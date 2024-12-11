@@ -9,12 +9,12 @@ import Test.QuickCheck.Instances.Text ()
 spec :: Spec
 spec =
     describe "UserPassword" do
-        it "creates a valid UserPassword"
+        it "Creates a valid UserPassword"
             . property
             $ forAll valid \password ->
                 mkUserPassword password `shouldSatisfy` isJust
 
-        it "fails to create UserPassword with invalid input"
+        it "Fails to create UserPassword with invalid input"
             . property
             $ forAll invalid \password ->
                 mkUserPassword password `shouldBe` Nothing

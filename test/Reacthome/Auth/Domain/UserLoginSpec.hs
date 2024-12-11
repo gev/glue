@@ -9,12 +9,12 @@ import Test.QuickCheck.Instances.Text ()
 spec :: Spec
 spec =
     describe "UserLogin" do
-        it "creates a valid UserLogin"
+        it "Creates a valid UserLogin"
             . property
             $ forAll valid \login ->
                 mkUserLogin login `shouldSatisfy` isJust
 
-        it "fails to create UserLogin with invalid input"
+        it "Fails to create UserLogin with invalid input"
             . property
             $ forAll invalid \login ->
                 mkUserLogin login `shouldBe` Nothing

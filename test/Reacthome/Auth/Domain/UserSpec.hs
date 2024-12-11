@@ -1,7 +1,7 @@
 module Reacthome.Auth.Domain.UserSpec (spec) where
 
 import Data.Maybe (fromJust)
-import Reacthome.Auth.Domain.User (UserId, UserLogin, UserPassword, mkUser, userId)
+import Reacthome.Auth.Domain.User (UserId, UserLogin, UserPassword, UserStatus (..), createdAt, login, mkActiveUser, mkUser, passwordHash, status, uid, updatedAt)
 import Reacthome.Auth.Domain.UserId (mkUserId)
 import Reacthome.Auth.Domain.UserLogin (isValidUserLogin, mkUserLogin)
 import Reacthome.Auth.Domain.UserPassword (isValidUserPassword, mkUserPassword)
@@ -17,11 +17,27 @@ import Test.QuickCheck.Property (property)
 spec :: Spec
 spec =
     describe "User" do
-        it "creates a User successfully"
+        it "Creates a User successfully"
             . property
             $ forAll arbitrary \(uid, login, password, time) ->
                 let user = mkUser uid login password time
-                 in user.userId `shouldBe` uid
+                 in (user.uid `shouldBe` uid)
+                        <> (user.login `shouldBe` login)
+                        <> (user.passwordHash `shouldBe` password)
+                        <> (user.status `shouldBe` Inactive)
+                        <> (user.createdAt `shouldBe` time)
+                        <> (user.updatedAt `shouldBe` time)
+
+        it "Creates an active User successfully"
+            . property
+            $ forAll arbitrary \(uid, login, password, time) ->
+                let user = mkActiveUser uid login password time
+                 in (user.uid `shouldBe` uid)
+                        <> (user.login `shouldBe` login)
+                        <> (user.passwordHash `shouldBe` password)
+                        <> (user.status `shouldBe` Active)
+                        <> (user.createdAt `shouldBe` time)
+                        <> (user.updatedAt `shouldBe` time)
 
         it "User instances with the same parameters are equal"
             . property
