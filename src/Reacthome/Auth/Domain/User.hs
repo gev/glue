@@ -2,16 +2,16 @@ module Reacthome.Auth.Domain.User (
   User,
 
   -- * User Fields
-  userId,
-  userLogin,
-  userPasswordHash,
-  userStatus,
-  userCreatedAt,
-  userUpdatedAt,
+  uid,
+  login,
+  passwordHash,
+  status,
+  createdAt,
+  updatedAt,
 
   -- * User Smart Constructors
   mkUser,
-  createActiveUser,
+  mkActiveUser,
   changeUserLogin,
   changeUserPassword,
   changeUserStatus,
@@ -35,12 +35,12 @@ import Reacthome.Auth.Domain.UserPassword (UserPassword)
 import Reacthome.Auth.Domain.UserStatus (UserStatus (..))
 
 data User = User
-  { userId :: UserId
-  , userLogin :: UserLogin
-  , userPasswordHash :: UserPassword
-  , userStatus :: UserStatus
-  , userCreatedAt :: UTCTime
-  , userUpdatedAt :: UTCTime
+  { uid :: UserId
+  , login :: UserLogin
+  , passwordHash :: UserPassword
+  , status :: UserStatus
+  , createdAt :: UTCTime
+  , updatedAt :: UTCTime
   }
   deriving (Eq, Show)
 
@@ -50,25 +50,25 @@ mkUser ::
   UserPassword ->
   UTCTime ->
   User
-mkUser userId userLogin userPasswordHash createdAt =
+mkUser uid login passwordHash createdAt =
   User
-    { userId = userId
-    , userLogin = userLogin
-    , userPasswordHash = userPasswordHash
-    , userStatus = Inactive -- Default to Inactive
-    , userCreatedAt = createdAt
-    , userUpdatedAt = createdAt
+    { uid = uid
+    , login = login
+    , passwordHash = passwordHash
+    , status = Inactive -- Default to Inactive
+    , createdAt = createdAt
+    , updatedAt = createdAt
     }
 
-createActiveUser ::
+mkActiveUser ::
   UserId ->
   UserLogin ->
   UserPassword ->
   UTCTime ->
   User
-createActiveUser userId userLogin userPasswordHash createdAt =
-  (mkUser userId userLogin userPasswordHash createdAt)
-    { userStatus = Active
+mkActiveUser uid login passwordHash createdAt =
+  (mkUser uid login passwordHash createdAt)
+    { status = Active
     }
 
 changeUserLogin ::
@@ -78,8 +78,8 @@ changeUserLogin ::
   User
 changeUserLogin user newLogin updatedAt =
   user
-    { userLogin = newLogin
-    , userUpdatedAt = updatedAt
+    { login = newLogin
+    , updatedAt = updatedAt
     }
 
 changeUserPassword ::
@@ -89,8 +89,8 @@ changeUserPassword ::
   User
 changeUserPassword user newPasswordHash updatedAt =
   user
-    { userPasswordHash = newPasswordHash
-    , userUpdatedAt = updatedAt
+    { passwordHash = newPasswordHash
+    , updatedAt = updatedAt
     }
 
 changeUserStatus ::
@@ -100,12 +100,12 @@ changeUserStatus ::
   User
 changeUserStatus user newStatus updatedAt =
   user
-    { userStatus = newStatus
-    , userUpdatedAt = updatedAt
+    { status = newStatus
+    , updatedAt = updatedAt
     }
 
 isUserActive :: User -> Bool
-isUserActive user = userStatus user == Active
+isUserActive user = status user == Active
 
 isUserInactive :: User -> Bool
-isUserInactive user = userStatus user == Inactive
+isUserInactive user = status user == Inactive
