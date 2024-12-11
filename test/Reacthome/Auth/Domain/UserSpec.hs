@@ -1,7 +1,7 @@
 module Reacthome.Auth.Domain.UserSpec (spec) where
 
 import Data.Maybe (fromJust)
-import Reacthome.Auth.Domain.User (UserId, UserLogin, UserPassword, createUser, userId)
+import Reacthome.Auth.Domain.User (UserId, UserLogin, UserPassword, mkUser, userId)
 import Reacthome.Auth.Domain.UserId (mkUserId)
 import Reacthome.Auth.Domain.UserLogin (isValidUserLogin, mkUserLogin)
 import Reacthome.Auth.Domain.UserPassword (isValidUserPassword, mkUserPassword)
@@ -20,14 +20,14 @@ spec =
         it "creates a User successfully"
             . property
             $ forAll arbitrary \(uid, login, password, time) ->
-                let user = createUser uid login password time
-                 in userId user `shouldBe` uid
+                let user = mkUser uid login password time
+                 in user.userId `shouldBe` uid
 
         it "User instances with the same parameters are equal"
             . property
             $ forAll arbitrary \(uid, login, password, time) ->
-                let user1 = createUser uid login password time
-                    user2 = createUser uid login password time
+                let user1 = mkUser uid login password time
+                    user2 = mkUser uid login password time
                  in user1 `shouldBe` user2
 
         it "User instances with different parameters are not equal"
@@ -36,8 +36,8 @@ spec =
                 forAll arbitrary \(uid2, login2, password2, time2) ->
                     (uid1, login1, password1, time1)
                         /= (uid2, login2, password2, time2)
-                            ==> createUser uid1 login1 password1 time1
-                        `shouldNotBe` createUser uid2 login2 password2 time2
+                            ==> mkUser uid1 login1 password1 time1
+                        `shouldNotBe` mkUser uid2 login2 password2 time2
 
 instance Arbitrary UserId where
     arbitrary = mkUserId <$> arbitrary

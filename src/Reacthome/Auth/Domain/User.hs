@@ -10,7 +10,7 @@ module Reacthome.Auth.Domain.User (
   userUpdatedAt,
 
   -- * User Smart Constructors
-  createUser,
+  mkUser,
   createActiveUser,
   changeUserLogin,
   changeUserPassword,
@@ -44,13 +44,13 @@ data User = User
   }
   deriving (Eq, Show)
 
-createUser ::
+mkUser ::
   UserId ->
   UserLogin ->
   UserPassword ->
   UTCTime ->
   User
-createUser userId userLogin userPasswordHash createdAt =
+mkUser userId userLogin userPasswordHash createdAt =
   User
     { userId = userId
     , userLogin = userLogin
@@ -67,7 +67,7 @@ createActiveUser ::
   UTCTime ->
   User
 createActiveUser userId userLogin userPasswordHash createdAt =
-  (createUser userId userLogin userPasswordHash createdAt)
+  (mkUser userId userLogin userPasswordHash createdAt)
     { userStatus = Active
     }
 
