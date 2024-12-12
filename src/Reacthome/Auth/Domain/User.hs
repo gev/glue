@@ -97,10 +97,10 @@ suspendUser user =
     }
 
 isUserActive :: User -> Bool
-isUserActive user = status user == Active
+isUserActive user = user.status == Active
 
 isUserInactive :: User -> Bool
-isUserInactive user = status user == Inactive
+isUserInactive user = user.status == Inactive
 
 isUserSuspended :: User -> Bool
-isUserSuspended user = status user == Suspended
+isUserSuspended user = user.status == Suspended
