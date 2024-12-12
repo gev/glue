@@ -19,7 +19,7 @@ spec =
             . property
             $ forAll arbitrary \(uid, login, password, time) ->
                 let user = mkUser uid login password time
-                 in user `shouldBeUserEqual` (uid, login, password, Active, time, time)
+                 in user `shouldBeEqualTo` (uid, login, password, Active, time, time)
 
         it "User instances with the same parameters are equal"
             . property
@@ -39,7 +39,7 @@ spec =
                 forAll arbitrary \(newLogin, updatedAt) ->
                     let user = mkUser uid login password createdAt
                         user' = changeUserLogin user newLogin updatedAt
-                     in user' `shouldBeUserEqual` (uid, newLogin, password, Active, createdAt, updatedAt)
+                     in user' `shouldBeEqualTo` (uid, newLogin, password, Active, createdAt, updatedAt)
 
         it "Change an User Password successfully"
             . property
@@ -47,7 +47,7 @@ spec =
                 forAll arbitrary \(newPassword, updatedAt) ->
                     let user = mkUser uid login password createdAt
                         user' = changeUserPassword user newPassword updatedAt
-                     in user' `shouldBeUserEqual` (uid, login, newPassword, Active, createdAt, updatedAt)
+                     in user' `shouldBeEqualTo` (uid, login, newPassword, Active, createdAt, updatedAt)
 
         it "Change an User Status successfully"
             . property
@@ -55,7 +55,7 @@ spec =
                 forAll arbitrary \(newStatus, updatedAt) ->
                     let user = mkUser uid login password createdAt
                         user' = changeUserStatus user newStatus updatedAt
-                     in user' `shouldBeUserEqual` (uid, login, password, newStatus, createdAt, updatedAt)
+                     in user' `shouldBeEqualTo` (uid, login, password, newStatus, createdAt, updatedAt)
 
         it "User is active when status is Active"
             . property
@@ -87,11 +87,11 @@ type UserTuple =
 mkUser' :: UserParams -> User
 mkUser' (uid, login, passwordHash, time) = mkUser uid login passwordHash time
 
-shouldBeUserEqual ::
+shouldBeEqualTo ::
     User ->
     UserTuple ->
     Expectation
-shouldBeUserEqual user (uid, login, passwordHash, status, createdAt, updatedAt) =
+shouldBeEqualTo user (uid, login, passwordHash, status, createdAt, updatedAt) =
     (user.uid `shouldBe` uid)
         <> (user.login `shouldBe` login)
         <> (user.passwordHash `shouldBe` passwordHash)
