@@ -34,10 +34,10 @@ common common-ghc-options
 common common-depends
     build-depends:
         base >= 4.20 && < 5.0,
+        containers,
         text,
         time,
-        uuid,
-        containers
+        uuid
 
 library
     import: common-extensions
@@ -68,10 +68,7 @@ test-suite reacthome-auth-test
         Reacthome.Auth.Domain.UserLoginSpec
         Reacthome.Auth.Domain.UserPasswordSpec
     build-depends:
-        base >=4.16 && <5,
-        text,
-        time,
+        reacthome-auth,
         hspec,
         QuickCheck,
         quickcheck-instances,
-        reacthome-auth
