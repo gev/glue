@@ -7,13 +7,10 @@ import Reacthome.Auth.Domain.UserId (mkUserId)
 import Reacthome.Auth.Domain.UserLogin (isValidUserLogin, mkUserLogin)
 import Reacthome.Auth.Domain.UserPassword (isValidUserPassword, mkUserPassword)
 import Test.Hspec (Expectation, Spec, describe, it, shouldBe, shouldNotBe)
-import Test.QuickCheck (arbitrary, elements, forAll, (==>))
-import Test.QuickCheck.Arbitrary (Arbitrary)
-import Test.QuickCheck.Gen (Gen, suchThat)
+import Test.QuickCheck (Arbitrary, Gen, arbitrary, elements, forAll, property, suchThat, (==>))
 import Test.QuickCheck.Instances.Text ()
 import Test.QuickCheck.Instances.Time ()
 import Test.QuickCheck.Instances.UUID ()
-import Test.QuickCheck.Property (property)
 
 spec :: Spec
 spec =
@@ -22,77 +19,88 @@ spec =
             . property
             $ forAll arbitrary \(uid, login, password, time) ->
                 let user = mkUser uid login password time
-                 in userShouldBe user uid login password Active time time
+                 in user `shouldBeUserEqual` (uid, login, password, Active, time, time)
 
         it "User instances with the same parameters are equal"
             . property
-            $ forAll arbitrary \(uid, login, password, time) ->
-                let user1 = mkUser uid login password time
-                    user2 = mkUser uid login password time
+            $ forAll arbitrary \user ->
+                let user1 = mkUser' user
+                    user2 = mkUser' user
                  in user1 `shouldBe` user2
 
         it "User instances with different parameters are not equal"
             . property
-            $ forAll arbitrary \(uid1, login1, password1, time1) ->
-                forAll arbitrary \(uid2, login2, password2, time2) ->
-                    (uid1, login1, password1, time1)
-                        /= (uid2, login2, password2, time2)
-                            ==> mkUser uid1 login1 password1 time1
-                        `shouldNotBe` mkUser uid2 login2 password2 time2
+            $ forAll arbitrary \(user1, user2) ->
+                user1 /= user2 ==> mkUser' user1 `shouldNotBe` mkUser' user2
 
         it "Change an User Login successfully"
             . property
-            $ forAll arbitrary \(uid, login, password, time) ->
+            $ forAll arbitrary \(uid, login, password, createdAt) ->
                 forAll arbitrary \(newLogin, updatedAt) ->
-                    let user = mkUser uid login password time
+                    let user = mkUser uid login password createdAt
                         user' = changeUserLogin user newLogin updatedAt
-                     in userShouldBe user' uid newLogin password Active time updatedAt
+                     in user' `shouldBeUserEqual` (uid, newLogin, password, Active, createdAt, updatedAt)
 
         it "Change an User Password successfully"
             . property
-            $ forAll arbitrary \(uid, login, password, time) ->
-                forAll arbitrary \(newPasswordHash, updatedAt) ->
-                    let user = mkUser uid login password time
-                        user' = changeUserPassword user newPasswordHash updatedAt
-                     in userShouldBe user' uid login newPasswordHash Active time updatedAt
+            $ forAll arbitrary \(uid, login, password, createdAt) ->
+                forAll arbitrary \(newPassword, updatedAt) ->
+                    let user = mkUser uid login password createdAt
+                        user' = changeUserPassword user newPassword updatedAt
+                     in user' `shouldBeUserEqual` (uid, login, newPassword, Active, createdAt, updatedAt)
 
         it "Change an User Status successfully"
             . property
-            $ forAll arbitrary \(uid, login, password, time) ->
+            $ forAll arbitrary \(uid, login, password, createdAt) ->
                 forAll arbitrary \(newStatus, updatedAt) ->
-                    let user = mkUser uid login password time
+                    let user = mkUser uid login password createdAt
                         user' = changeUserStatus user newStatus updatedAt
-                     in userShouldBe user' uid login password newStatus time updatedAt
+                     in user' `shouldBeUserEqual` (uid, login, password, newStatus, createdAt, updatedAt)
 
         it "User is active when status is Active"
             . property
-            $ forAll arbitrary \(uid, login, password, time) ->
-                let user = mkUser uid login password time
-                 in isUserActive user `shouldBe` user.status == Active
+            $ forAll arbitrary \user ->
+                forAll arbitrary \(status, time) ->
+                    let user' = changeUserStatus user status time
+                     in isUserActive user' `shouldBe` status == Active
 
         it "User is inactive when status is Inactive"
             . property
-            $ forAll arbitrary \(uid, login, password, time) ->
-                let user = mkUser uid login password time
-                    user' = changeUserStatus user Inactive time
-                 in isUserInactive user' `shouldBe` user'.status == Inactive
+            $ forAll arbitrary \user ->
+                forAll arbitrary \(status, time) ->
+                    let user' = changeUserStatus user status time
+                     in isUserInactive user' `shouldBe` status == Inactive
 
-userShouldBe ::
+        it "User is suspended when status is Suspended"
+            . property
+            $ forAll arbitrary \user ->
+                forAll arbitrary \(status, time) ->
+                    let user' = changeUserStatus user status time
+                     in isUserSuspended user' `shouldBe` status == Suspended
+
+type UserParams =
+    (UserId, UserLogin, UserPassword, UTCTime)
+
+type UserTuple =
+    (UserId, UserLogin, UserPassword, UserStatus, UTCTime, UTCTime)
+
+mkUser' :: UserParams -> User
+mkUser' (uid, login, passwordHash, time) = mkUser uid login passwordHash time
+
+shouldBeUserEqual ::
     User ->
-    UserId ->
-    UserLogin ->
-    UserPassword ->
-    UserStatus ->
-    UTCTime ->
-    UTCTime ->
+    UserTuple ->
     Expectation
-userShouldBe user uid login passwordHash status createdAt updatedAt =
+shouldBeUserEqual user (uid, login, passwordHash, status, createdAt, updatedAt) =
     (user.uid `shouldBe` uid)
         <> (user.login `shouldBe` login)
         <> (user.passwordHash `shouldBe` passwordHash)
         <> (user.status `shouldBe` status)
         <> (user.createdAt `shouldBe` createdAt)
         <> (user.updatedAt `shouldBe` updatedAt)
+
+instance Arbitrary User where
+    arbitrary = mkUser' <$> arbitrary
 
 instance Arbitrary UserId where
     arbitrary = mkUserId <$> arbitrary
