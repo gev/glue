@@ -19,12 +19,6 @@ spec =
                 mkUser uid login password status
                     `shouldBeEqualTo` (uid, login, password, status)
 
-        it "Creates a new User successfully"
-            . property
-            $ forAll arbitrary \(uid, login, password) ->
-                mkNewUser uid login password
-                    `shouldBeEqualTo` (uid, login, password, Active)
-
         it "User instances with the same parameters are equal"
             . property
             $ forAll arbitrary \user ->
@@ -34,6 +28,22 @@ spec =
             . property
             $ forAll arbitrary \(user1, user2) ->
                 user1 /= user2 ==> mkUser' user1 `shouldNotBe` mkUser' user2
+
+        it "Creates a new User successfully"
+            . property
+            $ forAll arbitrary \(uid, login, password) ->
+                mkNewUser uid login password
+                    `shouldBeEqualTo` (uid, login, password, Active)
+
+        it "New User instances with the same parameters are equal"
+            . property
+            $ forAll arbitrary \user ->
+                mkNewUser' user `shouldBe` mkNewUser' user
+
+        it "New User instances with different parameters are not equal"
+            . property
+            $ forAll arbitrary \(user1, user2) ->
+                user1 /= user2 ==> mkNewUser' user1 `shouldNotBe` mkNewUser' user2
 
         it "Change an User Login successfully"
             . property
@@ -71,11 +81,17 @@ spec =
                 isUserSuspended (changeUserStatus user status)
                     `shouldBe` status == Suspended
 
+type UserParams =
+    (UserId, UserLogin, UserPassword)
+
 type UserTuple =
     (UserId, UserLogin, UserPassword, UserStatus)
 
 mkUser' :: UserTuple -> User
 mkUser' (uid, login, passwordHash, status) = mkUser uid login passwordHash status
+
+mkNewUser' :: UserParams -> User
+mkNewUser' (uid, login, passwordHash) = mkNewUser uid login passwordHash
 
 shouldBeEqualTo ::
     User ->
