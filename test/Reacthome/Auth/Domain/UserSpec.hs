@@ -57,29 +57,41 @@ spec =
                 changeUserPassword user passwordHash
                     `shouldBeEqualTo` (user.uid, user.login, passwordHash, user.status)
 
-        it "Change an User Status successfully"
+        it "Activate an User successfully"
             . property
-            $ forAll arbitrary \(user, status) ->
-                changeUserStatus user status
-                    `shouldBeEqualTo` (user.uid, user.login, user.passwordHash, status)
+            $ forAll arbitrary \user ->
+                activateUser user
+                    `shouldBeEqualTo` (user.uid, user.login, user.passwordHash, Active)
 
-        it "User is active when status is Active"
+        it "Inactivate an User successfully"
             . property
-            $ forAll arbitrary \(user, status) ->
-                isUserActive (changeUserStatus user status)
-                    `shouldBe` status == Active
+            $ forAll arbitrary \user ->
+                inactivateUser user
+                    `shouldBeEqualTo` (user.uid, user.login, user.passwordHash, Inactive)
 
-        it "User is inactive when status is Inactive"
+        it "Suspend an User successfully"
             . property
-            $ forAll arbitrary \(user, status) ->
-                isUserInactive (changeUserStatus user status)
-                    `shouldBe` status == Inactive
+            $ forAll arbitrary \user ->
+                suspendUser user
+                    `shouldBeEqualTo` (user.uid, user.login, user.passwordHash, Suspended)
 
-        it "User is suspended when status is Suspended"
+        it "Is User active when status is Active"
             . property
-            $ forAll arbitrary \(user, status) ->
-                isUserSuspended (changeUserStatus user status)
-                    `shouldBe` status == Suspended
+            $ forAll arbitrary \user ->
+                isUserActive user
+                    `shouldBe` user.status == Active
+
+        it "Is User inactive when status is Inactive"
+            . property
+            $ forAll arbitrary \user ->
+                isUserInactive user
+                    `shouldBe` user.status == Inactive
+
+        it "Is User suspended when status is Suspended"
+            . property
+            $ forAll arbitrary \user ->
+                isUserSuspended user
+                    `shouldBe` user.status == Suspended
 
 type UserParams =
     (UserId, UserLogin, UserPassword)

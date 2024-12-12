@@ -14,7 +14,9 @@ module Reacthome.Auth.Domain.User (
   -- * User Modifiers
   changeUserLogin,
   changeUserPassword,
-  changeUserStatus,
+  activateUser,
+  inactivateUser,
+  suspendUser,
 
   -- * User Status Checks
   isUserActive,
@@ -75,13 +77,22 @@ changeUserPassword user newPasswordHash =
     { passwordHash = newPasswordHash
     }
 
-changeUserStatus ::
-  User ->
-  UserStatus ->
-  User
-changeUserStatus user newStatus =
+activateUser :: User -> User
+activateUser user =
   user
-    { status = newStatus
+    { status = Active
+    }
+
+inactivateUser :: User -> User
+inactivateUser user =
+  user
+    { status = Inactive
+    }
+
+suspendUser :: User -> User
+suspendUser user =
+  user
+    { status = Suspended
     }
 
 isUserActive :: User -> Bool
