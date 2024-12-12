@@ -93,7 +93,7 @@ spec =
                 isUserSuspended user
                     `shouldBe` user.status == Suspended
 
-type UserParams =
+type NewUserTuple =
     (UserId, UserLogin, UserPassword)
 
 type UserTuple =
@@ -102,7 +102,7 @@ type UserTuple =
 mkUser' :: UserTuple -> User
 mkUser' (uid, login, passwordHash, status) = mkUser uid login passwordHash status
 
-mkNewUser' :: UserParams -> User
+mkNewUser' :: NewUserTuple -> User
 mkNewUser' (uid, login, passwordHash) = mkNewUser uid login passwordHash
 
 shouldBeEqualTo ::
