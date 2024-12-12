@@ -15,9 +15,15 @@ spec =
     describe "User" do
         it "Creates an User successfully"
             . property
+            $ forAll arbitrary \(uid, login, password, status) ->
+                mkUser uid login password status
+                    `shouldBeEqualTo` (uid, login, password, status)
+
+        it "Creates a new User successfully"
+            . property
             $ forAll arbitrary \(uid, login, password) ->
-                let user = mkUser uid login password
-                 in user `shouldBeEqualTo` (uid, login, password, Active)
+                mkNewUser uid login password
+                    `shouldBeEqualTo` (uid, login, password, Active)
 
         it "User instances with the same parameters are equal"
             . property
@@ -33,13 +39,13 @@ spec =
             . property
             $ forAll arbitrary \(user, login) ->
                 changeUserLogin user login
-                    `shouldBeEqualTo` (user.uid, login, user.passwordHash, Active)
+                    `shouldBeEqualTo` (user.uid, login, user.passwordHash, user.status)
 
         it "Change an User Password successfully"
             . property
             $ forAll arbitrary \(user, passwordHash) ->
                 changeUserPassword user passwordHash
-                    `shouldBeEqualTo` (user.uid, user.login, passwordHash, Active)
+                    `shouldBeEqualTo` (user.uid, user.login, passwordHash, user.status)
 
         it "Change an User Status successfully"
             . property
@@ -65,14 +71,11 @@ spec =
                 isUserSuspended (changeUserStatus user status)
                     `shouldBe` status == Suspended
 
-type UserParams =
-    (UserId, UserLogin, UserPassword)
-
 type UserTuple =
     (UserId, UserLogin, UserPassword, UserStatus)
 
-mkUser' :: UserParams -> User
-mkUser' (uid, login, passwordHash) = mkUser uid login passwordHash
+mkUser' :: UserTuple -> User
+mkUser' (uid, login, passwordHash, status) = mkUser uid login passwordHash status
 
 shouldBeEqualTo ::
     User ->
