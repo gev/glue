@@ -20,6 +20,7 @@ module Reacthome.Auth.Domain.User (
   -- * User Status Checks
   isUserActive,
   isUserInactive,
+  isUserSuspended,
 
   -- * Reexported Types
   UserId,
@@ -99,3 +100,6 @@ isUserActive user = status user == Active
 
 isUserInactive :: User -> Bool
 isUserInactive user = status user == Inactive
+
+isUserSuspended :: User -> Bool
+isUserSuspended user = status user == Suspended
