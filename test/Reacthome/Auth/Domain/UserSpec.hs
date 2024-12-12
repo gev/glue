@@ -1,7 +1,7 @@
 module Reacthome.Auth.Domain.UserSpec (spec) where
 
 import Data.Maybe (fromJust)
-import Data.Time
+import Data.Time (UTCTime)
 import Reacthome.Auth.Domain.User
 import Reacthome.Auth.Domain.UserId (mkUserId)
 import Reacthome.Auth.Domain.UserLogin (isValidUserLogin, mkUserLogin)
