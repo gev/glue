@@ -6,7 +6,7 @@ import Reacthome.Auth.Domain.User
 import Reacthome.Auth.Domain.UserId (mkUserId)
 import Reacthome.Auth.Domain.UserLogin (isValidUserLogin, mkUserLogin)
 import Reacthome.Auth.Domain.UserPassword (isValidUserPassword, mkUserPassword)
-import Test.Hspec (Spec, describe, it, shouldBe, shouldNotBe)
+import Test.Hspec (Expectation, Spec, describe, it, shouldBe, shouldNotBe)
 import Test.QuickCheck (arbitrary, elements, forAll, (==>))
 import Test.QuickCheck.Arbitrary (Arbitrary)
 import Test.QuickCheck.Gen (Gen, suchThat)
@@ -85,7 +85,7 @@ userShouldBe ::
     UserStatus ->
     UTCTime ->
     UTCTime ->
-    IO ()
+    Expectation
 userShouldBe user uid login passwordHash status createdAt updatedAt =
     (user.uid `shouldBe` uid)
         <> (user.login `shouldBe` login)
