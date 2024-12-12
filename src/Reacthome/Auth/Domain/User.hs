@@ -57,7 +57,8 @@ mkNewUser ::
   UserLogin ->
   UserPassword ->
   User
-mkNewUser uid login passwordHash = mkUser uid login passwordHash Active
+mkNewUser uid login passwordHash =
+  mkUser uid login passwordHash Active
 
 changeUserLogin ::
   User ->
