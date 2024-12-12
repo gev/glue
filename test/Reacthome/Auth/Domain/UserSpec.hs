@@ -47,15 +47,15 @@ spec =
 
         it "Change an User Login successfully"
             . property
-            $ forAll arbitrary \(user, login) ->
-                changeUserLogin user login
-                    `shouldBeEqualTo` (user.uid, login, user.passwordHash, user.status)
+            $ forAll arbitrary \(user, newLogin) ->
+                changeUserLogin user newLogin
+                    `shouldBeEqualTo` (user.uid, newLogin, user.passwordHash, user.status)
 
         it "Change an User Password successfully"
             . property
-            $ forAll arbitrary \(user, passwordHash) ->
-                changeUserPassword user passwordHash
-                    `shouldBeEqualTo` (user.uid, user.login, passwordHash, user.status)
+            $ forAll arbitrary \(user, newPasswordHash) ->
+                changeUserPassword user newPasswordHash
+                    `shouldBeEqualTo` (user.uid, user.login, newPasswordHash, user.status)
 
         it "Activate an User successfully"
             . property
