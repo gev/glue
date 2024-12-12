@@ -6,8 +6,6 @@ module Reacthome.Auth.Domain.User (
   login,
   passwordHash,
   status,
-  createdAt,
-  updatedAt,
 
   -- * User Smart Constructors
   mkUser,
@@ -30,7 +28,6 @@ module Reacthome.Auth.Domain.User (
 )
 where
 
-import Data.Time (UTCTime)
 import Reacthome.Auth.Domain.UserId (UserId)
 import Reacthome.Auth.Domain.UserLogin (UserLogin)
 import Reacthome.Auth.Domain.UserPassword (UserPassword)
@@ -41,8 +38,6 @@ data User = User
   , login :: UserLogin
   , passwordHash :: UserPassword
   , status :: UserStatus
-  , createdAt :: UTCTime
-  , updatedAt :: UTCTime
   }
   deriving (Eq, Show)
 
@@ -50,49 +45,40 @@ mkUser ::
   UserId ->
   UserLogin ->
   UserPassword ->
-  UTCTime ->
   User
-mkUser uid login passwordHash createdAt =
+mkUser uid login passwordHash =
   User
     { uid = uid
     , login = login
     , passwordHash = passwordHash
     , status = Active
-    , createdAt = createdAt
-    , updatedAt = createdAt
     }
 
 changeUserLogin ::
   User ->
   UserLogin ->
-  UTCTime ->
   User
-changeUserLogin user newLogin updatedAt =
+changeUserLogin user newLogin =
   user
     { login = newLogin
-    , updatedAt = updatedAt
     }
 
 changeUserPassword ::
   User ->
   UserPassword ->
-  UTCTime ->
   User
-changeUserPassword user newPasswordHash updatedAt =
+changeUserPassword user newPasswordHash =
   user
     { passwordHash = newPasswordHash
-    , updatedAt = updatedAt
     }
 
 changeUserStatus ::
   User ->
   UserStatus ->
-  UTCTime ->
   User
-changeUserStatus user newStatus updatedAt =
+changeUserStatus user newStatus =
   user
     { status = newStatus
-    , updatedAt = updatedAt
     }
 
 isUserActive :: User -> Bool
