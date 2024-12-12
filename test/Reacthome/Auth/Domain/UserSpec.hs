@@ -1,6 +1,7 @@
 module Reacthome.Auth.Domain.UserSpec (spec) where
 
 import Data.Maybe (fromJust)
+import Data.Time
 import Reacthome.Auth.Domain.User
 import Reacthome.Auth.Domain.UserId (mkUserId)
 import Reacthome.Auth.Domain.UserLogin (isValidUserLogin, mkUserLogin)
@@ -17,27 +18,11 @@ import Test.QuickCheck.Property (property)
 spec :: Spec
 spec =
     describe "User" do
-        it "Creates a User successfully"
+        it "Creates an User successfully"
             . property
             $ forAll arbitrary \(uid, login, password, time) ->
                 let user = mkUser uid login password time
-                 in (user.uid `shouldBe` uid)
-                        <> (user.login `shouldBe` login)
-                        <> (user.passwordHash `shouldBe` password)
-                        <> (user.status `shouldBe` Inactive)
-                        <> (user.createdAt `shouldBe` time)
-                        <> (user.updatedAt `shouldBe` time)
-
-        it "Creates an active User successfully"
-            . property
-            $ forAll arbitrary \(uid, login, password, time) ->
-                let user = mkActiveUser uid login password time
-                 in (user.uid `shouldBe` uid)
-                        <> (user.login `shouldBe` login)
-                        <> (user.passwordHash `shouldBe` password)
-                        <> (user.status `shouldBe` Active)
-                        <> (user.createdAt `shouldBe` time)
-                        <> (user.updatedAt `shouldBe` time)
+                 in userShouldBe user uid login password Active time time
 
         it "User instances with the same parameters are equal"
             . property
@@ -61,12 +46,7 @@ spec =
                 forAll arbitrary \(newLogin, updatedAt) ->
                     let user = mkUser uid login password time
                         user' = changeUserLogin user newLogin updatedAt
-                     in (user.uid `shouldBe` user'.uid)
-                            <> (user'.login `shouldBe` newLogin)
-                            <> (user'.passwordHash `shouldBe` user.passwordHash)
-                            <> (user'.status `shouldBe` user.status)
-                            <> (user'.createdAt `shouldBe` user.createdAt)
-                            <> (user'.updatedAt `shouldBe` updatedAt)
+                     in userShouldBe user' uid newLogin password Active time updatedAt
 
         it "Change an User Password successfully"
             . property
@@ -74,12 +54,7 @@ spec =
                 forAll arbitrary \(newPasswordHash, updatedAt) ->
                     let user = mkUser uid login password time
                         user' = changeUserPassword user newPasswordHash updatedAt
-                     in (user.uid `shouldBe` user'.uid)
-                            <> (user'.login `shouldBe` user.login)
-                            <> (user'.passwordHash `shouldBe` newPasswordHash)
-                            <> (user'.status `shouldBe` user.status)
-                            <> (user'.createdAt `shouldBe` user.createdAt)
-                            <> (user'.updatedAt `shouldBe` updatedAt)
+                     in userShouldBe user' uid login newPasswordHash Active time updatedAt
 
         it "Change an User Status successfully"
             . property
@@ -87,24 +62,37 @@ spec =
                 forAll arbitrary \(newStatus, updatedAt) ->
                     let user = mkUser uid login password time
                         user' = changeUserStatus user newStatus updatedAt
-                     in (user.uid `shouldBe` user'.uid)
-                            <> (user'.login `shouldBe` user.login)
-                            <> (user'.passwordHash `shouldBe` user.passwordHash)
-                            <> (user'.status `shouldBe` newStatus)
-                            <> (user'.createdAt `shouldBe` user.createdAt)
-                            <> (user'.updatedAt `shouldBe` updatedAt)
+                     in userShouldBe user' uid login password newStatus time updatedAt
 
         it "User is active when status is Active"
             . property
             $ forAll arbitrary \(uid, login, password, time) ->
-                let user = mkActiveUser uid login password time
+                let user = mkUser uid login password time
                  in isUserActive user `shouldBe` user.status == Active
 
         it "User is inactive when status is Inactive"
             . property
             $ forAll arbitrary \(uid, login, password, time) ->
                 let user = mkUser uid login password time
-                 in isUserInactive user `shouldBe` user.status == Inactive
+                    user' = changeUserStatus user Inactive time
+                 in isUserInactive user' `shouldBe` user'.status == Inactive
+
+userShouldBe ::
+    User ->
+    UserId ->
+    UserLogin ->
+    UserPassword ->
+    UserStatus ->
+    UTCTime ->
+    UTCTime ->
+    IO ()
+userShouldBe user uid login passwordHash status createdAt updatedAt =
+    (user.uid `shouldBe` uid)
+        <> (user.login `shouldBe` login)
+        <> (user.passwordHash `shouldBe` passwordHash)
+        <> (user.status `shouldBe` status)
+        <> (user.createdAt `shouldBe` createdAt)
+        <> (user.updatedAt `shouldBe` updatedAt)
 
 instance Arbitrary UserId where
     arbitrary = mkUserId <$> arbitrary

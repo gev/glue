@@ -11,7 +11,8 @@ module Reacthome.Auth.Domain.User (
 
   -- * User Smart Constructors
   mkUser,
-  mkActiveUser,
+
+  -- * User Modifiers
   changeUserLogin,
   changeUserPassword,
   changeUserStatus,
@@ -55,20 +56,9 @@ mkUser uid login passwordHash createdAt =
     { uid = uid
     , login = login
     , passwordHash = passwordHash
-    , status = Inactive -- Default to Inactive
+    , status = Active
     , createdAt = createdAt
     , updatedAt = createdAt
-    }
-
-mkActiveUser ::
-  UserId ->
-  UserLogin ->
-  UserPassword ->
-  UTCTime ->
-  User
-mkActiveUser uid login passwordHash createdAt =
-  (mkUser uid login passwordHash createdAt)
-    { status = Active
     }
 
 changeUserLogin ::
