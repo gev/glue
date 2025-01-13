@@ -4,7 +4,6 @@ import Data.Maybe (fromJust)
 import Reacthome.Auth.Domain.User
 import Reacthome.Auth.Domain.UserId (mkUserId)
 import Reacthome.Auth.Domain.UserLogin (isValidUserLogin, mkUserLogin)
-import Reacthome.Auth.Domain.UserPassword (isValidUserPassword, mkUserPassword)
 import Test.Hspec (Expectation, Spec, describe, it, shouldBe, shouldNotBe)
 import Test.QuickCheck (Arbitrary, Gen, arbitrary, elements, forAll, property, suchThat, (==>))
 import Test.QuickCheck.Instances.Text ()
@@ -15,9 +14,9 @@ spec =
     describe "User" do
         it "Creates an User successfully"
             . property
-            $ forAll arbitrary \(uid, login, password, status) ->
-                mkUser uid login password status
-                    `shouldBeEqualTo` (uid, login, password, status)
+            $ forAll arbitrary \(uid, login, status) ->
+                mkUser uid login status
+                    `shouldBeEqualTo` (uid, login, status)
 
         it "User instances with the same parameters are equal"
             . property
@@ -31,9 +30,9 @@ spec =
 
         it "Creates a new User successfully"
             . property
-            $ forAll arbitrary \(uid, login, password) ->
-                mkNewUser uid login password
-                    `shouldBeEqualTo` (uid, login, password, Active)
+            $ forAll arbitrary \(uid, login) ->
+                mkNewUser uid login
+                    `shouldBeEqualTo` (uid, login, Active)
 
         it "New User instances with the same parameters are equal"
             . property
@@ -49,31 +48,25 @@ spec =
             . property
             $ forAll arbitrary \(user, newLogin) ->
                 changeUserLogin user newLogin
-                    `shouldBeEqualTo` (user.uid, newLogin, user.passwordHash, user.status)
-
-        it "Change an User Password successfully"
-            . property
-            $ forAll arbitrary \(user, newPasswordHash) ->
-                changeUserPassword user newPasswordHash
-                    `shouldBeEqualTo` (user.uid, user.login, newPasswordHash, user.status)
+                    `shouldBeEqualTo` (user.uid, newLogin, user.status)
 
         it "Activate an User successfully"
             . property
             $ forAll arbitrary \user ->
                 activateUser user
-                    `shouldBeEqualTo` (user.uid, user.login, user.passwordHash, Active)
+                    `shouldBeEqualTo` (user.uid, user.login, Active)
 
         it "Inactivate an User successfully"
             . property
             $ forAll arbitrary \user ->
                 inactivateUser user
-                    `shouldBeEqualTo` (user.uid, user.login, user.passwordHash, Inactive)
+                    `shouldBeEqualTo` (user.uid, user.login, Inactive)
 
         it "Suspend an User successfully"
             . property
             $ forAll arbitrary \user ->
                 suspendUser user
-                    `shouldBeEqualTo` (user.uid, user.login, user.passwordHash, Suspended)
+                    `shouldBeEqualTo` (user.uid, user.login, Suspended)
 
         it "Is User active when status is Active"
             . property
@@ -94,25 +87,24 @@ spec =
                     `shouldBe` user.status == Suspended
 
 type UserTuple =
-    (UserId, UserLogin, UserPassword, UserStatus)
+    (UserId, UserLogin, UserStatus)
 
 type NewUserTuple =
-    (UserId, UserLogin, UserPassword)
+    (UserId, UserLogin)
 
 mkUser' :: UserTuple -> User
-mkUser' (uid, login, passwordHash, status) = mkUser uid login passwordHash status
+mkUser' (uid, login, status) = mkUser uid login status
 
 mkNewUser' :: NewUserTuple -> User
-mkNewUser' (uid, login, passwordHash) = mkNewUser uid login passwordHash
+mkNewUser' (uid, login) = mkNewUser uid login
 
 shouldBeEqualTo ::
     User ->
     UserTuple ->
     Expectation
-shouldBeEqualTo user (uid, login, passwordHash, status) =
+shouldBeEqualTo user (uid, login, status) =
     (user.uid `shouldBe` uid)
         <> (user.login `shouldBe` login)
-        <> (user.passwordHash `shouldBe` passwordHash)
         <> (user.status `shouldBe` status)
 
 instance Arbitrary User where
@@ -123,9 +115,6 @@ instance Arbitrary UserId where
 
 instance Arbitrary UserLogin where
     arbitrary = mkArbitrary mkUserLogin isValidUserLogin
-
-instance Arbitrary UserPassword where
-    arbitrary = mkArbitrary mkUserPassword isValidUserPassword
 
 instance Arbitrary UserStatus where
     arbitrary = elements [Active, Inactive]

@@ -1,0 +1,17 @@
+### Successful GET static content 
+GET http://localhost:3000 HTTP/1.1
+
+
+
+### Successful HEAD static content success
+HEAD http://localhost:3000 HTTP/1.1
+
+
+
+### Invalid GET static content not found
+GET http://localhost:3000/not/found HTTP/1.1
+
+
+
+### Invalid HEAD  static content not found
+HEAD http://localhost:3000/not/found HTTP/1.1

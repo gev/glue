@@ -1,0 +1,167 @@
+module Service.Register.Start where
+
+import Crypto.Random
+import Data.Aeson
+import Data.ByteString
+import Data.ByteString.Base64 qualified as Base64
+import Data.Text
+import Data.Text.Encoding
+import GHC.Generics
+
+{--
+    RFC: https://w3c.github.io/webauthn/#dictdef-publickeycredentialcreationoption
+--}
+
+data StartRegisterService = StartRegisterService
+    { rp :: PublicKeyCredentialRpEntity
+    , timeout :: Int
+    }
+
+data StartRegisterRequest = StartRegisterRequest
+    { name :: Text
+    , displayName :: Text
+    }
+    deriving (Generic, Show)
+instance FromJSON StartRegisterRequest
+
+data PublicKeyCredentialCreationOptions = PublicKeyCredentialCreationOptions
+    { rp :: PublicKeyCredentialRpEntity
+    , user :: PublicKeyCredentialUserEntity
+    , challenge :: ByteString
+    , pubKeyCredParams :: [PublicKeyCredentialParameters]
+    , timeout :: Maybe Int
+    , excludeCredentials :: Maybe [PublicKeyCredentialDescriptor]
+    , authenticatorSelection :: Maybe AuthenticatorSelectionCriteria
+    , hints :: Maybe [Text]
+    , attestation :: Maybe Text
+    , attestationFormat :: Maybe Text
+    }
+    deriving (Generic, Show)
+instance ToJSON PublicKeyCredentialCreationOptions where
+    toJSON = genericToJSON omitNothing
+
+data PublicKeyCredentialUserEntity = PublicKeyCredentialUserEntity
+    { id :: ByteString
+    , name :: Text
+    , displayName :: Text
+    }
+    deriving (Generic, Show)
+instance ToJSON PublicKeyCredentialUserEntity
+
+data PublicKeyCredentialRpEntity = PublicKeyCredentialRpEntity
+    { id :: Maybe Text
+    , name :: Text
+    }
+    deriving (Generic, Show)
+instance ToJSON PublicKeyCredentialRpEntity where
+    toJSON = genericToJSON omitNothing
+
+data PublicKeyCredentialParameters = PublicKeyCredentialParameters
+    { type' :: Text
+    , alg :: COSEAlgorithmIdentifier
+    }
+    deriving (Generic, Show)
+instance ToJSON PublicKeyCredentialParameters where
+    toJSON = genericToJSON typeFieldLabelModifier
+
+data PublicKeyCredentialDescriptor = PublicKeyCredentialDescriptor
+    { type' :: Text
+    , id :: ByteString
+    , transports :: Maybe [Text]
+    }
+    deriving (Generic, Show)
+instance ToJSON PublicKeyCredentialDescriptor where
+    toJSON = genericToJSON omitNothing
+
+data AuthenticatorSelectionCriteria = AuthenticatorSelectionCriteria
+    { authenticatorAttachment :: Maybe Text
+    , residentKey :: Maybe Text
+    , requireResidentKey :: Maybe Bool
+    , userVerification :: Maybe Text
+    }
+    deriving (Generic, Show)
+instance ToJSON AuthenticatorSelectionCriteria where
+    toJSON = genericToJSON omitNothing
+
+instance ToJSON ByteString where
+    toJSON = toJSON . decodeUtf8 . Base64.encode
+
+type COSEAlgorithmIdentifier = Int
+
+ed25519 :: COSEAlgorithmIdentifier
+ed25519 = -8
+
+es256 :: COSEAlgorithmIdentifier
+es256 = -7
+
+rs256 :: COSEAlgorithmIdentifier
+rs256 = -257
+
+publicKeyCredentialType :: Text
+publicKeyCredentialType = "public-key"
+
+publicKeyCredential :: COSEAlgorithmIdentifier -> PublicKeyCredentialParameters
+publicKeyCredential = PublicKeyCredentialParameters publicKeyCredentialType
+
+publicKeyCredentialEd25519 :: PublicKeyCredentialParameters
+publicKeyCredentialEd25519 = publicKeyCredential ed25519
+
+publicKeyCredentialES256 :: PublicKeyCredentialParameters
+publicKeyCredentialES256 = publicKeyCredential es256
+
+publicKeyCredentialRS256 :: PublicKeyCredentialParameters
+publicKeyCredentialRS256 = publicKeyCredential rs256
+
+publicKeyCredentialParameters :: [PublicKeyCredentialParameters]
+publicKeyCredentialParameters =
+    [ publicKeyCredentialEd25519
+    , publicKeyCredentialES256
+    , publicKeyCredentialRS256
+    ]
+
+mkPublicKeyCredentialCreationOptions :: (?startRegisterService :: StartRegisterService) => PublicKeyCredentialUserEntity -> ByteString -> PublicKeyCredentialCreationOptions
+mkPublicKeyCredentialCreationOptions user challenge =
+    PublicKeyCredentialCreationOptions
+        { rp = ?startRegisterService.rp
+        , user
+        , challenge
+        , pubKeyCredParams = publicKeyCredentialParameters
+        , timeout = Nothing
+        , excludeCredentials = Nothing
+        , authenticatorSelection = Nothing
+        , hints = Just []
+        , attestation = Nothing
+        , attestationFormat = Nothing
+        }
+
+startRegister ::
+    (?startRegisterService :: StartRegisterService) =>
+    StartRegisterRequest ->
+    IO (Maybe PublicKeyCredentialCreationOptions)
+startRegister req = do
+    uid <- getRandomBytes 16
+    challenge <- getRandomBytes 16
+    let name = req.name
+    let displayName = req.displayName
+    if name /= "" && displayName /= ""
+        then do
+            let user = PublicKeyCredentialUserEntity uid name displayName
+            pure $
+                Just $
+                    mkPublicKeyCredentialCreationOptions user challenge
+        else pure Nothing
+
+omitNothing :: Options
+omitNothing =
+    defaultOptions
+        { omitNothingFields = True
+        }
+
+typeFieldLabelModifier :: Options
+typeFieldLabelModifier =
+    defaultOptions
+        { fieldLabelModifier = \s ->
+            if s == "type'"
+                then "type"
+                else s
+        }

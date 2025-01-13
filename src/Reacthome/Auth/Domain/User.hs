@@ -4,7 +4,6 @@ module Reacthome.Auth.Domain.User (
   -- * User Fields
   uid,
   login,
-  passwordHash,
   status,
 
   -- * User Smart Constructors
@@ -13,7 +12,6 @@ module Reacthome.Auth.Domain.User (
 
   -- * User Modifiers
   changeUserLogin,
-  changeUserPassword,
   activateUser,
   inactivateUser,
   suspendUser,
@@ -26,20 +24,17 @@ module Reacthome.Auth.Domain.User (
   -- * Reexported Types
   UserId,
   UserLogin,
-  UserPassword,
   UserStatus (..),
 )
 where
 
 import Reacthome.Auth.Domain.UserId (UserId)
 import Reacthome.Auth.Domain.UserLogin (UserLogin)
-import Reacthome.Auth.Domain.UserPassword (UserPassword)
 import Reacthome.Auth.Domain.UserStatus (UserStatus (..))
 
 data User = User
   { uid :: UserId
   , login :: UserLogin
-  , passwordHash :: UserPassword
   , status :: UserStatus
   }
   deriving (Eq, Show)
@@ -47,7 +42,6 @@ data User = User
 mkUser ::
   UserId ->
   UserLogin ->
-  UserPassword ->
   UserStatus ->
   User
 mkUser = User
@@ -55,10 +49,9 @@ mkUser = User
 mkNewUser ::
   UserId ->
   UserLogin ->
-  UserPassword ->
   User
-mkNewUser uid login passwordHash =
-  mkUser uid login passwordHash Active
+mkNewUser uid login =
+  mkUser uid login Active
 
 changeUserLogin ::
   User ->
@@ -67,15 +60,6 @@ changeUserLogin ::
 changeUserLogin user newLogin =
   user
     { login = newLogin
-    }
-
-changeUserPassword ::
-  User ->
-  UserPassword ->
-  User
-changeUserPassword user newPasswordHash =
-  user
-    { passwordHash = newPasswordHash
     }
 
 activateUser :: User -> User
