@@ -1,23 +1,26 @@
-const fromBase64 = base64 =>
-    Uint8Array.from(atob(base64), c => c.charCodeAt(0))
-
-const request = (url, data) => fetch(url, {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-})
-
 const register = async () => {
-    const response = await request("/register/start", {
-        name: document.getElementById("name").value,
-        displayName: document.getElementById("displayName").value,
-    })
-    if (response.ok) {
-        const options = await response.json()
-        console.log(options)
-        const publicKey = {
+    try {
+        const startRegisterOptions = createStartRegisterOptions()
+        const publicKeyCredentialCreationOptions = await startRegister(startRegisterOptions)
+        const credentials = await createCredentials(publicKeyCredentialCreationOptions)
+        const finishRegisterOptions = createFinishRegisterOptions(credentials)
+        console.log(finishRegisterOptions)
+        await finishRegister(finishRegisterOptions)
+    } catch (err) {
+        console.error(err.message)
+        debug(err.message)
+    }
+}
+
+const startRegister = startRegisterOptions =>
+    request("/register/start", startRegisterOptions)
+
+const finishRegister = finishRequestOptions =>
+    request("/register/finish", finishRequestOptions)
+
+const createCredentials = options =>
+    navigator.credentials.create({
+        publicKey: {
             ...options,
             user: {
                 ...options.user,
@@ -25,12 +28,53 @@ const register = async () => {
             },
             challenge: fromBase64(options.challenge),
         }
-        credentials = await navigator.credentials.create({ publicKey })
-        console.log(credentials)
-        request("/register/finish", JSON.stringify(credentials))
+    })
+
+const createStartRegisterOptions = () => ({
+    name: document.getElementById("name").value,
+    displayName: document.getElementById("displayName").value,
+})
+
+const createFinishRegisterOptions = credentials => ({
+    id: toBase64(this.rawId),
+    authenticatorAttachment: this.authenticatorAttachment,
+    response: {
+        attestationObject: toBase64(this.response.attestationObject),
+        clientDataJSON: toBase64(this.response.clientDataJSON),
+    },
+    type: this.type
+})
+
+const authenticate = () => {
+    console.log("authenticate")
+}
+
+const request = async (url, data) => {
+    const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    })
+    if (response.ok) {
+        return response.json()
+    } else {
+        throw new Error(await response.text())
     }
 }
 
-function authenticate() {
-    console.log("authenticate")
+const fromBase64 = base64 =>
+    Uint8Array.from(atob(base64), c => c.charCodeAt(0))
+
+const toBase64 = data =>
+    btoa(String.fromCharCode(...new Uint8Array(data)))
+
+
+const debug = data => {
+    const el = document.getElementById("debug")
+    el.innerHTML =
+        typeof data === "string"
+            ? data
+            : JSON.stringify(data, null, 4)
 }

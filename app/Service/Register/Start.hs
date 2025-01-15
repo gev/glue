@@ -34,7 +34,7 @@ data PublicKeyCredentialCreationOptions = PublicKeyCredentialCreationOptions
     , authenticatorSelection :: Maybe AuthenticatorSelectionCriteria
     , hints :: Maybe [Text]
     , attestation :: Maybe Text
-    , attestationFormat :: Maybe Text
+    , attestationFormats :: Maybe [Text]
     }
     deriving (Generic, Show)
 instance ToJSON PublicKeyCredentialCreationOptions where
@@ -126,12 +126,12 @@ mkPublicKeyCredentialCreationOptions user challenge =
         , user
         , challenge
         , pubKeyCredParams = publicKeyCredentialParameters
-        , timeout = Nothing
+        , timeout = Just $ ?startRegisterService.timeout
         , excludeCredentials = Nothing
         , authenticatorSelection = Nothing
-        , hints = Just []
+        , hints = Nothing
         , attestation = Nothing
-        , attestationFormat = Nothing
+        , attestationFormats = Nothing
         }
 
 startRegister ::
@@ -139,8 +139,8 @@ startRegister ::
     StartRegisterRequest ->
     IO (Maybe PublicKeyCredentialCreationOptions)
 startRegister req = do
-    uid <- getRandomBytes 16
-    challenge <- getRandomBytes 16
+    uid <- getRandomBytes 20
+    challenge <- getRandomBytes 20
     let name = req.name
     let displayName = req.displayName
     if name /= "" && displayName /= ""

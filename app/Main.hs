@@ -41,9 +41,7 @@ app req respond
                     respond' = mkRespond req respond
                 case req.pathInfo of
                     ["register", "start"] -> respond' startRegister
-                    ["register", "finish"] -> do
-                        print =<< strictRequestBody req
-                        respond notAllowed
+                    -- ["register", "finish"] -> respond' finishRegister
                     -- ["authenticate", "start"] -> respond' startAuthenticate
                     -- ["authenticate", "finish"] -> respond' finishAuthenticate
                     _ -> respond notAllowed
