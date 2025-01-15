@@ -10,7 +10,7 @@
       flex-direction: column;
       align-items: center;
       color: light-dark(black, white);
-      background-color: light-dark(white, gray-darker);
+      background-color: light-dark(white, #111);
   }
 
   div {
