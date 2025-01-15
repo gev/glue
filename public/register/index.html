@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <title>Hello World</title>
+    <meta charset="utf-8">
+    <meta name="description" content="Reacthome Auth Service">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="/icon.png">
     <link rel="stylesheet" href="/styles.css">
@@ -11,17 +13,18 @@
 
 <body>
     <div>
-        <img width="150px" src="/icon.png" />
+        <img width="150px" src="/icon.png" alt="Reacthome logo" />
         <h1>Reacthome Auth</h1>
     </div>
     <div>
-        <input type="text" id="name" placeholder="Login" required autofocus>
-        <input type="text" id="displayName" placeholder="Name" required autofocus>
+        <input type="text" id="name" placeholder="Login" autocomplete="on" required autofocus>
+        <input type="text" id="displayName" placeholder="Name" autocomplete="on" required>
     </div>
     <div>
         <button type="submit" onclick="register()">Sign up</button>
         <a href="/">Sign in</a>
     </div>
+    <div id="debug"></div>
 </body>
 
 </html>
