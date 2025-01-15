@@ -1,9 +1,9 @@
 const register = async () => {
     try {
-        const startRegisterOptions = createStartRegisterOptions()
+        const startRegisterOptions = makeStartRegisterOptions()
         const publicKeyCredentialCreationOptions = await startRegister(startRegisterOptions)
-        const credentials = await createCredentials(publicKeyCredentialCreationOptions)
-        const finishRegisterOptions = createFinishRegisterOptions(credentials)
+        const credentials = await makeCredentials(publicKeyCredentialCreationOptions)
+        const finishRegisterOptions = makeFinishRegisterOptions(credentials)
         console.log(finishRegisterOptions)
         await finishRegister(finishRegisterOptions)
     } catch (err) {
@@ -18,24 +18,17 @@ const startRegister = startRegisterOptions =>
 const finishRegister = finishRequestOptions =>
     request("/register/finish", finishRequestOptions)
 
-const createCredentials = options =>
+const makeCredentials = options =>
     navigator.credentials.create({
-        publicKey: {
-            ...options,
-            user: {
-                ...options.user,
-                id: fromBase64(options.user.id),
-            },
-            challenge: fromBase64(options.challenge),
-        }
+        publicKey: makePublicKeyCredentialCreationOptions(options)
     })
 
-const createStartRegisterOptions = () => ({
+const makeStartRegisterOptions = () => ({
     name: document.getElementById("name").value,
     displayName: document.getElementById("displayName").value,
 })
 
-const createFinishRegisterOptions = credentials => ({
+const makeFinishRegisterOptions = credentials => ({
     id: toBase64(credentials.rawId),
     authenticatorAttachment: credentials.authenticatorAttachment,
     response: {
@@ -44,6 +37,16 @@ const createFinishRegisterOptions = credentials => ({
     },
     type: credentials.type
 })
+
+const makePublicKeyCredentialCreationOptions = options => ({
+    ...options,
+    user: {
+        ...options.user,
+        id: fromBase64(options.user.id),
+    },
+    challenge: fromBase64(options.challenge),
+})
+
 
 const authenticate = () => {
     console.log("authenticate")
