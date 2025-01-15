@@ -59,9 +59,8 @@ const request = async (url, data) => {
     })
     if (response.ok) {
         return response.json()
-    } else {
-        throw new Error(await response.text())
     }
+    throw new Error(await response.text())
 }
 
 const fromBase64 = base64 =>
