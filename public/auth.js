@@ -36,13 +36,13 @@ const createStartRegisterOptions = () => ({
 })
 
 const createFinishRegisterOptions = credentials => ({
-    id: toBase64(this.rawId),
-    authenticatorAttachment: this.authenticatorAttachment,
+    id: toBase64(credentials.rawId),
+    authenticatorAttachment: credentials.authenticatorAttachment,
     response: {
-        attestationObject: toBase64(this.response.attestationObject),
-        clientDataJSON: toBase64(this.response.clientDataJSON),
+        attestationObject: toBase64(credentials.response.attestationObject),
+        clientDataJSON: toBase64(credentials.response.clientDataJSON),
     },
-    type: this.type
+    type: credentials.type
 })
 
 const authenticate = () => {
