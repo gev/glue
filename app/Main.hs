@@ -16,7 +16,7 @@ main = do
             StartRegisterService
                 { rp =
                     PublicKeyCredentialRpEntity
-                        { id = Just "auth.reacthome.net"
+                        { id = Just "reacthome.net"
                         , name = "Reacthome Auth Service"
                         }
                 , timeout = 60_000

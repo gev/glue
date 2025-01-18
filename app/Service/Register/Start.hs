@@ -17,12 +17,12 @@ data StartRegisterService = StartRegisterService
     , timeout :: Int
     }
 
-data StartRegisterRequest = StartRegisterRequest
+data StartRegisterOptions = StartRegisterOptions
     { name :: Text
     , displayName :: Text
     }
     deriving (Generic, Show)
-instance FromJSON StartRegisterRequest
+instance FromJSON StartRegisterOptions
 
 data PublicKeyCredentialCreationOptions = PublicKeyCredentialCreationOptions
     { rp :: PublicKeyCredentialRpEntity
@@ -136,7 +136,7 @@ mkPublicKeyCredentialCreationOptions user challenge =
 
 startRegister ::
     (?startRegisterService :: StartRegisterService) =>
-    StartRegisterRequest ->
+    StartRegisterOptions ->
     IO (Maybe PublicKeyCredentialCreationOptions)
 startRegister req = do
     uid <- getRandomBytes 20
