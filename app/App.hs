@@ -8,7 +8,7 @@ import Network.Wai.Application.Static
 
 -- import Service.Authenticate.Finish
 -- import Service.Authenticate.Start
--- import Service.Register.Finish
+import Service.Register.Finish
 import Service.Register.Start
 import Util
 
@@ -28,7 +28,7 @@ app req respond
                     respond' = mkRespond req respond
                 case req.pathInfo of
                     ["register", "start"] -> respond' startRegister
-                    -- ["register", "finish"] -> respond' finishRegister
+                    ["register", "finish"] -> respond' finishRegister
                     -- ["authenticate", "start"] -> respond' startAuthenticate
                     -- ["authenticate", "finish"] -> respond' finishAuthenticate
                     _ -> respond notAllowed

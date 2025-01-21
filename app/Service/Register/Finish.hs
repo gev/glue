@@ -1,6 +1,21 @@
 module Service.Register.Finish where
 
-import Data.ByteString.Lazy
+import Data.Aeson
+import Data.Text
+import Environment
+import GHC.Generics
 
-finishRegister :: ByteString -> IO (Maybe ByteString)
-finishRegister _ = pure $ Just "Finish Register!"
+data FinishRegisterOptions = FinishRegisterOptions
+    { id :: Text
+    }
+    deriving (Generic, Show)
+instance FromJSON FinishRegisterOptions
+
+data FinishRegisterResponse = FinishRegisterResponse
+    { res :: Text
+    }
+    deriving (Generic, Show)
+instance ToJSON FinishRegisterResponse
+
+finishRegister :: (?environment :: Environment) => FinishRegisterOptions -> IO (Maybe FinishRegisterResponse)
+finishRegister _ = pure . Just $ FinishRegisterResponse "Finish Register!"
