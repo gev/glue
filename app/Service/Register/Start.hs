@@ -6,16 +6,12 @@ import Data.ByteString
 import Data.ByteString.Base64 qualified as Base64
 import Data.Text
 import Data.Text.Encoding
+import Environment
 import GHC.Generics
 
 {--
     RFC: https://w3c.github.io/webauthn/#dictdef-publickeycredentialcreationoption
 --}
-
-data StartRegisterService = StartRegisterService
-    { rp :: PublicKeyCredentialRpEntity
-    , timeout :: Int
-    }
 
 data StartRegisterOptions = StartRegisterOptions
     { name :: Text
@@ -119,14 +115,15 @@ publicKeyCredentialParameters =
     , publicKeyCredentialRS256
     ]
 
-mkPublicKeyCredentialCreationOptions :: (?startRegisterService :: StartRegisterService) => PublicKeyCredentialUserEntity -> ByteString -> PublicKeyCredentialCreationOptions
-mkPublicKeyCredentialCreationOptions user challenge =
+mkPublicKeyCredentialCreationOptions ::
+    PublicKeyCredentialRpEntity -> PublicKeyCredentialUserEntity -> ByteString -> Int -> PublicKeyCredentialCreationOptions
+mkPublicKeyCredentialCreationOptions rp user challenge timeout =
     PublicKeyCredentialCreationOptions
-        { rp = ?startRegisterService.rp
+        { rp
         , user
         , challenge
         , pubKeyCredParams = publicKeyCredentialParameters
-        , timeout = Just $ ?startRegisterService.timeout
+        , timeout = Just timeout
         , excludeCredentials = Nothing
         , authenticatorSelection = Nothing
         , hints = Nothing
@@ -134,10 +131,7 @@ mkPublicKeyCredentialCreationOptions user challenge =
         , attestationFormats = Nothing
         }
 
-startRegister ::
-    (?startRegisterService :: StartRegisterService) =>
-    StartRegisterOptions ->
-    IO (Maybe PublicKeyCredentialCreationOptions)
+startRegister :: (?environment :: Environment) => StartRegisterOptions -> IO (Maybe PublicKeyCredentialCreationOptions)
 startRegister req = do
     uid <- getRandomBytes 20
     challenge <- getRandomBytes 20
@@ -146,9 +140,15 @@ startRegister req = do
     if name /= "" && displayName /= ""
         then do
             let user = PublicKeyCredentialUserEntity uid name displayName
+            let rp =
+                    PublicKeyCredentialRpEntity
+                        { id = Just ?environment.domain
+                        , name = ?environment.name
+                        }
+            let timeout = ?environment.timeout
             pure $
                 Just $
-                    mkPublicKeyCredentialCreationOptions user challenge
+                    mkPublicKeyCredentialCreationOptions rp user challenge timeout
         else pure Nothing
 
 omitNothing :: Options

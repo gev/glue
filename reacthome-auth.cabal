@@ -55,6 +55,8 @@ executable reacthome-auth-service
     main-is: Main.hs
     hs-source-dirs: app
     other-modules:
+        App
+        Environment
         Service.Register.Start
         Service.Register.Finish
         Service.Authenticate.Start
