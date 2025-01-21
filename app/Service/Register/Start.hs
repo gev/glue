@@ -116,7 +116,11 @@ publicKeyCredentialParameters =
     ]
 
 mkPublicKeyCredentialCreationOptions ::
-    PublicKeyCredentialRpEntity -> PublicKeyCredentialUserEntity -> ByteString -> Int -> PublicKeyCredentialCreationOptions
+    PublicKeyCredentialRpEntity ->
+    PublicKeyCredentialUserEntity ->
+    ByteString ->
+    Int ->
+    PublicKeyCredentialCreationOptions
 mkPublicKeyCredentialCreationOptions rp user challenge timeout =
     PublicKeyCredentialCreationOptions
         { rp
@@ -131,7 +135,10 @@ mkPublicKeyCredentialCreationOptions rp user challenge timeout =
         , attestationFormats = Nothing
         }
 
-startRegister :: (?environment :: Environment) => StartRegisterOptions -> IO (Maybe PublicKeyCredentialCreationOptions)
+startRegister ::
+    (?environment :: Environment) =>
+    StartRegisterOptions ->
+    IO (Maybe PublicKeyCredentialCreationOptions)
 startRegister req = do
     uid <- getRandomBytes 20
     challenge <- getRandomBytes 20
