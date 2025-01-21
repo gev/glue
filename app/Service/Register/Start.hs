@@ -2,10 +2,11 @@ module Service.Register.Start where
 
 import Crypto.Random
 import Data.Aeson
+import Data.ByteString
 import Data.Text
 import Environment
 import GHC.Generics
-import Util.ByteString
+import Util.Base64
 
 {--
     RFC: https://w3c.github.io/webauthn/#dictdef-publickeycredentialcreationoption
@@ -21,7 +22,7 @@ instance FromJSON StartRegisterOptions
 data PublicKeyCredentialCreationOptions = PublicKeyCredentialCreationOptions
     { rp :: PublicKeyCredentialRpEntity
     , user :: PublicKeyCredentialUserEntity
-    , challenge :: ByteString
+    , challenge :: Text
     , pubKeyCredParams :: [PublicKeyCredentialParameters]
     , timeout :: Maybe Int
     , excludeCredentials :: Maybe [PublicKeyCredentialDescriptor]
@@ -35,7 +36,7 @@ instance ToJSON PublicKeyCredentialCreationOptions where
     toJSON = genericToJSON omitNothing
 
 data PublicKeyCredentialUserEntity = PublicKeyCredentialUserEntity
-    { id :: ByteString
+    { id :: Text
     , name :: Text
     , displayName :: Text
     }
@@ -60,7 +61,7 @@ instance ToJSON PublicKeyCredentialParameters where
 
 data PublicKeyCredentialDescriptor = PublicKeyCredentialDescriptor
     { type' :: Text
-    , id :: ByteString
+    , id :: Text
     , transports :: Maybe [Text]
     }
     deriving (Generic, Show)
@@ -120,7 +121,7 @@ mkPublicKeyCredentialCreationOptions rp user challenge timeout =
     PublicKeyCredentialCreationOptions
         { rp
         , user
-        , challenge
+        , challenge = toBase64 challenge
         , pubKeyCredParams = publicKeyCredentialParameters
         , timeout = Just timeout
         , excludeCredentials = Nothing
@@ -128,6 +129,18 @@ mkPublicKeyCredentialCreationOptions rp user challenge timeout =
         , hints = Nothing
         , attestation = Nothing
         , attestationFormats = Nothing
+        }
+
+mkPublicKeyCredentialUserEntity ::
+    ByteString ->
+    Text ->
+    Text ->
+    PublicKeyCredentialUserEntity
+mkPublicKeyCredentialUserEntity uid name displayName =
+    PublicKeyCredentialUserEntity
+        { id = toBase64 uid
+        , name
+        , displayName
         }
 
 startRegister ::
@@ -141,7 +154,7 @@ startRegister req = do
     let displayName = req.displayName
     if name /= "" && displayName /= ""
         then do
-            let user = PublicKeyCredentialUserEntity uid name displayName
+            let user = mkPublicKeyCredentialUserEntity uid name displayName
             let rp =
                     PublicKeyCredentialRpEntity
                         { id = Just ?environment.domain
