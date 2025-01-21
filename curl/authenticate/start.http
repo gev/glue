@@ -1,2 +1,2 @@
-### Start authenticate
+### Start to authenticate
 POST http://localhost:3000/authenticate/start HTTP/1.1
