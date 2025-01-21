@@ -5,7 +5,7 @@ import Data.Aeson
 import Data.Text
 import Environment
 import GHC.Generics
-import Util.Base64
+import Util.ByteString
 
 {--
     RFC: https://w3c.github.io/webauthn/#dictdef-publickeycredentialcreationoption
@@ -21,7 +21,7 @@ instance FromJSON StartRegisterOptions
 data PublicKeyCredentialCreationOptions = PublicKeyCredentialCreationOptions
     { rp :: PublicKeyCredentialRpEntity
     , user :: PublicKeyCredentialUserEntity
-    , challenge :: ByteString'
+    , challenge :: ByteString
     , pubKeyCredParams :: [PublicKeyCredentialParameters]
     , timeout :: Maybe Int
     , excludeCredentials :: Maybe [PublicKeyCredentialDescriptor]
@@ -35,7 +35,7 @@ instance ToJSON PublicKeyCredentialCreationOptions where
     toJSON = genericToJSON omitNothing
 
 data PublicKeyCredentialUserEntity = PublicKeyCredentialUserEntity
-    { id :: ByteString'
+    { id :: ByteString
     , name :: Text
     , displayName :: Text
     }
@@ -60,7 +60,7 @@ instance ToJSON PublicKeyCredentialParameters where
 
 data PublicKeyCredentialDescriptor = PublicKeyCredentialDescriptor
     { type' :: Text
-    , id :: ByteString'
+    , id :: ByteString
     , transports :: Maybe [Text]
     }
     deriving (Generic, Show)
@@ -113,7 +113,7 @@ publicKeyCredentialParameters =
 mkPublicKeyCredentialCreationOptions ::
     PublicKeyCredentialRpEntity ->
     PublicKeyCredentialUserEntity ->
-    ByteString' ->
+    ByteString ->
     Int ->
     PublicKeyCredentialCreationOptions
 mkPublicKeyCredentialCreationOptions rp user challenge timeout =

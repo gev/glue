@@ -61,7 +61,7 @@ executable reacthome-auth-service
         Service.Register.Finish
         Service.Authenticate.Start
         Service.Authenticate.Finish
-        Util.Base64
+        Util.ByteString
         Util.Wai
     build-depends:
         aeson,
