@@ -8,5 +8,9 @@ import Data.Text.Encoding
 toBase64 :: ByteString -> Text
 toBase64 = decodeUtf8 . Base64.encode
 
-fromBase64 :: Text -> Either String ByteString
-fromBase64 = Base64.decode . encodeUtf8
+fromBase64 :: Text -> Maybe ByteString
+fromBase64 = hush . Base64.decode . encodeUtf8
+  where
+    hush = \case
+        Right b -> Just b
+        _ -> Nothing
