@@ -1,0 +1,21 @@
+### Successful finish to register
+POST http://localhost:3000/register/finish HTTP/1.1
+content-type: application/json
+
+{
+    "authenticatorAttachment": "platform",
+    "id": "qzutUrYyEMnEgxlbp23T9FFSwEg=",
+    "response": {
+        "attestationObject": "o2NmbXRkbm9uZWdhdHRTdG10oGhhdXRoRGF0YViY2TivR4eWlntwLGocTOugINOZxwcKB0ojmk8gzUrndGxZAAAAAPv8MAcVTk7MjAtuAgVX170AFKs7rVK2MhDJxIMZW6dt0/RRUsBIpQECAyYgASFYIIFz8KpelO9wIDYyg6Ls2XF0YT4hszplCNfl59s7wARWIlggoVLG+JMD9D/oA+1YoECvyczBEA4B1zCiooKtQEV+1ww=",
+        "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uY3JlYXRlIiwiY2hhbGxlbmdlIjoiR0hvdlVzeE90R1VYY1M0ZDZ1QTRXTnNVNlZRIiwib3JpZ2luIjoiaHR0cHM6Ly9kZXYucmVhY3Rob21lLm5ldCIsImNyb3NzT3JpZ2luIjpmYWxzZX0="
+    }
+}
+
+### Invalid finish to register
+POST http://localhost:3000/register/finish HTTP/1.1
+
+### Invalid finish to register
+POST http://localhost:3000/register/start HTTP/1.1
+content-type: application/json
+
+{}
