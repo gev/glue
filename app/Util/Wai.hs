@@ -1,4 +1,4 @@
-module Util where
+module Util.Wai where
 
 import Data.Aeson
 import Data.ByteString

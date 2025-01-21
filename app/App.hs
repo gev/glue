@@ -10,7 +10,7 @@ import Network.Wai.Application.Static
 -- import Service.Authenticate.Start
 import Service.Register.Finish
 import Service.Register.Start
-import Util
+import Util.Wai
 
 app :: (?environment :: Environment) => Application
 app req respond

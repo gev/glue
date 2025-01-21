@@ -2,12 +2,10 @@ module Service.Register.Start where
 
 import Crypto.Random
 import Data.Aeson
-import Data.ByteString
-import Data.ByteString.Base64 qualified as Base64
 import Data.Text
-import Data.Text.Encoding
 import Environment
 import GHC.Generics
+import Util.Base64
 
 {--
     RFC: https://w3c.github.io/webauthn/#dictdef-publickeycredentialcreationoption
@@ -23,7 +21,7 @@ instance FromJSON StartRegisterOptions
 data PublicKeyCredentialCreationOptions = PublicKeyCredentialCreationOptions
     { rp :: PublicKeyCredentialRpEntity
     , user :: PublicKeyCredentialUserEntity
-    , challenge :: ByteString
+    , challenge :: ByteString'
     , pubKeyCredParams :: [PublicKeyCredentialParameters]
     , timeout :: Maybe Int
     , excludeCredentials :: Maybe [PublicKeyCredentialDescriptor]
@@ -37,7 +35,7 @@ instance ToJSON PublicKeyCredentialCreationOptions where
     toJSON = genericToJSON omitNothing
 
 data PublicKeyCredentialUserEntity = PublicKeyCredentialUserEntity
-    { id :: ByteString
+    { id :: ByteString'
     , name :: Text
     , displayName :: Text
     }
@@ -62,7 +60,7 @@ instance ToJSON PublicKeyCredentialParameters where
 
 data PublicKeyCredentialDescriptor = PublicKeyCredentialDescriptor
     { type' :: Text
-    , id :: ByteString
+    , id :: ByteString'
     , transports :: Maybe [Text]
     }
     deriving (Generic, Show)
@@ -78,9 +76,6 @@ data AuthenticatorSelectionCriteria = AuthenticatorSelectionCriteria
     deriving (Generic, Show)
 instance ToJSON AuthenticatorSelectionCriteria where
     toJSON = genericToJSON omitNothing
-
-instance ToJSON ByteString where
-    toJSON = toJSON . decodeUtf8 . Base64.encode
 
 type COSEAlgorithmIdentifier = Int
 
@@ -118,7 +113,7 @@ publicKeyCredentialParameters =
 mkPublicKeyCredentialCreationOptions ::
     PublicKeyCredentialRpEntity ->
     PublicKeyCredentialUserEntity ->
-    ByteString ->
+    ByteString' ->
     Int ->
     PublicKeyCredentialCreationOptions
 mkPublicKeyCredentialCreationOptions rp user challenge timeout =
