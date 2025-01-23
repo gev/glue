@@ -3,6 +3,7 @@ const register = async () => {
         const startRegisterOptions = makeStartRegisterOptions()
         const publicKeyCredentialCreationOptions = await startRegister(startRegisterOptions)
         const credentials = await makeCredentials(publicKeyCredentialCreationOptions)
+        console.log(credentials)
         const finishRegisterOptions = makeFinishRegisterOptions(credentials)
         console.log(finishRegisterOptions)
         await finishRegister(finishRegisterOptions)

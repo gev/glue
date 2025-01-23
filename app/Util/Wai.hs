@@ -12,7 +12,7 @@ mkRespond ::
     (req -> IO (Maybe res)) ->
     IO ResponseReceived
 mkRespond req respond run = do
-    value <- decode <$> strictRequestBody req
+    value <- decode <$> lazyRequestBody req
     case value of
         (Just v) -> do
             res <- run v

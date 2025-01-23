@@ -6,6 +6,7 @@ import Data.ByteString
 import Data.Text
 import Environment
 import GHC.Generics
+import Util.Aeson
 import Util.Base64
 
 {--
@@ -165,18 +166,3 @@ startRegister req = do
                 Just $
                     mkPublicKeyCredentialCreationOptions rp user challenge timeout
         else pure Nothing
-
-omitNothing :: Options
-omitNothing =
-    defaultOptions
-        { omitNothingFields = True
-        }
-
-typeFieldLabelModifier :: Options
-typeFieldLabelModifier =
-    defaultOptions
-        { fieldLabelModifier = \s ->
-            if s == "type'"
-                then "type"
-                else s
-        }

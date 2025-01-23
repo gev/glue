@@ -23,7 +23,6 @@ common common-ghc-options
     ghc-options:
         -O3 -threaded -rtsopts -with-rtsopts=-N
         -Wall
-        -Wno-orphans
         
 common common-depends
     build-depends:
@@ -61,7 +60,10 @@ executable reacthome-auth-service
         Service.Register.Finish
         Service.Authenticate.Start
         Service.Authenticate.Finish
+        Util.Aeson
         Util.Base64
+        Util.Base64.Lazy
+        Util.Error
         Util.Wai
     build-depends:
         aeson,
@@ -76,6 +78,7 @@ test-suite reacthome-auth-test
     import: common-extensions
     import: common-ghc-options
     import: common-depends
+    ghc-options: -Wno-orphans
     type: exitcode-stdio-1.0
     main-is: Spec.hs
     hs-source-dirs: test
