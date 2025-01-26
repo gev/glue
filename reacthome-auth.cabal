@@ -1,93 +1,121 @@
 cabal-version: 3.8
-name:          reacthome-auth
-version:       0.1.0.0
-synopsis:      OAuth2 Authorization Server
-description:   A type-safe OAuth2 Authorization Server implementation
-license:       BSD-3-Clause
-author:        ReactHome Team
-maintainer:    gazdovsky@gmail.com
-category:      Web
-build-type:    Simple
+name: reacthome-auth
+version: 0.1.0.0
+synopsis: OAuth2 Authorization Server
+description: A type-safe OAuth2 Authorization Server implementation
+license: BSD-3-Clause
+author: ReactHome Team
+maintainer: gazdovsky@gmail.com
+category: Web
+build-type: Simple
 
 common common-extensions
-    default-language: GHC2024
-    default-extensions:
-        BlockArguments
-        DuplicateRecordFields
-        OverloadedRecordDot
-        OverloadedStrings
-        ImplicitParams
-        QuasiQuotes
+  default-language: GHC2024
+  default-extensions:
+    BlockArguments
+    DeriveAnyClass
+    DuplicateRecordFields
+    ImplicitParams
+    MultiWayIf
+    OverloadedRecordDot
+    OverloadedStrings
+    QuasiQuotes
 
 common common-ghc-options
-    ghc-options:
-        -O3 -threaded -rtsopts -with-rtsopts=-N
-        -Wall
-        
-common common-depends
-    build-depends:
-        base >= 4.20 && < 5.0,
-        bytestring,
-        containers,
-        text,
-        time,
-        uuid
+  ghc-options:
+    -O3
+    -threaded
+    -rtsopts
+    -with-rtsopts=-N
+    -Wall
 
-library 
-    import: common-extensions
-    import: common-ghc-options
-    import: common-depends
-    hs-source-dirs: src
-    exposed-modules:
-        Reacthome.Auth.Domain.User
-        Reacthome.Auth.Domain.UserId
-        Reacthome.Auth.Domain.UserLogin
-        Reacthome.Auth.Domain.UserStatus
-        Validate
-    build-depends:
-        crypton
+common common-depends
+  build-depends:
+    base >=4.20 && <5.0,
+    bytestring,
+    containers,
+    text,
+    time,
+    uuid,
+
+library
+  import: common-extensions
+  import: common-ghc-options
+  import: common-depends
+  hs-source-dirs: src
+  exposed-modules:
+    Reacthome.Auth.Domain.User
+    Reacthome.Auth.Domain.UserId
+    Reacthome.Auth.Domain.UserLogin
+    Reacthome.Auth.Domain.UserStatus
+    Validate
+
+  build-depends:
+    crypton
 
 executable reacthome-auth-service
-    import: common-extensions
-    import: common-ghc-options
-    import: common-depends
-    main-is: Main.hs
-    hs-source-dirs: app
-    other-modules:
-        App
-        Environment
-        Service.Register.Start
-        Service.Register.Finish
-        Service.Authenticate.Start
-        Service.Authenticate.Finish
-        Util.Aeson
-        Util.Base64
-        Util.Base64.Lazy
-        Util.Error
-        Util.Wai
-    build-depends:
-        aeson,
-        base64-bytestring,
-        crypton,
-        http-types,
-        wai,
-        wai-app-static,
-        warp
+  import: common-extensions
+  import: common-ghc-options
+  import: common-depends
+  main-is: Main.hs
+  hs-source-dirs: app
+  other-modules:
+    App
+    Environment
+    Service.Authenticate.Finish
+    Service.Authenticate.Start
+    Service.Challenge
+    Service.InMemoryChallengeSet
+    Service.Register.Finish
+    Service.Register.Start
+    Service.WebAuthn.AuthenticatorAttestationResponse
+    Service.WebAuthn.AuthenticatorSelectionCriteria
+    Service.WebAuthn.COSEAlgorithmIdentifier
+    Service.WebAuthn.ClientDataJSON
+    Service.WebAuthn.PublicKeyCredential
+    Service.WebAuthn.PublicKeyCredentialCreationOptions
+    Service.WebAuthn.PublicKeyCredentialDescriptor
+    Service.WebAuthn.PublicKeyCredentialParameters
+    Service.WebAuthn.PublicKeyCredentialRpEntity
+    Service.WebAuthn.PublicKeyCredentialType
+    Service.WebAuthn.PublicKeyCredentialUserEntity
+    Service.WebAuthn.RegisterOptions
+    Service.WebAuthn.RegisteredOptions
+    Util.Aeson
+    Util.Base64
+    Util.Base64.Lazy
+    Util.Base64.URL
+    Util.Base64.URL.Lazy
+    Util.Error
+    Util.MVar
+    Util.Wai
+
+  build-depends:
+    aeson,
+    base64-bytestring,
+    crypton,
+    hashable,
+    http-types,
+    unordered-containers,
+    wai,
+    wai-app-static,
+    warp,
 
 test-suite reacthome-auth-test
-    import: common-extensions
-    import: common-ghc-options
-    import: common-depends
-    ghc-options: -Wno-orphans
-    type: exitcode-stdio-1.0
-    main-is: Spec.hs
-    hs-source-dirs: test
-    other-modules:
-        Reacthome.Auth.Domain.UserIdSpec
-        Reacthome.Auth.Domain.UserLoginSpec
-        Reacthome.Auth.Domain.UserSpec
-    build-depends:
-        reacthome-auth,
-        hspec,
-        QuickCheck,
-        quickcheck-instances
+  import: common-extensions
+  import: common-ghc-options
+  import: common-depends
+  ghc-options: -Wno-orphans
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  hs-source-dirs: test
+  other-modules:
+    Reacthome.Auth.Domain.UserIdSpec
+    Reacthome.Auth.Domain.UserLoginSpec
+    Reacthome.Auth.Domain.UserSpec
+
+  build-depends:
+    QuickCheck,
+    hspec,
+    quickcheck-instances,
+    reacthome-auth,

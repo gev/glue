@@ -8,11 +8,17 @@ import Network.Wai.Application.Static
 
 -- import Service.Authenticate.Finish
 -- import Service.Authenticate.Start
+
+import Service.Challenge
 import Service.Register.Finish
 import Service.Register.Start
 import Util.Wai
 
-app :: (?environment :: Environment) => Application
+app ::
+    ( ?environment :: Environment
+    , ?challenges :: ChallengeSet
+    ) =>
+    Application
 app req respond
     | req.requestMethod == methodGet
         || req.requestMethod == methodHead =

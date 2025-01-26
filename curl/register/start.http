@@ -12,8 +12,8 @@ POST http://localhost:3000/register/start HTTP/1.1
 content-type: application/json
 
 {
-    "name": "",
-    "displayName": ""
+    "name": " ",
+    "displayName": " "
 }
 
 ### Invalid start to register

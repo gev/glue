@@ -15,7 +15,7 @@ content-type: application/json
 POST http://localhost:3000/register/finish HTTP/1.1
 
 ### Invalid finish to register
-POST http://localhost:3000/register/start HTTP/1.1
+POST http://localhost:3000/register/finish HTTP/1.1
 content-type: application/json
 
 {}
