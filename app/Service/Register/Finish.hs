@@ -28,6 +28,7 @@ mkRegisteredOptions (Just credentials) = do
     if isKnownChallenge
         then do
             ?challenges.remove challenge
+            print credentials
             pure $ Just (RegisteredOptions "Finish Register!")
         else
             pure Nothing

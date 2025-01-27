@@ -31,12 +31,15 @@ mkCreationOptions (Just options) = do
     uid <- getRandomBytes 20
     challenge <- mkAutoRemovedChallenge
     let user = mkUserEntity uid options
-    pure . Just $
-        mkPublicKeyCredentialCreationOptions
-            mkRpEntity
-            user
-            challenge.value
-            ?environment.timeout
+    print options
+    let res =
+            mkPublicKeyCredentialCreationOptions
+                mkRpEntity
+                user
+                challenge.value
+                ?environment.timeout
+    print res
+    pure . Just $ res
 
 mkAutoRemovedChallenge ::
     ( ?environment :: Environment

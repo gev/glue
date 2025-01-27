@@ -4,9 +4,8 @@ import Data.Aeson
 import Data.ByteString
 import Data.Text
 import GHC.Generics
-import GHC.IO
 import Service.WebAuthn.AuthenticatorAttestationResponse
-import Util.Base64
+import Util.Base64.URL
 
 data PublicKeyCredential t r = PublicKeyCredential
     { id :: t
@@ -32,7 +31,6 @@ decodedPublicKeyCredential ::
     EncodedPublicKeyCredential ->
     Maybe DecodedPublicKeyCredential
 decodedPublicKeyCredential credential = do
-    let _ = unsafePerformIO do print credential
     uid <- fromBase64 credential.id
     response <- decodedAuthenticatorAttestationResponse credential.response
     pure

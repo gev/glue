@@ -32,7 +32,7 @@ const makeStartRegisterOptions = () => ({
 })
 
 const makeFinishRegisterOptions = credentials => ({
-    id: toBase64(credentials.rawId),
+    id: credentials.id,
     authenticatorAttachment: credentials.authenticatorAttachment,
     response: {
         attestationObject: toBase64(credentials.response.attestationObject),
