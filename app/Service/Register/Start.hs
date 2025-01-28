@@ -28,12 +28,9 @@ mkCreationOptions (Just options) = do
     uid <- mkRandomUserId
     challenge <- ?challenges.get
     let user = mkPublicKeyCredentialUserEntity uid options
-    print options
-    let res =
-            mkPublicKeyCredentialCreationOptions
-                mkPublicKeyCredentialRpEntity
-                user
-                challenge.value
-                ?environment.timeout
-    print res
-    pure . Just $ res
+    pure . Just $
+        mkPublicKeyCredentialCreationOptions
+            mkPublicKeyCredentialRpEntity
+            user
+            challenge.value
+            ?environment.timeout
