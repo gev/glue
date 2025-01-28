@@ -69,6 +69,7 @@ executable reacthome-auth-service
     Service.Register.Challenges
     Service.Register.Finish
     Service.Register.Start
+    Service.WebAuthn.AttestationObject
     Service.WebAuthn.AuthenticatorAttestationResponse
     Service.WebAuthn.AuthenticatorSelectionCriteria
     Service.WebAuthn.COSEAlgorithmIdentifier
@@ -94,6 +95,7 @@ executable reacthome-auth-service
   build-depends:
     aeson,
     base64-bytestring,
+    cborg,
     crypton,
     hashable,
     http-types,

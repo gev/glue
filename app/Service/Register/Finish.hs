@@ -1,8 +1,10 @@
 module Service.Register.Finish where
 
+import Data.ByteString
 import Environment
 import Service.Challenge
 import Service.Register.Challenges
+import Service.WebAuthn.AttestationObject
 import Service.WebAuthn.AuthenticatorAttestationResponse
 import Service.WebAuthn.ClientDataJSON
 import Service.WebAuthn.PublicKeyCredential
@@ -30,5 +32,5 @@ mkRegisteredOptions (Right credentials) = do
         Left err -> pure $ Left err
         Right _ -> do
             ?challenges.remove challenge
-            print credentials
+            print $ decodeAttestationObject $ fromStrict credentials.response.attestationObject
             pure $ Right (RegisteredOptions "Finish Register!")
