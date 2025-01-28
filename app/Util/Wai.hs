@@ -13,14 +13,18 @@ mkRespond ::
     (req -> IO (Either String res)) ->
     IO ResponseReceived
 mkRespond req respond run = do
-    value <- decode <$> lazyRequestBody req
-    case value of
-        (Just v) -> do
-            res <- run v
-            respond case res of
-                Right content -> ok content
-                Left err -> badRequest err
-        Nothing -> respond $ badRequest "Body is not a valid JSON"
+    let contentType = lookup hContentType req.requestHeaders
+    if contentType == Just ctApplicationJson
+        then do
+            value <- eitherDecode <$> lazyRequestBody req
+            case value of
+                (Right v) -> do
+                    res <- run v
+                    respond case res of
+                        Right content -> ok content
+                        Left err -> badRequest err
+                (Left err) -> respond $ badRequest err
+        else respond $ badRequest "Content-Type is not application/json"
 
 ok :: (ToJSON a) => a -> Response
 ok content =

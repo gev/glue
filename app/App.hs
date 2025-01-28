@@ -24,21 +24,17 @@ app req respond
         || req.requestMethod == methodHead =
         static req respond
     | req.requestMethod == methodPost = do
-        let contentType = lookup hContentType req.requestHeaders
-        if contentType == Just ctApplicationJson
-            then do
-                let respond' ::
-                        (FromJSON req, ToJSON res) =>
-                        (req -> IO (Either String res)) ->
-                        IO ResponseReceived
-                    respond' = mkRespond req respond
-                case req.pathInfo of
-                    ["register", "start"] -> respond' startRegister
-                    ["register", "finish"] -> respond' finishRegister
-                    -- ["authenticate", "start"] -> respond' startAuthenticate
-                    -- ["authenticate", "finish"] -> respond' finishAuthenticate
-                    _ -> respond notAllowed
-            else respond notAllowed
+        let respond' ::
+                (FromJSON req, ToJSON res) =>
+                (req -> IO (Either String res)) ->
+                IO ResponseReceived
+            respond' = mkRespond req respond
+        case req.pathInfo of
+            ["register", "start"] -> respond' startRegister
+            ["register", "finish"] -> respond' finishRegister
+            -- ["authenticate", "start"] -> respond' startAuthenticate
+            -- ["authenticate", "finish"] -> respond' finishAuthenticate
+            _ -> respond notAllowed
     | otherwise = respond notAllowed
 
 static :: Application
