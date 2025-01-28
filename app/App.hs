@@ -9,14 +9,14 @@ import Network.Wai.Application.Static
 -- import Service.Authenticate.Finish
 -- import Service.Authenticate.Start
 
-import Service.Challenge
+import Service.Register.Challenges
 import Service.Register.Finish
 import Service.Register.Start
 import Util.Wai
 
 app ::
     ( ?environment :: Environment
-    , ?challenges :: ChallengeSet
+    , ?challenges :: RegisterChallenges
     ) =>
     Application
 app req respond

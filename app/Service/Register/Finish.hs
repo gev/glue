@@ -2,6 +2,7 @@ module Service.Register.Finish where
 
 import Environment
 import Service.Challenge
+import Service.Register.Challenges
 import Service.WebAuthn.AuthenticatorAttestationResponse
 import Service.WebAuthn.ClientDataJSON
 import Service.WebAuthn.PublicKeyCredential
@@ -9,7 +10,7 @@ import Service.WebAuthn.RegisteredOptions
 
 finishRegister ::
     ( ?environment :: Environment
-    , ?challenges :: ChallengeSet
+    , ?challenges :: RegisterChallenges
     ) =>
     EncodedPublicKeyCredential ->
     IO (Maybe RegisteredOptions)
@@ -17,7 +18,7 @@ finishRegister = do mkRegisteredOptions . decodedPublicKeyCredential
 
 mkRegisteredOptions ::
     ( ?environment :: Environment
-    , ?challenges :: ChallengeSet
+    , ?challenges :: RegisterChallenges
     ) =>
     Maybe DecodedPublicKeyCredential ->
     IO (Maybe RegisteredOptions)

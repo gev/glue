@@ -62,10 +62,11 @@ executable reacthome-auth-service
   other-modules:
     App
     Environment
+    Repository.InMemory.RegisterChallenges
     Service.Authenticate.Finish
     Service.Authenticate.Start
     Service.Challenge
-    Service.InMemoryChallengeSet
+    Service.Register.Challenges
     Service.Register.Finish
     Service.Register.Start
     Service.WebAuthn.AuthenticatorAttestationResponse

@@ -1,11 +1,10 @@
 module Service.Register.Start where
 
-import Control.Concurrent
-import Control.Monad
 import Crypto.Random
 import Data.ByteString
 import Environment
 import Service.Challenge
+import Service.Register.Challenges
 import Service.WebAuthn.PublicKeyCredentialCreationOptions
 import Service.WebAuthn.PublicKeyCredentialRpEntity
 import Service.WebAuthn.PublicKeyCredentialUserEntity
@@ -13,7 +12,7 @@ import Service.WebAuthn.RegisterOptions
 
 startRegister ::
     ( ?environment :: Environment
-    , ?challenges :: ChallengeSet
+    , ?challenges :: RegisterChallenges
     ) =>
     RegisterOptions ->
     IO (Maybe PublicKeyCredentialCreationOptions)
@@ -22,14 +21,14 @@ startRegister =
 
 mkCreationOptions ::
     ( ?environment :: Environment
-    , ?challenges :: ChallengeSet
+    , ?challenges :: RegisterChallenges
     ) =>
     Maybe ValidRegisterOptions ->
     IO (Maybe PublicKeyCredentialCreationOptions)
 mkCreationOptions Nothing = pure Nothing
 mkCreationOptions (Just options) = do
     uid <- getRandomBytes 20
-    challenge <- mkAutoRemovedChallenge
+    challenge <- ?challenges.get
     let user = mkUserEntity uid options
     print options
     let res =
@@ -40,27 +39,6 @@ mkCreationOptions (Just options) = do
                 ?environment.timeout
     print res
     pure . Just $ res
-
-mkAutoRemovedChallenge ::
-    ( ?environment :: Environment
-    , ?challenges :: ChallengeSet
-    ) =>
-    IO Challenge
-mkAutoRemovedChallenge = do
-    challenge <- mkRandomChallenge 20
-    ?challenges.put challenge
-    void $ autoRemovedChallenge challenge
-    pure challenge
-
-autoRemovedChallenge ::
-    ( ?environment :: Environment
-    , ?challenges :: ChallengeSet
-    ) =>
-    Challenge ->
-    IO ThreadId
-autoRemovedChallenge challenge = forkIO do
-    threadDelay $ 1_000 * ?environment.timeout
-    ?challenges.remove challenge
 
 mkUserEntity ::
     ByteString ->

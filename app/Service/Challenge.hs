@@ -10,12 +10,6 @@ newtype Challenge = Challenge
     deriving (Show)
     deriving newtype (Eq, Hashable)
 
-data ChallengeSet = ChallengeSet
-    { has :: Challenge -> IO Bool
-    , put :: Challenge -> IO ()
-    , remove :: Challenge -> IO ()
-    }
-
 mkChallenge :: ByteString -> Challenge
 mkChallenge = Challenge
 
