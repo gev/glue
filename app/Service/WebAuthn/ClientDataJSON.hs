@@ -11,7 +11,7 @@ data ClientDataJSON c = ClientDataJSON
     { type' :: Text
     , challenge :: c
     , origin :: Text
-    , crossOrigin :: Bool
+    , crossOrigin :: Maybe Bool
     }
     deriving (Show)
 
