@@ -29,7 +29,7 @@ app req respond
             then do
                 let respond' ::
                         (FromJSON req, ToJSON res) =>
-                        (req -> IO (Maybe res)) ->
+                        (req -> IO (Either String res)) ->
                         IO ResponseReceived
                     respond' = mkRespond req respond
                 case req.pathInfo of

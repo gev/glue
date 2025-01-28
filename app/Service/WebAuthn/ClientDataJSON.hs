@@ -24,7 +24,7 @@ instance FromJSON EncodedClientDataJSON where
 
 type DecodedClientDataJSON = ClientDataJSON ByteString
 
-decodeClientDataJSON :: EncodedClientDataJSON -> Maybe DecodedClientDataJSON
+decodeClientDataJSON :: EncodedClientDataJSON -> Either String DecodedClientDataJSON
 decodeClientDataJSON clientData = do
     challenge <- fromBase64 $ clientData.challenge
     pure

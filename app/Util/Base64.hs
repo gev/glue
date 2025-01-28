@@ -4,10 +4,9 @@ import Data.ByteString
 import Data.ByteString.Base64 (decode, encode)
 import Data.Text
 import Data.Text.Encoding (decodeUtf8, encodeUtf8)
-import Util.Error
 
 toBase64 :: ByteString -> Text
 toBase64 = decodeUtf8 . encode
 
-fromBase64 :: Text -> Maybe ByteString
-fromBase64 = hush . decode . encodeUtf8
+fromBase64 :: Text -> Either String ByteString
+fromBase64 = decode . encodeUtf8

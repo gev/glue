@@ -29,7 +29,7 @@ type DecodedPublicKeyCredential =
 
 decodePublicKeyCredential ::
     EncodedPublicKeyCredential ->
-    Maybe DecodedPublicKeyCredential
+    Either String DecodedPublicKeyCredential
 decodePublicKeyCredential credential = do
     uid <- fromBase64 credential.id
     response <- decodeAuthenticatorAttestationResponse credential.response

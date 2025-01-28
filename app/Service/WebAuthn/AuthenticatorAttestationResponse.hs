@@ -26,12 +26,12 @@ type DecodedAuthenticatorAttestationResponse =
 
 decodeAuthenticatorAttestationResponse ::
     EncodedAuthenticatorAttestationResponse ->
-    Maybe DecodedAuthenticatorAttestationResponse
+    Either String DecodedAuthenticatorAttestationResponse
 decodeAuthenticatorAttestationResponse response = do
     attestationObject <- fromBase64 response.attestationObject
     clientDataJSON <-
         decodeClientDataJSON
-            =<< decode
+            =<< eitherDecode
             =<< Lazy.fromBase64 response.clientDataJSON
     pure
         AuthenticatorAttestationResponse

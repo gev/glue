@@ -13,7 +13,7 @@ startRegister ::
     , ?challenges :: RegisterChallenges
     ) =>
     RegisterOptions ->
-    IO (Maybe PublicKeyCredentialCreationOptions)
+    IO (Either String PublicKeyCredentialCreationOptions)
 startRegister =
     mkCreationOptions . validateRegisterOptions
 
@@ -21,14 +21,14 @@ mkCreationOptions ::
     ( ?environment :: Environment
     , ?challenges :: RegisterChallenges
     ) =>
-    Maybe ValidRegisterOptions ->
-    IO (Maybe PublicKeyCredentialCreationOptions)
-mkCreationOptions Nothing = pure Nothing
-mkCreationOptions (Just options) = do
+    Either String ValidRegisterOptions ->
+    IO (Either String PublicKeyCredentialCreationOptions)
+mkCreationOptions (Left err) = pure $ Left err
+mkCreationOptions (Right options) = do
     uid <- mkRandomUserId
     challenge <- ?challenges.register options
     let user = mkPublicKeyCredentialUserEntity uid options
-    pure . Just $
+    pure . Right $
         mkPublicKeyCredentialCreationOptions
             mkPublicKeyCredentialRpEntity
             user

@@ -1,6 +1,5 @@
 module Service.WebAuthn.RegisterOptions where
 
-import Control.Monad
 import Data.Aeson
 import Data.Text
 import GHC.Generics
@@ -18,12 +17,10 @@ newtype ValidRegisterOptions = ValidRegisterOptions
     deriving (Show)
 
 validateRegisterOptions ::
-    RegisterOptions -> Maybe ValidRegisterOptions
+    RegisterOptions -> Either String ValidRegisterOptions
 validateRegisterOptions options = do
-    let name = strip options.name
-    guard $ validName name
-    let displayName = strip options.displayName
-    guard $ validName displayName
+    name <- validateName options.name
+    displayName <- validateDisplayName options.displayName
     pure
         ValidRegisterOptions
             { options =
@@ -33,5 +30,15 @@ validateRegisterOptions options = do
                     }
             }
 
-validName :: Text -> Bool
-validName = not . null
+validateName :: Text -> Either String Text
+validateName = validate "name"
+
+validateDisplayName :: Text -> Either String Text
+validateDisplayName = validate "displayName"
+
+validate :: String -> Text -> Either String Text
+validate field name = do
+    let name' = strip name
+    if not $ null name'
+        then Right name'
+        else Left $ "The " <> field <> " cannot be empty"

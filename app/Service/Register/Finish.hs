@@ -13,22 +13,22 @@ finishRegister ::
     , ?challenges :: RegisterChallenges
     ) =>
     EncodedPublicKeyCredential ->
-    IO (Maybe RegisteredOptions)
+    IO (Either String RegisteredOptions)
 finishRegister = mkRegisteredOptions . decodePublicKeyCredential
 
 mkRegisteredOptions ::
     ( ?environment :: Environment
     , ?challenges :: RegisterChallenges
     ) =>
-    Maybe DecodedPublicKeyCredential ->
-    IO (Maybe RegisteredOptions)
-mkRegisteredOptions Nothing = pure Nothing
-mkRegisteredOptions (Just credentials) = do
+    Either String DecodedPublicKeyCredential ->
+    IO (Either String RegisteredOptions)
+mkRegisteredOptions (Left err) = pure $ Left err
+mkRegisteredOptions (Right credentials) = do
     let challenge = mkChallenge credentials.response.clientDataJSON.challenge
     options <- ?challenges.get challenge
     case options of
-        Nothing -> pure Nothing
-        Just _ -> do
+        Left err -> pure $ Left err
+        Right _ -> do
             ?challenges.remove challenge
             print credentials
-            pure $ Just (RegisteredOptions "Finish Register!")
+            pure $ Right (RegisteredOptions "Finish Register!")
