@@ -1,7 +1,5 @@
 module Service.Register.Start where
 
-import Crypto.Random
-import Data.ByteString
 import Environment
 import Service.Challenge
 import Service.Register.Challenges
@@ -27,34 +25,15 @@ mkCreationOptions ::
     IO (Maybe PublicKeyCredentialCreationOptions)
 mkCreationOptions Nothing = pure Nothing
 mkCreationOptions (Just options) = do
-    uid <- getRandomBytes 20
+    uid <- mkRandomUserId
     challenge <- ?challenges.get
-    let user = mkUserEntity uid options
+    let user = mkPublicKeyCredentialUserEntity uid options
     print options
     let res =
             mkPublicKeyCredentialCreationOptions
-                mkRpEntity
+                mkPublicKeyCredentialRpEntity
                 user
                 challenge.value
                 ?environment.timeout
     print res
     pure . Just $ res
-
-mkUserEntity ::
-    ByteString ->
-    ValidRegisterOptions ->
-    PublicKeyCredentialUserEntity
-mkUserEntity uid valid =
-    mkPublicKeyCredentialUserEntity
-        uid
-        valid.options.name
-        valid.options.displayName
-
-mkRpEntity ::
-    (?environment :: Environment) =>
-    PublicKeyCredentialRpEntity
-mkRpEntity =
-    PublicKeyCredentialRpEntity
-        { id = Just ?environment.domain
-        , name = ?environment.name
-        }
