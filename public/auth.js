@@ -2,14 +2,9 @@ const register = async () => {
     try {
         const startRegisterOptions = makeStartRegisterOptions()
         const publicKeyCredentialCreationOptions = await startRegister(startRegisterOptions)
-        console.log(publicKeyCredentialCreationOptions)
         const credentials = await makeCredentials(publicKeyCredentialCreationOptions)
-        console.log(credentials)
-        console.log(credentials)
         const finishRegisterOptions = makeFinishRegisterOptions(credentials)
-        console.log(finishRegisterOptions)
         const res = await finishRegister(finishRegisterOptions)
-        console.log(res)
     } catch (err) {
         console.error(err.message)
         debug(err.message)
