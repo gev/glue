@@ -5,6 +5,7 @@ const register = async () => {
         console.log(publicKeyCredentialCreationOptions)
         const credentials = await makeCredentials(publicKeyCredentialCreationOptions)
         console.log(credentials)
+        console.log(new TextDecoder().decode(credentials.response.attestationObject))
         const finishRegisterOptions = makeFinishRegisterOptions(credentials)
         console.log(finishRegisterOptions)
         const res = await finishRegister(finishRegisterOptions)
