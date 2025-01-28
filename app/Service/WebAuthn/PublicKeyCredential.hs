@@ -27,12 +27,12 @@ type DecodedPublicKeyCredential =
         ByteString
         DecodedAuthenticatorAttestationResponse
 
-decodedPublicKeyCredential ::
+decodePublicKeyCredential ::
     EncodedPublicKeyCredential ->
     Maybe DecodedPublicKeyCredential
-decodedPublicKeyCredential credential = do
+decodePublicKeyCredential credential = do
     uid <- fromBase64 credential.id
-    response <- decodedAuthenticatorAttestationResponse credential.response
+    response <- decodeAuthenticatorAttestationResponse credential.response
     pure
         PublicKeyCredential
             { id = uid

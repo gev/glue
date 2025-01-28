@@ -24,13 +24,13 @@ deriving instance FromJSON EncodedAuthenticatorAttestationResponse
 type DecodedAuthenticatorAttestationResponse =
     AuthenticatorAttestationResponse ByteString DecodedClientDataJSON
 
-decodedAuthenticatorAttestationResponse ::
+decodeAuthenticatorAttestationResponse ::
     EncodedAuthenticatorAttestationResponse ->
     Maybe DecodedAuthenticatorAttestationResponse
-decodedAuthenticatorAttestationResponse response = do
+decodeAuthenticatorAttestationResponse response = do
     attestationObject <- fromBase64 response.attestationObject
     clientDataJSON <-
-        decodedClientDataJSON
+        decodeClientDataJSON
             =<< decode
             =<< Lazy.fromBase64 response.clientDataJSON
     pure

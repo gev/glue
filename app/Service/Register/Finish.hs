@@ -14,7 +14,7 @@ finishRegister ::
     ) =>
     EncodedPublicKeyCredential ->
     IO (Maybe RegisteredOptions)
-finishRegister = do mkRegisteredOptions . decodedPublicKeyCredential
+finishRegister = mkRegisteredOptions . decodePublicKeyCredential
 
 mkRegisteredOptions ::
     ( ?environment :: Environment
