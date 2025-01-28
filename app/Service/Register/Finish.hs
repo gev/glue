@@ -25,11 +25,10 @@ mkRegisteredOptions ::
 mkRegisteredOptions Nothing = pure Nothing
 mkRegisteredOptions (Just credentials) = do
     let challenge = mkChallenge credentials.response.clientDataJSON.challenge
-    isKnownChallenge <- ?challenges.has challenge
-    if isKnownChallenge
-        then do
+    options <- ?challenges.get challenge
+    case options of
+        Nothing -> pure Nothing
+        Just _ -> do
             ?challenges.remove challenge
             print credentials
             pure $ Just (RegisteredOptions "Finish Register!")
-        else
-            pure Nothing

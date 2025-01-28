@@ -1,9 +1,10 @@
 module Service.Register.Challenges where
 
 import Service.Challenge
+import Service.WebAuthn.RegisterOptions (ValidRegisterOptions)
 
 data RegisterChallenges = RegisterChallenges
-    { has :: Challenge -> IO Bool
-    , get :: IO Challenge
+    { register :: ValidRegisterOptions -> IO Challenge
+    , get :: Challenge -> IO (Maybe ValidRegisterOptions)
     , remove :: Challenge -> IO ()
     }

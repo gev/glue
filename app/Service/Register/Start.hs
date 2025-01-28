@@ -26,7 +26,7 @@ mkCreationOptions ::
 mkCreationOptions Nothing = pure Nothing
 mkCreationOptions (Just options) = do
     uid <- mkRandomUserId
-    challenge <- ?challenges.get
+    challenge <- ?challenges.register options
     let user = mkPublicKeyCredentialUserEntity uid options
     pure . Just $
         mkPublicKeyCredentialCreationOptions
