@@ -1,4 +1,4 @@
-module Service.WebAuthn.PublicKeyCredential where
+module Reacthome.Auth.Service.WebAuthn.PublicKeyCredential where
 
 import Data.Aeson
 import Data.ByteString

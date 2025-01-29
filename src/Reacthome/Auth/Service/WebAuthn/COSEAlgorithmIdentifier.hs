@@ -1,4 +1,4 @@
-module Service.WebAuthn.COSEAlgorithmIdentifier where
+module Reacthome.Auth.Service.WebAuthn.COSEAlgorithmIdentifier where
 
 type COSEAlgorithmIdentifier = Int
 

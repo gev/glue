@@ -1,4 +1,4 @@
-module Environment where
+module Reacthome.Auth.Environment where
 
 import Data.Text
 

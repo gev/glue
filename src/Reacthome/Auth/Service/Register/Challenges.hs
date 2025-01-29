@@ -1,7 +1,7 @@
-module Service.Register.Challenges where
+module Reacthome.Auth.Service.Register.Challenges where
 
-import Service.Challenge
-import Service.WebAuthn.RegisterOptions
+import Reacthome.Auth.Service.Challenge
+import Reacthome.Auth.Service.WebAuthn.RegisterOptions
 
 data RegisterChallenges = RegisterChallenges
     { register :: ValidRegisterOptions -> IO Challenge

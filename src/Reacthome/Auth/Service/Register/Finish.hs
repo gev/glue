@@ -1,10 +1,10 @@
-module Service.Register.Finish where
+module Reacthome.Auth.Service.Register.Finish where
 
-import Environment
-import Service.Challenge
-import Service.Register.Challenges
-import Service.WebAuthn.PublicKeyCredential
-import Service.WebAuthn.RegisteredOptions
+import Reacthome.Auth.Environment
+import Reacthome.Auth.Service.Challenge
+import Reacthome.Auth.Service.Register.Challenges
+import Reacthome.Auth.Service.WebAuthn.PublicKeyCredential
+import Reacthome.Auth.Service.WebAuthn.RegisteredOptions
 
 finishRegister ::
     ( ?environment :: Environment

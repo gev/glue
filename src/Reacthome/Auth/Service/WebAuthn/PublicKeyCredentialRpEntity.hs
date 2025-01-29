@@ -1,9 +1,9 @@
-module Service.WebAuthn.PublicKeyCredentialRpEntity where
+module Reacthome.Auth.Service.WebAuthn.PublicKeyCredentialRpEntity where
 
 import Data.Aeson
 import Data.Text
-import Environment
 import GHC.Generics
+import Reacthome.Auth.Environment
 import Util.Aeson
 
 data PublicKeyCredentialRpEntity = PublicKeyCredentialRpEntity

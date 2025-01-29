@@ -1,7 +1,7 @@
-import App
-import Environment
 import Network.Wai.Handler.Warp
-import Repository.InMemory.RegisterChallenges
+import Reacthome.Auth.App
+import Reacthome.Auth.Environment
+import Reacthome.Auth.Repository.InMemory.RegisterChallenges
 
 main :: IO ()
 main = do

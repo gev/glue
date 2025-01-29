@@ -1,12 +1,12 @@
-module Service.Register.Start where
+module Reacthome.Auth.Service.Register.Start where
 
-import Environment
-import Service.Challenge
-import Service.Register.Challenges
-import Service.WebAuthn.PublicKeyCredentialCreationOptions
-import Service.WebAuthn.PublicKeyCredentialRpEntity
-import Service.WebAuthn.PublicKeyCredentialUserEntity
-import Service.WebAuthn.RegisterOptions
+import Reacthome.Auth.Environment
+import Reacthome.Auth.Service.Challenge
+import Reacthome.Auth.Service.Register.Challenges
+import Reacthome.Auth.Service.WebAuthn.PublicKeyCredentialCreationOptions
+import Reacthome.Auth.Service.WebAuthn.PublicKeyCredentialRpEntity
+import Reacthome.Auth.Service.WebAuthn.PublicKeyCredentialUserEntity
+import Reacthome.Auth.Service.WebAuthn.RegisterOptions
 
 startRegister ::
     ( ?environment :: Environment

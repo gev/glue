@@ -1,4 +1,4 @@
-module Service.Authenticate.Start where
+module Reacthome.Auth.Service.Authenticate.Start where
 
 import Data.ByteString.Lazy
 

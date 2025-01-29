@@ -1,11 +1,11 @@
-module Service.WebAuthn.PublicKeyCredentialCreationOptions where
+module Reacthome.Auth.Service.WebAuthn.PublicKeyCredentialCreationOptions where
 
 import Data.Aeson
 import Data.ByteString
 import Data.Text
 import GHC.Generics
-import Service.WebAuthn.PublicKeyCredentialRpEntity
-import Service.WebAuthn.PublicKeyCredentialUserEntity
+import Reacthome.Auth.Service.WebAuthn.PublicKeyCredentialRpEntity
+import Reacthome.Auth.Service.WebAuthn.PublicKeyCredentialUserEntity
 import Util.Aeson
 import Util.Base64
 

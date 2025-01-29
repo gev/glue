@@ -44,38 +44,26 @@ library
   import: common-depends
   hs-source-dirs: src
   exposed-modules:
+    Reacthome.Auth.App
     Reacthome.Auth.Domain.User
     Reacthome.Auth.Domain.UserId
     Reacthome.Auth.Domain.UserLogin
     Reacthome.Auth.Domain.UserStatus
-    Validate
-
-  build-depends:
-    crypton
-
-executable reacthome-auth-service
-  import: common-extensions
-  import: common-ghc-options
-  import: common-depends
-  main-is: Main.hs
-  hs-source-dirs: app
-  other-modules:
-    App
-    Environment
-    Repository.InMemory.RegisterChallenges
-    Service.Authenticate.Finish
-    Service.Authenticate.Start
-    Service.Challenge
-    Service.Register.Challenges
-    Service.Register.Finish
-    Service.Register.Start
-    Service.WebAuthn.COSEAlgorithmIdentifier
-    Service.WebAuthn.PublicKeyCredential
-    Service.WebAuthn.PublicKeyCredentialCreationOptions
-    Service.WebAuthn.PublicKeyCredentialRpEntity
-    Service.WebAuthn.PublicKeyCredentialUserEntity
-    Service.WebAuthn.RegisterOptions
-    Service.WebAuthn.RegisteredOptions
+    Reacthome.Auth.Environment
+    Reacthome.Auth.Repository.InMemory.RegisterChallenges
+    Reacthome.Auth.Service.Authenticate.Finish
+    Reacthome.Auth.Service.Authenticate.Start
+    Reacthome.Auth.Service.Challenge
+    Reacthome.Auth.Service.Register.Challenges
+    Reacthome.Auth.Service.Register.Finish
+    Reacthome.Auth.Service.Register.Start
+    Reacthome.Auth.Service.WebAuthn.COSEAlgorithmIdentifier
+    Reacthome.Auth.Service.WebAuthn.PublicKeyCredential
+    Reacthome.Auth.Service.WebAuthn.PublicKeyCredentialCreationOptions
+    Reacthome.Auth.Service.WebAuthn.PublicKeyCredentialRpEntity
+    Reacthome.Auth.Service.WebAuthn.PublicKeyCredentialUserEntity
+    Reacthome.Auth.Service.WebAuthn.RegisterOptions
+    Reacthome.Auth.Service.WebAuthn.RegisteredOptions
     Util.Aeson
     Util.Base64
     Util.Base64.Lazy
@@ -84,6 +72,7 @@ executable reacthome-auth-service
     Util.Error
     Util.MVar
     Util.Wai
+    Validate
 
   build-depends:
     aeson,
@@ -94,6 +83,15 @@ executable reacthome-auth-service
     unordered-containers,
     wai,
     wai-app-static,
+
+executable reacthome-auth-service
+  import: common-extensions
+  import: common-ghc-options
+  import: common-depends
+  main-is: Main.hs
+  hs-source-dirs: app
+  build-depends:
+    reacthome-auth,
     warp,
 
 test-suite reacthome-auth-test

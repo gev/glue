@@ -1,11 +1,11 @@
-module Repository.InMemory.RegisterChallenges where
+module Reacthome.Auth.Repository.InMemory.RegisterChallenges where
 
 import Control.Concurrent
 import Control.Monad
 import Data.HashMap.Strict
-import Environment
-import Service.Challenge
-import Service.Register.Challenges
+import Reacthome.Auth.Environment
+import Reacthome.Auth.Service.Challenge
+import Reacthome.Auth.Service.Register.Challenges
 import Util.MVar
 import Prelude hiding (lookup)
 

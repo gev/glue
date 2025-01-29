@@ -1,17 +1,17 @@
-module App where
+module Reacthome.Auth.App where
 
 import Data.Aeson
-import Environment
 import Network.HTTP.Types
 import Network.Wai
 import Network.Wai.Application.Static
+import Reacthome.Auth.Environment
 
--- import Service.Authenticate.Finish
--- import Service.Authenticate.Start
+-- import Reacthome.Auth.Service.Authenticate.Finish
+-- import Reacthome.Auth.Service.Authenticate.Start
 
-import Service.Register.Challenges
-import Service.Register.Finish
-import Service.Register.Start
+import Reacthome.Auth.Service.Register.Challenges
+import Reacthome.Auth.Service.Register.Finish
+import Reacthome.Auth.Service.Register.Start
 import Util.Wai
 
 app ::

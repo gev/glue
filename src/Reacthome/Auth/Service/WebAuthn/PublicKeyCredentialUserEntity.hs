@@ -1,12 +1,12 @@
-module Service.WebAuthn.PublicKeyCredentialUserEntity where
+module Reacthome.Auth.Service.WebAuthn.PublicKeyCredentialUserEntity where
 
 import Crypto.Random
 import Data.Aeson
 import Data.ByteString
 import Data.Text
-import Environment
 import GHC.Generics
-import Service.WebAuthn.RegisterOptions
+import Reacthome.Auth.Environment
+import Reacthome.Auth.Service.WebAuthn.RegisterOptions
 import Util.Base64
 
 data PublicKeyCredentialUserEntity = PublicKeyCredentialUserEntity
