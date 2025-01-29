@@ -4,38 +4,34 @@ import Data.Aeson
 import Data.ByteString
 import Data.Text
 import GHC.Generics
-import Service.WebAuthn.AuthenticatorAttestationResponse
-import Util.Base64.URL
+import Util.Base64
 
-data PublicKeyCredential t r = PublicKeyCredential
+data PublicKeyCredential t = PublicKeyCredential
     { id :: t
-    , authenticatorAttachment :: Text
-    , response :: r
+    , challenge :: t
+    , publicKey :: t
+    , publicKeyAlgorithm :: Int
     }
     deriving (Show)
 
-type EncodedPublicKeyCredential =
-    PublicKeyCredential
-        Text
-        EncodedAuthenticatorAttestationResponse
+type EncodedPublicKeyCredential = PublicKeyCredential Text
 
 deriving instance Generic EncodedPublicKeyCredential
 deriving instance FromJSON EncodedPublicKeyCredential
 
-type DecodedPublicKeyCredential =
-    PublicKeyCredential
-        ByteString
-        DecodedAuthenticatorAttestationResponse
+type DecodedPublicKeyCredential = PublicKeyCredential ByteString
 
 decodePublicKeyCredential ::
     EncodedPublicKeyCredential ->
     Either String DecodedPublicKeyCredential
 decodePublicKeyCredential credential = do
     uid <- fromBase64 credential.id
-    response <- decodeAuthenticatorAttestationResponse credential.response
+    challenge <- fromBase64 credential.challenge
+    publicKey <- fromBase64 credential.publicKey
     pure
         PublicKeyCredential
             { id = uid
-            , authenticatorAttachment = credential.authenticatorAttachment
-            , response
+            , challenge
+            , publicKey
+            , publicKeyAlgorithm = credential.publicKeyAlgorithm
             }

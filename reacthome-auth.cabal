@@ -69,17 +69,10 @@ executable reacthome-auth-service
     Service.Register.Challenges
     Service.Register.Finish
     Service.Register.Start
-    Service.WebAuthn.AttestationObject
-    Service.WebAuthn.AuthenticatorAttestationResponse
-    Service.WebAuthn.AuthenticatorSelectionCriteria
     Service.WebAuthn.COSEAlgorithmIdentifier
-    Service.WebAuthn.ClientDataJSON
     Service.WebAuthn.PublicKeyCredential
     Service.WebAuthn.PublicKeyCredentialCreationOptions
-    Service.WebAuthn.PublicKeyCredentialDescriptor
-    Service.WebAuthn.PublicKeyCredentialParameters
     Service.WebAuthn.PublicKeyCredentialRpEntity
-    Service.WebAuthn.PublicKeyCredentialType
     Service.WebAuthn.PublicKeyCredentialUserEntity
     Service.WebAuthn.RegisterOptions
     Service.WebAuthn.RegisteredOptions
@@ -95,7 +88,6 @@ executable reacthome-auth-service
   build-depends:
     aeson,
     base64-bytestring,
-    cborg,
     crypton,
     hashable,
     http-types,
