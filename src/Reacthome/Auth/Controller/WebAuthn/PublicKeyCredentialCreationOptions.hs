@@ -1,11 +1,11 @@
-module Reacthome.Auth.Service.WebAuthn.PublicKeyCredentialCreationOptions where
+module Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialCreationOptions where
 
 import Data.Aeson
 import Data.ByteString
 import Data.Text
 import GHC.Generics
-import Reacthome.Auth.Service.WebAuthn.PublicKeyCredentialRpEntity
-import Reacthome.Auth.Service.WebAuthn.PublicKeyCredentialUserEntity
+import Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialRpEntity
+import Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialUserEntity
 import Util.Aeson
 import Util.Base64
 
@@ -15,7 +15,7 @@ data PublicKeyCredentialCreationOptions = PublicKeyCredentialCreationOptions
     , challenge :: Text
     , timeout :: Maybe Int
     }
-    deriving (Generic, Show)
+    deriving stock (Generic, Show)
 
 instance ToJSON PublicKeyCredentialCreationOptions where
     toJSON = genericToJSON omitNothing

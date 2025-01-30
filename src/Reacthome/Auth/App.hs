@@ -6,12 +6,12 @@ import Network.Wai
 import Network.Wai.Application.Static
 import Reacthome.Auth.Environment
 
--- import Reacthome.Auth.Service.Authenticate.Finish
--- import Reacthome.Auth.Service.Authenticate.Start
+-- import Reacthome.Auth.Controller.Authenticate.Finish
+-- import Reacthome.Auth.Controller.Authenticate.Start
 
-import Reacthome.Auth.Service.Register.Challenges
-import Reacthome.Auth.Service.Register.Finish
-import Reacthome.Auth.Service.Register.Start
+import Reacthome.Auth.Controller.Register.Challenges
+import Reacthome.Auth.Controller.Register.Finish
+import Reacthome.Auth.Controller.Register.Start
 import Util.Wai
 
 app ::

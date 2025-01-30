@@ -1,4 +1,4 @@
-module Reacthome.Auth.Service.Challenge where
+module Reacthome.Auth.Controller.Challenge where
 
 import Crypto.Random
 import Data.ByteString
@@ -7,7 +7,7 @@ import Data.Hashable
 newtype Challenge = Challenge
     { value :: ByteString
     }
-    deriving (Show)
+    deriving stock (Show)
     deriving newtype (Eq, Hashable)
 
 mkChallenge :: ByteString -> Challenge

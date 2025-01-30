@@ -10,7 +10,6 @@ main = do
           { name = "Reacthome Auth Service"
           , domain = "reacthome.net"
           , timeout
-          , userIdSize = 20
           , challengeSize = 20
           }
   challenges <- mkRegisterChallenges

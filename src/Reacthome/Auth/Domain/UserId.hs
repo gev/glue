@@ -1,12 +1,15 @@
-module Reacthome.Auth.Domain.UserId (
-  UserId,
-  mkUserId,
-) where
+module Reacthome.Auth.Domain.UserId where
 
-import Data.UUID (UUID)
+import Data.Hashable
+import Data.UUID
+import Data.UUID.V4
 
-newtype UserId = UserId UUID
-  deriving (Show, Eq)
+newtype UserId = UserId {value :: UUID}
+  deriving stock (Show)
+  deriving newtype (Eq, Hashable)
 
 mkUserId :: UUID -> UserId
 mkUserId = UserId
+
+mkRandomUserId :: IO UserId
+mkRandomUserId = UserId <$> nextRandom

@@ -1,4 +1,4 @@
-module Reacthome.Auth.Service.WebAuthn.PublicKeyCredential where
+module Reacthome.Auth.Controller.WebAuthn.PublicKeyCredential where
 
 import Data.Aeson
 import Data.ByteString
@@ -12,12 +12,12 @@ data PublicKeyCredential t = PublicKeyCredential
     , publicKey :: t
     , publicKeyAlgorithm :: Int
     }
-    deriving (Show)
+    deriving stock (Show)
 
 type EncodedPublicKeyCredential = PublicKeyCredential Text
 
-deriving instance Generic EncodedPublicKeyCredential
-deriving instance FromJSON EncodedPublicKeyCredential
+deriving stock instance Generic EncodedPublicKeyCredential
+deriving anyclass instance FromJSON EncodedPublicKeyCredential
 
 type DecodedPublicKeyCredential = PublicKeyCredential ByteString
 

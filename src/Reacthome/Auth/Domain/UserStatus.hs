@@ -1,9 +1,7 @@
-module Reacthome.Auth.Domain.UserStatus (
-  UserStatus (..),
-) where
+module Reacthome.Auth.Domain.UserStatus where
 
 data UserStatus
   = Active
   | Inactive
   | Suspended
-  deriving (Show, Eq)
+  deriving stock (Show, Eq)

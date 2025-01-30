@@ -6,6 +6,5 @@ data Environment = Environment
     { name :: Text
     , domain :: Text
     , timeout :: Int
-    , userIdSize :: Int
     , challengeSize :: Int
     }

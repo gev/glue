@@ -45,25 +45,27 @@ library
   hs-source-dirs: src
   exposed-modules:
     Reacthome.Auth.App
+    Reacthome.Auth.Controller.Authenticate.Finish
+    Reacthome.Auth.Controller.Authenticate.Start
+    Reacthome.Auth.Controller.Challenge
+    Reacthome.Auth.Controller.Register.Challenges
+    Reacthome.Auth.Controller.Register.Finish
+    Reacthome.Auth.Controller.Register.Start
+    Reacthome.Auth.Controller.WebAuthn.COSEAlgorithmIdentifier
+    Reacthome.Auth.Controller.WebAuthn.PublicKeyCredential
+    Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialCreationOptions
+    Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialRpEntity
+    Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialUserEntity
+    Reacthome.Auth.Controller.WebAuthn.RegisterOptions
+    Reacthome.Auth.Controller.WebAuthn.RegisteredOptions
     Reacthome.Auth.Domain.User
     Reacthome.Auth.Domain.UserId
     Reacthome.Auth.Domain.UserLogin
+    Reacthome.Auth.Domain.UserName
     Reacthome.Auth.Domain.UserStatus
+    Reacthome.Auth.Domain.Users
     Reacthome.Auth.Environment
     Reacthome.Auth.Repository.InMemory.RegisterChallenges
-    Reacthome.Auth.Service.Authenticate.Finish
-    Reacthome.Auth.Service.Authenticate.Start
-    Reacthome.Auth.Service.Challenge
-    Reacthome.Auth.Service.Register.Challenges
-    Reacthome.Auth.Service.Register.Finish
-    Reacthome.Auth.Service.Register.Start
-    Reacthome.Auth.Service.WebAuthn.COSEAlgorithmIdentifier
-    Reacthome.Auth.Service.WebAuthn.PublicKeyCredential
-    Reacthome.Auth.Service.WebAuthn.PublicKeyCredentialCreationOptions
-    Reacthome.Auth.Service.WebAuthn.PublicKeyCredentialRpEntity
-    Reacthome.Auth.Service.WebAuthn.PublicKeyCredentialUserEntity
-    Reacthome.Auth.Service.WebAuthn.RegisterOptions
-    Reacthome.Auth.Service.WebAuthn.RegisteredOptions
     Util.Aeson
     Util.Base64
     Util.Base64.Lazy
@@ -72,7 +74,6 @@ library
     Util.Error
     Util.MVar
     Util.Wai
-    Validate
 
   build-depends:
     aeson,
