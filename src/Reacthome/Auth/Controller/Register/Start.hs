@@ -7,9 +7,9 @@ import Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialRpEntity
 import Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialUserEntity
 import Reacthome.Auth.Controller.WebAuthn.RegisterOptions
 import Reacthome.Auth.Domain.User
-import Reacthome.Auth.Domain.UserId
-import Reacthome.Auth.Domain.UserLogin
-import Reacthome.Auth.Domain.UserName
+import Reacthome.Auth.Domain.User.Id
+import Reacthome.Auth.Domain.User.Login
+import Reacthome.Auth.Domain.User.Name
 import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
 

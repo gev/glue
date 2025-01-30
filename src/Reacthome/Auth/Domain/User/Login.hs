@@ -1,4 +1,4 @@
-module Reacthome.Auth.Domain.UserLogin where
+module Reacthome.Auth.Domain.User.Login where
 
 import Data.Char
 import Data.Hashable

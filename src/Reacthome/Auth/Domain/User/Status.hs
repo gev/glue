@@ -1,4 +1,4 @@
-module Reacthome.Auth.Domain.UserStatus where
+module Reacthome.Auth.Domain.User.Status where
 
 data UserStatus
   = Active

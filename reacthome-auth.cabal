@@ -59,10 +59,10 @@ library
     Reacthome.Auth.Controller.WebAuthn.RegisterOptions
     Reacthome.Auth.Controller.WebAuthn.RegisteredOptions
     Reacthome.Auth.Domain.User
-    Reacthome.Auth.Domain.UserId
-    Reacthome.Auth.Domain.UserLogin
-    Reacthome.Auth.Domain.UserName
-    Reacthome.Auth.Domain.UserStatus
+    Reacthome.Auth.Domain.User.Id
+    Reacthome.Auth.Domain.User.Login
+    Reacthome.Auth.Domain.User.Name
+    Reacthome.Auth.Domain.User.Status
     Reacthome.Auth.Domain.Users
     Reacthome.Auth.Environment
     Reacthome.Auth.Repository.InMemory.RegisterChallenges

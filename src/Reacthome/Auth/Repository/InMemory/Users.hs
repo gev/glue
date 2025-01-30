@@ -2,10 +2,10 @@ module Reacthome.Auth.Repository.InMemory.Users where
 
 import Control.Concurrent
 import Data.HashMap.Strict
-import Data.UUID (toString)
+import Data.UUID
 import Reacthome.Auth.Domain.User
-import Reacthome.Auth.Domain.UserId
-import Reacthome.Auth.Domain.UserLogin
+import Reacthome.Auth.Domain.User.Id
+import Reacthome.Auth.Domain.User.Login
 import Reacthome.Auth.Domain.Users
 import Util.MVar
 import Prelude hiding (lookup)
