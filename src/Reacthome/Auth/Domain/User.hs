@@ -1,47 +1,22 @@
-module Reacthome.Auth.Domain.User (
-  User,
+module Reacthome.Auth.Domain.User where
 
-  -- * User Fields
-  uid,
-  login,
-  status,
-
-  -- * User Smart Constructors
-  mkUser,
-  mkNewUser,
-
-  -- * User Modifiers
-  changeUserLogin,
-  activateUser,
-  inactivateUser,
-  suspendUser,
-
-  -- * User Status Checks
-  isUserActive,
-  isUserInactive,
-  isUserSuspended,
-
-  -- * Reexported Types
-  UserId,
-  UserLogin,
-  UserStatus (..),
-)
-where
-
-import Reacthome.Auth.Domain.UserId (UserId)
-import Reacthome.Auth.Domain.UserLogin (UserLogin)
-import Reacthome.Auth.Domain.UserStatus (UserStatus (..))
+import Reacthome.Auth.Domain.UserId
+import Reacthome.Auth.Domain.UserLogin
+import Reacthome.Auth.Domain.UserName
+import Reacthome.Auth.Domain.UserStatus
 
 data User = User
-  { uid :: UserId
+  { id :: UserId
   , login :: UserLogin
+  , name :: UserName
   , status :: UserStatus
   }
-  deriving (Eq, Show)
+  deriving stock (Eq, Show)
 
 mkUser ::
   UserId ->
   UserLogin ->
+  UserName ->
   UserStatus ->
   User
 mkUser = User
@@ -49,9 +24,10 @@ mkUser = User
 mkNewUser ::
   UserId ->
   UserLogin ->
+  UserName ->
   User
-mkNewUser uid login =
-  mkUser uid login Active
+mkNewUser uid login name =
+  mkUser uid login name Active
 
 changeUserLogin ::
   User ->

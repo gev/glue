@@ -44,45 +44,29 @@ library
   import: common-depends
   hs-source-dirs: src
   exposed-modules:
+    Reacthome.Auth.App
+    Reacthome.Auth.Controller.Authenticate.Finish
+    Reacthome.Auth.Controller.Authenticate.Start
+    Reacthome.Auth.Controller.Challenge
+    Reacthome.Auth.Controller.Register.Challenges
+    Reacthome.Auth.Controller.Register.Finish
+    Reacthome.Auth.Controller.Register.Start
+    Reacthome.Auth.Controller.WebAuthn.COSEAlgorithmIdentifier
+    Reacthome.Auth.Controller.WebAuthn.PublicKeyCredential
+    Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialCreationOptions
+    Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialRpEntity
+    Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialUserEntity
+    Reacthome.Auth.Controller.WebAuthn.RegisterOptions
+    Reacthome.Auth.Controller.WebAuthn.RegisteredOptions
     Reacthome.Auth.Domain.User
     Reacthome.Auth.Domain.UserId
     Reacthome.Auth.Domain.UserLogin
+    Reacthome.Auth.Domain.UserName
     Reacthome.Auth.Domain.UserStatus
-    Validate
-
-  build-depends:
-    crypton
-
-executable reacthome-auth-service
-  import: common-extensions
-  import: common-ghc-options
-  import: common-depends
-  main-is: Main.hs
-  hs-source-dirs: app
-  other-modules:
-    App
-    Environment
-    Repository.InMemory.RegisterChallenges
-    Service.Authenticate.Finish
-    Service.Authenticate.Start
-    Service.Challenge
-    Service.Register.Challenges
-    Service.Register.Finish
-    Service.Register.Start
-    Service.WebAuthn.AttestationObject
-    Service.WebAuthn.AuthenticatorAttestationResponse
-    Service.WebAuthn.AuthenticatorSelectionCriteria
-    Service.WebAuthn.COSEAlgorithmIdentifier
-    Service.WebAuthn.ClientDataJSON
-    Service.WebAuthn.PublicKeyCredential
-    Service.WebAuthn.PublicKeyCredentialCreationOptions
-    Service.WebAuthn.PublicKeyCredentialDescriptor
-    Service.WebAuthn.PublicKeyCredentialParameters
-    Service.WebAuthn.PublicKeyCredentialRpEntity
-    Service.WebAuthn.PublicKeyCredentialType
-    Service.WebAuthn.PublicKeyCredentialUserEntity
-    Service.WebAuthn.RegisterOptions
-    Service.WebAuthn.RegisteredOptions
+    Reacthome.Auth.Domain.Users
+    Reacthome.Auth.Environment
+    Reacthome.Auth.Repository.InMemory.RegisterChallenges
+    Reacthome.Auth.Repository.InMemory.Users
     Util.Aeson
     Util.Base64
     Util.Base64.Lazy
@@ -95,13 +79,21 @@ executable reacthome-auth-service
   build-depends:
     aeson,
     base64-bytestring,
-    cborg,
     crypton,
     hashable,
     http-types,
     unordered-containers,
     wai,
     wai-app-static,
+
+executable reacthome-auth-service
+  import: common-extensions
+  import: common-ghc-options
+  import: common-depends
+  main-is: Main.hs
+  hs-source-dirs: app
+  build-depends:
+    reacthome-auth,
     warp,
 
 test-suite reacthome-auth-test

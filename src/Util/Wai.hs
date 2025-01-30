@@ -16,8 +16,8 @@ mkRespond req respond run = do
     let contentType = lookup hContentType req.requestHeaders
     if contentType == Just ctApplicationJson
         then do
-            value <- eitherDecode <$> lazyRequestBody req
-            case value of
+            json <- lazyRequestBody req
+            case eitherDecode json of
                 (Right v) -> do
                     res <- run v
                     respond case res of

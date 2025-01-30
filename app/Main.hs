@@ -1,22 +1,24 @@
-import App
-import Environment
 import Network.Wai.Handler.Warp
-import Repository.InMemory.RegisterChallenges
+import Reacthome.Auth.App
+import Reacthome.Auth.Environment
+import Reacthome.Auth.Repository.InMemory.RegisterChallenges
+import Reacthome.Auth.Repository.InMemory.Users
 
 main :: IO ()
 main = do
-  let ?environment =
-        Environment
-          { name = "Reacthome Auth Service"
-          , domain = "reacthome.net"
-          , timeout
-          , userIdSize = 20
-          , challengeSize = 20
-          }
-  challenges <- mkRegisterChallenges
-  let ?challenges = challenges
-  let port = 3000
-  putStrLn $ "Serving on port " <> show port
-  run port app
- where
-  timeout = 60_000
+    let ?environment =
+            Environment
+                { name = "Reacthome Auth Service"
+                , domain = "reacthome.net"
+                , timeout
+                , challengeSize = 20
+                }
+    challenges <- mkRegisterChallenges
+    users <- mkUsers
+    let ?challenges = challenges
+    let ?users = users
+    let port = 3000
+    putStrLn $ "Serving on port " <> show port
+    run port app
+  where
+    timeout = 60_000

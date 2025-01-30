@@ -1,4 +1,4 @@
-module Service.Authenticate.Finish where
+module Reacthome.Auth.Controller.Authenticate.Finish where
 
 import Data.ByteString.Lazy
 

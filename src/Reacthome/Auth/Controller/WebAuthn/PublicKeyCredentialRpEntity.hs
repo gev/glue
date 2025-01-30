@@ -1,16 +1,16 @@
-module Service.WebAuthn.PublicKeyCredentialRpEntity where
+module Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialRpEntity where
 
 import Data.Aeson
 import Data.Text
-import Environment
 import GHC.Generics
+import Reacthome.Auth.Environment
 import Util.Aeson
 
 data PublicKeyCredentialRpEntity = PublicKeyCredentialRpEntity
     { id :: Maybe Text
     , name :: Text
     }
-    deriving (Generic, Show)
+    deriving stock (Generic, Show)
 
 instance ToJSON PublicKeyCredentialRpEntity where
     toJSON = genericToJSON omitNothing
