@@ -58,6 +58,10 @@ library
     Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialUserEntity
     Reacthome.Auth.Controller.WebAuthn.RegisterOptions
     Reacthome.Auth.Controller.WebAuthn.RegisteredOptions
+    Reacthome.Auth.Domain.Credential.PublicKey
+    Reacthome.Auth.Domain.Credential.PublicKey.Algorithm
+    Reacthome.Auth.Domain.Credential.PublicKey.Id
+    Reacthome.Auth.Domain.Credential.PublicKeys
     Reacthome.Auth.Domain.User
     Reacthome.Auth.Domain.User.Id
     Reacthome.Auth.Domain.User.Login
@@ -65,6 +69,7 @@ library
     Reacthome.Auth.Domain.User.Status
     Reacthome.Auth.Domain.Users
     Reacthome.Auth.Environment
+    Reacthome.Auth.Repository.InMemory.Credential.PublicKeys
     Reacthome.Auth.Repository.InMemory.RegisterChallenges
     Reacthome.Auth.Repository.InMemory.Users
     Util.Aeson
