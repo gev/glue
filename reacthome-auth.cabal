@@ -66,6 +66,7 @@ library
     Reacthome.Auth.Domain.Users
     Reacthome.Auth.Environment
     Reacthome.Auth.Repository.InMemory.RegisterChallenges
+    Reacthome.Auth.Repository.InMemory.Users
     Util.Aeson
     Util.Base64
     Util.Base64.Lazy

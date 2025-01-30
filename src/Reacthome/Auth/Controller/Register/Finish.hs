@@ -25,15 +25,12 @@ mkRegisteredOptions ::
 mkRegisteredOptions (Left err) = pure $ Left err
 mkRegisteredOptions (Right credentials) = do
     let challenge = mkChallenge credentials.challenge
-    options <- ?challenges.get challenge
-    print credentials
-    case options of
-        Nothing -> pure $ Left "Challenge not found"
-        Just user -> do
-            ?challenges.remove challenge
-            pure $
-                Right
-                    RegisteredOptions
-                        { rp = mkPublicKeyCredentialRpEntity
-                        , user = mkPublicKeyCredentialUserEntity user
-                        }
+    user' <- ?challenges.get challenge
+    ?challenges.remove challenge
+    pure do
+        user <- user'
+        Right
+            RegisteredOptions
+                { rp = mkPublicKeyCredentialRpEntity
+                , user = mkPublicKeyCredentialUserEntity user
+                }

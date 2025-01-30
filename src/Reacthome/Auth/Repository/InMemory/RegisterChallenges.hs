@@ -12,8 +12,7 @@ import Prelude hiding (lookup)
 mkRegisterChallenges :: (?environment :: Environment) => IO RegisterChallenges
 mkRegisterChallenges = do
     map' <- newMVar empty
-    let get = runRead map' . lookup
-        remove = runModify map' . delete
+    let
         register options = do
             challenge <- mkRandomChallenge ?environment.challengeSize
             runModify map' $ insert challenge options
@@ -21,6 +20,14 @@ mkRegisterChallenges = do
                 threadDelay $ 1_000 * ?environment.timeout
                 remove challenge
             pure challenge
+
+        get challenge = do
+            user <- runRead map' $ lookup challenge
+            case user of
+                (Just user') -> pure $ Right user'
+                _ -> pure $ Left "Challenge not found"
+
+        remove = runModify map' . delete
 
     pure
         RegisterChallenges
