@@ -21,7 +21,7 @@ mkRegisterChallenges = do
                 remove challenge
             pure challenge
 
-        get challenge = do
+        findBy challenge = do
             user <- runRead map' $ lookup challenge
             case user of
                 (Just user') -> pure $ Right user'
@@ -32,6 +32,6 @@ mkRegisterChallenges = do
     pure
         RegisterChallenges
             { register
-            , get
+            , findBy
             , remove
             }

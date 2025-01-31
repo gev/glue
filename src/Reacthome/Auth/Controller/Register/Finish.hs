@@ -28,7 +28,7 @@ mkRegisteredOptions ::
 mkRegisteredOptions (Left err) = pure $ Left err
 mkRegisteredOptions (Right credentials) = do
     let challenge = mkChallenge credentials.challenge
-    user' <- ?challenges.get challenge
+    user' <- ?challenges.findBy challenge
     ?challenges.remove challenge
     case user' of
         Left err -> pure $ Left err
