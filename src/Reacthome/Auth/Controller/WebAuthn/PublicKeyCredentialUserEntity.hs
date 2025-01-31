@@ -4,9 +4,9 @@ import Data.Aeson
 import Data.Text.Lazy qualified as Lazy
 import GHC.Generics
 import Reacthome.Auth.Domain.User
-import Reacthome.Auth.Domain.UserId
-import Reacthome.Auth.Domain.UserLogin
-import Reacthome.Auth.Domain.UserName
+import Reacthome.Auth.Domain.User.Id
+import Reacthome.Auth.Domain.User.Login
+import Reacthome.Auth.Domain.User.Name
 
 import Data.Text
 import Data.UUID

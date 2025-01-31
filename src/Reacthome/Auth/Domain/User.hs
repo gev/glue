@@ -1,9 +1,9 @@
 module Reacthome.Auth.Domain.User where
 
-import Reacthome.Auth.Domain.UserId
-import Reacthome.Auth.Domain.UserLogin
-import Reacthome.Auth.Domain.UserName
-import Reacthome.Auth.Domain.UserStatus
+import Reacthome.Auth.Domain.User.Id
+import Reacthome.Auth.Domain.User.Login
+import Reacthome.Auth.Domain.User.Name
+import Reacthome.Auth.Domain.User.Status
 
 data User = User
   { id :: UserId

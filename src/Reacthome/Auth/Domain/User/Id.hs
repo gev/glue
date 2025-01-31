@@ -1,4 +1,4 @@
-module Reacthome.Auth.Domain.UserId where
+module Reacthome.Auth.Domain.User.Id where
 
 import Data.Hashable
 import Data.UUID

@@ -1,4 +1,4 @@
-module Reacthome.Auth.Domain.UserName where
+module Reacthome.Auth.Domain.User.Name where
 
 import Data.Text as Text
 
