@@ -15,7 +15,7 @@ mkUsers :: IO Users
 mkUsers = do
     map' <- newMVar (empty, empty)
     let
-        getById uid =
+        findById uid =
             runRead
                 map'
                 \(byId, _) ->
@@ -23,7 +23,7 @@ mkUsers = do
                         (Just user) -> Right user
                         _ -> Left $ "User not found by id " <> toString uid.value
 
-        getByLogin login =
+        findByLogin login =
             runRead
                 map'
                 \(_, byLogin) ->
@@ -73,8 +73,8 @@ mkUsers = do
 
     pure
         Users
-            { getById
-            , getByLogin
+            { findById
+            , findByLogin
             , has
             , store
             , remove

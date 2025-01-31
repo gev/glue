@@ -5,8 +5,8 @@ import Reacthome.Auth.Domain.Credential.PublicKey.Id
 import Reacthome.Auth.Domain.User.Id
 
 data PublicKeys = PublicKeys
-    { getById :: PublicKeyId -> IO (Either String PublicKey)
-    , getByUserId :: UserId -> IO (Either String [PublicKey])
+    { findById :: PublicKeyId -> IO (Either String PublicKey)
+    , findByUserId :: UserId -> IO (Either String [PublicKey])
     , store :: PublicKey -> IO (Either String ())
     , remove :: PublicKeyId -> IO ()
     }

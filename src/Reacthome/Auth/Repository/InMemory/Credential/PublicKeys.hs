@@ -14,7 +14,7 @@ mkPublicKeys :: IO PublicKeys
 mkPublicKeys = do
     map' <- newMVar (M.empty, M.empty)
     let
-        getById id' =
+        findById id' =
             runRead
                 map'
                 \(byId, _) ->
@@ -22,7 +22,7 @@ mkPublicKeys = do
                         (Just publicKey) -> Right publicKey
                         _ -> Left $ "Public key not found " <> show id'
 
-        getByUserId id' =
+        findByUserId id' =
             runRead
                 map'
                 \(_, byUser) ->
@@ -88,8 +88,8 @@ mkPublicKeys = do
                             )
     pure
         PublicKeys
-            { getById
-            , getByUserId
+            { findById
+            , findByUserId
             , store
             , remove
             }
