@@ -38,15 +38,24 @@ mkUsers = do
                         (Just user') ->
                             if user.id == user'.id
                                 then
-                                    ( (insert user.id user byId, insert user.login user byLogin)
+                                    (
+                                        ( insert user.id user byId
+                                        , insert user.login user (delete user'.login byLogin)
+                                        )
                                     , Right ()
                                     )
                                 else
-                                    ( (byId, byLogin)
+                                    (
+                                        ( byId
+                                        , byLogin
+                                        )
                                     , Left $ "User with login " <> show user.login.value <> " already exists"
                                     )
                         _ ->
-                            ( (insert user.id user byId, insert user.login user byLogin)
+                            (
+                                ( insert user.id user byId
+                                , insert user.login user byLogin
+                                )
                             , Right ()
                             )
 
