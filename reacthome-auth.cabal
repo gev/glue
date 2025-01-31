@@ -29,6 +29,7 @@ common common-ghc-options
     -rtsopts
     -with-rtsopts=-N
     -Wall
+    -Wno-orphans
 
 common common-depends
   build-depends:
