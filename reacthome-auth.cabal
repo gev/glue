@@ -19,6 +19,7 @@ common common-extensions
     MultiWayIf
     OverloadedRecordDot
     OverloadedStrings
+    PatternSynonyms
     QuasiQuotes
 
 common common-ghc-options
