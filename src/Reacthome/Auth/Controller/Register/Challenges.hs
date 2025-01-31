@@ -5,6 +5,6 @@ import Reacthome.Auth.Domain.User
 
 data RegisterChallenges = RegisterChallenges
     { register :: User -> IO Challenge
-    , findBy :: Challenge -> IO (Either String User)
+    , findBy :: Challenge -> IO (Maybe User)
     , remove :: Challenge -> IO ()
     }

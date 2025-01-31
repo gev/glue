@@ -31,8 +31,7 @@ mkRegisteredOptions (Right credentials) = do
     user' <- ?challenges.findBy challenge
     ?challenges.remove challenge
     case user' of
-        Left err -> pure $ Left err
-        Right user -> do
+        Just user -> do
             success <- ?users.store user
             pure case success of
                 Left err -> Left err
@@ -42,3 +41,4 @@ mkRegisteredOptions (Right credentials) = do
                             { rp = mkPublicKeyCredentialRpEntity
                             , user = mkPublicKeyCredentialUserEntity user
                             }
+        _ -> pure . Left $ "Invalid challenge " <> show challenge.value

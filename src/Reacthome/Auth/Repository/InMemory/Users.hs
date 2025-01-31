@@ -3,9 +3,7 @@ module Reacthome.Auth.Repository.InMemory.Users where
 import Control.Concurrent
 import Data.HashMap.Strict
 import Data.Maybe (isJust)
-import Data.UUID
 import Reacthome.Auth.Domain.User
-import Reacthome.Auth.Domain.User.Id
 import Reacthome.Auth.Domain.User.Login
 import Reacthome.Auth.Domain.Users
 import Util.MVar
@@ -18,25 +16,19 @@ mkUsers = do
         findById uid =
             runRead
                 map'
-                \(byId, _) ->
-                    case lookup uid byId of
-                        (Just user) -> Right user
-                        _ -> Left $ "User not found by id " <> toString uid.value
+                \(byId, _) -> lookup uid byId
 
         findByLogin login =
             runRead
                 map'
-                \(_, byLogin) ->
-                    case lookup login byLogin of
-                        (Just user) -> Right user
-                        _ -> Left $ "User not found by login " <> show login.value
+                \(_, byLogin) -> lookup login byLogin
 
         has login =
             runRead
                 map'
                 \(_, byLogin) -> isJust $ lookup login byLogin
 
-        store user = do
+        store user =
             modifyMVar
                 map'
                 \(byId, byLogin) ->

@@ -17,18 +17,12 @@ mkPublicKeys = do
         findById id' =
             runRead
                 map'
-                \(byId, _) ->
-                    case M.lookup id' byId of
-                        (Just publicKey) -> Right publicKey
-                        _ -> Left $ "Public key not found " <> show id'
+                \(byId, _) -> M.lookup id' byId
 
         findByUserId id' =
             runRead
                 map'
-                \(_, byUser) ->
-                    case M.lookup id' byUser of
-                        (Just publicKeys) -> Right $ S.toList publicKeys
-                        _ -> Left $ "Public keys not found by user " <> show id'
+                \(_, byUser) -> S.toList <$> M.lookup id' byUser
 
         store publicKey =
             modifyMVar

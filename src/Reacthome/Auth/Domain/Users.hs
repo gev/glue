@@ -5,8 +5,8 @@ import Reacthome.Auth.Domain.User.Id
 import Reacthome.Auth.Domain.User.Login
 
 data Users = Users
-    { findById :: UserId -> IO (Either String User)
-    , findByLogin :: UserLogin -> IO (Either String User)
+    { findById :: UserId -> IO (Maybe User)
+    , findByLogin :: UserLogin -> IO (Maybe User)
     , has :: UserLogin -> IO Bool
     , store :: User -> IO (Either String ())
     , remove :: User -> IO ()
