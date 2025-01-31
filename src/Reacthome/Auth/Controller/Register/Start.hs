@@ -36,10 +36,11 @@ mkCreationOptions ::
     IO (Either String PublicKeyCredentialCreationOptions)
 mkCreationOptions (Left err) = pure $ Left err
 mkCreationOptions (Right user) = do
-    existedUser <- ?users.getByLogin user.login
-    case existedUser of
-        Right _ -> pure . Left $ "User with login " <> show user.login.value <> " already exists"
-        Left _ -> do
+    isUserExists <- ?users.has user.login
+    if isUserExists
+        then
+            pure . Left $ "User with login " <> show user.login.value <> " already exists"
+        else do
             challenge <- ?challenges.register user
             let newUser = mkPublicKeyCredentialUserEntity user
             pure . Right $

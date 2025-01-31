@@ -2,6 +2,7 @@ module Reacthome.Auth.Repository.InMemory.Users where
 
 import Control.Concurrent
 import Data.HashMap.Strict
+import Data.Maybe (isJust)
 import Data.UUID
 import Reacthome.Auth.Domain.User
 import Reacthome.Auth.Domain.User.Id
@@ -29,6 +30,11 @@ mkUsers = do
                     case lookup login byLogin of
                         (Just user) -> Right user
                         _ -> Left $ "User not found by login " <> show login.value
+
+        has login =
+            runRead
+                map'
+                \(_, byLogin) -> isJust $ lookup login byLogin
 
         store user = do
             modifyMVar
@@ -69,6 +75,7 @@ mkUsers = do
         Users
             { getById
             , getByLogin
+            , has
             , store
             , remove
             }
