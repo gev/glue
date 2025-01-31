@@ -6,6 +6,10 @@ import Reacthome.Auth.Controller.WebAuthn.PublicKeyCredential
 import Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialRpEntity
 import Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialUserEntity
 import Reacthome.Auth.Controller.WebAuthn.RegisteredOptions
+import Reacthome.Auth.Domain.Credential.PublicKey
+import Reacthome.Auth.Domain.Credential.PublicKey.Id
+import Reacthome.Auth.Domain.Credential.PublicKeys
+import Reacthome.Auth.Domain.User
 import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
 
@@ -13,6 +17,7 @@ finishRegister ::
     ( ?environment :: Environment
     , ?challenges :: RegisterChallenges
     , ?users :: Users
+    , ?publicKeys :: PublicKeys
     ) =>
     EncodedPublicKeyCredential ->
     IO (Either String RegisteredOptions)
@@ -22,6 +27,7 @@ mkRegisteredOptions ::
     ( ?environment :: Environment
     , ?challenges :: RegisterChallenges
     , ?users :: Users
+    , ?publicKeys :: PublicKeys
     ) =>
     Either String DecodedPublicKeyCredential ->
     IO (Either String RegisteredOptions)
@@ -33,12 +39,23 @@ mkRegisteredOptions (Right credentials) = do
     case user' of
         Just user -> do
             success <- ?users.store user
-            pure case success of
-                Left err -> Left err
-                _ ->
-                    Right
-                        RegisteredOptions
-                            { rp = mkPublicKeyCredentialRpEntity
-                            , user = mkPublicKeyCredentialUserEntity user
-                            }
+            case success of
+                Left err -> pure $ Left err
+                _ -> do
+                    success' <-
+                        ?publicKeys.store $
+                            PublicKey
+                                { id = PublicKeyId credentials.id
+                                , userId = user.id
+                                , algorithm = credentials.publicKeyAlgorithm
+                                , bytes = credentials.publicKey
+                                }
+                    case success' of
+                        Left err -> pure $ Left err
+                        _ ->
+                            pure . Right $
+                                RegisteredOptions
+                                    { rp = mkPublicKeyCredentialRpEntity
+                                    , user = mkPublicKeyCredentialUserEntity user
+                                    }
         _ -> pure . Left $ "Invalid challenge " <> show challenge.value

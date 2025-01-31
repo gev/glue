@@ -12,6 +12,7 @@ import Reacthome.Auth.Environment
 import Reacthome.Auth.Controller.Register.Challenges
 import Reacthome.Auth.Controller.Register.Finish
 import Reacthome.Auth.Controller.Register.Start
+import Reacthome.Auth.Domain.Credential.PublicKeys
 import Reacthome.Auth.Domain.Users
 import Util.Wai
 
@@ -19,6 +20,7 @@ app ::
     ( ?environment :: Environment
     , ?challenges :: RegisterChallenges
     , ?users :: Users
+    , ?publicKeys :: PublicKeys
     ) =>
     Application
 app req respond
