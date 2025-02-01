@@ -49,8 +49,6 @@ library
     Reacthome.Auth.App
     Reacthome.Auth.Controller.Authenticate.Finish
     Reacthome.Auth.Controller.Authenticate.Start
-    Reacthome.Auth.Controller.Challenge
-    Reacthome.Auth.Controller.Register.Challenges
     Reacthome.Auth.Controller.Register.Finish
     Reacthome.Auth.Controller.Register.Start
     Reacthome.Auth.Controller.WebAuthn.COSEAlgorithmIdentifier
@@ -74,6 +72,12 @@ library
     Reacthome.Auth.Repository.InMemory.Credential.PublicKeys
     Reacthome.Auth.Repository.InMemory.RegisterChallenges
     Reacthome.Auth.Repository.InMemory.Users
+    Reacthome.Auth.Service.Authenticate.Finish
+    Reacthome.Auth.Service.Authenticate.Start
+    Reacthome.Auth.Service.Challenge
+    Reacthome.Auth.Service.Register.Challenges
+    Reacthome.Auth.Service.Register.Finish
+    Reacthome.Auth.Service.Register.Start
     Util.Aeson
     Util.Base64
     Util.Base64.Lazy

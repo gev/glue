@@ -1,7 +1,7 @@
-module Reacthome.Auth.Controller.Register.Challenges where
+module Reacthome.Auth.Service.Register.Challenges where
 
-import Reacthome.Auth.Controller.Challenge
 import Reacthome.Auth.Domain.User
+import Reacthome.Auth.Service.Challenge
 
 data RegisterChallenges = RegisterChallenges
     { register :: User -> IO Challenge

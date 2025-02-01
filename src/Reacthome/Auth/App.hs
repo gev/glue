@@ -9,11 +9,11 @@ import Reacthome.Auth.Environment
 -- import Reacthome.Auth.Controller.Authenticate.Finish
 -- import Reacthome.Auth.Controller.Authenticate.Start
 
-import Reacthome.Auth.Controller.Register.Challenges
 import Reacthome.Auth.Controller.Register.Finish
 import Reacthome.Auth.Controller.Register.Start
 import Reacthome.Auth.Domain.Credential.PublicKeys
 import Reacthome.Auth.Domain.Users
+import Reacthome.Auth.Service.Register.Challenges
 import Util.Wai
 
 app ::
