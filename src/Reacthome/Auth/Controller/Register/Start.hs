@@ -1,9 +1,8 @@
 module Reacthome.Auth.Controller.Register.Start where
 
-import Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialCreationOptions
-import Reacthome.Auth.Controller.WebAuthn.RegisterOptions
-
 import Control.Monad.Trans.Except
+import Reacthome.Auth.Controller.Register.RegisterOptions
+import Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialCreationOptions
 import Reacthome.Auth.Domain.Register.Start
 import Reacthome.Auth.Domain.User.Login
 import Reacthome.Auth.Domain.User.Name

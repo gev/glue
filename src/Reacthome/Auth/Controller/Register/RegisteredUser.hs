@@ -1,4 +1,4 @@
-module Reacthome.Auth.Controller.WebAuthn.RegisteredOptions where
+module Reacthome.Auth.Controller.Register.RegisteredUser where
 
 import Data.Aeson
 import GHC.Generics
@@ -7,7 +7,7 @@ import Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialUserEntity
 import Reacthome.Auth.Domain.User
 import Reacthome.Auth.Environment
 
-data RegisteredOptions = RegisteredOptions
+data RegisteredUser = RegisteredUser
     { rp :: PublicKeyCredentialRpEntity
     , user :: PublicKeyCredentialUserEntity
     }
@@ -17,9 +17,9 @@ data RegisteredOptions = RegisteredOptions
 mkRegisteredOptions ::
     (?environment :: Environment) =>
     User ->
-    RegisteredOptions
+    RegisteredUser
 mkRegisteredOptions user =
-    RegisteredOptions
+    RegisteredUser
         { rp = mkPublicKeyCredentialRpEntity
         , user = mkPublicKeyCredentialUserEntity user
         }

@@ -1,4 +1,4 @@
-module Reacthome.Auth.Controller.WebAuthn.RegisterOptions where
+module Reacthome.Auth.Controller.Register.RegisterOptions where
 
 import Data.Aeson
 import Data.Text

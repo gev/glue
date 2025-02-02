@@ -53,14 +53,14 @@ library
     Reacthome.Auth.Controller.Authenticate.Finish
     Reacthome.Auth.Controller.Authenticate.Start
     Reacthome.Auth.Controller.Register.Finish
+    Reacthome.Auth.Controller.Register.RegisterOptions
+    Reacthome.Auth.Controller.Register.RegisteredUser
     Reacthome.Auth.Controller.Register.Start
     Reacthome.Auth.Controller.WebAuthn.COSEAlgorithmIdentifier
     Reacthome.Auth.Controller.WebAuthn.PublicKeyCredential
     Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialCreationOptions
     Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialRpEntity
     Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialUserEntity
-    Reacthome.Auth.Controller.WebAuthn.RegisterOptions
-    Reacthome.Auth.Controller.WebAuthn.RegisteredOptions
     Reacthome.Auth.Domain.Credential.PublicKey
     Reacthome.Auth.Domain.Credential.PublicKey.Algorithm
     Reacthome.Auth.Domain.Credential.PublicKey.Id

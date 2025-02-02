@@ -1,9 +1,9 @@
 module Reacthome.Auth.Controller.Register.Finish where
 
 import Control.Monad.Trans.Except
+import Reacthome.Auth.Controller.Register.RegisteredUser
 import Reacthome.Auth.Controller.WebAuthn.COSEAlgorithmIdentifier
 import Reacthome.Auth.Controller.WebAuthn.PublicKeyCredential
-import Reacthome.Auth.Controller.WebAuthn.RegisteredOptions
 import Reacthome.Auth.Domain.Credential.PublicKey.Id
 import Reacthome.Auth.Domain.Credential.PublicKeys
 import Reacthome.Auth.Domain.Register.Finish
@@ -21,7 +21,7 @@ finishRegister ::
     , ?publicKeys :: PublicKeys
     ) =>
     PublicKeyCredential ->
-    ExceptT String IO RegisteredOptions
+    ExceptT String IO RegisteredUser
 finishRegister credential = do
     cid <- mkPublicKeyId <$> fromBase64 credential.id
     challenge <- mkChallenge <$> fromBase64 credential.challenge
