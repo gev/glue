@@ -10,12 +10,14 @@ category: Web
 build-type: Simple
 
 common common-extensions
-  default-language: GHC2024
+  default-language: GHC2021
   default-extensions:
     BlockArguments
     DeriveAnyClass
+    DerivingStrategies
     DuplicateRecordFields
     ImplicitParams
+    LambdaCase
     MultiWayIf
     OverloadedRecordDot
     OverloadedStrings
@@ -33,7 +35,7 @@ common common-ghc-options
 
 common common-depends
   build-depends:
-    base >=4.20 && <5.0,
+    base >=4.19 && <5.0,
     bytestring,
     containers,
     text,
@@ -62,6 +64,8 @@ library
     Reacthome.Auth.Domain.Credential.PublicKey.Algorithm
     Reacthome.Auth.Domain.Credential.PublicKey.Id
     Reacthome.Auth.Domain.Credential.PublicKeys
+    Reacthome.Auth.Domain.Register.Finish
+    Reacthome.Auth.Domain.Register.Start
     Reacthome.Auth.Domain.User
     Reacthome.Auth.Domain.User.Id
     Reacthome.Auth.Domain.User.Login
@@ -77,6 +81,7 @@ library
     Reacthome.Auth.Service.Challenge
     Reacthome.Auth.Service.Register.Challenges
     Reacthome.Auth.Service.Register.Finish
+    Reacthome.Auth.Service.Register.PreRegistered
     Reacthome.Auth.Service.Register.Start
     Util.Aeson
     Util.Base64
