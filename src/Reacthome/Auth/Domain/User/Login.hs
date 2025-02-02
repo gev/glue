@@ -1,5 +1,6 @@
 module Reacthome.Auth.Domain.User.Login where
 
+import Control.Monad.Trans.Except
 import Data.Char
 import Data.Hashable
 import Data.Text as Text
@@ -8,13 +9,11 @@ newtype UserLogin = UserLogin {value :: Text}
   deriving stock (Show)
   deriving newtype (Eq, Hashable)
 
-mkUserLogin :: Text -> Either String UserLogin
+mkUserLogin :: (Monad m) => Text -> ExceptT String m UserLogin
 mkUserLogin login =
   if isValidUserLogin login'
-    then
-      Right (UserLogin login')
-    else
-      Left "Login should be between 3 and 24 characters, start with a letter and contain only letters, digits, '-', '_', '.', '@'"
+    then pure $ UserLogin login'
+    else throwE "Login should be between 3 and 24 characters, start with a letter and contain only letters, digits, '-', '_', '.', '@'"
  where
   login' = Text.strip login
 

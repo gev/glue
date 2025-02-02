@@ -9,6 +9,6 @@ data PublicKey = PublicKey
     { id :: PublicKeyId
     , userId :: UserId
     , algorithm :: PublicKeyAlgorithm
-    , bytes :: ByteString
+    , publicKey :: ByteString
     }
     deriving stock (Show)

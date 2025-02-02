@@ -14,7 +14,7 @@ runStartRegister ::
     ( ?challenges :: RegisterChallenges
     , ?users :: Users
     ) =>
-    StartRegisterUser ->
+    StartRegister ->
     ExceptT String IO PreRegistered
 runStartRegister command = do
     isUserExists <- lift $ ?users.has command.login

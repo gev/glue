@@ -3,45 +3,35 @@ module Reacthome.Auth.Service.Register.Finish where
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
 import Control.Monad.Trans.Maybe
-import Reacthome.Auth.Controller.WebAuthn.PublicKeyCredential
-import Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialRpEntity
-import Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialUserEntity
-import Reacthome.Auth.Controller.WebAuthn.RegisteredOptions
 import Reacthome.Auth.Domain.Credential.PublicKey
-import Reacthome.Auth.Domain.Credential.PublicKey.Id
 import Reacthome.Auth.Domain.Credential.PublicKeys
+import Reacthome.Auth.Domain.Register.Finish
 import Reacthome.Auth.Domain.User
 import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.Challenge
 import Reacthome.Auth.Service.Register.Challenges
 
-mkRegisteredOptions ::
+runFinishRegister ::
     ( ?environment :: Environment
     , ?challenges :: RegisterChallenges
     , ?users :: Users
     , ?publicKeys :: PublicKeys
     ) =>
-    Either String DecodedPublicKeyCredential ->
-    ExceptT String IO RegisteredOptions
-mkRegisteredOptions (Left err) = throwE err
-mkRegisteredOptions (Right credentials) = do
-    let challenge = mkChallenge credentials.challenge
+    FinishRegister ->
+    ExceptT String IO User
+runFinishRegister credentials = do
     user <-
         maybeToExceptT
-            ("Invalid challenge " <> show challenge.value)
-            (?challenges.findBy challenge)
-    lift $ ?challenges.remove challenge
+            ("Invalid challenge " <> show credentials.challenge.value)
+            $ ?challenges.findBy credentials.challenge
+    lift $ ?challenges.remove credentials.challenge
     ?users.store user
     ?publicKeys.store
         PublicKey
-            { id = PublicKeyId credentials.id
+            { id = credentials.id
             , userId = user.id
             , algorithm = credentials.publicKeyAlgorithm
-            , bytes = credentials.publicKey
+            , publicKey = credentials.publicKey
             }
-    pure $
-        RegisteredOptions
-            { rp = mkPublicKeyCredentialRpEntity
-            , user = mkPublicKeyCredentialUserEntity user
-            }
+    pure user

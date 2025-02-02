@@ -5,6 +5,8 @@ import Reacthome.Auth.Controller.WebAuthn.RegisterOptions
 
 import Control.Monad.Trans.Except
 import Reacthome.Auth.Domain.Register.Start
+import Reacthome.Auth.Domain.User.Login
+import Reacthome.Auth.Domain.User.Name
 import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.Register.Challenges
@@ -18,6 +20,11 @@ startRegister ::
     RegisterOptions ->
     ExceptT String IO PublicKeyCredentialCreationOptions
 startRegister options = do
-    command <- except $ mkStartRegisterUser options.login options.name
-    preRegisteredUser <- runStartRegister command
-    pure $ mkPublicKeyCredentialCreationOptions preRegisteredUser
+    login <- mkUserLogin options.login
+    name <- mkUserName options.name
+    mkPublicKeyCredentialCreationOptions
+        <$> runStartRegister
+            StartRegister
+                { login
+                , name
+                }

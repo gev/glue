@@ -1,5 +1,6 @@
 module Util.Base64 where
 
+import Control.Monad.Trans.Except
 import Data.ByteString
 import Data.ByteString.Base64 (decode, encode)
 import Data.Text
@@ -8,5 +9,5 @@ import Data.Text.Encoding (decodeUtf8, encodeUtf8)
 toBase64 :: ByteString -> Text
 toBase64 = decodeUtf8 . encode
 
-fromBase64 :: Text -> Either String ByteString
-fromBase64 = decode . encodeUtf8
+fromBase64 :: (Monad m) => Text -> ExceptT String m ByteString
+fromBase64 = except . decode . encodeUtf8

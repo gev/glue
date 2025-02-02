@@ -1,5 +1,6 @@
 module Reacthome.Auth.Controller.WebAuthn.COSEAlgorithmIdentifier where
 
+import Control.Monad.Trans.Except
 import Reacthome.Auth.Domain.Credential.PublicKey.Algorithm
 
 type COSEAlgorithmIdentifier = Int
@@ -13,11 +14,12 @@ pattern ES256' = -7
 pattern RS256' :: COSEAlgorithmIdentifier
 pattern RS256' = -257
 
-decodePublicKeyAlgorithm ::
+mkPublicKeyAlgorithm ::
+    (Monad m) =>
     COSEAlgorithmIdentifier ->
-    Either String PublicKeyAlgorithm
-decodePublicKeyAlgorithm = \case
-    ED25519' -> Right ED25519
-    ES256' -> Right ES256
-    RS256' -> Right RS256
-    _ -> Left "Invalid public key algorithm"
+    ExceptT String m PublicKeyAlgorithm
+mkPublicKeyAlgorithm = \case
+    ED25519' -> pure ED25519
+    ES256' -> pure ES256
+    RS256' -> pure RS256
+    _ -> throwE "Invalid public key algorithm"
