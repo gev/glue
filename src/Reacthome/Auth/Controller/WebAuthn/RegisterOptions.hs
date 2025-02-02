@@ -6,8 +6,8 @@ import GHC.Generics
 import Prelude hiding (null)
 
 data RegisterOptions = RegisterOptions
-    { name :: Text
-    , displayName :: Text
+    { login :: Text
+    , name :: Text
     }
     deriving stock (Generic, Show)
     deriving anyclass (FromJSON)
