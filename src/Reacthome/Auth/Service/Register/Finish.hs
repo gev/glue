@@ -32,6 +32,6 @@ runFinishRegister credentials = do
             { id = credentials.id
             , userId = user.id
             , algorithm = credentials.publicKeyAlgorithm
-            , publicKey = credentials.publicKey
+            , bytes = credentials.publicKey
             }
     pure user
