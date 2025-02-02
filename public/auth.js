@@ -42,8 +42,8 @@ const makeCredentials = options =>
     })
 
 const makeStartRegisterOptions = () => ({
-    name: document.getElementById("login").value,
-    displayName: document.getElementById("name").value,
+    login: document.getElementById("login").value,
+    name: document.getElementById("name").value,
 })
 
 const makeFinishRegisterOptions = credentials => ({
