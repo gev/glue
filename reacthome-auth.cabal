@@ -40,6 +40,7 @@ common common-depends
     containers,
     text,
     time,
+    transformers,
     uuid,
 
 library

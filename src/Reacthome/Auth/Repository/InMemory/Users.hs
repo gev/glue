@@ -1,8 +1,10 @@
 module Reacthome.Auth.Repository.InMemory.Users where
 
 import Control.Concurrent
+import Control.Monad.Trans.Except
+import Control.Monad.Trans.Maybe
+import Data.Bifunctor
 import Data.HashMap.Strict
-import Data.Maybe (isJust)
 import Reacthome.Auth.Domain.User
 import Reacthome.Auth.Domain.User.Login
 import Reacthome.Auth.Domain.Users
@@ -14,26 +16,26 @@ mkUsers = do
     map' <- newMVar (empty, empty)
     let
         findById uid =
-            runRead
+            MaybeT $ runRead
                 map'
                 \(byId, _) -> lookup uid byId
 
         findByLogin login =
-            runRead
+            MaybeT $ runRead
                 map'
                 \(_, byLogin) -> lookup login byLogin
 
         has login =
             runRead
                 map'
-                \(_, byLogin) -> isJust $ lookup login byLogin
+                \(_, byLogin) -> member login byLogin
 
         store user =
-            modifyMVar
+            ExceptT $ modifyMVar
                 map'
-                \(byId, byLogin) ->
+                \value@(byId, byLogin) ->
                     pure case lookup user.login byLogin of
-                        (Just user') ->
+                        Just user' ->
                             if user.id == user'.id
                                 then
                                     (
@@ -43,13 +45,13 @@ mkUsers = do
                                     , Right ()
                                     )
                                 else
-                                    (
-                                        ( byId
-                                        , byLogin
-                                        )
-                                    , Left $ "User with login " <> show user.login.value <> " already exists"
+                                    ( value
+                                    , Left $
+                                        "User with login "
+                                            <> show user.login.value
+                                            <> " already exists"
                                     )
-                        _ ->
+                        Nothing ->
                             (
                                 ( insert user.id user byId
                                 , insert user.login user byLogin
@@ -58,10 +60,10 @@ mkUsers = do
                             )
 
         remove user =
-            runModify
-                map'
-                \(byId, byLogin) ->
-                    (delete user.id byId, delete user.login byLogin)
+            runModify map' $
+                bimap
+                    (delete user.id)
+                    (delete user.login)
 
     pure
         Users

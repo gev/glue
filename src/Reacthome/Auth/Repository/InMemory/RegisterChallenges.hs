@@ -2,6 +2,7 @@ module Reacthome.Auth.Repository.InMemory.RegisterChallenges where
 
 import Control.Concurrent
 import Control.Monad
+import Control.Monad.Trans.Maybe
 import Data.HashMap.Strict
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.Challenge
@@ -21,7 +22,7 @@ mkRegisterChallenges = do
                 remove challenge
             pure challenge
 
-        findBy = runRead map' . lookup
+        findBy = MaybeT . runRead map' . lookup
 
         remove = runModify map' . delete
 

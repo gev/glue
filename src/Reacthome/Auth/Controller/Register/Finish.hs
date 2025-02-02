@@ -1,5 +1,6 @@
 module Reacthome.Auth.Controller.Register.Finish where
 
+import Control.Monad.Trans.Except
 import Reacthome.Auth.Controller.WebAuthn.PublicKeyCredential
 import Reacthome.Auth.Controller.WebAuthn.RegisteredOptions
 import Reacthome.Auth.Domain.Credential.PublicKeys
@@ -15,5 +16,5 @@ finishRegister ::
     , ?publicKeys :: PublicKeys
     ) =>
     EncodedPublicKeyCredential ->
-    IO (Either String RegisteredOptions)
+    ExceptT String IO RegisteredOptions
 finishRegister = mkRegisteredOptions . decodePublicKeyCredential

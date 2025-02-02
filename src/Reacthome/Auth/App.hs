@@ -9,6 +9,7 @@ import Reacthome.Auth.Environment
 -- import Reacthome.Auth.Controller.Authenticate.Finish
 -- import Reacthome.Auth.Controller.Authenticate.Start
 
+import Control.Monad.Trans.Except
 import Reacthome.Auth.Controller.Register.Finish
 import Reacthome.Auth.Controller.Register.Start
 import Reacthome.Auth.Domain.Credential.PublicKeys
@@ -30,7 +31,7 @@ app req respond
     | req.requestMethod == methodPost = do
         let respond' ::
                 (FromJSON req, ToJSON res) =>
-                (req -> IO (Either String res)) ->
+                (req -> ExceptT String IO res) ->
                 IO ResponseReceived
             respond' = mkRespond req respond
         case req.pathInfo of

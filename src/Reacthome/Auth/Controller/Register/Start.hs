@@ -3,6 +3,7 @@ module Reacthome.Auth.Controller.Register.Start where
 import Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialCreationOptions
 import Reacthome.Auth.Controller.WebAuthn.RegisterOptions
 
+import Control.Monad.Trans.Except
 import Reacthome.Auth.Domain.Register.Start
 import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
@@ -15,28 +16,8 @@ startRegister ::
     , ?users :: Users
     ) =>
     RegisterOptions ->
-    IO (Either String PublicKeyCredentialCreationOptions)
-startRegister options =
-    case mkStartRegisterUser options.login options.name of
-        Left err -> pure $ Left err
-        Right command -> do
-            preRegisteredUser <- runStartRegister command
-            pure $ mkPublicKeyCredentialCreationOptions <$> preRegisteredUser
-
--- startRegister ::
---     ( ?environment :: Environment
---     , ?challenges :: RegisterChallenges
---     , ?users :: Users
---     ) =>
---     RegisterOptions ->
---     Either String (IO PublicKeyCredentialCreationOptions)
--- startRegister options =
---     case mkStartRegisterUser options.login options.name of
---         Left err -> Left err
---         Right command ->
---             Right $ do
---                 preRegisteredResult <- runStartRegister command
---                 case preRegisteredResult of
---                     Left err -> fail err -- Handle the error within IO (e.g., throw an exception)
---                     Right preRegisteredUser ->
---                         pure $ mkPublicKeyCredentialCreationOptions preRegisteredUser
+    ExceptT String IO PublicKeyCredentialCreationOptions
+startRegister options = do
+    command <- except $ mkStartRegisterUser options.login options.name
+    preRegisteredUser <- runStartRegister command
+    pure $ mkPublicKeyCredentialCreationOptions preRegisteredUser
