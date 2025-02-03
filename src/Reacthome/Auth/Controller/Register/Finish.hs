@@ -10,13 +10,13 @@ import Reacthome.Auth.Domain.Register.Finish
 import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.Challenge
-import Reacthome.Auth.Service.Register.Challenges
+import Reacthome.Auth.Service.Challenges
 import Reacthome.Auth.Service.Register.Finish
 import Util.Base64
 
 finishRegister ::
     ( ?environment :: Environment
-    , ?challenges :: RegisterChallenges
+    , ?challenges :: Challenges
     , ?users :: Users
     , ?publicKeys :: PublicKeys
     ) =>

@@ -1,25 +1,23 @@
 module Reacthome.Auth.App where
 
+import Control.Monad.Trans.Except
 import Data.Aeson
 import Network.HTTP.Types
 import Network.Wai
 import Network.Wai.Application.Static
-import Reacthome.Auth.Environment
-
--- import Reacthome.Auth.Controller.Authenticate.Finish
--- import Reacthome.Auth.Controller.Authenticate.Start
-
-import Control.Monad.Trans.Except
+import Reacthome.Auth.Controller.Authenticate.Finish
+import Reacthome.Auth.Controller.Authenticate.Start
 import Reacthome.Auth.Controller.Register.Finish
 import Reacthome.Auth.Controller.Register.Start
 import Reacthome.Auth.Domain.Credential.PublicKeys
 import Reacthome.Auth.Domain.Users
-import Reacthome.Auth.Service.Register.Challenges
+import Reacthome.Auth.Environment
+import Reacthome.Auth.Service.Challenges
 import Util.Wai
 
 app ::
     ( ?environment :: Environment
-    , ?challenges :: RegisterChallenges
+    , ?challenges :: Challenges
     , ?users :: Users
     , ?publicKeys :: PublicKeys
     ) =>
@@ -37,8 +35,8 @@ app req respond
         case req.pathInfo of
             ["register", "start"] -> respond' startRegister
             ["register", "finish"] -> respond' finishRegister
-            -- ["authenticate", "start"] -> respond' startAuthenticate
-            -- ["authenticate", "finish"] -> respond' finishAuthenticate
+            ["authenticate", "start"] -> respond' startAuthenticate
+            ["authenticate", "finish"] -> respond' finishAuthenticate
             _ -> respond notAllowed
     | otherwise = respond notAllowed
 

@@ -8,12 +8,12 @@ import Reacthome.Auth.Domain.User.Login
 import Reacthome.Auth.Domain.User.Name
 import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
-import Reacthome.Auth.Service.Register.Challenges
+import Reacthome.Auth.Service.Challenges
 import Reacthome.Auth.Service.Register.Start
 
 startRegister ::
     ( ?environment :: Environment
-    , ?challenges :: RegisterChallenges
+    , ?challenges :: Challenges
     , ?users :: Users
     ) =>
     RegisterOptions ->

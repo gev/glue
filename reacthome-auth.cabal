@@ -50,6 +50,7 @@ library
   hs-source-dirs: src
   exposed-modules:
     Reacthome.Auth.App
+    Reacthome.Auth.Controller.Authenticate.AuthenticateOptions
     Reacthome.Auth.Controller.Authenticate.Finish
     Reacthome.Auth.Controller.Authenticate.Start
     Reacthome.Auth.Controller.Register.Finish
@@ -59,8 +60,11 @@ library
     Reacthome.Auth.Controller.WebAuthn.COSEAlgorithmIdentifier
     Reacthome.Auth.Controller.WebAuthn.PublicKeyCredential
     Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialCreationOptions
+    Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialRequestOptions
     Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialRpEntity
     Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialUserEntity
+    Reacthome.Auth.Domain.Authenticate.Finish
+    Reacthome.Auth.Domain.Authenticate.Start
     Reacthome.Auth.Domain.Credential.PublicKey
     Reacthome.Auth.Domain.Credential.PublicKey.Algorithm
     Reacthome.Auth.Domain.Credential.PublicKey.Id
@@ -74,13 +78,14 @@ library
     Reacthome.Auth.Domain.User.Status
     Reacthome.Auth.Domain.Users
     Reacthome.Auth.Environment
+    Reacthome.Auth.Repository.InMemory.Challenges
     Reacthome.Auth.Repository.InMemory.Credential.PublicKeys
-    Reacthome.Auth.Repository.InMemory.RegisterChallenges
     Reacthome.Auth.Repository.InMemory.Users
     Reacthome.Auth.Service.Authenticate.Finish
+    Reacthome.Auth.Service.Authenticate.PreAuthenticated
     Reacthome.Auth.Service.Authenticate.Start
     Reacthome.Auth.Service.Challenge
-    Reacthome.Auth.Service.Register.Challenges
+    Reacthome.Auth.Service.Challenges
     Reacthome.Auth.Service.Register.Finish
     Reacthome.Auth.Service.Register.PreRegistered
     Reacthome.Auth.Service.Register.Start

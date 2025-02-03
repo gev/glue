@@ -7,11 +7,11 @@ import Reacthome.Auth.Domain.User
 import Reacthome.Auth.Domain.User.Id
 import Reacthome.Auth.Domain.User.Login
 import Reacthome.Auth.Domain.Users
-import Reacthome.Auth.Service.Register.Challenges
+import Reacthome.Auth.Service.Challenges
 import Reacthome.Auth.Service.Register.PreRegistered
 
 runStartRegister ::
-    ( ?challenges :: RegisterChallenges
+    ( ?challenges :: Challenges
     , ?users :: Users
     ) =>
     StartRegister ->

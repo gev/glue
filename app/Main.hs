@@ -1,8 +1,8 @@
 import Network.Wai.Handler.Warp
 import Reacthome.Auth.App
 import Reacthome.Auth.Environment
+import Reacthome.Auth.Repository.InMemory.Challenges
 import Reacthome.Auth.Repository.InMemory.Credential.PublicKeys
-import Reacthome.Auth.Repository.InMemory.RegisterChallenges
 import Reacthome.Auth.Repository.InMemory.Users
 
 main :: IO ()
@@ -14,7 +14,7 @@ main = do
           , timeout
           , challengeSize = 20
           }
-  challenges <- mkRegisterChallenges
+  challenges <- mkChallenges
   users <- mkUsers
   publicKeys <- mkPublicKeys
   let ?challenges = challenges

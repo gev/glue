@@ -1,10 +1,10 @@
-module Reacthome.Auth.Service.Register.Challenges where
+module Reacthome.Auth.Service.Challenges where
 
 import Control.Monad.Trans.Maybe
 import Reacthome.Auth.Domain.User
 import Reacthome.Auth.Service.Challenge
 
-data RegisterChallenges = RegisterChallenges
+data Challenges = Challenges
     { register :: User -> IO Challenge
     , findBy :: Challenge -> MaybeT IO User
     , remove :: Challenge -> IO ()
