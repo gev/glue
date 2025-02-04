@@ -51,12 +51,15 @@ library
   exposed-modules:
     Reacthome.Auth.App
     Reacthome.Auth.Controller.Authenticate.AuthenticateOptions
+    Reacthome.Auth.Controller.Authenticate.AuthenticatedUser
     Reacthome.Auth.Controller.Authenticate.Finish
     Reacthome.Auth.Controller.Authenticate.Start
     Reacthome.Auth.Controller.Register.Finish
     Reacthome.Auth.Controller.Register.RegisterOptions
     Reacthome.Auth.Controller.Register.RegisteredUser
     Reacthome.Auth.Controller.Register.Start
+    Reacthome.Auth.Controller.WebAuthn.AuthenticatorAssertionResponse
+    Reacthome.Auth.Controller.WebAuthn.AuthenticatorAttestationResponse
     Reacthome.Auth.Controller.WebAuthn.COSEAlgorithmIdentifier
     Reacthome.Auth.Controller.WebAuthn.PublicKeyCredential
     Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialCreationOptions

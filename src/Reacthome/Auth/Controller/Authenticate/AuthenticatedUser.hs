@@ -1,4 +1,4 @@
-module Reacthome.Auth.Controller.Register.RegisteredUser where
+module Reacthome.Auth.Controller.Authenticate.AuthenticatedUser where
 
 import Data.Aeson
 import GHC.Generics
@@ -7,19 +7,19 @@ import Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialUserEntity
 import Reacthome.Auth.Domain.User
 import Reacthome.Auth.Environment
 
-data RegisteredUser = RegisteredUser
+data AuthenticatedUser = AuthenticatedUser
     { rp :: PublicKeyCredentialRpEntity
     , user :: PublicKeyCredentialUserEntity
     }
     deriving stock (Generic, Show)
     deriving anyclass (ToJSON)
 
-mkRegisteredUser ::
+mkAuthenticatedUser ::
     (?environment :: Environment) =>
     User ->
-    RegisteredUser
-mkRegisteredUser user =
-    RegisteredUser
+    AuthenticatedUser
+mkAuthenticatedUser user =
+    AuthenticatedUser
         { rp = mkPublicKeyCredentialRpEntity
         , user = mkPublicKeyCredentialUserEntity user
         }

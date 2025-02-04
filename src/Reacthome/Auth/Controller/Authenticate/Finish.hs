@@ -1,17 +1,17 @@
 module Reacthome.Auth.Controller.Authenticate.Finish where
 
 import Control.Monad.Trans.Except
-import Reacthome.Auth.Controller.Register.RegisteredUser
-import Reacthome.Auth.Controller.WebAuthn.COSEAlgorithmIdentifier
+import Reacthome.Auth.Controller.Authenticate.AuthenticatedUser
+import Reacthome.Auth.Controller.WebAuthn.AuthenticatorAssertionResponse
 import Reacthome.Auth.Controller.WebAuthn.PublicKeyCredential
+import Reacthome.Auth.Domain.Authenticate.Finish
 import Reacthome.Auth.Domain.Credential.PublicKey.Id
 import Reacthome.Auth.Domain.Credential.PublicKeys
-import Reacthome.Auth.Domain.Register.Finish
 import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
+import Reacthome.Auth.Service.Authenticate.Finish
 import Reacthome.Auth.Service.Challenge
 import Reacthome.Auth.Service.Challenges
-import Reacthome.Auth.Service.Register.Finish
 import Util.Base64
 
 finishAuthenticate ::
@@ -20,18 +20,18 @@ finishAuthenticate ::
     , ?users :: Users
     , ?publicKeys :: PublicKeys
     ) =>
-    PublicKeyCredential ->
-    ExceptT String IO RegisteredUser
+    PublicKeyCredential AuthenticatorAssertionResponse ->
+    ExceptT String IO AuthenticatedUser
 finishAuthenticate credential = do
     cid <- mkPublicKeyId <$> fromBase64 credential.id
-    challenge <- mkChallenge <$> fromBase64 credential.challenge
-    publicKey <- fromBase64 credential.publicKey
-    publicKeyAlgorithm <- mkPublicKeyAlgorithm credential.publicKeyAlgorithm
-    mkRegisteredOptions
-        <$> runFinishRegister
-            FinishRegister
+    challenge <- mkChallenge <$> fromBase64 credential.response.challenge
+    signedData <- fromBase64 credential.response.signedData
+    signature <- fromBase64 credential.response.signature
+    mkAuthenticatedUser
+        <$> runFinishAuthenticate
+            FinishAuthenticate
                 { id = cid
                 , challenge
-                , publicKey
-                , publicKeyAlgorithm
+                , signedData
+                , signature
                 }

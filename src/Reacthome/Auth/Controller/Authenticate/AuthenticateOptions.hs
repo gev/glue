@@ -4,7 +4,7 @@ import Data.Aeson
 import Data.Text
 import GHC.Generics
 
-data AuthenticateOptions = AuthenticateOptions
+newtype AuthenticateOptions = AuthenticateOptions
     { login :: Text
     }
     deriving stock (Generic, Show)

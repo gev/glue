@@ -2,6 +2,7 @@ module Reacthome.Auth.Controller.Register.Finish where
 
 import Control.Monad.Trans.Except
 import Reacthome.Auth.Controller.Register.RegisteredUser
+import Reacthome.Auth.Controller.WebAuthn.AuthenticatorAttestationResponse
 import Reacthome.Auth.Controller.WebAuthn.COSEAlgorithmIdentifier
 import Reacthome.Auth.Controller.WebAuthn.PublicKeyCredential
 import Reacthome.Auth.Domain.Credential.PublicKey.Id
@@ -20,14 +21,14 @@ finishRegister ::
     , ?users :: Users
     , ?publicKeys :: PublicKeys
     ) =>
-    PublicKeyCredential ->
+    PublicKeyCredential AuthenticatorAttestationResponse ->
     ExceptT String IO RegisteredUser
 finishRegister credential = do
     cid <- mkPublicKeyId <$> fromBase64 credential.id
-    challenge <- mkChallenge <$> fromBase64 credential.challenge
-    publicKey <- fromBase64 credential.publicKey
-    publicKeyAlgorithm <- mkPublicKeyAlgorithm credential.publicKeyAlgorithm
-    mkRegisteredOptions
+    challenge <- mkChallenge <$> fromBase64 credential.response.challenge
+    publicKey <- fromBase64 credential.response.publicKey
+    publicKeyAlgorithm <- mkPublicKeyAlgorithm credential.response.publicKeyAlgorithm
+    mkRegisteredUser
         <$> runFinishRegister
             FinishRegister
                 { id = cid

@@ -3,6 +3,8 @@ module Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialRequestOptions wher
 import Data.Aeson
 import Data.Text
 import GHC.Generics
+import Reacthome.Auth.Domain.Credential.PublicKey
+import Reacthome.Auth.Domain.Credential.PublicKey.Id
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.Authenticate.PreAuthenticated
 import Reacthome.Auth.Service.Challenge
@@ -13,6 +15,7 @@ data PublicKeyCredentialRequestOptions = PublicKeyCredentialRequestOptions
     { rpId :: Text
     , challenge :: Text
     , timeout :: Int
+    , allowCredentials :: [Text]
     }
     deriving stock (Generic, Show)
 
@@ -28,4 +31,5 @@ mkPublicKeyCredentialRequestOptions pre =
         { rpId = ?environment.domain
         , challenge = toBase64 pre.challenge.value
         , timeout = ?environment.timeout
+        , allowCredentials = toBase64 . (.value) . (.id) <$> pre.allowCredentials
         }
