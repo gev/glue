@@ -1,5 +1,7 @@
-### Successful begin to register
-POST http://localhost:3000/register/begin HTTP/1.1
+## Begin registration
+
+### Successful
+POST http://localhost:3000/registration/begin HTTP/1.1
 content-type: application/json
 
 {
@@ -7,8 +9,8 @@ content-type: application/json
     "displayName" : "John Doe"
 }
 
-### Invalid begin to register
-POST http://localhost:3000/register/begin HTTP/1.1
+### Invalid 
+POST http://localhost:3000/registration/begin HTTP/1.1
 content-type: application/json
 
 {
@@ -16,11 +18,11 @@ content-type: application/json
     "displayName": " "
 }
 
-### Invalid begin to register
-POST http://localhost:3000/register/begin HTTP/1.1
+### Invalid 
+POST http://localhost:3000/registration/begin HTTP/1.1
 content-type: application/json
 
 {}
 
-### Invalid begin to register
-POST http://localhost:3000/register/begin HTTP/1.1
+### Invalid 
+POST http://localhost:3000/registration/begin HTTP/1.1

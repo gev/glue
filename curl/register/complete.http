@@ -1,5 +1,6 @@
-### Successful complete to register
-POST http://localhost:3000/register/complete HTTP/1.1
+## Complete registration
+### Successful 
+POST http://localhost:3000/registration/complete HTTP/1.1
 content-type: application/json
 
 {
@@ -11,11 +12,11 @@ content-type: application/json
     }
 }
 
-### Invalid complete to register
-POST http://localhost:3000/register/complete HTTP/1.1
+### Invalid 
+POST http://localhost:3000/registration/complete HTTP/1.1
 
-### Invalid complete to register
-POST http://localhost:3000/register/complete HTTP/1.1
+### Invalid 
+POST http://localhost:3000/registration/complete HTTP/1.1
 content-type: application/json
 
 {}

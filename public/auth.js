@@ -1,8 +1,8 @@
 const register = async () => {
     try {
-        const registerOptions = makeRegisterOptions()
-        console.log(registerOptions)
-        const publicKeyCredentialCreationOptions = await beginRegister(registerOptions)
+        const registrationOptions = makeRegistrationOptions()
+        console.log(registrationOptions)
+        const publicKeyCredentialCreationOptions = await beginRegistration(registrationOptions)
         console.log(publicKeyCredentialCreationOptions)
         const credentials = await createCredentials(publicKeyCredentialCreationOptions)
         console.log(credentials)
@@ -10,7 +10,7 @@ const register = async () => {
         console.log(attestationResponse)
         const publicKeyCredentials = makePublicKeyCredentials(credentials, attestationResponse)
         console.log(publicKeyCredentials)
-        const res = await completeRegister(publicKeyCredentials)
+        const res = await completeRegistration(publicKeyCredentials)
         console.log(res)
     } catch (err) {
         console.error(err.message)
@@ -18,13 +18,13 @@ const register = async () => {
     }
 }
 
-const makeRegisterOptions = () => ({
+const makeRegistrationOptions = () => ({
     login: document.getElementById("login").value,
     name: document.getElementById("name").value,
 })
 
-const beginRegister = beginRegisterOptions =>
-    request("/register/begin", beginRegisterOptions)
+const beginRegistration = beginRegistrationOptions =>
+    request("/registration/begin", beginRegistrationOptions)
 
 const createCredentials = options =>
     navigator.credentials.create({
@@ -60,15 +60,15 @@ const makeAuthenticatorAttestationResponse = credentials => ({
     publicKeyAlgorithm: credentials.response.getPublicKeyAlgorithm(),
 })
 
-const completeRegister = completeRequestOptions =>
-    request("/register/complete", completeRequestOptions)
+const completeRegistration = completeRequestOptions =>
+    request("/registration/complete", completeRequestOptions)
 
 
 const authenticate = async () => {
     try {
-        const authenticationOptions = makeAuthenticateOptions()
+        const authenticationOptions = makeAuthenticationOptions()
         console.log(authenticationOptions)
-        const publicKeyCredentialRequestOptions = await beginAuthenticate(authenticationOptions)
+        const publicKeyCredentialRequestOptions = await beginAuthentication(authenticationOptions)
         console.log(publicKeyCredentialRequestOptions)
         const credentials = await getCredentials(publicKeyCredentialRequestOptions)
         console.log(credentials)
@@ -76,7 +76,7 @@ const authenticate = async () => {
         console.log(assertionResponse)
         const publicKeyCredentials = await makePublicKeyCredentials(credentials, assertionResponse)
         console.log(publicKeyCredentials)
-        const res = await completeAuthenticate(publicKeyCredentials)
+        const res = await completeAuthentication(publicKeyCredentials)
         console.log(res)
     } catch (err) {
         console.error(err.message)
@@ -84,12 +84,12 @@ const authenticate = async () => {
     }
 }
 
-const makeAuthenticateOptions = () => ({
+const makeAuthenticationOptions = () => ({
     login: document.getElementById("login").value,
 })
 
-const beginAuthenticate = beginAuthenticateOptions =>
-    request("/authenticate/begin", beginAuthenticateOptions)
+const beginAuthentication = beginAuthenticationOptions =>
+    request("/authentication/begin", beginAuthenticationOptions)
 
 const getCredentials = options =>
     navigator.credentials.get({
@@ -114,8 +114,8 @@ const makeAuthenticatorAssertionResponse = async credentials => ({
     signature: toBase64(credentials.response.signature),
 })
 
-const completeAuthenticate = completeAuthenticateOptions =>
-    request("/authenticate/complete", completeAuthenticateOptions)
+const completeAuthentication = completeAuthenticationOptions =>
+    request("/authentication/complete", completeAuthenticationOptions)
 
 const getChallenge = (clientDataJSON) => {
     const decoder = new TextDecoder()
@@ -154,7 +154,7 @@ fromBase64URL = (data) => {
     const pad = input.length % 4
     if (pad) {
         if (pad === 1) {
-            throw new Error("InvalidLengthError: Input base64url string is the wrong length to determine padding")
+            throw new Error("InvalidLengthError: Input base64url string is the wrong length determine padding")
         }
         return input.padEnd(input.length + (4 - pad), "=")
     }

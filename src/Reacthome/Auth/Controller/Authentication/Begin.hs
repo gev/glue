@@ -1,28 +1,28 @@
-module Reacthome.Auth.Controller.Authenticate.Begin where
+module Reacthome.Auth.Controller.Authentication.Begin where
 
 import Control.Monad.Trans.Except
-import Reacthome.Auth.Controller.Authenticate.AuthenticateOptions
+import Reacthome.Auth.Controller.Authentication.Options
 import Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialRequestOptions
-import Reacthome.Auth.Domain.Authenticate.Begin
+import Reacthome.Auth.Domain.Authentication.Begin
 import Reacthome.Auth.Domain.Credential.PublicKeys
 import Reacthome.Auth.Domain.User.Login
 import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
-import Reacthome.Auth.Service.Authenticate.Begin
+import Reacthome.Auth.Service.Authentication.Begin
 import Reacthome.Auth.Service.Challenges
 
-beginAuthenticate ::
+beginAuthentication ::
     ( ?environment :: Environment
     , ?challenges :: Challenges
     , ?users :: Users
     , ?publicKeys :: PublicKeys
     ) =>
-    AuthenticateOptions ->
+    AuthenticationOptions ->
     ExceptT String IO PublicKeyCredentialRequestOptions
-beginAuthenticate options = do
+beginAuthentication options = do
     login <- makeUserLogin options.login
     makePublicKeyCredentialRequestOptions
-        <$> runBeginAuthenticate
-            BeginAuthenticate
+        <$> runBeginAuthentication
+            BeginAuthentication
                 { login
                 }

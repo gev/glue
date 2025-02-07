@@ -1,9 +1,9 @@
-module Reacthome.Auth.Domain.Register.Begin where
+module Reacthome.Auth.Domain.Registration.Begin where
 
 import Reacthome.Auth.Domain.User.Login
 import Reacthome.Auth.Domain.User.Name
 
-data BeginRegister = BeginRegister
+data BeginRegistration = BeginRegistration
     { login :: UserLogin
     , name :: UserName
     }

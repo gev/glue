@@ -1,9 +1,9 @@
-module Reacthome.Auth.Service.Authenticate.PreAuthenticated where
+module Reacthome.Auth.Service.Authentication.Pre where
 
 import Reacthome.Auth.Domain.Credential.PublicKey
 import Reacthome.Auth.Service.Challenge
 
-data PreAuthenticated = PreAuthenticated
+data PreAuthentication = PreAuthentication
     { challenge :: Challenge
     , allowCredentials :: [PublicKey]
     }

@@ -7,7 +7,7 @@ import Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialRpEntity
 import Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialUserEntity
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.Challenge
-import Reacthome.Auth.Service.Register.PreRegistered
+import Reacthome.Auth.Service.Registration.Pre
 import Util.Aeson
 import Util.Base64
 
@@ -24,7 +24,7 @@ instance ToJSON PublicKeyCredentialCreationOptions where
 
 makePublicKeyCredentialCreationOptions ::
     (?environment :: Environment) =>
-    PreRegistered ->
+    PreRegistration ->
     PublicKeyCredentialCreationOptions
 makePublicKeyCredentialCreationOptions pre =
     PublicKeyCredentialCreationOptions

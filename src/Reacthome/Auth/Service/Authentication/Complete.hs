@@ -1,9 +1,9 @@
-module Reacthome.Auth.Service.Authenticate.Complete where
+module Reacthome.Auth.Service.Authentication.Complete where
 
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
 import Control.Monad.Trans.Maybe
-import Reacthome.Auth.Domain.Authenticate.Complete
+import Reacthome.Auth.Domain.Authentication.Complete
 import Reacthome.Auth.Domain.Credential.PublicKey.Id
 import Reacthome.Auth.Domain.Credential.PublicKeys
 import Reacthome.Auth.Domain.User
@@ -12,15 +12,15 @@ import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.Challenge
 import Reacthome.Auth.Service.Challenges
 
-runCompleteAuthenticate ::
+runCompleteAuthentication ::
     ( ?environment :: Environment
     , ?challenges :: Challenges
     , ?users :: Users
     , ?publicKeys :: PublicKeys
     ) =>
-    CompleteAuthenticate ->
+    CompleteAuthentication ->
     ExceptT String IO User
-runCompleteAuthenticate credentials = do
+runCompleteAuthentication credentials = do
     user <-
         maybeToExceptT
             ("Invalid challenge " <> show credentials.challenge.value)

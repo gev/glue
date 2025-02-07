@@ -50,14 +50,14 @@ library
   hs-source-dirs: src
   exposed-modules:
     Reacthome.Auth.App
-    Reacthome.Auth.Controller.Authenticate.AuthenticateOptions
-    Reacthome.Auth.Controller.Authenticate.AuthenticatedUser
-    Reacthome.Auth.Controller.Authenticate.Begin
-    Reacthome.Auth.Controller.Authenticate.Complete
-    Reacthome.Auth.Controller.Register.Begin
-    Reacthome.Auth.Controller.Register.Complete
-    Reacthome.Auth.Controller.Register.RegisterOptions
-    Reacthome.Auth.Controller.Register.RegisteredUser
+    Reacthome.Auth.Controller.Authentication.Authenticated
+    Reacthome.Auth.Controller.Authentication.Begin
+    Reacthome.Auth.Controller.Authentication.Complete
+    Reacthome.Auth.Controller.Authentication.Options
+    Reacthome.Auth.Controller.Registration.Begin
+    Reacthome.Auth.Controller.Registration.Complete
+    Reacthome.Auth.Controller.Registration.Options
+    Reacthome.Auth.Controller.Registration.Registered
     Reacthome.Auth.Controller.WebAuthn.AuthenticatorAssertionResponse
     Reacthome.Auth.Controller.WebAuthn.AuthenticatorAttestationResponse
     Reacthome.Auth.Controller.WebAuthn.COSEAlgorithmIdentifier
@@ -66,14 +66,14 @@ library
     Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialRequestOptions
     Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialRpEntity
     Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialUserEntity
-    Reacthome.Auth.Domain.Authenticate.Begin
-    Reacthome.Auth.Domain.Authenticate.Complete
+    Reacthome.Auth.Domain.Authentication.Begin
+    Reacthome.Auth.Domain.Authentication.Complete
     Reacthome.Auth.Domain.Credential.PublicKey
     Reacthome.Auth.Domain.Credential.PublicKey.Algorithm
     Reacthome.Auth.Domain.Credential.PublicKey.Id
     Reacthome.Auth.Domain.Credential.PublicKeys
-    Reacthome.Auth.Domain.Register.Begin
-    Reacthome.Auth.Domain.Register.Complete
+    Reacthome.Auth.Domain.Registration.Begin
+    Reacthome.Auth.Domain.Registration.Complete
     Reacthome.Auth.Domain.User
     Reacthome.Auth.Domain.User.Id
     Reacthome.Auth.Domain.User.Login
@@ -84,14 +84,14 @@ library
     Reacthome.Auth.Repository.InMemory.Challenges
     Reacthome.Auth.Repository.InMemory.Credential.PublicKeys
     Reacthome.Auth.Repository.InMemory.Users
-    Reacthome.Auth.Service.Authenticate.Begin
-    Reacthome.Auth.Service.Authenticate.Complete
-    Reacthome.Auth.Service.Authenticate.PreAuthenticated
+    Reacthome.Auth.Service.Authentication.Begin
+    Reacthome.Auth.Service.Authentication.Complete
+    Reacthome.Auth.Service.Authentication.Pre
     Reacthome.Auth.Service.Challenge
     Reacthome.Auth.Service.Challenges
-    Reacthome.Auth.Service.Register.Begin
-    Reacthome.Auth.Service.Register.Complete
-    Reacthome.Auth.Service.Register.PreRegistered
+    Reacthome.Auth.Service.Registration.Begin
+    Reacthome.Auth.Service.Registration.Complete
+    Reacthome.Auth.Service.Registration.Pre
     Util.Aeson
     Util.Base64
     Util.Base64.Lazy

@@ -5,10 +5,10 @@ import Data.Aeson
 import Network.HTTP.Types
 import Network.Wai
 import Network.Wai.Application.Static
-import Reacthome.Auth.Controller.Authenticate.Begin
-import Reacthome.Auth.Controller.Authenticate.Complete
-import Reacthome.Auth.Controller.Register.Begin
-import Reacthome.Auth.Controller.Register.Complete
+import Reacthome.Auth.Controller.Authentication.Begin
+import Reacthome.Auth.Controller.Authentication.Complete
+import Reacthome.Auth.Controller.Registration.Begin
+import Reacthome.Auth.Controller.Registration.Complete
 import Reacthome.Auth.Domain.Credential.PublicKeys
 import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
@@ -33,10 +33,10 @@ app req respond
                 IO ResponseReceived
             respond' = makeRespond req respond
         case req.pathInfo of
-            ["register", "begin"] -> respond' beginRegister
-            ["register", "complete"] -> respond' completeRegister
-            ["authenticate", "begin"] -> respond' beginAuthenticate
-            ["authenticate", "complete"] -> respond' completeAuthenticate
+            ["registration", "begin"] -> respond' beginRegistration
+            ["registration", "complete"] -> respond' completeRegistration
+            ["authentication", "begin"] -> respond' beginAuthentication
+            ["authentication", "complete"] -> respond' completeAuthentication
             _ -> respond notAllowed
     | otherwise = respond notAllowed
 

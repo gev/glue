@@ -1,10 +1,10 @@
-module Reacthome.Auth.Controller.Register.RegisterOptions where
+module Reacthome.Auth.Controller.Registration.Options where
 
 import Data.Aeson
 import Data.Text
 import GHC.Generics
 
-data RegisterOptions = RegisterOptions
+data RegistrationOptions = RegistrationOptions
     { login :: Text
     , name :: Text
     }

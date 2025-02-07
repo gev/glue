@@ -14,7 +14,7 @@ makeChallenges :: (?environment :: Environment) => IO Challenges
 makeChallenges = do
     map' <- newMVar empty
     let
-        register options = do
+        registration options = do
             challenge <- makeRandomChallenge ?environment.challengeSize
             runModify map' $ insert challenge options
             void $ forkIO do
@@ -28,7 +28,7 @@ makeChallenges = do
 
     pure
         Challenges
-            { register
+            { registration
             , findBy
             , remove
             }

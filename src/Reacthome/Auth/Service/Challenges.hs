@@ -5,7 +5,7 @@ import Reacthome.Auth.Domain.User
 import Reacthome.Auth.Service.Challenge
 
 data Challenges = Challenges
-    { register :: User -> IO Challenge
+    { registration :: User -> IO Challenge
     , findBy :: Challenge -> MaybeT IO User
     , remove :: Challenge -> IO ()
     }

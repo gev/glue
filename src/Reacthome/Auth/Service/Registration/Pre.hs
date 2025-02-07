@@ -1,9 +1,9 @@
-module Reacthome.Auth.Service.Register.PreRegistered where
+module Reacthome.Auth.Service.Registration.Pre where
 
 import Reacthome.Auth.Domain.User
 import Reacthome.Auth.Service.Challenge
 
-data PreRegistered = PreRegistered
+data PreRegistration = PreRegistration
     { user :: User
     , challenge :: Challenge
     }

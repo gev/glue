@@ -6,7 +6,7 @@ import GHC.Generics
 import Reacthome.Auth.Domain.Credential.PublicKey
 import Reacthome.Auth.Domain.Credential.PublicKey.Id
 import Reacthome.Auth.Environment
-import Reacthome.Auth.Service.Authenticate.PreAuthenticated
+import Reacthome.Auth.Service.Authentication.Pre
 import Reacthome.Auth.Service.Challenge
 import Util.Aeson
 import Util.Base64
@@ -24,7 +24,7 @@ instance ToJSON PublicKeyCredentialRequestOptions where
 
 makePublicKeyCredentialRequestOptions ::
     (?environment :: Environment) =>
-    PreAuthenticated ->
+    PreAuthentication ->
     PublicKeyCredentialRequestOptions
 makePublicKeyCredentialRequestOptions pre =
     PublicKeyCredentialRequestOptions

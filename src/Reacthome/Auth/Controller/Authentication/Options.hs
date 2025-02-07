@@ -1,10 +1,10 @@
-module Reacthome.Auth.Controller.Authenticate.AuthenticateOptions where
+module Reacthome.Auth.Controller.Authentication.Options where
 
 import Data.Aeson
 import Data.Text
 import GHC.Generics
 
-newtype AuthenticateOptions = AuthenticateOptions
+newtype AuthenticationOptions = AuthenticationOptions
     { login :: Text
     }
     deriving stock (Generic, Show)
