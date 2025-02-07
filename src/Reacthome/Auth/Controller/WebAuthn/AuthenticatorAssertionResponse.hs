@@ -6,7 +6,7 @@ import GHC.Generics
 
 data AuthenticatorAssertionResponse = AuthenticatorAssertionResponse
     { challenge :: Text
-    , signedData :: Text
+    , message :: Text
     , signature :: Text
     }
     deriving stock (Generic, Show)

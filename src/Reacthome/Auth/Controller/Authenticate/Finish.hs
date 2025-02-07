@@ -25,13 +25,13 @@ finishAuthenticate ::
 finishAuthenticate credential = do
     cid <- mkPublicKeyId <$> fromBase64 credential.id
     challenge <- mkChallenge <$> fromBase64 credential.response.challenge
-    signedData <- fromBase64 credential.response.signedData
+    message <- fromBase64 credential.response.message
     signature <- fromBase64 credential.response.signature
     mkAuthenticatedUser
         <$> runFinishAuthenticate
             FinishAuthenticate
                 { id = cid
                 , challenge
-                , signedData
+                , message
                 , signature
                 }

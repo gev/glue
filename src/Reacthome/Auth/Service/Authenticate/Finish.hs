@@ -4,6 +4,7 @@ import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
 import Control.Monad.Trans.Maybe
 import Reacthome.Auth.Domain.Authenticate.Finish
+import Reacthome.Auth.Domain.Credential.PublicKey.Id
 import Reacthome.Auth.Domain.Credential.PublicKeys
 import Reacthome.Auth.Domain.User
 import Reacthome.Auth.Domain.Users
@@ -25,5 +26,15 @@ runFinishAuthenticate credentials = do
             ("Invalid challenge " <> show credentials.challenge.value)
             $ ?challenges.findBy credentials.challenge
     lift $ ?challenges.remove credentials.challenge
-    -- ToDO: validate signature
+    _ <-
+        maybeToExceptT ("Public key with id " <> show credentials.id.value <> " not found") $
+            ?publicKeys.findById credentials.id
+
+    -- publicKey' <-
+
+    -- let isVerified = verify
+    --     (HashSHA256)
+    --     publicKey'
+    --     credentials.message
+    --     credentials.signature
     pure user

@@ -7,7 +7,7 @@ import Reacthome.Auth.Service.Challenge
 data FinishAuthenticate = FinishAuthenticate
     { id :: PublicKeyId
     , challenge :: Challenge
-    , signedData :: ByteString
+    , message :: ByteString
     , signature :: ByteString
     }
     deriving stock (Show)

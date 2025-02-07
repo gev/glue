@@ -107,7 +107,7 @@ const makePublicKeyCredentialRequestOptions = options => ({
 
 const makeAuthenticatorAssertionResponse = async credentials => ({
     challenge: fromBase64URL(getChallenge(credentials.response.clientDataJSON)),
-    signedData: toBase64(concat(
+    message: toBase64(concat(
         credentials.response.authenticatorData,
         await crypto.subtle.digest("SHA-256", credentials.response.clientDataJSON)
     )),
