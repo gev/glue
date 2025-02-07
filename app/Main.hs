@@ -14,9 +14,9 @@ main = do
           , timeout
           , challengeSize = 20
           }
-  challenges <- mkChallenges
-  users <- mkUsers
-  publicKeys <- mkPublicKeys
+  challenges <- makeChallenges
+  users <- makeUsers
+  publicKeys <- makePublicKeys
   let ?challenges = challenges
   let ?users = users
   let ?publicKeys = publicKeys

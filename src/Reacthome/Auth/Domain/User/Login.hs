@@ -9,8 +9,8 @@ newtype UserLogin = UserLogin {value :: Text}
   deriving stock (Show)
   deriving newtype (Eq, Hashable)
 
-mkUserLogin :: (Monad m) => Text -> ExceptT String m UserLogin
-mkUserLogin login =
+makeUserLogin :: (Monad m) => Text -> ExceptT String m UserLogin
+makeUserLogin login =
   if isValidUserLogin login'
     then pure $ UserLogin login'
     else throwE "Login should be between 3 and 24 characters, starts with a letter and contain only letters, digits, '-', '_', '.', '@'"

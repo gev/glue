@@ -20,8 +20,8 @@ beginAuthenticate ::
     AuthenticateOptions ->
     ExceptT String IO PublicKeyCredentialRequestOptions
 beginAuthenticate options = do
-    login <- mkUserLogin options.login
-    mkPublicKeyCredentialRequestOptions
+    login <- makeUserLogin options.login
+    makePublicKeyCredentialRequestOptions
         <$> runBeginAuthenticate
             BeginAuthenticate
                 { login

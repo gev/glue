@@ -20,10 +20,10 @@ data PublicKeyCredentialUserEntity = PublicKeyCredentialUserEntity
     deriving stock (Generic, Show)
     deriving anyclass (ToJSON)
 
-mkPublicKeyCredentialUserEntity ::
+makePublicKeyCredentialUserEntity ::
     User ->
     PublicKeyCredentialUserEntity
-mkPublicKeyCredentialUserEntity user =
+makePublicKeyCredentialUserEntity user =
     PublicKeyCredentialUserEntity
         { id = toBase64 . toByteString $ user.id.value
         , name = user.login.value

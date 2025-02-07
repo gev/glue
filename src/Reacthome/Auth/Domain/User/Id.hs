@@ -8,8 +8,8 @@ newtype UserId = UserId {value :: UUID}
   deriving stock (Show)
   deriving newtype (Eq, Hashable)
 
-mkUserId :: UUID -> UserId
-mkUserId = UserId
+makeUserId :: UUID -> UserId
+makeUserId = UserId
 
-mkRandomUserId :: IO UserId
-mkRandomUserId = UserId <$> nextRandom
+makeRandomUserId :: IO UserId
+makeRandomUserId = UserId <$> nextRandom

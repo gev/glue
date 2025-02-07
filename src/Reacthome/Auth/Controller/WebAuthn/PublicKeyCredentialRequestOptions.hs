@@ -22,11 +22,11 @@ data PublicKeyCredentialRequestOptions = PublicKeyCredentialRequestOptions
 instance ToJSON PublicKeyCredentialRequestOptions where
     toJSON = genericToJSON omitNothing
 
-mkPublicKeyCredentialRequestOptions ::
+makePublicKeyCredentialRequestOptions ::
     (?environment :: Environment) =>
     PreAuthenticated ->
     PublicKeyCredentialRequestOptions
-mkPublicKeyCredentialRequestOptions pre =
+makePublicKeyCredentialRequestOptions pre =
     PublicKeyCredentialRequestOptions
         { rpId = ?environment.domain
         , challenge = toBase64 pre.challenge.value

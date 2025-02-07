@@ -19,9 +19,9 @@ beginRegister ::
     RegisterOptions ->
     ExceptT String IO PublicKeyCredentialCreationOptions
 beginRegister options = do
-    login <- mkUserLogin options.login
-    name <- mkUserName options.name
-    mkPublicKeyCredentialCreationOptions
+    login <- makeUserLogin options.login
+    name <- makeUserName options.name
+    makePublicKeyCredentialCreationOptions
         <$> runBeginRegister
             BeginRegister
                 { login

@@ -14,12 +14,12 @@ data RegisteredUser = RegisteredUser
     deriving stock (Generic, Show)
     deriving anyclass (ToJSON)
 
-mkRegisteredUser ::
+makeRegisteredUser ::
     (?environment :: Environment) =>
     User ->
     RegisteredUser
-mkRegisteredUser user =
+makeRegisteredUser user =
     RegisteredUser
-        { rp = mkPublicKeyCredentialRpEntity
-        , user = mkPublicKeyCredentialUserEntity user
+        { rp = makePublicKeyCredentialRpEntity
+        , user = makePublicKeyCredentialUserEntity user
         }

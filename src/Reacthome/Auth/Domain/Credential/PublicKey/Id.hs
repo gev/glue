@@ -7,5 +7,5 @@ newtype PublicKeyId = PublicKeyId {value :: ByteString}
     deriving stock (Show)
     deriving newtype (Eq, Hashable)
 
-mkPublicKeyId :: ByteString -> PublicKeyId
-mkPublicKeyId = PublicKeyId
+makePublicKeyId :: ByteString -> PublicKeyId
+makePublicKeyId = PublicKeyId

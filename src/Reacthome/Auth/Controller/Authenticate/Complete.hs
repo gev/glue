@@ -23,11 +23,11 @@ completeAuthenticate ::
     PublicKeyCredential AuthenticatorAssertionResponse ->
     ExceptT String IO AuthenticatedUser
 completeAuthenticate credential = do
-    cid <- mkPublicKeyId <$> fromBase64 credential.id
-    challenge <- mkChallenge <$> fromBase64 credential.response.challenge
+    cid <- makePublicKeyId <$> fromBase64 credential.id
+    challenge <- makeChallenge <$> fromBase64 credential.response.challenge
     message <- fromBase64 credential.response.message
     signature <- fromBase64 credential.response.signature
-    mkAuthenticatedUser
+    makeAuthenticatedUser
         <$> runCompleteAuthenticate
             CompleteAuthenticate
                 { id = cid

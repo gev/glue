@@ -2,8 +2,8 @@ module Reacthome.Auth.Domain.UserSpec (spec) where
 
 import Data.Maybe (fromJust)
 import Reacthome.Auth.Domain.User
-import Reacthome.Auth.Domain.User.Id (mkUserId)
-import Reacthome.Auth.Domain.UserLogin (isValidUserLogin, mkUserLogin)
+import Reacthome.Auth.Domain.User.Id (makeUserId)
+import Reacthome.Auth.Domain.UserLogin (isValidUserLogin, makeUserLogin)
 import Test.Hspec (Expectation, Spec, describe, it, shouldBe, shouldNotBe)
 import Test.QuickCheck (Arbitrary, Gen, arbitrary, elements, forAll, property, suchThat, (==>))
 import Test.QuickCheck.Instances.Text ()
@@ -15,34 +15,34 @@ spec =
         it "Creates an User successfully"
             . property
             $ forAll arbitrary \(uid, login, status) ->
-                mkUser uid login status
+                makeUser uid login status
                     `shouldBeEqualTo` (uid, login, status)
 
         it "User instances with the same parameters are equal"
             . property
             $ forAll arbitrary \user ->
-                mkUser' user `shouldBe` mkUser' user
+                makeUser' user `shouldBe` makeUser' user
 
         it "User instances with different parameters are not equal"
             . property
             $ forAll arbitrary \(user1, user2) ->
-                user1 /= user2 ==> mkUser' user1 `shouldNotBe` mkUser' user2
+                user1 /= user2 ==> makeUser' user1 `shouldNotBe` makeUser' user2
 
         it "Creates a new User successfully"
             . property
             $ forAll arbitrary \(uid, login) ->
-                mkNewUser uid login
+                makeNewUser uid login
                     `shouldBeEqualTo` (uid, login, Active)
 
         it "New User instances with the same parameters are equal"
             . property
             $ forAll arbitrary \user ->
-                mkNewUser' user `shouldBe` mkNewUser' user
+                makeNewUser' user `shouldBe` makeNewUser' user
 
         it "New User instances with different parameters are not equal"
             . property
             $ forAll arbitrary \(user1, user2) ->
-                user1 /= user2 ==> mkNewUser' user1 `shouldNotBe` mkNewUser' user2
+                user1 /= user2 ==> makeNewUser' user1 `shouldNotBe` makeNewUser' user2
 
         it "Change an User Login successfully"
             . property
@@ -92,11 +92,11 @@ type UserTuple =
 type NewUserTuple =
     (User.Id, UserLogin)
 
-mkUser' :: UserTuple -> User
-mkUser' (uid, login, status) = mkUser uid login status
+makeUser' :: UserTuple -> User
+makeUser' (uid, login, status) = makeUser uid login status
 
-mkNewUser' :: NewUserTuple -> User
-mkNewUser' (uid, login) = mkNewUser uid login
+makeNewUser' :: NewUserTuple -> User
+makeNewUser' (uid, login) = makeNewUser uid login
 
 shouldBeEqualTo ::
     User ->
@@ -108,16 +108,16 @@ shouldBeEqualTo user (uid, login, status) =
         <> (user . status `shouldBe` status)
 
 instance Arbitrary User where
-    arbitrary = mkUser' <$> arbitrary
+    arbitrary = makeUser' <$> arbitrary
 
 instance Arbitrary User.Id where
-    arbitrary = mkUserId <$> arbitrary
+    arbitrary = makeUserId <$> arbitrary
 
 instance Arbitrary UserLogin where
-    arbitrary = mkArbitrary mkUserLogin isValidUserLogin
+    arbitrary = makeArbitrary makeUserLogin isValidUserLogin
 
 instance Arbitrary User.Status where
     arbitrary = elements [Active, Inactive]
 
-mkArbitrary :: (Arbitrary a) => (a -> Maybe m) -> (a -> Bool) -> Gen m
-mkArbitrary mk isValid = fromJust . mk <$> arbitrary `suchThat` isValid
+makeArbitrary :: (Arbitrary a) => (a -> Maybe m) -> (a -> Bool) -> Gen m
+makeArbitrary make isValid = fromJust . make <$> arbitrary `suchThat` isValid

@@ -22,14 +22,14 @@ data PublicKeyCredentialCreationOptions = PublicKeyCredentialCreationOptions
 instance ToJSON PublicKeyCredentialCreationOptions where
     toJSON = genericToJSON omitNothing
 
-mkPublicKeyCredentialCreationOptions ::
+makePublicKeyCredentialCreationOptions ::
     (?environment :: Environment) =>
     PreRegistered ->
     PublicKeyCredentialCreationOptions
-mkPublicKeyCredentialCreationOptions pre =
+makePublicKeyCredentialCreationOptions pre =
     PublicKeyCredentialCreationOptions
-        { rp = mkPublicKeyCredentialRpEntity
-        , user = mkPublicKeyCredentialUserEntity pre.user
+        { rp = makePublicKeyCredentialRpEntity
+        , user = makePublicKeyCredentialUserEntity pre.user
         , challenge = toBase64 pre.challenge.value
         , timeout = ?environment.timeout
         }

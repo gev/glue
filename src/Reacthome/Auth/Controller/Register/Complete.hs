@@ -24,11 +24,11 @@ completeRegister ::
     PublicKeyCredential AuthenticatorAttestationResponse ->
     ExceptT String IO RegisteredUser
 completeRegister credential = do
-    cid <- mkPublicKeyId <$> fromBase64 credential.id
-    challenge <- mkChallenge <$> fromBase64 credential.response.challenge
+    cid <- makePublicKeyId <$> fromBase64 credential.id
+    challenge <- makeChallenge <$> fromBase64 credential.response.challenge
     publicKey <- fromBase64 credential.response.publicKey
-    publicKeyAlgorithm <- mkPublicKeyAlgorithm credential.response.publicKeyAlgorithm
-    mkRegisteredUser
+    publicKeyAlgorithm <- makePublicKeyAlgorithm credential.response.publicKeyAlgorithm
+    makeRegisteredUser
         <$> runCompleteRegister
             CompleteRegister
                 { id = cid

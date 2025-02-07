@@ -7,8 +7,8 @@ newtype UserName = UserName {value :: Text}
   deriving stock (Show)
   deriving newtype (Eq)
 
-mkUserName :: (Monad m) => Text -> ExceptT String m UserName
-mkUserName name =
+makeUserName :: (Monad m) => Text -> ExceptT String m UserName
+makeUserName name =
   if isValidUserName name'
     then pure $ UserName name'
     else throwE "Name should be between 3 and 64 characters"

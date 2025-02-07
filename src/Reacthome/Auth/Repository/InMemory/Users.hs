@@ -11,8 +11,8 @@ import Reacthome.Auth.Domain.Users
 import Util.MVar
 import Prelude hiding (lookup)
 
-mkUsers :: IO Users
-mkUsers = do
+makeUsers :: IO Users
+makeUsers = do
     map' <- newMVar (empty, empty)
     let
         findById uid =

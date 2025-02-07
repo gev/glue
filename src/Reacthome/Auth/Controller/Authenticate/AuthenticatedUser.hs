@@ -14,12 +14,12 @@ data AuthenticatedUser = AuthenticatedUser
     deriving stock (Generic, Show)
     deriving anyclass (ToJSON)
 
-mkAuthenticatedUser ::
+makeAuthenticatedUser ::
     (?environment :: Environment) =>
     User ->
     AuthenticatedUser
-mkAuthenticatedUser user =
+makeAuthenticatedUser user =
     AuthenticatedUser
-        { rp = mkPublicKeyCredentialRpEntity
-        , user = mkPublicKeyCredentialUserEntity user
+        { rp = makePublicKeyCredentialRpEntity
+        , user = makePublicKeyCredentialUserEntity user
         }

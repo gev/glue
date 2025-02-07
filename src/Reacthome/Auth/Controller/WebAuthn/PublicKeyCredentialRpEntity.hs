@@ -15,10 +15,10 @@ data PublicKeyCredentialRpEntity = PublicKeyCredentialRpEntity
 instance ToJSON PublicKeyCredentialRpEntity where
     toJSON = genericToJSON omitNothing
 
-mkPublicKeyCredentialRpEntity ::
+makePublicKeyCredentialRpEntity ::
     (?environment :: Environment) =>
     PublicKeyCredentialRpEntity
-mkPublicKeyCredentialRpEntity =
+makePublicKeyCredentialRpEntity =
     PublicKeyCredentialRpEntity
         { id = Just ?environment.domain
         , name = ?environment.name

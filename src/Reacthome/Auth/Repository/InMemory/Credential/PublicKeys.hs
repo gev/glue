@@ -13,8 +13,8 @@ import Reacthome.Auth.Domain.Credential.PublicKey
 import Reacthome.Auth.Domain.Credential.PublicKeys
 import Util.MVar
 
-mkPublicKeys :: IO PublicKeys
-mkPublicKeys = do
+makePublicKeys :: IO PublicKeys
+makePublicKeys = do
     map' <- newMVar (M.empty, M.empty)
     let
         findById id' =

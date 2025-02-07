@@ -31,7 +31,7 @@ app req respond
                 (FromJSON req, ToJSON res) =>
                 (req -> ExceptT String IO res) ->
                 IO ResponseReceived
-            respond' = mkRespond req respond
+            respond' = makeRespond req respond
         case req.pathInfo of
             ["register", "begin"] -> respond' beginRegister
             ["register", "complete"] -> respond' completeRegister

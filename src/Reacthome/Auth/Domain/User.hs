@@ -13,21 +13,21 @@ data User = User
   }
   deriving stock (Eq, Show)
 
-mkUser ::
+makeUser ::
   UserId ->
   UserLogin ->
   UserName ->
   UserStatus ->
   User
-mkUser = User
+makeUser = User
 
-mkNewUser ::
+makeNewUser ::
   UserId ->
   UserLogin ->
   UserName ->
   User
-mkNewUser uid login name =
-  mkUser uid login name Active
+makeNewUser uid login name =
+  makeUser uid login name Active
 
 changeUserLogin ::
   User ->

@@ -25,7 +25,7 @@ runBeginRegister command = do
                     <> show command.login.value
                     <> " already exists"
         else do
-            uid <- lift mkRandomUserId
-            let user = mkNewUser uid command.login command.name
+            uid <- lift makeRandomUserId
+            let user = makeNewUser uid command.login command.name
             challenge <- lift $ ?challenges.register user
             pure $ PreRegistered user challenge

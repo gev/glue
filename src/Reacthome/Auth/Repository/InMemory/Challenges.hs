@@ -10,12 +10,12 @@ import Reacthome.Auth.Service.Challenges
 import Util.MVar
 import Prelude hiding (lookup)
 
-mkChallenges :: (?environment :: Environment) => IO Challenges
-mkChallenges = do
+makeChallenges :: (?environment :: Environment) => IO Challenges
+makeChallenges = do
     map' <- newMVar empty
     let
         register options = do
-            challenge <- mkRandomChallenge ?environment.challengeSize
+            challenge <- makeRandomChallenge ?environment.challengeSize
             runModify map' $ insert challenge options
             void $ forkIO do
                 threadDelay $ 1_000 * ?environment.timeout

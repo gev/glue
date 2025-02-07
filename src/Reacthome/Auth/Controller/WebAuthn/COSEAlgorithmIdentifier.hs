@@ -14,11 +14,11 @@ pattern ES256' = -7
 pattern RS256' :: COSEAlgorithmIdentifier
 pattern RS256' = -257
 
-mkPublicKeyAlgorithm ::
+makePublicKeyAlgorithm ::
     (Monad m) =>
     COSEAlgorithmIdentifier ->
     ExceptT String m PublicKeyAlgorithm
-mkPublicKeyAlgorithm = \case
+makePublicKeyAlgorithm = \case
     ED25519' -> pure ED25519
     ES256' -> pure ES256
     RS256' -> pure RS256

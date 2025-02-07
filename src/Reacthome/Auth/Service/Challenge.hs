@@ -10,8 +10,8 @@ newtype Challenge = Challenge
     deriving stock (Show)
     deriving newtype (Eq, Hashable)
 
-mkChallenge :: ByteString -> Challenge
-mkChallenge = Challenge
+makeChallenge :: ByteString -> Challenge
+makeChallenge = Challenge
 
-mkRandomChallenge :: Int -> IO Challenge
-mkRandomChallenge size = mkChallenge <$> getRandomBytes size
+makeRandomChallenge :: Int -> IO Challenge
+makeRandomChallenge size = makeChallenge <$> getRandomBytes size
