@@ -13,7 +13,7 @@ mkUserLogin :: (Monad m) => Text -> ExceptT String m UserLogin
 mkUserLogin login =
   if isValidUserLogin login'
     then pure $ UserLogin login'
-    else throwE "Login should be between 3 and 24 characters, start with a letter and contain only letters, digits, '-', '_', '.', '@'"
+    else throwE "Login should be between 3 and 24 characters, starts with a letter and contain only letters, digits, '-', '_', '.', '@'"
  where
   login' = Text.strip login
 

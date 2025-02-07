@@ -2,7 +2,7 @@ const register = async () => {
     try {
         const registerOptions = makeRegisterOptions()
         console.log(registerOptions)
-        const publicKeyCredentialCreationOptions = await startRegister(registerOptions)
+        const publicKeyCredentialCreationOptions = await beginRegister(registerOptions)
         console.log(publicKeyCredentialCreationOptions)
         const credentials = await createCredentials(publicKeyCredentialCreationOptions)
         console.log(credentials)
@@ -10,7 +10,7 @@ const register = async () => {
         console.log(attestationResponse)
         const publicKeyCredentials = makePublicKeyCredentials(credentials, attestationResponse)
         console.log(publicKeyCredentials)
-        const res = await finishRegister(publicKeyCredentials)
+        const res = await completeRegister(publicKeyCredentials)
         console.log(res)
     } catch (err) {
         console.error(err.message)
@@ -23,8 +23,8 @@ const makeRegisterOptions = () => ({
     name: document.getElementById("name").value,
 })
 
-const startRegister = startRegisterOptions =>
-    request("/register/start", startRegisterOptions)
+const beginRegister = beginRegisterOptions =>
+    request("/register/begin", beginRegisterOptions)
 
 const createCredentials = options =>
     navigator.credentials.create({
@@ -60,15 +60,15 @@ const makeAuthenticatorAttestationResponse = credentials => ({
     publicKeyAlgorithm: credentials.response.getPublicKeyAlgorithm(),
 })
 
-const finishRegister = finishRequestOptions =>
-    request("/register/finish", finishRequestOptions)
+const completeRegister = completeRequestOptions =>
+    request("/register/complete", completeRequestOptions)
 
 
 const authenticate = async () => {
     try {
         const authenticationOptions = makeAuthenticateOptions()
         console.log(authenticationOptions)
-        const publicKeyCredentialRequestOptions = await startAuthenticate(authenticationOptions)
+        const publicKeyCredentialRequestOptions = await beginAuthenticate(authenticationOptions)
         console.log(publicKeyCredentialRequestOptions)
         const credentials = await getCredentials(publicKeyCredentialRequestOptions)
         console.log(credentials)
@@ -76,7 +76,7 @@ const authenticate = async () => {
         console.log(assertionResponse)
         const publicKeyCredentials = await makePublicKeyCredentials(credentials, assertionResponse)
         console.log(publicKeyCredentials)
-        const res = await finishAuthenticate(publicKeyCredentials)
+        const res = await completeAuthenticate(publicKeyCredentials)
         console.log(res)
     } catch (err) {
         console.error(err.message)
@@ -88,8 +88,8 @@ const makeAuthenticateOptions = () => ({
     login: document.getElementById("login").value,
 })
 
-const startAuthenticate = startAuthenticateOptions =>
-    request("/authenticate/start", startAuthenticateOptions)
+const beginAuthenticate = beginAuthenticateOptions =>
+    request("/authenticate/begin", beginAuthenticateOptions)
 
 const getCredentials = options =>
     navigator.credentials.get({
@@ -114,8 +114,8 @@ const makeAuthenticatorAssertionResponse = async credentials => ({
     signature: toBase64(credentials.response.signature),
 })
 
-const finishAuthenticate = finishAuthenticateOptions =>
-    request("/authenticate/finish", finishAuthenticateOptions)
+const completeAuthenticate = completeAuthenticateOptions =>
+    request("/authenticate/complete", completeAuthenticateOptions)
 
 const getChallenge = (clientDataJSON) => {
     const decoder = new TextDecoder()

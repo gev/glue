@@ -1,5 +1,5 @@
-### Successful finish to register
-POST http://localhost:3000/register/finish HTTP/1.1
+### Successful complete to register
+POST http://localhost:3000/register/complete HTTP/1.1
 content-type: application/json
 
 {
@@ -11,11 +11,11 @@ content-type: application/json
     }
 }
 
-### Invalid finish to register
-POST http://localhost:3000/register/finish HTTP/1.1
+### Invalid complete to register
+POST http://localhost:3000/register/complete HTTP/1.1
 
-### Invalid finish to register
-POST http://localhost:3000/register/finish HTTP/1.1
+### Invalid complete to register
+POST http://localhost:3000/register/complete HTTP/1.1
 content-type: application/json
 
 {}
