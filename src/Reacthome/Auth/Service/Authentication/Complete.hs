@@ -4,6 +4,7 @@ import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
 import Control.Monad.Trans.Maybe
 import Reacthome.Auth.Domain.Authentication.Complete
+import Reacthome.Auth.Domain.Credential.PublicKey
 import Reacthome.Auth.Domain.Credential.PublicKey.Id
 import Reacthome.Auth.Domain.Credential.PublicKeys
 import Reacthome.Auth.Domain.User
@@ -11,6 +12,7 @@ import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.Challenge
 import Reacthome.Auth.Service.Challenges
+import Util.ASN1 qualified as ASN1
 
 runCompleteAuthentication ::
     ( ?environment :: Environment
@@ -26,9 +28,14 @@ runCompleteAuthentication credentials = do
             ("Invalid challenge " <> show credentials.challenge.value)
             $ ?challenges.findBy credentials.challenge
     lift $ ?challenges.remove credentials.challenge
-    _ <-
+    publicKey <-
         maybeToExceptT ("Public key with id " <> show credentials.id.value <> " not found") $
             ?publicKeys.findById credentials.id
+    publicKey' <- ASN1.decode publicKey.bytes
+    lift do
+        print publicKey.algorithm
+        print publicKey.bytes
+        print publicKey'
 
     -- publicKey' <-
 
