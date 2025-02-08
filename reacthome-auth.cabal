@@ -92,7 +92,6 @@ library
     Reacthome.Auth.Service.Registration.Begin
     Reacthome.Auth.Service.Registration.Complete
     Reacthome.Auth.Service.Registration.Pre
-    Reacthome.Yandex.Dialogs.AccountLinking
     Reacthome.Yandex.Dialogs.Application
     Reacthome.Yandex.Dialogs.DialogRequest
     Reacthome.Yandex.Dialogs.DialogResponse
@@ -101,10 +100,8 @@ library
     Reacthome.Yandex.Dialogs.Markup
     Reacthome.Yandex.Dialogs.Meta
     Reacthome.Yandex.Dialogs.NLU
-    Reacthome.Yandex.Dialogs.Payments
     Reacthome.Yandex.Dialogs.Request
     Reacthome.Yandex.Dialogs.Response
-    Reacthome.Yandex.Dialogs.Screen
     Reacthome.Yandex.Dialogs.Session
     Reacthome.Yandex.Dialogs.Token
     Reacthome.Yandex.Dialogs.User
