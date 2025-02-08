@@ -26,8 +26,8 @@ completeRegistration ::
 completeRegistration credential = do
     cid <- makePublicKeyId <$> fromBase64 credential.id
     challenge <- makeChallenge <$> fromBase64 credential.response.challenge
-    publicKey <- fromBase64 credential.response.publicKey
     publicKeyAlgorithm <- makePublicKeyAlgorithm credential.response.publicKeyAlgorithm
+    publicKey <- fromBase64 credential.response.publicKey
     makeRegistered
         <$> runCompleteRegistration
             CompleteRegistration
