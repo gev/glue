@@ -92,6 +92,22 @@ library
     Reacthome.Auth.Service.Registration.Begin
     Reacthome.Auth.Service.Registration.Complete
     Reacthome.Auth.Service.Registration.Pre
+    Reacthome.Yandex.Dialogs.AccountLinking
+    Reacthome.Yandex.Dialogs.Application
+    Reacthome.Yandex.Dialogs.DialogRequest
+    Reacthome.Yandex.Dialogs.Entity
+    Reacthome.Yandex.Dialogs.Intents
+    Reacthome.Yandex.Dialogs.Interfaces
+    Reacthome.Yandex.Dialogs.Markup
+    Reacthome.Yandex.Dialogs.Meta
+    Reacthome.Yandex.Dialogs.NLU
+    Reacthome.Yandex.Dialogs.Payments
+    Reacthome.Yandex.Dialogs.Request
+    Reacthome.Yandex.Dialogs.Screen
+    Reacthome.Yandex.Dialogs.Session
+    Reacthome.Yandex.Dialogs.Token
+    Reacthome.Yandex.Dialogs.User
+    Util.ASN1
     Util.Aeson
     Util.Base64
     Util.Base64.Lazy
@@ -103,6 +119,7 @@ library
 
   build-depends:
     aeson,
+    asn1-encoding,
     base64-bytestring,
     crypton,
     hashable,
