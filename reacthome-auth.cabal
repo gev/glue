@@ -95,6 +95,7 @@ library
     Reacthome.Yandex.Dialogs.AccountLinking
     Reacthome.Yandex.Dialogs.Application
     Reacthome.Yandex.Dialogs.DialogRequest
+    Reacthome.Yandex.Dialogs.DialogResponse
     Reacthome.Yandex.Dialogs.Entity
     Reacthome.Yandex.Dialogs.Intents
     Reacthome.Yandex.Dialogs.Interfaces
@@ -103,6 +104,7 @@ library
     Reacthome.Yandex.Dialogs.NLU
     Reacthome.Yandex.Dialogs.Payments
     Reacthome.Yandex.Dialogs.Request
+    Reacthome.Yandex.Dialogs.Response
     Reacthome.Yandex.Dialogs.Screen
     Reacthome.Yandex.Dialogs.Session
     Reacthome.Yandex.Dialogs.Token
