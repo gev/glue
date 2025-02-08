@@ -98,7 +98,6 @@ library
     Reacthome.Yandex.Dialogs.DialogResponse
     Reacthome.Yandex.Dialogs.Entity
     Reacthome.Yandex.Dialogs.Intents
-    Reacthome.Yandex.Dialogs.Interfaces
     Reacthome.Yandex.Dialogs.Markup
     Reacthome.Yandex.Dialogs.Meta
     Reacthome.Yandex.Dialogs.NLU
