@@ -11,18 +11,20 @@
     <script src="/auth.js"></script>
 </head>
 
-<body>
+<body onload="init(authenticate)">
     <div>
         <img width="150px" src="/icon.png" alt="Reacthome logo" />
         <h1>Reacthome Auth</h1>
     </div>
-    <div>
-        <input type="text" id="login" placeholder="Login" autocomplete="on" required autofocus>
-    </div>
-    <div>
-        <button type="submit" onclick="authenticate()">Sign in</button>
-        <a href="/register">Sign up</a>
-    </div>
+    <form id="form" action="">
+        <div>
+            <input name="login" type="text" placeholder="Login" autocomplete="on" required autofocus>
+        </div>
+        <div>
+            <button type="submit">Sign in</button>
+            <a href="/register">Sign up</a>
+        </div>
+    </form>
     <div id="debug"></div>
 </body>
 

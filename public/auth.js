@@ -1,6 +1,6 @@
-const register = async () => {
+const register = async (form) => {
     try {
-        const registrationOptions = makeRegistrationOptions()
+        const registrationOptions = makeRegistrationOptions(form)
         console.log(registrationOptions)
         const publicKeyCredentialCreationOptions = await beginRegistration(registrationOptions)
         console.log(publicKeyCredentialCreationOptions)
@@ -18,9 +18,9 @@ const register = async () => {
     }
 }
 
-const makeRegistrationOptions = () => ({
-    login: document.getElementById("login").value,
-    name: document.getElementById("name").value,
+const makeRegistrationOptions = form => ({
+    login: form.get("login"),
+    name: form.get("name"),
 })
 
 const beginRegistration = beginRegistrationOptions =>
@@ -64,9 +64,9 @@ const completeRegistration = completeRequestOptions =>
     request("/registration/complete", completeRequestOptions)
 
 
-const authenticate = async () => {
+const authenticate = async form => {
     try {
-        const authenticationOptions = makeAuthenticationOptions()
+        const authenticationOptions = makeAuthenticationOptions(form)
         console.log(authenticationOptions)
         const publicKeyCredentialRequestOptions = await beginAuthentication(authenticationOptions)
         console.log(publicKeyCredentialRequestOptions)
@@ -84,8 +84,8 @@ const authenticate = async () => {
     }
 }
 
-const makeAuthenticationOptions = () => ({
-    login: document.getElementById("login").value,
+const makeAuthenticationOptions = form => ({
+    login: form.get("login"),
 })
 
 const beginAuthentication = beginAuthenticationOptions =>
@@ -162,4 +162,11 @@ const debug = data => {
         typeof data === "string"
             ? data
             : JSON.stringify(data, null, 4)
+}
+
+const init = (handle) => {
+    document.getElementById("form").addEventListener("submit", event => {
+        handle(new FormData(event.target))
+        event.preventDefault()
+    })
 }
