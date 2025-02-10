@@ -7,7 +7,7 @@ import Reacthome.Yandex.Dialogs.Application
 import Reacthome.Yandex.Dialogs.User
 
 data Session = Session
-    { message_id :: Text
+    { message_id :: Int
     , session_id :: Text
     , skill_id :: Text
     , user :: User
