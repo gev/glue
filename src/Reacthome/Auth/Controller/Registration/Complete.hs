@@ -14,6 +14,7 @@ import Reacthome.Auth.Service.Challenge
 import Reacthome.Auth.Service.Challenges
 import Reacthome.Auth.Service.Registration.Complete
 import Util.Base64
+import Util.Base64.URL qualified as URL
 
 completeRegistration ::
     ( ?environment :: Environment
@@ -25,7 +26,7 @@ completeRegistration ::
     ExceptT String IO RegisteredUser
 completeRegistration credential = do
     cid <- makePublicKeyId <$> fromBase64 credential.id
-    challenge <- makeChallenge <$> fromBase64 credential.response.challenge
+    challenge <- makeChallenge <$> URL.fromBase64 credential.response.challenge
     publicKeyAlgorithm <- makePublicKeyAlgorithm credential.response.publicKeyAlgorithm
     publicKey <- fromBase64 credential.response.publicKey
     makeRegistered

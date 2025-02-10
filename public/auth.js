@@ -55,7 +55,7 @@ const makePublicKeyCredentialCreationOptions = options => ({
 })
 
 const makeAuthenticatorAttestationResponse = credentials => ({
-    challenge: fromBase64URL(getChallenge(credentials.response.clientDataJSON)),
+    challenge: getChallenge(credentials.response.clientDataJSON),
     publicKey: toBase64(credentials.response.getPublicKey()),
     publicKeyAlgorithm: credentials.response.getPublicKeyAlgorithm(),
 })
@@ -106,7 +106,7 @@ const makePublicKeyCredentialRequestOptions = options => ({
 })
 
 const makeAuthenticatorAssertionResponse = async credentials => ({
-    challenge: fromBase64URL(getChallenge(credentials.response.clientDataJSON)),
+    challenge: getChallenge(credentials.response.clientDataJSON),
     message: toBase64(concat(
         credentials.response.authenticatorData,
         await crypto.subtle.digest("SHA-256", credentials.response.clientDataJSON)
@@ -146,20 +146,6 @@ const fromBase64 = base64 =>
 
 const toBase64 = data =>
     btoa(String.fromCharCode(...new Uint8Array(data)))
-
-fromBase64URL = (data) => {
-    const input = data
-        .replace(/-/g, "+")
-        .replace(/_/g, "/")
-    const pad = input.length % 4
-    if (pad) {
-        if (pad === 1) {
-            throw new Error("InvalidLengthError: Input base64url string is the wrong length determine padding")
-        }
-        return input.padEnd(input.length + (4 - pad), "=")
-    }
-    return input
-}
 
 const concat = (a, b) => {
     const result = new Uint8Array(a.byteLength + b.byteLength)

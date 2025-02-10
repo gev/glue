@@ -13,6 +13,7 @@ import Reacthome.Auth.Service.Authentication.Complete
 import Reacthome.Auth.Service.Challenge
 import Reacthome.Auth.Service.Challenges
 import Util.Base64
+import Util.Base64.URL qualified as URL
 
 completeAuthentication ::
     ( ?environment :: Environment
@@ -24,7 +25,7 @@ completeAuthentication ::
     ExceptT String IO Authenticated
 completeAuthentication credential = do
     cid <- makePublicKeyId <$> fromBase64 credential.id
-    challenge <- makeChallenge <$> fromBase64 credential.response.challenge
+    challenge <- makeChallenge <$> URL.fromBase64 credential.response.challenge
     message <- fromBase64 credential.response.message
     signature <- fromBase64 credential.response.signature
     makeAuthenticated
