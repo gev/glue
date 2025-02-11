@@ -32,7 +32,7 @@ makeJSON req respond runController = do
             respond $
                 badRequest "Content-Type is not application/json"
 
-makeHTML :: Html a -> Response
+makeHTML :: Html () -> Response
 makeHTML html =
     responseLBS
         status200

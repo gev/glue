@@ -4,7 +4,7 @@ module Reacthome.Auth.View.Screen.Authentication where
 
 import Lucid
 
-authentication :: (Monad m) => HtmlT m ()
+authentication :: Html ()
 authentication =
     doctypehtml_ do
         head_ do

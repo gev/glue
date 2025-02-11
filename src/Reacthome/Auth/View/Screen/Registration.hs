@@ -2,7 +2,7 @@ module Reacthome.Auth.View.Screen.Registration where
 
 import Lucid
 
-registration :: (Monad m) => HtmlT m ()
+registration :: Html ()
 registration =
     doctypehtml_ do
         head_ do
