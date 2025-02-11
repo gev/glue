@@ -1,15 +1,10 @@
 const register = async (form) => {
     try {
         const registrationOptions = makeRegistrationOptions(form)
-        console.log(registrationOptions)
         const publicKeyCredentialCreationOptions = await beginRegistration(registrationOptions)
-        console.log(publicKeyCredentialCreationOptions)
         const credentials = await createCredentials(publicKeyCredentialCreationOptions)
-        console.log(credentials)
         const attestationResponse = makeAuthenticatorAttestationResponse(credentials)
-        console.log(attestationResponse)
         const publicKeyCredentials = makePublicKeyCredentials(credentials, attestationResponse)
-        console.log(publicKeyCredentials)
         const res = await completeRegistration(publicKeyCredentials)
         console.log(res)
     } catch (err) {
@@ -67,15 +62,10 @@ const completeRegistration = completeRequestOptions =>
 const authenticate = async form => {
     try {
         const authenticationOptions = makeAuthenticationOptions(form)
-        console.log(authenticationOptions)
         const publicKeyCredentialRequestOptions = await beginAuthentication(authenticationOptions)
-        console.log(publicKeyCredentialRequestOptions)
         const credentials = await getCredentials(publicKeyCredentialRequestOptions)
-        console.log(credentials)
         const assertionResponse = await makeAuthenticatorAssertionResponse(credentials)
-        console.log(assertionResponse)
         const publicKeyCredentials = await makePublicKeyCredentials(credentials, assertionResponse)
-        console.log(publicKeyCredentials)
         const res = await completeAuthentication(publicKeyCredentials)
         console.log(res)
     } catch (err) {
@@ -151,8 +141,6 @@ const concat = (a, b) => {
     const result = new Uint8Array(a.byteLength + b.byteLength)
     result.set(new Uint8Array(a))
     result.set(new Uint8Array(b), a.byteLength)
-    console.log(a, b, result)
-    console.log(a.length, b.length, result.length)
     return result
 }
 
@@ -165,6 +153,8 @@ const debug = data => {
 }
 
 const init = (handle) => {
+    const params = new URLSearchParams(document.location.search)
+    params.entries().forEach(console.log)
     document.getElementById("form").addEventListener("submit", event => {
         handle(new FormData(event.target))
         event.preventDefault()

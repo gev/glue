@@ -12,7 +12,9 @@ import Reacthome.Auth.Controller.Registration.Complete
 import Reacthome.Auth.Domain.Credential.PublicKeys
 import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
-import Reacthome.Auth.Service.Challenges
+import Reacthome.Auth.Service.Challenges (Challenges)
+import Reacthome.Auth.View.Screen.Authentication
+import Reacthome.Auth.View.Screen.Registration
 import Util.Wai
 
 app ::
@@ -24,14 +26,18 @@ app ::
     Application
 app req respond
     | req.requestMethod == methodGet
-        || req.requestMethod == methodHead =
-        static req respond
+        || req.requestMethod == methodHead = do
+        let respond' = respond . makeHTML
+        case req.pathInfo of
+            [] -> respond' authentication
+            ["register"] -> respond' registration
+            _ -> static req respond
     | req.requestMethod == methodPost = do
         let respond' ::
                 (FromJSON req, ToJSON res) =>
                 (req -> ExceptT String IO res) ->
                 IO ResponseReceived
-            respond' = makeRespond req respond
+            respond' = makeJSON req respond
         case req.pathInfo of
             ["registration", "begin"] -> respond' beginRegistration
             ["registration", "complete"] -> respond' completeRegistration
