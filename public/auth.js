@@ -153,8 +153,6 @@ const debug = data => {
 }
 
 const init = (handle) => {
-    const params = new URLSearchParams(document.location.search)
-    params.entries().forEach(console.log)
     document.getElementById("form").addEventListener("submit", event => {
         handle(new FormData(event.target))
         event.preventDefault()
