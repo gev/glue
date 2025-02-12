@@ -51,7 +51,14 @@ badRequest reason =
     responseLBS
         status400
         [(hContentType, ctTextPlane)]
-        ("Bad Request. " <> fromString reason)
+        (fromString reason)
+
+notFound :: Response
+notFound =
+    responseLBS
+        status404
+        [(hContentType, ctTextPlane)]
+        "Not Found"
 
 notAllowed :: Response
 notAllowed =
