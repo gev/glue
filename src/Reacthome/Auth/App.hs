@@ -13,8 +13,6 @@ import Reacthome.Auth.Domain.Credential.PublicKeys
 import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.Challenges (Challenges)
-import Reacthome.Auth.View.Screen.Authentication
-import Reacthome.Auth.View.Screen.Registration
 import Util.Wai
 
 app ::
