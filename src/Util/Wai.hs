@@ -4,17 +4,18 @@ import Control.Monad
 import Control.Monad.Trans.Except
 import Data.Aeson
 import Data.ByteString
+import Data.ByteString.Lazy qualified as Lazy
 import Data.String
 import Network.HTTP.Types
 import Network.Wai
 
-makeRespond ::
+makeJSON ::
     (FromJSON req, ToJSON res) =>
     Request ->
     (Response -> IO ResponseReceived) ->
     (req -> ExceptT String IO res) ->
     IO ResponseReceived
-makeRespond req respond runController = do
+makeJSON req respond runController = do
     let contentType = lookup hContentType req.requestHeaders
     if contentType == Just ctApplicationJson
         then do
@@ -30,6 +31,12 @@ makeRespond req respond runController = do
         else
             respond $
                 badRequest "Content-Type is not application/json"
+
+makeHTML :: Lazy.ByteString -> Response
+makeHTML =
+    responseLBS
+        status200
+        [(hContentType, ctApplicationHtml)]
 
 ok :: (ToJSON a) => a -> Response
 ok content =

@@ -2,6 +2,7 @@ module Reacthome.Auth.App where
 
 import Control.Monad.Trans.Except
 import Data.Aeson
+import Lucid (renderBS)
 import Network.HTTP.Types
 import Network.Wai
 import Network.Wai.Middleware.Static
@@ -13,6 +14,8 @@ import Reacthome.Auth.Domain.Credential.PublicKeys
 import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.Challenges (Challenges)
+import Reacthome.Auth.View.Screen.Authentication
+import Reacthome.Auth.View.Screen.Registration
 import Util.Wai
 
 app ::
@@ -34,7 +37,7 @@ router ::
 router req respond =
     if
         | req.requestMethod == methodGet || req.requestMethod == methodHead -> do
-            let respond' = respond . makeHTML
+            let respond' = respond . makeHTML . renderBS
             case req.pathInfo of
                 [] -> respond' authentication
                 ["register"] -> respond' registration

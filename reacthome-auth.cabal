@@ -93,6 +93,8 @@ library
     Reacthome.Auth.Service.Registration.Begin
     Reacthome.Auth.Service.Registration.Complete
     Reacthome.Auth.Service.Registration.Pre
+    Reacthome.Auth.View.Screen.Authentication
+    Reacthome.Auth.View.Screen.Registration
     Reacthome.Yandex.Dialogs.Application
     Reacthome.Yandex.Dialogs.DialogRequest
     Reacthome.Yandex.Dialogs.DialogResponse
@@ -122,6 +124,7 @@ library
     crypton,
     hashable,
     http-types,
+    lucid2,
     unordered-containers,
     wai,
     wai-middleware-static,
