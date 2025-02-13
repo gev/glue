@@ -124,7 +124,7 @@ library
     http-types,
     unordered-containers,
     wai,
-    wai-app-static,
+    wai-middleware-static,
 
 executable reacthome-auth-service
   import: common-extensions
