@@ -9,13 +9,13 @@ import Data.String
 import Network.HTTP.Types
 import Network.Wai
 
-makeRespond ::
+makeJSON ::
     (FromJSON req, ToJSON res) =>
     Request ->
     (Response -> IO ResponseReceived) ->
     (req -> ExceptT String IO res) ->
     IO ResponseReceived
-makeRespond req respond runController = do
+makeJSON req respond runController = do
     let contentType = lookup hContentType req.requestHeaders
     if contentType == Just ctApplicationJson
         then do
