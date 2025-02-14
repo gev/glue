@@ -8,7 +8,7 @@ import Reacthome.Auth.Domain.User.Login
 import Reacthome.Auth.Domain.User.Name
 import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
-import Reacthome.Auth.Service.Challenges
+import Reacthome.Auth.Service.AuthUsers
 import Reacthome.Auth.Service.Registration.Begin
 import Web.Rest
 import Web.Rest.Media
@@ -16,7 +16,7 @@ import Web.Rest.Media
 beginRegistration ::
     ( ?request :: Request
     , ?environment :: Environment
-    , ?challenges :: Challenges
+    , ?authUsers :: AuthUsers
     , ?users :: Users
     ) =>
     IO Response

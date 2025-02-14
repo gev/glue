@@ -10,13 +10,13 @@ import Reacthome.Auth.Domain.Credential.PublicKeys
 import Reacthome.Auth.Domain.User
 import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
+import Reacthome.Auth.Service.AuthUsers
 import Reacthome.Auth.Service.Challenge
-import Reacthome.Auth.Service.Challenges
 import Util.ASN1 qualified as ASN1
 
 runCompleteAuthentication ::
     ( ?environment :: Environment
-    , ?challenges :: Challenges
+    , ?authUsers :: AuthUsers
     , ?users :: Users
     , ?publicKeys :: PublicKeys
     ) =>
@@ -26,8 +26,8 @@ runCompleteAuthentication credentials = do
     user <-
         maybeToExceptT
             ("Invalid challenge " <> show credentials.challenge.value)
-            $ ?challenges.findBy credentials.challenge
-    lift $ ?challenges.remove credentials.challenge
+            $ ?authUsers.findBy credentials.challenge
+    lift $ ?authUsers.remove credentials.challenge
     publicKey <-
         maybeToExceptT ("Public key with id " <> show credentials.id.value <> " not found") $
             ?publicKeys.findById credentials.id

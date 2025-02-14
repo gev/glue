@@ -8,15 +8,15 @@ import Reacthome.Auth.Domain.Credential.PublicKeys
 import Reacthome.Auth.Domain.User.Login
 import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
+import Reacthome.Auth.Service.AuthUsers
 import Reacthome.Auth.Service.Authentication.Begin
-import Reacthome.Auth.Service.Challenges
 import Web.Rest
 import Web.Rest.Media
 
 beginAuthentication ::
     ( ?request :: Request
     , ?environment :: Environment
-    , ?challenges :: Challenges
+    , ?authUsers :: AuthUsers
     , ?users :: Users
     , ?publicKeys :: PublicKeys
     ) =>

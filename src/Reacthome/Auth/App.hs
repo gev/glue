@@ -12,14 +12,14 @@ import Reacthome.Auth.Controller.Registration.Complete
 import Reacthome.Auth.Domain.Credential.PublicKeys
 import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
-import Reacthome.Auth.Service.Challenges
+import Reacthome.Auth.Service.AuthUsers
 import Web.Rest
 import Web.Rest.Method
 import Web.Rest.Status
 
 app ::
     ( ?environment :: Environment
-    , ?challenges :: Challenges
+    , ?authUsers :: AuthUsers
     , ?users :: Users
     , ?publicKeys :: PublicKeys
     ) =>

@@ -1,7 +1,7 @@
 import Network.Wai.Handler.Warp
 import Reacthome.Auth.App
 import Reacthome.Auth.Environment
-import Reacthome.Auth.Repository.InMemory.Challenges
+import Reacthome.Auth.Repository.InMemory.AuthUsers
 import Reacthome.Auth.Repository.InMemory.Credential.PublicKeys
 import Reacthome.Auth.Repository.InMemory.Users
 
@@ -14,10 +14,10 @@ main = do
           , timeout
           , challengeSize = 20
           }
-  challenges <- makeChallenges
+  authUsers <- makeAuthUsers
   users <- makeUsers
   publicKeys <- makePublicKeys
-  let ?challenges = challenges
+  let ?authUsers = authUsers
   let ?users = users
   let ?publicKeys = publicKeys
   let port = 3000

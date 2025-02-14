@@ -9,12 +9,12 @@ import Reacthome.Auth.Domain.Registration.Complete
 import Reacthome.Auth.Domain.User
 import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
+import Reacthome.Auth.Service.AuthUsers
 import Reacthome.Auth.Service.Challenge
-import Reacthome.Auth.Service.Challenges
 
 runCompleteRegistration ::
     ( ?environment :: Environment
-    , ?challenges :: Challenges
+    , ?authUsers :: AuthUsers
     , ?users :: Users
     , ?publicKeys :: PublicKeys
     ) =>
@@ -24,8 +24,8 @@ runCompleteRegistration credentials = do
     user <-
         maybeToExceptT
             ("Invalid challenge " <> show credentials.challenge.value)
-            $ ?challenges.findBy credentials.challenge
-    lift $ ?challenges.remove credentials.challenge
+            $ ?authUsers.findBy credentials.challenge
+    lift $ ?authUsers.remove credentials.challenge
     ?users.store user
     ?publicKeys.store
         PublicKey

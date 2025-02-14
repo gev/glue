@@ -57,7 +57,6 @@ library
     Reacthome.Auth.Controller.Authentication.Complete
     Reacthome.Auth.Controller.Authentication.Options
     Reacthome.Auth.Controller.OAuth
-    Reacthome.Auth.Controller.OAuth2
     Reacthome.Auth.Controller.Registration
     Reacthome.Auth.Controller.Registration.Begin
     Reacthome.Auth.Controller.Registration.Complete
@@ -86,14 +85,17 @@ library
     Reacthome.Auth.Domain.User.Status
     Reacthome.Auth.Domain.Users
     Reacthome.Auth.Environment
-    Reacthome.Auth.Repository.InMemory.Challenges
+    Reacthome.Auth.Repository.InMemory.AuthUsers
+    Reacthome.Auth.Repository.InMemory.AuthorizationFlows
     Reacthome.Auth.Repository.InMemory.Credential.PublicKeys
     Reacthome.Auth.Repository.InMemory.Users
+    Reacthome.Auth.Service.AuthUsers
     Reacthome.Auth.Service.Authentication.Begin
     Reacthome.Auth.Service.Authentication.Complete
     Reacthome.Auth.Service.Authentication.Pre
+    Reacthome.Auth.Service.AuthorizationFlow
+    Reacthome.Auth.Service.AuthorizationFlows
     Reacthome.Auth.Service.Challenge
-    Reacthome.Auth.Service.Challenges
     Reacthome.Auth.Service.Registration.Begin
     Reacthome.Auth.Service.Registration.Complete
     Reacthome.Auth.Service.Registration.Pre

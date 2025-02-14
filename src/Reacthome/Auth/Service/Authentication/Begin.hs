@@ -8,11 +8,11 @@ import Reacthome.Auth.Domain.Credential.PublicKeys
 import Reacthome.Auth.Domain.User
 import Reacthome.Auth.Domain.User.Login
 import Reacthome.Auth.Domain.Users
+import Reacthome.Auth.Service.AuthUsers
 import Reacthome.Auth.Service.Authentication.Pre
-import Reacthome.Auth.Service.Challenges
 
 runBeginAuthentication ::
-    ( ?challenges :: Challenges
+    ( ?authUsers :: AuthUsers
     , ?users :: Users
     , ?publicKeys :: PublicKeys
     ) =>
@@ -27,7 +27,7 @@ runBeginAuthentication command = do
         maybeToExceptT
             ("User with login " <> show command.login.value <> " has no any credentials")
             $ ?publicKeys.findByUserId user.id
-    challenge <- lift $ ?challenges.register user
+    challenge <- lift $ ?authUsers.register user
     pure
         PreAuthentication
             { challenge

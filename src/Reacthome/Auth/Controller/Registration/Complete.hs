@@ -10,8 +10,8 @@ import Reacthome.Auth.Domain.Credential.PublicKeys
 import Reacthome.Auth.Domain.Registration.Complete
 import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
+import Reacthome.Auth.Service.AuthUsers
 import Reacthome.Auth.Service.Challenge
-import Reacthome.Auth.Service.Challenges
 import Reacthome.Auth.Service.Registration.Complete
 import Util.Base64
 import Util.Base64.URL qualified as URL
@@ -21,7 +21,7 @@ import Web.Rest.Media
 completeRegistration ::
     ( ?request :: Request
     , ?environment :: Environment
-    , ?challenges :: Challenges
+    , ?authUsers :: AuthUsers
     , ?users :: Users
     , ?publicKeys :: PublicKeys
     ) =>

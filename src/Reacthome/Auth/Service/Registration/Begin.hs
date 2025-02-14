@@ -7,11 +7,11 @@ import Reacthome.Auth.Domain.User
 import Reacthome.Auth.Domain.User.Id
 import Reacthome.Auth.Domain.User.Login
 import Reacthome.Auth.Domain.Users
-import Reacthome.Auth.Service.Challenges
+import Reacthome.Auth.Service.AuthUsers
 import Reacthome.Auth.Service.Registration.Pre
 
 runBeginRegistration ::
-    ( ?challenges :: Challenges
+    ( ?authUsers :: AuthUsers
     , ?users :: Users
     ) =>
     BeginRegistration ->
@@ -27,5 +27,5 @@ runBeginRegistration command = do
         else do
             uid <- lift makeRandomUserId
             let user = makeNewUser uid command.login command.name
-            challenge <- lift $ ?challenges.register user
+            challenge <- lift $ ?authUsers.register user
             pure $ PreRegistration user challenge

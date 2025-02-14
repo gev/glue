@@ -1,17 +1,17 @@
-module Reacthome.Auth.Repository.InMemory.Challenges where
+module Reacthome.Auth.Repository.InMemory.AuthUsers where
 
 import Control.Concurrent
 import Control.Monad
 import Control.Monad.Trans.Maybe
 import Data.HashMap.Strict
 import Reacthome.Auth.Environment
+import Reacthome.Auth.Service.AuthUsers
 import Reacthome.Auth.Service.Challenge
-import Reacthome.Auth.Service.Challenges
 import Util.MVar
 import Prelude hiding (lookup)
 
-makeChallenges :: (?environment :: Environment) => IO Challenges
-makeChallenges = do
+makeAuthUsers :: (?environment :: Environment) => IO AuthUsers
+makeAuthUsers = do
     map' <- newMVar empty
     let
         register options = do
@@ -27,7 +27,7 @@ makeChallenges = do
         remove = runModify map' . delete
 
     pure
-        Challenges
+        AuthUsers
             { register
             , findBy
             , remove
