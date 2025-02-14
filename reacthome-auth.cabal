@@ -57,6 +57,7 @@ library
     Reacthome.Auth.Controller.Authentication.Complete
     Reacthome.Auth.Controller.Authentication.Options
     Reacthome.Auth.Controller.OAuth
+    Reacthome.Auth.Controller.OAuth2
     Reacthome.Auth.Controller.Registration
     Reacthome.Auth.Controller.Registration.Begin
     Reacthome.Auth.Controller.Registration.Complete
