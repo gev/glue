@@ -7,21 +7,12 @@ import Reacthome.Auth.Controller.Authentication.Begin
 import Reacthome.Auth.Controller.Authentication.Complete
 import Reacthome.Auth.Controller.Registration.Begin
 import Reacthome.Auth.Controller.Registration.Complete
-import Reacthome.Auth.Domain.Credential.PublicKeys
-import Reacthome.Auth.Domain.Users
-import Reacthome.Auth.Environment
-import Reacthome.Auth.Service.Challenges (Challenges)
+import Reacthome.Auth.Dependencies
 import Reacthome.Auth.View.Screen.Authentication
 import Reacthome.Auth.View.Screen.Registration
 import Util.Rest
 
-app ::
-    ( ?environment :: Environment
-    , ?challenges :: Challenges
-    , ?users :: Users
-    , ?publicKeys :: PublicKeys
-    ) =>
-    Application
+app :: (Dependencies) => Application
 app =
     staticPolicy
         (addBase "public")
