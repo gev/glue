@@ -115,12 +115,13 @@ library
     Util.Base64.URL.Lazy
     Util.Error
     Util.MVar
-    Util.Wai
+    Util.Rest
 
   build-depends:
     aeson,
     asn1-encoding,
     base64-bytestring,
+    case-insensitive,
     crypton,
     hashable,
     http-types,

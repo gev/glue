@@ -1,8 +1,6 @@
 module Reacthome.Auth.App where
 
-import Control.Monad.Trans.Except
-import Data.Aeson
-import Lucid (renderBS)
+import Data.Function
 import Network.HTTP.Types
 import Network.Wai
 import Network.Wai.Middleware.Static
@@ -16,7 +14,7 @@ import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.Challenges (Challenges)
 import Reacthome.Auth.View.Screen.Authentication
 import Reacthome.Auth.View.Screen.Registration
-import Util.Wai
+import Util.Rest
 
 app ::
     ( ?environment :: Environment
@@ -25,33 +23,36 @@ app ::
     , ?publicKeys :: PublicKeys
     ) =>
     Application
-app = staticPolicy (addBase "public") router
+app =
+    staticPolicy
+        (addBase "public")
+        \request respond -> do
+            respond
+                =<< ( request & case request.pathInfo of
+                        [] -> get html authentication
+                        ["register"] -> get html registration
+                        ["registration", "begin"] -> post json beginRegistration
+                        ["registration", "complete"] -> post json completeRegistration
+                        ["authentication", "begin"] -> post json beginAuthentication
+                        ["authentication", "complete"] -> post json completeAuthentication
+                        _ -> const notFound
+                    )
 
-router ::
-    ( ?environment :: Environment
-    , ?challenges :: Challenges
-    , ?users :: Users
-    , ?publicKeys :: PublicKeys
-    ) =>
-    Application
-router req respond =
-    if
-        | req.requestMethod == methodGet || req.requestMethod == methodHead -> do
-            let respond' = respond . makeHTML . renderBS
-            case req.pathInfo of
-                [] -> respond' authentication
-                ["register"] -> respond' registration
-                _ -> respond notFound
-        | req.requestMethod == methodPost -> do
-            let respond' ::
-                    (FromJSON req, ToJSON res) =>
-                    (req -> ExceptT String IO res) ->
-                    IO ResponseReceived
-                respond' = makeJSON req respond
-            case req.pathInfo of
-                ["registration", "begin"] -> respond' beginRegistration
-                ["registration", "complete"] -> respond' completeRegistration
-                ["authentication", "begin"] -> respond' beginAuthentication
-                ["authentication", "complete"] -> respond' completeAuthentication
-                _ -> respond notAllowed
-        | otherwise -> respond notAllowed
+type Controller a t =
+    (Applicative a) =>
+    (t -> Request -> a Response) ->
+    t ->
+    Request ->
+    a Response
+
+get :: Controller a t
+get = ifMethod methodGet
+
+post :: Controller a t
+post = ifMethod methodPost
+
+ifMethod :: Method -> Controller a t
+ifMethod method media runController request =
+    if request.requestMethod == method
+        then media runController request
+        else notAllowed method
