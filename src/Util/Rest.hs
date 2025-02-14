@@ -51,6 +51,13 @@ ok =
         status200
         [(hContentType, ctApplicationJson)]
 
+redirect :: (Applicative a) => String -> a Response
+redirect location =
+    response
+        status302
+        [(hLocation, fromString location)]
+        mempty
+
 badRequest :: (Applicative a) => String -> a Response
 badRequest reason =
     response
