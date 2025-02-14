@@ -11,8 +11,8 @@ main = do
         Environment
           { name = "Reacthome Auth Service"
           , domain = "reacthome.net"
-          , timeout = 60_000
           , challengeSize = 20
+          , timeout = 60_000
           }
   authUsers <- makeAuthUsers
   users <- makeUsers
