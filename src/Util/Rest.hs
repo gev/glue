@@ -12,15 +12,13 @@ import Network.HTTP.Types
 import Network.HTTP.Types.Header
 import Network.Wai
 
-type ContentType = ByteString
-
-ctTextPlane :: ContentType
+ctTextPlane :: ByteString
 ctTextPlane = "text/plain"
 
-ctApplicationJson :: ContentType
+ctApplicationJson :: ByteString
 ctApplicationJson = "application/json"
 
-ctApplicationHtml :: ContentType
+ctApplicationHtml :: ByteString
 ctApplicationHtml = "text/html"
 
 json ::
@@ -35,7 +33,7 @@ json runController request =
         let contentType = lookup hContentType request.requestHeaders
         if contentType == Just ctApplicationJson
             then
-                ok . encode
+                ok ctApplicationJson . encode
                     =<< runController
                     =<< (except . eitherDecode)
                     =<< lift (lazyRequestBody request)
@@ -45,20 +43,19 @@ json runController request =
                     ctApplicationJson
 
 html :: (Applicative a) => Html h -> Request -> a Response
-html = flip . const $ ok . renderBS
+html = flip . const $ ok ctApplicationHtml . renderBS
 
-ok :: (Applicative a) => Lazy.ByteString -> a Response
-ok =
+ok :: (Applicative a) => ByteString -> Lazy.ByteString -> a Response
+ok contentType =
     response
         status200
-        [(hContentType, ctApplicationJson)]
+        [(hContentType, contentType)]
 
-redirect :: (Applicative a) => ByteString -> ContentType -> a Response
-redirect location contentType =
+redirect :: (Applicative a) => ByteString -> a Response
+redirect location =
     response
         status302
         [ (hLocation, location)
-        , (hContentType, contentType)
         ]
         mempty
 
