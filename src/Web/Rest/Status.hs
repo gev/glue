@@ -56,4 +56,5 @@ unsupportedMediaType method mediaType =
         mempty
 
 response :: (Applicative a) => Status -> ResponseHeaders -> Lazy.ByteString -> a Response
-response status headers body = pure $ responseLBS status headers body
+response status headers body =
+    pure $ responseLBS status headers body

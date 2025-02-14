@@ -1,6 +1,5 @@
 module Reacthome.Auth.App where
 
-import Data.Function
 import Network.Wai
 import Network.Wai.Middleware.Static
 import Reacthome.Auth.Controller.Authentication.Begin
@@ -18,15 +17,15 @@ app :: (Dependencies) => Application
 app =
     staticPolicy
         (addBase "public")
-        \request respond ->
+        \request respond -> do
+            let ?rest = request
             respond
-                =<< ( request & case request.pathInfo of
-                        [] -> const $ redirect "/authentication"
-                        ["authentication"] -> get html authentication
-                        ["authentication", "begin"] -> post json beginAuthentication
-                        ["authentication", "complete"] -> post json completeAuthentication
-                        ["registration"] -> get html registration
-                        ["registration", "begin"] -> post json beginRegistration
-                        ["registration", "complete"] -> post json completeRegistration
-                        _ -> const notFound
-                    )
+                =<< case request.pathInfo of
+                    [] -> redirect "/authentication"
+                    ["authentication"] -> get html authentication
+                    ["authentication", "begin"] -> post json beginAuthentication
+                    ["authentication", "complete"] -> post json completeAuthentication
+                    ["registration"] -> get html registration
+                    ["registration", "begin"] -> post json beginRegistration
+                    ["registration", "complete"] -> post json completeRegistration
+                    _ -> notFound
