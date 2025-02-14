@@ -6,6 +6,8 @@ import Network.HTTP.Types.Method
 import Network.Wai qualified as W
 import Web.Rest.ContentType
 
+type Response = W.Response
+
 data Rest = Rest
     { requestMethod :: Method
     , requestBody :: IO Lazy.ByteString

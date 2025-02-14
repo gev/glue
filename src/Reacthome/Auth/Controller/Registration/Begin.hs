@@ -10,20 +10,27 @@ import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.Challenges
 import Reacthome.Auth.Service.Registration.Begin
+import Web.Rest
+import Web.Rest.Media
 
 beginRegistration ::
-    ( ?environment :: Environment
+    ( ?rest :: Rest
+    , ?environment :: Environment
     , ?challenges :: Challenges
     , ?users :: Users
     ) =>
-    RegistrationOptions ->
-    ExceptT String IO PublicKeyCredentialCreationOptions
-beginRegistration options = do
-    login <- makeUserLogin options.login
-    name <- makeUserName options.name
-    makePublicKeyCredentialCreationOptions
-        <$> runBeginRegistration
-            BeginRegistration
-                { login
-                , name
-                }
+    IO Response
+beginRegistration = json run
+  where
+    run ::
+        RegistrationOptions ->
+        ExceptT String IO PublicKeyCredentialCreationOptions
+    run options = do
+        login <- makeUserLogin options.login
+        name <- makeUserName options.name
+        makePublicKeyCredentialCreationOptions
+            <$> runBeginRegistration
+                BeginRegistration
+                    { login
+                    , name
+                    }

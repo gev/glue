@@ -10,19 +10,26 @@ import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.Authentication.Begin
 import Reacthome.Auth.Service.Challenges
+import Web.Rest
+import Web.Rest.Media
 
 beginAuthentication ::
-    ( ?environment :: Environment
+    ( ?rest :: Rest
+    , ?environment :: Environment
     , ?challenges :: Challenges
     , ?users :: Users
     , ?publicKeys :: PublicKeys
     ) =>
-    AuthenticationOptions ->
-    ExceptT String IO PublicKeyCredentialRequestOptions
-beginAuthentication options = do
-    login <- makeUserLogin options.login
-    makePublicKeyCredentialRequestOptions
-        <$> runBeginAuthentication
-            BeginAuthentication
-                { login
-                }
+    IO Response
+beginAuthentication = json run
+  where
+    run ::
+        AuthenticationOptions ->
+        ExceptT String IO PublicKeyCredentialRequestOptions
+    run options = do
+        login <- makeUserLogin options.login
+        makePublicKeyCredentialRequestOptions
+            <$> runBeginAuthentication
+                BeginAuthentication
+                    { login
+                    }

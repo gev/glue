@@ -51,10 +51,12 @@ library
   exposed-modules:
     Reacthome.Assist.Controller.Yandex
     Reacthome.Auth.App
+    Reacthome.Auth.Controller.Authentication
     Reacthome.Auth.Controller.Authentication.Authenticated
     Reacthome.Auth.Controller.Authentication.Begin
     Reacthome.Auth.Controller.Authentication.Complete
     Reacthome.Auth.Controller.Authentication.Options
+    Reacthome.Auth.Controller.Registration
     Reacthome.Auth.Controller.Registration.Begin
     Reacthome.Auth.Controller.Registration.Complete
     Reacthome.Auth.Controller.Registration.Options
@@ -67,7 +69,6 @@ library
     Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialRequestOptions
     Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialRpEntity
     Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialUserEntity
-    Reacthome.Auth.Dependencies
     Reacthome.Auth.Domain.Authentication.Begin
     Reacthome.Auth.Domain.Authentication.Complete
     Reacthome.Auth.Domain.Credential.PublicKey
@@ -96,6 +97,7 @@ library
     Reacthome.Auth.Service.Registration.Pre
     Reacthome.Auth.View.Screen.Authentication
     Reacthome.Auth.View.Screen.Registration
+    Reacthome.OAuth2.Controller.OAuth
     Reacthome.Yandex.Dialogs.Application
     Reacthome.Yandex.Dialogs.DialogRequest
     Reacthome.Yandex.Dialogs.DialogResponse
@@ -116,11 +118,11 @@ library
     Util.Base64.URL.Lazy
     Util.Error
     Util.MVar
-    Web.Request
-    Web.Request.ContentType
-    Web.Request.Media
-    Web.Request.Method
-    Web.Request.Status
+    Web.Rest
+    Web.Rest.ContentType
+    Web.Rest.Media
+    Web.Rest.Method
+    Web.Rest.Status
 
   build-depends:
     aeson,

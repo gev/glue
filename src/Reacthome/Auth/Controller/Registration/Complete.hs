@@ -15,25 +15,32 @@ import Reacthome.Auth.Service.Challenges
 import Reacthome.Auth.Service.Registration.Complete
 import Util.Base64
 import Util.Base64.URL qualified as URL
+import Web.Rest
+import Web.Rest.Media
 
 completeRegistration ::
-    ( ?environment :: Environment
+    ( ?rest :: Rest
+    , ?environment :: Environment
     , ?challenges :: Challenges
     , ?users :: Users
     , ?publicKeys :: PublicKeys
     ) =>
-    PublicKeyCredential AuthenticatorAttestationResponse ->
-    ExceptT String IO RegisteredUser
-completeRegistration credential = do
-    cid <- makePublicKeyId <$> fromBase64 credential.id
-    challenge <- makeChallenge <$> URL.fromBase64 credential.response.challenge
-    publicKeyAlgorithm <- makePublicKeyAlgorithm credential.response.publicKeyAlgorithm
-    publicKey <- fromBase64 credential.response.publicKey
-    makeRegistered
-        <$> runCompleteRegistration
-            CompleteRegistration
-                { id = cid
-                , challenge
-                , publicKey
-                , publicKeyAlgorithm
-                }
+    IO Response
+completeRegistration = json run
+  where
+    run ::
+        PublicKeyCredential AuthenticatorAttestationResponse ->
+        ExceptT String IO RegisteredUser
+    run credential = do
+        cid <- makePublicKeyId <$> fromBase64 credential.id
+        challenge <- makeChallenge <$> URL.fromBase64 credential.response.challenge
+        publicKeyAlgorithm <- makePublicKeyAlgorithm credential.response.publicKeyAlgorithm
+        publicKey <- fromBase64 credential.response.publicKey
+        makeRegistered
+            <$> runCompleteRegistration
+                CompleteRegistration
+                    { id = cid
+                    , challenge
+                    , publicKey
+                    , publicKeyAlgorithm
+                    }

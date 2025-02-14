@@ -2,19 +2,28 @@ module Reacthome.Auth.App where
 
 import Network.Wai
 import Network.Wai.Middleware.Static
+import Reacthome.Auth.Controller.Authentication
 import Reacthome.Auth.Controller.Authentication.Begin
 import Reacthome.Auth.Controller.Authentication.Complete
+import Reacthome.Auth.Controller.Registration
 import Reacthome.Auth.Controller.Registration.Begin
 import Reacthome.Auth.Controller.Registration.Complete
-import Reacthome.Auth.Dependencies
-import Reacthome.Auth.View.Screen.Authentication
-import Reacthome.Auth.View.Screen.Registration
+import Reacthome.Auth.Domain.Credential.PublicKeys
+import Reacthome.Auth.Domain.Users
+import Reacthome.Auth.Environment
+import Reacthome.Auth.Service.Challenges
+import Reacthome.OAuth2.Controller.OAuth
 import Web.Rest
-import Web.Rest.Media
 import Web.Rest.Method
 import Web.Rest.Status
 
-app :: (Dependencies) => Application
+app ::
+    ( ?environment :: Environment
+    , ?challenges :: Challenges
+    , ?users :: Users
+    , ?publicKeys :: PublicKeys
+    ) =>
+    Application
 app =
     staticPolicy
         (addBase "public")
@@ -22,11 +31,11 @@ app =
             let ?rest = rest request
             respond
                 =<< case request.pathInfo of
-                    [] -> redirect mempty "/authentication"
-                    ["authentication"] -> get html authentication
-                    ["authentication", "begin"] -> post json beginAuthentication
-                    ["authentication", "complete"] -> post json completeAuthentication
-                    ["registration"] -> get html registration
-                    ["registration", "begin"] -> post json beginRegistration
-                    ["registration", "complete"] -> post json completeRegistration
+                    [] -> get oauth
+                    ["authentication"] -> get showAuthentication
+                    ["authentication", "begin"] -> post beginAuthentication
+                    ["authentication", "complete"] -> post completeAuthentication
+                    ["registration"] -> get showRegistration
+                    ["registration", "begin"] -> post beginRegistration
+                    ["registration", "complete"] -> post completeRegistration
                     _ -> notFound

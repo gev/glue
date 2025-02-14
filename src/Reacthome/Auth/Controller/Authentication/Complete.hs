@@ -14,25 +14,32 @@ import Reacthome.Auth.Service.Challenge
 import Reacthome.Auth.Service.Challenges
 import Util.Base64
 import Util.Base64.URL qualified as URL
+import Web.Rest
+import Web.Rest.Media
 
 completeAuthentication ::
-    ( ?environment :: Environment
+    ( ?rest :: Rest
+    , ?environment :: Environment
     , ?challenges :: Challenges
     , ?users :: Users
     , ?publicKeys :: PublicKeys
     ) =>
-    PublicKeyCredential AuthenticatorAssertionResponse ->
-    ExceptT String IO Authenticated
-completeAuthentication credential = do
-    cid <- makePublicKeyId <$> fromBase64 credential.id
-    challenge <- makeChallenge <$> URL.fromBase64 credential.response.challenge
-    message <- fromBase64 credential.response.message
-    signature <- fromBase64 credential.response.signature
-    makeAuthenticated
-        <$> runCompleteAuthentication
-            CompleteAuthentication
-                { id = cid
-                , challenge
-                , message
-                , signature
-                }
+    IO Response
+completeAuthentication = json run
+  where
+    run ::
+        PublicKeyCredential AuthenticatorAssertionResponse ->
+        ExceptT String IO Authenticated
+    run credential = do
+        cid <- makePublicKeyId <$> fromBase64 credential.id
+        challenge <- makeChallenge <$> URL.fromBase64 credential.response.challenge
+        message <- fromBase64 credential.response.message
+        signature <- fromBase64 credential.response.signature
+        makeAuthenticated
+            <$> runCompleteAuthentication
+                CompleteAuthentication
+                    { id = cid
+                    , challenge
+                    , message
+                    , signature
+                    }

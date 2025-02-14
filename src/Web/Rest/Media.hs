@@ -4,7 +4,6 @@ import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
 import Data.Aeson
 import Lucid
-import Network.Wai
 import Web.Rest
 import Web.Rest.ContentType
 import Web.Rest.Status
