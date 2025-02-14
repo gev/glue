@@ -85,3 +85,22 @@ unsupportedMediaType method mediaType =
 
 response :: (Applicative a) => Status -> ResponseHeaders -> Lazy.ByteString -> a Response
 response status headers body = pure $ responseLBS status headers body
+
+type Rest a c =
+    (Applicative a) =>
+    (c -> Request -> a Response) ->
+    c ->
+    Request ->
+    a Response
+
+get :: Rest a c
+get = ifMethod methodGet
+
+post :: Rest a c
+post = ifMethod methodPost
+
+ifMethod :: Method -> Rest a c
+ifMethod method run controller request =
+    if request.requestMethod == method
+        then run controller request
+        else notAllowed method

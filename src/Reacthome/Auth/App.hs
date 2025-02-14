@@ -1,7 +1,6 @@
 module Reacthome.Auth.App where
 
 import Data.Function
-import Network.HTTP.Types
 import Network.Wai
 import Network.Wai.Middleware.Static
 import Reacthome.Auth.Controller.Authentication.Begin
@@ -26,33 +25,14 @@ app ::
 app =
     staticPolicy
         (addBase "public")
-        \request respond -> do
+        \request respond ->
             respond
                 =<< ( request & case request.pathInfo of
-                        [] -> get html authentication
-                        ["register"] -> get html registration
-                        ["registration", "begin"] -> post json beginRegistration
-                        ["registration", "complete"] -> post json completeRegistration
+                        ["authentication"] -> get html authentication
                         ["authentication", "begin"] -> post json beginAuthentication
                         ["authentication", "complete"] -> post json completeAuthentication
+                        ["registration"] -> get html registration
+                        ["registration", "begin"] -> post json beginRegistration
+                        ["registration", "complete"] -> post json completeRegistration
                         _ -> const notFound
                     )
-
-type Controller a t =
-    (Applicative a) =>
-    (t -> Request -> a Response) ->
-    t ->
-    Request ->
-    a Response
-
-get :: Controller a t
-get = ifMethod methodGet
-
-post :: Controller a t
-post = ifMethod methodPost
-
-ifMethod :: Method -> Controller a t
-ifMethod method media runController request =
-    if request.requestMethod == method
-        then media runController request
-        else notAllowed method
