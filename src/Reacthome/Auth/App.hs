@@ -10,7 +10,9 @@ import Reacthome.Auth.Controller.Registration.Complete
 import Reacthome.Auth.Dependencies
 import Reacthome.Auth.View.Screen.Authentication
 import Reacthome.Auth.View.Screen.Registration
-import Util.Rest
+import Web.Rest.Media
+import Web.Rest.Method
+import Web.Rest.Status
 
 app :: (Dependencies) => Application
 app =
