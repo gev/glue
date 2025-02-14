@@ -27,5 +27,5 @@ runBeginRegistration command = do
         else do
             uid <- lift makeRandomUserId
             let user = makeNewUser uid command.login command.name
-            challenge <- lift $ ?challenges.registration user
+            challenge <- lift $ ?challenges.register user
             pure $ PreRegistration user challenge

@@ -27,7 +27,7 @@ runBeginAuthentication command = do
         maybeToExceptT
             ("User with login " <> show command.login.value <> " has no any credentials")
             $ ?publicKeys.findByUserId user.id
-    challenge <- lift $ ?challenges.registration user
+    challenge <- lift $ ?challenges.register user
     pure
         PreAuthentication
             { challenge
