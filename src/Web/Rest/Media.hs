@@ -4,7 +4,6 @@ import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
 import Data.Aeson
 import Lucid
-import Network.HTTP.Types
 import Network.Wai
 import Web.Rest
 import Web.Rest.ContentType
@@ -19,13 +18,12 @@ json runController =
     either badRequest pure =<< runExceptT make
   where
     make = do
-        let contentType = lookup hContentType ?rest.requestHeaders
-        if contentType == Just ctApplicationJson
+        if ?rest.hasContentType ctApplicationJson
             then
                 ok ctApplicationJson . encode
                     =<< runController
                     =<< (except . eitherDecode)
-                    =<< lift (lazyRequestBody ?rest)
+                    =<< lift ?rest.requestBody
             else
                 unsupportedMediaType
                     ?rest.requestMethod

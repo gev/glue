@@ -9,6 +9,7 @@ import Reacthome.Auth.Controller.Registration.Complete
 import Reacthome.Auth.Dependencies
 import Reacthome.Auth.View.Screen.Authentication
 import Reacthome.Auth.View.Screen.Registration
+import Web.Rest
 import Web.Rest.Media
 import Web.Rest.Method
 import Web.Rest.Status
@@ -18,7 +19,7 @@ app =
     staticPolicy
         (addBase "public")
         \request respond -> do
-            let ?rest = request
+            let ?rest = rest request
             respond
                 =<< case request.pathInfo of
                     [] -> redirect "/authentication"
