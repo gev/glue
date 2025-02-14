@@ -14,7 +14,7 @@ import Web.Rest
 import Web.Rest.Media
 
 beginRegistration ::
-    ( ?rest :: Rest
+    ( ?request :: Request
     , ?environment :: Environment
     , ?challenges :: Challenges
     , ?users :: Users

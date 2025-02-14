@@ -18,7 +18,7 @@ import Web.Rest
 import Web.Rest.Media
 
 completeAuthentication ::
-    ( ?rest :: Rest
+    ( ?request :: Request
     , ?environment :: Environment
     , ?challenges :: Challenges
     , ?users :: Users

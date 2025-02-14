@@ -5,7 +5,7 @@ import Web.Rest
 import Web.Rest.Status
 
 type Handler a c =
-    (?rest :: Rest) =>
+    (?request :: Request) =>
     (Applicative a) =>
     a Response ->
     a Response
@@ -18,6 +18,6 @@ post = match methodPost
 
 match :: Method -> Handler a c
 match method controller =
-    if ?rest.requestMethod == method
+    if ?request.method == method
         then controller
         else notAllowed method

@@ -56,6 +56,7 @@ library
     Reacthome.Auth.Controller.Authentication.Begin
     Reacthome.Auth.Controller.Authentication.Complete
     Reacthome.Auth.Controller.Authentication.Options
+    Reacthome.Auth.Controller.OAuth
     Reacthome.Auth.Controller.Registration
     Reacthome.Auth.Controller.Registration.Begin
     Reacthome.Auth.Controller.Registration.Complete
@@ -97,7 +98,6 @@ library
     Reacthome.Auth.Service.Registration.Pre
     Reacthome.Auth.View.Screen.Authentication
     Reacthome.Auth.View.Screen.Registration
-    Reacthome.OAuth2.Controller.OAuth
     Reacthome.Yandex.Dialogs.Application
     Reacthome.Yandex.Dialogs.DialogRequest
     Reacthome.Yandex.Dialogs.DialogResponse

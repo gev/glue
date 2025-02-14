@@ -1,5 +1,7 @@
 module Web.Rest where
 
+import Control.Monad
+import Data.ByteString
 import Data.ByteString.Lazy qualified as Lazy
 import Network.HTTP.Types.Header
 import Network.HTTP.Types.Method
@@ -8,24 +10,27 @@ import Web.Rest.ContentType
 
 type Response = W.Response
 
-data Rest = Rest
-    { requestMethod :: Method
-    , requestBody :: IO Lazy.ByteString
-    , requestHeader :: HeaderName -> Maybe ContentType
+data Request = Request
+    { method :: Method
+    , body :: IO Lazy.ByteString
+    , header :: HeaderName -> Maybe ContentType
+    , query :: ByteString -> Maybe ByteString
     , hasContentType :: ContentType -> Bool
     }
 
-rest :: W.Request -> Rest
+rest :: W.Request -> Request
 rest request =
-    Rest
-        { requestMethod
-        , requestBody
-        , requestHeader
+    Request
+        { method
+        , body
+        , header
+        , query
         , hasContentType
         }
   where
-    requestMethod = W.requestMethod request
-    requestBody = W.lazyRequestBody request
-    requestHeader name = lookup name (W.requestHeaders request)
+    method = W.requestMethod request
+    body = W.lazyRequestBody request
+    header name = lookup name $ W.requestHeaders request
+    query name = join $ lookup name $ W.queryString request
     hasContentType contentType =
-        Just contentType == requestHeader hContentType
+        Just contentType == header hContentType

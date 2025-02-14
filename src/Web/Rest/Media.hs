@@ -9,7 +9,7 @@ import Web.Rest.ContentType
 import Web.Rest.Status
 
 json ::
-    (?rest :: Rest) =>
+    (?request :: Request) =>
     (FromJSON req, ToJSON res) =>
     (req -> ExceptT String IO res) ->
     IO Response
@@ -17,15 +17,15 @@ json runController =
     either badRequest pure =<< runExceptT make
   where
     make = do
-        if ?rest.hasContentType ctApplicationJson
+        if ?request.hasContentType ctApplicationJson
             then
                 ok ctApplicationJson mempty . encode
                     =<< runController
                     =<< (except . eitherDecode)
-                    =<< lift ?rest.requestBody
+                    =<< lift ?request.body
             else
                 unsupportedMediaType
-                    ?rest.requestMethod
+                    ?request.method
                     ctApplicationJson
 
 html :: (Applicative a) => Html h -> a Response
