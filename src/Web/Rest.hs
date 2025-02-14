@@ -3,7 +3,7 @@ module Web.Rest where
 import Data.ByteString.Lazy qualified as Lazy
 import Network.HTTP.Types.Header
 import Network.HTTP.Types.Method
-import Network.Wai as W
+import Network.Wai qualified as W
 import Web.Rest.ContentType
 
 data Rest = Rest
@@ -13,7 +13,7 @@ data Rest = Rest
     , hasContentType :: ContentType -> Bool
     }
 
-rest :: Request -> Rest
+rest :: W.Request -> Rest
 rest request =
     Rest
         { requestMethod
