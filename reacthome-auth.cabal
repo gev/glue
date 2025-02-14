@@ -116,11 +116,11 @@ library
     Util.Base64.URL.Lazy
     Util.Error
     Util.MVar
-    Web.Rest
-    Web.Rest.ContentType
-    Web.Rest.Media
-    Web.Rest.Method
-    Web.Rest.Status
+    Web.Request
+    Web.Request.ContentType
+    Web.Request.Media
+    Web.Request.Method
+    Web.Request.Status
 
   build-depends:
     aeson,

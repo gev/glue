@@ -9,18 +9,17 @@ import Network.HTTP.Types.Header
 import Network.Wai
 import Web.Rest.ContentType
 
-ok :: (Applicative a) => ByteString -> Lazy.ByteString -> a Response
-ok contentType =
+ok :: (Applicative a) => ByteString -> ResponseHeaders -> Lazy.ByteString -> a Response
+ok contentType headers =
     response
         status200
-        [(hContentType, contentType)]
+        ((hContentType, contentType) : headers)
 
-redirect :: (Applicative a) => ByteString -> a Response
-redirect location =
+redirect :: (Applicative a) => ResponseHeaders -> ByteString -> a Response
+redirect headers location =
     response
         status302
-        [ (hLocation, location)
-        ]
+        ((hLocation, location) : headers)
         mempty
 
 badRequest :: (Applicative a) => String -> a Response

@@ -22,7 +22,7 @@ app =
             let ?rest = rest request
             respond
                 =<< case request.pathInfo of
-                    [] -> redirect "/authentication"
+                    [] -> redirect mempty "/authentication"
                     ["authentication"] -> get html authentication
                     ["authentication", "begin"] -> post json beginAuthentication
                     ["authentication", "complete"] -> post json completeAuthentication

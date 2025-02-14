@@ -20,7 +20,7 @@ json runController =
     make = do
         if ?rest.hasContentType ctApplicationJson
             then
-                ok ctApplicationJson . encode
+                ok ctApplicationJson mempty . encode
                     =<< runController
                     =<< (except . eitherDecode)
                     =<< lift ?rest.requestBody
@@ -30,4 +30,4 @@ json runController =
                     ctApplicationJson
 
 html :: (Applicative a) => Html h -> a Response
-html = ok ctApplicationHtml . renderBS
+html = ok ctApplicationHtml mempty . renderBS
