@@ -19,7 +19,7 @@ app =
         \request respond ->
             respond
                 =<< ( request & case request.pathInfo of
-                        [] -> const $ redirect "/authentication"
+                        [] -> const $ redirect "/authentication" ctApplicationHtml
                         ["authentication"] -> get html authentication
                         ["authentication", "begin"] -> post json beginAuthentication
                         ["authentication", "complete"] -> post json completeAuthentication

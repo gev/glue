@@ -12,13 +12,15 @@ import Network.HTTP.Types
 import Network.HTTP.Types.Header
 import Network.Wai
 
-ctTextPlane :: ByteString
+type ContentType = ByteString
+
+ctTextPlane :: ContentType
 ctTextPlane = "text/plain"
 
-ctApplicationJson :: ByteString
+ctApplicationJson :: ContentType
 ctApplicationJson = "application/json"
 
-ctApplicationHtml :: ByteString
+ctApplicationHtml :: ContentType
 ctApplicationHtml = "text/html"
 
 json ::
@@ -51,11 +53,13 @@ ok =
         status200
         [(hContentType, ctApplicationJson)]
 
-redirect :: (Applicative a) => String -> a Response
-redirect location =
+redirect :: (Applicative a) => ByteString -> ContentType -> a Response
+redirect location contentType =
     response
         status302
-        [(hLocation, fromString location)]
+        [ (hLocation, location)
+        , (hContentType, contentType)
+        ]
         mempty
 
 badRequest :: (Applicative a) => String -> a Response
