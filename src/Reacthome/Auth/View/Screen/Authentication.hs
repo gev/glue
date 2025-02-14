@@ -23,5 +23,5 @@ authentication =
                     input_ [name_ "login", type_ "text", placeholder_ "Login", autocomplete_ "on", autofocus_]
                 div_ do
                     button_ [type_ "submit"] "Sign in"
-                    a_ [href_ "/register"] "Sign up"
+                    a_ [href_ "/registration"] "Sign up"
             div_ [id_ "debug"] mempty

@@ -25,5 +25,5 @@ registration =
                     input_ [name_ "name", type_ "text", placeholder_ "Name", autocomplete_ "on"]
                 div_ do
                     button_ [type_ "submit"] "Sign up"
-                    a_ [href_ "/"] "Sign in"
+                    a_ [href_ "/authentication"] "Sign in"
             div_ [id_ "debug"] mempty
