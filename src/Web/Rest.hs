@@ -1,16 +1,16 @@
 module Web.Rest where
 
-import Data.ByteString
 import Data.ByteString.Lazy qualified as Lazy
 import Network.HTTP.Types.Header
 import Network.HTTP.Types.Method
 import Network.Wai as W
+import Web.Rest.ContentType
 
 data Rest = Rest
     { requestMethod :: Method
     , requestBody :: IO Lazy.ByteString
-    , requestHeader :: HeaderName -> Maybe ByteString
-    , hasContentType :: ByteString -> Bool
+    , requestHeader :: HeaderName -> Maybe ContentType
+    , hasContentType :: ContentType -> Bool
     }
 
 rest :: Request -> Rest

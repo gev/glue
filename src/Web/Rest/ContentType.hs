@@ -2,11 +2,13 @@ module Web.Rest.ContentType where
 
 import Data.ByteString
 
-ctTextPlane :: ByteString
+type ContentType = ByteString
+
+ctTextPlane :: ContentType
 ctTextPlane = "text/plain"
 
-ctApplicationJson :: ByteString
+ctApplicationJson :: ContentType
 ctApplicationJson = "application/json"
 
-ctApplicationHtml :: ByteString
+ctApplicationHtml :: ContentType
 ctApplicationHtml = "text/html"
