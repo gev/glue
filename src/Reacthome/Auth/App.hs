@@ -1,7 +1,8 @@
 module Reacthome.Auth.App where
 
-import Network.Wai qualified as W
+import Network.Wai
 import Network.Wai.Middleware.Static
+import Reacthome.Assist.Controller.Yandex
 import Reacthome.Auth.Controller.Authentication
 import Reacthome.Auth.Controller.Authentication.Begin
 import Reacthome.Auth.Controller.Authentication.Complete
@@ -25,7 +26,7 @@ app ::
     , ?users :: Users
     , ?publicKeys :: PublicKeys
     ) =>
-    W.Application
+    Application
 app =
     staticPolicy
         (addBase "public")
@@ -40,4 +41,5 @@ app =
                     ["registration"] -> get showRegistration
                     ["registration", "begin"] -> post beginRegistration
                     ["registration", "complete"] -> post completeRegistration
+                    ["yandex"] -> post runDialog
                     _ -> notFound
