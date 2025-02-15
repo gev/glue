@@ -18,7 +18,7 @@ makeChallenges = do
             challenge <- makeRandomChallenge ?environment.challengeSize
             runModify map' $ insert challenge payload
             void $ forkIO do
-                threadDelay $ 1_000 * ?environment.timeout
+                threadDelay $ 1_000_000 * ?environment.timeout
                 remove challenge
             pure challenge
 
