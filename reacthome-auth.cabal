@@ -51,6 +51,7 @@ library
   exposed-modules:
     Reacthome.Assist.Controller.Yandex
     Reacthome.Auth.App
+    Reacthome.Auth.Controller.AuthFlowCookie
     Reacthome.Auth.Controller.Authentication
     Reacthome.Auth.Controller.Authentication.Authenticated
     Reacthome.Auth.Controller.Authentication.Begin
