@@ -13,4 +13,5 @@ instance ToJSON Directives where
     toJSON = genericToJSON typeFieldLabelModifier
 
 start'account'linking :: Directives
-start'account'linking = Directives{start_account_linking = Just $ object []}
+start'account'linking =
+    Directives{start_account_linking = Just $ object []}
