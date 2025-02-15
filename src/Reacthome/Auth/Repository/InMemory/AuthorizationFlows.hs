@@ -1,37 +1,24 @@
 module Reacthome.Auth.Repository.InMemory.AuthorizationFlows where
 
-import Control.Concurrent
-import Control.Monad
-import Control.Monad.Trans.Maybe
-import Data.HashMap.Strict
 import Reacthome.Auth.Environment
+import Reacthome.Auth.Repository.InMemory.Challenges
 import Reacthome.Auth.Service.AuthorizationFlow
 import Reacthome.Auth.Service.AuthorizationFlows
-import Reacthome.Auth.Service.Challenge
-import Util.MVar
-import Prelude hiding (lookup)
+import Reacthome.Auth.Service.Challenges
 
 makeAuthorizationFlows :: (?environment :: Environment) => IO AuthorizationFlows
 makeAuthorizationFlows = do
-    map' <- newMVar empty
+    challenges <- makeChallenges
     let
-        startFlow flow = do
-            challenge <- makeRandomChallenge ?environment.challengeSize
-            runModify map' $ insert challenge flow
-            void $ forkIO do
-                threadDelay $ 1_000 * ?environment.timeout
-                stop challenge
-            pure challenge
-
         startCredentialGrantFlow =
-            startFlow CredentialGrant
+            challenges.makeNew CredentialGrant
 
         startAuthorizationCodeGrantFlow scope state redirectUri clientId =
-            startFlow $ AuthorizationCodeGrant scope state redirectUri clientId
+            challenges.makeNew $ AuthorizationCodeGrant scope state redirectUri clientId
 
-        findBy = MaybeT . runRead map' . lookup
+        findBy = challenges.findBy
 
-        stop = runModify map' . delete
+        stop = challenges.remove
 
     pure
         AuthorizationFlows

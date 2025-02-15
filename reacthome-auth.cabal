@@ -87,6 +87,7 @@ library
     Reacthome.Auth.Environment
     Reacthome.Auth.Repository.InMemory.AuthUsers
     Reacthome.Auth.Repository.InMemory.AuthorizationFlows
+    Reacthome.Auth.Repository.InMemory.Challenges
     Reacthome.Auth.Repository.InMemory.Credential.PublicKeys
     Reacthome.Auth.Repository.InMemory.Users
     Reacthome.Auth.Service.AuthUsers
@@ -96,6 +97,7 @@ library
     Reacthome.Auth.Service.AuthorizationFlow
     Reacthome.Auth.Service.AuthorizationFlows
     Reacthome.Auth.Service.Challenge
+    Reacthome.Auth.Service.Challenges
     Reacthome.Auth.Service.Registration.Begin
     Reacthome.Auth.Service.Registration.Complete
     Reacthome.Auth.Service.Registration.Pre

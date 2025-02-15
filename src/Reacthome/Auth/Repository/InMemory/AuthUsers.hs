@@ -1,31 +1,18 @@
 module Reacthome.Auth.Repository.InMemory.AuthUsers where
 
-import Control.Concurrent
-import Control.Monad
-import Control.Monad.Trans.Maybe
-import Data.HashMap.Strict
 import Reacthome.Auth.Environment
+import Reacthome.Auth.Repository.InMemory.Challenges
 import Reacthome.Auth.Service.AuthUsers
-import Reacthome.Auth.Service.Challenge
-import Util.MVar
+import Reacthome.Auth.Service.Challenges
 import Prelude hiding (lookup)
 
 makeAuthUsers :: (?environment :: Environment) => IO AuthUsers
 makeAuthUsers = do
-    map' <- newMVar empty
+    challenges <- makeChallenges
     let
-        register options = do
-            challenge <- makeRandomChallenge ?environment.challengeSize
-            runModify map' $ insert challenge options
-            void $ forkIO do
-                threadDelay $ 1_000 * ?environment.timeout
-                remove challenge
-            pure challenge
-
-        findBy = MaybeT . runRead map' . lookup
-
-        remove = runModify map' . delete
-
+        register = challenges.makeNew
+        findBy = challenges.findBy
+        remove = challenges.remove
     pure
         AuthUsers
             { register
