@@ -1,12 +1,11 @@
 module Reacthome.Auth.Service.AuthFlow where
 
 import Data.ByteString
-import Data.Text
 
 type Scope = ByteString
 type State = ByteString
 type RedirectUri = ByteString
-type ClientId = Text
+type ClientId = ByteString
 
 data AuthFlow
     = CredentialGrant
