@@ -13,6 +13,10 @@ import Web.Cookie
 import Web.Rest
 import Web.Rest.Status
 
+{-
+    TODO: Should validate the `redirect_uri` parameter
+-}
+
 oauth ::
     ( ?request :: Request
     , ?environment :: Environment
