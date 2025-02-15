@@ -1,8 +1,8 @@
 cabal-version: 3.8
 name: reacthome-auth
 version: 0.1.0.0
-synopsis: OAuth2 Authorization Server
-description: A type-safe OAuth2 Authorization Server implementation
+synopsis: OAuth2 Auth Server
+description: A type-safe OAuth2 Auth Server implementation
 license: BSD-3-Clause
 author: ReactHome Team
 maintainer: gazdovsky@gmail.com
@@ -85,17 +85,17 @@ library
     Reacthome.Auth.Domain.User.Status
     Reacthome.Auth.Domain.Users
     Reacthome.Auth.Environment
+    Reacthome.Auth.Repository.InMemory.AuthFlows
     Reacthome.Auth.Repository.InMemory.AuthUsers
-    Reacthome.Auth.Repository.InMemory.AuthorizationFlows
     Reacthome.Auth.Repository.InMemory.Challenges
     Reacthome.Auth.Repository.InMemory.Credential.PublicKeys
     Reacthome.Auth.Repository.InMemory.Users
+    Reacthome.Auth.Service.AuthFlow
+    Reacthome.Auth.Service.AuthFlows
     Reacthome.Auth.Service.AuthUsers
     Reacthome.Auth.Service.Authentication.Begin
     Reacthome.Auth.Service.Authentication.Complete
     Reacthome.Auth.Service.Authentication.Pre
-    Reacthome.Auth.Service.AuthorizationFlow
-    Reacthome.Auth.Service.AuthorizationFlows
     Reacthome.Auth.Service.Challenge
     Reacthome.Auth.Service.Challenges
     Reacthome.Auth.Service.Registration.Begin

@@ -1,4 +1,4 @@
-module Reacthome.Auth.Service.AuthorizationFlow where
+module Reacthome.Auth.Service.AuthFlow where
 
 import Data.ByteString
 import Data.Text
@@ -8,9 +8,9 @@ type State = ByteString
 type RedirectUri = ByteString
 type ClientId = Text
 
-data AuthorizationFlow
+data AuthFlow
     = CredentialGrant
-    | AuthorizationCodeGrant
+    | AuthCodeGrant
         { scope :: Scope
         , state :: State
         , redirect_uri :: RedirectUri

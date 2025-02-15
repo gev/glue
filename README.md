@@ -1,6 +1,6 @@
-# ReactHome Authorization Server
+# ReactHome Auth Server
 
-A standards-compliant OAuth2 Authorization Server implementation in Haskell.
+A standards-compliant OAuth2 Auth Server implementation in Haskell.
 
 ## OAuth2 Specification Compliance
 
@@ -8,11 +8,11 @@ This implementation adheres to the following RFCs:
 
 ### Core Specifications
 
-- [RFC 6749: OAuth 2.0 Authorization Framework](https://datatracker.ietf.org/doc/html/rfc6749)
+- [RFC 6749: OAuth 2.0 Auth Framework](https://datatracker.ietf.org/doc/html/rfc6749)
   - §1.3 Grant Types
   - §2 Client Registration
   - §3 Protocol Endpoints
-  - §4 Obtaining Authorization
+  - §4 Obtaining Auth
   - §5 Issuing an Access Token
   - §6 Refreshing an Access Token
 
@@ -29,7 +29,7 @@ This implementation adheres to the following RFCs:
 
 Implemented according to RFC 6749:
 
-1. **Authorization Code Grant** (§4.1)
+1. **Auth Code Grant** (§4.1)
    - Recommended for server-side web applications
    - Provides best security for confidential clients
 
