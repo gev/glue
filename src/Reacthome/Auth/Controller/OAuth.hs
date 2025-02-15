@@ -4,12 +4,10 @@ import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
 import Control.Monad.Trans.Maybe
 import Data.String
-import Network.HTTP.Types.Header (hSetCookie)
 import Reacthome.Auth.Controller.AuthFlowCookie
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.AuthFlow
 import Reacthome.Auth.Service.AuthFlows
-import Web.Cookie
 import Web.Rest
 import Web.Rest.Status
 
@@ -41,9 +39,7 @@ oauth = do
                                 , redirect_uri
                                 , client_id
                                 }
-                let cookie = makeAuthFlowCookie challenge
-                lift $ print cookie
-                redirect [(hSetCookie, renderSetCookieBS cookie)] "/authentication"
+                redirect [setAuthFlowCookie challenge] "/authentication"
             else throwE "Unknown type of the OAuth2 authorization flow"
   where
     query err name = maybeToExceptT err $ hoistMaybe $ ?request.query name
