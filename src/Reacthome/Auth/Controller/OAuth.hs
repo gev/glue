@@ -4,13 +4,18 @@ import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
 import Control.Monad.Trans.Maybe
 import Data.String
+import Network.HTTP.Types.Header (hSetCookie)
+import Reacthome.Auth.Controller.AuthFlowCookie
+import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.AuthFlow
 import Reacthome.Auth.Service.AuthFlows
+import Web.Cookie
 import Web.Rest
 import Web.Rest.Status
 
 oauth ::
     ( ?request :: Request
+    , ?environment :: Environment
     , ?authFlows :: AuthFlows
     ) =>
     IO Response
@@ -23,7 +28,7 @@ oauth = do
                 state <- flowParam "state"
                 redirect_uri <- flowParam "redirect_uri"
                 client_id <- flowParam "client_id"
-                _ <-
+                challenge <-
                     lift $
                         ?authFlows.start
                             AuthCodeGrant
@@ -32,7 +37,9 @@ oauth = do
                                 , redirect_uri
                                 , client_id
                                 }
-                redirect mempty "/authentication"
+                let cookie = makeAuthFlowCookie challenge
+                lift $ print cookie
+                redirect [(hSetCookie, renderSetCookieBS cookie)] "/authentication"
             else throwE "Unknown type of the OAuth2 authorization flow"
   where
     query err name = maybeToExceptT err $ hoistMaybe $ ?request.query name
