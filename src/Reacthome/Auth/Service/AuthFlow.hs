@@ -11,7 +11,7 @@ type ClientId = Text
 data AuthFlow
     = CredentialGrant
     | AuthCodeGrant
-        { scope :: Scope
+        { scope :: Maybe Scope
         , state :: State
         , redirect_uri :: RedirectUri
         , client_id :: ClientId
