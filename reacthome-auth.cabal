@@ -134,6 +134,7 @@ library
     asn1-encoding,
     base64-bytestring,
     case-insensitive,
+    cookie,
     crypton,
     hashable,
     http-types,
