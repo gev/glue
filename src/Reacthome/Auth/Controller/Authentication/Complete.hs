@@ -1,5 +1,6 @@
 module Reacthome.Auth.Controller.Authentication.Complete where
 
+import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
 import Control.Monad.Trans.Maybe
 import Reacthome.Auth.Controller.AuthFlowCookie
@@ -37,7 +38,13 @@ completeAuthentication =
         credential <- fromJSON @(PublicKeyCredential AuthenticatorAssertionResponse) ?request
         user <- authenticateBy credential
         case authFlow of
-            AuthCodeGrant{} -> throwE "Invalid auth flow"
+            AuthCodeGrant scope state redirect_uri client_id -> do
+                lift do
+                    print scope
+                    print state
+                    print redirect_uri
+                    print client_id
+                throwE "Not implemented"
             CredentialGrant -> pure $ makeAuthenticated user
   where
     authenticateBy credential = do
