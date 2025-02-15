@@ -5,8 +5,7 @@ import Reacthome.Auth.Service.AuthFlow
 import Reacthome.Auth.Service.Challenge
 
 data AuthFlows = AuthFlows
-    { startCredentialGrantFlow :: IO Challenge
-    , startAuthCodeGrantFlow :: Scope -> State -> RedirectUri -> ClientId -> IO Challenge
+    { startFlow :: AuthFlow -> IO Challenge
     , findBy :: Challenge -> MaybeT IO AuthFlow
     , stop :: Challenge -> IO ()
     }
