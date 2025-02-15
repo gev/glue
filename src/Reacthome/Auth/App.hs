@@ -33,9 +33,7 @@ app =
             let ?request = rest request
             respond
                 =<< case request.pathInfo of
-                    [] -> do
-                        print $ queryString request
-                        get oauth
+                    [] -> get oauth
                     ["authentication"] -> get showAuthentication
                     ["authentication", "begin"] -> post beginAuthentication
                     ["authentication", "complete"] -> post completeAuthentication
