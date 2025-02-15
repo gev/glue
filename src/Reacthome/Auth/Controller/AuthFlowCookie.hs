@@ -3,6 +3,7 @@ module Reacthome.Auth.Controller.AuthFlowCookie where
 import Control.Monad.Trans.Except
 import Control.Monad.Trans.Maybe
 import Data.ByteString
+import Data.ByteString.Base64
 import Data.Time
 import Network.HTTP.Types
 import Network.HTTP.Types.Header
@@ -21,7 +22,7 @@ makeAuthFlowCookie ::
 makeAuthFlowCookie challenge =
     defaultSetCookie
         { setCookieName = cookieName
-        , setCookieValue = challenge.value
+        , setCookieValue = encode challenge.value
         , setCookiePath = Just "/authentication/complete"
         , setCookieMaxAge = Just $ secondsToDiffTime $ fromIntegral ?environment.timeout
         , setCookieSameSite = Just sameSiteStrict
@@ -43,9 +44,11 @@ getAuthFlowCookie ::
     , Monad m
     ) =>
     ExceptT String m Challenge
-getAuthFlowCookie =
-    maybeToExceptT
-        "Missing the auth flow cookie"
-        $ hoistMaybe
-        $ makeChallenge
-            <$> ?request.cookie cookieName
+getAuthFlowCookie = do
+    encoded <-
+        maybeToExceptT
+            "Missing the auth flow cookie"
+            $ hoistMaybe
+            $ ?request.cookie cookieName
+    decoded <- except $ decode encoded
+    pure $ makeChallenge decoded
