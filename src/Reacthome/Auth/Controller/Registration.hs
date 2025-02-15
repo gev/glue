@@ -5,4 +5,4 @@ import Web.Rest
 import Web.Rest.Media
 
 showRegistration :: (Applicative a) => a Response
-showRegistration = html registration
+showRegistration = toHTML registration

@@ -12,6 +12,7 @@ import Reacthome.Auth.Service.AuthUsers
 import Reacthome.Auth.Service.Registration.Begin
 import Web.Rest
 import Web.Rest.Media
+import Web.Rest.Status
 
 beginRegistration ::
     ( ?request :: Request
@@ -20,12 +21,9 @@ beginRegistration ::
     , ?users :: Users
     ) =>
     IO Response
-beginRegistration = json run
-  where
-    run ::
-        RegistrationOptions ->
-        ExceptT String IO PublicKeyCredentialCreationOptions
-    run options = do
+beginRegistration =
+    either badRequest toJSON =<< runExceptT do
+        options <- fromJSON @RegistrationOptions ?request
         login <- makeUserLogin options.login
         name <- makeUserName options.name
         makePublicKeyCredentialCreationOptions

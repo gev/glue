@@ -5,4 +5,4 @@ import Web.Rest
 import Web.Rest.Media
 
 showAuthentication :: (Applicative a) => a Response
-showAuthentication = html authentication
+showAuthentication = toHTML authentication

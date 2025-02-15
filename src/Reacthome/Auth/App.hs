@@ -1,6 +1,6 @@
 module Reacthome.Auth.App where
 
-import Network.Wai
+import Network.Wai qualified as W
 import Network.Wai.Middleware.Static
 import Reacthome.Auth.Controller.Authentication
 import Reacthome.Auth.Controller.Authentication.Begin
@@ -25,7 +25,7 @@ app ::
     , ?users :: Users
     , ?publicKeys :: PublicKeys
     ) =>
-    Application
+    W.Application
 app =
     staticPolicy
         (addBase "public")

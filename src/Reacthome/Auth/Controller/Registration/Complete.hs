@@ -17,6 +17,7 @@ import Util.Base64
 import Util.Base64.URL qualified as URL
 import Web.Rest
 import Web.Rest.Media
+import Web.Rest.Status
 
 completeRegistration ::
     ( ?request :: Request
@@ -26,12 +27,9 @@ completeRegistration ::
     , ?publicKeys :: PublicKeys
     ) =>
     IO Response
-completeRegistration = json run
-  where
-    run ::
-        PublicKeyCredential AuthenticatorAttestationResponse ->
-        ExceptT String IO RegisteredUser
-    run credential = do
+completeRegistration =
+    either badRequest toJSON =<< runExceptT do
+        credential <- fromJSON @(PublicKeyCredential AuthenticatorAttestationResponse) ?request
         cid <- makePublicKeyId <$> fromBase64 credential.id
         challenge <- makeChallenge <$> URL.fromBase64 credential.response.challenge
         publicKeyAlgorithm <- makePublicKeyAlgorithm credential.response.publicKeyAlgorithm
