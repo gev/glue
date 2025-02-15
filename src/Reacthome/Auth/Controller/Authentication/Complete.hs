@@ -33,7 +33,7 @@ completeAuthentication ::
     ) =>
     IO Response
 completeAuthentication =
-    either badRequest toJSON =<< runExceptT do
+    either badRequest pure =<< runExceptT do
         authFlow <- maybeToExceptT "Invalid auth flow" . ?authFlows.findBy =<< getAuthFlowCookie
         credential <- fromJSON @(PublicKeyCredential AuthenticatorAssertionResponse) ?request
         user <- authenticateBy credential
@@ -44,8 +44,8 @@ completeAuthentication =
                     print state
                     print redirect_uri
                     print client_id
-                throwE "Not implemented"
-            CredentialGrant -> pure $ makeAuthenticated user
+                redirect [] $ redirect_uri <> "?code=AUTHORIZATION_CODE&state=" <> state
+            CredentialGrant -> toJSON $ makeAuthenticated user
   where
     authenticateBy credential = do
         cid <- makePublicKeyId <$> fromBase64 credential.id
