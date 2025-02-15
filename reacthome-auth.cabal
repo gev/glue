@@ -139,6 +139,7 @@ library
     hashable,
     http-types,
     lucid2,
+    time,
     unordered-containers,
     wai,
     wai-middleware-static,
