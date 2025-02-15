@@ -9,12 +9,12 @@ makeAuthFlows :: (?environment :: Environment) => IO AuthFlows
 makeAuthFlows = do
     challenges <- makeChallenges
     let
-        startFlow = challenges.makeNew
+        start = challenges.makeNew
         findBy = challenges.findBy
         stop = challenges.remove
     pure
         AuthFlows
-            { startFlow
+            { start
             , findBy
             , stop
             }

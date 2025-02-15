@@ -1,5 +1,9 @@
 module Reacthome.Auth.Controller.OAuth where
 
+import Control.Monad.Trans.Class
+import Control.Monad.Trans.Except
+import Control.Monad.Trans.Maybe
+import Data.String
 import Reacthome.Auth.Service.AuthFlow
 import Reacthome.Auth.Service.AuthFlows
 import Web.Rest
@@ -8,27 +12,30 @@ import Web.Rest.Status
 oauth ::
     ( ?request :: Request
     , ?authFlows :: AuthFlows
-    , Applicative a
     ) =>
-    a Response
+    IO Response
 oauth = do
-    let responseType = ?request.query "response_type"
-    case responseType of
-        Just "code" -> do
-            let flow = do
-                    let scope = ?request.query "scope"
-                    state <- ?request.query "state"
-                    redirect_uri <- ?request.query "redirect_uri"
-                    client_id <- ?request.query "client_id"
-                    pure
-                        AuthCodeGrant
-                            { scope
-                            , state
-                            , redirect_uri
-                            , client_id
-                            }
-            case flow of
-                Just _ -> do
-                    redirect mempty "/authentication"
-                _ -> badRequest "Invalid OAuth2 Authorization Code Grant flow parameters"
-        _ -> badRequest "Unknown OAuth2 authorization glow"
+    either badRequest pure =<< runExceptT do
+        responseType <- query "Not a valid `OAuth2` flow" "response_type"
+        if responseType == "code"
+            then do
+                let scope = ?request.query "scope"
+                state <- flowParam "state"
+                redirect_uri <- flowParam "redirect_uri"
+                client_id <- flowParam "client_id"
+                _ <-
+                    lift $
+                        ?authFlows.start
+                            AuthCodeGrant
+                                { scope
+                                , state
+                                , redirect_uri
+                                , client_id
+                                }
+                redirect mempty "/authentication"
+            else throwE "Unknown type of the OAuth2 authorization flow"
+  where
+    query err name = maybeToExceptT err $ hoistMaybe $ ?request.query name
+    missParam name = "Missing parameter `" <> name <> "` of the `AuthorizationCodeGrant` flow"
+    flowParam name =
+        query (missParam name) $ fromString name
