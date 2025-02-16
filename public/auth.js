@@ -67,7 +67,14 @@ const authenticate = async form => {
         const assertionResponse = await makeAuthenticatorAssertionResponse(credentials)
         const publicKeyCredentials = await makePublicKeyCredentials(credentials, assertionResponse)
         const res = await completeAuthentication(publicKeyCredentials)
-        console.log(res)
+        switch (res.tag) {
+            case "Code":
+                window.location.href = res.redirect_uri
+                break
+            case "Credentials":
+                console.log(res)
+                break
+        }
     } catch (err) {
         console.error(err.message)
         debug(err.message)

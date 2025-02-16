@@ -12,7 +12,6 @@ import Reacthome.Auth.Domain.Credential.PublicKey.Id
 import Reacthome.Auth.Domain.Credential.PublicKeys
 import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
-import Reacthome.Auth.Service.AuthFlow
 import Reacthome.Auth.Service.AuthFlows
 import Reacthome.Auth.Service.AuthUsers
 import Reacthome.Auth.Service.Authentication.Complete
@@ -33,19 +32,11 @@ completeAuthentication ::
     ) =>
     IO Response
 completeAuthentication =
-    either badRequest pure =<< runExceptT do
+    either badRequest toJSON =<< runExceptT do
         authFlow <- maybeToExceptT "Invalid auth flow" . ?authFlows.findBy =<< getAuthFlowCookie
         credential <- fromJSON @(PublicKeyCredential AuthenticatorAssertionResponse) ?request
         user <- authenticateBy credential
-        case authFlow of
-            AuthCodeGrant scope state redirect_uri client_id -> do
-                lift do
-                    print scope
-                    print state
-                    print redirect_uri
-                    print client_id
-                redirect [] $ redirect_uri <> "?code=AUTHORIZATION_CODE&state=" <> state
-            CredentialGrant -> toJSON $ makeAuthenticated user
+        lift $ makeAuthenticated authFlow user
   where
     authenticateBy credential = do
         cid <- makePublicKeyId <$> fromBase64 credential.id

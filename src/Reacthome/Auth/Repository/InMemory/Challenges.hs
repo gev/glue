@@ -15,7 +15,7 @@ makeChallenges = do
     map' <- newMVar empty
     let
         makeNew payload = do
-            challenge <- makeRandomChallenge ?environment.challengeSize
+            challenge <- makeRandomChallenge
             runModify map' $ insert challenge payload
             void $ forkIO do
                 threadDelay $ 1_000_000 * ?environment.timeout
