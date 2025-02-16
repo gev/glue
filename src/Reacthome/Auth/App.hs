@@ -7,6 +7,8 @@ import Reacthome.Auth.Controller.Authentication
 import Reacthome.Auth.Controller.Authentication.Begin
 import Reacthome.Auth.Controller.Authentication.Complete
 import Reacthome.Auth.Controller.OAuth
+import Reacthome.Auth.Controller.OAuth.Refresh
+import Reacthome.Auth.Controller.OAuth.Token
 import Reacthome.Auth.Controller.Registration
 import Reacthome.Auth.Controller.Registration.Begin
 import Reacthome.Auth.Controller.Registration.Complete
@@ -35,6 +37,8 @@ app =
             respond
                 =<< case request.pathInfo of
                     [] -> get oauth
+                    ["token"] -> post exchangeCodeForToken
+                    ["refresh"] -> post refreshToken
                     ["authentication"] -> get showAuthentication
                     ["authentication", "begin"] -> post beginAuthentication
                     ["authentication", "complete"] -> post completeAuthentication
