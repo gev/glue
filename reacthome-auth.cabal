@@ -145,6 +145,7 @@ library
     time,
     unordered-containers,
     wai,
+    wai-extra,
     wai-middleware-static,
 
 executable reacthome-auth-service
