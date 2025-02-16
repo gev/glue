@@ -9,7 +9,7 @@ import Data.ByteString.Lazy qualified as Lazy
 import Network.HTTP.Types.Header
 import Network.HTTP.Types.Method
 import Network.Wai qualified as W
-import Network.Wai.Parse qualified as W
+import Network.Wai.Parse
 import Web.Cookie
 import Web.Rest.ContentType
 
@@ -19,7 +19,7 @@ data Request
     = Request
     { method :: Method
     , body :: IO Lazy.ByteString
-    , bodyParams :: ExceptT W.RequestParseException IO ([W.Param], [W.File Lazy.ByteString])
+    , bodyParams :: ExceptT String IO [Param]
     , headers :: RequestHeaders
     , header :: HeaderName -> Maybe ContentType
     , query :: ByteString -> Maybe ByteString
@@ -42,12 +42,17 @@ rest request =
         , cookie
         }
   where
-    method = W.requestMethod request
+    method = request.requestMethod
     body = W.lazyRequestBody request
-    bodyParams = except =<< lift (try $ W.parseRequestBody W.lbsBackEnd request)
-    headers = W.requestHeaders request
+    bodyParams =
+        withExceptT show . except
+            =<< lift
+                ( try @RequestParseException $
+                    fst <$> parseRequestBody lbsBackEnd request
+                )
+    headers = request.requestHeaders
     header name = lookup name headers
-    query name = join $ lookup name $ W.queryString request
+    query name = join $ lookup name request.queryString
     hasContentType contentType = Just contentType == header hContentType
     cookies = parseCookies <$> header hCookie
     cookie name = lookup name =<< cookies
