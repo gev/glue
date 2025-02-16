@@ -12,4 +12,5 @@ exchangeCodeForToken ::
 exchangeCodeForToken =
     either badRequest pure =<< runExceptT do
         lift $ print ?request.headers
+        lift $ print =<< ?request.body
         throwE "Not implemented"
