@@ -14,7 +14,9 @@ main = do
           { name = "Reacthome Auth Service"
           , domain = "reacthome.net"
           , challengeSize = 20
-          , timeout = 600
+          , authTimeout = 100
+          , authFlowCookieTTL = 300
+          , authCodeTTL = 30
           }
   authFlows <- makeAuthFlows
   let ?authFlows = authFlows

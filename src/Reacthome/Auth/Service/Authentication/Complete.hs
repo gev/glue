@@ -28,14 +28,14 @@ runCompleteAuthentication credentials = do
             ("Invalid challenge " <> show credentials.challenge.value)
             $ ?authUsers.findBy credentials.challenge
     lift $ ?authUsers.remove credentials.challenge
-    publicKey <-
-        maybeToExceptT ("Public key with id " <> show credentials.id.value <> " not found") $
-            ?publicKeys.findById credentials.id
-    publicKey' <- ASN1.decode publicKey.bytes
-    lift do
-        print publicKey.algorithm
-        print publicKey.bytes
-        print publicKey'
+    -- publicKey <-
+    --     maybeToExceptT ("Public key with id " <> show credentials.id.value <> " not found") $
+    --         ?publicKeys.findById credentials.id
+    -- publicKey' <- ASN1.decode publicKey.bytes
+    -- lift do
+    --     print publicKey.algorithm
+    --     print publicKey.bytes
+    --     print publicKey'
 
     -- publicKey' <-
 

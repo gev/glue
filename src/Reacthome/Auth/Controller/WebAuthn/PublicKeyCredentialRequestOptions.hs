@@ -30,6 +30,6 @@ makePublicKeyCredentialRequestOptions pre =
     PublicKeyCredentialRequestOptions
         { rpId = ?environment.domain
         , challenge = toBase64 pre.challenge.value
-        , timeout = ?environment.timeout
+        , timeout = ?environment.authTimeout
         , allowCredentials = toBase64 . (.value) . (.id) <$> pre.allowCredentials
         }

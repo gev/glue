@@ -5,6 +5,8 @@ import Data.Text
 data Environment = Environment
     { name :: Text
     , domain :: Text
-    , timeout :: Int
+    , authTimeout :: Int
+    , authFlowCookieTTL :: Int
+    , authCodeTTL :: Int
     , challengeSize :: Int
     }

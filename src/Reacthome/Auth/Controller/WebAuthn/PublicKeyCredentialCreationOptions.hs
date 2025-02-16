@@ -31,5 +31,5 @@ makePublicKeyCredentialCreationOptions pre =
         { rp = makePublicKeyCredentialRpEntity
         , user = makePublicKeyCredentialUserEntity pre.user
         , challenge = toBase64 pre.challenge.value
-        , timeout = ?environment.timeout
+        , timeout = ?environment.authTimeout
         }

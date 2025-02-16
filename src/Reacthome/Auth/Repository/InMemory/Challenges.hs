@@ -4,21 +4,20 @@ import Control.Concurrent
 import Control.Monad
 import Control.Monad.Trans.Maybe
 import Data.HashMap.Strict
-import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.Challenge
 import Reacthome.Auth.Service.Challenges
 import Util.MVar
 import Prelude hiding (lookup)
 
-makeChallenges :: (?environment :: Environment) => IO (Challenges t)
+makeChallenges :: IO (Challenges t)
 makeChallenges = do
     map' <- newMVar empty
     let
-        makeNew payload = do
-            challenge <- makeRandomChallenge
+        makeNew ttl payload = do
+            challenge <- makeRandomChallenge ttl
             runModify map' $ insert challenge payload
             void $ forkIO do
-                threadDelay $ 1_000_000 * ?environment.timeout
+                threadDelay $ 1_000_000 * ttl
                 remove challenge
             pure challenge
 

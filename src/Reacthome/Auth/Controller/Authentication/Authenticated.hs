@@ -43,7 +43,7 @@ makeCode ::
     ClientId ->
     IO Authenticated
 makeCode scope state redirect_uri client_id = do
-    code <- makeRandomChallenge
+    code <- makeRandomChallenge ?environment.authCodeTTL
     pure
         Code
             { redirect_uri =

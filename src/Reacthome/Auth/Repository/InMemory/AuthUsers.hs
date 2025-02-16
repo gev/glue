@@ -10,7 +10,7 @@ makeAuthUsers :: (?environment :: Environment) => IO AuthUsers
 makeAuthUsers = do
     challenges <- makeChallenges
     let
-        register = challenges.makeNew
+        register = challenges.makeNew ?environment.authTimeout
         findBy = challenges.findBy
         remove = challenges.remove
     pure

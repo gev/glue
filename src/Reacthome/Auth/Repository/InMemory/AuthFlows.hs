@@ -9,7 +9,7 @@ makeAuthFlows :: (?environment :: Environment) => IO AuthFlows
 makeAuthFlows = do
     challenges <- makeChallenges
     let
-        start = challenges.makeNew
+        start = challenges.makeNew ?environment.authFlowCookieTTL
         findBy = challenges.findBy
         stop = challenges.remove
     pure
