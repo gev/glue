@@ -20,7 +20,6 @@ import Util.Base64
 import Util.Base64.URL qualified as URL
 import Web.Rest
 import Web.Rest.Media
-import Web.Rest.Status
 
 completeAuthentication ::
     ( ?request :: Request
@@ -30,13 +29,12 @@ completeAuthentication ::
     , ?users :: Users
     , ?publicKeys :: PublicKeys
     ) =>
-    IO Response
-completeAuthentication =
-    either badRequest toJSON =<< runExceptT do
-        authFlow <- maybeToExceptT "Invalid auth flow" . ?authFlows.findBy =<< getAuthFlowCookie
-        credential <- fromJSON @(PublicKeyCredential AuthenticatorAssertionResponse) ?request
-        user <- authenticateBy credential
-        lift $ makeAuthenticated authFlow user
+    ExceptT String IO Response
+completeAuthentication = do
+    authFlow <- maybeToExceptT "Invalid auth flow" . ?authFlows.findBy =<< getAuthFlowCookie
+    credential <- fromJSON @(PublicKeyCredential AuthenticatorAssertionResponse) ?request
+    user <- authenticateBy credential
+    toJSON =<< lift (makeAuthenticated authFlow user)
   where
     authenticateBy credential = do
         cid <- makePublicKeyId <$> fromBase64 credential.id

@@ -12,7 +12,6 @@ import Reacthome.Auth.Service.AuthUsers
 import Reacthome.Auth.Service.Authentication.Begin
 import Web.Rest
 import Web.Rest.Media
-import Web.Rest.Status
 
 beginAuthentication ::
     ( ?request :: Request
@@ -21,13 +20,12 @@ beginAuthentication ::
     , ?users :: Users
     , ?publicKeys :: PublicKeys
     ) =>
-    IO Response
-beginAuthentication =
-    either badRequest toJSON =<< runExceptT do
-        options <- fromJSON @AuthenticationOptions ?request
-        login <- makeUserLogin options.login
-        makePublicKeyCredentialRequestOptions
-            <$> runBeginAuthentication
-                BeginAuthentication
-                    { login
-                    }
+    ExceptT String IO Response
+beginAuthentication = do
+    options <- fromJSON @AuthenticationOptions ?request
+    login <- makeUserLogin options.login
+    toJSON . makePublicKeyCredentialRequestOptions
+        =<< runBeginAuthentication
+            BeginAuthentication
+                { login
+                }

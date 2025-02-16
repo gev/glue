@@ -1,23 +1,24 @@
 module Web.Rest.Method where
 
+import Control.Monad.Trans.Except
 import Network.HTTP.Types
 import Web.Rest
 import Web.Rest.Status
 
-type Handler a c =
+type Handler m =
     (?request :: Request) =>
-    (Applicative a) =>
-    a Response ->
-    a Response
+    (Monad m) =>
+    ExceptT String m Response ->
+    m Response
 
-get :: Handler a c
+get :: Handler m
 get = match methodGet
 
-post :: Handler a c
+post :: Handler m
 post = match methodPost
 
-match :: Method -> Handler a c
+match :: Method -> Handler m
 match method controller =
     if ?request.method == method
-        then controller
+        then either badRequest pure =<< runExceptT controller
         else notAllowed method
