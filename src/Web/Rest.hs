@@ -15,6 +15,7 @@ data Request
     = Request
     { method :: Method
     , body :: IO Lazy.ByteString
+    , headers :: RequestHeaders
     , header :: HeaderName -> Maybe ContentType
     , query :: ByteString -> Maybe ByteString
     , hasContentType :: ContentType -> Bool
@@ -27,6 +28,7 @@ rest request =
     Request
         { method
         , body
+        , headers
         , header
         , query
         , hasContentType
@@ -36,7 +38,8 @@ rest request =
   where
     method = W.requestMethod request
     body = W.lazyRequestBody request
-    header name = lookup name $ W.requestHeaders request
+    headers = W.requestHeaders request
+    header name = lookup name headers
     query name = join $ lookup name $ W.queryString request
     hasContentType contentType = Just contentType == header hContentType
     cookies = parseCookies <$> header hCookie
