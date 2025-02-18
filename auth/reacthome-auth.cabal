@@ -10,6 +10,13 @@ category: Web
 build-type: Simple
 
 common common-options
+  build-depends:
+    base,
+    bytestring,
+    text,
+    transformers,
+    uuid,
+
   default-language: GHC2021
   default-extensions:
     BlockArguments
@@ -22,34 +29,24 @@ common common-options
     OverloadedRecordDot
     OverloadedStrings
     PatternSynonyms
-  build-depends:
-    base,
-    bytestring,
-    text,
-    transformers,
-    uuid,
 
 library
-  import: common-options
+  import:
+    common-options
+
   hs-source-dirs: src
+  -- cabal-gild: discover src
   exposed-modules:
     Reacthome.Auth.App
-    Reacthome.Auth.Environment
-    Reacthome.Auth.Repository.InMemory.AuthFlows
-    Reacthome.Auth.Repository.InMemory.AuthUsers
-    Reacthome.Auth.Repository.InMemory.Challenges
-    Reacthome.Auth.Repository.InMemory.Credential.PublicKeys
-    Reacthome.Auth.Repository.InMemory.Users
-  other-modules:
     Reacthome.Auth.Controller.AuthFlowCookie
     Reacthome.Auth.Controller.Authentication
     Reacthome.Auth.Controller.Authentication.Authenticated
     Reacthome.Auth.Controller.Authentication.Begin
     Reacthome.Auth.Controller.Authentication.Complete
     Reacthome.Auth.Controller.Authentication.Options
-    Reacthome.Auth.Controller.OAuth.Token
-    Reacthome.Auth.Controller.OAuth.Refresh
     Reacthome.Auth.Controller.OAuth
+    Reacthome.Auth.Controller.OAuth.Refresh
+    Reacthome.Auth.Controller.OAuth.Token
     Reacthome.Auth.Controller.Registration
     Reacthome.Auth.Controller.Registration.Begin
     Reacthome.Auth.Controller.Registration.Complete
@@ -77,6 +74,12 @@ library
     Reacthome.Auth.Domain.User.Name
     Reacthome.Auth.Domain.User.Status
     Reacthome.Auth.Domain.Users
+    Reacthome.Auth.Environment
+    Reacthome.Auth.Repository.InMemory.AuthFlows
+    Reacthome.Auth.Repository.InMemory.AuthUsers
+    Reacthome.Auth.Repository.InMemory.Challenges
+    Reacthome.Auth.Repository.InMemory.Credential.PublicKeys
+    Reacthome.Auth.Repository.InMemory.Users
     Reacthome.Auth.Service.AuthFlow
     Reacthome.Auth.Service.AuthFlows
     Reacthome.Auth.Service.AuthUsers
@@ -90,9 +93,8 @@ library
     Reacthome.Auth.Service.Registration.Pre
     Reacthome.Auth.View.Screen.Authentication
     Reacthome.Auth.View.Screen.Registration
+
   build-depends:
-    util,
-    web,
     aeson,
     base64-bytestring,
     cookie,
@@ -102,17 +104,25 @@ library
     lucid2,
     time,
     unordered-containers,
+    util,
     wai,
+    web,
 
 executable reacthome-auth
-  import: common-options
-  ghc-options: -rtsopts -with-rtsopts=-N
-  main-is: Main.hs
-  hs-source-dirs: app
+  import:
+    common-options
+
+  ghc-options:
+    -rtsopts
+    -with-rtsopts=-N
+
   build-depends:
     reacthome-auth,
     wai-middleware-static,
     warp,
+
+  hs-source-dirs: app
+  main-is: Main.hs
 
 -- test-suite reacthome-auth-test
 --   import: common-options
@@ -124,7 +134,6 @@ executable reacthome-auth
 --     Reacthome.Auth.Domain.UserIdSpec
 --     Reacthome.Auth.Domain.UserLoginSpec
 --     Reacthome.Auth.Domain.UserSpec
-
 --   build-depends:
 --     QuickCheck,
 --     hspec,

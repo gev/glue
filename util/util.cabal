@@ -10,10 +10,8 @@ category: Web
 build-type: Simple
 
 library
-  default-language: GHC2021
-  
   hs-source-dirs: src
-
+  -- cabal-gild: discover src
   exposed-modules:
     Util.ASN1
     Util.Aeson
@@ -31,3 +29,5 @@ library
     bytestring,
     text,
     transformers,
+
+  default-language: GHC2021

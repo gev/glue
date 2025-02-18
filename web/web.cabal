@@ -10,15 +10,8 @@ category: Web
 build-type: Simple
 
 library
-  default-language: GHC2021
-
-  default-extensions:
-    OverloadedStrings
-    OverloadedRecordDot
-    ImplicitParams
-  
   hs-source-dirs: src
-
+  -- cabal-gild: discover src
   exposed-modules:
     Web.Rest
     Web.Rest.ContentType
@@ -27,14 +20,20 @@ library
     Web.Rest.Status
 
   build-depends:
-    base,
-    util,
     aeson,
+    base,
     bytestring,
     case-insensitive,
     cookie,
     http-types,
     lucid2,
+    transformers,
+    util,
     wai,
     wai-extra,
-    transformers,
+
+  default-language: GHC2021
+  default-extensions:
+    ImplicitParams
+    OverloadedRecordDot
+    OverloadedStrings
