@@ -17,11 +17,8 @@ common common-extensions
     DerivingStrategies
     DuplicateRecordFields
     ImplicitParams
-    LambdaCase
-    MultiWayIf
     OverloadedRecordDot
     OverloadedStrings
-    PatternSynonyms
 
 common common-depends
   build-depends:
@@ -33,9 +30,13 @@ common common-depends
 library
   import: common-extensions
   import: common-depends
+  
   hs-source-dirs: src
+
   exposed-modules:
     Reacthome.Assist.App
+
+  other-modules:
     Reacthome.Assist.Controller.Yandex
     Reacthome.Yandex.Dialogs.Application
     Reacthome.Yandex.Dialogs.DialogRequest

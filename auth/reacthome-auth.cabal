@@ -38,6 +38,14 @@ library
   hs-source-dirs: src
   exposed-modules:
     Reacthome.Auth.App
+    Reacthome.Auth.Environment
+    Reacthome.Auth.Repository.InMemory.AuthFlows
+    Reacthome.Auth.Repository.InMemory.AuthUsers
+    Reacthome.Auth.Repository.InMemory.Challenges
+    Reacthome.Auth.Repository.InMemory.Credential.PublicKeys
+    Reacthome.Auth.Repository.InMemory.Users
+
+  other-modules:
     Reacthome.Auth.Controller.AuthFlowCookie
     Reacthome.Auth.Controller.Authentication
     Reacthome.Auth.Controller.Authentication.Authenticated
@@ -74,12 +82,6 @@ library
     Reacthome.Auth.Domain.User.Name
     Reacthome.Auth.Domain.User.Status
     Reacthome.Auth.Domain.Users
-    Reacthome.Auth.Environment
-    Reacthome.Auth.Repository.InMemory.AuthFlows
-    Reacthome.Auth.Repository.InMemory.AuthUsers
-    Reacthome.Auth.Repository.InMemory.Challenges
-    Reacthome.Auth.Repository.InMemory.Credential.PublicKeys
-    Reacthome.Auth.Repository.InMemory.Users
     Reacthome.Auth.Service.AuthFlow
     Reacthome.Auth.Service.AuthFlows
     Reacthome.Auth.Service.AuthUsers
