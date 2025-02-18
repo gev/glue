@@ -1,4 +1,5 @@
 import Network.Wai.Handler.Warp
+import Network.Wai.Middleware.Static
 import Reacthome.Auth.App
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Repository.InMemory.AuthFlows
@@ -27,4 +28,7 @@ main = do
   publicKeys <- makePublicKeys
   let ?publicKeys = publicKeys
   putStrLn $ "Serving Reacthome Auth on port " <> show port
-  run port app
+  run port $
+    staticPolicy
+      (addBase "auth/public")
+      app

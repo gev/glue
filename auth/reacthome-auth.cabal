@@ -107,9 +107,8 @@ library
     time,
     unordered-containers,
     wai,
-    wai-middleware-static,
 
-executable reacthome-auth-service
+executable reacthome-auth
   import: common-extensions
   import: common-depends
   ghc-options: -rtsopts -with-rtsopts=-N
@@ -117,6 +116,7 @@ executable reacthome-auth-service
   hs-source-dirs: app
   build-depends:
     reacthome-auth,
+    wai-middleware-static,
     warp,
 
 -- test-suite reacthome-auth-test

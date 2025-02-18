@@ -1,7 +1,6 @@
 module Reacthome.Auth.App where
 
 import Network.Wai
-import Network.Wai.Middleware.Static
 import Reacthome.Auth.Controller.Authentication
 import Reacthome.Auth.Controller.Authentication.Begin
 import Reacthome.Auth.Controller.Authentication.Complete
@@ -28,20 +27,17 @@ app ::
     , ?publicKeys :: PublicKeys
     ) =>
     Application
-app =
-    staticPolicy
-        (addBase "public")
-        \request respond -> do
-            let ?request = rest request
-            respond
-                =<< case request.pathInfo of
-                    [] -> get oauth
-                    ["token"] -> post exchangeCodeForToken
-                    ["refresh"] -> post refreshToken
-                    ["authentication"] -> get showAuthentication
-                    ["authentication", "begin"] -> post beginAuthentication
-                    ["authentication", "complete"] -> post completeAuthentication
-                    ["registration"] -> get showRegistration
-                    ["registration", "begin"] -> post beginRegistration
-                    ["registration", "complete"] -> post completeRegistration
-                    _ -> notFound
+app request respond = do
+    let ?request = rest request
+    respond
+        =<< case request.pathInfo of
+            [] -> get oauth
+            ["token"] -> post exchangeCodeForToken
+            ["refresh"] -> post refreshToken
+            ["authentication"] -> get showAuthentication
+            ["authentication", "begin"] -> post beginAuthentication
+            ["authentication", "complete"] -> post completeAuthentication
+            ["registration"] -> get showRegistration
+            ["registration", "begin"] -> post beginRegistration
+            ["registration", "complete"] -> post completeRegistration
+            _ -> notFound

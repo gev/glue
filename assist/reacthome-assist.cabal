@@ -29,7 +29,6 @@ common common-depends
     bytestring,
     text,
     transformers,
-    uuid,
 
 library
   import: common-extensions
@@ -55,17 +54,9 @@ library
     util,
     web,
     aeson,
-    base64-bytestring,
-    cookie,
-    crypton,
-    hashable,
-    http-types,
-    lucid2,
-    time,
-    unordered-containers,
     wai,
 
-executable reacthome-auth-service
+executable reacthome-assist
   import: common-extensions
   import: common-depends
   ghc-options: -rtsopts -with-rtsopts=-N
