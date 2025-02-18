@@ -9,7 +9,7 @@ import Reacthome.Auth.Repository.InMemory.Users
 
 main :: IO ()
 main = do
-  let port = 3000
+  let port = 3002
   let ?environment =
         Environment
           { name = "Reacthome Auth Service"
