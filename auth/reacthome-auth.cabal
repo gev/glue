@@ -9,7 +9,7 @@ maintainer: gazdovsky@gmail.com
 category: Web
 build-type: Simple
 
-common common-extensions
+common common-options
   default-language: GHC2021
   default-extensions:
     BlockArguments
@@ -22,9 +22,6 @@ common common-extensions
     OverloadedRecordDot
     OverloadedStrings
     PatternSynonyms
-    
-
-common common-depends
   build-depends:
     base,
     bytestring,
@@ -33,8 +30,7 @@ common common-depends
     uuid,
 
 library
-  import: common-extensions
-  import: common-depends
+  import: common-options
   hs-source-dirs: src
   exposed-modules:
     Reacthome.Auth.App
@@ -44,7 +40,6 @@ library
     Reacthome.Auth.Repository.InMemory.Challenges
     Reacthome.Auth.Repository.InMemory.Credential.PublicKeys
     Reacthome.Auth.Repository.InMemory.Users
-
   other-modules:
     Reacthome.Auth.Controller.AuthFlowCookie
     Reacthome.Auth.Controller.Authentication
@@ -95,7 +90,6 @@ library
     Reacthome.Auth.Service.Registration.Pre
     Reacthome.Auth.View.Screen.Authentication
     Reacthome.Auth.View.Screen.Registration
-
   build-depends:
     util,
     web,
@@ -111,8 +105,7 @@ library
     wai,
 
 executable reacthome-auth
-  import: common-extensions
-  import: common-depends
+  import: common-options
   ghc-options: -rtsopts -with-rtsopts=-N
   main-is: Main.hs
   hs-source-dirs: app
@@ -122,8 +115,7 @@ executable reacthome-auth
     warp,
 
 -- test-suite reacthome-auth-test
---   import: common-extensions
---   import: common-depends
+--   import: common-options
 --   ghc-options: -Wno-orphans
 --   type: exitcode-stdio-1.0
 --   main-is: Spec.hs

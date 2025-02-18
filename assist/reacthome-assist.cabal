@@ -9,7 +9,7 @@ maintainer: gazdovsky@gmail.com
 category: Web
 build-type: Simple
 
-common common-extensions
+common common-options
   default-language: GHC2021
   default-extensions:
     BlockArguments
@@ -19,8 +19,6 @@ common common-extensions
     ImplicitParams
     OverloadedRecordDot
     OverloadedStrings
-
-common common-depends
   build-depends:
     base,
     bytestring,
@@ -28,14 +26,10 @@ common common-depends
     transformers,
 
 library
-  import: common-extensions
-  import: common-depends
-  
+  import: common-options
   hs-source-dirs: src
-
   exposed-modules:
     Reacthome.Assist.App
-
   other-modules:
     Reacthome.Assist.Controller.Yandex
     Reacthome.Yandex.Dialogs.Application
@@ -50,7 +44,6 @@ library
     Reacthome.Yandex.Dialogs.Response
     Reacthome.Yandex.Dialogs.Session
     Reacthome.Yandex.Dialogs.User
-
   build-depends:
     util,
     web,
@@ -58,8 +51,7 @@ library
     wai,
 
 executable reacthome-assist
-  import: common-extensions
-  import: common-depends
+  import: common-options
   ghc-options: -rtsopts -with-rtsopts=-N
   main-is: Main.hs
   hs-source-dirs: app

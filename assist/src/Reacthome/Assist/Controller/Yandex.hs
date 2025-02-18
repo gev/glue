@@ -24,7 +24,7 @@ runDialog = do
                     { text = greeting
                     , tts = Just greeting
                     , end_session = False
-                    , directives = Just start'account'linking
+                    , directives = Nothing -- Just start'account'linking
                     }
             , version = "1.0"
             }
