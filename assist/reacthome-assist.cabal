@@ -15,6 +15,7 @@ common common-options
     bytestring,
     text,
     transformers,
+    wuss,
 
   default-language: GHC2021
   default-extensions:
