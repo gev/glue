@@ -1,0 +1,33 @@
+cabal-version: 3.8
+name: util
+version: 0.1.0.0
+synopsis: Common Utilities
+description: A collection of common utilities for Reacthome daemons galaxy
+license: BSD-3-Clause
+author: ReactHome Team
+maintainer: gazdovsky@gmail.com
+category: Web
+build-type: Simple
+
+library
+  default-language: GHC2021
+  
+  hs-source-dirs: src
+
+  exposed-modules:
+    Util.ASN1
+    Util.Aeson
+    Util.Base64
+    Util.Base64.Lazy
+    Util.Base64.URL
+    Util.Base64.URL.Lazy
+    Util.MVar
+
+  build-depends:
+    aeson,
+    asn1-encoding,
+    base,
+    base64-bytestring,
+    bytestring,
+    text,
+    transformers,

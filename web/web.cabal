@@ -1,0 +1,40 @@
+cabal-version: 3.8
+name: web
+version: 0.1.0.0
+synopsis: Web micro framework
+description: A collection of web utilities above WAI
+license: BSD-3-Clause
+author: ReactHome Team
+maintainer: gazdovsky@gmail.com
+category: Web
+build-type: Simple
+
+library
+  default-language: GHC2021
+
+  default-extensions:
+    OverloadedStrings
+    OverloadedRecordDot
+    ImplicitParams
+  
+  hs-source-dirs: src
+
+  exposed-modules:
+    Web.Rest
+    Web.Rest.ContentType
+    Web.Rest.Media
+    Web.Rest.Method
+    Web.Rest.Status
+
+  build-depends:
+    base,
+    util,
+    aeson,
+    bytestring,
+    case-insensitive,
+    cookie,
+    http-types,
+    lucid2,
+    wai,
+    wai-extra,
+    transformers,

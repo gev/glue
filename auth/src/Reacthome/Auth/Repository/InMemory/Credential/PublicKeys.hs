@@ -1,5 +1,3 @@
-{-# LANGUAGE DerivingVia #-}
-
 module Reacthome.Auth.Repository.InMemory.Credential.PublicKeys where
 
 import Control.Concurrent.MVar
@@ -7,7 +5,6 @@ import Control.Monad.Trans.Except
 import Control.Monad.Trans.Maybe
 import Data.HashMap.Strict as M
 import Data.HashSet as S
-import Data.Hashable
 import Data.Maybe
 import Reacthome.Auth.Domain.Credential.PublicKey
 import Reacthome.Auth.Domain.Credential.PublicKeys
@@ -79,10 +76,3 @@ makePublicKeys = do
             , store
             , remove
             }
-
-instance Eq PublicKey where
-    a == b = a.id == b.id
-
-instance Hashable PublicKey where
-    hashWithSalt salt publicKey =
-        hashWithSalt salt publicKey.id

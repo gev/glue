@@ -1,0 +1,76 @@
+cabal-version: 3.8
+name: reacthome-assist
+version: 0.1.0.0
+synopsis: Reacthome AI Assistant Server
+description: A collection of the voice assistants for Reacthome
+license: BSD-3-Clause
+author: ReactHome Team
+maintainer: gazdovsky@gmail.com
+category: Web
+build-type: Simple
+
+common common-extensions
+  default-language: GHC2021
+  default-extensions:
+    BlockArguments
+    DeriveAnyClass
+    DerivingStrategies
+    DuplicateRecordFields
+    ImplicitParams
+    LambdaCase
+    MultiWayIf
+    OverloadedRecordDot
+    OverloadedStrings
+    PatternSynonyms
+
+common common-depends
+  build-depends:
+    base,
+    bytestring,
+    text,
+    transformers,
+    uuid,
+
+library
+  import: common-extensions
+  import: common-depends
+  hs-source-dirs: src
+  exposed-modules:
+    Reacthome.Assist.App
+    Reacthome.Assist.Controller.Yandex
+    Reacthome.Yandex.Dialogs.Application
+    Reacthome.Yandex.Dialogs.DialogRequest
+    Reacthome.Yandex.Dialogs.DialogResponse
+    Reacthome.Yandex.Dialogs.Directives
+    Reacthome.Yandex.Dialogs.Entity
+    Reacthome.Yandex.Dialogs.Intents
+    Reacthome.Yandex.Dialogs.Markup
+    Reacthome.Yandex.Dialogs.Meta
+    Reacthome.Yandex.Dialogs.Request
+    Reacthome.Yandex.Dialogs.Response
+    Reacthome.Yandex.Dialogs.Session
+    Reacthome.Yandex.Dialogs.User
+
+  build-depends:
+    util,
+    web,
+    aeson,
+    base64-bytestring,
+    cookie,
+    crypton,
+    hashable,
+    http-types,
+    lucid2,
+    time,
+    unordered-containers,
+    wai,
+
+executable reacthome-auth-service
+  import: common-extensions
+  import: common-depends
+  ghc-options: -rtsopts -with-rtsopts=-N
+  main-is: Main.hs
+  hs-source-dirs: app
+  build-depends:
+    reacthome-assist,
+    warp,

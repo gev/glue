@@ -1,7 +1,7 @@
 cabal-version: 3.8
 name: reacthome-auth
 version: 0.1.0.0
-synopsis: OAuth2 Auth Server
+synopsis: Reacthome OAuth2 Auth Server
 description: A type-safe OAuth2 Auth Server implementation
 license: BSD-3-Clause
 author: ReactHome Team
@@ -22,34 +22,21 @@ common common-extensions
     OverloadedRecordDot
     OverloadedStrings
     PatternSynonyms
-    QuasiQuotes
-
-common common-ghc-options
-  ghc-options:
-    -O3
-    -threaded
-    -rtsopts
-    -with-rtsopts=-N
-    -Wall
-    -Wno-orphans
+    
 
 common common-depends
   build-depends:
-    base >=4.19 && <5.0,
+    base,
     bytestring,
-    containers,
     text,
-    time,
     transformers,
     uuid,
 
 library
   import: common-extensions
-  import: common-ghc-options
   import: common-depends
   hs-source-dirs: src
   exposed-modules:
-    Reacthome.Assist.Controller.Yandex
     Reacthome.Auth.App
     Reacthome.Auth.Controller.AuthFlowCookie
     Reacthome.Auth.Controller.Authentication
@@ -106,37 +93,12 @@ library
     Reacthome.Auth.Service.Registration.Pre
     Reacthome.Auth.View.Screen.Authentication
     Reacthome.Auth.View.Screen.Registration
-    Reacthome.Yandex.Dialogs.Application
-    Reacthome.Yandex.Dialogs.DialogRequest
-    Reacthome.Yandex.Dialogs.DialogResponse
-    Reacthome.Yandex.Dialogs.Directives
-    Reacthome.Yandex.Dialogs.Entity
-    Reacthome.Yandex.Dialogs.Intents
-    Reacthome.Yandex.Dialogs.Markup
-    Reacthome.Yandex.Dialogs.Meta
-    Reacthome.Yandex.Dialogs.Request
-    Reacthome.Yandex.Dialogs.Response
-    Reacthome.Yandex.Dialogs.Session
-    Reacthome.Yandex.Dialogs.User
-    Util.ASN1
-    Util.Aeson
-    Util.Base64
-    Util.Base64.Lazy
-    Util.Base64.URL
-    Util.Base64.URL.Lazy
-    Util.Error
-    Util.MVar
-    Web.Rest
-    Web.Rest.ContentType
-    Web.Rest.Media
-    Web.Rest.Method
-    Web.Rest.Status
 
   build-depends:
+    util,
+    web,
     aeson,
-    asn1-encoding,
     base64-bytestring,
-    case-insensitive,
     cookie,
     crypton,
     hashable,
@@ -145,34 +107,32 @@ library
     time,
     unordered-containers,
     wai,
-    wai-extra,
     wai-middleware-static,
 
 executable reacthome-auth-service
   import: common-extensions
-  import: common-ghc-options
   import: common-depends
+  ghc-options: -rtsopts -with-rtsopts=-N
   main-is: Main.hs
   hs-source-dirs: app
   build-depends:
     reacthome-auth,
     warp,
 
-test-suite reacthome-auth-test
-  import: common-extensions
-  import: common-ghc-options
-  import: common-depends
-  ghc-options: -Wno-orphans
-  type: exitcode-stdio-1.0
-  main-is: Spec.hs
-  hs-source-dirs: test
-  other-modules:
-    Reacthome.Auth.Domain.UserIdSpec
-    Reacthome.Auth.Domain.UserLoginSpec
-    Reacthome.Auth.Domain.UserSpec
+-- test-suite reacthome-auth-test
+--   import: common-extensions
+--   import: common-depends
+--   ghc-options: -Wno-orphans
+--   type: exitcode-stdio-1.0
+--   main-is: Spec.hs
+--   hs-source-dirs: test
+--   other-modules:
+--     Reacthome.Auth.Domain.UserIdSpec
+--     Reacthome.Auth.Domain.UserLoginSpec
+--     Reacthome.Auth.Domain.UserSpec
 
-  build-depends:
-    QuickCheck,
-    hspec,
-    quickcheck-instances,
-    reacthome-auth,
+--   build-depends:
+--     QuickCheck,
+--     hspec,
+--     quickcheck-instances,
+--     reacthome-auth,

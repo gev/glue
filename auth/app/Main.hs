@@ -26,5 +26,5 @@ main = do
   let ?users = users
   publicKeys <- makePublicKeys
   let ?publicKeys = publicKeys
-  putStrLn $ "Serving on port " <> show port
+  putStrLn $ "Serving Reacthome Auth on port " <> show port
   run port app

@@ -2,7 +2,6 @@ module Reacthome.Auth.App where
 
 import Network.Wai
 import Network.Wai.Middleware.Static
-import Reacthome.Assist.Controller.Yandex
 import Reacthome.Auth.Controller.Authentication
 import Reacthome.Auth.Controller.Authentication.Begin
 import Reacthome.Auth.Controller.Authentication.Complete
@@ -45,5 +44,4 @@ app =
                     ["registration"] -> get showRegistration
                     ["registration", "begin"] -> post beginRegistration
                     ["registration", "complete"] -> post completeRegistration
-                    ["yandex"] -> post runDialog
                     _ -> notFound

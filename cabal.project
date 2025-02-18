@@ -1,0 +1,7 @@
+packages: */*.cabal
+
+constraints:
+    base >= 4.19 && < 5
+
+package *
+    ghc-options: -O3 -threaded  -Wall 
