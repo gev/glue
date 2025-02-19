@@ -15,7 +15,6 @@ common common-options
     bytestring,
     text,
     transformers,
-    wuss,
 
   default-language: GHC2021
   default-extensions:
@@ -24,6 +23,7 @@ common common-options
     DerivingStrategies
     DuplicateRecordFields
     ImplicitParams
+    LambdaCase
     OverloadedRecordDot
     OverloadedStrings
 
@@ -35,6 +35,12 @@ library
   exposed-modules:
     Reacthome.Assist.App
     Reacthome.Assist.Controller.Yandex
+    Reacthome.Assist.Domain.Answer
+    Reacthome.Assist.Domain.Query
+    Reacthome.Assist.Environment
+    Reacthome.Assist.Service.Dialog
+    Reacthome.Gate.Connection
+    Reacthome.Gate.Connection.Pool
     Reacthome.Yandex.Dialogs.Application
     Reacthome.Yandex.Dialogs.DialogRequest
     Reacthome.Yandex.Dialogs.DialogResponse
@@ -50,9 +56,15 @@ library
 
   build-depends:
     aeson,
+    http-types,
+    network,
+    unordered-containers,
     util,
+    uuid,
     wai,
     web,
+    websockets,
+    wuss,
 
   hs-source-dirs: src
 
