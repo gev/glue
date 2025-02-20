@@ -1,12 +1,47 @@
 module Reacthome.Assist.Service.Dialog where
 
+import Data.Aeson
+import Data.Maybe
+import Data.Text
+import Data.Text.Lazy.Encoding
+import Data.UUID
+import GHC.Generics
 import Reacthome.Assist.Domain.Answer
 import Reacthome.Assist.Domain.Query
+import Reacthome.Gate.Connection
+import Reacthome.Gate.Connection.Pool
+import Util.Aeson
 
-getAnswer :: Query -> Answer
-getAnswer query =
-    Answer
-        { message = query.message
-        , sessionId = query.sessionId
-        , endSession = False
-        }
+data ActionQuery = ActionQuery
+    { type' :: Text
+    , message :: Text
+    , sessionId :: Text
+    }
+    deriving stock (Generic, Show)
+
+instance ToJSON ActionQuery where
+    toJSON = genericToJSON typeFieldLabelModifier
+
+makeActionQuery :: Text -> Text -> ActionQuery
+makeActionQuery = ActionQuery "ACTION_ASSIST"
+
+getAnswer ::
+    (?gateConnectionPool :: GateConnectionPool) =>
+    Query ->
+    IO Answer
+getAnswer query = do
+    connection <- ?gateConnectionPool.getConnection myDaemon
+    connection.send $
+        decodeUtf8 . encode $
+            makeActionQuery
+                query.message
+                query.sessionId
+    pure
+        Answer
+            { message = query.message
+            , sessionId = query.sessionId
+            , endSession = False
+            }
+
+myDaemon :: UUID
+myDaemon = fromJust $ fromString "02aaee3f-a050-43d5-bbf2-e0f2abd73a6e"
