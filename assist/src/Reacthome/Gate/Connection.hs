@@ -2,15 +2,16 @@ module Reacthome.Gate.Connection where
 
 import Control.Concurrent
 import Control.Monad
-import Data.Text (Text)
+import Data.Text.Lazy (Text)
 import Data.UUID (UUID, toString)
 import Network.HTTP.Types
-import Network.WebSockets (Connection, WebSocketsData, defaultConnectionOptions, receiveData, sendTextData)
+import Network.WebSockets (Connection, WebSocketsData, defaultConnectionOptions, receiveData, sendClose, sendTextData)
 import Reacthome.Assist.Environment
 import Wuss
 
-newtype GateConnection = GateConnection
+data GateConnection = GateConnection
     { send :: Text -> IO ()
+    , close :: IO ()
     }
 
 makeConnection ::
@@ -31,9 +32,11 @@ makeConnection uid onMessage onClose = do
             [(hSecWebSocketProtocol, ?environment.gate.protocol)]
             $ ws onMessage onClose
     let send = sendTextData client
+    let close = sendClose @Text client "Close" >> onClose
     pure
         GateConnection
             { send
+            , close
             }
 
 ws ::
