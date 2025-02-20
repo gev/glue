@@ -31,7 +31,7 @@ makeConnection uid onMessage onError = do
     void $
         forkFinally
             ( connect uid $
-                runClient queue onMessage
+                run queue onMessage
             )
             (either onError pure)
     pure
@@ -39,12 +39,12 @@ makeConnection uid onMessage onError = do
             { send = atomically . writeTQueue queue
             }
 
-runClient ::
+run ::
     TQueue Text ->
     (Text -> IO ()) ->
     Connection ->
     IO ()
-runClient queue onMessage connection = do
+run queue onMessage connection = do
     concurrently_
         (forever $ onMessage =<< receiveData connection)
         (forever $ sendTextData connection =<< atomically (readTQueue queue))
