@@ -11,7 +11,7 @@ import Prelude hiding (lookup)
 
 makeChallenges :: IO (Challenges t)
 makeChallenges = do
-    map' <- newEmptyMVar
+    map' <- newMVar empty
     let
         makeNew ttl payload = do
             challenge <- makeRandomChallenge ttl
