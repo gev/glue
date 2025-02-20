@@ -12,7 +12,7 @@ import Util.MVar
 
 makePublicKeys :: IO PublicKeys
 makePublicKeys = do
-    map' <- newMVar (M.empty, M.empty)
+    map' <- newEmptyMVar
     let
         findById id' =
             MaybeT $ runRead

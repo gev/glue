@@ -13,7 +13,7 @@ import Prelude hiding (lookup)
 
 makeUsers :: IO Users
 makeUsers = do
-    map' <- newMVar (empty, empty)
+    map' <- newEmptyMVar
     let
         findById uid =
             MaybeT $ runRead

@@ -4,7 +4,7 @@ import Control.Concurrent
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
 import Data.HashMap.Strict
-import Data.Text.Lazy (Text)
+import Data.Text.Lazy
 import Data.UUID
 import Reacthome.Assist.Environment
 import Reacthome.Gate.Connection
@@ -21,10 +21,11 @@ makeConnectionPool ::
     (Text -> IO ()) ->
     IO GateConnectionPool
 makeConnectionPool onMessage = do
-    pool <- newMVar empty
+    pool <- newEmptyMVar
 
     let connect uid = do
-            let onError _ = do
+            let onError e = do
+                    print e
                     print $ "Disconnecting from " <> ?environment.gate.host <> ":" <> show ?environment.gate.port <> "/" <> toString uid
                     runModify pool $ delete uid
 
