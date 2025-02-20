@@ -5,6 +5,7 @@ import Control.Monad.Trans.Except
 import Reacthome.Assist.Domain.Answer
 import Reacthome.Assist.Domain.Query
 import Reacthome.Assist.Service.Dialog
+import Reacthome.Gate.Connection.Pool
 import Reacthome.Yandex.Dialogs.DialogRequest
 import Reacthome.Yandex.Dialogs.DialogResponse
 import Reacthome.Yandex.Dialogs.Directives
@@ -15,12 +16,15 @@ import Web.Rest
 import Web.Rest.Media
 
 runDialog ::
-    (?request :: Request) =>
+    ( ?gateConnectionPool :: GateConnectionPool
+    , ?request :: Request
+    ) =>
     ExceptT String IO Response
 runDialog = do
     dialog <- fromJSON @DialogRequest ?request
     lift $ print dialog
-    let answer =
+    answer <-
+        lift $
             getAnswer
                 Query
                     { message = dialog.request.command
