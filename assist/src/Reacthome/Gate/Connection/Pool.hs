@@ -1,8 +1,6 @@
 module Reacthome.Gate.Connection.Pool where
 
 import Control.Concurrent
-import Control.Monad.Trans.Class
-import Control.Monad.Trans.Except
 import Data.HashMap.Strict
 import Data.Text.Lazy (Text)
 import Data.UUID
@@ -12,7 +10,7 @@ import Util.MVar
 import Prelude hiding (lookup)
 
 newtype GateConnectionPool = GateConnectionPool
-    { getConnection :: UUID -> ExceptT String IO GateConnection
+    { getConnection :: UUID -> IO GateConnection
     }
 
 makeConnectionPool ::
@@ -26,16 +24,16 @@ makeConnectionPool onMessage = do
     let connect uid = do
             let onError e = do
                     print e
-                    print $ "Disconnected from " <> ?environment.gate.host <> ":" <> show ?environment.gate.port <> "/" <> toString uid
                     runModify pool $ delete uid
 
             connection <- makeConnection uid onMessage onError
-            lift . runModify pool $ insert uid connection
+            print $ "Connected to " <> ?environment.gate.host <> ":" <> show ?environment.gate.port <> "/" <> toString uid
+            runModify pool $ insert uid connection
             pure connection
 
     let getConnection uid =
             maybe (connect uid) pure
-                =<< lift (runRead pool $ lookup uid)
+                =<< runRead pool (lookup uid)
 
     pure $
         GateConnectionPool

@@ -32,7 +32,7 @@ getAnswer ::
     Query ->
     ExceptT String IO Answer
 getAnswer query = do
-    connection <- ?gateConnectionPool.getConnection myDaemon
+    connection <- lift $ ?gateConnectionPool.getConnection myDaemon
     lift $
         connection.send
             ( decodeUtf8 . encode $

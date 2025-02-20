@@ -1,14 +1,17 @@
-module Reacthome.Gate.Connection where
+module Reacthome.Gate.Connection (
+    GateConnection (..),
+    makeConnection,
+) where
 
 import Control.Concurrent
+import Control.Concurrent.Async
+import Control.Concurrent.STM
 import Control.Exception
 import Control.Monad
-import Control.Monad.Trans.Class
-import Control.Monad.Trans.Except
-import Data.Text.Lazy (Text, empty)
+import Data.Text.Lazy
 import Data.UUID (UUID, toString)
 import Network.HTTP.Types
-import Network.WebSockets (Connection, HandshakeException, defaultConnectionOptions, receiveData, sendTextData)
+import Network.WebSockets (ClientApp, Connection, defaultConnectionOptions, receiveData, sendTextData)
 import Reacthome.Assist.Environment
 import Wuss
 
@@ -22,50 +25,42 @@ makeConnection ::
     UUID ->
     (Text -> IO ()) ->
     (SomeException -> IO ()) ->
-    ExceptT String IO GateConnection
+    IO GateConnection
 makeConnection uid onMessage onError = do
-    message <- lift $ newMVar empty
-    withExceptT show . except
-        =<< lift do
-            try @HandshakeException $
-                void $
-                    forkFinally
-                        ( runSecureClientWith
-                            ?environment.gate.host
-                            ?environment.gate.port
-                            ("/" <> toString uid)
-                            defaultConnectionOptions
-                            [(hSecWebSocketProtocol, ?environment.gate.protocol)]
-                            (ws message onMessage onError)
-                        )
-                        (either onError pure)
-
-    let send = putMVar message
-
-    pure
-        GateConnection
-            { send
-            }
-
-ws ::
-    MVar Text ->
-    (Text -> IO ()) ->
-    (SomeException -> IO ()) ->
-    Connection ->
-    IO ()
-ws message onMessage onError connection = do
+    queue <- newTQueueIO
     void $
         forkFinally
-            ( forever $
-                onMessage =<< receiveData connection
+            ( connect uid $
+                runClient queue onMessage
             )
-            (either onError id)
+            (either onError pure)
+    pure
+        GateConnection
+            { send = atomically . writeTQueue queue
+            }
 
-    let loop = do
-            sendTextData connection =<< takeMVar message
-            loop
+runClient ::
+    TQueue Text ->
+    (Text -> IO ()) ->
+    Connection ->
+    IO ()
+runClient queue onMessage connection = do
+    concurrently_
+        (forever $ onMessage =<< receiveData connection)
+        (forever $ sendTextData connection =<< atomically (readTQueue queue))
 
-    loop
+connect ::
+    (?environment :: Environment) =>
+    UUID ->
+    ClientApp a ->
+    IO a
+connect uid = do
+    runSecureClientWith
+        ?environment.gate.host
+        ?environment.gate.port
+        ("/" <> toString uid)
+        defaultConnectionOptions
+        [(hSecWebSocketProtocol, ?environment.gate.protocol)]
 
 hSecWebSocketProtocol :: HeaderName
 hSecWebSocketProtocol = "Sec-WebSocket-Protocol"
