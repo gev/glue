@@ -1,7 +1,5 @@
 module Reacthome.Assist.Service.Dialog where
 
-import Control.Exception (SomeException (SomeException))
-import Control.Exception.Base
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
 import Data.Aeson
