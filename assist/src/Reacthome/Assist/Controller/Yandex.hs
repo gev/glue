@@ -24,12 +24,11 @@ runDialog = do
     dialog <- fromJSON @DialogRequest ?request
     -- lift $ print dialog
     answer <-
-        mapExceptT (\e -> do e' <- e; print e'; pure e') $
-            getAnswer
-                Query
-                    { message = dialog.request.command
-                    , sessionId = dialog.session.session_id
-                    }
+        getAnswer
+            Query
+                { message = dialog.request.command
+                , sessionId = dialog.session.session_id
+                }
 
     lift $ print answer
     toJSON
