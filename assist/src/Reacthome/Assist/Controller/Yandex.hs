@@ -24,12 +24,11 @@ runDialog = do
     dialog <- fromJSON @DialogRequest ?request
     lift $ print dialog
     answer <-
-        lift $
-            getAnswer
-                Query
-                    { message = dialog.request.command
-                    , sessionId = dialog.session.session_id
-                    }
+        getAnswer
+            Query
+                { message = dialog.request.command
+                , sessionId = dialog.session.session_id
+                }
     toJSON
         DialogResponse
             { response =
