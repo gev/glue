@@ -5,63 +5,67 @@ import Control.Exception
 import Control.Monad
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
-import Data.Text.Lazy (Text)
+import Data.Text.Lazy (Text, empty)
 import Data.UUID (UUID, toString)
 import Network.HTTP.Types
-import Network.WebSockets (Connection, HandshakeException, WebSocketsData, defaultConnectionOptions, receiveData, sendClose, sendTextData)
+import Network.WebSockets (Connection, HandshakeException, defaultConnectionOptions, receiveData, sendTextData)
 import Reacthome.Assist.Environment
 import Wuss
 
-data GateConnection = GateConnection
+newtype GateConnection = GateConnection
     { send :: Text -> IO ()
-    , close :: IO ()
     }
 
 makeConnection ::
     ( ?environment :: Environment
-    , WebSocketsData a
     ) =>
     UUID ->
-    (a -> IO ()) ->
-    IO () ->
+    (Text -> IO ()) ->
+    (SomeException -> IO ()) ->
     ExceptT String IO GateConnection
-makeConnection uid onMessage onClose = do
-    client <-
-        withExceptT show . except
-            =<< lift
-                ( try @HandshakeException
-                    $ runSecureClientWith
-                        ?environment.gate.host
-                        ?environment.gate.port
-                        (toString uid)
-                        defaultConnectionOptions
-                        [(hSecWebSocketProtocol, ?environment.gate.protocol)]
-                    $ ws onMessage onClose
-                )
-    let send = sendTextData client
-    let close = sendClose @Text client "Close" >> onClose
+makeConnection uid onMessage onError = do
+    message <- lift $ newMVar empty
+    withExceptT show . except
+        =<< lift do
+            try @HandshakeException $
+                void $
+                    forkFinally
+                        ( runSecureClientWith
+                            ?environment.gate.host
+                            ?environment.gate.port
+                            ("/" <> toString uid)
+                            defaultConnectionOptions
+                            [(hSecWebSocketProtocol, ?environment.gate.protocol)]
+                            (ws message onMessage onError)
+                        )
+                        (either onError pure)
+
+    let send = putMVar message
+
     pure
         GateConnection
             { send
-            , close
             }
 
 ws ::
-    (WebSocketsData a) =>
-    (a -> IO ()) ->
-    IO () ->
+    MVar Text ->
+    (Text -> IO ()) ->
+    (SomeException -> IO ()) ->
     Connection ->
-    IO Connection
-ws onMessage onClose connection = do
+    IO ()
+ws message onMessage onError connection = do
     void $
         forkFinally
-            ( forever $ do
-                message <- receiveData connection
-                onMessage message
+            ( forever $
+                onMessage =<< receiveData connection
             )
-            (const onClose)
+            (either onError id)
 
-    pure connection
+    let loop = do
+            sendTextData connection =<< takeMVar message
+            loop
+
+    loop
 
 hSecWebSocketProtocol :: HeaderName
 hSecWebSocketProtocol = "Sec-WebSocket-Protocol"

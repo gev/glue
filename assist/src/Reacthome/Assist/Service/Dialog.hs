@@ -1,5 +1,7 @@
 module Reacthome.Assist.Service.Dialog where
 
+import Control.Exception (SomeException (SomeException))
+import Control.Exception.Base
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
 import Data.Aeson
@@ -34,11 +36,12 @@ getAnswer ::
 getAnswer query = do
     connection <- ?gateConnectionPool.getConnection myDaemon
     lift $
-        connection.send $
-            decodeUtf8 . encode $
+        connection.send
+            ( decodeUtf8 . encode $
                 makeActionQuery
                     query.message
                     query.sessionId
+            )
     pure
         Answer
             { message = query.message

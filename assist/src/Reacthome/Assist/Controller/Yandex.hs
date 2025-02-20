@@ -22,13 +22,16 @@ runDialog ::
     ExceptT String IO Response
 runDialog = do
     dialog <- fromJSON @DialogRequest ?request
-    lift $ print dialog
+    -- lift $ print dialog
     answer <-
-        getAnswer
-            Query
-                { message = dialog.request.command
-                , sessionId = dialog.session.session_id
-                }
+        mapExceptT (\e -> do e' <- e; print e'; pure e') $
+            getAnswer
+                Query
+                    { message = dialog.request.command
+                    , sessionId = dialog.session.session_id
+                    }
+
+    lift $ print answer
     toJSON
         DialogResponse
             { response =

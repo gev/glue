@@ -46,10 +46,10 @@ rest request =
     body = W.lazyRequestBody request
     bodyParams =
         withExceptT show . except
-            =<< lift
-                ( try @RequestParseException $
+            =<< lift do
+                try @RequestParseException $
                     fst <$> parseRequestBody lbsBackEnd request
-                )
+
     headers = request.requestHeaders
     header name = lookup name headers
     query name = join $ lookup name request.queryString

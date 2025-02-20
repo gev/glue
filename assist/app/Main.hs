@@ -13,7 +13,7 @@ main = do
               GateConfig
                 { host = "gate.reacthome.net"
                 , port = 443
-                , protocol = "client"
+                , protocol = "connect"
                 }
           }
   gateConnectionPool <- makeConnectionPool handleAnswer
