@@ -1,5 +1,7 @@
 module Reacthome.Assist.Service.Dialog where
 
+import Control.Monad.Trans.Class
+import Control.Monad.Trans.Except
 import Data.Aeson
 import Data.Maybe
 import Data.Text
@@ -28,14 +30,15 @@ makeActionQuery = ActionQuery "ACTION_ASSIST"
 getAnswer ::
     (?gateConnectionPool :: GateConnectionPool) =>
     Query ->
-    IO Answer
+    ExceptT String IO Answer
 getAnswer query = do
     connection <- ?gateConnectionPool.getConnection myDaemon
-    connection.send $
-        decodeUtf8 . encode $
-            makeActionQuery
-                query.message
-                query.sessionId
+    lift $
+        connection.send $
+            decodeUtf8 . encode $
+                makeActionQuery
+                    query.message
+                    query.sessionId
     pure
         Answer
             { message = query.message

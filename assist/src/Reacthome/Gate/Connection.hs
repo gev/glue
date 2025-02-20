@@ -1,11 +1,14 @@
 module Reacthome.Gate.Connection where
 
 import Control.Concurrent
+import Control.Exception
 import Control.Monad
+import Control.Monad.Trans.Class
+import Control.Monad.Trans.Except
 import Data.Text.Lazy (Text)
 import Data.UUID (UUID, toString)
 import Network.HTTP.Types
-import Network.WebSockets (Connection, WebSocketsData, defaultConnectionOptions, receiveData, sendClose, sendTextData)
+import Network.WebSockets (Connection, HandshakeException, WebSocketsData, defaultConnectionOptions, receiveData, sendClose, sendTextData)
 import Reacthome.Assist.Environment
 import Wuss
 
@@ -21,16 +24,20 @@ makeConnection ::
     UUID ->
     (a -> IO ()) ->
     IO () ->
-    IO GateConnection
+    ExceptT String IO GateConnection
 makeConnection uid onMessage onClose = do
     client <-
-        runSecureClientWith
-            ?environment.gate.host
-            ?environment.gate.port
-            (toString uid)
-            defaultConnectionOptions
-            [(hSecWebSocketProtocol, ?environment.gate.protocol)]
-            $ ws onMessage onClose
+        withExceptT show . except
+            =<< lift
+                ( try @HandshakeException
+                    $ runSecureClientWith
+                        ?environment.gate.host
+                        ?environment.gate.port
+                        (toString uid)
+                        defaultConnectionOptions
+                        [(hSecWebSocketProtocol, ?environment.gate.protocol)]
+                    $ ws onMessage onClose
+                )
     let send = sendTextData client
     let close = sendClose @Text client "Close" >> onClose
     pure
