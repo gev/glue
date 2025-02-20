@@ -9,9 +9,9 @@ import Control.Concurrent.STM
 import Control.Exception
 import Control.Monad
 import Data.Text.Lazy
-import Data.UUID (UUID, toString)
+import Data.UUID
 import Network.HTTP.Types
-import Network.WebSockets (ClientApp, Connection, defaultConnectionOptions, receiveData, sendTextData)
+import Network.WebSockets
 import Reacthome.Assist.Environment
 import Wuss
 
