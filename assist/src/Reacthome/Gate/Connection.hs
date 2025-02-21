@@ -27,7 +27,7 @@ makeConnection ::
     (SomeException -> IO ()) ->
     IO GateConnection
 makeConnection uid onMessage onError = do
-    queue <- newTQueueIO
+    queue <- newTBQueueIO $ fromIntegral ?environment.queueSize
     void $
         forkFinally
             ( connect uid $
@@ -36,18 +36,18 @@ makeConnection uid onMessage onError = do
             (either onError pure)
     pure
         GateConnection
-            { send = atomically . writeTQueue queue
+            { send = atomically . writeTBQueue queue
             }
 
 run ::
-    TQueue Text ->
+    TBQueue Text ->
     (Text -> IO ()) ->
     Connection ->
     IO ()
 run queue onMessage connection = do
     concurrently_
         (forever $ onMessage =<< receiveData connection)
-        (forever $ sendTextData connection =<< atomically (readTQueue queue))
+        (forever $ sendTextData connection =<< atomically (readTBQueue queue))
 
 connect ::
     (?environment :: Environment) =>

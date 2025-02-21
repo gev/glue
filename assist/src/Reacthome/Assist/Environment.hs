@@ -3,8 +3,9 @@ module Reacthome.Assist.Environment where
 import Data.ByteString (ByteString)
 import Network.Socket
 
-newtype Environment = Environment
+data Environment = Environment
     { gate :: GateConfig
+    , queueSize :: Int
     }
 
 data GateConfig = GateConfig

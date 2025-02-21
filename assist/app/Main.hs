@@ -15,6 +15,7 @@ main = do
                 , port = 443
                 , protocol = "connect"
                 }
+          , queueSize = 42
           }
   gateConnectionPool <- makeConnectionPool handleAnswer
   let ?gateConnectionPool = gateConnectionPool
