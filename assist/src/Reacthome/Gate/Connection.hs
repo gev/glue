@@ -44,7 +44,7 @@ run ::
     (Text -> IO ()) ->
     Connection ->
     IO ()
-run queue onMessage connection = do
+run queue onMessage connection =
     concurrently_
         (forever $ onMessage =<< receiveData connection)
         (forever $ sendTextData connection =<< atomically (readTBQueue queue))
