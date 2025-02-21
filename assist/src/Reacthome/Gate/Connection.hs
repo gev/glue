@@ -54,7 +54,7 @@ connect ::
     UUID ->
     ClientApp a ->
     IO a
-connect uid = do
+connect uid =
     runSecureClientWith
         ?environment.gate.host
         ?environment.gate.port
