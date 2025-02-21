@@ -14,8 +14,7 @@ newtype GateConnectionPool = GateConnectionPool
     }
 
 makeConnectionPool ::
-    ( ?environment :: Environment
-    ) =>
+    (?environment :: Environment) =>
     (Text -> IO ()) ->
     IO GateConnectionPool
 makeConnectionPool onMessage = do
@@ -25,9 +24,7 @@ makeConnectionPool onMessage = do
             let onError e = do
                     print e
                     runModify pool $ delete uid
-
             connection <- makeConnection uid onMessage onError
-            print $ "Connected to " <> ?environment.gate.host <> ":" <> show ?environment.gate.port <> "/" <> toString uid
             runModify pool $ insert uid connection
             pure connection
 
