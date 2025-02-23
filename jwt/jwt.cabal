@@ -1,5 +1,5 @@
 cabal-version: 3.8
-name: util
+name: jwt
 version: 0.1.0.0
 synopsis: JWT Utilities
 description: A collection of JWT utilities for Reacthome daemons galaxy
@@ -13,6 +13,12 @@ library
   hs-source-dirs: src
   -- cabal-gild: discover src
   exposed-modules:
+    JWT
+    JWT.Alg
+    JWT.Header
+    JWT.Payload
+    JWT.Typ
+
   build-depends:
     aeson,
     base,
@@ -20,6 +26,13 @@ library
     bytestring,
     crypton,
     text,
+    time,
     transformers,
+    uuid,
 
   default-language: GHC2021
+  default-extensions:
+    DeriveAnyClass
+    DerivingStrategies
+    OverloadedRecordDot
+    OverloadedStrings
