@@ -1,8 +1,8 @@
 cabal-version: 3.8
 name: jwt
 version: 0.1.0.0
-synopsis: JWT Utilities
-description: A collection of JWT utilities for Reacthome daemons galaxy
+synopsis: JOSE Utilities
+description: A collection of JOSE utilities for Reacthome daemons galaxy
 license: BSD-3-Clause
 author: ReactHome Team
 maintainer: gazdovsky@gmail.com
@@ -13,11 +13,15 @@ library
   hs-source-dirs: src
   -- cabal-gild: discover src
   exposed-modules:
-    JWT
-    JWT.Alg
-    JWT.Header
-    JWT.Payload
-    JWT.Typ
+    JOSE.Alg
+    JOSE.Crypto
+    JOSE.Header
+    JOSE.JWK
+    JOSE.JWKS
+    JOSE.JWT
+    JOSE.Payload
+    JOSE.Typ
+    JOSE.Util
 
   build-depends:
     aeson,
@@ -25,6 +29,8 @@ library
     base64-bytestring,
     bytestring,
     crypton,
+    hashable,
+    memory,
     text,
     time,
     transformers,
@@ -34,5 +40,7 @@ library
   default-extensions:
     DeriveAnyClass
     DerivingStrategies
+    DisambiguateRecordFields
+    DuplicateRecordFields
     OverloadedRecordDot
     OverloadedStrings
