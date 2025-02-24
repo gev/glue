@@ -1,5 +1,5 @@
 cabal-version: 3.8
-name: jwt
+name: jose
 version: 0.1.0.0
 synopsis: JOSE Utilities
 description: A collection of JOSE utilities for Reacthome daemons galaxy

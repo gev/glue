@@ -101,6 +101,7 @@ library
     crypton,
     hashable,
     http-types,
+    jose,
     lucid2,
     time,
     unordered-containers,
