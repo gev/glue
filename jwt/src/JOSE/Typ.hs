@@ -4,7 +4,7 @@ import Data.Aeson
 import GHC.Generics
 import JOSE.Util
 
-data Typ = JWS
+data Typ = JWT
     deriving stock (Generic, Show)
 
 instance FromJSON Typ where

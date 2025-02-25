@@ -15,7 +15,7 @@ data Header = Header
     deriving anyclass (FromJSON, ToJSON)
 
 makeHeader :: UUID -> Header
-makeHeader = Header JWS EdDSA
+makeHeader = Header JWT EdDSA
 
 options :: Options
 options =
