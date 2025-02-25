@@ -10,6 +10,7 @@ import Data.ByteString.Base64.URL qualified as BS64
 import Data.ByteString.Char8
 import Data.Text (Text)
 import Data.Time.Clock
+import Data.Time.Clock.POSIX (POSIXTime)
 import Data.UUID
 import JOSE.Crypto
 import JOSE.Header
@@ -30,7 +31,7 @@ data JWT = JWT
 makeToken :: Header -> Payload -> Token
 makeToken = Token
 
-generateToken :: KeyPair -> Text -> UUID -> NominalDiffTime -> IO ByteString
+generateToken :: KeyPair -> Text -> UUID -> Int -> IO ByteString
 generateToken kp iss sub ttl = do
     let header = makeHeader kp.kid
     payload <- newPayload iss sub ttl
@@ -81,5 +82,5 @@ verifyToken public token = do
             pure $ Ed.verify public (token.header <> "." <> token.payload) signature''
     withExceptT show . except . eitherCryptoError $ res
 
-isTokenValid :: Token -> UTCTime -> Bool
-isTokenValid token now = now < token.payload.exp
+isTokenValid :: Token -> POSIXTime -> Bool
+isTokenValid token now = round now < token.payload.exp
