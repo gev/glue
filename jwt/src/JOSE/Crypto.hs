@@ -12,6 +12,7 @@ data KeyPair = KeyPair
     , secretKey :: Ed.SecretKey
     , publicKey :: Ed.PublicKey
     }
+    deriving stock (Show)
 
 makeKeyPair :: UUID -> ByteString -> ExceptT String IO KeyPair
 makeKeyPair kid secretKey' = do

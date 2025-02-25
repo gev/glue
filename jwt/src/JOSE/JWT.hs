@@ -8,7 +8,9 @@ import Data.Aeson
 import Data.ByteArray.Encoding
 import Data.ByteString.Base64.URL qualified as BS64
 import Data.ByteString.Char8
-import Data.Time (UTCTime)
+import Data.Text (Text)
+import Data.Time.Clock
+import Data.UUID
 import JOSE.Crypto
 import JOSE.Header
 import JOSE.Payload
@@ -27,6 +29,13 @@ data JWT = JWT
 
 makeToken :: Header -> Payload -> Token
 makeToken = Token
+
+generateToken :: KeyPair -> Text -> UUID -> NominalDiffTime -> IO ByteString
+generateToken kp iss sub ttl = do
+    let header = makeHeader kp.kid
+    payload <- newPayload iss sub ttl
+    let token = makeToken header payload
+    pure $ signToken kp token
 
 signToken :: KeyPair -> Token -> ByteString
 signToken kp token =
