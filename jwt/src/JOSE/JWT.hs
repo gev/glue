@@ -9,7 +9,6 @@ import Data.ByteArray.Encoding
 import Data.ByteString.Base64.URL qualified as BS64
 import Data.ByteString.Char8
 import Data.Text (Text)
-import Data.Time.Clock
 import Data.Time.Clock.POSIX (POSIXTime)
 import Data.UUID
 import JOSE.Crypto
