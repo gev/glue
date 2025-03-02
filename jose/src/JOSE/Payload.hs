@@ -22,10 +22,10 @@ makePayload :: UUID -> Text -> UUID -> Int -> Int -> Payload
 makePayload = Payload
 
 newPayload :: Text -> UUID -> Int -> IO Payload
-newPayload iss sub age = do
+newPayload iss sub ttl = do
     jti <- nextRandom
     iat <- round <$> getPOSIXTime
-    let exp = age + iat
+    let exp = ttl + iat
     pure $
         Payload
             { jti
