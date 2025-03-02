@@ -43,7 +43,7 @@ runDialog = do
                     { text = answer.message
                     , tts = Just answer.message
                     , end_session = fromMaybe False answer.endSession
-                    , directives = Nothing -- Just start'account'linking
+                    , directives = Just start'account'linking
                     }
             , version = "1.0"
             }
