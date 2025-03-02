@@ -14,14 +14,17 @@ library
   -- cabal-gild: discover src
   exposed-modules:
     JOSE.Alg
-    JOSE.Crypto
     JOSE.Header
     JOSE.JWK
     JOSE.JWKS
     JOSE.JWT
+    JOSE.KeyPair
     JOSE.Payload
+    JOSE.PublicKey
+    JOSE.Sign
     JOSE.Typ
     JOSE.Util
+    JOSE.Verify
 
   build-depends:
     aeson,
@@ -29,11 +32,9 @@ library
     base64-bytestring,
     bytestring,
     crypton,
-    hashable,
     memory,
     text,
     time,
-    transformers,
     uuid,
 
   default-language: GHC2021

@@ -1,12 +1,9 @@
 module JOSE.JWK where
 
 import Data.Aeson
-import Data.ByteArray.Encoding
 import Data.Text
-import Data.Text.Encoding
 import Data.UUID
 import GHC.Generics
-import JOSE.Crypto
 import JOSE.Util
 
 data JWK = JWK
@@ -35,12 +32,3 @@ instance FromJSON Crv where
 
 instance ToJSON Crv where
     toJSON = genericToJSON aesonOptions
-
-makeJWK :: KeyPair -> JWK
-makeJWK kp = do
-    JWK
-        { kty = OKP
-        , crv = Ed25519
-        , x = decodeUtf8 $ convertToBase Base64URLUnpadded kp.publicKey
-        , kid = kp.kid
-        }

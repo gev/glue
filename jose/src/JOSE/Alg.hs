@@ -2,18 +2,13 @@ module JOSE.Alg where
 
 import Data.Aeson
 import GHC.Generics
+import JOSE.Util
 
 data Alg = EdDSA
     deriving stock (Generic, Eq, Show)
 
 instance FromJSON Alg where
-    parseJSON = genericParseJSON options
+    parseJSON = genericParseJSON aesonOptions
 
 instance ToJSON Alg where
-    toJSON = genericToJSON options
-
-options :: Options
-options =
-    defaultOptions
-        { tagSingleConstructors = True
-        }
+    toJSON = genericToJSON aesonOptions

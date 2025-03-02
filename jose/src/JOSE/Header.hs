@@ -16,9 +16,3 @@ data Header = Header
 
 makeHeader :: UUID -> Header
 makeHeader = Header JWT EdDSA
-
-options :: Options
-options =
-    defaultOptions
-        { tagSingleConstructors = True
-        }
