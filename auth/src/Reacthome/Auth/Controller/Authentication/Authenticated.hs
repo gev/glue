@@ -10,6 +10,7 @@ import Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialUserEntity
 import Reacthome.Auth.Domain.User
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.AuthFlow
+import Reacthome.Auth.Service.AuthUsers
 import Reacthome.Auth.Service.Challenge
 
 data Authenticated
@@ -24,33 +25,41 @@ data Authenticated
     deriving anyclass (ToJSON)
 
 makeAuthenticated ::
-    (?environment :: Environment) =>
+    ( ?environment :: Environment
+    , ?authUsers :: AuthUsers
+    ) =>
     AuthFlow ->
     User ->
     IO Authenticated
 makeAuthenticated flow user =
     case flow of
         AuthCodeGrant scope state redirect_uri client_id ->
-            makeCode scope state redirect_uri client_id
+            makeCode scope state redirect_uri client_id user
         CredentialGrant ->
             pure $ makeCredentials user
 
 makeCode ::
-    (?environment :: Environment) =>
+    ( ?environment :: Environment
+    , ?authUsers :: AuthUsers
+    ) =>
     Maybe Scope ->
     State ->
     RedirectUri ->
     ClientId ->
+    User ->
     IO Authenticated
-makeCode scope state redirect_uri client_id = do
-    code <- makeRandomChallenge ?environment.authCodeTTL
+makeCode scope state redirect_uri client_id user = do
+    {-
+        TODO: Pass the `scope` with the `user`
+    -}
+    code <- ?authUsers.register user
     pure
         Code
             { redirect_uri =
                 decodeUtf8 $
                     redirect_uri
                         <> "?code="
-                        <> encode code.value
+                        <> encodeUnpadded code.value
                         <> maybe mempty ("&scope=" <>) scope
                         <> "&state="
                         <> state

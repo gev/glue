@@ -28,6 +28,9 @@ oauth = do
             let scope = ?request.query "scope"
             state <- flowParam "state"
             redirect_uri <- flowParam "redirect_uri"
+            {-
+                TODO: Check the `client_id` on the every stage?
+            -}
             client_id <- flowParam "client_id"
             challenge <-
                 lift $

@@ -7,7 +7,7 @@ import Data.Text.Lazy
 import Data.Text.Lazy.Encoding
 
 toBase64 :: ByteString -> Text
-toBase64 = decodeUtf8 . encode
+toBase64 = decodeUtf8 . encodeUnpadded
 
 fromBase64 :: (Monad m) => Text -> ExceptT String m ByteString
-fromBase64 = except . decode . encodeUtf8
+fromBase64 = except . decodeUnpadded . encodeUtf8

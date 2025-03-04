@@ -45,7 +45,8 @@ library
     Reacthome.Auth.Controller.Authentication.Complete
     Reacthome.Auth.Controller.Authentication.Options
     Reacthome.Auth.Controller.OAuth
-    Reacthome.Auth.Controller.OAuth.Refresh
+    Reacthome.Auth.Controller.OAuth.ExchangeCodeForToken
+    Reacthome.Auth.Controller.OAuth.RefreshToken
     Reacthome.Auth.Controller.OAuth.Token
     Reacthome.Auth.Controller.Registration
     Reacthome.Auth.Controller.Registration.Begin
@@ -60,6 +61,7 @@ library
     Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialRequestOptions
     Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialRpEntity
     Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialUserEntity
+    Reacthome.Auth.Controller.WellKnown.JWKS
     Reacthome.Auth.Domain.Authentication.Begin
     Reacthome.Auth.Domain.Authentication.Complete
     Reacthome.Auth.Domain.Credential.PublicKey
@@ -118,6 +120,7 @@ executable reacthome-auth
     -with-rtsopts=-N
 
   build-depends:
+    jose,
     reacthome-auth,
     wai-middleware-static,
     warp,

@@ -1,3 +1,4 @@
+import JOSE.KeyPair
 import Network.Wai.Handler.Warp
 import Network.Wai.Middleware.Static
 import Reacthome.Auth.App
@@ -27,6 +28,8 @@ main = do
   let ?users = users
   publicKeys <- makePublicKeys
   let ?publicKeys = publicKeys
+  keyPair <- generateKeyPair
+  let ?keyPair = keyPair
   putStrLn $ "Serving Reacthome Auth on port " <> show port
   run port $
     staticPolicy

@@ -1,15 +1,17 @@
 module Reacthome.Auth.App where
 
+import JOSE.KeyPair
 import Network.Wai
 import Reacthome.Auth.Controller.Authentication
 import Reacthome.Auth.Controller.Authentication.Begin
 import Reacthome.Auth.Controller.Authentication.Complete
 import Reacthome.Auth.Controller.OAuth
-import Reacthome.Auth.Controller.OAuth.Refresh
-import Reacthome.Auth.Controller.OAuth.Token
+import Reacthome.Auth.Controller.OAuth.ExchangeCodeForToken
+import Reacthome.Auth.Controller.OAuth.RefreshToken
 import Reacthome.Auth.Controller.Registration
 import Reacthome.Auth.Controller.Registration.Begin
 import Reacthome.Auth.Controller.Registration.Complete
+import Reacthome.Auth.Controller.WellKnown.JWKS
 import Reacthome.Auth.Domain.Credential.PublicKeys
 import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
@@ -25,6 +27,7 @@ app ::
     , ?authUsers :: AuthUsers
     , ?users :: Users
     , ?publicKeys :: PublicKeys
+    , ?keyPair :: KeyPair
     ) =>
     Application
 app request respond = do
@@ -40,4 +43,5 @@ app request respond = do
             ["registration"] -> get showRegistration
             ["registration", "begin"] -> post beginRegistration
             ["registration", "complete"] -> post completeRegistration
+            [".well-known", "jwks.json"] -> get jwks
             _ -> notFound
