@@ -1,0 +1,30 @@
+module Reacthome.Auth.Controller.OAuth.Grant where
+
+import Control.Monad.Trans.Except
+import Data.ByteString
+import Data.ByteString.Base64.URL (decodeUnpadded)
+import Reacthome.Auth.Service.OAuth.Grant
+import Web.Rest
+
+getAuthorizationCode ::
+    (?request :: Request) =>
+    ExceptT String IO ByteString
+getAuthorizationCode = run grantAuthorizationCode "code"
+
+getRefreshToken ::
+    (?request :: Request) =>
+    ExceptT String IO ByteString
+getRefreshToken = run grantRefreshToken "refresh_token"
+
+run ::
+    (?request :: Request) =>
+    (ByteString -> ExceptT String IO ()) ->
+    ByteString ->
+    ExceptT String IO ByteString
+run grant name = do
+    params <- ?request.bodyParams
+    grant =<< params.lookup "grant_type"
+    client_id <- params.lookup "client_id"
+    client_secret <- params.lookup "client_secret"
+    grantClient client_id client_secret
+    except . decodeUnpadded =<< params.lookup name

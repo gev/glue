@@ -46,6 +46,7 @@ library
     Reacthome.Auth.Controller.Authentication.Options
     Reacthome.Auth.Controller.OAuth
     Reacthome.Auth.Controller.OAuth.ExchangeCodeForToken
+    Reacthome.Auth.Controller.OAuth.Grant
     Reacthome.Auth.Controller.OAuth.RefreshToken
     Reacthome.Auth.Controller.OAuth.Token
     Reacthome.Auth.Controller.Registration
@@ -90,6 +91,7 @@ library
     Reacthome.Auth.Service.Authentication.Pre
     Reacthome.Auth.Service.Challenge
     Reacthome.Auth.Service.Challenges
+    Reacthome.Auth.Service.OAuth.Grant
     Reacthome.Auth.Service.Registration.Begin
     Reacthome.Auth.Service.Registration.Complete
     Reacthome.Auth.Service.Registration.Pre
