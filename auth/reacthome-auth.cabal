@@ -119,7 +119,6 @@ executable reacthome-auth
 
   ghc-options:
     -O2
-    -split-objs
     -rtsopts
     -with-rtsopts=-N
     -Wall
