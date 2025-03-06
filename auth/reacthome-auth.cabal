@@ -121,6 +121,7 @@ executable reacthome-auth
     -O2
     -rtsopts
     -with-rtsopts=-N
+    -Wall
 
   build-depends:
     jose,
