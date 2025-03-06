@@ -5,3 +5,4 @@ constraints:
 
 package *
     ghc-options: -O2 -threaded  -Wall 
+    split-sections: True
