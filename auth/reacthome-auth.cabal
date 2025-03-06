@@ -118,6 +118,7 @@ executable reacthome-auth
     common-options
 
   ghc-options:
+    -O2
     -rtsopts
     -with-rtsopts=-N
 

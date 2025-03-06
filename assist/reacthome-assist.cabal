@@ -82,6 +82,7 @@ executable reacthome-assist
     common-options
 
   ghc-options:
+    -O2
     -rtsopts
     -with-rtsopts=-N
 
