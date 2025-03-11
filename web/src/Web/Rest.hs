@@ -22,7 +22,7 @@ data Request
     , body :: IO Lazy.ByteString
     , bodyParams :: ExceptT String IO BodyParams
     , headers :: RequestHeaders
-    , header :: HeaderName -> Maybe ContentType
+    , header :: HeaderName -> Maybe ByteString
     , query :: ByteString -> Maybe ByteString
     , hasContentType :: ContentType -> Bool
     , cookies :: Maybe Cookies
