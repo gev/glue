@@ -2,7 +2,9 @@ module Reacthome.Assist.Controller.Yandex where
 
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
+import Data.ByteString
 import Data.Maybe
+import Network.HTTP.Types.Header
 import Reacthome.Assist.Dialog.Gate
 import Reacthome.Assist.Domain.Answer
 import Reacthome.Assist.Domain.Query
@@ -24,6 +26,22 @@ runDialog ::
     ) =>
     ExceptT String IO Response
 runDialog = do
+    response <- maybe shouldAuthorize runDialog' checkAuthorization
+    toJSON
+        DialogResponse
+            { response
+            , version = "1.0"
+            }
+
+runDialog' ::
+    ( ?answers :: Answers
+    , ?gateConnectionPool :: GateConnectionPool
+    , ?request :: Request
+    ) =>
+    ByteString ->
+    ExceptT String IO D.Response
+runDialog' authorization = do
+    lift $ print authorization
     dialog <- fromJSON @DialogRequest ?request
     -- lift $ print dialog
     answer <-
@@ -36,14 +54,24 @@ runDialog = do
                     { message = dialog.request.command
                     , sessionId = dialog.session.session_id
                     }
-    toJSON
-        DialogResponse
-            { response =
-                D.Response
-                    { text = answer.message
-                    , tts = Just answer.message
-                    , end_session = fromMaybe False answer.endSession
-                    , directives = Just start'account'linking
-                    }
-            , version = "1.0"
+    pure
+        D.Response
+            { text = answer.message
+            , tts = Just answer.message
+            , end_session = fromMaybe False answer.endSession
+            , directives = Nothing
+            }
+
+checkAuthorization :: (?request :: Request) => Maybe ByteString
+checkAuthorization =
+    ?request.header hAuthorization
+
+shouldAuthorize :: ExceptT String IO D.Response
+shouldAuthorize =
+    pure
+        D.Response
+            { text = "Привет!"
+            , tts = Just "Привет!"
+            , end_session = False
+            , directives = Just start'account'linking
             }

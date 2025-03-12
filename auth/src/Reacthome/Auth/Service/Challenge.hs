@@ -3,6 +3,7 @@ module Reacthome.Auth.Service.Challenge where
 import Crypto.Random
 import Data.ByteString
 import Data.Hashable
+import Reacthome.Auth.Environment
 
 newtype Challenge = Challenge
     { value :: ByteString
@@ -13,5 +14,5 @@ newtype Challenge = Challenge
 makeChallenge :: ByteString -> Challenge
 makeChallenge = Challenge
 
-makeRandomChallenge :: Int -> IO Challenge
-makeRandomChallenge ttl = makeChallenge <$> getRandomBytes ttl
+makeRandomChallenge :: (?environment :: Environment) => IO Challenge
+makeRandomChallenge = makeChallenge <$> getRandomBytes ?environment.challengeSize

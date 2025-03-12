@@ -6,6 +6,7 @@ import Reacthome.Auth.Environment
 import Reacthome.Auth.Repository.InMemory.AuthFlows
 import Reacthome.Auth.Repository.InMemory.AuthUsers
 import Reacthome.Auth.Repository.InMemory.Credential.PublicKeys
+import Reacthome.Auth.Repository.InMemory.RefreshTokens
 import Reacthome.Auth.Repository.InMemory.Users
 
 main :: IO ()
@@ -19,6 +20,7 @@ main = do
           , authTimeout = 100
           , authFlowCookieTTL = 300
           , authCodeTTL = 30
+          , accessTokenTTL = 900
           }
   authFlows <- makeAuthFlows
   let ?authFlows = authFlows
@@ -30,6 +32,8 @@ main = do
   let ?publicKeys = publicKeys
   keyPair <- generateKeyPair
   let ?keyPair = keyPair
+  refreshTokens <- makeRefreshTokens
+  let ?refreshTokens = refreshTokens
   putStrLn $ "Serving Reacthome Auth on port " <> show port
   run port $
     staticPolicy

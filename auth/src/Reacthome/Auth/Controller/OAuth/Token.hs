@@ -9,8 +9,8 @@ import JOSE.Sign qualified as JOSE
 import Reacthome.Auth.Domain.User
 import Reacthome.Auth.Domain.User.Id
 import Reacthome.Auth.Environment
-import Reacthome.Auth.Service.AuthUsers
 import Reacthome.Auth.Service.Challenge
+import Reacthome.Auth.Service.RefreshTokens
 import Util.Base64.URL
 
 data TokenType = Bearer
@@ -37,15 +37,15 @@ data Token = Token
 
 generateToken ::
     ( ?environment :: Environment
-    , ?authUsers :: AuthUsers
+    , ?refreshTokens :: RefreshTokens
     , ?keyPair :: KeyPair
     ) =>
     User ->
     IO Token
 generateToken user = do
-    let expires_in = 60
+    let expires_in = ?environment.accessTokenTTL
     access_token <- JOSE.generateToken ?keyPair ?environment.domain user.id.value expires_in
-    refresh_token <- ?authUsers.register user
+    refresh_token <- ?refreshTokens.register user
     pure
         Token
             { access_token = decodeUtf8 access_token

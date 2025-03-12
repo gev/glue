@@ -9,4 +9,5 @@ data Environment = Environment
     , authFlowCookieTTL :: Int
     , authCodeTTL :: Int
     , challengeSize :: Int
+    , accessTokenTTL :: Int
     }

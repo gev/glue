@@ -17,6 +17,7 @@ import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.AuthFlows
 import Reacthome.Auth.Service.AuthUsers
+import Reacthome.Auth.Service.RefreshTokens
 import Web.Rest
 import Web.Rest.Method
 import Web.Rest.Status
@@ -27,6 +28,7 @@ app ::
     , ?authUsers :: AuthUsers
     , ?users :: Users
     , ?publicKeys :: PublicKeys
+    , ?refreshTokens :: RefreshTokens
     , ?keyPair :: KeyPair
     ) =>
     Application
