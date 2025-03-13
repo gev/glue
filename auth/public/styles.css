@@ -13,7 +13,7 @@
   }
 
   div {
-      width: 240px;
+      width: 260px;
   }
 
   img {
@@ -21,18 +21,13 @@
       margin-bottom: 16px;
   }
 
-  h1 {
+  h2 {
       font-weight: normal;
-  }
-
-  form {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
   }
 
   input {
       padding: 8px;
+      margin-left: -8px;
       margin-bottom: 8px;
       border: 1px solid #ced4da;
       border-radius: 4px;
@@ -47,4 +42,11 @@
       cursor: pointer;
       background-color: #007bff;
       color: light-dark(white, black);
+  }
+
+  .row {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: baseline;
   }

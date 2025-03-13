@@ -15,15 +15,13 @@ registration =
             script_ [src_ "/auth.js"] (mempty :: Html ())
         body_ [onload_ "init(register)"] do
             div_ do
-                img_ [width_ "150px", src_ "/icon.png", alt_ "Reacthome logo"]
-                h2_ "Reacthome"
-                h1_ "Registration"
-            form_ [id_ "form"] do
-                div_ do
+                img_ [src_ "/icon.png", alt_ "Reacthome logo"]
+            div_ [class_ "row"] do
+                h2_ "Registration"
+                a_ [href_ "/authentication"] "Sign in"
+            div_ do
+                form_ [id_ "form"] do
                     input_ [name_ "login", type_ "text", placeholder_ "Login", autocomplete_ "on", autofocus_]
-                div_ do
                     input_ [name_ "name", type_ "text", placeholder_ "Name", autocomplete_ "on"]
-                div_ do
                     button_ [type_ "submit"] "Sign up"
-                    a_ [href_ "/authentication"] "Sign in"
             div_ [id_ "debug"] mempty

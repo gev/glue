@@ -15,13 +15,12 @@ authentication =
             script_ [src_ "/auth.js"] (mempty :: Html ())
         body_ [onload_ "init(authenticate)"] do
             div_ do
-                img_ [width_ "150px", src_ "/icon.png", alt_ "Reacthome logo"]
-                h2_ "Reacthome"
-                h1_ "Authentication"
-            form_ [id_ "form"] do
-                div_ do
+                img_ [src_ "/icon.png", alt_ "Reacthome logo"]
+            div_ [class_ "row"] do
+                h2_ "Authentication"
+                a_ [href_ "/registration"] "Sign up"
+            div_ do
+                form_ [id_ "form"] do
                     input_ [name_ "login", type_ "text", placeholder_ "Login", autocomplete_ "on", autofocus_]
-                div_ do
                     button_ [type_ "submit"] "Sign in"
-                    a_ [href_ "/registration"] "Sign up"
             div_ [id_ "debug"] mempty
