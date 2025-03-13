@@ -16,6 +16,7 @@ main = do
         Environment
           { name = "Reacthome Auth Service"
           , domain = "reacthome.net"
+          , host = "dev.auth.reacthome.net"
           , challengeSize = 20
           , authTimeout = 100
           , authFlowCookieTTL = 300

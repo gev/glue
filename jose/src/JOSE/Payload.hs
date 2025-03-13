@@ -21,8 +21,8 @@ data Payload = Payload
 makePayload :: UUID -> Text -> UUID -> Int -> Int -> Payload
 makePayload = Payload
 
-newPayload :: Text -> UUID -> Int -> IO Payload
-newPayload iss sub ttl = do
+newPayload :: Text -> Int -> UUID -> IO Payload
+newPayload iss ttl sub = do
     jti <- nextRandom
     iat <- round <$> getPOSIXTime
     let exp = ttl + iat

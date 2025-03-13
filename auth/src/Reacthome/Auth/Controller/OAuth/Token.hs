@@ -43,13 +43,17 @@ generateToken ::
     User ->
     IO Token
 generateToken user = do
-    let expires_in = ?environment.accessTokenTTL
-    access_token <- JOSE.generateToken ?keyPair ?environment.domain user.id.value expires_in
+    access_token <-
+        JOSE.generateToken
+            ?keyPair
+            ?environment.host
+            ?environment.accessTokenTTL
+            user.id.value
     refresh_token <- ?refreshTokens.register user
     pure
         Token
             { access_token = decodeUtf8 access_token
             , token_type = Bearer
-            , expires_in
+            , expires_in = ?environment.accessTokenTTL
             , refresh_token = toBase64 refresh_token.value
             }

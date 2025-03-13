@@ -12,10 +12,10 @@ import JOSE.JWT
 import JOSE.KeyPair
 import JOSE.Payload
 
-generateToken :: KeyPair -> Text -> UUID -> Int -> IO ByteString
-generateToken kp iss sub ttl = do
+generateToken :: KeyPair -> Text -> Int -> UUID -> IO ByteString
+generateToken kp iss ttl sub = do
     let header = makeHeader kp.kid
-    payload <- newPayload iss sub ttl
+    payload <- newPayload iss ttl sub
     let token = makeToken header payload
     pure $ signToken kp token
 
