@@ -69,7 +69,6 @@ const authenticate = async form => {
         const res = await completeAuthentication(publicKeyCredentials)
         switch (res.tag) {
             case "Code":
-                alert(res)
                 window.location.href = res.redirect_uri
                 break
             case "Credentials":
