@@ -1,6 +1,6 @@
 module Reacthome.Assist.Environment where
 
-import Data.ByteString (ByteString)
+import Data.ByteString
 import Network.Socket
 
 data Environment = Environment
