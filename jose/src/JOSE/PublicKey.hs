@@ -1,5 +1,6 @@
 module JOSE.PublicKey where
 
+import Control.Monad.Trans.Maybe
 import Crypto.Error
 import Crypto.PubKey.Ed25519 qualified as Ed
 import Data.ByteString
@@ -13,8 +14,8 @@ data PublicKey = PublicKey
     , publicKey :: Ed.PublicKey
     }
 
-newtype PublicKeys = PublicKeys
-    { findBy :: UUID -> Maybe PublicKey
+newtype PublicKeys m = PublicKeys
+    { findBy :: UUID -> MaybeT m PublicKey
     }
 
 makePublicKey :: UUID -> ByteString -> Either String PublicKey
