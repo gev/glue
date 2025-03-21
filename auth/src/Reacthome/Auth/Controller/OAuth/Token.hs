@@ -46,7 +46,7 @@ generateToken user = do
     access_token <-
         JOSE.generateToken
             ?keyPair
-            ?environment.host
+            ?environment.domain
             ?environment.accessTokenTTL
             user.id.value
     refresh_token <- ?refreshTokens.register user
