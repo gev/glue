@@ -6,6 +6,8 @@ import Network.Socket
 data Environment = Environment
     { gate :: GateConfig
     , queueSize :: Int
+    , jwksURL :: String
+    , publicKeysUpdateInterval :: Int
     }
 
 data GateConfig = GateConfig

@@ -42,7 +42,9 @@ library
     Reacthome.Assist.Domain.Query
     Reacthome.Assist.Environment
     Reacthome.Assist.Repository.Answers
+    Reacthome.Assist.Repository.PublicKeys
     Reacthome.Assist.Service.Dialog
+    Reacthome.Assist.Service.JOSE.PublicKey
     Reacthome.Gate.Connection
     Reacthome.Gate.Connection.Pool
     Reacthome.Yandex.Dialogs.Application
@@ -62,8 +64,10 @@ library
     aeson,
     async,
     hashable,
+    http-client,
     http-client-tls,
     http-types,
+    jose,
     network,
     stm,
     stm-containers,
