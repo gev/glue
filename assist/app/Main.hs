@@ -20,7 +20,7 @@ main = do
                 }
           , queueSize = 42
           , jwksURL = "https://dev.auth.reacthome.net/.well-known/jwks.json"
-          , publicKeysUpdateInterval = 10
+          , publicKeysUpdateInterval = 60
           }
   answers <- makeAnswers
   let ?answers = answers
