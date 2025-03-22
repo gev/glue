@@ -13,16 +13,23 @@ data PublicKey = PublicKey
     { kid :: UUID
     , publicKey :: Ed.PublicKey
     }
+    deriving stock (Show)
 
-newtype PublicKeys m = PublicKeys
+data PublicKeys m = PublicKeys
     { findBy :: UUID -> MaybeT m PublicKey
+    , store :: [PublicKey] -> m ()
     }
 
 makePublicKey :: UUID -> ByteString -> Either String PublicKey
 makePublicKey kid bs = do
     case Ed.publicKey bs of
         CryptoFailed err -> Left $ show err
-        CryptoPassed publicKey -> Right $ PublicKey kid publicKey
+        CryptoPassed publicKey ->
+            Right
+                PublicKey
+                    { kid
+                    , publicKey
+                    }
 
 fromJWK :: JWK -> Either String PublicKey
 fromJWK jwk =
