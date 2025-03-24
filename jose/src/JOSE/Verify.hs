@@ -10,12 +10,12 @@ import JOSE.Header
 import JOSE.JWT
 import JOSE.PublicKey
 
-verify ::
+verifySignature ::
     (Monad m) =>
     PublicKeys m ->
     ByteString ->
-    ExceptT String m Bool
-verify pks bs = do
+    ExceptT String m Token
+verifySignature pks bs = do
     jwt <- splitToken bs
     token <- parseToken jwt
     signature <- except $ decodeUnpadded jwt.signature
@@ -25,4 +25,6 @@ verify pks bs = do
             let err = "Public key not found: " <> show token.header.kid
             pk <- maybeToExceptT err $ pks.findBy token.header.kid
             let msg = jwt.header <> "." <> jwt.payload
-            pure $ Ed.verify pk.publicKey msg sig
+            if Ed.verify pk.publicKey msg sig
+                then pure token
+                else throwE "Invalid signature"
