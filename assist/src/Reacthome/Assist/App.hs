@@ -1,5 +1,6 @@
 module Reacthome.Assist.App where
 
+import JOSE.PublicKey
 import Network.Wai
 import Reacthome.Assist.Controller.Yandex
 import Reacthome.Assist.Service.Dialog
@@ -11,6 +12,7 @@ import Web.Rest.Status
 app ::
     ( ?answers :: Answers
     , ?gateConnectionPool :: GateConnectionPool
+    , ?publicKeys :: PublicKeys IO
     ) =>
     Application
 app request respond = do

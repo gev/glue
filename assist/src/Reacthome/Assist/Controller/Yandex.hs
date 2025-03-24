@@ -2,8 +2,14 @@ module Reacthome.Assist.Controller.Yandex where
 
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
+import Control.Monad.Trans.Maybe
 import Data.ByteString
 import Data.Maybe
+import Data.Text (Text)
+import JOSE.JWT
+import JOSE.Payload
+import JOSE.PublicKey
+import JOSE.Verify (verifySignature)
 import Network.HTTP.Types.Header
 import Reacthome.Assist.Dialog.Gate
 import Reacthome.Assist.Domain.Answer
@@ -23,35 +29,47 @@ runDialog ::
     ( ?answers :: Answers
     , ?gateConnectionPool :: GateConnectionPool
     , ?request :: Request
+    , ?publicKeys :: PublicKeys IO
     ) =>
     ExceptT String IO Response
 runDialog = do
-    response <- maybe shouldAuthorize runDialog' checkAuthorization
+    response <- handleE shouldAuthorize run
     toJSON
         DialogResponse
             { response
             , version = "1.0"
             }
 
-runDialog' ::
+run ::
     ( ?answers :: Answers
     , ?gateConnectionPool :: GateConnectionPool
     , ?request :: Request
+    , ?publicKeys :: PublicKeys IO
     ) =>
-    ByteString ->
     ExceptT String IO D.Response
-runDialog' authorization = do
-    lift $ print authorization
+run = do
+    user <- getAuthorizedUser
+    lift $ print user
     dialog <- fromJSON ?request
-    lift $ print dialog
     makeAnswer dialog
 
-checkAuthorization :: (?request :: Request) => Maybe ByteString
-checkAuthorization =
-    ?request.header hAuthorization
+getAuthorizedUser ::
+    ( ?request :: Request
+    , ?publicKeys :: PublicKeys IO
+    ) =>
+    ExceptT String IO Text
+getAuthorizedUser = do
+    authorization <- maybeToExceptT "Not authorized" . hoistMaybe $ ?request.header hAuthorization
+    jwt <- maybeToExceptT "Required `Bearer` authorization" . hoistMaybe $ stripPrefix "Bearer " authorization
+    token <- verifySignature ?publicKeys jwt
+    isValid <- lift $ isTokenValidNow token
+    if isValid
+        then pure token.payload.iss
+        else throwE "Token is expired"
 
-shouldAuthorize :: ExceptT String IO D.Response
-shouldAuthorize =
+shouldAuthorize :: String -> ExceptT String IO D.Response
+shouldAuthorize err = do
+    lift $ print err
     pure
         D.Response
             { text = "Привет!"
