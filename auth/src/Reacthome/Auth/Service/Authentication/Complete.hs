@@ -12,36 +12,38 @@ import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.AuthUsers
 import Reacthome.Auth.Service.Challenge
-import Util.ASN1 qualified as ASN1
+import Util.ASN1
 
 runCompleteAuthentication ::
-    ( ?environment :: Environment
-    , ?authUsers :: AuthUsers
-    , ?users :: Users
-    , ?publicKeys :: PublicKeys
-    ) =>
-    CompleteAuthentication ->
-    ExceptT String IO User
+  ( ?environment :: Environment
+  , ?authUsers :: AuthUsers
+  , ?users :: Users
+  , ?publicKeys :: PublicKeys
+  ) =>
+  CompleteAuthentication ->
+  ExceptT String IO User
 runCompleteAuthentication credentials = do
-    user <-
-        maybeToExceptT
-            ("Invalid challenge " <> show credentials.challenge.value)
-            $ ?authUsers.findBy credentials.challenge
-    lift $ ?authUsers.remove credentials.challenge
-    -- publicKey <-
-    --     maybeToExceptT ("Public key with id " <> show credentials.id.value <> " not found") $
-    --         ?publicKeys.findById credentials.id
-    -- publicKey' <- ASN1.decode publicKey.bytes
-    -- lift do
-    --     print publicKey.algorithm
-    --     print publicKey.bytes
-    --     print publicKey'
+  user <-
+    maybeToExceptT
+      ("Invalid challenge " <> show credentials.challenge.value)
+      $ ?authUsers.findBy credentials.challenge
+  lift $ ?authUsers.remove credentials.challenge
+  publicKey <-
+    maybeToExceptT ("Public key with id " <> show credentials.id.value <> " not found") $
+      ?publicKeys.findById credentials.id
+  publicKey' <- berDecode publicKey.bytes
+  lift do
+    print publicKey.algorithm
+    print publicKey.bytes
+    print publicKey'
 
-    -- publicKey' <-
+  -- decodePublicKey publicKey
 
-    -- let isVerified = verify
-    --     (HashSHA256)
-    --     publicKey'
-    --     credentials.message
-    --     credentials.signature
-    pure user
+  -- publicKey' <-
+
+  -- let isVerified = verify
+  --     (HashSHA256)
+  --     publicKey'
+  --     credentials.message
+  --     credentials.signature
+  pure user

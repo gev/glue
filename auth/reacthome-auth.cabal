@@ -67,6 +67,9 @@ library
     Reacthome.Auth.Domain.Authentication.Complete
     Reacthome.Auth.Domain.Credential.PublicKey
     Reacthome.Auth.Domain.Credential.PublicKey.Algorithm
+    Reacthome.Auth.Domain.Credential.PublicKey.Algorithm.ED25519
+    Reacthome.Auth.Domain.Credential.PublicKey.Algorithm.ES256
+    Reacthome.Auth.Domain.Credential.PublicKey.Algorithm.RS256
     Reacthome.Auth.Domain.Credential.PublicKey.Id
     Reacthome.Auth.Domain.Credential.PublicKeys
     Reacthome.Auth.Domain.Registration.Begin
@@ -102,6 +105,8 @@ library
 
   build-depends:
     aeson,
+    asn1-encoding,
+    asn1-types,
     base64-bytestring,
     cookie,
     crypton,

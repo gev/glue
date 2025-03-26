@@ -1,10 +1,16 @@
 module Reacthome.Auth.Domain.Credential.PublicKey where
 
+import Control.Monad.Trans.Except
+import Data.ASN1.Prim
 import Data.ByteString
 import Data.Hashable
 import Reacthome.Auth.Domain.Credential.PublicKey.Algorithm
+import Reacthome.Auth.Domain.Credential.PublicKey.Algorithm.ED25519 qualified as ED25519
+import Reacthome.Auth.Domain.Credential.PublicKey.Algorithm.ES256 qualified as ES256
+import Reacthome.Auth.Domain.Credential.PublicKey.Algorithm.RS256 qualified as RS256
 import Reacthome.Auth.Domain.Credential.PublicKey.Id
 import Reacthome.Auth.Domain.User.Id
+import Prelude hiding (head, length, splitAt)
 
 data PublicKey = PublicKey
     { id :: PublicKeyId
@@ -21,10 +27,12 @@ instance Hashable PublicKey where
     hashWithSalt salt publicKey =
         hashWithSalt salt publicKey.id
 
--- decodePublicKey :: PublicKey -> ExceptT String m PublicKey
--- decodePublicKey publicKey = case publicKey.algorithm of
---     ED25519 -> pure decodePublicKeyES256 publicKey.bytes
---     ES256 -> pure publicKey
---     RS256 -> pure publicKey
-
--- decodePublicKeyES256 :: ByteString -> ExceptT String m PublicKey
+decodePublicKey ::
+    (Monad m) =>
+    PublicKeyAlgorithm ->
+    [ASN1] ->
+    ExceptT String m ByteString
+decodePublicKey = \case
+    ED25519 -> ED25519.decodePublicKey
+    ES256 -> ES256.decodePublicKey
+    RS256 -> RS256.decodePublicKey
