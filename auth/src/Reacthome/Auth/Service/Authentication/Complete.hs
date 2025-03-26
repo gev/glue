@@ -12,7 +12,6 @@ import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.AuthUsers
 import Reacthome.Auth.Service.Challenge
-import Util.ASN1
 
 runCompleteAuthentication ::
   ( ?environment :: Environment
@@ -22,28 +21,23 @@ runCompleteAuthentication ::
   ) =>
   CompleteAuthentication ->
   ExceptT String IO User
-runCompleteAuthentication credentials = do
+runCompleteAuthentication request = do
   user <-
     maybeToExceptT
-      ("Invalid challenge " <> show credentials.challenge.value)
-      $ ?authUsers.findBy credentials.challenge
-  lift $ ?authUsers.remove credentials.challenge
+      ("Invalid challenge " <> show request.challenge.value)
+      $ ?authUsers.findBy request.challenge
+  lift $ ?authUsers.remove request.challenge
+  lift $ print request.message
   publicKey <-
-    maybeToExceptT ("Public key with id " <> show credentials.id.value <> " not found") $
-      ?publicKeys.findById credentials.id
-  publicKey' <- berDecode publicKey.bytes
-  lift do
-    print publicKey.algorithm
-    print publicKey.bytes
-    print publicKey'
-
-  -- decodePublicKey publicKey
-
-  -- publicKey' <-
-
-  -- let isVerified = verify
-  --     (HashSHA256)
-  --     publicKey'
-  --     credentials.message
-  --     credentials.signature
-  pure user
+    maybeToExceptT ("Public key with id " <> show request.id.value <> " not found") $
+      ?publicKeys.findById request.id
+  isValidSignature <- verifySignature publicKey request.message request.signature
+  if isValidSignature
+    then pure user
+    else
+      throwE $
+        "Cant verify signature for user id: `"
+          <> show user.id
+          <> "` by public key id `"
+          <> show publicKey.id
+          <> "` "

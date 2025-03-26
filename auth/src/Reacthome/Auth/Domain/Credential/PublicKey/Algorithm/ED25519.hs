@@ -15,3 +15,15 @@ decodePublicKey = \case
         , End Sequence
         ] -> pure bytes
     _ -> throwE "Invalid Ed25519 public key format"
+
+verifySignature ::
+    (Monad m) =>
+    ByteString ->
+    ByteString ->
+    ByteString ->
+    ExceptT String m Bool
+verifySignature _ _ _ = pure False
+
+{-
+    TODO: WebAuthn. Implement ED25519
+-}

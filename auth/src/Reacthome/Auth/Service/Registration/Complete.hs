@@ -11,7 +11,6 @@ import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.AuthUsers
 import Reacthome.Auth.Service.Challenge
-import Util.ASN1
 
 runCompleteRegistration ::
     ( ?environment :: Environment
@@ -29,8 +28,9 @@ runCompleteRegistration credentials = do
     lift $ ?authUsers.remove credentials.challenge
     ?users.store user
     bytes <-
-        decodePublicKey credentials.publicKeyAlgorithm
-            =<< derDecode credentials.publicKey
+        decodePublicKey
+            credentials.publicKeyAlgorithm
+            credentials.publicKey
     ?publicKeys.store
         PublicKey
             { id = credentials.id

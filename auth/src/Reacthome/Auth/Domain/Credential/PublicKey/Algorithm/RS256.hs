@@ -43,3 +43,15 @@ encodeMPI i =
             [ byteString $ i2osp len
             , byteString bytes
             ]
+
+verifySignature ::
+    (Monad m) =>
+    ByteString ->
+    ByteString ->
+    ByteString ->
+    ExceptT String m Bool
+verifySignature _ _ _ = pure False
+
+{-
+    TODO: WebAuthn. Implement RS256
+-}
