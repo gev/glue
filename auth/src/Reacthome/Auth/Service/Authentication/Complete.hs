@@ -27,7 +27,6 @@ runCompleteAuthentication request = do
       ("Invalid challenge " <> show request.challenge.value)
       $ ?authUsers.findBy request.challenge
   lift $ ?authUsers.remove request.challenge
-  lift $ print request.message
   publicKey <-
     maybeToExceptT ("Public key with id " <> show request.id.value <> " not found") $
       ?publicKeys.findById request.id
