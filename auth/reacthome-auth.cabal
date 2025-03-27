@@ -114,6 +114,7 @@ library
     http-types,
     jose,
     lucid2,
+    sqlite-simple,
     time,
     unordered-containers,
     util,
