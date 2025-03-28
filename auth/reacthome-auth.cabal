@@ -13,6 +13,7 @@ common common-options
   build-depends:
     base,
     bytestring,
+    sqlite-simple,
     text,
     transformers,
     uuid,
@@ -29,6 +30,7 @@ common common-options
     OverloadedRecordDot
     OverloadedStrings
     PatternSynonyms
+    QuasiQuotes
 
 library
   import:
@@ -87,6 +89,9 @@ library
     Reacthome.Auth.Repository.InMemory.Credential.PublicKeys
     Reacthome.Auth.Repository.InMemory.RefreshTokens
     Reacthome.Auth.Repository.InMemory.Users
+    Reacthome.Auth.Repository.Sqlite
+    Reacthome.Auth.Repository.Sqlite.PublicKeys    
+    Reacthome.Auth.Repository.Sqlite.Users
     Reacthome.Auth.Service.AuthFlow
     Reacthome.Auth.Service.AuthFlows
     Reacthome.Auth.Service.AuthUsers
@@ -114,7 +119,6 @@ library
     http-types,
     jose,
     lucid2,
-    sqlite-simple,
     time,
     unordered-containers,
     util,

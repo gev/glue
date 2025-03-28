@@ -1,6 +1,7 @@
 module Reacthome.Auth.Environment where
 
 import Data.Text
+import Database.SQLite.Simple
 
 data Environment = Environment
     { name :: Text
@@ -10,4 +11,5 @@ data Environment = Environment
     , authCodeTTL :: Int
     , challengeSize :: Int
     , accessTokenTTL :: Int
+    , db :: Connection
     }
