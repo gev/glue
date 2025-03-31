@@ -1,13 +1,15 @@
-module Reacthome.Auth.Repository.Sqlite.Users where
+module Reacthome.Auth.Repository.SQLite.Users where
 
+import Control.Monad
 import Control.Monad.Trans.Class
+import Control.Monad.Trans.Except
 import Control.Monad.Trans.Maybe
 import Data.ByteString.Lazy (ByteString)
-import Data.Foldable
+import Data.Foldable (traverse_)
+import Data.Pool
 import Data.Text (Text)
-import Data.UUID
+import Data.UUID hiding (null)
 import Database.SQLite.Simple
-import Database.SQLite.Simple.QQ
 import Database.SQLite.Simple.ToField
 import GHC.Generics
 import Reacthome.Auth.Domain.User
@@ -16,54 +18,61 @@ import Reacthome.Auth.Domain.User.Login
 import Reacthome.Auth.Domain.User.Name
 import Reacthome.Auth.Domain.User.Status
 import Reacthome.Auth.Domain.Users
-import Reacthome.Auth.Environment
-import Reacthome.Auth.Repository.Sqlite
+import Reacthome.Auth.Repository.SQLite.Users.Query
+import Util.SQLite
 
-makeUsers :: (?environment :: Environment) => IO Users
-makeUsers = do
-    traverse_ (execute_ ?environment.db) initUsers
+makeUsers :: Pool Connection -> IO Users
+makeUsers pool = do
+    withResource pool \connection ->
+        traverse_
+            (execute_ connection)
+            [ createUsersTable
+            , createUsersIndex
+            ]
+
     let
         findById uid =
             findBy
-                [sql| 
-                    SELECT id, login, status 
-                    FROM users WHERE id = ? 
-                    |]
+                pool
+                findUserById
                 $ toByteString uid.value
 
         findByLogin login =
             findBy
-                [sql| 
-                    SELECT id, login, status 
-                    FROM users WHERE login = ?
-                    |]
+                pool
+                findUserByLogin
                 login.value
 
-        has login = do
-            [Only count] <-
-                onlyQuery
-                    [sql| 
-                        SELECT COUNT(*) 
-                        FROM users WHERE login = ? 
-                        |]
-                    login.value
-            pure (count > (0 :: Int))
+        has login =
+            either
+                (const False)
+                ( \case
+                    [Only count] -> count > (0 :: Int)
+                    _ -> False
+                )
+                <$> runExceptT
+                    ( withExceptT print $
+                        tryQuery
+                            pool
+                            countUserByLogin
+                            (Only login.value)
+                    )
 
         store user =
             tryExecute
-                [sql| 
-                    REPLACE INTO users (id, login, name, status)
-                    VALUES (?, ?, ?, ?)
-                    |]
-                $ toUserRow user
+                pool
+                storeUser
+                (toUserRow user)
 
-        remove user = do
-            onlyExecute
-                [sql| 
-                    DELETE FROM users 
-                    WHERE id = ? 
-                    |]
-                $ toByteString user.id.value
+        remove user =
+            void $
+                runExceptT
+                    ( withExceptT print $
+                        tryExecute
+                            pool
+                            removeUser
+                            (Only $ toByteString user.id.value)
+                    )
 
     pure
         Users
@@ -74,13 +83,6 @@ makeUsers = do
             , remove
             }
 
-findBy :: (?environment :: Environment, ToField p) => Query -> p -> MaybeT IO User
-findBy q p = do
-    result <- lift $ onlyQuery q p
-    hoistMaybe $ case result of
-        (user : _) -> fromUserRow user
-        [] -> Nothing
-
 data UserRow = UserRow
     { id :: ByteString
     , login :: Text
@@ -89,10 +91,6 @@ data UserRow = UserRow
     }
     deriving stock (Generic, Eq, Show)
     deriving anyclass (FromRow, ToRow)
-
--- instance ToField UserRow where
---     toField user =
---         SQLBlob $ toStrict user.id
 
 fromUserRow :: UserRow -> Maybe User
 fromUserRow user = do
@@ -122,20 +120,17 @@ toUserRow user =
             Suspended -> "suspended"
         }
 
-initUsers :: [Query]
-initUsers =
-    [ createUsersTable
-    , createUsersIndex
-    ]
-  where
-    createUsersTable =
-        [sql|
-                CREATE TABLE IF NOT EXISTS users 
-                        (id BLOB PRIMARY KEY, login TEXT, name TEXT, status TEXT)
-            |]
-
-    createUsersIndex =
-        [sql|
-                CREATE INDEX IF NOT EXISTS users_login_idx 
-                    ON users(login)
-            |]
+findBy ::
+    (ToField p) =>
+    Pool Connection ->
+    Query ->
+    p ->
+    MaybeT IO User
+findBy pool q p = do
+    res <- lift . runExceptT $ tryQuery pool q (Only p)
+    case res of
+        Left e -> do
+            lift $ print e
+            hoistMaybe Nothing
+        Right [] -> hoistMaybe Nothing
+        Right (user : _) -> hoistMaybe $ fromUserRow user

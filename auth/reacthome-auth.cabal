@@ -16,6 +16,7 @@ common common-options
     sqlite-simple,
     text,
     transformers,
+    util,
     uuid,
 
   default-language: GHC2021
@@ -89,9 +90,9 @@ library
     Reacthome.Auth.Repository.InMemory.Credential.PublicKeys
     Reacthome.Auth.Repository.InMemory.RefreshTokens
     Reacthome.Auth.Repository.InMemory.Users
-    Reacthome.Auth.Repository.Sqlite
-    Reacthome.Auth.Repository.Sqlite.PublicKeys    
-    Reacthome.Auth.Repository.Sqlite.Users
+    Reacthome.Auth.Repository.SQLite.PublicKeys
+    Reacthome.Auth.Repository.SQLite.Users
+    Reacthome.Auth.Repository.SQLite.Users.Query
     Reacthome.Auth.Service.AuthFlow
     Reacthome.Auth.Service.AuthFlows
     Reacthome.Auth.Service.AuthUsers
@@ -119,9 +120,9 @@ library
     http-types,
     jose,
     lucid2,
+    resource-pool,
     time,
     unordered-containers,
-    util,
     wai,
     web,
 
