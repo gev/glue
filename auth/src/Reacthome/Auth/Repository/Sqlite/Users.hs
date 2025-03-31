@@ -1,6 +1,5 @@
 module Reacthome.Auth.Repository.SQLite.Users where
 
-import Control.Monad
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
 import Control.Monad.Trans.Maybe
@@ -45,17 +44,19 @@ makeUsers pool = do
 
         has login =
             either
-                (const False)
-                ( \case
-                    [Only count] -> count > (0 :: Int)
-                    _ -> False
+                ( \e -> do
+                    print e
+                    pure False
                 )
-                <$> runExceptT
-                    ( withExceptT print $
-                        tryQuery
-                            pool
-                            countUserByLogin
-                            (Only login.value)
+                ( \case
+                    [Only count] -> pure $ count > (0 :: Int)
+                    _ -> pure False
+                )
+                =<< runExceptT
+                    ( tryQuery
+                        pool
+                        countUserByLogin
+                        (Only login.value)
                     )
 
         store user =
@@ -65,13 +66,14 @@ makeUsers pool = do
                 (toUserRow user)
 
         remove user =
-            void $
-                runExceptT
-                    ( withExceptT print $
-                        tryExecute
-                            pool
-                            removeUser
-                            (Only $ toByteString user.id.value)
+            either
+                print
+                (const $ pure ())
+                =<< runExceptT
+                    ( tryExecute
+                        pool
+                        removeUser
+                        (Only $ toByteString user.id.value)
                     )
 
     pure
