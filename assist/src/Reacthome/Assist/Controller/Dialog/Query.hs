@@ -15,8 +15,11 @@ sendQuery ::
     Container Query ->
     IO ()
 sendQuery query = do
-    gate <- ?gateConnectionPool.getConnection myDaemon
+    gate <- ?gateConnectionPool.getConnection npDaemon
     gate.send (decodeUtf8 . encode $ query)
 
 myDaemon :: UUID
 myDaemon = fromJust $ fromString "02aaee3f-a050-43d5-bbf2-e0f2abd73a6e"
+
+npDaemon :: UUID
+npDaemon = fromJust $ fromString "4d6f75da-4fc7-424f-93fd-266d7c300417"
