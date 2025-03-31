@@ -7,7 +7,7 @@ createUsersTable :: Query
 createUsersTable =
     [sql|
         CREATE TABLE IF NOT EXISTS users 
-            (id BLOB PRIMARY KEY, login TEXT, name TEXT, status TEXT)
+            (id BLOB PRIMARY KEY, login TEXT UNIQUE, name TEXT, status TEXT)
     |]
 
 createUsersIndex :: Query
