@@ -12,6 +12,6 @@ handleAnswer ::
     IO ()
 handleAnswer text = do
     either
-        print
+        (const $ pure ()) -- print
         (uncurry setAnswer)
         (unpack =<< eitherDecode (encodeUtf8 text))
