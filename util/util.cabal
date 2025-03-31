@@ -20,6 +20,7 @@ library
     Util.Base64.URL
     Util.Base64.URL.Lazy
     Util.MVar
+    Util.SQLite
 
   build-depends:
     aeson,
@@ -27,7 +28,12 @@ library
     base,
     base64-bytestring,
     bytestring,
+    resource-pool,
+    sqlite-simple,
     text,
     transformers,
 
   default-language: GHC2021
+  default-extensions:
+    BlockArguments
+    OverloadedStrings
