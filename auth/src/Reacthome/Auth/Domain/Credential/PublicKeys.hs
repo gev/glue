@@ -8,7 +8,7 @@ import Reacthome.Auth.Domain.User.Id
 
 data PublicKeys = PublicKeys
     { findById :: PublicKeyId -> MaybeT IO PublicKey
-    , findByUserId :: UserId -> MaybeT IO [PublicKey]
+    , findByUserId :: UserId -> IO [PublicKey]
     , store :: PublicKey -> ExceptT String IO ()
     , remove :: PublicKeyId -> IO ()
     }

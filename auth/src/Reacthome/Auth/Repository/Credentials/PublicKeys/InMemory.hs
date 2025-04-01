@@ -20,9 +20,12 @@ makePublicKeys = do
                 \(byId, _) -> M.lookup id' byId
 
         findByUserId id' =
-            MaybeT $ runRead
+            runRead
                 map'
-                \(_, byUser) -> S.toList <$> M.lookup id' byUser
+                \(_, byUser) ->
+                    S.toList $
+                        fromMaybe S.empty $
+                            M.lookup id' byUser
 
         store publicKey =
             ExceptT $
