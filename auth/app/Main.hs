@@ -5,7 +5,7 @@ import Reacthome.Auth.App
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Repository.AuthFlows
 import Reacthome.Auth.Repository.AuthUsers
-import Reacthome.Auth.Repository.Credentials.PublicKeys.InMemory
+import Reacthome.Auth.Repository.Credentials.PublicKeys.SQLite
 import Reacthome.Auth.Repository.RefreshTokens
 import Reacthome.Auth.Repository.Users.SQLite
 import Util.SQLite
@@ -27,10 +27,10 @@ main = do
   let ?authFlows = authFlows
   authUsers <- makeAuthUsers
   let ?authUsers = authUsers
-  auth <- makePool "./var/reacthome-auth.db" 100 10
-  users <- makeUsers auth
+  authStore <- makePool "./var/reacthome-auth.db" 100 10
+  users <- makeUsers authStore
   let ?users = users
-  publicKeys <- makePublicKeys
+  publicKeys <- makePublicKeys authStore
   let ?publicKeys = publicKeys
   keyPair <- generateKeyPair
   let ?keyPair = keyPair
