@@ -1,4 +1,4 @@
-module Reacthome.Auth.Repository.InMemory.RefreshTokens where
+module Reacthome.Auth.Repository.RefreshTokens where
 
 import Control.Concurrent
 import Control.Monad.Trans.Maybe

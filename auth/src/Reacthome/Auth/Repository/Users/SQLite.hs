@@ -1,4 +1,4 @@
-module Reacthome.Auth.Repository.SQLite.Users where
+module Reacthome.Auth.Repository.Users.SQLite where
 
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
@@ -17,7 +17,7 @@ import Reacthome.Auth.Domain.User.Login
 import Reacthome.Auth.Domain.User.Name
 import Reacthome.Auth.Domain.User.Status
 import Reacthome.Auth.Domain.Users
-import Reacthome.Auth.Repository.SQLite.Users.Query
+import Reacthome.Auth.Repository.Users.SQLite.Query
 import Util.SQLite
 
 makeUsers :: Pool Connection -> IO Users

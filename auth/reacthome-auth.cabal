@@ -84,16 +84,16 @@ library
     Reacthome.Auth.Domain.User.Status
     Reacthome.Auth.Domain.Users
     Reacthome.Auth.Environment
-    Reacthome.Auth.Repository.InMemory.AuthFlows
-    Reacthome.Auth.Repository.InMemory.AuthUsers
-    Reacthome.Auth.Repository.InMemory.Challenges
-    Reacthome.Auth.Repository.InMemory.Credentials.PublicKeys
-    Reacthome.Auth.Repository.InMemory.RefreshTokens
-    Reacthome.Auth.Repository.InMemory.Users
-    Reacthome.Auth.Repository.SQLite.Credentials.PublicKeys
-    Reacthome.Auth.Repository.SQLite.Credentials.PublicKeys.Query
-    Reacthome.Auth.Repository.SQLite.Users
-    Reacthome.Auth.Repository.SQLite.Users.Query
+    Reacthome.Auth.Repository.AuthFlows
+    Reacthome.Auth.Repository.AuthUsers
+    Reacthome.Auth.Repository.Challenges
+    Reacthome.Auth.Repository.Credentials.PublicKeys.InMemory
+    Reacthome.Auth.Repository.Credentials.PublicKeys.SQLite
+    Reacthome.Auth.Repository.Credentials.PublicKeys.SQLite.Query
+    Reacthome.Auth.Repository.RefreshTokens
+    Reacthome.Auth.Repository.Users.InMemory
+    Reacthome.Auth.Repository.Users.SQLite
+    Reacthome.Auth.Repository.Users.SQLite.Query
     Reacthome.Auth.Service.AuthFlow
     Reacthome.Auth.Service.AuthFlows
     Reacthome.Auth.Service.AuthUsers

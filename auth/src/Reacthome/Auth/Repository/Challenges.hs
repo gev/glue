@@ -1,4 +1,4 @@
-module Reacthome.Auth.Repository.InMemory.Challenges where
+module Reacthome.Auth.Repository.Challenges where
 
 import Control.Concurrent
 import Control.Monad

@@ -1,4 +1,4 @@
-module Reacthome.Auth.Repository.SQLite.Users.Query where
+module Reacthome.Auth.Repository.Users.SQLite.Query where
 
 import Database.SQLite.Simple
 import Database.SQLite.Simple.QQ

@@ -1,7 +1,7 @@
-module Reacthome.Auth.Repository.InMemory.AuthFlows where
+module Reacthome.Auth.Repository.AuthFlows where
 
 import Reacthome.Auth.Environment
-import Reacthome.Auth.Repository.InMemory.Challenges
+import Reacthome.Auth.Repository.Challenges
 import Reacthome.Auth.Service.AuthFlows
 import Reacthome.Auth.Service.Challenges
 

@@ -1,4 +1,4 @@
-module Reacthome.Auth.Repository.InMemory.Users where
+module Reacthome.Auth.Repository.Users.InMemory where
 
 import Control.Concurrent
 import Control.Monad.Trans.Except

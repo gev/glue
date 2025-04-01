@@ -1,7 +1,7 @@
-module Reacthome.Auth.Repository.InMemory.AuthUsers where
+module Reacthome.Auth.Repository.AuthUsers where
 
 import Reacthome.Auth.Environment
-import Reacthome.Auth.Repository.InMemory.Challenges
+import Reacthome.Auth.Repository.Challenges
 import Reacthome.Auth.Service.AuthUsers
 import Reacthome.Auth.Service.Challenges
 import Prelude hiding (lookup)
