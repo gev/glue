@@ -87,11 +87,11 @@ library
     Reacthome.Auth.Repository.InMemory.AuthFlows
     Reacthome.Auth.Repository.InMemory.AuthUsers
     Reacthome.Auth.Repository.InMemory.Challenges
-    Reacthome.Auth.Repository.InMemory.Credential.PublicKeys
+    Reacthome.Auth.Repository.InMemory.Credentials.PublicKeys
     Reacthome.Auth.Repository.InMemory.RefreshTokens
     Reacthome.Auth.Repository.InMemory.Users
-    Reacthome.Auth.Repository.SQLite.PublicKeys
-    Reacthome.Auth.Repository.SQLite.PublicKeys.Query
+    Reacthome.Auth.Repository.SQLite.Credentials.PublicKeys
+    Reacthome.Auth.Repository.SQLite.Credentials.PublicKeys.Query
     Reacthome.Auth.Repository.SQLite.Users
     Reacthome.Auth.Repository.SQLite.Users.Query
     Reacthome.Auth.Service.AuthFlow
