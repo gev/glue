@@ -27,13 +27,7 @@ findUserById =
 findUserByLogin :: Query
 findUserByLogin =
     [sql| 
-        SELECT id, login, name,INSERT INTO users (id, login, name, status)
-        VALUES (
-            'id:BLOB',
-            'login:TEXT',
-            'name:TEXT',
-            'status:TEXT'
-          ); status 
+        SELECT id, login, name, status 
         FROM users WHERE login = ?
     |]
 

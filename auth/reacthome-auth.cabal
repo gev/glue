@@ -91,6 +91,7 @@ library
     Reacthome.Auth.Repository.InMemory.RefreshTokens
     Reacthome.Auth.Repository.InMemory.Users
     Reacthome.Auth.Repository.SQLite.PublicKeys
+    Reacthome.Auth.Repository.SQLite.PublicKeys.Query
     Reacthome.Auth.Repository.SQLite.Users
     Reacthome.Auth.Repository.SQLite.Users.Query
     Reacthome.Auth.Service.AuthFlow
