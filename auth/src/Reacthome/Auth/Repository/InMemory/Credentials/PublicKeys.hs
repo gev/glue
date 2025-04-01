@@ -1,4 +1,4 @@
-module Reacthome.Auth.Repository.InMemory.Credential.PublicKeys where
+module Reacthome.Auth.Repository.InMemory.Credentials.PublicKeys where
 
 import Control.Concurrent.MVar
 import Control.Monad.Trans.Except

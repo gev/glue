@@ -5,7 +5,7 @@ import Reacthome.Auth.App
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Repository.InMemory.AuthFlows
 import Reacthome.Auth.Repository.InMemory.AuthUsers
-import Reacthome.Auth.Repository.InMemory.Credential.PublicKeys
+import Reacthome.Auth.Repository.InMemory.Credentials.PublicKeys
 import Reacthome.Auth.Repository.InMemory.RefreshTokens
 import Reacthome.Auth.Repository.SQLite.Users
 import Util.SQLite
