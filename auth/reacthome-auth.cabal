@@ -68,6 +68,8 @@ library
     Reacthome.Auth.Controller.WellKnown.JWKS
     Reacthome.Auth.Domain.Authentication.Begin
     Reacthome.Auth.Domain.Authentication.Complete
+    Reacthome.Auth.Domain.Challenge
+    Reacthome.Auth.Domain.Challenges
     Reacthome.Auth.Domain.Credential.PublicKey
     Reacthome.Auth.Domain.Credential.PublicKey.Algorithm
     Reacthome.Auth.Domain.Credential.PublicKey.Algorithm.ED25519
@@ -75,6 +77,8 @@ library
     Reacthome.Auth.Domain.Credential.PublicKey.Algorithm.RS256
     Reacthome.Auth.Domain.Credential.PublicKey.Id
     Reacthome.Auth.Domain.Credential.PublicKeys
+    Reacthome.Auth.Domain.RefreshToken
+    Reacthome.Auth.Domain.RefreshTokens
     Reacthome.Auth.Domain.Registration.Begin
     Reacthome.Auth.Domain.Registration.Complete
     Reacthome.Auth.Domain.User
@@ -90,7 +94,9 @@ library
     Reacthome.Auth.Repository.Credentials.PublicKeys.InMemory
     Reacthome.Auth.Repository.Credentials.PublicKeys.SQLite
     Reacthome.Auth.Repository.Credentials.PublicKeys.SQLite.Query
-    Reacthome.Auth.Repository.RefreshTokens
+    Reacthome.Auth.Repository.RefreshTokens.InMemory
+    Reacthome.Auth.Repository.RefreshTokens.SQLite
+    Reacthome.Auth.Repository.RefreshTokens.SQLite.Query
     Reacthome.Auth.Repository.Users.InMemory
     Reacthome.Auth.Repository.Users.SQLite
     Reacthome.Auth.Repository.Users.SQLite.Query
@@ -100,10 +106,7 @@ library
     Reacthome.Auth.Service.Authentication.Begin
     Reacthome.Auth.Service.Authentication.Complete
     Reacthome.Auth.Service.Authentication.Pre
-    Reacthome.Auth.Service.Challenge
-    Reacthome.Auth.Service.Challenges
     Reacthome.Auth.Service.OAuth.Grant
-    Reacthome.Auth.Service.RefreshTokens
     Reacthome.Auth.Service.Registration.Begin
     Reacthome.Auth.Service.Registration.Complete
     Reacthome.Auth.Service.Registration.Pre

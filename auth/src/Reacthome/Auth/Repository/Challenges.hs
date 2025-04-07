@@ -4,9 +4,9 @@ import Control.Concurrent
 import Control.Monad
 import Control.Monad.Trans.Maybe
 import Data.HashMap.Strict
+import Reacthome.Auth.Domain.Challenge
+import Reacthome.Auth.Domain.Challenges
 import Reacthome.Auth.Environment
-import Reacthome.Auth.Service.Challenge
-import Reacthome.Auth.Service.Challenges
 import Util.MVar
 import Prelude hiding (lookup)
 

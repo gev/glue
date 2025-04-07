@@ -3,11 +3,11 @@ module Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialRequestOptions wher
 import Data.Aeson
 import Data.Text
 import GHC.Generics
+import Reacthome.Auth.Domain.Challenge
 import Reacthome.Auth.Domain.Credential.PublicKey
 import Reacthome.Auth.Domain.Credential.PublicKey.Id
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.Authentication.Pre
-import Reacthome.Auth.Service.Challenge
 import Util.Aeson
 import Util.Base64
 

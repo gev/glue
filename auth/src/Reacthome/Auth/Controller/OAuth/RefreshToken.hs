@@ -6,9 +6,10 @@ import Control.Monad.Trans.Maybe
 import JOSE.KeyPair
 import Reacthome.Auth.Controller.OAuth.Grant
 import Reacthome.Auth.Controller.OAuth.Token
+import Reacthome.Auth.Domain.Challenge
+import Reacthome.Auth.Domain.RefreshToken
+import Reacthome.Auth.Domain.RefreshTokens
 import Reacthome.Auth.Environment
-import Reacthome.Auth.Service.Challenge
-import Reacthome.Auth.Service.RefreshTokens
 import Web.Rest
 import Web.Rest.Media
 
@@ -20,11 +21,12 @@ refreshToken ::
     ) =>
     ExceptT String IO Response
 refreshToken = do
-    token <- makeChallenge <$> getRefreshToken
-    user <- maybeToExceptT "Invalid refresh token" $ ?refreshTokens.findBy token
+    refresh <- makeChallenge <$> getRefreshToken
+    token <- maybeToExceptT "Invalid refresh token" $ ?refreshTokens.findByToken refresh
     lift $ ?refreshTokens.remove token
-    toJSON =<< lift (generateToken user)
+    toJSON =<< generateToken token.userId
 
 {-
     TODO: What I should response on the error?
+    TODO: Move this logic out of the controller
 -}

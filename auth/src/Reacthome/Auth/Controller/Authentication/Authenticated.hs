@@ -7,11 +7,11 @@ import Data.Text.Encoding
 import GHC.Generics
 import Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialRpEntity
 import Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialUserEntity
+import Reacthome.Auth.Domain.Challenge
 import Reacthome.Auth.Domain.User
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.AuthFlow
 import Reacthome.Auth.Service.AuthUsers
-import Reacthome.Auth.Service.Challenge
 
 data Authenticated
     = Code

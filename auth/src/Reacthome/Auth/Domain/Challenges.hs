@@ -1,7 +1,7 @@
-module Reacthome.Auth.Service.Challenges where
+module Reacthome.Auth.Domain.Challenges where
 
 import Control.Monad.Trans.Maybe
-import Reacthome.Auth.Service.Challenge
+import Reacthome.Auth.Domain.Challenge
 
 data Challenges t = Challenges
     { makeNew :: Int -> t -> IO Challenge

@@ -7,8 +7,8 @@ import Data.ByteString.Base64
 import Data.Time
 import Network.HTTP.Types
 import Network.HTTP.Types.Header
+import Reacthome.Auth.Domain.Challenge
 import Reacthome.Auth.Environment
-import Reacthome.Auth.Service.Challenge
 import Web.Cookie
 import Web.Rest
 

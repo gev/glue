@@ -8,6 +8,7 @@ import Reacthome.Auth.Controller.Authentication.Authenticated
 import Reacthome.Auth.Controller.WebAuthn.AuthenticatorAssertionResponse
 import Reacthome.Auth.Controller.WebAuthn.PublicKeyCredential
 import Reacthome.Auth.Domain.Authentication.Complete
+import Reacthome.Auth.Domain.Challenge
 import Reacthome.Auth.Domain.Credential.PublicKey.Id
 import Reacthome.Auth.Domain.Credential.PublicKeys
 import Reacthome.Auth.Domain.Users
@@ -15,7 +16,6 @@ import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.AuthFlows
 import Reacthome.Auth.Service.AuthUsers
 import Reacthome.Auth.Service.Authentication.Complete
-import Reacthome.Auth.Service.Challenge
 import Util.Base64
 import Util.Base64.URL qualified as URL
 import Web.Rest

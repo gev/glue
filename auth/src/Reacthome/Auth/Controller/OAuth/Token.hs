@@ -1,16 +1,18 @@
 module Reacthome.Auth.Controller.OAuth.Token where
 
+import Control.Monad.Trans.Class
+import Control.Monad.Trans.Except
 import Data.Aeson
 import Data.Text
 import Data.Text.Encoding
 import GHC.Generics
 import JOSE.KeyPair
 import JOSE.Sign qualified as JOSE
-import Reacthome.Auth.Domain.User
+import Reacthome.Auth.Domain.Challenge
+import Reacthome.Auth.Domain.RefreshToken
+import Reacthome.Auth.Domain.RefreshTokens
 import Reacthome.Auth.Domain.User.Id
 import Reacthome.Auth.Environment
-import Reacthome.Auth.Service.Challenge
-import Reacthome.Auth.Service.RefreshTokens
 import Util.Base64.URL
 
 data TokenType = Bearer
@@ -40,20 +42,22 @@ generateToken ::
     , ?refreshTokens :: RefreshTokens
     , ?keyPair :: KeyPair
     ) =>
-    User ->
-    IO Token
-generateToken user = do
+    UserId ->
+    ExceptT String IO Token
+generateToken uid = do
     access_token <-
-        JOSE.generateToken
-            ?keyPair
-            ?environment.domain
-            ?environment.accessTokenTTL
-            user.id.value
-    refresh_token <- ?refreshTokens.register user
+        lift $
+            JOSE.generateToken
+                ?keyPair
+                ?environment.domain
+                ?environment.accessTokenTTL
+                uid.value
+    refresh <- lift $ makeRandomRefreshToken uid
+    ?refreshTokens.store refresh
     pure
         Token
             { access_token = decodeUtf8 access_token
             , token_type = Bearer
             , expires_in = ?environment.accessTokenTTL
-            , refresh_token = toBase64 refresh_token.value
+            , refresh_token = toBase64 refresh.token.value
             }

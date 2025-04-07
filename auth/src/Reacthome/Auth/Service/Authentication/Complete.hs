@@ -4,6 +4,7 @@ import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
 import Control.Monad.Trans.Maybe
 import Reacthome.Auth.Domain.Authentication.Complete
+import Reacthome.Auth.Domain.Challenge
 import Reacthome.Auth.Domain.Credential.PublicKey
 import Reacthome.Auth.Domain.Credential.PublicKey.Id
 import Reacthome.Auth.Domain.Credential.PublicKeys
@@ -11,7 +12,6 @@ import Reacthome.Auth.Domain.User
 import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.AuthUsers
-import Reacthome.Auth.Service.Challenge
 
 runCompleteAuthentication ::
   ( ?environment :: Environment

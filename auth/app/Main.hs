@@ -6,7 +6,7 @@ import Reacthome.Auth.Environment
 import Reacthome.Auth.Repository.AuthFlows
 import Reacthome.Auth.Repository.AuthUsers
 import Reacthome.Auth.Repository.Credentials.PublicKeys.SQLite
-import Reacthome.Auth.Repository.RefreshTokens
+import Reacthome.Auth.Repository.RefreshTokens.SQLite
 import Reacthome.Auth.Repository.Users.SQLite
 import Util.SQLite
 
@@ -21,7 +21,7 @@ main = do
           , authTimeout = 100
           , authFlowCookieTTL = 300
           , authCodeTTL = 30
-          , accessTokenTTL = 900
+          , accessTokenTTL = 120
           }
   authFlows <- makeAuthFlows
   let ?authFlows = authFlows
@@ -34,7 +34,7 @@ main = do
   let ?publicKeys = publicKeys
   keyPair <- generateKeyPair
   let ?keyPair = keyPair
-  refreshTokens <- makeRefreshTokens
+  refreshTokens <- makeRefreshTokens authStore
   let ?refreshTokens = refreshTokens
   putStrLn $ "Serving Reacthome Auth on port " <> show port
   run port $

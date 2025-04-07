@@ -6,10 +6,11 @@ import Control.Monad.Trans.Maybe
 import JOSE.KeyPair
 import Reacthome.Auth.Controller.OAuth.Grant
 import Reacthome.Auth.Controller.OAuth.Token
+import Reacthome.Auth.Domain.Challenge
+import Reacthome.Auth.Domain.RefreshTokens
+import Reacthome.Auth.Domain.User
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.AuthUsers
-import Reacthome.Auth.Service.Challenge
-import Reacthome.Auth.Service.RefreshTokens
 import Web.Rest
 import Web.Rest.Media
 
@@ -25,7 +26,7 @@ exchangeCodeForToken = do
     code <- makeChallenge <$> getAuthorizationCode
     user <- maybeToExceptT "Invalid exchange code" $ ?authUsers.findBy code
     lift $ ?authUsers.remove code
-    toJSON =<< lift (generateToken user)
+    toJSON =<< generateToken user.id
 
 {-
     TODO: What I should response on the error?

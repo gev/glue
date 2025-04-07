@@ -13,11 +13,11 @@ import Reacthome.Auth.Controller.Registration.Begin
 import Reacthome.Auth.Controller.Registration.Complete
 import Reacthome.Auth.Controller.WellKnown.JWKS
 import Reacthome.Auth.Domain.Credential.PublicKeys
+import Reacthome.Auth.Domain.RefreshTokens
 import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.AuthFlows
 import Reacthome.Auth.Service.AuthUsers
-import Reacthome.Auth.Service.RefreshTokens
 import Web.Rest
 import Web.Rest.Method
 import Web.Rest.Status

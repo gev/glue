@@ -5,13 +5,13 @@ import Reacthome.Auth.Controller.Registration.Registered
 import Reacthome.Auth.Controller.WebAuthn.AuthenticatorAttestationResponse
 import Reacthome.Auth.Controller.WebAuthn.COSEAlgorithmIdentifier
 import Reacthome.Auth.Controller.WebAuthn.PublicKeyCredential
+import Reacthome.Auth.Domain.Challenge
 import Reacthome.Auth.Domain.Credential.PublicKey.Id
 import Reacthome.Auth.Domain.Credential.PublicKeys
 import Reacthome.Auth.Domain.Registration.Complete
 import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.AuthUsers
-import Reacthome.Auth.Service.Challenge
 import Reacthome.Auth.Service.Registration.Complete
 import Util.Base64
 import Util.Base64.URL qualified as URL

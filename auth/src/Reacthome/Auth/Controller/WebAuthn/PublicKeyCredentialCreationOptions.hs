@@ -5,8 +5,8 @@ import Data.Text
 import GHC.Generics
 import Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialRpEntity
 import Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialUserEntity
+import Reacthome.Auth.Domain.Challenge
 import Reacthome.Auth.Environment
-import Reacthome.Auth.Service.Challenge
 import Reacthome.Auth.Service.Registration.Pre
 import Util.Aeson
 import Util.Base64

@@ -1,4 +1,4 @@
-module Reacthome.Auth.Service.Challenge where
+module Reacthome.Auth.Domain.Challenge where
 
 import Crypto.Random
 import Data.ByteString

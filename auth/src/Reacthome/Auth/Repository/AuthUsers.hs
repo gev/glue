@@ -1,9 +1,9 @@
 module Reacthome.Auth.Repository.AuthUsers where
 
+import Reacthome.Auth.Domain.Challenges
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Repository.Challenges
 import Reacthome.Auth.Service.AuthUsers
-import Reacthome.Auth.Service.Challenges
 import Prelude hiding (lookup)
 
 makeAuthUsers :: (?environment :: Environment) => IO AuthUsers
