@@ -87,7 +87,6 @@ library
     Reacthome.Auth.Domain.User.Id
     Reacthome.Auth.Domain.User.Login
     Reacthome.Auth.Domain.User.Name
-    Reacthome.Auth.Domain.User.Status
     Reacthome.Auth.Domain.Users
     Reacthome.Auth.Environment
     Reacthome.Auth.Repository.AuthFlows

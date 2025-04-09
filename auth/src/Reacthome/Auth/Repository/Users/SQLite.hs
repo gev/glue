@@ -15,7 +15,6 @@ import Reacthome.Auth.Domain.User
 import Reacthome.Auth.Domain.User.Id
 import Reacthome.Auth.Domain.User.Login
 import Reacthome.Auth.Domain.User.Name
-import Reacthome.Auth.Domain.User.Status
 import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Repository.Users.SQLite.Query
 import Util.SQLite
@@ -89,7 +88,6 @@ data UserRow = UserRow
     { id :: ByteString
     , login :: Text
     , name :: Text
-    , status :: Text
     }
     deriving stock (Generic, Eq, Show)
     deriving anyclass (FromRow, ToRow)
@@ -97,17 +95,11 @@ data UserRow = UserRow
 fromUserRow :: UserRow -> Maybe User
 fromUserRow user = do
     uid <- UserId <$> fromByteString user.id
-    status <- case user.status of
-        "active" -> Just Active
-        "inactive" -> Just Inactive
-        "suspended" -> Just Suspended
-        _ -> Nothing
     pure
         User
             { id = uid
             , login = UserLogin user.login
             , name = UserName user.name
-            , status
             }
 
 toUserRow :: User -> UserRow
@@ -116,10 +108,6 @@ toUserRow user =
         { id = toByteString user.id.value
         , login = user.login.value
         , name = user.name.value
-        , status = case user.status of
-            Active -> "active"
-            Inactive -> "inactive"
-            Suspended -> "suspended"
         }
 
 findBy ::

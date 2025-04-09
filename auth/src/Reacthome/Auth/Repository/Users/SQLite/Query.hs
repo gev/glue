@@ -7,7 +7,7 @@ createUsersTable :: Query
 createUsersTable =
     [sql|
         CREATE TABLE IF NOT EXISTS users 
-            (id BLOB PRIMARY KEY, login TEXT UNIQUE, name TEXT, status TEXT)
+            (id BLOB PRIMARY KEY, login TEXT UNIQUE, name TEXT)
     |]
 
 createUsersIndex :: Query
@@ -20,14 +20,14 @@ createUsersIndex =
 findUserById :: Query
 findUserById =
     [sql| 
-        SELECT id, login, name, status 
+        SELECT id, login, name
         FROM users WHERE id = ? 
     |]
 
 findUserByLogin :: Query
 findUserByLogin =
     [sql| 
-        SELECT id, login, name, status 
+        SELECT id, login, name
         FROM users WHERE login = ?
     |]
 
@@ -41,7 +41,7 @@ countUserByLogin =
 storeUser :: Query
 storeUser =
     [sql| 
-        REPLACE INTO users (id, login, name, status)
+        REPLACE INTO users (id, login, name)
         VALUES (?, ?, ?, ?)
     |]
 

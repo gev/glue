@@ -26,6 +26,6 @@ runBeginRegistration command = do
                     <> " already exists"
         else do
             uid <- lift makeRandomUserId
-            let user = makeNewUser uid command.login command.name
+            let user = makeUser uid command.login command.name
             challenge <- lift $ ?authUsers.register user
             pure $ PreRegistration user challenge
