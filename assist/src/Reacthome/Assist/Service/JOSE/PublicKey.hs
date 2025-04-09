@@ -3,6 +3,7 @@ module Reacthome.Assist.Service.JOSE.PublicKey where
 import Control.Concurrent
 import Control.Monad
 import Data.Aeson
+import JOSE.JWK
 import JOSE.JWKS
 import JOSE.PublicKey
 import Network.HTTP.Client

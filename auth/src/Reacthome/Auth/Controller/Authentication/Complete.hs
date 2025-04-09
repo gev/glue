@@ -27,7 +27,7 @@ completeAuthentication ::
     , ?authFlows :: AuthFlows
     , ?authUsers :: AuthUsers
     , ?users :: Users
-    , ?publicKeys :: PublicKeys
+    , ?userPublicKeys :: PublicKeys
     ) =>
     ExceptT String IO Response
 completeAuthentication = do

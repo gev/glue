@@ -1,13 +1,14 @@
-import JOSE.KeyPair
 import Network.Wai.Handler.Warp
 import Network.Wai.Middleware.Static
 import Reacthome.Auth.App
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Repository.AuthFlows
 import Reacthome.Auth.Repository.AuthUsers
-import Reacthome.Auth.Repository.Credentials.PublicKeys.SQLite
+import Reacthome.Auth.Repository.Credentials.PublicKeys.SQLite as U
+import Reacthome.Auth.Repository.PublicKeys.InMemory as J
 import Reacthome.Auth.Repository.RefreshTokens.SQLite
 import Reacthome.Auth.Repository.Users.SQLite
+import Reacthome.Auth.Service.Secret
 import Util.SQLite
 
 main :: IO ()
@@ -30,9 +31,11 @@ main = do
   authStore <- makePool "./var/reacthome-auth.db" 100 10
   users <- makeUsers authStore
   let ?users = users
-  publicKeys <- makePublicKeys authStore
-  let ?publicKeys = publicKeys
-  keyPair <- generateKeyPair
+  userPublicKeys <- U.makePublicKeys authStore
+  let ?userPublicKeys = userPublicKeys
+  jwkPublicKeys <- J.makePublicKeys
+  let ?jwkPublicKeys = jwkPublicKeys
+  keyPair <- makeSecret
   let ?keyPair = keyPair
   refreshTokens <- makeRefreshTokens authStore
   let ?refreshTokens = refreshTokens

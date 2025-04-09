@@ -4,10 +4,7 @@ import Control.Monad.Trans.Maybe
 import Crypto.Error
 import Crypto.PubKey.Ed25519 qualified as Ed
 import Data.ByteString
-import Data.ByteString.Base64.URL
-import Data.Text.Encoding
 import Data.UUID
-import JOSE.JWK
 
 data PublicKey = PublicKey
     { kid :: UUID
@@ -30,8 +27,3 @@ makePublicKey kid bs = do
                     { kid
                     , publicKey
                     }
-
-fromJWK :: JWK -> Either String PublicKey
-fromJWK jwk =
-    makePublicKey jwk.kid
-        =<< decodeUnpadded (encodeUtf8 jwk.x)

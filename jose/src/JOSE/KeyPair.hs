@@ -2,12 +2,9 @@ module JOSE.KeyPair where
 
 import Crypto.Error
 import Crypto.PubKey.Ed25519 qualified as Ed
-import Data.ByteArray.Encoding
 import Data.ByteString
-import Data.Text.Encoding
 import Data.UUID
 import Data.UUID.V4
-import JOSE.JWK
 
 data KeyPair = KeyPair
     { kid :: UUID
@@ -33,13 +30,4 @@ fromSecret kid secretKey =
         { kid
         , secretKey
         , publicKey = Ed.toPublic secretKey
-        }
-
-toJWK :: KeyPair -> JWK
-toJWK kp = do
-    JWK
-        { kty = OKP
-        , crv = Ed25519
-        , x = decodeUtf8 $ convertToBase Base64URLUnpadded kp.publicKey
-        , kid = kp.kid
         }

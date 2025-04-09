@@ -17,7 +17,7 @@ runCompleteAuthentication ::
   ( ?environment :: Environment
   , ?authUsers :: AuthUsers
   , ?users :: Users
-  , ?publicKeys :: PublicKeys
+  , ?userPublicKeys :: PublicKeys
   ) =>
   CompleteAuthentication ->
   ExceptT String IO User
@@ -29,7 +29,7 @@ runCompleteAuthentication request = do
   lift $ ?authUsers.remove request.challenge
   publicKey <-
     maybeToExceptT ("Public key with id " <> show request.id.value <> " not found") $
-      ?publicKeys.findById request.id
+      ?userPublicKeys.findById request.id
   isValidSignature <- verifySignature publicKey request.message request.signature
   if isValidSignature
     then pure user

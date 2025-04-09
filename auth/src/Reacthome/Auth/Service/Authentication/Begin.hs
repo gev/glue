@@ -15,7 +15,7 @@ import Reacthome.Auth.Service.Authentication.Pre
 runBeginAuthentication ::
     ( ?authUsers :: AuthUsers
     , ?users :: Users
-    , ?publicKeys :: PublicKeys
+    , ?userPublicKeys :: PublicKeys
     ) =>
     BeginAuthentication ->
     ExceptT String IO PreAuthentication
@@ -24,7 +24,7 @@ runBeginAuthentication command = do
         maybeToExceptT
             ("User with login " <> show command.login.value <> " not found")
             $ ?users.findByLogin command.login
-    allowCredentials <- lift $ ?publicKeys.findByUserId user.id
+    allowCredentials <- lift $ ?userPublicKeys.findByUserId user.id
     when
         (null allowCredentials)
         $ throwE ("User with login " <> show command.login.value <> " has no any credentials")

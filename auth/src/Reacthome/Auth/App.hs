@@ -12,7 +12,8 @@ import Reacthome.Auth.Controller.Registration
 import Reacthome.Auth.Controller.Registration.Begin
 import Reacthome.Auth.Controller.Registration.Complete
 import Reacthome.Auth.Controller.WellKnown.JWKS
-import Reacthome.Auth.Domain.Credential.PublicKeys
+import Reacthome.Auth.Domain.Credential.PublicKeys as U
+import Reacthome.Auth.Domain.PublicKeys qualified as J
 import Reacthome.Auth.Domain.RefreshTokens
 import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
@@ -27,7 +28,8 @@ app ::
     , ?authFlows :: AuthFlows
     , ?authUsers :: AuthUsers
     , ?users :: Users
-    , ?publicKeys :: PublicKeys
+    , ?userPublicKeys :: U.PublicKeys
+    , ?jwkPublicKeys :: J.PublicKeys
     , ?refreshTokens :: RefreshTokens
     , ?keyPair :: KeyPair
     ) =>

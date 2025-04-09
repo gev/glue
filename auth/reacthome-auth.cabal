@@ -77,6 +77,8 @@ library
     Reacthome.Auth.Domain.Credential.PublicKey.Algorithm.RS256
     Reacthome.Auth.Domain.Credential.PublicKey.Id
     Reacthome.Auth.Domain.Credential.PublicKeys
+    Reacthome.Auth.Domain.PublicKey
+    Reacthome.Auth.Domain.PublicKeys
     Reacthome.Auth.Domain.RefreshToken
     Reacthome.Auth.Domain.RefreshTokens
     Reacthome.Auth.Domain.Registration.Begin
@@ -94,6 +96,9 @@ library
     Reacthome.Auth.Repository.Credentials.PublicKeys.InMemory
     Reacthome.Auth.Repository.Credentials.PublicKeys.SQLite
     Reacthome.Auth.Repository.Credentials.PublicKeys.SQLite.Query
+    Reacthome.Auth.Repository.PublicKeys.InMemory
+    Reacthome.Auth.Repository.PublicKeys.SQLite
+    Reacthome.Auth.Repository.PublicKeys.SQLite.Query
     Reacthome.Auth.Repository.RefreshTokens.InMemory
     Reacthome.Auth.Repository.RefreshTokens.SQLite
     Reacthome.Auth.Repository.RefreshTokens.SQLite.Query
@@ -110,6 +115,7 @@ library
     Reacthome.Auth.Service.Registration.Begin
     Reacthome.Auth.Service.Registration.Complete
     Reacthome.Auth.Service.Registration.Pre
+    Reacthome.Auth.Service.Secret
     Reacthome.Auth.View.Screen.Authentication
     Reacthome.Auth.View.Screen.Registration
 
@@ -124,6 +130,7 @@ library
     http-types,
     jose,
     lucid2,
+    memory,
     resource-pool,
     time,
     unordered-containers,

@@ -23,7 +23,7 @@ completeRegistration ::
     , ?environment :: Environment
     , ?authUsers :: AuthUsers
     , ?users :: Users
-    , ?publicKeys :: PublicKeys
+    , ?userPublicKeys :: PublicKeys
     ) =>
     ExceptT String IO Response
 completeRegistration = do

@@ -16,7 +16,7 @@ runCompleteRegistration ::
     ( ?environment :: Environment
     , ?authUsers :: AuthUsers
     , ?users :: Users
-    , ?publicKeys :: PublicKeys
+    , ?userPublicKeys :: PublicKeys
     ) =>
     CompleteRegistration ->
     ExceptT String IO User
@@ -31,7 +31,7 @@ runCompleteRegistration credentials = do
         decodePublicKey
             credentials.publicKeyAlgorithm
             credentials.publicKey
-    ?publicKeys.store
+    ?userPublicKeys.store
         PublicKey
             { id = credentials.id
             , userId = user.id
