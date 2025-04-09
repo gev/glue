@@ -6,7 +6,7 @@ import Control.Monad.Trans.Maybe
 import JOSE.KeyPair
 import Reacthome.Auth.Controller.OAuth.Grant
 import Reacthome.Auth.Controller.OAuth.Token
-import Reacthome.Auth.Domain.Challenge
+import Reacthome.Auth.Domain.Hash
 import Reacthome.Auth.Domain.RefreshToken
 import Reacthome.Auth.Domain.RefreshTokens
 import Reacthome.Auth.Environment
@@ -21,8 +21,8 @@ refreshToken ::
     ) =>
     ExceptT String IO Response
 refreshToken = do
-    refresh <- makeChallenge <$> getRefreshToken
-    token <- maybeToExceptT "Invalid refresh token" $ ?refreshTokens.findByToken refresh
+    hash <- makeHash <$> getRefreshToken
+    token <- maybeToExceptT "Invalid refresh token" $ ?refreshTokens.findByHash hash
     lift $ ?refreshTokens.remove token
     toJSON =<< generateToken token.userId
 

@@ -77,6 +77,7 @@ library
     Reacthome.Auth.Domain.Credential.PublicKey.Algorithm.RS256
     Reacthome.Auth.Domain.Credential.PublicKey.Id
     Reacthome.Auth.Domain.Credential.PublicKeys
+    Reacthome.Auth.Domain.Hash
     Reacthome.Auth.Domain.PublicKey
     Reacthome.Auth.Domain.PublicKeys
     Reacthome.Auth.Domain.RefreshToken

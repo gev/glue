@@ -1,23 +1,21 @@
 module Reacthome.Auth.Domain.RefreshToken where
 
-import Reacthome.Auth.Domain.Challenge
+import Data.ByteString
+import Reacthome.Auth.Domain.Hash
 import Reacthome.Auth.Domain.User.Id
-import Reacthome.Auth.Environment
 
 data RefreshToken = RefreshToken
     { userId :: UserId
-    , token :: Challenge
+    , hash :: Hash
     }
     deriving stock (Show)
 
 makeRefreshToken ::
     UserId ->
-    Challenge ->
+    ByteString ->
     RefreshToken
-makeRefreshToken = RefreshToken
-
-makeRandomRefreshToken ::
-    (?environment :: Environment) =>
-    UserId ->
-    IO RefreshToken
-makeRandomRefreshToken userId = makeRefreshToken userId <$> makeRandomChallenge
+makeRefreshToken userId value =
+    RefreshToken
+        { userId
+        , hash = makeHash value
+        }

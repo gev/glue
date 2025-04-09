@@ -14,12 +14,12 @@ makeRefreshTokens :: (?environment :: Environment) => IO RefreshTokens
 makeRefreshTokens = do
     map' <- newMVar empty
     let
-        findByToken = MaybeT . runRead map' . lookup
-        store refresh = lift $ runModify map' $ insert refresh.token refresh
-        remove refresh = runModify map' $ delete refresh.token
+        findByHash = MaybeT . runRead map' . lookup
+        store token = lift $ runModify map' $ insert token.hash token
+        remove token = runModify map' $ delete token.hash
     pure
         RefreshTokens
-            { findByToken
+            { findByHash
             , store
             , remove
             }

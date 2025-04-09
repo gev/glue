@@ -52,12 +52,13 @@ generateToken uid = do
                 ?environment.domain
                 ?environment.accessTokenTTL
                 uid.value
-    refresh <- lift $ makeRandomRefreshToken uid
-    ?refreshTokens.store refresh
+    challenge <- lift makeRandomChallenge
+    let token = makeRefreshToken uid challenge.value
+    ?refreshTokens.store token
     pure
         Token
             { access_token = decodeUtf8 access_token
             , token_type = Bearer
             , expires_in = ?environment.accessTokenTTL
-            , refresh_token = toBase64 refresh.token.value
+            , refresh_token = toBase64 challenge.value
             }

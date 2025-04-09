@@ -9,7 +9,7 @@ import Data.UUID
 import Database.SQLite.Simple
 import Database.SQLite.Simple.ToField
 import GHC.Generics
-import Reacthome.Auth.Domain.Challenge
+import Reacthome.Auth.Domain.Hash
 import Reacthome.Auth.Domain.RefreshToken
 import Reacthome.Auth.Domain.RefreshTokens
 import Reacthome.Auth.Domain.User.Id
@@ -25,19 +25,19 @@ makeRefreshTokens ::
 makeRefreshTokens pool = do
     withResource pool (`execute_` createRefreshTokensTable)
     let
-        findByToken token =
+        findByHash token =
             findBy
                 pool
                 findRefreshTokenByToken
                 token.value
 
-        store refresh = do
+        store token = do
             tryExecute
                 pool
                 storeRefreshToken
-                (toRefreshTokenRow refresh)
+                (toRefreshTokenRow token)
 
-        remove refresh =
+        remove token =
             either
                 print
                 (const $ pure ())
@@ -45,12 +45,12 @@ makeRefreshTokens pool = do
                     ( tryExecute
                         pool
                         removeRefreshToken
-                        (Only refresh.token.value)
+                        (Only token.hash.value)
                     )
 
     pure
         RefreshTokens
-            { findByToken
+            { findByHash
             , store
             , remove
             }
@@ -68,14 +68,14 @@ fromRefreshTokenRow row = do
     pure
         RefreshToken
             { userId
-            , token = makeChallenge $ toStrict row.token
+            , hash = Hash $ toStrict row.token
             }
 
 toRefreshTokenRow :: RefreshToken -> RefreshTokenRow
-toRefreshTokenRow refresh =
+toRefreshTokenRow token =
     RefreshTokenRow
-        { user_id = toByteString refresh.userId.value
-        , token = fromStrict refresh.token.value
+        { user_id = toByteString token.userId.value
+        , token = fromStrict token.hash.value
         }
 
 findBy ::
