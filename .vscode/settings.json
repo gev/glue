@@ -6,7 +6,13 @@
             "previewLimit": 50,
             "driver": "SQLite",
             "name": "reacthome-auth",
-            "database": "./var/reacthome-auth.db"
+            "database": "./var/db/reacthome-auth.db"
+        },
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "reacthome-keys",
+            "database": "./var/db/reacthome-keys.db"
         }
     ]
 }

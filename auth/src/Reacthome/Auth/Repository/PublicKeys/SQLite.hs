@@ -7,7 +7,6 @@ import Data.Maybe
 import Data.Pool
 import Data.UUID
 import Database.SQLite.Simple
-import Database.SQLite.Simple.ToField
 import GHC.Generics
 import Reacthome.Auth.Domain.PublicKey
 import Reacthome.Auth.Domain.PublicKeys
@@ -23,7 +22,7 @@ makePublicKeys pool = do
             , createPublicKeysIndex
             ]
     let
-        get = undefined
+        get = findBy pool getAllPublicKeys
 
         store key =
             either
@@ -81,13 +80,11 @@ toPublicKeyRow key =
         }
 
 findBy ::
-    (ToField p) =>
     Pool Connection ->
     Query ->
-    p ->
     IO [PublicKey]
-findBy pool q p = do
-    res <- runExceptT $ tryQuery pool q (Only p)
+findBy pool q = do
+    res <- runExceptT $ tryQuery_ pool q
     case res of
         Left e -> do
             print e
