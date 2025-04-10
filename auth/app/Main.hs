@@ -29,19 +29,19 @@ main = do
   let ?authFlows = authFlows
   authUsers <- makeAuthUsers
   let ?authUsers = authUsers
-  authStore <- makePool "./var/db/reacthome-auth.db" 100 10
-  keyStore <- makePool "./var/db/reacthome-keys.db" 100 10
-  clients <- makeClients "./var/clients.json"
+  usersStore <- makePool "./var/reacthome-auth/db/users.db" 100 10
+  keyStore <- makePool "./var/reacthome-auth/db/keys.db" 100 10
+  clients <- makeClients "./var/reacthome-auth/clients.json"
   let ?clients = clients
-  users <- makeUsers authStore
+  users <- makeUsers usersStore
   let ?users = users
-  userPublicKeys <- U.makePublicKeys authStore
+  userPublicKeys <- U.makePublicKeys usersStore
   let ?userPublicKeys = userPublicKeys
   jwkPublicKeys <- J.makePublicKeys keyStore
   let ?jwkPublicKeys = jwkPublicKeys
   keyPair <- makeSecret
   let ?keyPair = keyPair
-  refreshTokens <- makeRefreshTokens authStore
+  refreshTokens <- makeRefreshTokens usersStore
   let ?refreshTokens = refreshTokens
   putStrLn $ "Serving Reacthome Auth on port " <> show port
   run port $
