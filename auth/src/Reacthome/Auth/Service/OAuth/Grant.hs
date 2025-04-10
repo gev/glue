@@ -1,11 +1,10 @@
 module Reacthome.Auth.Service.OAuth.Grant where
 
 import Control.Monad
-import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
 import Control.Monad.Trans.Maybe
 import Data.ByteString
-import Data.ByteString.Base64 (decode)
+import Data.ByteString.Base64
 import Data.Text.Encoding
 import Data.UUID
 import Reacthome.Auth.Domain.Client
@@ -23,9 +22,6 @@ grantClient client_id client_secret = do
             $ client_id
     client <- maybeToExceptT "Unknown client" $ ?clients.findById $ ClientId cid
     secret <- except . decode $ client_secret
-    lift $ print secret
-    lift $ print $ makeHash secret
-    lift $ print client.secret
     assert "Client not authorized" $
         client.secret == makeHash secret
 
