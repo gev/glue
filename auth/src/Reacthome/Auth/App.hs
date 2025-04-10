@@ -40,7 +40,7 @@ app request respond = do
     let ?request = rest request
     respond
         =<< case request.pathInfo of
-            [] -> get oauth
+            ["oauth"] -> get oauth
             ["token"] -> post exchangeCodeForToken
             ["refresh"] -> post refreshToken
             ["authentication"] -> get showAuthentication
