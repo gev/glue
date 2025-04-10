@@ -5,14 +5,14 @@
         {
             "previewLimit": 50,
             "driver": "SQLite",
-            "name": "reacthome-auth",
-            "database": "./var/reacthome-auth/db/users.db"
+            "name": "auth",
+            "database": "./var/db/auth.db"
         },
         {
             "previewLimit": 50,
             "driver": "SQLite",
-            "name": "reacthome-keys",
-            "database": "./var/reacthome-auth/db/keys.db"
+            "name": "keys",
+            "database": "./var/db/keys.db"
         }
     ]
 }
