@@ -1,13 +1,33 @@
 module Reacthome.Auth.Service.OAuth.Grant where
 
 import Control.Monad
+import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
+import Control.Monad.Trans.Maybe
 import Data.ByteString
+import Data.ByteString.Base64 (decode)
+import Data.Text.Encoding
+import Data.UUID
+import Reacthome.Auth.Domain.Client
+import Reacthome.Auth.Domain.Client.Id
+import Reacthome.Auth.Domain.Clients
+import Reacthome.Auth.Domain.Hash
 
-grantClient :: ByteString -> ByteString -> ExceptT String IO ()
-grantClient client_id client_secret =
-    assert "Invalid client" $
-        client_id == "reacthome" && client_secret == "reacthome"
+grantClient :: (?clients :: Clients) => ByteString -> ByteString -> ExceptT String IO ()
+grantClient client_id client_secret = do
+    cid <-
+        maybeToExceptT "Invalid client id"
+            . hoistMaybe
+            . fromText
+            . decodeUtf8
+            $ client_id
+    client <- maybeToExceptT "Unknown client" $ ?clients.findById $ ClientId cid
+    secret <- except . decode $ client_secret
+    lift $ print secret
+    lift $ print $ makeHash secret
+    lift $ print client.secret
+    assert "Client not authorized" $
+        client.secret == makeHash secret
 
 grantAuthorizationCode :: ByteString -> ExceptT String IO ()
 grantAuthorizationCode grant_type =

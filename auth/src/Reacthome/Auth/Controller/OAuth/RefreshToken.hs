@@ -6,6 +6,7 @@ import Control.Monad.Trans.Maybe
 import JOSE.KeyPair
 import Reacthome.Auth.Controller.OAuth.Grant
 import Reacthome.Auth.Controller.OAuth.Token
+import Reacthome.Auth.Domain.Clients
 import Reacthome.Auth.Domain.Hash
 import Reacthome.Auth.Domain.RefreshToken
 import Reacthome.Auth.Domain.RefreshTokens
@@ -16,6 +17,7 @@ import Web.Rest.Media
 refreshToken ::
     ( ?environment :: Environment
     , ?request :: Request
+    , ?clients :: Clients
     , ?refreshTokens :: RefreshTokens
     , ?keyPair :: KeyPair
     ) =>

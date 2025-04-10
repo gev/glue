@@ -70,6 +70,10 @@ library
     Reacthome.Auth.Domain.Authentication.Complete
     Reacthome.Auth.Domain.Challenge
     Reacthome.Auth.Domain.Challenges
+    Reacthome.Auth.Domain.Client
+    Reacthome.Auth.Domain.Client.Id
+    Reacthome.Auth.Domain.Client.Name
+    Reacthome.Auth.Domain.Clients
     Reacthome.Auth.Domain.Credential.PublicKey
     Reacthome.Auth.Domain.Credential.PublicKey.Algorithm
     Reacthome.Auth.Domain.Credential.PublicKey.Algorithm.ED25519
@@ -93,6 +97,7 @@ library
     Reacthome.Auth.Repository.AuthFlows
     Reacthome.Auth.Repository.AuthUsers
     Reacthome.Auth.Repository.Challenges
+    Reacthome.Auth.Repository.Clients
     Reacthome.Auth.Repository.Credentials.PublicKeys.InMemory
     Reacthome.Auth.Repository.Credentials.PublicKeys.SQLite
     Reacthome.Auth.Repository.Credentials.PublicKeys.SQLite.Query

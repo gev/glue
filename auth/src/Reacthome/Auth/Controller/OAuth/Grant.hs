@@ -3,21 +3,28 @@ module Reacthome.Auth.Controller.OAuth.Grant where
 import Control.Monad.Trans.Except
 import Data.ByteString
 import Data.ByteString.Base64.URL (decodeUnpadded)
+import Reacthome.Auth.Domain.Clients
 import Reacthome.Auth.Service.OAuth.Grant
 import Web.Rest
 
 getAuthorizationCode ::
-    (?request :: Request) =>
+    ( ?request :: Request
+    , ?clients :: Clients
+    ) =>
     ExceptT String IO ByteString
 getAuthorizationCode = run grantAuthorizationCode "code"
 
 getRefreshToken ::
-    (?request :: Request) =>
+    ( ?request :: Request
+    , ?clients :: Clients
+    ) =>
     ExceptT String IO ByteString
 getRefreshToken = run grantRefreshToken "refresh_token"
 
 run ::
-    (?request :: Request) =>
+    ( ?request :: Request
+    , ?clients :: Clients
+    ) =>
     (ByteString -> ExceptT String IO ()) ->
     ByteString ->
     ExceptT String IO ByteString

@@ -23,7 +23,7 @@ redirect headers location =
         mempty
 
 badRequest :: (Applicative a) => String -> a Response
-badRequest reason =
+badRequest reason = do
     response
         status400
         [(hContentType, ctTextPlane)]

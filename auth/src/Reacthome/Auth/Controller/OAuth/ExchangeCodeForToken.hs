@@ -7,6 +7,7 @@ import JOSE.KeyPair
 import Reacthome.Auth.Controller.OAuth.Grant
 import Reacthome.Auth.Controller.OAuth.Token
 import Reacthome.Auth.Domain.Challenge
+import Reacthome.Auth.Domain.Clients
 import Reacthome.Auth.Domain.RefreshTokens
 import Reacthome.Auth.Domain.User
 import Reacthome.Auth.Environment
@@ -18,6 +19,7 @@ exchangeCodeForToken ::
     ( ?environment :: Environment
     , ?request :: Request
     , ?authUsers :: AuthUsers
+    , ?clients :: Clients
     , ?refreshTokens :: RefreshTokens
     , ?keyPair :: KeyPair
     ) =>
