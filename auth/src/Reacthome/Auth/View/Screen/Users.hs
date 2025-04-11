@@ -3,7 +3,6 @@
 module Reacthome.Auth.View.Screen.Users where
 
 import Data.Foldable
-import Data.Text
 import Data.UUID
 import Lucid
 import Reacthome.Auth.Domain.User
