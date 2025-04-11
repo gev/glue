@@ -19,35 +19,35 @@ createUsersIndex =
 
 findUserById :: Query
 findUserById =
-    [sql| 
+    [sql|
         SELECT id, login, name
         FROM users WHERE id = ? 
     |]
 
 findUserByLogin :: Query
 findUserByLogin =
-    [sql| 
+    [sql|
         SELECT id, login, name
         FROM users WHERE login = ?
     |]
 
 countUserByLogin :: Query
 countUserByLogin =
-    [sql| 
+    [sql|
         SELECT count(*)
         FROM users WHERE login = ?
     |]
 
 storeUser :: Query
 storeUser =
-    [sql| 
+    [sql|
         REPLACE INTO users (id, login, name)
-        VALUES (?, ?, ?, ?)
+        VALUES (?, ?, ?)
     |]
 
 removeUser :: Query
 removeUser =
-    [sql| 
+    [sql|
         DELETE FROM users 
         WHERE id = ? 
     |]
