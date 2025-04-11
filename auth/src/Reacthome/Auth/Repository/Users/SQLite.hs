@@ -5,6 +5,7 @@ import Control.Monad.Trans.Except
 import Control.Monad.Trans.Maybe
 import Data.ByteString.Lazy (ByteString)
 import Data.Foldable (traverse_)
+import Data.Maybe
 import Data.Pool
 import Data.Text (Text)
 import Data.UUID hiding (null)
@@ -29,6 +30,8 @@ makeUsers pool = do
             ]
 
     let
+        getAll = findAll pool getAllUsers
+
         findById uid =
             findBy
                 pool
@@ -77,7 +80,8 @@ makeUsers pool = do
 
     pure
         Users
-            { findById
+            { getAll
+            , findById
             , findByLogin
             , has
             , store
@@ -109,6 +113,21 @@ toUserRow user =
         , login = user.login.value
         , name = user.name.value
         }
+
+findAll ::
+    Pool Connection ->
+    Query ->
+    IO [User]
+findAll pool q = do
+    res <- runExceptT $ tryQuery_ pool q
+    case res of
+        Left e -> do
+            print e
+            pure []
+        Right rows -> do
+            let keys = fromUserRow <$> rows
+                valid = filter (/= Nothing) keys
+            pure $ fromJust <$> valid
 
 findBy ::
     (ToField p) =>

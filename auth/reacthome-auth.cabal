@@ -57,6 +57,7 @@ library
     Reacthome.Auth.Controller.Registration.Complete
     Reacthome.Auth.Controller.Registration.Options
     Reacthome.Auth.Controller.Registration.Registered
+    Reacthome.Auth.Controller.Users
     Reacthome.Auth.Controller.WebAuthn.AuthenticatorAssertionResponse
     Reacthome.Auth.Controller.WebAuthn.AuthenticatorAttestationResponse
     Reacthome.Auth.Controller.WebAuthn.COSEAlgorithmIdentifier
@@ -123,6 +124,7 @@ library
     Reacthome.Auth.Service.Secret
     Reacthome.Auth.View.Screen.Authentication
     Reacthome.Auth.View.Screen.Registration
+    Reacthome.Auth.View.Screen.Users
 
   build-depends:
     aeson,

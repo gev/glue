@@ -15,6 +15,10 @@ makeUsers :: IO Users
 makeUsers = do
     map' <- newMVar (empty, empty)
     let
+        getAll = runRead
+            map'
+            \(byId, _) -> snd <$> toList byId
+
         findById uid =
             MaybeT $ runRead
                 map'
@@ -67,7 +71,8 @@ makeUsers = do
 
     pure
         Users
-            { findById
+            { getAll
+            , findById
             , findByLogin
             , has
             , store

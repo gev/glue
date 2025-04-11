@@ -22,7 +22,7 @@ makePublicKeys pool = do
             , createPublicKeysIndex
             ]
     let
-        get = findBy pool getAllPublicKeys
+        getAll = findBy pool getAllPublicKeys
 
         store key =
             either
@@ -48,7 +48,7 @@ makePublicKeys pool = do
 
     pure
         PublicKeys
-            { get
+            { getAll
             , store
             , cleanUp
             }

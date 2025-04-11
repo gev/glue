@@ -9,7 +9,7 @@ makePublicKeys :: IO PublicKeys
 makePublicKeys = do
     list <- newMVar []
 
-    let get = readMVar list
+    let getAll = readMVar list
 
         store key = runModify list (key :)
 
@@ -18,7 +18,7 @@ makePublicKeys = do
                 \key -> key.timestamp > t
     pure
         PublicKeys
-            { get
+            { getAll
             , store
             , cleanUp
             }

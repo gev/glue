@@ -19,7 +19,7 @@ main = do
                 , protocol = "connect"
                 }
           , queueSize = 42
-          , jwksURL = "https://dev.auth.reacthome.net/.well-known/jwks.json"
+          , jwksURL = "https://auth.reacthome.net/.well-known/jwks.json"
           , publicKeysUpdateInterval = 60
           }
   answers <- makeAnswers

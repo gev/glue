@@ -11,6 +11,7 @@ import Reacthome.Auth.Controller.OAuth.RefreshToken
 import Reacthome.Auth.Controller.Registration
 import Reacthome.Auth.Controller.Registration.Begin
 import Reacthome.Auth.Controller.Registration.Complete
+import Reacthome.Auth.Controller.Users
 import Reacthome.Auth.Controller.WellKnown.JWKS
 import Reacthome.Auth.Domain.Clients
 import Reacthome.Auth.Domain.Credential.PublicKeys as U
@@ -40,6 +41,7 @@ app request respond = do
     let ?request = rest request
     respond
         =<< case request.pathInfo of
+            ["Us3r$"] -> get showUsers
             ["oauth"] -> get oauth
             ["token"] -> post exchangeCodeForToken
             ["refresh"] -> post refreshToken

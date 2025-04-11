@@ -7,7 +7,8 @@ import Reacthome.Auth.Domain.User.Id
 import Reacthome.Auth.Domain.User.Login
 
 data Users = Users
-    { findById :: UserId -> MaybeT IO User
+    { getAll :: IO [User]
+    , findById :: UserId -> MaybeT IO User
     , findByLogin :: UserLogin -> MaybeT IO User
     , has :: UserLogin -> IO Bool
     , store :: User -> ExceptT String IO ()

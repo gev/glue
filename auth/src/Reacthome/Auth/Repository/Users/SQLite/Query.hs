@@ -17,6 +17,13 @@ createUsersIndex =
             ON users(login)
     |]
 
+getAllUsers :: Query
+getAllUsers =
+    [sql|
+        SELECT id, login, name
+        FROM users
+    |]
+
 findUserById :: Query
 findUserById =
     [sql|

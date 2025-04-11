@@ -6,7 +6,7 @@ import JOSE.JWK
 import JOSE.JWKS
 import JOSE.PublicKey (makePublicKey)
 import Reacthome.Auth.Domain.PublicKey (PublicKey, bytes, kid)
-import Reacthome.Auth.Domain.PublicKeys (PublicKeys, get)
+import Reacthome.Auth.Domain.PublicKeys (PublicKeys, getAll)
 import Web.Rest
 import Web.Rest.Media
 
@@ -17,7 +17,7 @@ jwks ::
 jwks = do
     keys <-
         traverse makeJWK
-            =<< lift ?jwkPublicKeys.get
+            =<< lift ?jwkPublicKeys.getAll
     toJSON $
         JWKS
             { keys
