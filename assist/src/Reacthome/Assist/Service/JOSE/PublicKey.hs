@@ -19,6 +19,9 @@ runPublicKeysUpdate = do
     req <- parseRequest ?environment.jwksURL
     manager <- newManager tlsManagerSettings
     let updatePublicKeys = do
+            {-
+                TODO: Handle the HTTP response status code
+            -}
             response <- responseBody <$> httpLbs req manager
             either
                 print
