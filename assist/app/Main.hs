@@ -4,6 +4,7 @@ import Reacthome.Assist.Controller.Dialog.Answer
 import Reacthome.Assist.Environment
 import Reacthome.Assist.Repository.Answers
 import Reacthome.Assist.Repository.PublicKeys (makePublicKeys)
+import Reacthome.Assist.Repository.Users
 import Reacthome.Assist.Service.JOSE.PublicKey (runPublicKeysUpdate)
 import Reacthome.Gate.Connection.Pool
 
@@ -29,5 +30,7 @@ main = do
   publicKeys <- makePublicKeys
   let ?publicKeys = publicKeys
   runPublicKeysUpdate
+  users <- makeUsers "./var/assist.json"
+  let ?users = users
   putStrLn $ "Serving Reacthome Assist on port " <> show port
   run port app

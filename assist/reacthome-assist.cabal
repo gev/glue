@@ -40,9 +40,14 @@ library
     Reacthome.Assist.Dialog.Gate
     Reacthome.Assist.Domain.Answer
     Reacthome.Assist.Domain.Query
+    Reacthome.Assist.Domain.Server.Id
+    Reacthome.Assist.Domain.User
+    Reacthome.Assist.Domain.User.Id
+    Reacthome.Assist.Domain.Users
     Reacthome.Assist.Environment
     Reacthome.Assist.Repository.Answers
     Reacthome.Assist.Repository.PublicKeys
+    Reacthome.Assist.Repository.Users
     Reacthome.Assist.Service.Dialog
     Reacthome.Assist.Service.JOSE.PublicKey
     Reacthome.Gate.Connection
