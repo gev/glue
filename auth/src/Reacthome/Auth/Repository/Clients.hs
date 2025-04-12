@@ -21,12 +21,11 @@ import Prelude hiding (lookup)
 
 makeClients :: String -> IO Clients
 makeClients file = do
-    rows :: [ClientRow] <-
+    rows <-
         maybe
             (error $ "Can't read clients from `" <> file <> "`")
             pure
             =<< decodeFileStrict file
-
     clients' <- traverse fromClientRow rows
     let
         clients =
