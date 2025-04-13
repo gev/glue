@@ -85,7 +85,7 @@ getAuthorizedUser = do
         then do
             let uid = token.payload.sub
             maybeToExceptT
-                ("Unknown user: " <> toString uid)
+                ("Unknown user: `" <> toString uid <> "`")
                 . ?users.findById
                 $ UserId uid
         else throwE "Token is expired"
@@ -144,9 +144,9 @@ shouldAddServer :: User -> ExceptT String IO D.Response
 shouldAddServer user = do
     lift $
         print
-            ( "User: "
+            ( "User: `"
                 <> toString user.id.value
-                <> " doesn't have the any known smart home server"
+                <> "` doesn't have the any known smart home server"
             )
     pure
         D.Response
