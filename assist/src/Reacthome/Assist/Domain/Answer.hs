@@ -10,8 +10,8 @@ type AnswerID = UUID
 
 data Answer = Answer
     { message :: Text
-    , sessionId :: Text
-    , endSession :: Maybe Bool
+    , session :: Text
+    , end :: Maybe Bool
     }
     deriving stock (Generic, Show)
 
