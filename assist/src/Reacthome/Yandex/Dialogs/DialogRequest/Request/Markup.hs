@@ -1,4 +1,4 @@
-module Reacthome.Yandex.Dialogs.Markup where
+module Reacthome.Yandex.Dialogs.DialogRequest.Request.Markup where
 
 import Data.Aeson
 import GHC.Generics

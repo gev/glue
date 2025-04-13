@@ -1,10 +1,10 @@
-module Reacthome.Yandex.Dialogs.Session where
+module Reacthome.Yandex.Dialogs.DialogRequest.Session where
 
 import Data.Aeson
 import Data.Text
 import GHC.Generics
-import Reacthome.Yandex.Dialogs.Application
-import Reacthome.Yandex.Dialogs.User
+import Reacthome.Yandex.Dialogs.DialogRequest.Session.Application
+import Reacthome.Yandex.Dialogs.DialogRequest.Session.User
 
 data Session = Session
     { message_id :: Int

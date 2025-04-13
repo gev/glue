@@ -66,6 +66,7 @@ run = do
             shouldAddServer
         (server : _) -> do
             dialog <- fromJSON ?request
+            lift $ print dialog
             makeAnswer server dialog
 
 getAuthorizedUser ::
@@ -111,7 +112,7 @@ makeAnswer _ LinkingComplete{} =
             , end_session = False
             , directives = Nothing
             }
-makeAnswer server DialogRequest{session, request} = do
+makeAnswer server DialogRequest{meta, session, request} = do
     answer <-
         {-
             TODO: Add timeout
@@ -120,8 +121,12 @@ makeAnswer server DialogRequest{session, request} = do
             getAnswer
                 server
                 Query
-                    { message = request.command
-                    , sessionId = session.session_id
+                    { user_agent = meta.client_id
+                    , session = session.session_id
+                    , skill = session.skill_id
+                    , skill_user = session.user.user_id
+                    , skill_application = session.application.application_id
+                    , message = request.command
                     }
     pure
         D.Response

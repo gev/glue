@@ -1,4 +1,4 @@
-module Reacthome.Yandex.Dialogs.Meta where
+module Reacthome.Yandex.Dialogs.DialogRequest.Meta where
 
 import Data.Aeson
 import Data.Text

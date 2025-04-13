@@ -3,7 +3,7 @@ module Reacthome.Yandex.Dialogs.DialogResponse where
 import Data.Aeson
 import Data.Text
 import GHC.Generics
-import Reacthome.Yandex.Dialogs.Response
+import Reacthome.Yandex.Dialogs.DialogResponse.Response
 
 data DialogResponse = DialogResponse
     { response :: Response

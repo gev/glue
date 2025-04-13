@@ -1,4 +1,4 @@
-module Reacthome.Yandex.Dialogs.Directives where
+module Reacthome.Yandex.Dialogs.DialogResponse.Response.Directives where
 
 import Data.Aeson
 import GHC.Generics

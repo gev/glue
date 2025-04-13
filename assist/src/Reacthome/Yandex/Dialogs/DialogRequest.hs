@@ -3,9 +3,9 @@ module Reacthome.Yandex.Dialogs.DialogRequest where
 import Data.Aeson
 import Data.Aeson.KeyMap
 import Data.Text
-import Reacthome.Yandex.Dialogs.Meta
-import Reacthome.Yandex.Dialogs.Request
-import Reacthome.Yandex.Dialogs.Session
+import Reacthome.Yandex.Dialogs.DialogRequest.Meta
+import Reacthome.Yandex.Dialogs.DialogRequest.Request
+import Reacthome.Yandex.Dialogs.DialogRequest.Session
 
 data DialogRequest
     = DialogRequest

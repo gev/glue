@@ -1,4 +1,4 @@
-module Reacthome.Yandex.Dialogs.Application where
+module Reacthome.Yandex.Dialogs.DialogRequest.Session.Application where
 
 import Data.Aeson
 import Data.Text

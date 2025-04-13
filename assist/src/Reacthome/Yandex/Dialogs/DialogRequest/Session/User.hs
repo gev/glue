@@ -1,4 +1,4 @@
-module Reacthome.Yandex.Dialogs.User where
+module Reacthome.Yandex.Dialogs.DialogRequest.Session.User where
 
 import Data.Aeson
 import Data.Text

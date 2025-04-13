@@ -1,9 +1,9 @@
-module Reacthome.Yandex.Dialogs.Request where
+module Reacthome.Yandex.Dialogs.DialogRequest.Request where
 
 import Data.Aeson
 import Data.Text
 import GHC.Generics
-import Reacthome.Yandex.Dialogs.Markup
+import Reacthome.Yandex.Dialogs.DialogRequest.Request.Markup
 import Util.Aeson
 
 data Request = Request

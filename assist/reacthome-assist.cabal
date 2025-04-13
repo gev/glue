@@ -52,18 +52,16 @@ library
     Reacthome.Assist.Service.JOSE.PublicKey
     Reacthome.Gate.Connection
     Reacthome.Gate.Connection.Pool
-    Reacthome.Yandex.Dialogs.Application
     Reacthome.Yandex.Dialogs.DialogRequest
+    Reacthome.Yandex.Dialogs.DialogRequest.Meta
+    Reacthome.Yandex.Dialogs.DialogRequest.Request
+    Reacthome.Yandex.Dialogs.DialogRequest.Request.Markup
+    Reacthome.Yandex.Dialogs.DialogRequest.Session
+    Reacthome.Yandex.Dialogs.DialogRequest.Session.Application
+    Reacthome.Yandex.Dialogs.DialogRequest.Session.User
     Reacthome.Yandex.Dialogs.DialogResponse
-    Reacthome.Yandex.Dialogs.Directives
-    Reacthome.Yandex.Dialogs.Entity
-    Reacthome.Yandex.Dialogs.Intents
-    Reacthome.Yandex.Dialogs.Markup
-    Reacthome.Yandex.Dialogs.Meta
-    Reacthome.Yandex.Dialogs.Request
-    Reacthome.Yandex.Dialogs.Response
-    Reacthome.Yandex.Dialogs.Session
-    Reacthome.Yandex.Dialogs.User
+    Reacthome.Yandex.Dialogs.DialogResponse.Response
+    Reacthome.Yandex.Dialogs.DialogResponse.Response.Directives
 
   build-depends:
     aeson,
