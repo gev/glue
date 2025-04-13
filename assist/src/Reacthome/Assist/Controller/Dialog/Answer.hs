@@ -10,8 +10,8 @@ handleAnswer ::
     (?answers :: Answers) =>
     Text ->
     IO ()
-handleAnswer text = do
+handleAnswer message =
     either
         (const $ pure ()) -- print
         (uncurry setAnswer)
-        (unpack =<< eitherDecode (encodeUtf8 text))
+        (unpack =<< eitherDecode (encodeUtf8 message))
