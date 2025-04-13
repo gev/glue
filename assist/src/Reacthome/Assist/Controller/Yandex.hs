@@ -21,11 +21,14 @@ import Reacthome.Assist.Domain.Users
 import Reacthome.Assist.Service.Dialog
 import Reacthome.Gate.Connection.Pool
 import Reacthome.Yandex.Dialogs.DialogRequest
+import Reacthome.Yandex.Dialogs.DialogRequest.Meta
+import Reacthome.Yandex.Dialogs.DialogRequest.Request qualified
+import Reacthome.Yandex.Dialogs.DialogRequest.Session
+import Reacthome.Yandex.Dialogs.DialogRequest.Session.Application
+import Reacthome.Yandex.Dialogs.DialogRequest.Session.User qualified
 import Reacthome.Yandex.Dialogs.DialogResponse
-import Reacthome.Yandex.Dialogs.Directives
-import Reacthome.Yandex.Dialogs.Request qualified
-import Reacthome.Yandex.Dialogs.Response qualified as D
-import Reacthome.Yandex.Dialogs.Session
+import Reacthome.Yandex.Dialogs.DialogResponse.Response qualified as D
+import Reacthome.Yandex.Dialogs.DialogResponse.Response.Directives
 import Web.Rest
 import Web.Rest.Media
 
@@ -56,18 +59,8 @@ run ::
 run = do
     user <- getAuthorizedUser
     case user.servers of
-        [] -> do
-            lift $
-                print
-                    ( "User: "
-                        <> toString user.id.value
-                        <> " doesn't have the any known smart home server"
-                    )
-            shouldAddServer
-        (server : _) -> do
-            dialog <- fromJSON ?request
-            lift $ print dialog
-            makeAnswer server dialog
+        [] -> shouldAddServer user
+        (server : _) -> makeAnswer server =<< fromJSON ?request
 
 getAuthorizedUser ::
     ( ?request :: Request
@@ -132,7 +125,7 @@ makeAnswer server DialogRequest{meta, session, request} = do
         D.Response
             { text = answer.message
             , tts = Just answer.message
-            , end_session = fromMaybe False answer.endSession
+            , end_session = fromMaybe False answer.end
             , directives = Nothing
             }
 
@@ -147,8 +140,14 @@ shouldAuthorize err = do
             , directives = Just start'account'linking
             }
 
-shouldAddServer :: ExceptT String IO D.Response
-shouldAddServer =
+shouldAddServer :: User -> ExceptT String IO D.Response
+shouldAddServer user = do
+    lift $
+        print
+            ( "User: "
+                <> toString user.id.value
+                <> " doesn't have the any known smart home server"
+            )
     pure
         D.Response
             { text = "Необходимо добавить сервер умного дома"
