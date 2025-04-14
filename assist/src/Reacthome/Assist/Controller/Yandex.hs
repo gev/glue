@@ -57,17 +57,27 @@ run ::
     ) =>
     ExceptT String IO D.Response
 run = do
-    user <- getAuthorizedUser
-    case user.servers of
-        [] -> shouldAddServer user
-        (server : _) -> makeAnswer server =<< fromJSON ?request
+    maybe
+        shouldAddServer
+        ( \user -> case user.servers of
+            [] -> do
+                lift $
+                    print
+                        ( "User: `"
+                            <> toString user.id.value
+                            <> "` doesn't have the any known smart home server"
+                        )
+                shouldAddServer
+            (server : _) -> makeAnswer server =<< fromJSON ?request
+        )
+        =<< getAuthorizedUser
 
 getAuthorizedUser ::
     ( ?request :: Request
     , ?publicKeys :: PublicKeys IO
     , ?users :: Users
     ) =>
-    ExceptT String IO User
+    ExceptT String IO (Maybe User)
 getAuthorizedUser = do
     authorization <-
         maybeToExceptT
@@ -84,10 +94,7 @@ getAuthorizedUser = do
     if isValid
         then do
             let uid = token.payload.sub
-            maybeToExceptT
-                ("Unknown user: `" <> toString uid <> "`")
-                . ?users.findById
-                $ UserId uid
+            lift . runMaybeT $ ?users.findById $ UserId uid
         else throwE "Token is expired"
 
 makeAnswer ::
@@ -140,14 +147,8 @@ shouldAuthorize err = do
             , directives = Just start'account'linking
             }
 
-shouldAddServer :: User -> ExceptT String IO D.Response
-shouldAddServer user = do
-    lift $
-        print
-            ( "User: `"
-                <> toString user.id.value
-                <> "` doesn't have the any known smart home server"
-            )
+shouldAddServer :: ExceptT String IO D.Response
+shouldAddServer = do
     pure
         D.Response
             { text = "Необходимо добавить сервер умного дома"
