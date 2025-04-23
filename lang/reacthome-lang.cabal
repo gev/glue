@@ -1,0 +1,55 @@
+cabal-version: 3.8
+name: reacthome-lang
+version: 0.1.0.0
+synopsis: Reacthome Language Utils
+description: A collection of the language utils
+license: BSD-3-Clause
+author: ReactHome Team
+maintainer: gazdovsky@gmail.com
+category: Web
+build-type: Simple
+
+common common-options
+  build-depends:
+    base,
+    bytestring,
+    sqlite-simple,
+    text,
+    transformers,
+    xeno,
+
+  default-language: GHC2021
+  default-extensions:
+    BlockArguments
+    DerivingStrategies
+    DuplicateRecordFields
+    MultiWayIf
+    OverloadedRecordDot
+    OverloadedStrings
+    QuasiQuotes
+
+library
+  import:
+    common-options
+
+  -- cabal-gild: discover src
+  exposed-modules: Lang
+  build-depends:
+  hs-source-dirs: src
+
+executable reacthome-lang
+  import:
+    common-options
+
+  ghc-options:
+    -O2
+    -rtsopts
+    -threaded
+    -with-rtsopts=-N
+    -Wall
+
+  build-depends:
+    reacthome-lang
+
+  hs-source-dirs: app
+  main-is: Main.hs
