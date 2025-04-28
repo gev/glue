@@ -13,6 +13,13 @@
             "driver": "SQLite",
             "name": "keys",
             "database": "./var/db/keys.db"
+        },
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "lang_ru",
+            "group": "lang",
+            "database": "./var/lang/ru.db"
         }
     ]
 }
