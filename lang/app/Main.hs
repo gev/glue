@@ -38,6 +38,13 @@ createFormsLemmaIndex =
             ON forms(lemma)
     |]
 
+createFormsTextIndex :: Query
+createFormsTextIndex =
+    [sql|
+        CREATE INDEX forms_text_idx 
+            ON forms(text)
+    |]
+
 createLinksTable :: Query
 createLinksTable =
     [sql|
@@ -100,6 +107,7 @@ main = do
         , createLemmasTableTextIndex
         , createFormsTable
         , createFormsLemmaIndex
+        , createFormsTextIndex
         , createLinksTable
         , createLinksFromLemmaIndex
         , createLinksToLemmaIndex
