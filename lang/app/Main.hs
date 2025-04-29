@@ -163,7 +163,7 @@ main = do
                             forms' <- readIORef forms
                             let form =
                                     Form
-                                        { text = replace "ё" "е" $ decodeUtf8 text'
+                                        { text = decodeUtf8 text'
                                         , grammemes = decodeUtf8 <$> grammemes'
                                         }
                             writeIORef forms $ forms' <> [form]
