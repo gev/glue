@@ -21,14 +21,16 @@ findPublicKeyById :: Query
 findPublicKeyById =
     [sql| 
         SELECT id, user_id, algorithm, bytes 
-        FROM public_keys WHERE id = ? 
+        FROM public_keys 
+        WHERE id = ? 
     |]
 
 findPublicKeyByUserId :: Query
 findPublicKeyByUserId =
     [sql| 
         SELECT id, user_id, algorithm, bytes 
-        FROM public_keys WHERE user_id = ?
+        FROM public_keys 
+        WHERE user_id = ?
     |]
 
 storePublicKey :: Query
