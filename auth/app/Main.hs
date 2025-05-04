@@ -23,7 +23,7 @@ main = do
           , authTimeout = 100
           , authFlowCookieTTL = 300
           , authCodeTTL = 30
-          , accessTokenTTL = 120
+          , accessTokenTTL = 900
           }
   authFlows <- makeAuthFlows
   let ?authFlows = authFlows
