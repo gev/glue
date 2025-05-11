@@ -19,6 +19,7 @@ main = do
         Environment
           { name = "Reacthome Auth Service"
           , domain = "reacthome.net"
+          , appleApps = ["Q8QP3DQFJY.net.reacthome.studio"]
           , challengeSize = 20
           , authTimeout = 100
           , authFlowCookieTTL = 300

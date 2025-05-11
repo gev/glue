@@ -5,6 +5,7 @@ import Control.Monad.Trans.Except
 import Data.Aeson (ToJSON)
 import Data.Text
 import GHC.Generics
+import Reacthome.Auth.Environment
 import Web.Rest
 import Web.Rest.Media (toJSON)
 
@@ -20,13 +21,13 @@ newtype WebCredentials = WebCredentials
     deriving stock (Generic, Show)
     deriving anyclass (ToJSON)
 
-appleAppSiteAssociation :: ExceptT String IO Response
+appleAppSiteAssociation :: (?environment :: Environment) => ExceptT String IO Response
 appleAppSiteAssociation = do
     lift $ print @String "Apple"
     toJSON $
         AppleAppSiteAssociation
             { webcredentials =
                 WebCredentials
-                    { apps = ["Q8QP3DQFJY.net.reacthome.studio"]
+                    { apps = ?environment.appleApps
                     }
             }
