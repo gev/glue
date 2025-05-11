@@ -66,6 +66,7 @@ library
     Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialRequestOptions
     Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialRpEntity
     Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialUserEntity
+    Reacthome.Auth.Controller.WellKnown.AppleAppSiteAssociation
     Reacthome.Auth.Controller.WellKnown.JWKS
     Reacthome.Auth.Domain.Authentication.Begin
     Reacthome.Auth.Domain.Authentication.Complete

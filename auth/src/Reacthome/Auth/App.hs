@@ -12,6 +12,7 @@ import Reacthome.Auth.Controller.Registration
 import Reacthome.Auth.Controller.Registration.Begin
 import Reacthome.Auth.Controller.Registration.Complete
 import Reacthome.Auth.Controller.Users
+import Reacthome.Auth.Controller.WellKnown.AppleAppSiteAssociation
 import Reacthome.Auth.Controller.WellKnown.JWKS
 import Reacthome.Auth.Domain.Clients
 import Reacthome.Auth.Domain.Credential.PublicKeys as U
@@ -51,5 +52,6 @@ app request respond = do
             ["registration"] -> get showRegistration
             ["registration", "begin"] -> post beginRegistration
             ["registration", "complete"] -> post completeRegistration
+            [".well-known", "apple-app-site-association"] -> get appleAppSiteAssociation
             [".well-known", "jwks.json"] -> get jwks
             _ -> notFound
