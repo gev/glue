@@ -1,0 +1,23 @@
+cabal-version: 3.8
+name: util
+version: 0.1.0.0
+synopsis: Core Domain
+description: A core domain of Reacthome applications galaxy
+license: BSD-3-Clause
+author: ReactHome Team
+maintainer: gazdovsky@gmail.com
+category: Web
+build-type: Simple
+
+library
+  hs-source-dirs: src
+  -- cabal-gild: discover src
+  exposed-modules:
+  build-depends:
+    aeson,
+    text,
+
+  default-language: GHC2021
+  default-extensions:
+    BlockArguments
+    OverloadedStrings
