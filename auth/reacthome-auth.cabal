@@ -19,14 +19,13 @@ common common-options
     util,
     uuid,
 
-  default-language: GHC2021
+  default-language: GHC2024
   default-extensions:
     BlockArguments
     DeriveAnyClass
     DerivingStrategies
     DuplicateRecordFields
     ImplicitParams
-    LambdaCase
     MultiWayIf
     OverloadedRecordDot
     OverloadedStrings

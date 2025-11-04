@@ -38,11 +38,10 @@ library
     transformers,
     uuid,
 
-  default-language: GHC2021
+  default-language: GHC2024
   default-extensions:
     DeriveAnyClass
     DerivingStrategies
-    DisambiguateRecordFields
     DuplicateRecordFields
     OverloadedRecordDot
     OverloadedStrings
