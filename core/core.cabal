@@ -18,6 +18,7 @@ library
     Reacthome.Core.Switchable
 
   build-depends:
+    base,
     aeson,
     containers,
     text,
