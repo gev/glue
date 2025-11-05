@@ -1,0 +1,54 @@
+cabal-version: 3.8
+name: reacthome-relay
+version: 0.1.0.0
+synopsis: Reacthome Relay
+description: Cloud relay for Reacthome applications galaxy
+license: BSD-3-Clause
+author: ReactHome Team
+maintainer: gazdovsky@gmail.com
+category: Web
+build-type: Simple
+
+common common-options
+  build-depends:
+    base,
+    bytestring,
+    text,
+    transformers,
+
+  default-language: GHC2024
+  default-extensions:
+    BlockArguments
+    DeriveAnyClass
+    DerivingStrategies
+    DuplicateRecordFields
+    ImplicitParams
+    OverloadedRecordDot
+    OverloadedStrings
+
+library
+  import:
+    common-options
+
+  -- cabal-gild: discover src
+  exposed-modules:
+  build-depends:
+  hs-source-dirs: src
+
+executable reacthome-assist
+  import:
+    common-options
+
+  ghc-options:
+    -O2
+    -rtsopts
+    -threaded
+    -with-rtsopts=-N
+    -Wall
+
+  build-depends:
+    reacthome-assist,
+    warp,
+
+  hs-source-dirs: app
+  main-is: Main.hs
