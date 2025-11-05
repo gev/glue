@@ -16,13 +16,14 @@ common common-options
     text,
     transformers,
 
-  default-language: GHC2024
+  default-language: GHC2021
   default-extensions:
     BlockArguments
     DeriveAnyClass
     DerivingStrategies
     DuplicateRecordFields
     ImplicitParams
+    LambdaCase
     OverloadedRecordDot
     OverloadedStrings
 
