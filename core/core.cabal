@@ -23,7 +23,7 @@ library
     containers,
     text,
 
-  default-language: GHC2021
+  default-language: GHC2024
   default-extensions:
     BlockArguments
     OverloadedStrings
