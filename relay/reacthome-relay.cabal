@@ -15,6 +15,8 @@ common common-options
     bytestring,
     text,
     transformers,
+    uuid,
+    websockets,
 
   default-language: GHC2024
   default-extensions:
@@ -25,6 +27,7 @@ common common-options
     ImplicitParams
     OverloadedRecordDot
     OverloadedStrings
+    RecordWildCards
 
 library
   import:
@@ -32,7 +35,17 @@ library
 
   -- cabal-gild: discover src
   exposed-modules:
+    Reacthome.Relay
+    Reacthome.Relay.App
+    Reacthome.Relay.Repository
+    Reacthome.Relays
+
   build-depends:
+    hashable,
+    list-t,
+    stm,
+    stm-containers,
+
   hs-source-dirs: src
 
 executable reacthome-assist
@@ -47,8 +60,7 @@ executable reacthome-assist
     -Wall
 
   build-depends:
-    reacthome-assist,
-    warp,
+    reacthome-relay
 
   hs-source-dirs: app
   main-is: Main.hs
