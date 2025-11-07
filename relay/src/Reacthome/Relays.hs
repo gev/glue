@@ -35,14 +35,13 @@ makeRelays = do
             catch @SomeException
                 do
                     connection <- acceptRequestWith pending defaultAcceptRequest
-                    withPingPong defaultPingPongOptions connection \connection' -> do
-                        relay <- makeRelay connection'
-                        repository.add uid relay
-                        run uid relay
+                    withPingPong defaultPingPongOptions connection $ run uid
                 do
                     logError . ConnectionError uid
 
-        run uid relay =
+        run uid connection = do
+            relay <- makeRelay connection
+            repository.add uid relay
             finally
                 do
                     forever $ loop uid relay
