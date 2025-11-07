@@ -4,19 +4,21 @@ import Control.Exception (SomeException, catch, finally, throwIO)
 import Control.Monad (forever, when)
 import Data.ByteString.Lazy (length, splitAt)
 import Data.Foldable (for_)
+import Data.Int (Int64)
 import Data.Text.Encoding (encodeUtf8)
 import Data.UUID (UUID, fromByteString, toByteString)
 import Network.WebSockets (
     PendingConnection,
     acceptRequestWith,
     defaultAcceptRequest,
+    defaultPingPongOptions,
     receiveData,
     sendBinaryData,
     sendClose,
-    withPingThread,
+    withPingPong,
  )
 import Reacthome.Relay (connection, makeRelay)
-import Reacthome.Relay.Error
+import Reacthome.Relay.Error (RelayError (..), logError)
 import Reacthome.Relay.Repository (add, get, makeRepository, remove)
 import Prelude hiding (length, splitAt, tail)
 
@@ -32,54 +34,56 @@ makeRelays = do
         connect pending uid =
             catch @SomeException
                 do
-                    relay <- acceptConnection pending uid
-                    run uid relay
+                    connection <- acceptRequestWith pending defaultAcceptRequest
+                    withPingPong defaultPingPongOptions connection \connection' -> do
+                        relay <- makeRelay connection'
+                        repository.add uid relay
+                        run uid relay
                 do
                     logError . ConnectionError uid
 
-        acceptConnection pending uid = do
-            connection <- acceptRequestWith pending defaultAcceptRequest
-            relay <- makeRelay connection
-            repository.add uid relay
-            pure relay
-
         run uid relay =
-            withPingThread relay.connection 30 (pure ()) do
-                finally
-                    do
-                        forever do
-                            catch @RelayError
-                                do
-                                    catch @SomeException
-                                        do
-                                            message <- receiveData relay.connection
-                                            handle uid message
-                                        do
-                                            throwIO . ReceiveError uid
-                                \e -> do
-                                    logError e
-                                    close uid relay
-                    do
-                        close uid relay
+            finally
+                do
+                    forever $ loop uid relay
+                do
+                    close uid relay
+
+        loop uid relay =
+            catch @RelayError
+                do
+                    catch @SomeException
+                        do
+                            message <- receiveData relay.connection
+                            handle uid message
+                        do
+                            throwIO . ReceiveError uid
+                \e -> do
+                    logError e
+                    close uid relay
 
         handle from message = do
-            let messageLength = length message
+            (to, content) <- parse message
+            resend content from to
 
-            when (messageLength < 17) $ do
-                throwIO
-                    InvalidMessageLength
-                        { messageLength = fromIntegral messageLength
-                        , minimumLength = 17
-                        }
-
-            let (to, content) = splitAt 16 message
+        parse message = do
+            validate message
+            let (to, content) = splitAt headerLength message
             maybe
                 do
                     throwIO $ InvalidUUID to
                 do
-                    resend content from
+                    pure . (,content)
                 do
                     fromByteString to
+
+        validate message = do
+            let messageLength = length message
+            when (messageLength < minimumMessageLength) $ do
+                throwIO $
+                    InvalidMessageLength
+                        messageLength
+                        minimumMessageLength
 
         resend content from to = do
             relays <- repository.get to
@@ -104,3 +108,9 @@ makeRelays = do
             repository.remove uid relay
 
     pure Relays{..}
+
+headerLength :: Int64
+headerLength = 16
+
+minimumMessageLength :: Int64
+minimumMessageLength = headerLength + 1

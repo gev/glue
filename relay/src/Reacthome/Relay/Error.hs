@@ -2,14 +2,15 @@ module Reacthome.Relay.Error where
 
 import Control.Exception (Exception, SomeException)
 import Data.ByteString.Lazy (ByteString)
+import Data.Int (Int64)
 import Data.UUID (UUID)
 import Debug.Trace (traceIO)
 import Prelude hiding (error)
 
 data RelayError
     = InvalidMessageLength
-        { messageLength :: Int
-        , minimumLength :: Int
+        { messageLength :: Int64
+        , minimumLength :: Int64
         }
     | InvalidUUID ByteString
     | NoRelaysFound UUID
