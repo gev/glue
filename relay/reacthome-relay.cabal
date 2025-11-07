@@ -37,6 +37,7 @@ library
   exposed-modules:
     Reacthome.Relay
     Reacthome.Relay.App
+    Reacthome.Relay.Error
     Reacthome.Relay.Repository
     Reacthome.Relays
 
