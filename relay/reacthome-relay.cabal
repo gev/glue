@@ -12,10 +12,6 @@ build-type: Simple
 common common-options
   build-depends:
     base,
-    bytestring,
-    text,
-    transformers,
-    uuid,
     websockets,
 
   default-language: GHC2024
@@ -43,10 +39,14 @@ library
     Reacthome.Relay.Server
 
   build-depends:
+    bytestring,
     hashable,
     list-t,
     stm,
     stm-containers,
+    text,
+    transformers,
+    uuid,
 
   hs-source-dirs: src
 
