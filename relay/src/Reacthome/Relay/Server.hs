@@ -10,12 +10,14 @@ import Network.WebSockets (
     acceptRequestWith,
     defaultAcceptRequest,
     defaultPingPongOptions,
+    receiveData,
+    sendBinaryData,
     sendClose,
     withPingPong,
  )
 import Reacthome.Relay.Connection (connection, makeRelayConnection)
 import Reacthome.Relay.Error (RelayError (..), logError)
-import Reacthome.Relay.Message (RelayMessage (..), receiveMessage, sendMessage)
+import Reacthome.Relay.Message (RelayMessage (..), parseMessage, serializeMessage)
 import Reacthome.Relay.Repository (add, get, makeRepository, remove)
 import Prelude hiding (length, splitAt, tail)
 
@@ -48,30 +50,33 @@ makeRelayServer = do
         loop peer relay =
             catch @RelayError
                 do
-                    catch @SomeException
-                        do
-                            message <- receiveMessage relay.connection
-                            handle peer message
-                        do
-                            throwIO . ReceiveError peer
+                    message <- receiveMessage peer relay
+                    handle peer message
                 \e -> do
                     logError e
                     close peer relay
 
         handle from message = do
             relays <- repository.get message.peer
-
             when (null relays) do
-                throwIO $ NoRelaysFound message.peer
+                throwIO $ NoPeersFound message.peer
+            for_ relays do
+                sendMessage $ RelayMessage from message.content
 
-            let to = message.peer
-            for_ relays \relay ->
-                catch @SomeException
-                    do
-                        sendMessage relay.connection $ RelayMessage from message.content
-                    \e -> do
-                        logError $ SendError to e
-                        close to relay
+        receiveMessage peer relay =
+            parseMessage <$> catch @SomeException
+                do
+                    receiveData relay.connection
+                do
+                    throwIO . ReceiveError peer
+
+        sendMessage message relay =
+            catch @SomeException
+                do
+                    sendBinaryData relay.connection $ serializeMessage message
+                \e -> do
+                    logError $ SendError message.peer e
+                    close message.peer relay
 
         close peer relay = do
             catch @SomeException

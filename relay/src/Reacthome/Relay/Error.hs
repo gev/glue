@@ -9,12 +9,12 @@ import Prelude hiding (error)
 
 data RelayError
     = InvalidUUID ByteString
-    | NoRelaysFound UUID
+    | NoPeersFound UUID
     | SendError UUID SomeException
     | ReceiveError UUID SomeException
     | CloseError UUID SomeException
     | ConnectionError
-        { clientId :: UUID
+        { peer :: UUID
         , error :: SomeException
         }
     | InvalidMessageLength
@@ -36,7 +36,7 @@ logError err =
                     <> show minimumLength
             InvalidUUID bytes ->
                 "Invalid UUID in message: " <> show bytes
-            NoRelaysFound uid ->
+            NoPeersFound uid ->
                 "No relays found for UUID: " <> show uid
             ReceiveError uid e ->
                 "Failed to receive message from " <> show uid <> ": " <> show e
@@ -45,4 +45,4 @@ logError err =
             CloseError uid e ->
                 "Failed to close connection " <> show uid <> ": " <> show e
             ConnectionError{..} ->
-                "Connection error for " <> show clientId <> ": " <> show error
+                "Connection error for " <> show peer <> ": " <> show error

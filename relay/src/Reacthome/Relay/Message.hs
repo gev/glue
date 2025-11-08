@@ -4,7 +4,6 @@ import Control.Exception (throw)
 import Data.ByteString.Lazy (ByteString, length, splitAt)
 import Data.Int (Int64)
 import Data.UUID (UUID, fromByteString, toByteString)
-import Network.WebSockets (Connection, receiveData, sendBinaryData)
 import Reacthome.Relay.Error (RelayError (InvalidMessageLength, InvalidUUID))
 import Prelude hiding (length, splitAt, tail)
 
@@ -35,14 +34,6 @@ parseMessage message = do
                     flip RelayMessage content
                 do
                     fromByteString peer'
-
-receiveMessage :: Connection -> IO RelayMessage
-receiveMessage connection =
-    parseMessage <$> receiveData connection
-
-sendMessage :: Connection -> RelayMessage -> IO ()
-sendMessage connection =
-    sendBinaryData connection . serializeMessage
 
 headerLength :: Int64
 headerLength = 16
