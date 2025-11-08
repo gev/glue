@@ -24,7 +24,7 @@ import Reacthome.Relay.Repository (add, get, makeRepository, remove)
 import Prelude hiding (length, splitAt, tail)
 
 newtype RelayServer = RelayServer
-    { connect :: PendingConnection -> UUID -> IO ()
+    { start :: PendingConnection -> UUID -> IO ()
     }
 
 makeRelayServer :: IO RelayServer
@@ -32,7 +32,7 @@ makeRelayServer = do
     repository <- makeRepository
 
     let
-        connect pending peer =
+        start pending peer =
             catch @HandshakeException
                 do
                     connection <- acceptRequestWith pending defaultAcceptRequest
@@ -58,7 +58,7 @@ makeRelayServer = do
             relays <- repository.get message.peer
             if null relays
                 then logError $ NoPeersFound message.peer
-                else for_ relays \relay -> do
+                else for_ relays \relay ->
                     catch @RelayError
                         do
                             sendMessage relay $

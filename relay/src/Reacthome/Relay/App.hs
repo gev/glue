@@ -9,7 +9,7 @@ import Network.WebSockets (
     pendingRequest,
     requestPath,
  )
-import Reacthome.Relay.Server (connect, makeRelayServer)
+import Reacthome.Relay.Server (makeRelayServer, start)
 import Prelude hiding (length, splitAt, tail)
 
 application :: ServerApp
@@ -19,5 +19,5 @@ application pending = do
     when (length path > 1) do
         maybe
             (pure ())
-            (server.connect pending)
+            (server.start pending)
             (fromText $ tail path)
