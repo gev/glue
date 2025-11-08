@@ -1,11 +1,13 @@
 module Reacthome.Relay.Server where
 
-import Control.Exception (SomeException, catch, finally, throwIO)
+import Control.Exception (catch, finally, throwIO)
 import Control.Monad (forever, when)
 import Data.Foldable (for_)
 import Data.Text.Encoding (encodeUtf8)
 import Data.UUID (UUID)
 import Network.WebSockets (
+    ConnectionException,
+    HandshakeException,
     PendingConnection,
     acceptRequestWith,
     defaultAcceptRequest,
@@ -31,59 +33,57 @@ makeRelayServer = do
 
     let
         connect pending peer =
-            catch @SomeException
+            catch @HandshakeException
                 do
                     connection <- acceptRequestWith pending defaultAcceptRequest
                     withPingPong defaultPingPongOptions connection $ run peer
                 do
-                    logError . ConnectionError peer
+                    logError . HandshakeError peer
 
         run peer connection = do
             relay <- makeRelayConnection connection
             repository.add peer relay
-            finally
-                do
-                    forever $ loop peer relay
-                do
-                    close peer relay
-
-        loop peer relay =
             catch @RelayError
                 do
-                    message <- receiveMessage peer relay
-                    handle peer message
-                \e -> do
-                    logError e
-                    close peer relay
+                    finally
+                        do forever $ loop peer relay
+                        do close peer relay
+                logError
+
+        loop peer relay = do
+            message <- receiveMessage peer relay
+            handle peer message
 
         handle from message = do
             relays <- repository.get message.peer
-            when (null relays) do
-                throwIO $ NoPeersFound message.peer
-            for_ relays do
-                sendMessage $ RelayMessage from message.content
+            if null relays
+                then logError $ NoPeersFound message.peer
+                else for_ relays \relay -> do
+                    catch @RelayError
+                        do
+                            sendMessage relay $
+                                RelayMessage
+                                    { peer = from
+                                    , content = message.content
+                                    }
+                        \e -> do
+                            logError e
+                            close message.peer relay
 
         receiveMessage peer relay =
-            parseMessage <$> catch @SomeException
-                do
-                    receiveData relay.connection
-                do
-                    throwIO . ReceiveError peer
+            parseMessage <$> catch @ConnectionException
+                do receiveData relay.connection
+                do throwIO . ReceiveError peer
 
-        sendMessage message relay =
-            catch @SomeException
-                do
-                    sendBinaryData relay.connection $ serializeMessage message
-                \e -> do
-                    logError $ SendError message.peer e
-                    close message.peer relay
+        sendMessage relay message =
+            catch @ConnectionException
+                do sendBinaryData relay.connection $ serializeMessage message
+                do throwIO . SendError message.peer
 
         close peer relay = do
-            catch @SomeException
-                do
-                    sendClose relay.connection $ encodeUtf8 "Close Relay"
-                do
-                    logError . CloseError peer
+            catch @ConnectionException
+                do sendClose relay.connection $ encodeUtf8 "Close Relay"
+                do logError . CloseError peer
             repository.remove peer relay
 
     pure RelayServer{..}

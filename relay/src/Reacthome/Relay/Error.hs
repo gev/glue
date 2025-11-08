@@ -1,22 +1,21 @@
 module Reacthome.Relay.Error where
 
-import Control.Exception (Exception, SomeException)
+import Control.Exception (Exception)
 import Data.ByteString.Lazy (ByteString)
 import Data.Int (Int64)
 import Data.UUID (UUID)
 import Debug.Trace (traceIO)
+import Network.WebSockets (ConnectionException, HandshakeException)
 import Prelude hiding (error)
 
 data RelayError
     = InvalidUUID ByteString
     | NoPeersFound UUID
-    | SendError UUID SomeException
-    | ReceiveError UUID SomeException
-    | CloseError UUID SomeException
-    | ConnectionError
-        { peer :: UUID
-        , error :: SomeException
-        }
+    | SendError UUID ConnectionException
+    | ReceiveError UUID ConnectionException
+    | CloseError UUID ConnectionException
+    | HandshakeError UUID HandshakeException
+    | ConnectionError UUID ConnectionException
     | InvalidMessageLength
         { messageLength :: Int64
         , minimumLength :: Int64
@@ -36,13 +35,15 @@ logError err =
                     <> show minimumLength
             InvalidUUID bytes ->
                 "Invalid UUID in message: " <> show bytes
-            NoPeersFound uid ->
-                "No relays found for UUID: " <> show uid
-            ReceiveError uid e ->
-                "Failed to receive message from " <> show uid <> ": " <> show e
-            SendError uid e ->
-                "Failed to send message to " <> show uid <> ": " <> show e
-            CloseError uid e ->
-                "Failed to close connection " <> show uid <> ": " <> show e
-            ConnectionError{..} ->
-                "Connection error for " <> show peer <> ": " <> show error
+            NoPeersFound peer ->
+                "No relays found for UUID: " <> show peer
+            ReceiveError peer e ->
+                "Failed to receive message from " <> show peer <> ": " <> show e
+            SendError peer e ->
+                "Failed to send message to " <> show peer <> ": " <> show e
+            CloseError peer e ->
+                "Failed to close connection " <> show peer <> ": " <> show e
+            HandshakeError peer e ->
+                "Handshake error for " <> show peer <> ": " <> show e
+            ConnectionError peer e ->
+                "Connection error for " <> show peer <> ": " <> show e
