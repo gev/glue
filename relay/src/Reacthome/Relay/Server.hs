@@ -1,7 +1,7 @@
 module Reacthome.Relay.Server where
 
 import Control.Exception (catch, finally, throwIO)
-import Control.Monad (forever, when)
+import Control.Monad (forever)
 import Data.Foldable (for_)
 import Data.Text.Encoding (encodeUtf8)
 import Data.UUID (UUID)
