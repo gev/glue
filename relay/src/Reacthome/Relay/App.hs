@@ -9,15 +9,15 @@ import Network.WebSockets (
     pendingRequest,
     requestPath,
  )
-import Reacthome.Relays (connect, makeRelays)
+import Reacthome.Relay.Server (connect, makeRelayServer)
 import Prelude hiding (length, splitAt, tail)
 
 application :: ServerApp
 application pending = do
-    relays <- makeRelays
+    server <- makeRelayServer
     let path = decodeUtf8 pending.pendingRequest.requestPath
     when (length path > 1) do
         maybe
             (pure ())
-            (relays.connect pending)
+            (server.connect pending)
             (fromText $ tail path)

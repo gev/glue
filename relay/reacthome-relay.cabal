@@ -35,11 +35,12 @@ library
 
   -- cabal-gild: discover src
   exposed-modules:
-    Reacthome.Relay
     Reacthome.Relay.App
+    Reacthome.Relay.Connection
     Reacthome.Relay.Error
+    Reacthome.Relay.Message
     Reacthome.Relay.Repository
-    Reacthome.Relays
+    Reacthome.Relay.Server
 
   build-depends:
     hashable,
