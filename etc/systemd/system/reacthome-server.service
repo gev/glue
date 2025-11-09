@@ -1,0 +1,12 @@
+[Unit]
+After=network.target
+
+[Service]
+Type=simple
+User=reacthome
+WorkingDirectory=/home/reacthome
+ExecStart=/home/reacthome/reacthome-server
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,57 @@
+cabal-version: 3.8
+name: reacthome-server
+version: 0.1.0.0
+synopsis: Reacthome Daemon
+description: Reacthome Device Server
+license: BSD-3-Clause
+author: ReactHome Team
+maintainer: gazdovsky@gmail.com
+category: Web
+build-type: Simple
+
+common common-options
+  build-depends:
+    base,
+    websockets,
+
+  default-language: GHC2024
+  default-extensions:
+    BlockArguments
+    DeriveAnyClass
+    DerivingStrategies
+    DuplicateRecordFields
+    ImplicitParams
+    OverloadedRecordDot
+    OverloadedStrings
+    RecordWildCards
+
+library
+  import:
+    common-options
+
+  -- cabal-gild: discover src
+  exposed-modules:
+    Reacthome.Server.App
+
+  build-depends:
+    text,
+    uuid,
+
+  hs-source-dirs: src
+
+executable reacthome-server
+  import:
+    common-options
+
+  ghc-options:
+    -O2
+    -rtsopts
+    -threaded
+    -with-rtsopts=-N
+    -Wall
+
+  build-depends:
+    reacthome-server
+
+  hs-source-dirs: app
+  main-is: Main.hs
