@@ -11,6 +11,7 @@ data RelayMessage = RelayMessage
     { peer :: UUID
     , content :: ByteString
     }
+    deriving (Show)
 
 serializeMessage :: RelayMessage -> ByteString
 serializeMessage message =

@@ -34,7 +34,9 @@ library
     Reacthome.Daemon.App
 
   build-depends:
-    reacthome-relay
+    reacthome-relay,
+    text,
+    uuid,
 
   hs-source-dirs: src
 
@@ -50,5 +52,9 @@ executable reacthome-daemon
     -Wall
 
   build-depends:
+    reacthome-daemon,
+    reacthome-relay,
+    uuid,
+
   hs-source-dirs: app
   main-is: Main.hs
