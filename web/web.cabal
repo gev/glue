@@ -18,10 +18,11 @@ library
     Web.Rest.Media
     Web.Rest.Method
     Web.Rest.Status
-    Web.Websockets.Client
-    Web.Websockets.Connection
-    Web.Websockets.Error
-    Web.Websockets.Server
+    Web.WebSockets.Client
+    Web.WebSockets.Connection
+    Web.WebSockets.Error
+    Web.WebSockets.Server
+    Web.WebSockets.Socket
 
   build-depends:
     aeson,
@@ -31,6 +32,7 @@ library
     cookie,
     http-types,
     lucid2,
+    text,
     transformers,
     util,
     wai,
@@ -43,3 +45,4 @@ library
     ImplicitParams
     OverloadedRecordDot
     OverloadedStrings
+    RecordWildCards
