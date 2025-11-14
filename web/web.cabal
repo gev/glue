@@ -18,6 +18,10 @@ library
     Web.Rest.Media
     Web.Rest.Method
     Web.Rest.Status
+    Web.Websockets.Client
+    Web.Websockets.Connection
+    Web.Websockets.Error
+    Web.Websockets.Server
 
   build-depends:
     aeson,
@@ -31,6 +35,7 @@ library
     util,
     wai,
     wai-extra,
+    websockets,
 
   default-language: GHC2024
   default-extensions:
