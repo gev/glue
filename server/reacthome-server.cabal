@@ -31,6 +31,8 @@ library
 
   -- cabal-gild: discover src
   exposed-modules:
+    Reacthome.RBUS.Serial
+    Reacthome.RBUS.UDP
     Reacthome.Server.App
 
   build-depends:
