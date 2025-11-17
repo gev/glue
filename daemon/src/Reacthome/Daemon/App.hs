@@ -22,4 +22,5 @@ application peer connection = do
                 { peer
                 , content = encodeUtf8 $ "Hello Relay! " <> show @Int count
                 }
-        threadDelay 50_000
+
+-- threadDelay 1000
