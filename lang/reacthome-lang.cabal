@@ -41,13 +41,6 @@ executable reacthome-lang
   import:
     common-options
 
-  ghc-options:
-    -O2
-    -rtsopts
-    -threaded
-    -with-rtsopts=-N
-    -Wall
-
   build-depends:
     reacthome-lang
 

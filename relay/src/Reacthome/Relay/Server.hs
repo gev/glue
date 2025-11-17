@@ -1,89 +1,74 @@
 module Reacthome.Relay.Server where
 
-import Control.Exception (catch, finally, throwIO)
-import Control.Monad (forever)
+import Control.Concurrent (forkIO, threadDelay)
+import Control.Exception (catch)
+import Control.Monad (forever, void)
 import Data.Foldable (for_)
-import Data.Text.Encoding (encodeUtf8)
+import Data.IORef (modifyIORef, newIORef, readIORef, writeIORef)
 import Data.UUID (UUID)
-import Network.WebSockets (
-    ConnectionException,
-    HandshakeException,
-    PendingConnection,
-    acceptRequestWith,
-    defaultAcceptRequest,
-    defaultPingPongOptions,
-    receiveData,
-    sendBinaryData,
-    sendClose,
-    withPingPong,
- )
-import Reacthome.Relay.Connection (connection, makeRelayConnection)
 import Reacthome.Relay.Error (RelayError (..), logError)
-import Reacthome.Relay.Message (RelayMessage (..), parseMessage, serializeMessage)
+import Reacthome.Relay.Message (RelayMessage (..))
+import Reacthome.Relay.Relay (Relay (..), newRelay)
 import Reacthome.Relay.Repository (add, get, makeRepository, remove)
+import Web.WebSockets.Error (WebSocketError)
+import Web.WebSockets.PendingConnection (WebSocketPendingConnection (..))
 import Prelude hiding (length, splitAt, tail)
 
 newtype RelayServer = RelayServer
-    { start :: PendingConnection -> UUID -> IO ()
+    { start :: WebSocketPendingConnection -> UUID -> IO ()
     }
 
 makeRelayServer :: IO RelayServer
 makeRelayServer = do
     repository <- makeRepository
 
+    rx <- newIORef @Int 0
+    tx <- newIORef @Int 0
+
+    void $ forkIO $ forever do
+        rx0 <- readIORef rx
+        tx0 <- readIORef tx
+        threadDelay 1_000_000
+        rx1 <- readIORef rx
+        tx1 <- readIORef tx
+        print $ "Rx: " <> show rx1 <> " | " <> show (rx1 - rx0) <> " rps"
+        print $ "Tx: " <> show tx1 <> " | " <> show (tx1 - tx0) <> " rps"
+
     let
         start pending peer =
-            catch @HandshakeException
-                do
-                    connection <- acceptRequestWith pending defaultAcceptRequest
-                    withPingPong defaultPingPongOptions connection $ run peer
-                do
-                    logError . HandshakeError peer
+            catch @WebSocketError
+                do run peer =<< pending.accept
+                do logError . WebSocketError peer
 
         run peer connection = do
-            relay <- makeRelayConnection connection
+            relay <- newRelay connection
             repository.add peer relay
-            catch @RelayError
+            catch @WebSocketError
                 do
-                    finally
-                        do forever $ loop peer relay
-                        do close peer relay
-                logError
-
-        loop peer relay = do
-            message <- receiveMessage peer relay
-            handle peer message
+                    forever do
+                        message <- relay.receiveMessage
+                        modifyIORef rx (+ 1)
+                        handle peer message
+                \e -> do
+                    repository.remove peer relay
+                    logError $ WebSocketError peer e
 
         handle from message = do
-            relays <- repository.get message.peer
+            let to = message.peer
+            relays <- repository.get to
             if null relays
-                then logError $ NoPeersFound message.peer
+                then logError $ NoPeersFound to
                 else for_ relays \relay ->
-                    catch @RelayError
+                    catch @WebSocketError
                         do
-                            sendMessage relay $
+                            relay.sendMessage
                                 RelayMessage
                                     { peer = from
                                     , content = message.content
                                     }
+                            modifyIORef tx (+ 1)
                         \e -> do
-                            logError e
-                            close message.peer relay
-
-        receiveMessage peer relay =
-            parseMessage <$> catch @ConnectionException
-                do receiveData relay.connection
-                do throwIO . ReceiveError peer
-
-        sendMessage relay message =
-            catch @ConnectionException
-                do sendBinaryData relay.connection $ serializeMessage message
-                do throwIO . SendError message.peer
-
-        close peer relay = do
-            catch @ConnectionException
-                do sendClose relay.connection $ encodeUtf8 "Close Relay"
-                do logError . CloseError peer
-            repository.remove peer relay
+                            repository.remove to relay
+                            logError $ WebSocketError to e
 
     pure RelayServer{..}

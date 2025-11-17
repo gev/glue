@@ -21,8 +21,8 @@ library
     Web.WebSockets.Client
     Web.WebSockets.Connection
     Web.WebSockets.Error
+    Web.WebSockets.PendingConnection
     Web.WebSockets.Server
-    Web.WebSockets.Socket
 
   build-depends:
     aeson,

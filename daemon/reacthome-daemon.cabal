@@ -12,7 +12,9 @@ build-type: Simple
 common common-options
   build-depends:
     base,
-    websockets,
+    text,
+    util,
+    web,
 
   default-language: GHC2024
   default-extensions:
@@ -34,6 +36,7 @@ library
     Reacthome.Daemon.App
 
   build-depends:
+    bytestring,
     reacthome-relay,
     text,
     uuid,
@@ -43,13 +46,6 @@ library
 executable reacthome-daemon
   import:
     common-options
-
-  ghc-options:
-    -O2
-    -rtsopts
-    -threaded
-    -with-rtsopts=-N
-    -Wall
 
   build-depends:
     reacthome-daemon,

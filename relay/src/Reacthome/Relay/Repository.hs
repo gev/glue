@@ -3,16 +3,16 @@ module Reacthome.Relay.Repository where
 import Control.Concurrent.STM (atomically)
 import Data.UUID (UUID)
 import ListT (toList)
-import Reacthome.Relay.Connection (RelayConnection)
+import Reacthome.Relay.Relay (Relay)
 import StmContainers.Multimap (delete, insert, listTByKey, newIO)
 
-data ConnectionRepository = ConnectionRepository
-    { add :: UUID -> RelayConnection -> IO ()
-    , remove :: UUID -> RelayConnection -> IO ()
-    , get :: UUID -> IO [RelayConnection]
+data RelayRepository = RelayRepository
+    { add :: UUID -> Relay -> IO ()
+    , remove :: UUID -> Relay -> IO ()
+    , get :: UUID -> IO [Relay]
     }
 
-makeRepository :: IO ConnectionRepository
+makeRepository :: IO RelayRepository
 makeRepository = do
     repository <- newIO
 
@@ -21,4 +21,4 @@ makeRepository = do
         remove uid relay = atomically $ delete relay uid repository
         get uid = atomically $ toList $ listTByKey uid repository
 
-    pure ConnectionRepository{..}
+    pure RelayRepository{..}

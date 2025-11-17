@@ -4,18 +4,14 @@ import Control.Monad (when)
 import Data.Text (length, tail)
 import Data.Text.Encoding (decodeUtf8)
 import Data.UUID (fromText)
-import Network.WebSockets (
-    ServerApp,
-    pendingRequest,
-    requestPath,
- )
-import Reacthome.Relay.Server (makeRelayServer, start)
+import Reacthome.Relay.Server (RelayServer, start)
+import Web.WebSockets.PendingConnection (WebSocketPendingConnection (..))
+import Web.WebSockets.Server (WebSocketServerApplication)
 import Prelude hiding (length, splitAt, tail)
 
-application :: ServerApp
-application pending = do
-    server <- makeRelayServer
-    let path = decodeUtf8 pending.pendingRequest.requestPath
+application :: RelayServer -> WebSocketServerApplication
+application server pending = do
+    let path = decodeUtf8 pending.path
     when (length path > 1) do
         maybe
             (pure ())

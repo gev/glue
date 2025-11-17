@@ -1,36 +1,39 @@
 module Web.WebSockets.Connection where
 
 import Control.Exception (catch, throwIO)
-import Data.ByteString (ByteString)
-import Data.CaseInsensitive
+import Data.ByteString.Lazy (ByteString)
+import Data.Text (Text)
+import Data.Text.Encoding (encodeUtf8)
 import Network.WebSockets (
     Connection,
-    HandshakeException,
-    PendingConnection,
-    RequestHead (..),
-    acceptRequestWith,
-    defaultAcceptRequest,
-    pendingRequest,
+    ConnectionException,
+    receiveData,
+    sendBinaryData,
+    sendClose,
  )
-import Web.WebSockets.Error (WebSocketError (HandshakeError))
+import Web.WebSockets.Error (WebSocketError (..))
 
-type Headers = [(CI ByteString, ByteString)]
-
-data WebSocketPendingConnection = WebSocketPendingConnection
-    { headers :: Headers
-    , path :: ByteString
-    , accept :: IO Connection
+data WebSocketConnection = WebSocketConnection
+    { receiveMessage :: IO ByteString
+    , sendMessage :: ByteString -> IO ()
+    , close :: Text -> IO ()
     }
 
-makeWebSocketPendingConnection :: PendingConnection -> WebSocketPendingConnection
-makeWebSocketPendingConnection pending =
-    WebSocketPendingConnection
-        { headers = request.requestHeaders
-        , path = request.requestPath
-        , accept
-        }
+makeWebSocketConnection :: Connection -> WebSocketConnection
+makeWebSocketConnection connection =
+    WebSocketConnection{receiveMessage, sendMessage, close}
   where
-    request = pendingRequest pending
-    accept = catch @HandshakeException
-        do acceptRequestWith pending defaultAcceptRequest
-        do throwIO . HandshakeError
+    receiveMessage =
+        catch @ConnectionException
+            do receiveData connection
+            do throwIO . ReceiveError
+
+    sendMessage message =
+        catch @ConnectionException
+            do sendBinaryData connection message
+            do throwIO . SendError
+
+    close message =
+        catch @ConnectionException
+            do sendClose connection $ encodeUtf8 message
+            do throwIO . CloseError

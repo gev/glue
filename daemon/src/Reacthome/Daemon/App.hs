@@ -1,22 +1,25 @@
 module Reacthome.Daemon.App where
 
-import Control.Concurrent (forkIO, threadDelay)
-import Control.Monad (void)
+import Control.Concurrent (threadDelay)
+import Data.Foldable (traverse_)
 import Data.Text.Lazy (show)
 import Data.Text.Lazy.Encoding
 import Data.UUID (UUID)
-import Network.WebSockets.Client (ClientApp)
-import Reacthome.Relay.Client (RelayClient, makeRelayClient, send, start)
+import Reacthome.Relay.Client (RelayClient (..), makeRelayClient)
+import Reacthome.Relay.Message (RelayMessage (..))
+import Web.WebSockets.Client (WebSocketClientApplication)
 import Prelude hiding (show)
 
-application :: UUID -> ClientApp ()
+application :: UUID -> WebSocketClientApplication
 application peer connection = do
-    client <- makeRelayClient connection
-    void $ forkIO client.start
-    loop peer client 0
-
-loop :: UUID -> RelayClient -> Int -> IO ()
-loop peer client count = do
-    threadDelay 10_000
-    client.send peer $ encodeUtf8 $ "Hello Relay! " <> show count
-    loop peer client $ count + 1
+    client.start
+    traverse_ loop [0 ..]
+  where
+    client = makeRelayClient peer connection
+    loop count = do
+        client.send
+            RelayMessage
+                { peer
+                , content = encodeUtf8 $ "Hello Relay! " <> show @Int count
+                }
+        threadDelay 50_000

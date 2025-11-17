@@ -148,13 +148,6 @@ executable reacthome-auth
   import:
     common-options
 
-  ghc-options:
-    -O2
-    -rtsopts
-    -threaded
-    -with-rtsopts=-N
-    -Wall
-
   build-depends:
     jose,
     reacthome-auth,

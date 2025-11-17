@@ -19,6 +19,7 @@ library
     Util.Base64.Lazy
     Util.Base64.URL
     Util.Base64.URL.Lazy
+    Util.Channel
     Util.MVar
     Util.SQLite
 
@@ -30,6 +31,7 @@ library
     bytestring,
     resource-pool,
     sqlite-simple,
+    stm,
     text,
     transformers,
 
