@@ -2,7 +2,6 @@ module Reacthome.Relay.Error where
 
 import Control.Exception (Exception)
 import Data.ByteString (ByteString)
-import Data.Int (Int64)
 import Data.UUID (UUID)
 import Debug.Trace (traceIO)
 import Web.WebSockets.Error (WebSocketError)
