@@ -2,7 +2,7 @@ module Reacthome.Relay.Message where
 
 import Control.Exception (throw)
 import Data.ByteString (ByteString, fromStrict, length, splitAt)
-import Data.ByteString.Lazy (toStrict)
+import Data.ByteString.Lazy (fromChunks, toStrict)
 import Data.UUID (UUID, fromByteString, toByteString)
 import Reacthome.Relay.Error (RelayError (InvalidMessageLength, InvalidUUID))
 import Prelude hiding (length, splitAt, tail)
@@ -15,7 +15,8 @@ data RelayMessage = RelayMessage
 
 serializeMessage :: RelayMessage -> ByteString
 serializeMessage message =
-    toStrict (toByteString message.peer) <> message.content
+    toStrict $ fromChunks [toStrict $ toByteString message.peer, message.content]
+-- toStrict (toByteString message.peer) <> message.content
 {-# INLINE serializeMessage #-}
 
 parseMessage :: ByteString -> RelayMessage
