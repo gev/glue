@@ -1,8 +1,8 @@
 module Reacthome.Relay.Message where
 
 import Control.Exception (throw)
-import Data.ByteString.Lazy (ByteString, length, splitAt)
-import Data.Int (Int64)
+import Data.ByteString (ByteString, fromStrict, length, splitAt)
+import Data.ByteString.Lazy (toStrict)
 import Data.UUID (UUID, fromByteString, toByteString)
 import Reacthome.Relay.Error (RelayError (InvalidMessageLength, InvalidUUID))
 import Prelude hiding (length, splitAt, tail)
@@ -15,7 +15,7 @@ data RelayMessage = RelayMessage
 
 serializeMessage :: RelayMessage -> ByteString
 serializeMessage message =
-    toByteString message.peer <> message.content
+    toStrict (toByteString message.peer) <> message.content
 
 parseMessage :: ByteString -> RelayMessage
 parseMessage message = do
@@ -34,10 +34,10 @@ parseMessage message = do
                 do
                     flip RelayMessage content
                 do
-                    fromByteString peer'
+                    fromByteString $ fromStrict peer'
 
-headerLength :: Int64
+headerLength :: Int
 headerLength = 16
 
-minimumMessageLength :: Int64
+minimumMessageLength :: Int
 minimumMessageLength = headerLength + 1

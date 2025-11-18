@@ -1,9 +1,8 @@
 module Reacthome.Daemon.App where
 
-import Control.Concurrent (threadDelay)
 import Data.Foldable (traverse_)
-import Data.Text.Lazy (show)
-import Data.Text.Lazy.Encoding
+import Data.Text (show)
+import Data.Text.Encoding
 import Data.UUID (UUID)
 import Reacthome.Relay.Client (RelayClient (..), makeRelayClient)
 import Reacthome.Relay.Message (RelayMessage (..))
@@ -22,5 +21,3 @@ application peer connection = do
                 { peer
                 , content = encodeUtf8 $ "Hello Relay! " <> show @Int count
                 }
-
--- threadDelay 1000
