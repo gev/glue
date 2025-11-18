@@ -4,5 +4,5 @@ constraints:
     base >= 4.19 && < 5
 
 package *
-    ghc-options: -O2 -rtsopts -threaded -with-rtsopts=-N -Wall
+    ghc-options: -O3 -rtsopts -threaded -with-rtsopts=-N -Wall
     split-sections: True
