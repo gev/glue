@@ -9,6 +9,7 @@ import Network.WebSockets (
     ConnectionException,
     receiveData,
     sendBinaryData,
+    sendBinaryDatas,
     sendClose,
  )
 import Web.WebSockets.Error (WebSocketError (..))
@@ -16,12 +17,13 @@ import Web.WebSockets.Error (WebSocketError (..))
 data WebSocketConnection = WebSocketConnection
     { receiveMessage :: IO ByteString
     , sendMessage :: ByteString -> IO ()
+    , sendMessages :: [ByteString] -> IO ()
     , close :: Text -> IO ()
     }
 
 makeWebSocketConnection :: Connection -> WebSocketConnection
 makeWebSocketConnection connection =
-    WebSocketConnection{receiveMessage, sendMessage, close}
+    WebSocketConnection{receiveMessage, sendMessage, sendMessages, close}
   where
     receiveMessage =
         catch @ConnectionException
@@ -31,6 +33,11 @@ makeWebSocketConnection connection =
     sendMessage message =
         catch @ConnectionException
             do sendBinaryData connection message
+            do throwIO . SendError
+
+    sendMessages messages =
+        catch @ConnectionException
+            do sendBinaryDatas connection messages
             do throwIO . SendError
 
     close message =

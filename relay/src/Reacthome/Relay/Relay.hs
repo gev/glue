@@ -1,15 +1,16 @@
 module Reacthome.Relay.Relay where
 
+import Data.ByteString (toStrict)
 import Data.Hashable (Hashable, hashWithSalt)
 import Data.Text (show)
-import Data.UUID (UUID)
-import Data.UUID.V4 (nextRandom)
-import Reacthome.Relay.Message (RelayMessage, parseMessage, serializeMessage)
+import Data.UUID (toByteString)
+import Data.Word (Word64)
+import Reacthome.Relay.Message (RelayMessage (..), parseMessage, serializeMessage)
 import Web.WebSockets.Connection (WebSocketConnection (..))
 import Prelude hiding (show)
 
 data Relay = Relay
-    { uid :: UUID
+    { uid :: !Word64
     , receiveMessage :: IO RelayMessage
     , sendMessage :: RelayMessage -> IO ()
     , close :: IO ()
@@ -21,16 +22,12 @@ instance Eq Relay where
 instance Hashable Relay where
     hashWithSalt sault r = hashWithSalt sault r.uid
 
-makeRelay :: UUID -> WebSocketConnection -> Relay
+makeRelay :: Word64 -> WebSocketConnection -> Relay
 makeRelay uid connection =
     let
         receiveMessage = parseMessage <$> connection.receiveMessage
+        -- sendMessage message = connection.sendMessages [toStrict $ toByteString message.peer, message.content]
         sendMessage = connection.sendMessage . serializeMessage
         close = connection.close $ "Close relay" <> show uid
      in
         Relay{..}
-
-newRelay :: WebSocketConnection -> IO Relay
-newRelay connection = do
-    uid <- nextRandom
-    pure $ makeRelay uid connection

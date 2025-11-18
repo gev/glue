@@ -22,6 +22,7 @@ common common-options
     DerivingStrategies
     DuplicateRecordFields
     ImplicitParams
+    MagicHash
     OverloadedRecordDot
     OverloadedStrings
     RecordWildCards

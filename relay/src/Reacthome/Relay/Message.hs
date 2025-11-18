@@ -8,14 +8,15 @@ import Reacthome.Relay.Error (RelayError (InvalidMessageLength, InvalidUUID))
 import Prelude hiding (length, splitAt, tail)
 
 data RelayMessage = RelayMessage
-    { peer :: UUID
-    , content :: ByteString
+    { peer :: !UUID
+    , content :: !ByteString
     }
     deriving (Show)
 
 serializeMessage :: RelayMessage -> ByteString
 serializeMessage message =
     toStrict (toByteString message.peer) <> message.content
+{-# INLINE serializeMessage #-}
 
 parseMessage :: ByteString -> RelayMessage
 parseMessage message = do
@@ -35,6 +36,7 @@ parseMessage message = do
                     flip RelayMessage content
                 do
                     fromByteString $ fromStrict peer'
+{-# INLINE parseMessage #-}
 
 headerLength :: Int
 headerLength = 16

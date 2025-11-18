@@ -14,7 +14,7 @@ application peer connection = do
     client.start
     traverse_ loop [0 ..]
   where
-    client = makeRelayClient peer connection
+    client = makeRelayClient connection
     loop count = do
         client.send
             RelayMessage

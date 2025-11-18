@@ -4,11 +4,12 @@ import Control.Concurrent (forkIO, threadDelay)
 import Control.Exception (catch)
 import Control.Monad (forever, void)
 import Data.Foldable (for_)
-import Data.IORef (modifyIORef, newIORef, readIORef)
+import Data.IORef (modifyIORef, newIORef, readIORef, writeIORef)
 import Data.UUID (UUID)
+import Data.Word (Word64)
 import Reacthome.Relay.Error (RelayError (..), logError)
 import Reacthome.Relay.Message (RelayMessage (..))
-import Reacthome.Relay.Relay (Relay (..), newRelay)
+import Reacthome.Relay.Relay (Relay (..), makeRelay)
 import Reacthome.Relay.Repository (add, get, makeRepository, remove)
 import Web.WebSockets.Error (WebSocketError)
 import Web.WebSockets.PendingConnection (WebSocketPendingConnection (..))
@@ -22,8 +23,9 @@ makeRelayServer :: IO RelayServer
 makeRelayServer = do
     repository <- makeRepository
 
-    rx <- newIORef @Int 0
-    tx <- newIORef @Int 0
+    uid <- newIORef 0
+    rx <- newIORef @Word64 0
+    tx <- newIORef @Word64 0
 
     void $ forkIO $ forever do
         rx0 <- readIORef rx
@@ -41,7 +43,9 @@ makeRelayServer = do
                 do logError . WebSocketError peer
 
         run peer connection = do
-            relay <- newRelay connection
+            uid' <- readIORef uid
+            let relay = makeRelay uid' connection
+            writeIORef uid $ uid' + 1
             repository.add peer relay
             catch @WebSocketError
                 do
