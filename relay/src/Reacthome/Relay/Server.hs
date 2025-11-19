@@ -3,16 +3,16 @@ module Reacthome.Relay.Server where
 import Control.Concurrent (forkIO, threadDelay)
 import Control.Exception (catch)
 import Control.Monad (forever, void)
-import Data.ByteString (ByteString, splitAt, toStrict)
+import Data.ByteString (length, splitAt, toStrict)
 import Data.ByteString.Lazy (fromChunks)
-import Data.ByteString.Lazy qualified as L
 import Data.Foldable (for_)
 import Data.IORef (modifyIORef, newIORef, readIORef, writeIORef)
 import Data.UUID (UUID, toByteString)
 import Data.Word (Word64)
 import Reacthome.Relay.Error (RelayError (..), logError)
-import Reacthome.Relay.Relay (Relay (..), makeRelay)
+import Reacthome.Relay.Relay (Relay (..))
 import Reacthome.Relay.Repository (add, get, makeRepository, remove)
+import Web.WebSockets.Connection (WebSocketConnection (..))
 import Web.WebSockets.Error (WebSocketError)
 import Web.WebSockets.PendingConnection (WebSocketPendingConnection (..))
 import Prelude hiding (length, splitAt, tail, take)
@@ -35,8 +35,8 @@ makeRelayServer = do
         threadDelay 1_000_000
         rx1 <- readIORef rx
         tx1 <- readIORef tx
-        print $ "Rx: " <> show rx1 <> " | " <> show (rx1 - rx0) <> " rps"
-        print $ "Tx: " <> show tx1 <> " | " <> show (tx1 - tx0) <> " rps"
+        putStrLn $ "Rx: " <> show rx1 <> " | " <> show (rx1 - rx0) <> " rps"
+        putStrLn $ "Tx: " <> show tx1 <> " | " <> show (tx1 - tx0) <> " rps"
 
     let
         start pending peer = do
@@ -47,22 +47,30 @@ makeRelayServer = do
 
         run from connection = do
             uid' <- readIORef uid
-            let relay = makeRelay uid' connection
+            let relay = Relay uid' connection
             writeIORef uid $ uid' + 1
             repository.add from relay
             catch @WebSocketError
                 do
                     forever do
-                        message <- relay.receiveMessage
+                        message <- toStrict <$> relay.connection.receiveMessage
                         modifyIORef rx (+ 1)
-                        let (to, content) = splitAt 16 message
-                        let message' = fromChunks [from, content]
-                        handle to message'
+                        let messageLength = length message
+                        if messageLength > headerLength
+                            then do
+                                let (to, content) = splitAt 16 message
+                                let message' = fromChunks [from, content]
+                                handle to message'
+                            else
+                                logError
+                                    InvalidMessageLength
+                                        { messageLength
+                                        , minimumLength = headerLength + 1
+                                        }
                 \e -> do
                     repository.remove from relay
                     logError $ WebSocketError from e
 
-        handle :: ByteString -> L.ByteString -> IO ()
         handle to message = do
             relays <- repository.get to
             if null relays
@@ -70,10 +78,13 @@ makeRelayServer = do
                 else for_ relays \relay ->
                     catch @WebSocketError
                         do
-                            relay.sendMessage message
+                            relay.connection.sendMessage message
                             modifyIORef tx (+ 1)
                         \e -> do
                             repository.remove to relay
                             logError $ WebSocketError to e
 
     pure RelayServer{..}
+
+headerLength :: Int
+headerLength = 16

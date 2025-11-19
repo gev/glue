@@ -1,8 +1,7 @@
 module Web.WebSockets.Connection where
 
 import Control.Exception (catch, throwIO)
-import Data.ByteString (ByteString)
-import Data.ByteString.Lazy qualified as L
+import Data.ByteString.Lazy (ByteString)
 import Data.Text (Text)
 import Data.Text.Encoding (encodeUtf8)
 import Network.WebSockets (
@@ -17,8 +16,8 @@ import Web.WebSockets.Error (WebSocketError (..))
 
 data WebSocketConnection = WebSocketConnection
     { receiveMessage :: IO ByteString
-    , sendMessage :: L.ByteString -> IO ()
-    , sendMessages :: [L.ByteString] -> IO ()
+    , sendMessage :: ByteString -> IO ()
+    , sendMessages :: [ByteString] -> IO ()
     , close :: Text -> IO ()
     }
 
