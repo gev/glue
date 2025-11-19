@@ -8,7 +8,7 @@ main :: IO ()
 main = do
     let port = 3003
         host = "127.0.0.1"
-    replicateM_ 10 $ run host port
+    replicateM_ 5 $ run host port
     forever $ threadDelay 1_000_000
   where
     run host port = forkIO do
