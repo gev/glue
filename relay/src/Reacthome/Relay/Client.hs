@@ -2,23 +2,23 @@ module Reacthome.Relay.Client where
 
 import Control.Concurrent (forkIO)
 import Control.Monad (forever, void, when)
+import Data.ByteString.Lazy (ByteString)
 import Data.IORef (newIORef, readIORef, writeIORef)
-import Data.UUID (UUID)
-import Reacthome.Relay.Message (RelayMessage (..))
+import Data.Word (Word64)
 import Reacthome.Relay.Relay (Relay (..), makeRelay)
 import Web.WebSockets.Connection (WebSocketConnection)
 import Prelude hiding (length, splitAt, tail)
 
 data RelayClient = RelayClient
     { start :: IO ()
-    , send :: RelayMessage -> IO ()
+    , send :: ByteString -> IO ()
     }
 
-makeRelayClient :: UUID -> WebSocketConnection -> RelayClient
-makeRelayClient uid connection =
+makeRelayClient :: WebSocketConnection -> RelayClient
+makeRelayClient connection =
     let
         start = do
-            counter <- newIORef @Int 0
+            counter <- newIORef @Word64 0
             void $ forkIO $ forever do
                 message <- relay.receiveMessage
                 counter' <- readIORef counter
@@ -30,4 +30,4 @@ makeRelayClient uid connection =
      in
         RelayClient{..}
   where
-    relay = makeRelay uid connection
+    relay = makeRelay 0 connection

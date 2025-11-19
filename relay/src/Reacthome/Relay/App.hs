@@ -14,6 +14,6 @@ application server pending = do
     let path = decodeUtf8 pending.path
     when (length path > 1) do
         maybe
-            (pure ())
+            (pure ()) -- throw error
             (server.start pending)
             (fromText $ tail path)
