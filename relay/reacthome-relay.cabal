@@ -36,6 +36,7 @@ library
     Reacthome.Relay.App
     Reacthome.Relay.Client
     Reacthome.Relay.Error
+    Reacthome.Relay.Message
     Reacthome.Relay.Relay
     Reacthome.Relay.Repository
     Reacthome.Relay.Server
