@@ -10,11 +10,11 @@ import Prelude hiding (show)
 
 application :: UUID -> WebSocketClientApplication
 application peer connection = do
-    client . start
+    client.start
     traverse_ loop [0 ..]
   where
     from = toByteString peer
     client = makeRelayClient connection
     loop count = do
-        client . send $
+        client.send $
             from <> encodeUtf8 ("Hello Relay! " <> show @Int count)

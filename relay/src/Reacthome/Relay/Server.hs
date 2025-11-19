@@ -7,7 +7,7 @@ import Data.ByteString (ByteString, splitAt, toStrict)
 import Data.ByteString.Lazy (fromChunks)
 import Data.ByteString.Lazy qualified as L
 import Data.Foldable (for_)
-import Data.IORef (modifyIORef, newIORef, readIORef)
+import Data.IORef (modifyIORef, newIORef, readIORef, writeIORef)
 import Data.UUID (UUID, toByteString)
 import Data.Word (Word64)
 import Reacthome.Relay.Error (RelayError (..), logError)
