@@ -4,5 +4,5 @@ constraints:
     base >= 4.19 && < 5
 
 package *
-    ghc-options: -O3 -rtsopts -threaded -with-rtsopts=-N -Wall
+    ghc-options: -O3 -rtsopts -threaded -with-rtsopts=-N -Wall -funbox-strict-fields -fmax-inline-alloc-size=512 -fspecialise-aggressively -flate-specialise -fstatic-argument-transformation -feager-blackholing
     split-sections: True
