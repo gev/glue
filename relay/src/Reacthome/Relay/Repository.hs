@@ -1,15 +1,15 @@
 module Reacthome.Relay.Repository where
 
 import Control.Concurrent.STM (atomically)
-import Data.UUID (UUID)
+import Data.ByteString (ByteString)
 import ListT (toList)
 import Reacthome.Relay.Relay (Relay)
 import StmContainers.Multimap (delete, insert, listTByKey, newIO)
 
 data RelayRepository = RelayRepository
-    { add :: UUID -> Relay -> IO ()
-    , remove :: UUID -> Relay -> IO ()
-    , get :: UUID -> IO [Relay]
+    { add :: ByteString -> Relay -> IO ()
+    , remove :: ByteString -> Relay -> IO ()
+    , get :: ByteString -> IO [Relay]
     }
 
 makeRepository :: IO RelayRepository

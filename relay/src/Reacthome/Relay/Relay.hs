@@ -1,16 +1,16 @@
 module Reacthome.Relay.Relay where
 
+import Data.ByteString.Short (ShortByteString)
 import Data.Hashable (Hashable, hashWithSalt)
 import Data.Text (show)
 import Data.Word (Word64)
-import Reacthome.Relay.Message (RelayMessage (..), parseMessage, serializeMessage)
 import Web.WebSockets.Connection (WebSocketConnection (..))
 import Prelude hiding (show)
 
 data Relay = Relay
     { uid :: !Word64
-    , receiveMessage :: IO RelayMessage
-    , sendMessage :: RelayMessage -> IO ()
+    , receiveMessage :: IO ShortByteString
+    , sendMessage :: ShortByteString -> IO ()
     , close :: IO ()
     }
 
@@ -23,8 +23,8 @@ instance Hashable Relay where
 makeRelay :: Word64 -> WebSocketConnection -> Relay
 makeRelay uid connection =
     let
-        receiveMessage = parseMessage <$> connection.receiveMessage
-        sendMessage = connection.sendMessage . serializeMessage
+        receiveMessage = connection.receiveMessage
+        sendMessage = connection.sendMessage
         close = connection.close $ "Close relay" <> show uid
      in
         Relay{..}

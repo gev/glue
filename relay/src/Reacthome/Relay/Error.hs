@@ -2,15 +2,14 @@ module Reacthome.Relay.Error where
 
 import Control.Exception (Exception)
 import Data.ByteString (ByteString)
-import Data.UUID (UUID)
 import Debug.Trace (traceIO)
 import Web.WebSockets.Error (WebSocketError)
 import Prelude hiding (error)
 
 data RelayError
     = InvalidUUID ByteString
-    | NoPeersFound UUID
-    | WebSocketError UUID WebSocketError
+    | NoPeersFound ByteString
+    | WebSocketError ByteString WebSocketError
     | InvalidMessageLength
         { messageLength :: Int
         , minimumLength :: Int

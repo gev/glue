@@ -1,7 +1,8 @@
 module Web.WebSockets.Connection where
 
 import Control.Exception (catch, throwIO)
-import Data.ByteString (ByteString)
+import Data.ByteString.Lazy (ByteString)
+import Data.ByteString.Short (ShortByteString, fromShort, toShort)
 import Data.Text (Text)
 import Data.Text.Encoding (encodeUtf8)
 import Network.WebSockets (
@@ -15,9 +16,9 @@ import Network.WebSockets (
 import Web.WebSockets.Error (WebSocketError (..))
 
 data WebSocketConnection = WebSocketConnection
-    { receiveMessage :: IO ByteString
-    , sendMessage :: ByteString -> IO ()
-    , sendMessages :: [ByteString] -> IO ()
+    { receiveMessage :: IO ShortByteString
+    , sendMessage :: ShortByteString -> IO ()
+    , sendMessages :: [ShortByteString] -> IO ()
     , close :: Text -> IO ()
     }
 
@@ -27,17 +28,17 @@ makeWebSocketConnection connection =
   where
     receiveMessage =
         catch @ConnectionException
-            do receiveData connection
+            do toShort <$> receiveData connection
             do throwIO . ReceiveError
 
     sendMessage message =
         catch @ConnectionException
-            do sendBinaryData connection message
+            do sendBinaryData connection $ fromShort message
             do throwIO . SendError
 
     sendMessages messages =
         catch @ConnectionException
-            do sendBinaryDatas connection messages
+            do sendBinaryDatas connection $ fromShort <$> messages
             do throwIO . SendError
 
     close message =
