@@ -1,7 +1,7 @@
 module Reacthome.Relay.Error where
 
 import Control.Exception (Exception)
-import Data.ByteString.Lazy (ByteString)
+import Data.ByteString (ByteString)
 import Debug.Trace (traceIO)
 import Web.WebSockets.Error (WebSocketError)
 import Prelude hiding (error)

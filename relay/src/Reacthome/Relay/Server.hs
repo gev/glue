@@ -3,7 +3,9 @@ module Reacthome.Relay.Server where
 import Control.Concurrent (forkIO, threadDelay)
 import Control.Exception (catch)
 import Control.Monad (forever, void)
-import Data.ByteString.Lazy (ByteString, take, toStrict)
+import Data.ByteString (ByteString, splitAt, toStrict)
+import Data.ByteString.Lazy (fromChunks)
+import Data.ByteString.Lazy qualified as L
 import Data.Foldable (for_)
 import Data.IORef (modifyIORef, newIORef, readIORef, writeIORef)
 import Data.UUID (UUID, toByteString)
@@ -30,7 +32,7 @@ makeRelayServer = do
     void $ forkIO $ forever do
         rx0 <- readIORef rx
         tx0 <- readIORef tx
-        threadDelay 10_000_000
+        threadDelay 1_000_000
         rx1 <- readIORef rx
         tx1 <- readIORef tx
         print $ "Rx: " <> show rx1 <> " | " <> show (rx1 - rx0) <> " rps"
@@ -38,7 +40,7 @@ makeRelayServer = do
 
     let
         start pending peer = do
-            let from = toByteString peer
+            let from = toStrict $ toByteString peer
             catch @WebSocketError
                 do run from =<< pending.accept
                 do logError . WebSocketError from
@@ -53,13 +55,14 @@ makeRelayServer = do
                     forever do
                         message <- relay.receiveMessage
                         modifyIORef rx (+ 1)
-                        let to = take 16 message
-                        handle to message
+                        let (to, content) = splitAt 16 message
+                        let message' = fromChunks [from, content]
+                        handle to message'
                 \e -> do
                     repository.remove from relay
                     logError $ WebSocketError from e
 
-        handle :: ByteString -> ByteString -> IO ()
+        handle :: ByteString -> L.ByteString -> IO ()
         handle to message = do
             relays <- repository.get to
             if null relays
