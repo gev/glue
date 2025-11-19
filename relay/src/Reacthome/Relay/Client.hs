@@ -2,7 +2,7 @@ module Reacthome.Relay.Client where
 
 import Control.Concurrent (forkIO)
 import Control.Monad (forever, void, when)
-import Data.ByteString.Short (ShortByteString)
+import Data.ByteString.Lazy (ByteString)
 import Data.IORef (newIORef, readIORef, writeIORef)
 import Data.Word (Word64)
 import Reacthome.Relay.Relay (Relay (..), makeRelay)
@@ -11,7 +11,7 @@ import Prelude hiding (length, splitAt, tail)
 
 data RelayClient = RelayClient
     { start :: IO ()
-    , send :: ShortByteString -> IO ()
+    , send :: ByteString -> IO ()
     }
 
 makeRelayClient :: WebSocketConnection -> RelayClient

@@ -1,7 +1,7 @@
 module Reacthome.Relay.Repository where
 
 import Control.Concurrent.STM (atomically)
-import Data.ByteString (ByteString)
+import Data.ByteString.Lazy (ByteString)
 import ListT (toList)
 import Reacthome.Relay.Relay (Relay)
 import StmContainers.Multimap (delete, insert, listTByKey, newIO)

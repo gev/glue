@@ -1,6 +1,6 @@
 module Reacthome.Relay.Relay where
 
-import Data.ByteString.Short (ShortByteString)
+import Data.ByteString.Lazy (ByteString)
 import Data.Hashable (Hashable, hashWithSalt)
 import Data.Text (show)
 import Data.Word (Word64)
@@ -9,8 +9,8 @@ import Prelude hiding (show)
 
 data Relay = Relay
     { uid :: !Word64
-    , receiveMessage :: IO ShortByteString
-    , sendMessage :: ShortByteString -> IO ()
+    , receiveMessage :: IO ByteString
+    , sendMessage :: ByteString -> IO ()
     , close :: IO ()
     }
 

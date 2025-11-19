@@ -2,7 +2,6 @@ module Web.WebSockets.Error where
 
 import Control.Exception (Exception)
 import Network.WebSockets (ConnectionException, HandshakeException)
-import Prelude hiding (error)
 
 data WebSocketError
     = SendError ConnectionException
