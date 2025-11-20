@@ -4,7 +4,7 @@ import Control.Monad (when)
 import Data.Text (length, tail)
 import Data.Text.Encoding (decodeUtf8)
 import Data.UUID (fromText)
-import Reacthome.Relay.Server (RelayServer, start)
+import Reacthome.Relay.Server (RelayServer, accept)
 import Web.WebSockets.PendingConnection (WebSocketPendingConnection (..))
 import Web.WebSockets.Server (WebSocketServerApplication)
 import Prelude hiding (length, splitAt, tail)
@@ -15,5 +15,5 @@ application server pending = do
     when (length path > 1) do
         maybe
             (pure ()) -- throw error
-            (server.start pending)
+            (server.accept pending)
             (fromText $ tail path)

@@ -16,7 +16,7 @@ import Web.WebSockets.PendingConnection (WebSocketPendingConnection (..))
 import Prelude hiding (length, splitAt, tail, take)
 
 newtype RelayServer = RelayServer
-    { start :: WebSocketPendingConnection -> UUID -> IO ()
+    { accept :: WebSocketPendingConnection -> UUID -> IO ()
     }
 
 makeRelayServer :: IO RelayServer
@@ -24,7 +24,7 @@ makeRelayServer = do
     repository <- makeRelayRepository
     uid <- newIORef 0
     let
-        start pending peer = do
+        accept pending peer = do
             let from = toStrict $ toByteString peer
             catch @WebSocketError
                 do run from =<< pending.accept
@@ -59,7 +59,7 @@ makeRelayServer = do
                 then logError $ NoPeersFound to
                 else do
                     let message' = serializeMessage message
-                    for_ relays \relay ->
+                    for_ relays \relay -> do
                         catch @WebSocketError
                             do
                                 relay.connection.sendMessage message'
