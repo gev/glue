@@ -1,20 +1,25 @@
 module Reacthome.Daemon.App where
 
-import Data.Foldable (traverse_)
-import Data.Text.Lazy (show)
-import Data.Text.Lazy.Encoding
+import Data.ByteString (toStrict)
+import Data.Foldable (for_)
+import Data.Text (show)
+import Data.Text.Encoding
 import Data.UUID (UUID, toByteString)
 import Reacthome.Relay.Client (RelayClient (..), makeRelayClient)
+import Reacthome.Relay.Message (RelayMessage (..))
+import Reacthome.Relay.Stat (RelayHits (hit), RelayStat (tx))
 import Web.WebSockets.Client (WebSocketClientApplication)
 import Prelude hiding (show)
 
-application :: UUID -> WebSocketClientApplication
-application peer connection = do
+application :: UUID -> RelayStat -> WebSocketClientApplication
+application peer stat connection = do
+    client <- makeRelayClient stat connection
     client.start
-    traverse_ loop [0 ..]
-  where
-    from = toByteString peer
-    client = makeRelayClient connection
-    loop count = do
-        client.send $
-            from <> encodeUtf8 ("Hello Relay! " <> show @Int count)
+    let from = toStrict $ toByteString peer
+    for_ [0 ..] \i -> do
+        client.send
+            RelayMessage
+                { peer = from
+                , content = encodeUtf8 ("Hello Relay! " <> show @Int i)
+                }
+        stat.tx.hit
