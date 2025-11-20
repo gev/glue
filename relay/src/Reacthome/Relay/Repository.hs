@@ -12,8 +12,8 @@ data RelayRepository = RelayRepository
     , get :: ByteString -> IO [Relay]
     }
 
-makeRepository :: IO RelayRepository
-makeRepository = do
+makeRelayRepository :: IO RelayRepository
+makeRelayRepository = do
     repository <- newIO
 
     let

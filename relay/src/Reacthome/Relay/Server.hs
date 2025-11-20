@@ -9,7 +9,7 @@ import Data.UUID (UUID, toByteString)
 import Reacthome.Relay.Error (RelayError (..), logError)
 import Reacthome.Relay.Message (RelayMessage (..), parseMessage, serializeMessage)
 import Reacthome.Relay.Relay (Relay (..))
-import Reacthome.Relay.Repository (add, get, makeRepository, remove)
+import Reacthome.Relay.Repository (add, get, makeRelayRepository, remove)
 import Web.WebSockets.Connection (WebSocketConnection (..))
 import Web.WebSockets.Error (WebSocketError)
 import Web.WebSockets.PendingConnection (WebSocketPendingConnection (..))
@@ -21,7 +21,7 @@ newtype RelayServer = RelayServer
 
 makeRelayServer :: IO RelayServer
 makeRelayServer = do
-    repository <- makeRepository
+    repository <- makeRelayRepository
     uid <- newIORef 0
     let
         start pending peer = do
