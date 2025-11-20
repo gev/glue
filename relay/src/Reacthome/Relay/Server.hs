@@ -38,7 +38,7 @@ makeRelayServer = do
             catch @WebSocketError
                 do
                     forever do
-                        message <- toStrict <$> relay.connection.receiveMessage
+                        message <- relay.connection.receiveMessage
                         catch @RelayError
                             do
                                 let message' = parseMessage message
