@@ -43,6 +43,7 @@ library
     Reacthome.Relay.Stat
 
   build-depends:
+    async,
     bytestring,
     hashable,
     list-t,

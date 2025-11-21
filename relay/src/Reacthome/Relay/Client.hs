@@ -12,14 +12,16 @@ data RelayClient = RelayClient
     , send :: RelayMessage -> IO ()
     }
 
-makeRelayClient :: RelayStat -> WebSocketConnection -> IO RelayClient
-makeRelayClient stat connection = do
+makeRelayClient :: (?stat :: RelayStat) => WebSocketConnection -> IO RelayClient
+makeRelayClient connection = do
     let
         start =
             void $ forkIO $ forever do
                 void connection.receiveMessage
-                stat.rx.hit
+                ?stat.rx.hit
 
-        send = connection.sendMessage . serializeMessage
+        send message = do
+            connection.sendMessage $ serializeMessage message
+            ?stat.tx.hit
 
     pure RelayClient{..}

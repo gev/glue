@@ -1,15 +1,13 @@
 module Reacthome.Relay.Server where
 
+import Control.Concurrent (threadDelay)
+import Control.Concurrent.Async (concurrently_)
+import Control.Concurrent.STM (TBQueue, atomically, flushTBQueue, newTBQueueIO, writeTBQueue)
 import Control.Exception (catch)
 import Control.Monad (forever)
-import Data.ByteString (toStrict)
-import Data.Foldable (for_)
-import Data.IORef (newIORef, readIORef, writeIORef)
+import Data.ByteString.Lazy (ByteString, toStrict)
 import Data.UUID (UUID, toByteString)
 import Reacthome.Relay.Error (RelayError (..), logError)
-import Reacthome.Relay.Message (RelayMessage (..), parseMessage, serializeMessage)
-import Reacthome.Relay.Relay (Relay (..))
-import Reacthome.Relay.Repository (add, get, makeRelayRepository, remove)
 import Web.WebSockets.Connection (WebSocketConnection (..))
 import Web.WebSockets.Error (WebSocketError)
 import Web.WebSockets.PendingConnection (WebSocketPendingConnection (..))
@@ -21,53 +19,30 @@ newtype RelayServer = RelayServer
 
 makeRelayServer :: IO RelayServer
 makeRelayServer = do
-    repository <- makeRelayRepository
-    uid <- newIORef 0
     let
         accept pending peer = do
             let from = toStrict $ toByteString peer
             catch @WebSocketError
-                do run from =<< pending.accept
+                do
+                    connection <- pending.accept
+                    queue <- newTBQueueIO 1000
+                    concurrently_
+                        do rxRun queue connection
+                        do txRun queue connection
                 do logError . WebSocketError from
 
-        run from connection = do
-            uid' <- readIORef uid
-            let relay = Relay uid' connection
-            writeIORef uid $ uid' + 1
-            repository.add from relay
-            catch @WebSocketError
-                do
-                    forever do
-                        message <- relay.connection.receiveMessage
-                        catch @RelayError
-                            do
-                                let message' = parseMessage message
-                                send
-                                    message'.peer
-                                    RelayMessage
-                                        { peer = from
-                                        , content = message'.content
-                                        }
-                            logError
-                \e -> do
-                    repository.remove from relay
-                    logError $ WebSocketError from e
-
-        send to message = do
-            relays <- repository.get to
-            if null relays
-                then logError $ NoPeersFound to
-                else do
-                    let message' = serializeMessage message
-                    for_ relays \relay -> do
-                        catch @WebSocketError
-                            do
-                                relay.connection.sendMessage message'
-                            \e -> do
-                                repository.remove to relay
-                                logError $ WebSocketError to e
-
     pure RelayServer{..}
+
+rxRun :: TBQueue ByteString -> WebSocketConnection -> IO ()
+rxRun queue connection = forever do
+    message <- connection.receiveMessage
+    atomically $ writeTBQueue queue message
+
+txRun :: TBQueue ByteString -> WebSocketConnection -> IO ()
+txRun queue connection = forever do
+    messages <- atomically $ flushTBQueue queue
+    connection.sendMessages messages
+    threadDelay 1000
 
 headerLength :: Int
 headerLength = 16
