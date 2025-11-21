@@ -1,5 +1,6 @@
 module Web.WebSockets.Client where
 
+import Control.Monad ((<=<))
 import Network.WebSockets (runClient)
 import Web.WebSockets.Connection (WebSocketConnection, makeWebSocketConnection)
 
@@ -7,4 +8,4 @@ type WebSocketClientApplication = WebSocketConnection -> IO ()
 
 runWebSocketClient :: String -> Int -> String -> WebSocketClientApplication -> IO ()
 runWebSocketClient host port path application =
-  runClient host port path $ application . makeWebSocketConnection
+  runClient host port path $ application <=< makeWebSocketConnection

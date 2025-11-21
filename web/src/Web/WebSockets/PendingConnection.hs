@@ -34,6 +34,6 @@ makeWebSocketPendingConnection pending =
     accept =
         catch @HandshakeException
             do
-                makeWebSocketConnection
-                    <$> acceptRequestWith pending defaultAcceptRequest
+                connection <- acceptRequestWith pending defaultAcceptRequest
+                makeWebSocketConnection connection
             do throwIO . HandshakeError
