@@ -23,19 +23,24 @@ data WebSocketConnection = WebSocketConnection
 
 makeWebSocketConnection :: Connection -> WebSocketConnection
 makeWebSocketConnection connection =
-    let
-        receiveMessage =
-            catch @ConnectionException
-                do receiveData connection
-                do throwIO . ReceiveError
+    WebSocketConnection{receiveMessage, sendMessage, sendMessages, close}
+  where
+    receiveMessage =
+        catch @ConnectionException
+            do receiveData connection
+            do throwIO . ReceiveError
 
-        sendMessage = sendBinaryData connection
+    sendMessage message =
+        catch @ConnectionException
+            do sendBinaryData connection message
+            do throwIO . SendError
 
-        sendMessages = sendBinaryDatas connection
+    sendMessages messages =
+        catch @ConnectionException
+            do sendBinaryDatas connection messages
+            do throwIO . SendError
 
-        close message =
-            catch @ConnectionException
-                do sendClose connection $ encodeUtf8 message
-                do throwIO . CloseError
-     in
-        WebSocketConnection{..}
+    close message =
+        catch @ConnectionException
+            do sendClose connection $ encodeUtf8 message
+            do throwIO . CloseError
