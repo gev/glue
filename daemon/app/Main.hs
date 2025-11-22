@@ -24,7 +24,8 @@ main = do
             putStrLn $ "Connect to Reacthome Relay on " <> host <> ":" <> show port <> path
             runWebSocketClient host port path $ application peer
 
-    let summarize x = sum <$> traverse (hits . x) stats
+        summarize x = sum <$> traverse (hits . x) stats
+
         rps x1 x0 = show x1 <> " | " <> show (x1 - x0) <> " rps"
 
     concurrently_
