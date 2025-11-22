@@ -1,7 +1,6 @@
-import Control.Concurrent (forkIO, threadDelay)
+import Control.Concurrent (threadDelay)
 import Control.Concurrent.Async (concurrently_, mapConcurrently_)
 import Control.Monad (forever, replicateM)
-import Data.Foldable (traverse_)
 import Data.UUID.V4 (nextRandom)
 import Reacthome.Daemon.App (application)
 import Reacthome.Relay.Stat (RelayHits (hits), RelayStat (..), makeRelayStat)
