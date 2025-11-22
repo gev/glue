@@ -8,8 +8,8 @@ import Network.WebSockets (
     Connection,
     ConnectionException,
     DataMessage (..),
-    Message (..),
     receiveData,
+    receiveDataMessage,
     sendClose,
     sendDataMessages,
  )
@@ -28,7 +28,11 @@ makeWebSocketConnection connection =
   where
     receiveMessage =
         catch @ConnectionException
-            do receiveData connection
+            do
+                message <- receiveDataMessage connection
+                pure case message of
+                    Text bs _ -> bs
+                    Binary bs -> bs
             do throwIO . ReceiveError
 
     sendMessage = sendMessages . pure

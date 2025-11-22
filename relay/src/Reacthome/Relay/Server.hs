@@ -1,9 +1,10 @@
 module Reacthome.Relay.Server where
 
+import Control.Concurrent (threadDelay)
 import Control.Concurrent.Async (concurrently_)
-import Control.Concurrent.STM (TBQueue, atomically, newTBQueueIO, readTBQueue, writeTBQueue)
+import Control.Concurrent.STM (TBQueue, atomically, flushTBQueue, isFullTBQueue, newTBQueueIO, readTBQueue, retry, tryReadTBQueue, writeTBQueue)
 import Control.Exception (catch)
-import Control.Monad (forever)
+import Control.Monad (forever, unless, when)
 import Data.ByteString.Lazy (ByteString, toStrict)
 import Data.Int (Int64)
 import Data.Time.Clock.System (SystemTime (..), getSystemTime)
@@ -27,6 +28,7 @@ makeRelayServer = do
                 do
                     connection <- pending.accept
                     queue <- newTBQueueIO 100
+                    -- rxRun queue connection
                     concurrently_
                         do rxRun queue connection
                         do txRun queue connection
@@ -35,22 +37,31 @@ makeRelayServer = do
     pure RelayServer{..}
 
 rxRun :: TBQueue [ByteString] -> WebSocketConnection -> IO ()
-rxRun queue connection = do
-    let go batch last = do
-            msg <- connection.receiveMessage
-            now <- getSystemTime
-            if diffSystemTime now last >= 300_000 && not (null batch)
-                then do
-                    atomically $ writeTBQueue queue (reverse batch)
-                    go [msg] now
-                else
-                    go (msg : batch) last
-    start <- getSystemTime
-    go [] start
+rxRun queue connection = forever do
+    -- msg <- connection.receiveMessage
+    -- atomically $ writeTBQueue queue msg
+
+    go [] =<< getSystemTime
+  where
+    go batch last = do
+        msg <- connection.receiveMessage
+        now <- getSystemTime
+        if length batch >= 40
+            -- \|| diffSystemTime now last >= 100_000 && not (null batch)
+            then do
+                connection.sendMessages (reverse batch)
+                -- atomically $ writeTBQueue queue (reverse batch)
+                go [msg] now
+            else
+                go (msg : batch) last
 
 txRun :: TBQueue [ByteString] -> WebSocketConnection -> IO ()
 txRun queue connection = forever do
     messages <- atomically $ readTBQueue queue
+    -- messages <- atomically do
+    --     isFull <- isFullTBQueue queue
+    --     unless isFull retry
+    --     flushTBQueue queue
     connection.sendMessages messages
 
 headerLength :: Int
