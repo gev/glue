@@ -7,14 +7,14 @@ import Reacthome.Relay.Stat (RelayHits (hits), RelayStat (..), makeRelayStat)
 import Web.WebSockets.Client (runWebSocketClient)
 
 concurrency :: Int
-concurrency = 5
+concurrency = 2
 
 main :: IO ()
 main = do
     stats <- replicateM concurrency makeRelayStat
     let
         port = 3003
-        host = "192.168.11.210"
+        host = "172.16.1.1"
 
         run stat = do
             let ?stat = stat
