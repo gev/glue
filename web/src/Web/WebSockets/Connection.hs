@@ -7,10 +7,10 @@ import Data.Text.Encoding (encodeUtf8)
 import Network.WebSockets (
     Connection,
     ConnectionException,
+    DataMessage (..),
     receiveData,
-    sendBinaryData,
-    sendBinaryDatas,
     sendClose,
+    sendDataMessages,
  )
 import Web.WebSockets.Error (WebSocketError (..))
 
@@ -30,14 +30,11 @@ makeWebSocketConnection connection =
             do receiveData connection
             do throwIO . ReceiveError
 
-    sendMessage message =
-        catch @ConnectionException
-            do sendBinaryData connection message
-            do throwIO . SendError
+    sendMessage = sendMessages . pure
 
     sendMessages messages =
         catch @ConnectionException
-            do sendBinaryDatas connection messages
+            do sendDataMessages connection $ Binary <$> messages
             do throwIO . SendError
 
     close message =

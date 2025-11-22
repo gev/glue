@@ -61,7 +61,8 @@ executable reacthome-relay
     common-options
 
   build-depends:
-    reacthome-relay
+    async,
+    reacthome-relay,
 
   hs-source-dirs: app
   main-is: Main.hs
