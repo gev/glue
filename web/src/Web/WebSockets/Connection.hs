@@ -8,6 +8,7 @@ import Network.WebSockets (
     Connection,
     ConnectionException,
     DataMessage (..),
+    Message (..),
     receiveData,
     sendClose,
     sendDataMessages,
@@ -34,7 +35,7 @@ makeWebSocketConnection connection =
 
     sendMessages messages =
         catch @ConnectionException
-            do sendDataMessages connection $ Binary <$> messages
+            do sendDataMessages connection (Binary <$> messages)
             do throwIO . SendError
 
     close message =
