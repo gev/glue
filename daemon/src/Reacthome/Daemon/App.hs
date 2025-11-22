@@ -1,24 +1,35 @@
 module Reacthome.Daemon.App where
 
+import Control.Concurrent.Async (concurrently_)
+import Control.Monad (forever, void)
 import Data.ByteString (toStrict)
-import Data.Foldable (for_)
-import Data.Text (show)
 import Data.Text.Encoding
 import Data.UUID (UUID, toByteString)
-import Reacthome.Relay.Client (RelayClient (..), makeRelayClient)
-import Reacthome.Relay.Message (RelayMessage (..))
-import Reacthome.Relay.Stat (RelayStat)
+import Reacthome.Relay.Message (RelayMessage (..), serializeMessage)
+import Reacthome.Relay.Stat (RelayHits (..), RelayStat (..))
 import Web.WebSockets.Client (WebSocketClientApplication)
+import Web.WebSockets.Connection (WebSocketConnection (..))
 import Prelude hiding (show)
+
+messagesPerChunk :: Int
+messagesPerChunk = 40
 
 application :: (?stat :: RelayStat) => UUID -> WebSocketClientApplication
 application peer connection = do
-    client <- makeRelayClient connection
-    client.start
     let from = toStrict $ toByteString peer
-    for_ [0 ..] \i ->
-        client.send
-            RelayMessage
-                { peer = from
-                , content = encodeUtf8 ("Hello Relay! " <> show @Int i)
-                }
+        chunk =
+            replicate messagesPerChunk $
+                serializeMessage
+                    RelayMessage
+                        { peer = from
+                        , content = encodeUtf8 "Hello Reacthome Relay!"
+                        }
+    concurrently_
+        do
+            forever do
+                connection.sendMessages chunk
+                ?stat.tx.hit messagesPerChunk
+        do
+            forever do
+                void connection.receiveMessage
+                ?stat.rx.hit 1

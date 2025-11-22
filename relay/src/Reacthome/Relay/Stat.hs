@@ -1,12 +1,11 @@
 module Reacthome.Relay.Stat where
 
 import Data.IORef (modifyIORef, newIORef, readIORef)
-import Data.Word (Word64)
 import Prelude hiding (length, splitAt, tail)
 
 data RelayHits = RelayHits
-    { hits :: IO Word64
-    , hit :: IO ()
+    { hits :: IO Int
+    , hit :: Int -> IO ()
     }
 
 makeRelayHits :: IO RelayHits
@@ -15,7 +14,7 @@ makeRelayHits = do
     pure
         RelayHits
             { hits = readIORef counter
-            , hit = modifyIORef counter (+ 1)
+            , hit = modifyIORef counter <$> (+)
             }
 
 data RelayStat = RelayStat

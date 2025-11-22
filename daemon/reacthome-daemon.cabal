@@ -36,6 +36,7 @@ library
     Reacthome.Daemon.App
 
   build-depends:
+    async,
     bytestring,
     reacthome-relay,
     text,
@@ -48,6 +49,7 @@ executable reacthome-daemon
     common-options
 
   build-depends:
+    async,
     reacthome-daemon,
     reacthome-relay,
     uuid,
