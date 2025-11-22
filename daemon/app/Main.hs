@@ -2,7 +2,7 @@ import Control.Concurrent (threadDelay)
 import Control.Concurrent.Async (concurrently_, mapConcurrently_, race_)
 import Control.Monad (forever, replicateM)
 import Data.UUID.V4 (nextRandom)
-import Reacthome.Daemon.App (rxApplication, txApplication)
+import Reacthome.Daemon.App (application, rxApplication, txApplication)
 import Reacthome.Relay.Stat (RelayHits (hits), RelayStat (..), makeRelayStat)
 import Web.WebSockets.Client (runWebSocketClient)
 
@@ -21,9 +21,7 @@ main = do
             peer <- nextRandom
             let path = "/" <> show peer
             putStrLn $ "Connect to Reacthome Relay on " <> host <> ":" <> show port <> path
-            race_
-                do runWebSocketClient host port path $ txApplication peer
-                do runWebSocketClient host port path rxApplication
+            runWebSocketClient host port path $ application peer
 
         summarize x = sum <$> traverse (hits . x) stats
 
