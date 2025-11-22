@@ -5,7 +5,7 @@ import Control.Monad (forever, void)
 import Data.ByteString (toStrict)
 import Data.Text.Encoding
 import Data.UUID (UUID, toByteString)
-import Reacthome.Relay.Message (RelayMessage (..), serializeMessage)
+import Reacthome.Relay.Message (PeerMessage (..), serializeMessage)
 import Reacthome.Relay.Stat (RelayHits (..), RelayStat (..))
 import Web.WebSockets.Client (WebSocketClientApplication)
 import Web.WebSockets.Connection (WebSocketConnection (..))
@@ -20,7 +20,7 @@ application peer connection = do
         chunk =
             replicate messagesPerChunk $
                 serializeMessage
-                    RelayMessage
+                    PeerMessage
                         { peer = from
                         , content = encodeUtf8 "Hello Reacthome Relay ;)"
                         }
@@ -45,7 +45,7 @@ txApplication peer connection = do
         chunk =
             replicate messagesPerChunk $
                 serializeMessage
-                    RelayMessage
+                    PeerMessage
                         { peer = from
                         , content = encodeUtf8 "Hello Reacthome Relay ;)"
                         }

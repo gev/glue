@@ -7,6 +7,5 @@ main =
   run "0.0.0.0" 3003
  where
   run host port = do
-    server <- makeRelayServer
     putStrLn $ "Run Reacthome Relay on " <> host <> ":" <> show port
-    runWebSocketServer host port $ application server
+    runWebSocketServer host port $ application makeRelayServer
