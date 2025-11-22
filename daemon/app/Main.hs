@@ -15,7 +15,7 @@ main = do
     stats <- replicateM concurrency makeRelayStat
     let
         port = 3003
-        host = "0.0.0.0"
+        host = "192.168.11.210"
 
         run stat = do
             let ?stat = stat
