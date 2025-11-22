@@ -22,7 +22,7 @@ application peer connection = do
                 serializeMessage
                     RelayMessage
                         { peer = from
-                        , content = encodeUtf8 "Hello Reacthome Relay!"
+                        , content = encodeUtf8 "Hello Reacthome Relay ;)"
                         }
     concurrently_
         do

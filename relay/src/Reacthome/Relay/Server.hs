@@ -39,7 +39,7 @@ rxRun queue connection = do
     let go batch last = do
             msg <- connection.receiveMessage
             now <- getSystemTime
-            if diffSystemTime now last >= 1_000_000 && not (null batch)
+            if diffSystemTime now last >= 300_000 && not (null batch)
                 then do
                     atomically $ writeTBQueue queue (reverse batch)
                     go [msg] now
