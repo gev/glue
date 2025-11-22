@@ -33,3 +33,22 @@ application peer connection = do
             forever do
                 void connection.receiveMessage
                 ?stat.rx.hit 1
+
+rxApplication :: (?stat :: RelayStat) => WebSocketClientApplication
+rxApplication connection = forever do
+    void connection.receiveMessage
+    ?stat.rx.hit 1
+
+txApplication :: (?stat :: RelayStat) => UUID -> WebSocketClientApplication
+txApplication peer connection = do
+    let from = toStrict $ toByteString peer
+        chunk =
+            replicate messagesPerChunk $
+                serializeMessage
+                    RelayMessage
+                        { peer = from
+                        , content = encodeUtf8 "Hello Reacthome Relay ;)"
+                        }
+    forever do
+        connection.sendMessages chunk
+        ?stat.tx.hit messagesPerChunk

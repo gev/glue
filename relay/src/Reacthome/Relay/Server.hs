@@ -1,19 +1,21 @@
 module Reacthome.Relay.Server where
 
-import Control.Concurrent (threadDelay)
 import Control.Concurrent.Async (concurrently_)
-import Control.Concurrent.STM (TBQueue, atomically, flushTBQueue, isFullTBQueue, newTBQueueIO, readTBQueue, retry, tryReadTBQueue, writeTBQueue)
+import Control.Concurrent.STM (atomically)
+import Control.Concurrent.STM.TChan (TChan, dupTChan, newBroadcastTChan, readTChan, writeTChan)
 import Control.Exception (catch)
-import Control.Monad (forever, unless, when)
+import Control.Monad (forever)
 import Data.ByteString.Lazy (ByteString, toStrict)
+import Data.Foldable (traverse_)
 import Data.Int (Int64)
 import Data.Time.Clock.System (SystemTime (..), getSystemTime)
 import Data.UUID (UUID, toByteString)
 import Reacthome.Relay.Error (RelayError (..), logError)
+import StmContainers.Map (insert, lookup, newIO)
 import Web.WebSockets.Connection (WebSocketConnection (..))
 import Web.WebSockets.Error (WebSocketError)
 import Web.WebSockets.PendingConnection (WebSocketPendingConnection (..))
-import Prelude hiding (last, splitAt, tail, take)
+import Prelude hiding (last, lookup, splitAt, tail, take)
 
 newtype RelayServer = RelayServer
     { accept :: WebSocketPendingConnection -> UUID -> IO ()
@@ -21,48 +23,56 @@ newtype RelayServer = RelayServer
 
 makeRelayServer :: IO RelayServer
 makeRelayServer = do
+    sinks <- newIO
     let
         accept pending peer = do
             let from = toStrict $ toByteString peer
             catch @WebSocketError
                 do
+                    (sink, source) <-
+                        atomically do
+                            maybe
+                                do
+                                    sink <- newBroadcastTChan
+                                    insert sink from sinks
+                                    source <- dupTChan sink
+                                    pure (sink, source)
+                                do
+                                    \sink -> do
+                                        source <- dupTChan sink
+                                        pure (sink, source)
+                                =<< lookup from sinks
                     connection <- pending.accept
-                    queue <- newTBQueueIO 100
-                    -- rxRun queue connection
                     concurrently_
-                        do rxRun queue connection
-                        do txRun queue connection
+                        do rxRun connection sink
+                        do txRun connection source
                 do logError . WebSocketError from
 
     pure RelayServer{..}
 
-rxRun :: TBQueue [ByteString] -> WebSocketConnection -> IO ()
-rxRun queue connection = forever do
-    -- msg <- connection.receiveMessage
-    -- atomically $ writeTBQueue queue msg
-
+rxRun :: WebSocketConnection -> TChan ByteString -> IO ()
+rxRun connection sink = do
     go [] =<< getSystemTime
   where
     go batch last = do
         msg <- connection.receiveMessage
         now <- getSystemTime
-        if length batch >= 40
-            -- \|| diffSystemTime now last >= 100_000 && not (null batch)
+        if diffSystemTime now last >= 500_000
             then do
-                connection.sendMessages (reverse batch)
-                -- atomically $ writeTBQueue queue (reverse batch)
+                atomically $ traverse_ (writeTChan sink) (reverse batch)
                 go [msg] now
             else
                 go (msg : batch) last
 
-txRun :: TBQueue [ByteString] -> WebSocketConnection -> IO ()
-txRun queue connection = forever do
-    messages <- atomically $ readTBQueue queue
-    -- messages <- atomically do
-    --     isFull <- isFullTBQueue queue
-    --     unless isFull retry
-    --     flushTBQueue queue
-    connection.sendMessages messages
+txRun :: WebSocketConnection -> TChan ByteString -> IO ()
+txRun connection source = forever do
+    messages <- atomically $ go [] (40 :: Int)
+    connection.sendMessages $ reverse messages
+  where
+    go batch 0 = pure batch
+    go batch n = do
+        msg <- readTChan source
+        go (msg : batch) (n - 1)
 
 headerLength :: Int
 headerLength = 16
