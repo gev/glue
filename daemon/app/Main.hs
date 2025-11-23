@@ -37,7 +37,7 @@ main = do
             t <- summarize tx
             pure (r, t)
 
-        rps x1 x0 dt = fmt x0 <> " " <> fmt x1 <> " " <> fmt dt <> " | RPS: " <> fmt ((x1 - x0) `div` dt)
+        rps x1 x0 dt = fmt x1 <> " " <> " | RPS: " <> fmt ((x1 - x0) `div` dt)
 
         fmt = unpack . prettyI (Just '.')
 
@@ -54,7 +54,7 @@ main = do
                 (rx1, tx1) <- summarizeStat
                 writeIORef total (rx1, tx1)
 
-                let dt = fromInteger $ toNanoSecs (diffTimeSpec t1 t0)
+                let dt = fromInteger $ toNanoSecs (diffTimeSpec t1 t0) `div` 1_000_000_000
 
                 putStrLn "<->"
                 putStrLn $ "Tx: " <> rps tx1 tx0 dt
