@@ -1,6 +1,6 @@
 import Control.Concurrent (threadDelay)
 import Control.Concurrent.Async (concurrently_, mapConcurrently_)
-import Control.Monad (forever, replicateM)
+import Control.Monad (forever, replicateM, when)
 import Data.IORef (newIORef, readIORef, writeIORef)
 import Data.Text (unpack)
 import Data.Text.Format.Numbers (prettyI)
@@ -56,8 +56,9 @@ main = do
 
                 let dt = fromInteger $ toNanoSecs (diffTimeSpec t1 t0) `div` 1_000_000_000
 
-                putStrLn "<->"
-                putStrLn $ "Tx: " <> rps tx1 tx0 dt
-                putStrLn $ "Rx: " <> rps rx1 rx0 dt
+                when (dt > 0) do
+                    putStrLn "<->"
+                    putStrLn $ "Tx: " <> rps tx1 tx0 dt
+                    putStrLn $ "Rx: " <> rps rx1 rx0 dt
 
                 threadDelay 1_000_000
