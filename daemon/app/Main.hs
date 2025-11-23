@@ -1,16 +1,14 @@
 import Control.Concurrent (threadDelay)
 import Control.Concurrent.Async (concurrently_, mapConcurrently_)
 import Control.Monad (forever, replicateM)
-import Data.Time (getCurrentTime)
 import Data.Time.Clock.POSIX (getPOSIXTime)
-import Data.Time.Clock.System (getSystemTime)
 import Data.UUID.V4 (nextRandom)
 import Reacthome.Daemon.App (application)
 import Reacthome.Relay.Stat (RelayHits (hits), RelayStat (..), makeRelayStat)
 import Web.WebSockets.Client (runWebSocketClient)
 
 concurrency :: Int
-concurrency = 2
+concurrency = 5
 
 main :: IO ()
 main = do
@@ -43,5 +41,6 @@ main = do
                 tx1 <- summarize tx
                 rx1 <- summarize rx
                 let dt = floor $ t1 - t0
+                putStrLn "<->"
                 putStrLn $ "Tx: " <> rps tx1 tx0 dt
                 putStrLn $ "Rx: " <> rps rx1 rx0 dt
