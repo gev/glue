@@ -12,7 +12,7 @@ import Web.WebSockets.Connection (WebSocketConnection (..))
 import Prelude hiding (show)
 
 messagesPerChunk :: Int
-messagesPerChunk = 40
+messagesPerChunk = 512
 
 application :: (?stat :: RelayStat) => UUID -> WebSocketClientApplication
 application peer connection = do
