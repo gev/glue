@@ -25,17 +25,20 @@ main = do
 
         summarize x = sum <$> traverse (hits . x) stats
 
-        rps x1 x0 = show x1 <> " | " <> show (x1 - x0) <> " rps"
+        rps x1 x0 dt = show x1 <> " | " <> show ((x1 - x0) / dt) <> " rps"
 
     concurrently_
         do
             mapConcurrently_ run stats
         do
             forever do
+                t0 <- getSystemTime
                 tx0 <- summarize tx
                 rx0 <- summarize rx
                 threadDelay 1_000_000
+                t1 <- getSystemTime
                 tx1 <- summarize tx
                 rx1 <- summarize rx
-                putStrLn $ "Tx: " <> rps tx1 tx0
-                putStrLn $ "Rx: " <> rps rx1 rx0
+                let dt = t1 - t0
+                putStrLn $ "Tx: " <> rps tx1 tx0 dt
+                putStrLn $ "Rx: " <> rps rx1 rx0 dt

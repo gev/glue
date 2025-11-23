@@ -53,6 +53,7 @@ executable reacthome-daemon
     reacthome-daemon,
     reacthome-relay,
     uuid,
+    time,
 
   hs-source-dirs: app
   main-is: Main.hs
