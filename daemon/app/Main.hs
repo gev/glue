@@ -1,6 +1,9 @@
 import Control.Concurrent (threadDelay)
 import Control.Concurrent.Async (concurrently_, mapConcurrently_)
 import Control.Monad (forever, replicateM)
+import Data.Time (getCurrentTime)
+import Data.Time.Clock.POSIX (getPOSIXTime)
+import Data.Time.Clock.System (getSystemTime)
 import Data.UUID.V4 (nextRandom)
 import Reacthome.Daemon.App (application)
 import Reacthome.Relay.Stat (RelayHits (hits), RelayStat (..), makeRelayStat)
@@ -25,20 +28,20 @@ main = do
 
         summarize x = sum <$> traverse (hits . x) stats
 
-        rps x1 x0 dt = show x1 <> " | " <> show ((x1 - x0) / dt) <> " rps"
+        rps x1 x0 dt = show x1 <> " | " <> show ((x1 - x0) `div` dt) <> " rps"
 
     concurrently_
         do
             mapConcurrently_ run stats
         do
             forever do
-                t0 <- getSystemTime
+                t0 <- getPOSIXTime
                 tx0 <- summarize tx
                 rx0 <- summarize rx
                 threadDelay 1_000_000
-                t1 <- getSystemTime
+                t1 <- getPOSIXTime
                 tx1 <- summarize tx
                 rx1 <- summarize rx
-                let dt = t1 - t0
+                let dt = floor $ t1 - t0
                 putStrLn $ "Tx: " <> rps tx1 tx0 dt
                 putStrLn $ "Rx: " <> rps rx1 rx0 dt
