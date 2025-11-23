@@ -51,6 +51,7 @@ library
     text,
     time,
     transformers,
+    unordered-containers,
     uuid,
 
   hs-source-dirs: src

@@ -9,7 +9,7 @@ main =
   run "0.0.0.0" 3003
  where
   run host port = do
-    relay <- makeRelay 100
+    relay <- makeRelay 100_000
     let server = makeRelayServer relay
     putStrLn $ "Run Reacthome Relay on " <> host <> ":" <> show port
     concurrently_

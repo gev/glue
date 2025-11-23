@@ -28,7 +28,7 @@ makeRelayServer relay = do
             catch @WebSocketError
                 do
                     connection <- pending.accept
-                    source <- atomically $ relay.getSource from
+                    source <- relay.getSource from
                     concurrently_
                         do rxRun connection
                         do txRun connection source
@@ -36,10 +36,10 @@ makeRelayServer relay = do
 
         rxRun connection = forever do
             raw <- connection.receiveMessage
-            atomically $ relay.sendMessage raw
+            relay.sendMessage raw
 
         txRun connection source = forever do
-            messages <- atomically $ receive [] (40 :: Int)
+            messages <- atomically $ receive [] (400 :: Int)
             connection.sendMessages messages
           where
             receive ms 0 = pure $ reverse ms
