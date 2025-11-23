@@ -1,5 +1,6 @@
+import Control.Concurrent.Async (concurrently_)
 import Reacthome.Relay.App (application)
-import Reacthome.Relay.Relay (makeRelay)
+import Reacthome.Relay.Relay (Relay (..), makeRelay)
 import Reacthome.Relay.Server (makeRelayServer)
 import Web.WebSockets.Server (runWebSocketServer)
 
@@ -9,5 +10,8 @@ main =
  where
   run host port = do
     relay <- makeRelay 50_000
+    let server = makeRelayServer relay
     putStrLn $ "Run Reacthome Relay on " <> host <> ":" <> show port
-    runWebSocketServer host port $ application $ makeRelayServer relay
+    concurrently_
+      do runWebSocketServer host port $ application server
+      do relay.dispatch

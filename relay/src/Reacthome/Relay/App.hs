@@ -15,5 +15,5 @@ application server pending = do
     when (length path > 1) do
         maybe
             (pure ()) -- throw error
-            (server pending)
+            (server.accept pending)
             (fromText $ tail path)

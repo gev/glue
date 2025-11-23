@@ -1,5 +1,3 @@
-{-# LANGUAGE Strict #-}
-
 module Reacthome.Relay.Message where
 
 import Control.Exception (throw)

@@ -1,13 +1,10 @@
-{-# LANGUAGE Strict #-}
-
 module Reacthome.Relay.Server where
 
-import Control.Concurrent (forkIO)
 import Control.Concurrent.Async (concurrently_)
 import Control.Concurrent.STM (atomically)
 import Control.Concurrent.STM.TChan (readTChan)
 import Control.Exception (catch)
-import Control.Monad (forever, void)
+import Control.Monad (forever)
 import Data.ByteString (toStrict)
 import Data.UUID (UUID, toByteString)
 import Reacthome.Relay.Error (RelayError (..), logError)
@@ -18,15 +15,27 @@ import Web.WebSockets.Error (WebSocketError)
 import Web.WebSockets.PendingConnection (WebSocketPendingConnection (..))
 import Prelude hiding (last, lookup, splitAt, tail, take)
 
-type RelayServer = WebSocketPendingConnection -> Peer -> IO ()
+newtype RelayServer = RelayServer
+    { accept :: WebSocketPendingConnection -> Peer -> IO ()
+    }
+
 type Peer = UUID
 
 makeRelayServer :: Relay -> RelayServer
-makeRelayServer relay pending peer = do
+makeRelayServer relay = do
     let
-        from = toStrict $ toByteString peer
+        accept pending peer = do
+            let from = toStrict $ toByteString peer
+            catch @WebSocketError
+                do
+                    connection <- pending.accept
+                    source <- atomically $ relay.getSource from
+                    concurrently_
+                        do rxRun connection from
+                        do txRun connection source
+                do logError . WebSocketError from
 
-        rxRun connection = forever do
+        rxRun connection from = forever do
             raw <- connection.receiveMessage
             catch @RelayError
                 do
@@ -43,20 +52,11 @@ makeRelayServer relay pending peer = do
 
         txRun connection source = forever do
             messages <- atomically $ receive [] (40 :: Int)
-            connection.sendMessages messages
+            connection.sendMessages $ reverse messages
           where
             receive ms 0 = pure $ reverse ms
             receive ms n = do
                 m <- readTChan source
                 receive (m : ms) (n - 1)
 
-    void $ forkIO relay.dispatch
-
-    catch @WebSocketError
-        do
-            connection <- pending.accept
-            source <- atomically $ relay.getSource from
-            concurrently_
-                do rxRun connection
-                do txRun connection source
-        do logError . WebSocketError from
+    RelayServer{..}
