@@ -8,7 +8,6 @@ import Network.WebSockets (
     Connection,
     ConnectionException,
     DataMessage (..),
-    receiveData,
     receiveDataMessage,
     sendClose,
     sendDataMessages,
