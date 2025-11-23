@@ -1,3 +1,5 @@
+{-# LANGUAGE Strict #-}
+
 module Reacthome.Relay.Relay where
 
 import Control.Concurrent.STM (STM, readTBQueue, writeTChan)
