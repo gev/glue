@@ -51,6 +51,7 @@ library
     text,
     time,
     transformers,
+    unagi-chan,
     unordered-containers,
     uuid,
 

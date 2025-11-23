@@ -1,14 +1,14 @@
 module Reacthome.Relay.Server where
 
+import Control.Concurrent (yield)
 import Control.Concurrent.Async (concurrently_)
-import Control.Concurrent.STM (atomically)
-import Control.Concurrent.STM.TChan (readTChan)
+import Control.Concurrent.Chan.Unagi.NoBlocking (readChan)
 import Control.Exception (catch)
 import Control.Monad (forever)
 import Data.ByteString (toStrict)
 import Data.UUID (UUID, toByteString)
 import Reacthome.Relay.Error (RelayError (..), logError)
-import Reacthome.Relay.Relay (Relay (..))
+import Reacthome.Relay.Relay (Relay (..), Source)
 import Web.WebSockets.Connection (WebSocketConnection (..))
 import Web.WebSockets.Error (WebSocketError)
 import Web.WebSockets.PendingConnection (WebSocketPendingConnection (..))
@@ -38,13 +38,14 @@ makeRelayServer relay = do
             raw <- connection.receiveMessage
             relay.sendMessage raw
 
+        txRun :: WebSocketConnection -> Source -> IO ()
         txRun connection source = forever do
-            messages <- atomically $ receive [] (400 :: Int)
+            messages <- receive [] (400 :: Int)
             connection.sendMessages messages
           where
             receive ms 0 = pure $ reverse ms
             receive ms n = do
-                m <- readTChan source
+                m <- readChan yield source
                 receive (m : ms) (n - 1)
 
     RelayServer{..}

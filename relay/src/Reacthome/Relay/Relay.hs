@@ -1,9 +1,9 @@
 module Reacthome.Relay.Relay where
 
-import Control.Concurrent.STM (readTBQueue, writeTChan)
+import Control.Concurrent.Chan.Unagi.NoBlocking (OutChan, dupChan, newChan, writeChan)
+import Control.Concurrent.STM (readTBQueue)
 import Control.Concurrent.STM.TBQueue (newTBQueueIO, writeTBQueue)
-import Control.Concurrent.STM.TChan (TChan, dupTChan, newBroadcastTChan)
-import Control.Exception (catch, throw)
+import Control.Exception (catch, throwIO)
 import Control.Monad (forever, void)
 import Control.Monad.STM (atomically)
 import Data.HashMap.Strict (empty, insert, lookup)
@@ -18,37 +18,38 @@ data Relay = Relay
     , dispatch :: IO ()
     }
 
-type Source = TChan LazyRaw
+type Source = OutChan LazyRaw
 
 makeRelay :: Int -> IO Relay
 makeRelay bound = do
-    sink <- newTBQueueIO $ fromIntegral bound
+    queue <- newTBQueueIO $ fromIntegral bound
     sources <- newIORef empty
 
     let
-        sendMessage = atomically . writeTBQueue sink
+        sendMessage = atomically . writeTBQueue queue
 
         getSource uid = do
             sources' <- readIORef sources
             case lookup uid sources' of
                 Nothing -> do
-                    (source, clone) <- atomically do
-                        source <- newBroadcastTChan
-                        clone <- dupTChan source
-                        pure (source, clone)
-                    void $ atomicModifyIORef'_ sources $ insert uid source
-                    pure clone
-                Just source -> atomically $ dupTChan source
+                    (inChan, _) <- newChan
+                    void $ atomicModifyIORef'_ sources $ insert uid inChan
+                    dupChan inChan
+                Just source -> dupChan source
+
+        getSink uid = do
+            sources' <- readIORef sources
+            case lookup uid sources' of
+                Nothing -> throwIO $ NoPeersFound uid
+                Just source -> pure source
 
         dispatch = forever do
-            sources' <- readIORef sources
             catch @RelayError
                 do
-                    message <- atomically $ readTBQueue sink
+                    message <- atomically $ readTBQueue queue
                     let destination = getMessageDestination message
-                    case lookup destination sources' of
-                        Nothing -> throw $ NoPeersFound destination
-                        Just source -> atomically $ writeTChan source message
+                    source <- getSink destination
+                    writeChan source message
                 logError
 
     pure Relay{..}
