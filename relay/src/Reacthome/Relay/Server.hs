@@ -39,9 +39,9 @@ makeRelayServer relay = do
             raw <- connection.receiveMessage
             catch @RelayError
                 do
-                    let message = parseMessage raw
+                    let message = parseMessage $! raw
                     atomically do
-                        relay.sendMessage
+                        relay.sendMessage $!
                             RelayMessage
                                 { from
                                 , to = message.peer
@@ -51,12 +51,12 @@ makeRelayServer relay = do
                     logError
 
         txRun connection source = forever do
-            messages <- atomically $ receive [] (40 :: Int)
-            connection.sendMessages $ reverse messages
+            messages <- atomically $! receive [] (40 :: Int)
+            connection.sendMessages $! messages
           where
-            receive ms 0 = pure $ reverse ms
+            receive ms 0 = pure $ reverse $! ms
             receive ms n = do
-                m <- readTChan source
+                m <- readTChan $! source
                 receive (m : ms) (n - 1)
 
     RelayServer{..}

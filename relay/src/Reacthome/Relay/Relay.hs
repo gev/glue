@@ -39,17 +39,18 @@ makeRelay bound = do
         dispatch =
             forever $
                 catch @RelayError
-                    run
+                    do atomically run
                     logError
 
-        run = atomically do
-            RelayMessage{from, to, content} <- readTBQueue sink
+        run = do
+            RelayMessage{from, to, content} <- readTBQueue $! sink
             source <-
                 lookup to sources
                     >>= maybe
                         do throw $ NoPeersFound from
                         do pure
-            writeTChan source $
-                serializeMessage PeerMessage{peer = from, content}
+            writeTChan source $!
+                serializeMessage $!
+                    PeerMessage{peer = from, content}
 
     pure Relay{..}
