@@ -8,7 +8,6 @@ import Control.Monad (forever)
 import Data.ByteString (toStrict)
 import Data.UUID (UUID, toByteString)
 import Reacthome.Relay.Error (RelayError (..), logError)
-import Reacthome.Relay.Message (PeerMessage (..), RelayMessage (..), parseMessage)
 import Reacthome.Relay.Relay (Relay (..))
 import Web.WebSockets.Connection (WebSocketConnection (..))
 import Web.WebSockets.Error (WebSocketError)
@@ -31,32 +30,21 @@ makeRelayServer relay = do
                     connection <- pending.accept
                     source <- atomically $ relay.getSource from
                     concurrently_
-                        do rxRun connection from
+                        do rxRun connection
                         do txRun connection source
                 do logError . WebSocketError from
 
-        rxRun connection from = forever do
+        rxRun connection = forever do
             raw <- connection.receiveMessage
-            catch @RelayError
-                do
-                    let message = parseMessage $! raw
-                    atomically do
-                        relay.sendMessage $!
-                            RelayMessage
-                                { from
-                                , to = message.peer
-                                , content = message.content
-                                }
-                do
-                    logError
+            atomically $ relay.sendMessage raw
 
         txRun connection source = forever do
-            messages <- atomically $! receive [] (40 :: Int)
-            connection.sendMessages $! messages
+            messages <- atomically $ receive [] (40 :: Int)
+            connection.sendMessages messages
           where
-            receive ms 0 = pure $ reverse $! ms
+            receive ms 0 = pure $ reverse ms
             receive ms n = do
-                m <- readTChan $! source
+                m <- readTChan source
                 receive (m : ms) (n - 1)
 
     RelayServer{..}

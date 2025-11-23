@@ -7,12 +7,12 @@ import Control.Exception (catch, throw)
 import Control.Monad (forever)
 import Control.Monad.STM (atomically)
 import Reacthome.Relay.Error (RelayError (..), logError)
-import Reacthome.Relay.Message
+import Reacthome.Relay.Message (LazyRaw, Uid, getMessageDestination)
 import StmContainers.Map (insert, lookup, newIO)
 import Prelude hiding (lookup, show)
 
 data Relay = Relay
-    { sendMessage :: RelayMessage -> STM ()
+    { sendMessage :: LazyRaw -> STM ()
     , getSource :: Uid -> STM Source
     , dispatch :: IO ()
     }
@@ -36,21 +36,19 @@ makeRelay bound = do
                         dupTChan source
                     dupTChan
 
-        dispatch =
-            forever $
-                catch @RelayError
-                    do atomically run
-                    logError
+        dispatch = forever do
+            catch @RelayError
+                do atomically run
+                logError
 
         run = do
-            RelayMessage{from, to, content} <- readTBQueue $! sink
+            message <- readTBQueue sink
+            let destination = getMessageDestination message
             source <-
-                lookup to sources
+                lookup destination sources
                     >>= maybe
-                        do throw $ NoPeersFound from
+                        do throw $ NoPeersFound destination
                         do pure
-            writeTChan source $!
-                serializeMessage $!
-                    PeerMessage{peer = from, content}
+            writeTChan source message
 
     pure Relay{..}

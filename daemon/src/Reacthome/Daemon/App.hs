@@ -5,7 +5,7 @@ import Control.Monad (forever, void)
 import Data.ByteString (toStrict)
 import Data.Text.Encoding
 import Data.UUID (UUID, toByteString)
-import Reacthome.Relay.Message (PeerMessage (..), serializeMessage)
+import Reacthome.Relay.Message (RelayMessage (..), serializeMessage)
 import Reacthome.Relay.Stat (RelayHits (..), RelayStat (..))
 import Web.WebSockets.Client (WebSocketClientApplication)
 import Web.WebSockets.Connection (WebSocketConnection (..))
@@ -20,8 +20,9 @@ application peer connection = do
         chunk =
             replicate messagesPerChunk $
                 serializeMessage
-                    PeerMessage
-                        { peer = from
+                    RelayMessage
+                        { to = from
+                        , from = from
                         , content = encodeUtf8 "Hello Reacthome Relay ;)"
                         }
     concurrently_
@@ -33,22 +34,3 @@ application peer connection = do
             forever do
                 void connection.receiveMessage
                 ?stat.rx.hit 1
-
-rxApplication :: (?stat :: RelayStat) => WebSocketClientApplication
-rxApplication connection = forever do
-    void connection.receiveMessage
-    ?stat.rx.hit 1
-
-txApplication :: (?stat :: RelayStat) => UUID -> WebSocketClientApplication
-txApplication peer connection = do
-    let from = toStrict $ toByteString peer
-        chunk =
-            replicate messagesPerChunk $
-                serializeMessage
-                    PeerMessage
-                        { peer = from
-                        , content = encodeUtf8 "Hello Reacthome Relay ;)"
-                        }
-    forever do
-        connection.sendMessages chunk
-        ?stat.tx.hit messagesPerChunk

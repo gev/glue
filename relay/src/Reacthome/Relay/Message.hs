@@ -1,47 +1,37 @@
 module Reacthome.Relay.Message where
 
-import Control.Exception (throw)
-import Data.ByteString (ByteString, length, splitAt, toStrict)
+import Data.ByteString qualified as S
 import Data.ByteString.Lazy qualified as L
-import Reacthome.Relay.Error (RelayError (..))
-import Prelude hiding (length, splitAt, tail)
-
-data PeerMessage = PeerMessage
-    { peer :: !Uid
-    , content :: StrictRaw
-    }
-    deriving (Show)
+import Data.Int (Int64)
+import Prelude hiding (length, splitAt, tail, take)
 
 data RelayMessage = RelayMessage
-    { from :: !Uid
-    , to :: !Uid
-    , content :: !ByteString
+    { to :: !Uid
+    , from :: !Uid
+    , content :: !S.ByteString
     }
 
-type Uid = ByteString
-type StrictRaw = ByteString
+type Uid = S.ByteString
+type StrictRaw = S.ByteString
 type LazyRaw = L.ByteString
 
-serializeMessage :: PeerMessage -> LazyRaw
+serializeMessage :: RelayMessage -> LazyRaw
 serializeMessage message =
-    L.fromChunks [message.peer, message.content]
+    L.fromChunks
+        [ message.to
+        , message.from
+        , message.content
+        ]
 {-# INLINEABLE serializeMessage #-}
 
-parseMessage :: L.ByteString -> PeerMessage
-parseMessage message = do
-    let message' = toStrict message
-    let messageLength = length message'
-    if messageLength > headerLength
-        then do
-            let (peer, content) = splitAt headerLength message'
-            PeerMessage{..}
-        else
-            throw
-                InvalidMessageLength
-                    { messageLength
-                    , minimumLength = headerLength + 1
-                    }
-{-# INLINEABLE parseMessage #-}
+getMessageDestination :: LazyRaw -> Uid
+getMessageDestination :: LazyRaw -> Uid =
+    L.toStrict . L.take 16
+{-# INLINEABLE getMessageDestination #-}
 
-headerLength :: Int
-headerLength = 16
+isMessageValid :: LazyRaw -> Bool
+isMessageValid = (> headerLength) . L.length
+{-# INLINEABLE isMessageValid #-}
+
+headerLength :: Int64
+headerLength = 32
