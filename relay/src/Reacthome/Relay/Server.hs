@@ -4,11 +4,15 @@ import Control.Concurrent (yield)
 import Control.Concurrent.Async (concurrently_)
 import Control.Concurrent.Chan.Unagi.NoBlocking (readChan)
 import Control.Exception (catch)
-import Control.Monad (forever)
+import Control.Monad (forever, unless, when)
 import Data.ByteString (toStrict)
+import Data.IORef (modifyIORef', newIORef, readIORef, writeIORef)
 import Data.UUID (UUID, toByteString)
+import GHC.Exts
 import Reacthome.Relay.Error (RelayError (..), logError)
-import Reacthome.Relay.Relay (Relay (..), Source)
+import Reacthome.Relay.Relay (Relay (..))
+import System.Clock (diffTimeSpec, getTime, toNanoSecs)
+import System.Clock.Seconds (Clock (..))
 import Web.WebSockets.Connection (WebSocketConnection (..))
 import Web.WebSockets.Error (WebSocketError)
 import Web.WebSockets.PendingConnection (WebSocketPendingConnection (..))
@@ -38,14 +42,39 @@ makeRelayServer relay = do
             raw <- connection.receiveMessage
             relay.sendMessage raw
 
-        txRun :: WebSocketConnection -> Source -> IO ()
-        txRun connection source = forever do
-            messages <- receive [] (400 :: Int)
-            connection.sendMessages messages
-          where
-            receive ms 0 = pure $ reverse ms
-            receive ms n = do
-                m <- readChan yield source
-                receive (m : ms) (n - 1)
+        txRun connection source = do
+            buffer <- newIORef []
+            deadlineRef <- newIORef =<< getTime Monotonic
+            let
+                loop = do
+                    now <- getTime Monotonic
+                    deadline <- readIORef deadlineRef
+                    when (toNanoSecs (diffTimeSpec now deadline) >= flushIntervalNs) do
+                        flush
+                        writeIORef deadlineRef =<< getTime Monotonic
+
+                    msg <- readChan yield source
+
+                    modifyIORef' buffer (msg :)
+                    len <- length <$> readIORef buffer
+                    when (len >= batchSize) do
+                        flush
+                        newDeadline <- getTime Monotonic
+                        writeIORef deadlineRef newDeadline
+                    loop
+
+                flush = do
+                    msgs <- reverse <$> readIORef buffer
+                    unless (null msgs) do
+                        writeIORef buffer []
+                        connection.sendMessages msgs
+
+            loop
 
     RelayServer{..}
+
+batchSize :: Int
+batchSize = 512
+
+flushIntervalNs :: Integer
+flushIntervalNs = 300_000

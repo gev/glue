@@ -26,6 +26,7 @@ common common-options
     OverloadedRecordDot
     OverloadedStrings
     RecordWildCards
+    StrictData
 
 library
   import:
@@ -44,6 +45,7 @@ library
   build-depends:
     async,
     bytestring,
+    clock,
     hashable,
     list-t,
     stm,
