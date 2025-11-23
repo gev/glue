@@ -50,10 +50,11 @@ executable reacthome-daemon
 
   build-depends:
     async,
+    format-numbers,
     reacthome-daemon,
     reacthome-relay,
-    uuid,
     time,
+    uuid,
 
   hs-source-dirs: app
   main-is: Main.hs

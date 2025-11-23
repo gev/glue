@@ -1,6 +1,8 @@
 import Control.Concurrent (threadDelay)
 import Control.Concurrent.Async (concurrently_, mapConcurrently_)
 import Control.Monad (forever, replicateM)
+import Data.Text (unpack)
+import Data.Text.Format.Numbers (prettyI)
 import Data.Time.Clock.POSIX (getPOSIXTime)
 import Data.UUID.V4 (nextRandom)
 import Reacthome.Daemon.App (application)
@@ -26,7 +28,9 @@ main = do
 
         summarize x = sum <$> traverse (hits . x) stats
 
-        rps x1 x0 dt = show x1 <> " | " <> show ((x1 - x0) `div` dt) <> " rps"
+        rps x1 x0 dt = fmt x1 <> " | RPS: " <> fmt ((x1 - x0) `div` dt)
+
+        fmt = unpack . prettyI (Just '.')
 
     concurrently_
         do
