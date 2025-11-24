@@ -33,8 +33,8 @@ main = do
         summarize x = sum <$> traverse (hits . x) stats
 
         summarizeStat = do
-            r <- summarize rx
-            t <- summarize tx
+            !r <- summarize rx
+            !t <- summarize tx
             pure (r, t)
 
         rps x1 x0 dt = fmt x1 <> " " <> " | RPS: " <> fmt ((x1 - x0) `div` dt)
@@ -46,15 +46,15 @@ main = do
             mapConcurrently_ run stats
         do
             forever do
-                t0 <- readIORef time
-                t1 <- getTime Monotonic
+                !t0 <- readIORef time
+                !t1 <- getTime Monotonic
                 writeIORef time t1
 
-                (rx0, tx0) <- readIORef total
-                (rx1, tx1) <- summarizeStat
+                (!rx0, !tx0) <- readIORef total
+                (!rx1, !tx1) <- summarizeStat
                 writeIORef total (rx1, tx1)
 
-                let dt = fromInteger $ toNanoSecs (diffTimeSpec t1 t0) `div` 1_000_000_000
+                let !dt = fromInteger $ toNanoSecs (diffTimeSpec t1 t0) `div` 1_000_000_000
 
                 when (dt > 0) do
                     putStrLn "<->"

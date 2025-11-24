@@ -14,12 +14,12 @@ makeRelayHits = do
     pure
         RelayHits
             { hits = readIORef counter
-            , hit = modifyIORef counter <$> (+)
+            , hit = modifyIORef $! counter <$> (+)
             }
 
 data RelayStat = RelayStat
-    { rx :: RelayHits
-    , tx :: RelayHits
+    { !rx :: RelayHits
+    , !tx :: RelayHits
     }
 
 makeRelayStat :: IO RelayStat
