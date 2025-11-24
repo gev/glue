@@ -26,6 +26,7 @@ common common-options
     OverloadedRecordDot
     OverloadedStrings
     RecordWildCards
+    StrictData
 
 library
   import:
