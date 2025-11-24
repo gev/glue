@@ -1,6 +1,6 @@
 module Reacthome.Relay.Stat where
 
-import Data.IORef (modifyIORef, newIORef, readIORef)
+import Data.IORef (modifyIORef, modifyIORef', newIORef, readIORef)
 import Prelude hiding (length, splitAt, tail)
 
 data RelayHits = RelayHits
@@ -14,12 +14,12 @@ makeRelayHits = do
     pure
         RelayHits
             { hits = readIORef counter
-            , hit = modifyIORef $! counter <$> (+)
+            , hit = modifyIORef' counter <$> (+)
             }
 
 data RelayStat = RelayStat
-    { !rx :: RelayHits
-    , !tx :: RelayHits
+    { rx :: !RelayHits
+    , tx :: !RelayHits
     }
 
 makeRelayStat :: IO RelayStat
