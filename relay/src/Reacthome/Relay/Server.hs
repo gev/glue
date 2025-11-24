@@ -1,8 +1,7 @@
 module Reacthome.Relay.Server where
 
-import Control.Concurrent (yield)
 import Control.Concurrent.Async (race_)
-import Control.Concurrent.Chan.Unagi.NoBlocking (readChan)
+import Control.Concurrent.Chan.Unagi (readChan)
 import Control.Exception (finally, handle)
 import Control.Monad (forever, unless, when)
 import Data.ByteString (toStrict)
@@ -54,7 +53,7 @@ makeRelayServer dispatcher = do
             deadlineRef <- newIORef =<< getTime Monotonic
             let
                 flush messages = do
-                    writeIORef deadlineRef =<< getTime Monotonic
+                    -- writeIORef deadlineRef =<< getTime Monotonic
                     writeIORef buffer []
                     connection.sendMessages $ reverse messages
 
@@ -68,13 +67,13 @@ makeRelayServer dispatcher = do
 
                 enqueue message = do
                     modifyIORef' buffer (message :)
-                    len <- length <$> readIORef buffer
-                    when (len >= batchSize) do
-                        flush =<< readIORef buffer
+                    messages <- readIORef buffer
+                    when (length messages >= batchSize) do
+                        flush messages
 
             forever do
                 checkDeadline =<< getTime Monotonic
-                enqueue =<< readChan yield source
+                enqueue =<< readChan source
 
     RelayServer{..}
 

@@ -1,7 +1,7 @@
 module Reacthome.Relay.Dispatcher where
 
+import Control.Concurrent.Chan.Unagi (OutChan, dupChan, newChan, writeChan)
 import Control.Concurrent.Chan.Unagi.Bounded qualified as B
-import Control.Concurrent.Chan.Unagi.NoBlocking (OutChan, dupChan, newChan, writeChan)
 import Control.Exception (catch, throwIO)
 import Control.Monad (forever, void)
 import Data.HashMap.Strict (empty, insert, lookup)
