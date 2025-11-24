@@ -41,15 +41,15 @@ makeRelayServer dispatcher = do
             finally
                 do
                     race_
-                        do wrap $ rxRun connection
-                        do wrap $ txRun connection source
+                        do wrap $ runRx connection
+                        do wrap $ runTx connection source
                 do
                     print $ "Peer disconnected " <> show peer
 
-        rxRun connection = forever do
+        runRx connection = forever do
             dispatcher.sendMessage =<< connection.receiveMessage
 
-        txRun connection source = do
+        runTx connection source = do
             buffer <- newIORef []
             deadlineRef <- newIORef =<< getTime Monotonic
             let
