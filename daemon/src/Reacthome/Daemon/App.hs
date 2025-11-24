@@ -1,23 +1,31 @@
 module Reacthome.Daemon.App where
 
-import Control.Concurrent (threadDelay, yield)
-import Control.Concurrent.Async (concurrently_, race_)
+import Control.Concurrent (threadDelay)
+import Control.Concurrent.Async (race_)
+import Control.Exception (finally, handle)
 import Control.Monad (forever, void)
 import Data.ByteString (toStrict)
 import Data.Text.Encoding
 import Data.UUID (UUID, toByteString)
+import Reacthome.Relay.Error (RelayError (..), logError)
 import Reacthome.Relay.Message (RelayMessage (..), serializeMessage)
 import Reacthome.Relay.Stat (RelayHits (..), RelayStat (..))
 import Web.WebSockets.Client (WebSocketClientApplication)
 import Web.WebSockets.Connection (WebSocketConnection (..))
-import Prelude hiding (show)
+import Web.WebSockets.Error (WebSocketError)
 
 messagesPerChunk :: Int
 messagesPerChunk = 512
 
 application :: (?stat :: RelayStat) => UUID -> WebSocketClientApplication
 application peer connection = do
-    let from = toStrict $ toByteString peer
+    let
+        from = toStrict $ toByteString peer
+
+        onError = logError . WebSocketError from
+
+        wrap = handle @WebSocketError onError
+
         chunk =
             replicate messagesPerChunk $
                 serializeMessage
@@ -27,13 +35,19 @@ application peer connection = do
                         , content = encodeUtf8 "Hello Reacthome Relay ;)"
                         }
 
-    race_
+        runTx = forever do
+            connection.sendMessages chunk
+            ?stat.tx.hit messagesPerChunk
+            threadDelay 10_000
+
+        runRx = forever do
+            void connection.receiveMessage
+            ?stat.rx.hit 1
+
+    finally
         do
-            forever do
-                connection.sendMessages chunk
-                ?stat.tx.hit messagesPerChunk
-                threadDelay 10_000
+            race_
+                do wrap runTx
+                do wrap runRx
         do
-            forever do
-                void connection.receiveMessage
-                ?stat.rx.hit 1
+            print $ "Peer " <> show peer <> " Disconnected"
