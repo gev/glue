@@ -53,7 +53,7 @@ makeRelayServer dispatcher = do
             deadlineRef <- newIORef =<< getTime Monotonic
             let
                 flush messages = do
-                    -- writeIORef deadlineRef =<< getTime Monotonic
+                    writeIORef deadlineRef =<< getTime Monotonic
                     writeIORef buffer []
                     connection.sendMessages $ reverse messages
 
