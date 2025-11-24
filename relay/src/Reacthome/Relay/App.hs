@@ -1,11 +1,10 @@
 module Reacthome.Relay.App where
 
-import Control.Exception (throwIO)
 import Control.Monad (when)
 import Data.Text (length, tail)
 import Data.Text.Encoding (decodeUtf8)
 import Data.UUID (fromText)
-import Reacthome.Relay.Error (RelayError (..))
+import Reacthome.Relay.Error (RelayError (..), logError)
 import Reacthome.Relay.Server
 import Web.WebSockets.PendingConnection (WebSocketPendingConnection (..))
 import Web.WebSockets.Server (WebSocketServerApplication)
@@ -18,4 +17,4 @@ application server pending = do
         let origin = tail path
         case fromText origin of
             Just peer -> server.accept pending peer
-            Nothing -> throwIO $ InvalidUUID origin
+            Nothing -> logError $ InvalidUUID origin
