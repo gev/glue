@@ -12,7 +12,7 @@ import Web.WebSockets.Client (runWebSocketClient)
 import Prelude hiding (last)
 
 concurrency :: Int
-concurrency = 5
+concurrency = 50
 
 main :: IO ()
 main = do

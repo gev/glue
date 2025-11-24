@@ -1,6 +1,7 @@
 module Reacthome.Daemon.App where
 
-import Control.Concurrent.Async (concurrently_)
+import Control.Concurrent (threadDelay, yield)
+import Control.Concurrent.Async (concurrently_, race_)
 import Control.Monad (forever, void)
 import Data.ByteString (toStrict)
 import Data.Text.Encoding
@@ -25,11 +26,13 @@ application peer connection = do
                         , from = from
                         , content = encodeUtf8 "Hello Reacthome Relay ;)"
                         }
-    concurrently_
+
+    race_
         do
             forever do
                 connection.sendMessages chunk
                 ?stat.tx.hit messagesPerChunk
+                threadDelay 10_000
         do
             forever do
                 void connection.receiveMessage
