@@ -1,5 +1,5 @@
 import Control.Concurrent (threadDelay)
-import Control.Concurrent.Async (concurrently_, mapConcurrently_)
+import Control.Concurrent.Async (mapConcurrently_, race_)
 import Control.Monad (forever, replicateM, when)
 import Data.IORef (newIORef, readIORef, writeIORef)
 import Data.Text (unpack)
@@ -41,24 +41,24 @@ main = do
 
         fmt = unpack . prettyI (Just '.')
 
-    concurrently_
-        do
-            mapConcurrently_ run stats
-        do
-            forever do
-                t0 <- readIORef time
-                t1 <- getTime Monotonic
-                writeIORef time t1
+        showStat = forever do
+            t0 <- readIORef time
+            t1 <- getTime Monotonic
+            writeIORef time t1
 
-                (rx0, tx0) <- readIORef total
-                (rx1, tx1) <- summarizeStat
-                writeIORef total (rx1, tx1)
+            (rx0, tx0) <- readIORef total
+            (rx1, tx1) <- summarizeStat
+            writeIORef total (rx1, tx1)
 
-                let !dt = fromInteger $ toNanoSecs (diffTimeSpec t1 t0) `div` 1_000_000_000
+            let !dt = fromInteger $ toNanoSecs (diffTimeSpec t1 t0) `div` 1_000_000_000
 
-                when (dt > 0) do
-                    putStrLn "<->"
-                    putStrLn $ "Tx: " <> rps tx1 tx0 dt
-                    putStrLn $ "Rx: " <> rps rx1 rx0 dt
+            when (dt > 0) do
+                putStrLn "<->"
+                putStrLn $ "Tx: " <> rps tx1 tx0 dt
+                putStrLn $ "Rx: " <> rps rx1 rx0 dt
 
-                threadDelay 1_000_000
+            threadDelay 1_000_000
+
+    race_
+        do mapConcurrently_ run stats
+        showStat
