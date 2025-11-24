@@ -1,16 +1,16 @@
 module Reacthome.Relay.Server where
 
-import Control.Concurrent (yield)
-import Control.Concurrent.Async (concurrently_)
+import Control.Concurrent (forkIO, yield)
+import Control.Concurrent.Async (AsyncCancelled (AsyncCancelled), concurrently_, race_)
 import Control.Concurrent.Chan.Unagi.NoBlocking (readChan)
-import Control.Exception (catch)
-import Control.Monad (forever, unless, when)
+import Control.Exception (SomeException, catch, finally, handle, throwIO)
+import Control.Monad (forever, unless, void, when)
 import Data.ByteString (toStrict)
 import Data.IORef (modifyIORef', newIORef, readIORef, writeIORef)
 import Data.UUID (UUID, toByteString)
 import GHC.Exts
+import Reacthome.Relay.Dispatcher (RelayDispatcher (..))
 import Reacthome.Relay.Error (RelayError (..), logError)
-import Reacthome.Relay.Relay (Relay (..))
 import System.Clock (diffTimeSpec, getTime, toNanoSecs)
 import System.Clock.Seconds (Clock (..))
 import Web.WebSockets.Connection (WebSocketConnection (..))
@@ -24,52 +24,57 @@ newtype RelayServer = RelayServer
 
 type Peer = UUID
 
-makeRelayServer :: Relay -> RelayServer
-makeRelayServer relay = do
+makeRelayServer :: RelayDispatcher -> RelayServer
+makeRelayServer dispatcher = do
     let
         accept pending peer = do
-            let from = toStrict $ toByteString peer
-            catch @WebSocketError
+            let
+                from = toStrict $ toByteString peer
+
+                onError = logError . WebSocketError from
+
+                wrap = handle @WebSocketError onError
+
+            source <- dispatcher.getSource from
+            connection <- pending.accept
+            print $ "Peer connected " <> show peer
+            finally
                 do
-                    connection <- pending.accept
-                    source <- relay.getSource from
-                    concurrently_
-                        do rxRun connection
-                        do txRun connection source
-                do logError . WebSocketError from
+                    race_
+                        do wrap $ rxRun connection
+                        do wrap $ txRun connection source
+                do
+                    print $ "Peer disconnected " <> show peer
 
         rxRun connection = forever do
-            raw <- connection.receiveMessage
-            relay.sendMessage raw
+            dispatcher.sendMessage =<< connection.receiveMessage
 
         txRun connection source = do
             buffer <- newIORef []
             deadlineRef <- newIORef =<< getTime Monotonic
             let
-                loop = do
-                    now <- getTime Monotonic
+                flush messages = do
+                    writeIORef deadlineRef =<< getTime Monotonic
+                    writeIORef buffer []
+                    connection.sendMessages $ reverse messages
+
+                checkDeadline now = do
                     deadline <- readIORef deadlineRef
-                    when (toNanoSecs (diffTimeSpec now deadline) >= flushIntervalNs) do
-                        flush
-                        writeIORef deadlineRef =<< getTime Monotonic
+                    let timeout = toNanoSecs (diffTimeSpec now deadline)
+                    when (timeout >= flushIntervalNs) do
+                        messages <- readIORef buffer
+                        unless (null messages) do
+                            flush messages
 
-                    msg <- readChan yield source
-
-                    modifyIORef' buffer (msg :)
+                enqueue message = do
+                    modifyIORef' buffer (message :)
                     len <- length <$> readIORef buffer
                     when (len >= batchSize) do
-                        flush
-                        newDeadline <- getTime Monotonic
-                        writeIORef deadlineRef newDeadline
-                    loop
+                        flush =<< readIORef buffer
 
-                flush = do
-                    msgs <- reverse <$> readIORef buffer
-                    unless (null msgs) do
-                        writeIORef buffer []
-                        connection.sendMessages msgs
-
-            loop
+            forever do
+                checkDeadline =<< getTime Monotonic
+                enqueue =<< readChan yield source
 
     RelayServer{..}
 

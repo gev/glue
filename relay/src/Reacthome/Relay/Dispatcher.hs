@@ -1,4 +1,4 @@
-module Reacthome.Relay.Relay where
+module Reacthome.Relay.Dispatcher where
 
 import Control.Concurrent.Chan.Unagi.Bounded qualified as B
 import Control.Concurrent.Chan.Unagi.NoBlocking (OutChan, dupChan, newChan, writeChan)
@@ -7,20 +7,21 @@ import Control.Monad (forever, void)
 import Data.HashMap.Strict (empty, insert, lookup)
 import Data.IORef (newIORef, readIORef)
 import GHC.IORef (atomicModifyIORef'_)
+import Reacthome.Relay (LazyRaw, Uid)
 import Reacthome.Relay.Error (RelayError (..), logError)
-import Reacthome.Relay.Message (LazyRaw, Uid, getMessageDestination)
+import Reacthome.Relay.Message (getMessageDestination)
 import Prelude hiding (lookup, show)
 
-data Relay = Relay
+data RelayDispatcher = RelayDispatcher
     { sendMessage :: LazyRaw -> IO ()
     , getSource :: Uid -> IO Source
-    , dispatch :: IO ()
+    , run :: IO ()
     }
 
 type Source = OutChan LazyRaw
 
-makeRelay :: Int -> IO Relay
-makeRelay bound = do
+makeRelayDispatcher :: Int -> IO RelayDispatcher
+makeRelayDispatcher bound = do
     (inChan, outChan) <- B.newChan bound
     sources <- newIORef empty
 
@@ -42,7 +43,7 @@ makeRelay bound = do
                 Nothing -> throwIO $ NoPeersFound uid
                 Just source -> pure source
 
-        dispatch = forever do
+        run = forever do
             catch @RelayError
                 do
                     message <- B.readChan outChan
@@ -51,4 +52,4 @@ makeRelay bound = do
                     writeChan source message
                 logError
 
-    pure Relay{..}
+    pure RelayDispatcher{..}

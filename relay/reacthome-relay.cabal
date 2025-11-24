@@ -33,11 +33,12 @@ library
 
   -- cabal-gild: discover src
   exposed-modules:
+    Reacthome.Relay
     Reacthome.Relay.App
     Reacthome.Relay.Client
+    Reacthome.Relay.Dispatcher
     Reacthome.Relay.Error
     Reacthome.Relay.Message
-    Reacthome.Relay.Relay
     Reacthome.Relay.Server
     Reacthome.Relay.Stat
 
