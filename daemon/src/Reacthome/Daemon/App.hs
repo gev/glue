@@ -1,6 +1,5 @@
 module Reacthome.Daemon.App where
 
-import Control.Concurrent (threadDelay)
 import Control.Concurrent.Async (race_)
 import Control.Exception (finally, handle)
 import Control.Monad (forever, void)
