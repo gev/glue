@@ -1,10 +1,10 @@
 module Reacthome.Relay.Server where
 
-import Control.Concurrent (forkIO, yield)
-import Control.Concurrent.Async (AsyncCancelled (AsyncCancelled), concurrently_, race_)
+import Control.Concurrent (yield)
+import Control.Concurrent.Async (race_)
 import Control.Concurrent.Chan.Unagi.NoBlocking (readChan)
-import Control.Exception (SomeException, catch, finally, handle, throwIO)
-import Control.Monad (forever, unless, void, when)
+import Control.Exception (finally, handle)
+import Control.Monad (forever, unless, when)
 import Data.ByteString (toStrict)
 import Data.IORef (modifyIORef', newIORef, readIORef, writeIORef)
 import Data.UUID (UUID, toByteString)
