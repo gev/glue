@@ -1,6 +1,6 @@
 module Reacthome.Relay.Stat where
 
-import Data.IORef (modifyIORef, modifyIORef', newIORef, readIORef)
+import Data.IORef (modifyIORef', newIORef, readIORef)
 import Prelude hiding (length, splitAt, tail)
 
 data RelayHits = RelayHits
