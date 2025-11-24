@@ -1,6 +1,5 @@
 module Reacthome.Relay.Message where
 
-import Data.ByteString qualified as S
 import Data.ByteString.Lazy qualified as L
 import Data.Int (Int64)
 import Reacthome.Relay (LazyRaw, StrictRaw, Uid)
