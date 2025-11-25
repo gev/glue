@@ -1,9 +1,8 @@
 module Reacthome.Relay.Dispatcher where
 
-import Control.Concurrent.Chan.Unagi (OutChan, dupChan, newChan, writeChan)
-import Control.Concurrent.Chan.Unagi.Bounded qualified as B
+import Control.Concurrent.Chan.Unagi.Bounded (OutChan, dupChan, newChan, writeChan)
 import Control.Exception (catch, throwIO)
-import Control.Monad (forever, void)
+import Control.Monad (void)
 import Data.HashMap.Strict (empty, insert, lookup)
 import Data.IORef (newIORef, readIORef)
 import GHC.IORef (atomicModifyIORef'_)
@@ -15,24 +14,20 @@ import Prelude hiding (lookup, show)
 data RelayDispatcher = RelayDispatcher
     { sendMessage :: LazyRaw -> IO ()
     , getSource :: Uid -> IO Source
-    , run :: IO ()
     }
 
 type Source = OutChan LazyRaw
 
-makeRelayDispatcher :: Int -> IO RelayDispatcher
-makeRelayDispatcher bound = do
-    (inChan, outChan) <- B.newChan bound
+makeRelayDispatcher :: IO RelayDispatcher
+makeRelayDispatcher = do
     sources <- newIORef empty
 
     let
-        sendMessage = B.writeChan inChan
-
         getSource uid = do
             sources' <- readIORef sources
             case lookup uid sources' of
                 Nothing -> do
-                    (source, _) <- newChan
+                    (source, _) <- newChan bound
                     void $ atomicModifyIORef'_ sources $ insert uid source
                     dupChan source
                 Just source -> dupChan source
@@ -43,13 +38,15 @@ makeRelayDispatcher bound = do
                 Nothing -> throwIO $ NoPeersFound uid
                 Just source -> pure source
 
-        run = forever do
+        sendMessage message =
             catch @RelayError
                 do
-                    message <- B.readChan outChan
                     let destination = getMessageDestination message
                     source <- getSink destination
                     writeChan source message
                 logError
 
     pure RelayDispatcher{..}
+
+bound :: Int
+bound = 8_000

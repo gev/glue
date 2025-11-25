@@ -1,7 +1,7 @@
 module Reacthome.Relay.Server where
 
 import Control.Concurrent.Async (race_)
-import Control.Concurrent.Chan.Unagi (readChan)
+import Control.Concurrent.Chan.Unagi.Bounded (readChan)
 import Control.Exception (finally, handle)
 import Control.Monad (forever, unless, when)
 import Data.ByteString (toStrict)
@@ -78,7 +78,7 @@ makeRelayServer dispatcher = do
     RelayServer{..}
 
 batchSize :: Int
-batchSize = 512
+batchSize = 40
 
 flushIntervalNs :: Integer
 flushIntervalNs = 300_000
