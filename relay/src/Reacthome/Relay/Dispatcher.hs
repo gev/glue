@@ -1,7 +1,6 @@
 module Reacthome.Relay.Dispatcher where
 
-import Control.Concurrent.STM (atomically, dupTChan, writeTChan)
-import Control.Concurrent.STM.TChan (TChan, newTChanIO)
+import Control.Concurrent.Chan.Unagi.Bounded (OutChan, dupChan, newChan, writeChan)
 import Control.Exception (catch, throwIO)
 import Control.Monad (void)
 import Data.HashMap.Strict (empty, insert, lookup)
@@ -17,7 +16,7 @@ data RelayDispatcher = RelayDispatcher
     , getSource :: Uid -> IO Source
     }
 
-type Source = TChan LazyRaw
+type Source = OutChan LazyRaw
 
 makeRelayDispatcher :: IO RelayDispatcher
 makeRelayDispatcher = do
@@ -28,10 +27,10 @@ makeRelayDispatcher = do
             sources' <- readIORef sources
             case lookup uid sources' of
                 Nothing -> do
-                    source <- newTChanIO
+                    (source, _) <- newChan bound
                     void $ atomicModifyIORef'_ sources $ insert uid source
-                    atomically $ dupTChan source
-                Just source -> atomically $ dupTChan source
+                    dupChan source
+                Just source -> dupChan source
 
         getSink uid = do
             sources' <- readIORef sources
@@ -44,7 +43,7 @@ makeRelayDispatcher = do
                 do
                     let destination = getMessageDestination message
                     source <- getSink destination
-                    atomically $ writeTChan source message
+                    writeChan source message
                 logError
 
     pure RelayDispatcher{..}

@@ -1,8 +1,7 @@
 module Reacthome.Relay.Server where
 
 import Control.Concurrent.Async (race_)
-import Control.Concurrent.STM (atomically)
-import Control.Concurrent.STM.TChan (readTChan)
+import Control.Concurrent.Chan.Unagi.Bounded (readChan)
 import Control.Exception (finally, handle)
 import Control.Monad (forever, unless, when)
 import Data.ByteString (toStrict)
@@ -74,7 +73,7 @@ makeRelayServer dispatcher = do
 
             forever do
                 checkDeadline =<< getTime Monotonic
-                enqueue =<< atomically (readTChan source)
+                enqueue =<< readChan source
 
     RelayServer{..}
 
