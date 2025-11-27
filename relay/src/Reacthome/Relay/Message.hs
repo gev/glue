@@ -1,9 +1,8 @@
 module Reacthome.Relay.Message where
 
-import Data.ByteString.Lazy qualified as L
-import Data.Int (Int64)
-import Reacthome.Relay (LazyRaw, StrictRaw, Uid)
-import Prelude hiding (length, splitAt, tail, take)
+import Data.ByteString (concat, length, take)
+import Reacthome.Relay (StrictRaw, Uid)
+import Prelude hiding (concat, length, splitAt, tail, take)
 
 data RelayMessage = RelayMessage
     { to :: !Uid
@@ -11,23 +10,22 @@ data RelayMessage = RelayMessage
     , content :: !StrictRaw
     }
 
-serializeMessage :: RelayMessage -> LazyRaw
+serializeMessage :: RelayMessage -> StrictRaw
 serializeMessage message =
-    L.fromChunks
+    concat
         [ message.to
         , message.from
         , message.content
         ]
-{-# INLINEABLE serializeMessage #-}
+{-# INLINE serializeMessage #-}
 
-getMessageDestination :: LazyRaw -> Uid
-getMessageDestination :: LazyRaw -> Uid =
-    L.toStrict . L.take 16
-{-# INLINEABLE getMessageDestination #-}
+getMessageDestination :: StrictRaw -> Uid
+getMessageDestination = take 16
+{-# INLINE getMessageDestination #-}
 
-isMessageValid :: LazyRaw -> Bool
-isMessageValid = (> headerLength) . L.length
-{-# INLINEABLE isMessageValid #-}
+isMessageValid :: StrictRaw -> Bool
+isMessageValid = (> headerLength) . length
+{-# INLINE isMessageValid #-}
 
-headerLength :: Int64
+headerLength :: Int
 headerLength = 32

@@ -1,52 +1,65 @@
 module Reacthome.Relay.Dispatcher where
 
-import Control.Concurrent.Chan.Unagi.Bounded (OutChan, dupChan, newChan, writeChan)
-import Control.Exception (catch, throwIO)
-import Control.Monad (void)
-import Data.HashMap.Strict (empty, insert, lookup)
-import Data.IORef (newIORef, readIORef)
-import GHC.IORef (atomicModifyIORef'_)
-import Reacthome.Relay (LazyRaw, Uid)
-import Reacthome.Relay.Error (RelayError (..), logError)
-import Reacthome.Relay.Message (getMessageDestination)
+import Control.Concurrent (modifyMVar, modifyMVar_, newMVar, readMVar)
+import Control.Concurrent.Chan.Unagi.Bounded (dupChan, newChan, readChan, writeChan)
+import Data.HashMap.Strict (delete, empty, insert, lookup)
+import Data.Traversable (for)
+import Reacthome.Relay (StrictRaw, Uid)
 import Prelude hiding (lookup, show)
 
 data RelayDispatcher = RelayDispatcher
-    { sendMessage :: LazyRaw -> IO ()
-    , getSource :: Uid -> IO Source
+    { getSource :: Uid -> IO RelaySource
+    , freeSource :: Uid -> IO ()
+    , getSink :: Uid -> IO (Maybe RelaySink)
     }
 
-type Source = OutChan LazyRaw
+newtype RelaySource = RelaySource
+    { receiveMessage :: IO StrictRaw
+    }
+
+newtype RelaySink = RelaySink
+    { sendMessage :: StrictRaw -> IO ()
+    }
 
 makeRelayDispatcher :: IO RelayDispatcher
 makeRelayDispatcher = do
-    sources <- newIORef empty
+    sources <- newMVar empty
 
     let
         getSource uid = do
-            sources' <- readIORef sources
+            inChan <- modifyMVar sources \sources' -> do
+                case lookup uid sources' of
+                    Nothing -> do
+                        (inChan, _) <- newChan bound
+                        pure (insert uid (inChan, 0 :: Int) sources', inChan)
+                    Just (inChan, count) ->
+                        pure (insert uid (inChan, count + 1) sources', inChan)
+            source <- dupChan inChan
+            let receiveMessage = readChan source
+                {-# INLINE receiveMessage #-}
+            pure
+                RelaySource{..}
+        {-# INLINE getSource #-}
+
+        freeSource uid = modifyMVar_ sources \sources' -> pure do
             case lookup uid sources' of
-                Nothing -> do
-                    (source, _) <- newChan bound
-                    void $ atomicModifyIORef'_ sources $ insert uid source
-                    dupChan source
-                Just source -> dupChan source
+                Nothing -> sources'
+                Just (inChan, count) -> do
+                    if count == 0
+                        then delete uid sources'
+                        else insert uid (inChan, count - 1) sources'
+        {-# INLINE freeSource #-}
 
         getSink uid = do
-            sources' <- readIORef sources
-            case lookup uid sources' of
-                Nothing -> throwIO $ NoPeersFound uid
-                Just source -> pure source
-
-        sendMessage message =
-            catch @RelayError
-                do
-                    let destination = getMessageDestination message
-                    source <- getSink destination
-                    writeChan source message
-                logError
+            sources' <- readMVar sources
+            for (lookup uid sources') \(sink, _) ->
+                let sendMessage = writeChan sink
+                    {-# INLINE sendMessage #-}
+                 in pure
+                        RelaySink{..}
+        {-# INLINE getSink #-}
 
     pure RelayDispatcher{..}
 
 bound :: Int
-bound = 8_000
+bound = 128

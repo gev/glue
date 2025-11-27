@@ -1,17 +1,17 @@
 module Reacthome.Relay.Server where
 
+import Control.Concurrent (threadDelay)
 import Control.Concurrent.Async (race_)
-import Control.Concurrent.Chan.Unagi.Bounded (readChan)
 import Control.Exception (finally, handle)
-import Control.Monad (forever, unless, when)
+import Control.Monad (forever, unless)
 import Data.ByteString (toStrict)
-import Data.IORef (modifyIORef', newIORef, readIORef, writeIORef)
+import Data.IORef (atomicModifyIORef', newIORef)
 import Data.UUID (UUID, toByteString)
 import GHC.Exts
-import Reacthome.Relay.Dispatcher (RelayDispatcher (..))
+import GHC.IORef (atomicModifyIORef'_)
+import Reacthome.Relay.Dispatcher (RelayDispatcher (..), RelaySink (..), RelaySource (..))
 import Reacthome.Relay.Error (RelayError (..), logError)
-import System.Clock (diffTimeSpec, getTime, toNanoSecs)
-import System.Clock.Seconds (Clock (..))
+import Reacthome.Relay.Message (getMessageDestination)
 import Web.WebSockets.Connection (WebSocketConnection (..))
 import Web.WebSockets.Error (WebSocketError)
 import Web.WebSockets.PendingConnection (WebSocketPendingConnection (..))
@@ -28,57 +28,52 @@ makeRelayServer dispatcher = do
     let
         accept pending peer = do
             let
+                runRx connection = wrap $ forever do
+                    message <- connection.receiveMessage
+                    let destination = getMessageDestination message
+                    found <- dispatcher.getSink destination
+                    case found of
+                        Just sink -> sink.sendMessage message
+                        Nothing -> logError $ NoPeersFound destination
+
+                runTx connection source = do
+                    buffer <- newIORef []
+                    let
+                        collectMessages = forever do
+                            message <- source.receiveMessage
+                            atomicModifyIORef'_ buffer (message :)
+
+                        transmitMessages = wrap $ forever do
+                            messages <- atomicModifyIORef' buffer ([],)
+                            unless (null messages) do
+                                connection.sendMessages $ reverse messages
+                            threadDelay flushIntervalUs
+
+                    race_
+                        collectMessages
+                        transmitMessages
+
                 from = toStrict $ toByteString peer
 
                 onError = logError . WebSocketError from
-
                 wrap = handle @WebSocketError onError
 
-            source <- dispatcher.getSource from
             connection <- pending.accept
             print $ "Peer connected " <> show peer
+            source <- dispatcher.getSource from
             finally
                 do
                     race_
-                        do wrap $ runRx connection
-                        do wrap $ runTx connection source
+                        do runRx connection
+                        do runTx connection source
                 do
                     print $ "Peer disconnected " <> show peer
-
-        runRx connection = forever do
-            dispatcher.sendMessage =<< connection.receiveMessage
-
-        runTx connection source = do
-            buffer <- newIORef []
-            deadlineRef <- newIORef =<< getTime Monotonic
-            let
-                flush messages = do
-                    writeIORef deadlineRef =<< getTime Monotonic
-                    writeIORef buffer []
-                    connection.sendMessages $ reverse messages
-
-                checkDeadline now = do
-                    deadline <- readIORef deadlineRef
-                    let timeout = toNanoSecs (diffTimeSpec now deadline)
-                    when (timeout >= flushIntervalNs) do
-                        messages <- readIORef buffer
-                        unless (null messages) do
-                            flush messages
-
-                enqueue message = do
-                    modifyIORef' buffer (message :)
-                    messages <- readIORef buffer
-                    when (length messages >= batchSize) do
-                        flush messages
-
-            forever do
-                checkDeadline =<< getTime Monotonic
-                enqueue =<< readChan source
+                    dispatcher.freeSource from
 
     RelayServer{..}
 
 batchSize :: Int
-batchSize = 40
+batchSize = 64
 
-flushIntervalNs :: Integer
-flushIntervalNs = 300_000
+flushIntervalUs :: Int
+flushIntervalUs = 128

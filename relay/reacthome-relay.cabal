@@ -48,6 +48,7 @@ library
     clock,
     hashable,
     list-t,
+    split,
     stm,
     stm-containers,
     text,
