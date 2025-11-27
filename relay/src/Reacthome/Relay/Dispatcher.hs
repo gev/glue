@@ -4,7 +4,7 @@ import Control.Concurrent (modifyMVar, modifyMVar_, newMVar, readMVar)
 import Control.Concurrent.Chan.Unagi.Bounded (dupChan, newChan, readChan, writeChan)
 import Data.HashMap.Strict (delete, empty, insert, lookup)
 import Data.Traversable (for)
-import Reacthome.Relay (StrictRaw, Uid)
+import Reacthome.Relay (LazyRaw, Uid)
 import Prelude hiding (lookup, show)
 
 data RelayDispatcher = RelayDispatcher
@@ -14,11 +14,11 @@ data RelayDispatcher = RelayDispatcher
     }
 
 newtype RelaySource = RelaySource
-    { receiveMessage :: IO StrictRaw
+    { receiveMessage :: IO LazyRaw
     }
 
 newtype RelaySink = RelaySink
-    { sendMessage :: StrictRaw -> IO ()
+    { sendMessage :: LazyRaw -> IO ()
     }
 
 makeRelayDispatcher :: IO RelayDispatcher
@@ -35,11 +35,10 @@ makeRelayDispatcher = do
                     Just (inChan, count) ->
                         pure (insert uid (inChan, count + 1) sources', inChan)
             source <- dupChan inChan
-            let receiveMessage = readChan source
-                {-# INLINE receiveMessage #-}
             pure
-                RelaySource{..}
-        {-# INLINE getSource #-}
+                RelaySource
+                    { receiveMessage = readChan source
+                    }
 
         freeSource uid = modifyMVar_ sources \sources' -> pure do
             case lookup uid sources' of
@@ -48,16 +47,14 @@ makeRelayDispatcher = do
                     if count == 0
                         then delete uid sources'
                         else insert uid (inChan, count - 1) sources'
-        {-# INLINE freeSource #-}
 
         getSink uid = do
             sources' <- readMVar sources
             for (lookup uid sources') \(sink, _) ->
-                let sendMessage = writeChan sink
-                    {-# INLINE sendMessage #-}
-                 in pure
-                        RelaySink{..}
-        {-# INLINE getSink #-}
+                pure
+                    RelaySink
+                        { sendMessage = writeChan sink
+                        }
 
     pure RelayDispatcher{..}
 

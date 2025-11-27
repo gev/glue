@@ -46,6 +46,7 @@ library
     async,
     bytestring,
     clock,
+    containers,
     hashable,
     list-t,
     split,

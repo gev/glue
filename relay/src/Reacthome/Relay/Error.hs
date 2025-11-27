@@ -3,12 +3,13 @@ module Reacthome.Relay.Error where
 import Control.Exception (Exception)
 import Data.Text (Text)
 import Debug.Trace (traceIO)
-import Reacthome.Relay (Uid)
+import Reacthome.Relay (StrictRaw, Uid)
 import Web.WebSockets.Error (WebSocketError)
 import Prelude hiding (error)
 
 data RelayError
     = InvalidUUID Text
+    | InvalidDestination StrictRaw
     | NoPeersFound Uid
     | WebSocketError Uid WebSocketError
     | InvalidMessageLength
@@ -30,6 +31,8 @@ logError err =
                     <> show minimumLength
             InvalidUUID bytes ->
                 "Invalid UUID in message: " <> show bytes
+            InvalidDestination uid ->
+                "Invalid UUID in message: " <> show uid
             NoPeersFound peer ->
                 "No relays found for UUID: " <> show peer
             WebSocketError peer e ->

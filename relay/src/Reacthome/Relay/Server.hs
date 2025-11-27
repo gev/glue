@@ -5,13 +5,16 @@ import Control.Concurrent.Async (race_)
 import Control.Exception (finally, handle)
 import Control.Monad (forever, unless)
 import Data.ByteString (toStrict)
+import Data.Foldable (traverse_)
 import Data.IORef (atomicModifyIORef', newIORef)
+import Data.List.Split (chunksOf)
+import Data.Sequence (empty, (|>))
 import Data.UUID (UUID, toByteString)
 import GHC.Exts
 import GHC.IORef (atomicModifyIORef'_)
 import Reacthome.Relay.Dispatcher (RelayDispatcher (..), RelaySink (..), RelaySource (..))
 import Reacthome.Relay.Error (RelayError (..), logError)
-import Reacthome.Relay.Message (getMessageDestination)
+import Reacthome.Relay.Message (getMessageDestination, isMessageDestinationValid)
 import Web.WebSockets.Connection (WebSocketConnection (..))
 import Web.WebSockets.Error (WebSocketError)
 import Web.WebSockets.PendingConnection (WebSocketPendingConnection (..))
@@ -29,24 +32,28 @@ makeRelayServer dispatcher = do
         accept pending peer = do
             let
                 runRx connection = wrap $ forever do
-                    message <- connection.receiveMessage
+                    !message <- connection.receiveMessage
                     let destination = getMessageDestination message
-                    found <- dispatcher.getSink destination
-                    case found of
-                        Just sink -> sink.sendMessage message
-                        Nothing -> logError $ NoPeersFound destination
+                    if isMessageDestinationValid destination
+                        then do
+                            !found <- dispatcher.getSink destination
+                            case found of
+                                Just !sink -> sink.sendMessage message
+                                Nothing -> logError $ NoPeersFound destination
+                        else logError $ InvalidDestination destination
 
                 runTx connection source = do
-                    buffer <- newIORef []
+                    buffer <- newIORef empty
                     let
                         collectMessages = forever do
-                            message <- source.receiveMessage
-                            atomicModifyIORef'_ buffer (message :)
+                            !message <- source.receiveMessage
+                            atomicModifyIORef'_ buffer (|> message)
 
                         transmitMessages = wrap $ forever do
-                            messages <- atomicModifyIORef' buffer ([],)
+                            !messages <- atomicModifyIORef' buffer (empty,)
                             unless (null messages) do
-                                connection.sendMessages $ reverse messages
+                                let !chunks = chunksOf batchSize $ toList messages
+                                traverse_ connection.sendMessages chunks
                             threadDelay flushIntervalUs
 
                     race_
@@ -59,7 +66,7 @@ makeRelayServer dispatcher = do
                 wrap = handle @WebSocketError onError
 
             connection <- pending.accept
-            print $ "Peer connected " <> show peer
+            -- print $ "Peer connected " <> show peer
             source <- dispatcher.getSource from
             finally
                 do
@@ -67,13 +74,13 @@ makeRelayServer dispatcher = do
                         do runRx connection
                         do runTx connection source
                 do
-                    print $ "Peer disconnected " <> show peer
+                    -- print $ "Peer disconnected " <> show peer
                     dispatcher.freeSource from
 
     RelayServer{..}
 
 batchSize :: Int
-batchSize = 64
+batchSize = 40
 
 flushIntervalUs :: Int
-flushIntervalUs = 128
+flushIntervalUs = 100
