@@ -44,6 +44,8 @@ application peer connection = do
             void connection.receiveMessage
             ?stat.rx.hit 1
 
+    threadDelay 1_000_000
+
     finally
         do
             race_
