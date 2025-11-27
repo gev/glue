@@ -15,7 +15,7 @@ import Web.WebSockets.Client (runWebSocketClient)
 import Prelude hiding (last)
 
 concurrency :: Int
-concurrency = 50_000
+concurrency = 16_000
 
 main :: IO ()
 main = do
@@ -38,7 +38,7 @@ main = do
                                 let ?stat = stat
                                 peer <- nextRandom
                                 let path = "/" <> show peer
-                                putStrLn $ "Connect to Reacthome Relay on " <> host <> ":" <> show port <> path
+                                -- putStrLn $ "Connect to Reacthome Relay on " <> host <> ":" <> show port <> path
                                 runWebSocketClient host port path $ application peer
                             print
                     do

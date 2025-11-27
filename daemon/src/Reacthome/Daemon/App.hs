@@ -15,7 +15,7 @@ import Web.WebSockets.Connection (WebSocketConnection (..))
 import Web.WebSockets.Error (WebSocketError)
 
 messagesPerChunk :: Int
-messagesPerChunk = 1
+messagesPerChunk = 100
 
 application :: (?stat :: RelayStat) => UUID -> WebSocketClientApplication
 application peer connection = do
