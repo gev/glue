@@ -1,6 +1,8 @@
-import Control.Concurrent (threadDelay)
-import Control.Concurrent.Async (mapConcurrently_, race_)
-import Control.Monad (forever, replicateM, when)
+import Control.Concurrent (forkIO, threadDelay)
+import Control.Exception (catch)
+import Control.Exception.Base (SomeException)
+import Control.Monad (forever, replicateM, void, when)
+import Data.Foldable (traverse_)
 import Data.IORef (newIORef, readIORef, writeIORef)
 import Data.Text (unpack)
 import Data.Text.Format.Numbers (prettyI)
@@ -12,7 +14,7 @@ import Web.WebSockets.Client (runWebSocketClient)
 import Prelude hiding (last)
 
 concurrency :: Int
-concurrency = 100
+concurrency = 50_000
 
 main :: IO ()
 main = do
@@ -24,11 +26,16 @@ main = do
         host = "172.16.1.1"
 
         run stat = do
-            let ?stat = stat
-            peer <- nextRandom
-            let path = "/" <> show peer
-            putStrLn $ "Connect to Reacthome Relay on " <> host <> ":" <> show port <> path
-            runWebSocketClient host port path $ application peer
+            threadDelay 1_000
+            void $ forkIO do
+                catch @SomeException
+                    do
+                        let ?stat = stat
+                        peer <- nextRandom
+                        let path = "/" <> show peer
+                        putStrLn $ "Connect to Reacthome Relay on " <> host <> ":" <> show port <> path
+                        runWebSocketClient host port path $ application peer
+                    print
 
         summarize x = sum <$> traverse (hits . x) stats
 
@@ -59,6 +66,5 @@ main = do
 
             threadDelay 1_000_000
 
-    race_
-        do mapConcurrently_ run stats
-        showStat
+    void $ forkIO do traverse_ run stats
+    showStat

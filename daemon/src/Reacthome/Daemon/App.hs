@@ -1,5 +1,6 @@
 module Reacthome.Daemon.App where
 
+import Control.Concurrent (threadDelay)
 import Control.Concurrent.Async (race_)
 import Control.Exception (finally, handle)
 import Control.Monad (forever, void)
@@ -14,7 +15,7 @@ import Web.WebSockets.Connection (WebSocketConnection (..))
 import Web.WebSockets.Error (WebSocketError)
 
 messagesPerChunk :: Int
-messagesPerChunk = 512
+messagesPerChunk = 1
 
 application :: (?stat :: RelayStat) => UUID -> WebSocketClientApplication
 application peer connection = do
@@ -37,6 +38,7 @@ application peer connection = do
         runTx = forever do
             connection.sendMessages chunk
             ?stat.tx.hit messagesPerChunk
+            threadDelay 1_000_000
 
         runRx = forever do
             void connection.receiveMessage
