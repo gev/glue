@@ -1,9 +1,8 @@
 module Reacthome.Relay.Dispatcher where
 
+import Control.Concurrent (modifyMVar, modifyMVar_, newMVar, readMVar)
 import Control.Concurrent.Chan.Unagi.Bounded (dupChan, newChan, readChan, writeChan)
-import Control.Monad (void)
 import Data.HashMap.Strict (delete, empty, insert, lookup)
-import Data.IORef (atomicModifyIORef', newIORef, readIORef)
 import Data.Traversable (for)
 import Reacthome.Relay (LazyRaw, Uid)
 import Prelude hiding (lookup, show)
@@ -24,24 +23,24 @@ newtype RelaySink = RelaySink
 
 makeRelayDispatcher :: IO RelayDispatcher
 makeRelayDispatcher = do
-    sources <- newIORef empty
+    sources <- newMVar empty
 
     let
         getSource uid = do
-            (newInChan, _) <- newChan bound
-            actualInChan <- atomicModifyIORef' sources \sources' -> do
+            inChan <- modifyMVar sources \sources' -> do
                 case lookup uid sources' of
                     Nothing -> do
-                        (insert uid (newInChan, 0 :: Int) sources', newInChan)
-                    Just (existedInChan, count) ->
-                        (insert uid (existedInChan, count + 1) sources', existedInChan)
-            source <- dupChan actualInChan
+                        (inChan, _) <- newChan bound
+                        pure (insert uid (inChan, 0 :: Int) sources', inChan)
+                    Just (inChan, count) ->
+                        pure (insert uid (inChan, count + 1) sources', inChan)
+            source <- dupChan inChan
             pure
                 RelaySource
                     { receiveMessage = readChan source
                     }
 
-        freeSource uid = void $ atomicModifyIORef' sources \sources' -> pure do
+        freeSource uid = modifyMVar_ sources \sources' -> pure do
             case lookup uid sources' of
                 Nothing -> sources'
                 Just (inChan, count) -> do
@@ -50,7 +49,7 @@ makeRelayDispatcher = do
                         else insert uid (inChan, count - 1) sources'
 
         getSink uid = do
-            sources' <- readIORef sources
+            sources' <- readMVar sources
             for (lookup uid sources') \(sink, _) ->
                 pure
                     RelaySink
