@@ -65,17 +65,18 @@ makeRelayServer dispatcher = do
                 onError = logError . WebSocketError from
                 wrap = handle @WebSocketError onError
 
-            connection <- pending.accept
-            -- print $ "Peer connected " <> show peer
-            source <- dispatcher.getSource from
-            finally
-                do
-                    race_
-                        do runRx connection
-                        do runTx connection source
-                do
-                    -- print $ "Peer disconnected " <> show peer
-                    dispatcher.freeSource from
+            wrap do
+                connection <- pending.accept
+                -- print $ "Peer connected " <> show peer
+                source <- dispatcher.getSource from
+                finally
+                    do
+                        race_
+                            do runRx connection
+                            do runTx connection source
+                    do
+                        -- print $ "Peer disconnected " <> show peer
+                        dispatcher.freeSource from
 
     RelayServer{..}
 
