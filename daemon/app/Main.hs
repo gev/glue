@@ -28,7 +28,7 @@ main = do
         host = "172.16.1.1"
 
         run stat = do
-            threadDelay 1_000
+            threadDelay 10_000
             void $ forkIO do
                 finally
                     do
