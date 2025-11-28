@@ -22,6 +22,7 @@ library
     Util.Channel
     Util.MVar
     Util.SQLite
+    Util.Timer
 
   build-depends:
     aeson,
