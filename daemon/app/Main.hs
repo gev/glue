@@ -30,7 +30,7 @@ main = do
         host = "172.16.1.1"
 
         run (stat, i) = do
-            threadDelay $ 10_000 * i
+            -- threadDelay $ 100 * i
             finally
                 do
                     void $ atomicModifyIORef'_ connections (+ 1)

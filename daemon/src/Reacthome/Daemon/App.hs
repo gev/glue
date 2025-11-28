@@ -44,10 +44,10 @@ application peer connection = do
             void connection.receiveMessage
             ?stat.rx.hit 1
 
-    -- finally
-    --     do
-    --         race_
-    void . forkIO $ wrap runTx
+    -- -- finally
+    -- --     do
+    -- --         race_
+    -- void . forkIO $ wrap runTx
     wrap runRx
 
 -- do

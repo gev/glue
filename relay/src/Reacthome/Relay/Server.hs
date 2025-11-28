@@ -1,12 +1,12 @@
 module Reacthome.Relay.Server where
 
-import Control.Concurrent (threadDelay)
+import Control.Concurrent (newEmptyMVar, newMVar, readMVar, takeMVar, threadDelay, yield)
 import Control.Concurrent.Async (race_)
 import Control.Exception (finally, handle)
 import Control.Monad (forever, unless)
 import Data.ByteString (toStrict)
 import Data.Foldable (traverse_)
-import Data.IORef (atomicModifyIORef', newIORef)
+import Data.IORef (atomicModifyIORef', newIORef, readIORef)
 import Data.List.Split (chunksOf)
 import Data.Sequence (empty, (|>))
 import Data.UUID (UUID, toByteString)
@@ -42,7 +42,7 @@ makeRelayServer dispatcher = do
                                 Nothing -> logError $ NoPeersFound destination
                         else logError $ InvalidDestination destination
 
-                runTx connection source = do
+                runTx connection from source = do
                     buffer <- newIORef empty
                     let
                         collectMessages = forever do
@@ -50,11 +50,14 @@ makeRelayServer dispatcher = do
                             atomicModifyIORef'_ buffer (|> message)
 
                         transmitMessages = wrap $ forever do
-                            !messages <- atomicModifyIORef' buffer (empty,)
-                            unless (null messages) do
-                                let !chunks = chunksOf batchSize $ toList messages
-                                traverse_ connection.sendMessages chunks
-                            threadDelay flushIntervalUs
+                            !a <- dispatcher.getSink from
+                            maybe yield (const yield) a
+                    -- !messages <- readIORef buffer
+                    -- unless (null messages) do
+                    --     !actualMessages <- atomicModifyIORef' buffer (empty,)
+                    --     let !chunks = chunksOf batchSize $ toList actualMessages
+                    --     traverse_ connection.sendMessages chunks
+                    -- threadDelay flushIntervalUs
 
                     race_
                         collectMessages
@@ -68,15 +71,11 @@ makeRelayServer dispatcher = do
             wrap do
                 connection <- pending.accept
                 -- print $ "Peer connected " <> show peer
-                source <- dispatcher.getSource from
-                finally
-                    do
-                        race_
-                            do runRx connection
-                            do runTx connection source
-                    do
-                        -- print $ "Peer disconnected " <> show peer
-                        dispatcher.freeSource from
+                !source <- dispatcher.getSource from
+                race_
+                    do runRx connection
+                    do runTx connection from source
+                dispatcher.freeSource from
 
     RelayServer{..}
 
