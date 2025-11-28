@@ -13,6 +13,7 @@ import Reacthome.Daemon.App (application)
 import Reacthome.Relay.Stat (RelayHits (hits), RelayStat (..), makeRelayStat)
 import System.Clock (Clock (..), diffTimeSpec, getTime, toNanoSecs)
 import Web.WebSockets.Client (runWebSocketClient)
+import Web.WebSockets.Error (WebSocketError)
 import Prelude hiding (last)
 
 concurrency :: Int
@@ -33,7 +34,7 @@ main = do
             finally
                 do
                     void $ atomicModifyIORef'_ connections (+ 1)
-                    catch @SomeException
+                    catch @WebSocketError
                         do
                             let ?stat = stat
                             peer <- nextRandom
