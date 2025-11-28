@@ -12,8 +12,7 @@ makeTimer usInterval = do
 
     void . forkIO $ forever do
         modifyIORef' timer (+ 1)
-
-    threadDelay usInterval
+        threadDelay usInterval
 
     pure
         Timer
