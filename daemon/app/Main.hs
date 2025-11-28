@@ -1,4 +1,5 @@
-import Control.Concurrent (forkIO, threadDelay)
+import Control.Concurrent (forkIO, threadDelay, yield)
+import Control.Concurrent.Async (mapConcurrently_, race_)
 import Control.Exception (catch, finally)
 import Control.Exception.Base (SomeException)
 import Control.Monad (forever, replicateM, void, when)
@@ -27,22 +28,21 @@ main = do
         port = 3003
         host = "172.16.1.1"
 
-        run stat = do
-            threadDelay 10_000
-            void $ forkIO do
-                finally
-                    do
-                        void $ atomicModifyIORef'_ connections (+ 1)
-                        catch @SomeException
-                            do
-                                let ?stat = stat
-                                peer <- nextRandom
-                                let path = "/" <> show peer
-                                -- putStrLn $ "Connect to Reacthome Relay on " <> host <> ":" <> show port <> path
-                                runWebSocketClient host port path $ application peer
-                            print
-                    do
-                        void $ atomicModifyIORef'_ connections \n -> n - 1
+        run (stat, i) = do
+            threadDelay $ 10_000 * i
+            finally
+                do
+                    void $ atomicModifyIORef'_ connections (+ 1)
+                    catch @SomeException
+                        do
+                            let ?stat = stat
+                            peer <- nextRandom
+                            let path = "/" <> show peer
+                            -- putStrLn $ "Connect to Reacthome Relay on " <> host <> ":" <> show port <> path
+                            runWebSocketClient host port path $ application peer
+                        print
+                do
+                    void $ atomicModifyIORef'_ connections \n -> n - 1
 
         summarize x = sum <$> traverse (hits . x) stats
 
@@ -75,5 +75,6 @@ main = do
 
             threadDelay 1_000_000
 
-    void $ forkIO do traverse_ run stats
-    showStat
+    race_
+        do mapConcurrently_ run $ zip stats [1 ..]
+        showStat
