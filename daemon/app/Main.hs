@@ -12,6 +12,7 @@ import GHC.IORef (atomicModifyIORef'_)
 import Reacthome.Daemon.App (application)
 import Reacthome.Relay.Stat (RelayHits (hits), RelayStat (..), makeRelayStat)
 import System.Clock (Clock (..), diffTimeSpec, getTime, toNanoSecs)
+import Util.Timer (makeTimer)
 import Web.WebSockets.Client (runWebSocketClient)
 import Web.WebSockets.Error (WebSocketError)
 import Prelude hiding (last)
@@ -25,12 +26,14 @@ main = do
     total <- newIORef (0, 0)
     time <- newIORef =<< getTime Monotonic
     connections <- newIORef @Int 0
+    timer <- makeTimer 1_000_000
+    let ?timer = timer
     let
         port = 3003
         host = "172.16.1.1"
 
-        run (stat, i) = do
-            -- threadDelay $ 100 * i
+        run (stat, delay) = do
+            threadDelay delay
             finally
                 do
                     void $ atomicModifyIORef'_ connections (+ 1)
@@ -77,5 +80,5 @@ main = do
             threadDelay 1_000_000
 
     race_
-        do mapConcurrently_ run $ zip stats [1 ..]
+        do mapConcurrently_ run $ zip stats [10_000, 20_000 ..]
         showStat
