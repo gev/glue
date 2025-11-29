@@ -7,7 +7,6 @@ import Control.Monad (forever, void)
 import Data.ByteString (toStrict)
 import Data.Text.Encoding
 import Data.UUID (UUID, toByteString)
-import GHC.Event ()
 import Reacthome.Relay.Error (RelayError (..), logError)
 import Reacthome.Relay.Message (RelayMessage (..), serializeMessage)
 import Reacthome.Relay.Stat (RelayHits (..), RelayStat (..))
