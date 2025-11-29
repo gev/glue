@@ -1,8 +1,7 @@
-import Control.Concurrent (forkOS, runInBoundThread, threadDelay)
-import Control.Monad (forever, void)
 import Reacthome.Relay.App (application)
 import Reacthome.Relay.Dispatcher (makeRelayDispatcher)
 import Reacthome.Relay.Server (makeRelayServer)
+import Util.Timer (makeTimerManager)
 import Web.WebSockets.Server (runWebSocketServer)
 
 main :: IO ()
@@ -10,7 +9,10 @@ main =
   run "0.0.0.0" 3003
  where
   run host port = do
+    timerManager <- makeTimerManager 100
+    let ?timerManager = timerManager
     dispatcher <- makeRelayDispatcher
-    let server = makeRelayServer dispatcher
+    let ?dispatcher = dispatcher
+    let server = makeRelayServer
     putStrLn $ "Run Reacthome Relay on " <> host <> ":" <> show port
     runWebSocketServer host port $ application server

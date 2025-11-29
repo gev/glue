@@ -1,17 +1,16 @@
 module Reacthome.Daemon.App where
 
-import Control.Concurrent (yield)
 import Control.Concurrent.Async (race_)
 import Control.Exception (handle)
-import Control.Monad (forever, void, when)
+import Control.Monad (forever, void)
 import Data.ByteString (toStrict)
-import Data.IORef (newIORef, readIORef, writeIORef)
 import Data.Text.Encoding
 import Data.UUID (UUID, toByteString)
+import GHC.Event ()
 import Reacthome.Relay.Error (RelayError (..), logError)
 import Reacthome.Relay.Message (RelayMessage (..), serializeMessage)
 import Reacthome.Relay.Stat (RelayHits (..), RelayStat (..))
-import Util.Timer (Timer (ticks))
+import Util.Timer (Timer (..), TimerManager (..))
 import Web.WebSockets.Client (WebSocketClientApplication)
 import Web.WebSockets.Connection (WebSocketConnection (..))
 import Web.WebSockets.Error (WebSocketError)
@@ -20,7 +19,7 @@ messagesPerChunk :: Int
 messagesPerChunk = 1
 
 application ::
-    (?stat :: RelayStat, ?timer :: Timer) =>
+    (?stat :: RelayStat, ?timerManager :: TimerManager) =>
     UUID -> WebSocketClientApplication
 application peer connection = do
     let
@@ -40,15 +39,11 @@ application peer connection = do
                         }
 
         runTx = do
-            ticks <- newIORef =<< ?timer.ticks
+            timer <- ?timerManager.makeTimer
             forever do
-                old <- readIORef ticks
-                now <- ?timer.ticks
-                when (now > old) do
-                    connection.sendMessages chunk
-                    ?stat.tx.hit messagesPerChunk
-                    writeIORef ticks now
-                yield
+                connection.sendMessages chunk
+                ?stat.tx.hit messagesPerChunk
+                timer.wait 1_000_000
 
         runRx = forever do
             void connection.receiveMessage

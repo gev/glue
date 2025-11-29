@@ -40,3 +40,4 @@ library
   default-extensions:
     BlockArguments
     OverloadedStrings
+    RecordWildCards

@@ -1,8 +1,8 @@
 module Reacthome.Relay.Server where
 
-import Control.Concurrent (newEmptyMVar, newMVar, readMVar, takeMVar, threadDelay, yield)
+import Control.Concurrent (threadDelay, yield)
 import Control.Concurrent.Async (race_)
-import Control.Exception (finally, handle)
+import Control.Exception (handle)
 import Control.Monad (forever, unless)
 import Data.ByteString (toStrict)
 import Data.Foldable (traverse_)
@@ -15,6 +15,7 @@ import GHC.IORef (atomicModifyIORef'_)
 import Reacthome.Relay.Dispatcher (RelayDispatcher (..), RelaySink (..), RelaySource (..))
 import Reacthome.Relay.Error (RelayError (..), logError)
 import Reacthome.Relay.Message (getMessageDestination, isMessageDestinationValid)
+import Util.Timer (Timer (..), TimerManager (..))
 import Web.WebSockets.Connection (WebSocketConnection (..))
 import Web.WebSockets.Error (WebSocketError)
 import Web.WebSockets.PendingConnection (WebSocketPendingConnection (..))
@@ -26,8 +27,8 @@ newtype RelayServer = RelayServer
 
 type Peer = UUID
 
-makeRelayServer :: RelayDispatcher -> RelayServer
-makeRelayServer dispatcher = do
+makeRelayServer :: (?timerManager :: TimerManager, ?dispatcher :: RelayDispatcher) => RelayServer
+makeRelayServer = do
     let
         accept pending peer = do
             let
@@ -36,19 +37,19 @@ makeRelayServer dispatcher = do
                     let destination = getMessageDestination message
                     if isMessageDestinationValid destination
                         then do
-                            !found <- dispatcher.getSink destination
+                            !found <- ?dispatcher.getSink destination
                             case found of
-                                Just !sink -> connection.sendMessage message -- sink.sendMessage message
+                                Just !sink -> sink.sendMessage message
                                 Nothing -> logError $ NoPeersFound destination
                         else logError $ InvalidDestination destination
 
                 runTx connection source = do
+                    timer <- ?timerManager.makeTimer
                     buffer <- newIORef empty
                     let
                         collectMessages = forever do
                             !message <- source.receiveMessage
-                            connection.sendMessage message
-                        -- atomicModifyIORef'_ buffer (|> message)
+                            atomicModifyIORef'_ buffer (|> message)
 
                         transmitMessages = wrap $ forever do
                             !messages <- readIORef buffer
@@ -56,12 +57,12 @@ makeRelayServer dispatcher = do
                                 !actualMessages <- atomicModifyIORef' buffer (empty,)
                                 let !chunks = chunksOf batchSize $ toList actualMessages
                                 traverse_ connection.sendMessages chunks
-                            yield
+                            threadDelay flushIntervalUs
+                    -- timer.wait flushIntervalUs
 
-                    collectMessages
-                -- race_
-                --     collectMessages
-                --     transmitMessages
+                    race_
+                        collectMessages
+                        transmitMessages
 
                 from = toStrict $ toByteString peer
 
@@ -71,11 +72,11 @@ makeRelayServer dispatcher = do
             wrap do
                 !connection <- pending.accept
                 -- print $ "Peer connected " <> show peer
-                !source <- dispatcher.getSource from
+                !source <- ?dispatcher.getSource from
                 race_
                     do runRx connection
                     do runTx connection source
-                dispatcher.freeSource from
+                ?dispatcher.freeSource from
 
     RelayServer{..}
 
@@ -83,4 +84,4 @@ batchSize :: Int
 batchSize = 40
 
 flushIntervalUs :: Int
-flushIntervalUs = 100
+flushIntervalUs = 300

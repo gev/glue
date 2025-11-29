@@ -67,7 +67,9 @@ executable reacthome-relay
 
   build-depends:
     async,
+    bytestring,
     reacthome-relay,
+    websockets,
 
   hs-source-dirs: app
   main-is: Main.hs
