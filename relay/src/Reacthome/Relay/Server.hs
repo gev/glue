@@ -42,7 +42,7 @@ makeRelayServer dispatcher = do
                                 Nothing -> logError $ NoPeersFound destination
                         else logError $ InvalidDestination destination
 
-                runTx connection from source = do
+                runTx connection source = do
                     buffer <- newIORef empty
                     let
                         collectMessages = forever do
@@ -50,14 +50,12 @@ makeRelayServer dispatcher = do
                             atomicModifyIORef'_ buffer (|> message)
 
                         transmitMessages = wrap $ forever do
-                            !a <- dispatcher.getSink from
-                            maybe yield (const yield) a
-                    -- !messages <- readIORef buffer
-                    -- unless (null messages) do
-                    --     !actualMessages <- atomicModifyIORef' buffer (empty,)
-                    --     let !chunks = chunksOf batchSize $ toList actualMessages
-                    --     traverse_ connection.sendMessages chunks
-                    -- threadDelay flushIntervalUs
+                            !messages <- readIORef buffer
+                            unless (null messages) do
+                                !actualMessages <- atomicModifyIORef' buffer (empty,)
+                                let !chunks = chunksOf batchSize $ toList actualMessages
+                                traverse_ connection.sendMessages chunks
+                            yield
 
                     race_
                         collectMessages
@@ -74,7 +72,7 @@ makeRelayServer dispatcher = do
                 !source <- dispatcher.getSource from
                 race_
                     do runRx connection
-                    do runTx connection from source
+                    do runTx connection source
                 dispatcher.freeSource from
 
     RelayServer{..}
