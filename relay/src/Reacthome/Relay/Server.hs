@@ -36,7 +36,7 @@ makeRelayServer = do
                                 Nothing -> logError $ NoPeersFound destination
                         else logError $ InvalidDestination destination
 
-                runTx connection source = do
+                runTx connection source = wrap $ forever do
                     !message <- source.receiveMessage
                     connection.sendMessage message
 

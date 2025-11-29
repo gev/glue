@@ -10,7 +10,6 @@ import GHC.IORef (atomicModifyIORef'_)
 import Reacthome.Daemon.App (application)
 import Reacthome.Relay.Stat (RelayHits (hits), RelayStat (..), makeRelayStat)
 import System.Clock (Clock (..), diffTimeSpec, getTime, toNanoSecs)
-import Util.Timer (makeTimerManager)
 import Web.WebSockets.Client (runWebSocketClient)
 import Web.WebSockets.Error (WebSocketError)
 import Prelude hiding (last)
@@ -24,8 +23,6 @@ main = do
     total <- newIORef (0, 0)
     time <- newIORef =<< getTime Monotonic
     connections <- newIORef @Int 0
-    timerManager <- makeTimerManager 1_000_000
-    let ?timerManager = timerManager
     let
         port = 3003
         host = "172.16.1.1"
