@@ -38,7 +38,7 @@ makeRelayServer dispatcher = do
                         then do
                             !found <- dispatcher.getSink destination
                             case found of
-                                Just !sink -> sink.sendMessage message
+                                Just !sink -> connection.sendMessage message -- sink.sendMessage message
                                 Nothing -> logError $ NoPeersFound destination
                         else logError $ InvalidDestination destination
 
@@ -47,7 +47,8 @@ makeRelayServer dispatcher = do
                     let
                         collectMessages = forever do
                             !message <- source.receiveMessage
-                            atomicModifyIORef'_ buffer (|> message)
+                            connection.sendMessage message
+                        -- atomicModifyIORef'_ buffer (|> message)
 
                         transmitMessages = wrap $ forever do
                             !messages <- readIORef buffer
@@ -57,9 +58,10 @@ makeRelayServer dispatcher = do
                                 traverse_ connection.sendMessages chunks
                             yield
 
-                    race_
-                        collectMessages
-                        transmitMessages
+                    collectMessages
+                -- race_
+                --     collectMessages
+                --     transmitMessages
 
                 from = toStrict $ toByteString peer
 
@@ -67,7 +69,7 @@ makeRelayServer dispatcher = do
                 wrap = handle @WebSocketError onError
 
             wrap do
-                connection <- pending.accept
+                !connection <- pending.accept
                 -- print $ "Peer connected " <> show peer
                 !source <- dispatcher.getSource from
                 race_

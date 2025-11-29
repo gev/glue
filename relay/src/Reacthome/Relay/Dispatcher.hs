@@ -1,8 +1,10 @@
 module Reacthome.Relay.Dispatcher where
 
-import Control.Concurrent (modifyMVar, modifyMVar_, newMVar, readMVar)
+import Control.Concurrent (newMVar, putMVar, takeMVar)
 import Control.Concurrent.Chan.Unagi.Bounded (dupChan, newChan, readChan, writeChan)
+import Data.Foldable (for_)
 import Data.HashMap.Strict (delete, empty, insert, lookup)
+import Data.IORef (newIORef, readIORef, writeIORef)
 import Data.Traversable (for)
 import Reacthome.Relay (LazyRaw, Uid)
 import Prelude hiding (lookup, show)
@@ -23,33 +25,40 @@ newtype RelaySink = RelaySink
 
 makeRelayDispatcher :: IO RelayDispatcher
 makeRelayDispatcher = do
-    sources <- newMVar empty
+    sources <- newIORef empty
+    lock <- newMVar ()
 
     let
         getSource uid = do
-            inChan <- modifyMVar sources \sources' -> do
-                case lookup uid sources' of
-                    Nothing -> do
-                        (inChan, _) <- newChan bound
-                        pure (insert uid (inChan, 0 :: Int) sources', inChan)
-                    Just (inChan, count) ->
-                        pure (insert uid (inChan, count + 1) sources', inChan)
-            source <- dupChan inChan
+            takeMVar lock
+            lastSources <- readIORef sources
+            (actualSources, actualInChan) <- case lookup uid lastSources of
+                Nothing -> do
+                    (newInChan, _) <- newChan bound
+                    pure (insert uid (newInChan, 0 :: Int) lastSources, newInChan)
+                Just (existedChan, count) ->
+                    pure (insert uid (existedChan, count + 1) lastSources, existedChan)
+            writeIORef sources actualSources
+            source <- dupChan actualInChan
+            putMVar lock ()
             pure
                 RelaySource
                     { receiveMessage = readChan source
                     }
 
-        freeSource uid = modifyMVar_ sources \sources' -> pure do
-            case lookup uid sources' of
-                Nothing -> sources'
-                Just (inChan, count) -> do
-                    if count == 0
-                        then delete uid sources'
-                        else insert uid (inChan, count - 1) sources'
+        freeSource uid = do
+            takeMVar lock
+            lastSources <- readIORef sources
+            for_ (lookup uid lastSources) \(inChan, count) -> do
+                let actualSources =
+                        if count == 0
+                            then delete uid lastSources
+                            else insert uid (inChan, count - 1) lastSources
+                writeIORef sources actualSources
+            putMVar lock ()
 
         getSink uid = do
-            sources' <- readMVar sources
+            sources' <- readIORef sources
             for (lookup uid sources') \(sink, _) ->
                 pure
                     RelaySink
