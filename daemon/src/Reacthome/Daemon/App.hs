@@ -40,7 +40,7 @@ application peer connection = do
                         }
 
         runTx = do
-            ticks <- newIORef 0
+            ticks <- newIORef =<< ?timer.ticks
             forever do
                 old <- readIORef ticks
                 now <- ?timer.ticks

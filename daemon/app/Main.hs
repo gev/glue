@@ -1,9 +1,7 @@
-import Control.Concurrent (forkIO, threadDelay, yield)
+import Control.Concurrent (threadDelay)
 import Control.Concurrent.Async (mapConcurrently_, race_)
-import Control.Exception (catch, finally)
-import Control.Exception.Base (SomeException)
+import Control.Exception (catch)
 import Control.Monad (forever, replicateM, void, when)
-import Data.Foldable (traverse_)
 import Data.IORef (newIORef, readIORef, writeIORef)
 import Data.Text (unpack)
 import Data.Text.Format.Numbers (prettyI)
@@ -34,19 +32,16 @@ main = do
 
         run (stat, delay) = do
             threadDelay delay
-            finally
+            void $ atomicModifyIORef'_ connections (+ 1)
+            catch @WebSocketError
                 do
-                    void $ atomicModifyIORef'_ connections (+ 1)
-                    catch @WebSocketError
-                        do
-                            let ?stat = stat
-                            peer <- nextRandom
-                            let path = "/" <> show peer
-                            -- putStrLn $ "Connect to Reacthome Relay on " <> host <> ":" <> show port <> path
-                            runWebSocketClient host port path $ application peer
-                        print
-                do
-                    void $ atomicModifyIORef'_ connections \n -> n - 1
+                    let ?stat = stat
+                    peer <- nextRandom
+                    let path = "/" <> show peer
+                    -- putStrLn $ "Connect to Reacthome Relay on " <> host <> ":" <> show port <> path
+                    runWebSocketClient host port path $ application peer
+                print
+            void $ atomicModifyIORef'_ connections \n -> n - 1
 
         summarize x = sum <$> traverse (hits . x) stats
 
