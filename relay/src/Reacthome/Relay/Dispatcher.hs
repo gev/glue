@@ -32,18 +32,18 @@ makeRelayDispatcher = do
         getSource uid = do
             takeMVar lock
             lastSources <- readIORef sources
-            (actualSources, actualInChan) <- case lookup uid lastSources of
+            (actualSources, actualOutChan) <- case lookup uid lastSources of
                 Nothing -> do
-                    (newInChan, _) <- newChan bound
-                    pure (insert uid (newInChan, 0 :: Int) lastSources, newInChan)
-                Just (existedChan, count) ->
-                    pure (insert uid (existedChan, count + 1) lastSources, existedChan)
+                    (newInChan, newOutChan) <- newChan bound
+                    pure (insert uid (newInChan, 0 :: Int) lastSources, newOutChan)
+                Just (existedInChan, count) -> do
+                    actualOutChan <- dupChan existedInChan
+                    pure (insert uid (existedInChan, count + 1) lastSources, actualOutChan)
             writeIORef sources actualSources
-            source <- dupChan actualInChan
             putMVar lock ()
             pure
                 RelaySource
-                    { receiveMessage = readChan source
+                    { receiveMessage = readChan actualOutChan
                     }
 
         freeSource uid = do
