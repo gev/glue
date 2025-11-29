@@ -1,11 +1,17 @@
 module Reacthome.Relay.Server where
 
+import Control.Concurrent (threadDelay, yield)
 import Control.Concurrent.Async (race_)
 import Control.Exception (handle)
-import Control.Monad (forever)
+import Control.Monad (forever, unless)
 import Data.ByteString (toStrict)
+import Data.Foldable (traverse_)
+import Data.IORef (atomicModifyIORef', newIORef, readIORef)
+import Data.List.Split (chunksOf)
+import Data.Sequence (empty, (|>))
 import Data.UUID (UUID, toByteString)
 import GHC.Exts
+import GHC.IORef (atomicModifyIORef'_)
 import Reacthome.Relay.Dispatcher (RelayDispatcher (..), RelaySink (..), RelaySource (..))
 import Reacthome.Relay.Error (RelayError (..), logError)
 import Reacthome.Relay.Message (getMessageDestination, isMessageDestinationValid)
@@ -36,9 +42,24 @@ makeRelayServer = do
                                 Nothing -> logError $ NoPeersFound destination
                         else logError $ InvalidDestination destination
 
-                runTx connection source = wrap $ forever do
-                    !message <- source.receiveMessage
-                    connection.sendMessage message
+                runTx connection source = do
+                    buffer <- newIORef empty
+                    let
+                        collectMessages = forever do
+                            !message <- source.receiveMessage
+                            atomicModifyIORef'_ buffer (|> message)
+
+                        transmitMessages = wrap $ forever do
+                            !messages <- readIORef buffer
+                            unless (null messages) do
+                                !actualMessages <- atomicModifyIORef' buffer (empty,)
+                                let !chunks = chunksOf batchSize $ toList actualMessages
+                                traverse_ connection.sendMessages chunks
+                            threadDelay flushIntervalUs
+
+                    race_
+                        collectMessages
+                        transmitMessages
 
                 from = toStrict $ toByteString peer
 
