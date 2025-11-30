@@ -1,11 +1,11 @@
 module Web.WebSockets.Connection where
 
-import Control.Exception (catch, throwIO)
+import Control.Exception (IOException, catch, throwIO)
 import Data.ByteString (ByteString)
 import Data.Text (Text)
 import Data.Text.Encoding (encodeUtf8)
-import Network.WebSockets (Connection, ConnectionException, receiveData, sendBinaryDatas)
-import Network.WebSockets.Connection (sendClose)
+import Network.WebSockets (ConnectionException)
+import Network.WebSockets.Connection (Connection, receiveData, sendBinaryDatas, sendClose)
 import Web.WebSockets.Error (WebSocketError (..))
 
 data WebSocketConnection = WebSocketConnection
@@ -19,21 +19,30 @@ makeWebSocketConnection :: Connection -> WebSocketConnection
 makeWebSocketConnection connection =
     let
         receiveMessage =
-            catch @ConnectionException
+            catch @IOException
                 do
-                    receiveData connection
-                do throwIO . ReceiveError
+                    catch @ConnectionException
+                        do
+                            receiveData connection
+                        do throwIO . ReceiveError
+                do throwIO . IOException
 
         sendMessage = sendMessages . pure
 
         sendMessages messages =
-            catch @ConnectionException
-                do sendBinaryDatas connection messages
-                do throwIO . SendError
+            catch @IOException
+                do
+                    catch @ConnectionException
+                        do sendBinaryDatas connection messages
+                        do throwIO . SendError
+                do throwIO . IOException
 
         close message =
-            catch @ConnectionException
-                do sendClose connection $ encodeUtf8 message
-                do throwIO . CloseError
+            catch @IOException
+                do
+                    catch @ConnectionException
+                        do sendClose connection $ encodeUtf8 message
+                        do throwIO . CloseError
+                do throwIO . IOException
      in
         WebSocketConnection{..}
