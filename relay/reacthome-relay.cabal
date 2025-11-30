@@ -58,6 +58,7 @@ library
     unagi-chan,
     unordered-containers,
     uuid,
+    vector,
 
   hs-source-dirs: src
 

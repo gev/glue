@@ -1,7 +1,7 @@
 module Reacthome.Relay.Dispatcher where
 
 import Control.Concurrent (newMVar, putMVar, takeMVar)
-import Control.Concurrent.Chan.Unagi.Bounded (dupChan, newChan, readChan, writeChan)
+import Control.Concurrent.Chan.Unagi.Bounded (dupChan, newChan, tryRead, tryReadChan, writeChan)
 import Data.Foldable (for_)
 import Data.HashMap.Strict (delete, empty, insert, lookup)
 import Data.IORef (newIORef, readIORef, writeIORef)
@@ -16,7 +16,7 @@ data RelayDispatcher = RelayDispatcher
     }
 
 newtype RelaySource = RelaySource
-    { receiveMessage :: IO StrictRaw
+    { tryReceiveMessage :: IO (Maybe StrictRaw, IO StrictRaw)
     }
 
 newtype RelaySink = RelaySink
@@ -43,7 +43,10 @@ makeRelayDispatcher = do
             putMVar lock ()
             pure
                 RelaySource
-                    { receiveMessage = readChan actualOutChan
+                    { tryReceiveMessage = do
+                        (!el, !wait) <- tryReadChan actualOutChan
+                        !m <- tryRead el
+                        pure (m, wait)
                     }
 
         freeSource uid = do

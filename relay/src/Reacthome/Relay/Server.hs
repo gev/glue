@@ -1,24 +1,19 @@
 module Reacthome.Relay.Server where
 
-import Control.Concurrent (threadDelay, yield)
 import Control.Concurrent.Async (race_)
 import Control.Exception (handle)
-import Control.Monad (forever, unless)
+import Control.Monad (forever, void)
 import Data.ByteString (toStrict)
-import Data.Foldable (traverse_)
-import Data.IORef (atomicModifyIORef', newIORef, readIORef)
-import Data.List.Split (chunksOf)
-import Data.Sequence (empty, (|>))
 import Data.UUID (UUID, toByteString)
-import GHC.Exts
-import GHC.IORef (atomicModifyIORef'_)
+import Data.Vector (toList, unsafeFreeze, unsafeTake)
+import Data.Vector.Mutable (unsafeNew, unsafeWrite)
 import Reacthome.Relay.Dispatcher (RelayDispatcher (..), RelaySink (..), RelaySource (..))
 import Reacthome.Relay.Error (RelayError (..), logError)
 import Reacthome.Relay.Message (getMessageDestination, isMessageDestinationValid)
 import Web.WebSockets.Connection (WebSocketConnection (..))
 import Web.WebSockets.Error (WebSocketError)
 import Web.WebSockets.PendingConnection (WebSocketPendingConnection (..))
-import Prelude hiding (last, lookup, splitAt, tail, take)
+import Prelude hiding (lookup, take)
 
 newtype RelayServer = RelayServer
     { accept :: WebSocketPendingConnection -> Peer -> IO ()
@@ -27,7 +22,7 @@ newtype RelayServer = RelayServer
 type Peer = UUID
 
 makeRelayServer :: (?dispatcher :: RelayDispatcher) => RelayServer
-makeRelayServer = do
+makeRelayServer =
     let
         accept pending peer = do
             let
@@ -42,24 +37,39 @@ makeRelayServer = do
                                 Nothing -> logError $ NoPeersFound destination
                         else logError $ InvalidDestination destination
 
-                runTx connection source = do
-                    buffer <- newIORef empty
+                runTx connection source = wrap do
                     let
-                        collectMessages = forever do
-                            !message <- source.receiveMessage
-                            atomicModifyIORef'_ buffer (|> message)
+                        processMessageLoop !vector !index = do
+                            (!maybeMessage, !waitMessage) <- source.tryReceiveMessage
+                            case maybeMessage of
+                                Nothing -> do
+                                    !actualVector <-
+                                        if index > 0
+                                            then sendBatch vector index
+                                            else pure vector
+                                    !message <- waitMessage
+                                    unsafeWrite actualVector 0 message
+                                    processMessageLoop actualVector 1
+                                Just !message -> do
+                                    let nextIndex = index + 1
+                                    if nextIndex < batchSize
+                                        then do
+                                            unsafeWrite vector index message
+                                            processMessageLoop vector nextIndex
+                                        else do
+                                            unsafeWrite vector index message
+                                            newVector <- sendBatch vector batchSize
+                                            unsafeWrite newVector 0 message
+                                            processMessageLoop newVector 1
 
-                        transmitMessages = wrap $ forever do
-                            !messages <- readIORef buffer
-                            unless (null messages) do
-                                !actualMessages <- atomicModifyIORef' buffer (empty,)
-                                let !chunks = chunksOf batchSize $ toList actualMessages
-                                traverse_ connection.sendMessages chunks
-                            threadDelay flushIntervalUs
+                        sendBatch !vector !size = do
+                            !frozen <- unsafeFreeze vector
+                            let !messages = toList $ unsafeTake size frozen
+                            void $ connection.sendMessages messages
+                            unsafeNew batchSize
 
-                    race_
-                        collectMessages
-                        transmitMessages
+                    initialVector <- unsafeNew batchSize
+                    processMessageLoop initialVector 0
 
                 from = toStrict $ toByteString peer
 
@@ -74,11 +84,8 @@ makeRelayServer = do
                     do runRx connection
                     do runTx connection source
                 ?dispatcher.freeSource from
-
-    RelayServer{..}
+     in
+        RelayServer{..}
 
 batchSize :: Int
 batchSize = 40
-
-flushIntervalUs :: Int
-flushIntervalUs = 300
