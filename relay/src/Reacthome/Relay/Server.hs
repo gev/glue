@@ -26,7 +26,7 @@ makeRelayServer =
     let
         accept pending peer = do
             let
-                runRx connection = wrap $ forever do
+                runRx connection = forever do
                     !message <- connection.receiveMessage
                     let destination = getMessageDestination message
                     if isMessageDestinationValid destination
@@ -37,7 +37,7 @@ makeRelayServer =
                                 Nothing -> logError $ NoPeersFound destination
                         else logError $ InvalidDestination destination
 
-                runTx connection source = wrap do
+                runTx connection source = do
                     let
                         processMessageLoop !vector !index = do
                             (!maybeMessage, !waitMessage) <- source.tryReceiveMessage
@@ -51,16 +51,14 @@ makeRelayServer =
                                     unsafeWrite actualVector 0 message
                                     processMessageLoop actualVector 1
                                 Just !message -> do
+                                    unsafeWrite vector index message
                                     let nextIndex = index + 1
                                     if nextIndex < batchSize
                                         then do
-                                            unsafeWrite vector index message
                                             processMessageLoop vector nextIndex
                                         else do
-                                            unsafeWrite vector index message
                                             newVector <- sendBatch vector batchSize
-                                            unsafeWrite newVector 0 message
-                                            processMessageLoop newVector 1
+                                            processMessageLoop newVector 0
 
                         sendBatch !vector !size = do
                             !frozen <- unsafeFreeze vector
@@ -81,8 +79,8 @@ makeRelayServer =
                 -- print $ "Peer connected " <> show peer
                 !source <- ?dispatcher.getSource from
                 race_
-                    do runRx connection
-                    do runTx connection source
+                    do wrap $ runRx connection
+                    do wrap $ runTx connection source
                 ?dispatcher.freeSource from
      in
         RelayServer{..}
