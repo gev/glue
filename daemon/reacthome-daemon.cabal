@@ -54,6 +54,7 @@ executable reacthome-daemon
     format-numbers,
     reacthome-daemon,
     reacthome-relay,
+    unordered-containers,
     uuid,
 
   hs-source-dirs: app
