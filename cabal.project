@@ -10,4 +10,4 @@ package *
 source-repository-package
     type:     git
     location: https://github.com/gev/websockets.git
-    tag:      c68f967fe8b98e92ad3f7b6d523d22783f39b484
+    tag:      9f0e048b712c88be0ea1140a71deb40972aff667
