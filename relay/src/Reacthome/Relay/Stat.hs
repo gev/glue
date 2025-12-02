@@ -20,10 +20,17 @@ makeRelayHits = do
 data RelayStat = RelayStat
     { rx :: !RelayHits
     , tx :: !RelayHits
+    , hits :: IO RelayStatHits
+    }
+
+data RelayStatHits = RelayStatHits
+    { rx :: Int
+    , tx :: Int
     }
 
 makeRelayStat :: IO RelayStat
 makeRelayStat = do
     rx <- makeRelayHits
     tx <- makeRelayHits
+    let hits = liftA2 RelayStatHits rx.hits tx.hits
     pure RelayStat{..}
