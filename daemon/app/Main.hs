@@ -1,6 +1,7 @@
 import Control.Concurrent (threadDelay)
 import Control.Concurrent.Async (mapConcurrently_, race_)
-import Control.Concurrent.Chan.Unagi (newChan, readChan, writeChan)
+import Control.Concurrent.Chan.Unagi (newChan, readChan)
+import Control.Concurrent.Chan.Unagi.Bounded qualified as B
 import Control.Exception (catch)
 import Control.Monad (forever, replicateM, void)
 import Data.ByteString (toStrict)
@@ -26,10 +27,13 @@ concurrency = 16_000
 messagesPerChunk :: Int
 messagesPerChunk = 1
 
+bound :: Int
+bound = 10
+
 main :: IO ()
 main = do
     peers <- replicateM concurrency nextRandom
-    (peerInChans, peerOutChans) <- unzip <$> replicateM concurrency newChan
+    (peerInChans, peerOutChans) <- unzip <$> replicateM concurrency (B.newChan bound)
     (mainInChan, mainOutChan) <- newChan
     stat <- makeRelayStat
     connections <- newIORef @Int 0
@@ -90,7 +94,7 @@ main = do
                             (zip peerInChans messagesPool)
                             \(inChan, messages) -> do
                                 stat.tx.hit messagesPerChunk
-                                writeChan inChan messages
+                                B.writeChan inChan messages
                         threadDelay 100_000
                 do
                     forever do

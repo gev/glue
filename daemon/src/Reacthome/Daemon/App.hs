@@ -5,6 +5,7 @@ module Reacthome.Daemon.App where
 import Control.Concurrent (threadDelay)
 import Control.Concurrent.Async (race_)
 import Control.Concurrent.Chan.Unagi (InChan, OutChan, readChan, writeChan)
+import Control.Concurrent.Chan.Unagi.Bounded qualified as B
 import Control.Exception (handle)
 import Control.Monad (forever, void)
 import Data.ByteString (toStrict)
@@ -19,7 +20,7 @@ import Web.WebSockets.Error (WebSocketError)
 
 application ::
     ( ?inChan :: InChan StrictRaw
-    , ?outChan :: OutChan [StrictRaw]
+    , ?outChan :: B.OutChan [StrictRaw]
     ) =>
     UUID -> WebSocketClientApplication
 application peer connection = do
@@ -31,7 +32,7 @@ application peer connection = do
 
         runTx = do
             forever do
-                messages <- readChan ?outChan
+                messages <- B.readChan ?outChan
                 connection.sendMessages messages
 
         runRx = forever do
