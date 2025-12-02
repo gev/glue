@@ -6,3 +6,8 @@ constraints:
 package *
     ghc-options: -O2 -rtsopts -threaded -with-rtsopts=-N -Wall -funbox-strict-fields -fmax-inline-alloc-size=512 -fspecialise-aggressively -flate-specialise -fstatic-argument-transformation -feager-blackholing
     split-sections: True
+
+source-repository-package
+    type:     git
+    location: https://github.com/gev/websockets.git
+    tag:      c92a12ae512f858f9f10c1710006780e1422c0fc
