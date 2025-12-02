@@ -9,7 +9,6 @@ import Data.IORef (newIORef, readIORef)
 import Data.Text (unpack)
 import Data.Text.Encoding (encodeUtf8)
 import Data.Text.Format.Numbers (prettyI)
-import Data.Traversable (for)
 import Data.UUID (toByteString)
 import Data.UUID.V4 (nextRandom)
 import GHC.IORef (atomicModifyIORef'_)
@@ -92,7 +91,7 @@ main = do
                             \(inChan, messages) -> do
                                 stat.tx.hit messagesPerChunk
                                 writeChan inChan messages
-                        threadDelay 1_000_000
+                        threadDelay 100_000
                 do
                     forever do
                         void $ readChan mainOutChan
