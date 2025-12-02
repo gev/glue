@@ -89,8 +89,9 @@ main = do
                     forever do
                         for_
                             (zip peerInChans messagesPool)
-                            (uncurry writeChan)
-                        stat.tx.hit messagesPerChunk
+                            \(inChan, messages) -> do
+                                writeChan inChan messages
+                                stat.tx.hit messagesPerChunk
                         threadDelay 1_000_000
                 do
                     forever do
