@@ -27,7 +27,6 @@ application peer connection = do
         from = toStrict $ toByteString peer
 
         onError = logError . WebSocketError from
-
         wrap = handle @WebSocketError onError
 
         runTx = do

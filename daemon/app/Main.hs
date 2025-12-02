@@ -80,6 +80,12 @@ main = do
         do
             race_
                 do
+                    mapConcurrently_ run $ zip3 peers peerOutChans [1_000, 2_000 ..]
+                showStat
+        do
+            race_
+                do
+                    threadDelay 20_000_000
                     forever do
                         for_
                             (zip peerInChans messagesPool)
@@ -90,8 +96,3 @@ main = do
                     forever do
                         void $ readChan mainOutChan
                         stat.rx.hit 1
-        do
-            race_
-                do
-                    mapConcurrently_ run $ zip3 peers peerOutChans [1_000, 2_000 ..]
-                showStat
