@@ -67,7 +67,7 @@ main = do
             putStrLn $ "Tx: " <> rps hits1.tx hits0.tx dt
             putStrLn $ "Rx: " <> rps hits1.rx hits0.rx dt
 
-        messagesPool = for (toStrict . toByteString <$> peers) \peer ->
+        messagesPool = flip map (toStrict . toByteString <$> peers) \peer ->
             replicate messagesPerChunk $
                 serializeMessage
                     RelayMessage
@@ -90,8 +90,8 @@ main = do
                         for_
                             (zip peerInChans messagesPool)
                             \(inChan, messages) -> do
-                                writeChan inChan messages
                                 stat.tx.hit messagesPerChunk
+                                writeChan inChan messages
                         threadDelay 1_000_000
                 do
                     forever do
