@@ -22,13 +22,13 @@ import Web.WebSockets.Error (WebSocketError)
 import Prelude hiding (last)
 
 concurrency :: Int
-concurrency = 16_000
+concurrency = 10_000
 
 messagesPerChunk :: Int
 messagesPerChunk = 1
 
 bound :: Int
-bound = 10
+bound = 1
 
 main :: IO ()
 main = do
@@ -93,9 +93,8 @@ main = do
                         for_
                             (zip peerInChans messagesPool)
                             \(inChan, messages) -> do
-                                stat.tx.hit messagesPerChunk
                                 B.writeChan inChan messages
-                        threadDelay 100_000
+                                stat.tx.hit messagesPerChunk
                 do
                     forever do
                         void $ readChan mainOutChan

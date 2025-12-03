@@ -32,11 +32,11 @@ application peer connection = do
 
         runTx = do
             forever do
-                messages <- B.readChan ?outChan
+                !messages <- B.readChan ?outChan
                 connection.sendMessages messages
 
         runRx = forever do
-            message <- connection.receiveMessage
+            !message <- connection.receiveMessage
             writeChan ?inChan message
 
     race_
