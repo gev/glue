@@ -24,22 +24,23 @@ concurrency :: Int
 concurrency = 10_000
 
 messagesPerChunk :: Int
-messagesPerChunk = 1
+messagesPerChunk = 30
 
 main :: IO ()
 main = do
     peers <- replicateM concurrency nextRandom
+    stats <- replicateM concurrency makeRelayStat
     connections <- newIORef []
-    stat <- makeRelayStat
     let
         port = 3003
         host = "172.16.1.1"
 
-        run (peer, delay) = do
+        run (peer, stat, delay) = do
             threadDelay delay
             catch @WebSocketError
                 do
                     let path = "/" <> show peer
+                    let ?stat = stat
                     let ?register =
                             \connection ->
                                 void $ atomicModifyIORef'_ connections (connection :)
@@ -77,14 +78,14 @@ main = do
         do
             race_
                 do
-                    mapConcurrently_ run $ zip peers [1_000, 2_000 ..]
+                    mapConcurrently_ run $ zip3 peers stats [1_000, 2_000 ..]
                 showStat
         do
             threadDelay 20_000_000
             forever do
                 connections' <- readIORef connections
                 for_
-                    (zip connections' messagesPool)
-                    \(connection, messages) -> do
+                    (zip3 connections' stats messagesPool)
+                    \(connection, stat, messages) -> do
                         connection.sendMessages messages
                         stat.tx.hit messagesPerChunk
