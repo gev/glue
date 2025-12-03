@@ -39,6 +39,7 @@ library
     Reacthome.Relay.Dispatcher
     Reacthome.Relay.Error
     Reacthome.Relay.Message
+    Reacthome.Relay.Options
     Reacthome.Relay.Server
     Reacthome.Relay.Stat
 

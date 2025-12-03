@@ -7,6 +7,7 @@ import Data.HashMap.Strict (delete, empty, insert, lookup)
 import Data.IORef (newIORef, readIORef, writeIORef)
 import Data.Traversable (for)
 import Reacthome.Relay (StrictRaw, Uid)
+import Reacthome.Relay.Options (RelayOptions (..))
 import Prelude hiding (lookup, show)
 
 data RelayDispatcher = RelayDispatcher
@@ -23,21 +24,21 @@ newtype RelaySink = RelaySink
     { sendMessage :: StrictRaw -> IO ()
     }
 
-makeRelayDispatcher :: IO RelayDispatcher
+makeRelayDispatcher :: (?options :: RelayOptions) => IO RelayDispatcher
 makeRelayDispatcher = do
-    sources <- newIORef empty
-    lock <- newMVar ()
+    !sources <- newIORef empty
+    !lock <- newMVar ()
 
     let
-        getSource uid = do
+        getSource !uid = do
             takeMVar lock
-            lastSources <- readIORef sources
-            (actualSources, actualOutChan) <- case lookup uid lastSources of
+            !lastSources <- readIORef sources
+            (!actualSources, !actualOutChan) <- case lookup uid lastSources of
                 Nothing -> do
-                    (newInChan, newOutChan) <- newChan bound
+                    (!newInChan, !newOutChan) <- newChan ?options.inBound
                     pure (insert uid (newInChan, 0 :: Int) lastSources, newOutChan)
-                Just (existedInChan, count) -> do
-                    actualOutChan <- dupChan existedInChan
+                Just (!existedInChan, !count) -> do
+                    !actualOutChan <- dupChan existedInChan
                     pure (insert uid (existedInChan, count + 1) lastSources, actualOutChan)
             writeIORef sources actualSources
             putMVar lock ()
@@ -49,26 +50,23 @@ makeRelayDispatcher = do
                         pure (m, wait)
                     }
 
-        freeSource uid = do
+        freeSource !uid = do
             takeMVar lock
-            lastSources <- readIORef sources
-            for_ (lookup uid lastSources) \(inChan, count) -> do
-                let actualSources =
+            !lastSources <- readIORef sources
+            for_ (lookup uid lastSources) \(!inChan, !count) -> do
+                let !actualSources =
                         if count == 0
                             then delete uid lastSources
                             else insert uid (inChan, count - 1) lastSources
                 writeIORef sources actualSources
             putMVar lock ()
 
-        getSink uid = do
-            sources' <- readIORef sources
-            for (lookup uid sources') \(sink, _) ->
+        getSink !uid = do
+            !sources' <- readIORef sources
+            for (lookup uid sources') \(!sink, _) ->
                 pure
                     RelaySink
                         { sendMessage = writeChan sink
                         }
 
     pure RelayDispatcher{..}
-
-bound :: Int
-bound = 256

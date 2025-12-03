@@ -10,6 +10,7 @@ import Data.Vector.Mutable (unsafeNew, unsafeWrite)
 import Reacthome.Relay.Dispatcher (RelayDispatcher (..), RelaySink (..), RelaySource (..))
 import Reacthome.Relay.Error (RelayError (..), logError)
 import Reacthome.Relay.Message (getMessageDestination, isMessageDestinationValid)
+import Reacthome.Relay.Options
 import Web.WebSockets.Connection (WebSocketConnection (..))
 import Web.WebSockets.Error (WebSocketError)
 import Web.WebSockets.PendingConnection (WebSocketPendingConnection (..))
@@ -21,7 +22,11 @@ newtype RelayServer = RelayServer
 
 type Peer = UUID
 
-makeRelayServer :: (?dispatcher :: RelayDispatcher) => RelayServer
+makeRelayServer ::
+    ( ?options :: RelayOptions
+    , ?dispatcher :: RelayDispatcher
+    ) =>
+    RelayServer
 makeRelayServer =
     let
         accept pending peer = do
@@ -53,20 +58,20 @@ makeRelayServer =
                                 Just !message -> do
                                     unsafeWrite vector index message
                                     let nextIndex = index + 1
-                                    if nextIndex < batchSize
+                                    if nextIndex < chunkSize
                                         then do
                                             processMessageLoop vector nextIndex
                                         else do
-                                            newVector <- sendBatch vector batchSize
+                                            newVector <- sendBatch vector chunkSize
                                             processMessageLoop newVector 0
 
                         sendBatch !vector !size = do
                             !frozen <- unsafeFreeze vector
                             let !messages = toList $ unsafeTake size frozen
                             void $ connection.sendMessages messages
-                            unsafeNew batchSize
+                            unsafeNew chunkSize
 
-                    initialVector <- unsafeNew batchSize
+                    initialVector <- unsafeNew chunkSize
                     processMessageLoop initialVector 0
 
                 from = toStrict $ toByteString peer
@@ -84,6 +89,5 @@ makeRelayServer =
                 ?dispatcher.freeSource from
      in
         RelayServer{..}
-
-batchSize :: Int
-batchSize = 256
+  where
+    chunkSize = ?options.chunkSize
