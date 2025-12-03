@@ -25,7 +25,7 @@ concurrency :: Int
 concurrency = 10_000
 
 messagesPerChunk :: Int
-messagesPerChunk = 100
+messagesPerChunk = 64
 
 main :: IO ()
 main = do
