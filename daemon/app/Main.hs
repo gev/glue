@@ -4,6 +4,7 @@ import Control.Exception (catch)
 import Control.Monad (forever, replicateM, void)
 import Data.ByteString (toStrict)
 import Data.Foldable (for_)
+import Data.HashMap.Strict (delete, elems, empty, insert)
 import Data.IORef (newIORef, readIORef)
 import Data.Text (unpack)
 import Data.Text.Encoding (encodeUtf8)
@@ -16,7 +17,7 @@ import Reacthome.Relay.Message (RelayMessage (..), serializeMessage)
 import Reacthome.Relay.Stat (RelayHits (hit, hits), RelayStat (rx, tx), makeRelayStat)
 import System.Clock (Clock (..), diffTimeSpec, getTime, toNanoSecs)
 import Web.WebSockets.Client (runWebSocketClient)
-import Web.WebSockets.Connection (WebSocketConnection (sendMessages))
+import Web.WebSockets.Connection (WebSocketConnection (..))
 import Web.WebSockets.Error (WebSocketError)
 import Prelude hiding (last)
 
@@ -24,13 +25,13 @@ concurrency :: Int
 concurrency = 10_000
 
 messagesPerChunk :: Int
-messagesPerChunk = 30
+messagesPerChunk = 100
 
 main :: IO ()
 main = do
     peers <- replicateM concurrency nextRandom
     stats <- replicateM concurrency makeRelayStat
-    connections <- newIORef []
+    connections <- newIORef empty
     let
         port = 3003
         host = "172.16.1.1"
@@ -42,10 +43,12 @@ main = do
                     let path = "/" <> show peer
                     let ?stat = stat
                     let ?register =
-                            \connection ->
-                                void $ atomicModifyIORef'_ connections (connection :)
+                            void . atomicModifyIORef'_ connections . insert peer
                     let ?onMessage = const $ stat.rx.hit 1
-                    let ?onError = print
+                    let ?onError =
+                            \e -> do
+                                void . atomicModifyIORef'_ connections $ delete peer
+                                print e
                     runWebSocketClient host port path application
                 print
 
@@ -90,7 +93,7 @@ main = do
         do
             threadDelay 20_000_000
             forever do
-                connections' <- readIORef connections
+                connections' <- elems <$> readIORef connections
                 for_
                     (zip3 connections' stats messagesPool)
                     \(connection, stat, messages) -> do
