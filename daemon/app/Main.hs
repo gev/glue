@@ -13,7 +13,7 @@ import Data.UUID.V4 (nextRandom)
 import GHC.IORef (atomicModifyIORef'_)
 import Reacthome.Daemon.App (application)
 import Reacthome.Relay.Message (RelayMessage (..), serializeMessage)
-import Reacthome.Relay.Stat (RelayHits (..), RelayStat (..), RelayStatHits (..), makeRelayStat)
+import Reacthome.Relay.Stat (RelayHits (hit, hits), RelayStat (rx, tx), makeRelayStat)
 import System.Clock (Clock (..), diffTimeSpec, getTime, toNanoSecs)
 import Web.WebSockets.Client (runWebSocketClient)
 import Web.WebSockets.Connection (WebSocketConnection (sendMessages))
@@ -49,21 +49,28 @@ main = do
                     runWebSocketClient host port path application
                 print
 
+        summarize x = sum <$> traverse (hits . x) stats
+
+        summarizeStat = do
+            r <- summarize rx
+            t <- summarize tx
+            pure (r, t)
+
         rps x1 x0 dt = fmt x1 <> " " <> " | RPS: " <> fmt ((x1 - x0) `div` dt)
 
         fmt = unpack . prettyI (Just '.')
 
         showStat = forever do
             t0 <- getTime Monotonic
-            hits0 <- stat.hits
+            (rx0, tx0) <- summarizeStat
             threadDelay 1_000_000
             t1 <- getTime Monotonic
-            hits1 <- stat.hits
+            (rx1, tx1) <- summarizeStat
             let !dt = fromInteger $ toNanoSecs (diffTimeSpec t1 t0) `div` 1_000_000_000
             n <- length <$> readIORef connections
             putStrLn $ "<-> " <> fmt n <> " connections"
-            putStrLn $ "Tx: " <> rps hits1.tx hits0.tx dt
-            putStrLn $ "Rx: " <> rps hits1.rx hits0.rx dt
+            putStrLn $ "Tx: " <> rps tx1 tx0 dt
+            putStrLn $ "Rx: " <> rps rx1 rx0 dt
 
         messagesPool = flip map (toStrict . toByteString <$> peers) \peer ->
             replicate messagesPerChunk $
