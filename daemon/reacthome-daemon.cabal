@@ -40,7 +40,6 @@ library
     bytestring,
     reacthome-relay,
     text,
-    unagi-chan,
     uuid,
 
   hs-source-dirs: src
@@ -57,7 +56,6 @@ executable reacthome-daemon
     reacthome-daemon,
     reacthome-relay,
     text,
-    unagi-chan,
     uuid,
 
   hs-source-dirs: app
