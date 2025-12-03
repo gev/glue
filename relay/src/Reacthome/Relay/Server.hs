@@ -86,4 +86,4 @@ makeRelayServer =
         RelayServer{..}
 
 batchSize :: Int
-batchSize = 100
+batchSize = 256

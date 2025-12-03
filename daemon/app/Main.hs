@@ -43,7 +43,9 @@ main = do
                     let path = "/" <> show peer
                     let ?stat = stat
                     let ?register =
-                            void . atomicModifyIORef'_ connections . insert peer
+                            \connection ->
+                                void . atomicModifyIORef'_ connections $
+                                    insert peer (toStrict $ toByteString peer, connection, stat)
                     let ?onMessage = const $ stat.rx.hit 1
                     let ?onError =
                             \e -> do
@@ -75,15 +77,6 @@ main = do
             putStrLn $ "Tx: " <> rps tx1 tx0 dt
             putStrLn $ "Rx: " <> rps rx1 rx0 dt
 
-        messagesPool = flip map (toStrict . toByteString <$> peers) \peer ->
-            replicate messagesPerChunk $
-                serializeMessage
-                    RelayMessage
-                        { to = peer
-                        , from = peer
-                        , content = encodeUtf8 "Hello Reacthome Relay ;)"
-                        }
-
     race_
         do
             race_
@@ -95,7 +88,15 @@ main = do
             forever do
                 connections' <- elems <$> readIORef connections
                 for_
-                    (zip3 connections' stats messagesPool)
-                    \(connection, stat, messages) -> do
+                    connections'
+                    \(peer, connection, stat) -> do
+                        let messages =
+                                replicate messagesPerChunk $
+                                    serializeMessage
+                                        RelayMessage
+                                            { to = peer
+                                            , from = peer
+                                            , content = encodeUtf8 "Hello Reacthome Relay ;)"
+                                            }
                         connection.sendMessages messages
                         stat.tx.hit messagesPerChunk
