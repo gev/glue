@@ -1,5 +1,5 @@
 import Control.Concurrent (forkIO, threadDelay)
-import Control.Monad (filterM, forever, replicateM, void)
+import Control.Monad (filterM, forever, replicateM, void, when)
 import Data.ByteString (toStrict)
 import Data.Foldable (for_, traverse_)
 import Data.HashMap.Strict (elems, empty, insert)
@@ -62,8 +62,9 @@ main = do
             (_, c, _) <- unzip3 . elems <$> readIORef clients
             n <- length <$> filterM isConnected c
             putStrLn $ "<-> " <> fmt n <> " connections"
-            putStrLn $ "Tx: " <> rps tx1 tx0 dt
-            putStrLn $ "Rx: " <> rps rx1 rx0 dt
+            when (dt > 0) do
+                putStrLn $ "Tx: " <> rps tx1 tx0 dt
+                putStrLn $ "Rx: " <> rps rx1 rx0 dt
 
         doWork = do
             threadDelay 20_000_000
