@@ -68,8 +68,6 @@ runWebSocketClient host port path = do
             writeChan inSource message
 
         runTx connection = forever do
-            -- !message <- readChan outSink
-            -- connection.sendMessage message
             let
                 processMessageLoop !vector !index = do
                     (!el, !waitMessage) <- tryReadChan outSink
