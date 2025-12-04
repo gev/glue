@@ -67,20 +67,22 @@ main = do
             putStrLn $ "Tx: " <> rps tx1 tx0 dt
             putStrLn $ "Rx: " <> rps rx1 rx0 dt
 
-        doWork = forever do
-            clients' <- elems <$> readIORef clients
-            for_
-                clients'
-                \(uid, client, stat) -> do
-                    let message =
-                            serializeMessage
-                                RelayMessage
-                                    { to = uid
-                                    , from = uid
-                                    , content = encodeUtf8 "Hello Reacthome Relay ;)"
-                                    }
-                    client.sendMessage message
-                    stat.tx.hit 1
+        doWork = do
+            threadDelay 20_000_000
+            forever do
+                clients' <- elems <$> readIORef clients
+                for_
+                    clients'
+                    \(uid, client, stat) -> do
+                        let message =
+                                serializeMessage
+                                    RelayMessage
+                                        { to = uid
+                                        , from = uid
+                                        , content = encodeUtf8 "Hello Reacthome Relay ;)"
+                                        }
+                        client.sendMessage message
+                        stat.tx.hit 1
 
     traverse_ run (zip3 peers stats [1000, 2000 ..])
     void $ forkIO doWork
