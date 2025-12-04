@@ -39,6 +39,7 @@ library
     transformers,
     unagi-chan,
     util,
+    vector,
     wai,
     wai-extra,
     websockets,
