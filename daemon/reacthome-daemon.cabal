@@ -33,8 +33,6 @@ library
 
   -- cabal-gild: discover src
   exposed-modules:
-    Reacthome.Daemon.App
-
   build-depends:
     async,
     bytestring,

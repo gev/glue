@@ -21,11 +21,13 @@ library
     Web.WebSockets.Client
     Web.WebSockets.Connection
     Web.WebSockets.Error
+    Web.WebSockets.Options
     Web.WebSockets.PendingConnection
     Web.WebSockets.Server
 
   build-depends:
     aeson,
+    async,
     base,
     bytestring,
     case-insensitive,
@@ -34,6 +36,7 @@ library
     lucid2,
     text,
     transformers,
+    unagi-chan,
     util,
     wai,
     wai-extra,

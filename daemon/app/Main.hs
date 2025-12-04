@@ -1,32 +1,24 @@
 import Control.Concurrent (forkIO, threadDelay)
-import Control.Concurrent.Async (mapConcurrently_, race_)
-import Control.Exception (catch, throwIO)
-import Control.Monad (forever, replicateM, void)
+import Control.Monad (filterM, forever, replicateM, void)
 import Data.ByteString (toStrict)
 import Data.Foldable (for_, traverse_)
-import Data.HashMap.Strict (delete, elems, empty, insert)
+import Data.HashMap.Strict (elems, empty, insert)
 import Data.IORef (newIORef, readIORef)
-import Data.Text (unpack)
+import Data.Text (center, unpack)
 import Data.Text.Encoding (encodeUtf8)
 import Data.Text.Format.Numbers (prettyI)
 import Data.UUID (toByteString)
 import Data.UUID.V4 (nextRandom)
 import GHC.IORef (atomicModifyIORef'_)
-import Reacthome.Daemon.App (application)
-import Reacthome.Relay.Error (RelayError (WebSocketError))
 import Reacthome.Relay.Message (RelayMessage (..), serializeMessage)
 import Reacthome.Relay.Stat (RelayHits (hit, hits), RelayStat (rx, tx), makeRelayStat)
 import System.Clock (Clock (..), diffTimeSpec, getTime, toNanoSecs)
-import Web.WebSockets.Client (runWebSocketClient)
-import Web.WebSockets.Connection (WebSocketConnection (..))
-import Web.WebSockets.Error (WebSocketError)
+import Web.WebSockets.Client (WebSocketClient (..), runWebSocketClient)
+import Web.WebSockets.Options (defaultWebSocketOptionsOptions)
 import Prelude hiding (last)
 
 concurrency :: Int
-concurrency = 1
-
-messagesPerChunk :: Int
-messagesPerChunk = 1
+concurrency = 10_000
 
 main :: IO ()
 main = do
@@ -34,7 +26,8 @@ main = do
     let (rx0, tx0) = (0, 0)
     peers <- replicateM concurrency nextRandom
     stats <- replicateM concurrency makeRelayStat
-    connections <- newIORef empty
+    clients <- newIORef empty
+    let ?options = defaultWebSocketOptionsOptions
     let
         port = 3003
         host = "172.16.1.1"
@@ -44,16 +37,11 @@ main = do
             let uid = toStrict $ toByteString peer
             let path = "/" <> show peer
             let ?stat = stat
-            let ?register =
-                    \connection ->
-                        void . atomicModifyIORef'_ connections $
-                            insert uid (uid, connection, stat)
-            let ?onMessage = const $ stat.rx.hit 1
-            let ?onError =
-                    \e -> do
-                        void . atomicModifyIORef'_ connections $ delete uid
-                        print e
-            runWebSocketClient host port path application
+            client <- runWebSocketClient host port path
+            void $ atomicModifyIORef'_ clients $ insert uid (uid, client, stat)
+            void . forkIO $ forever do
+                void client.receiveMessage
+                stat.rx.hit 1
 
         summarize x = sum <$> traverse (hits . x) stats
 
@@ -72,32 +60,27 @@ main = do
             threadDelay 1_000_000
             t1 <- getTime Monotonic
             (rx1, tx1) <- summarizeStat
-            let !dt = fromInteger $ toNanoSecs (diffTimeSpec t1 t0) `div` 1_000
-            n <- length <$> readIORef connections
+            let !dt = fromInteger $ toNanoSecs (diffTimeSpec t1 t0) `div` 1_000_000_000
+            (_, c, _) <- unzip3 . elems <$> readIORef clients
+            n <- length <$> filterM isConnected c
             putStrLn $ "<-> " <> fmt n <> " connections"
             putStrLn $ "Tx: " <> rps tx1 tx0 dt
             putStrLn $ "Rx: " <> rps rx1 rx0 dt
 
         doWork = forever do
-            connections' <- elems <$> readIORef connections
+            clients' <- elems <$> readIORef clients
             for_
-                connections'
-                \(uid, connection, stat) -> do
-                    let messages =
-                            replicate messagesPerChunk $
-                                serializeMessage
-                                    RelayMessage
-                                        { to = uid
-                                        , from = uid
-                                        , content = encodeUtf8 "Hello Reacthome Relay ;)"
-                                        }
-                    catch @WebSocketError
-                        do
-                            connection.sendMessages messages
-                            stat.tx.hit messagesPerChunk
-                        \e -> do
-                            print e
-                            void . atomicModifyIORef'_ connections $ delete uid
+                clients'
+                \(uid, client, stat) -> do
+                    let message =
+                            serializeMessage
+                                RelayMessage
+                                    { to = uid
+                                    , from = uid
+                                    , content = encodeUtf8 "Hello Reacthome Relay ;)"
+                                    }
+                    client.sendMessage message
+                    stat.tx.hit 1
 
     traverse_ run (zip3 peers stats [1000, 2000 ..])
     void $ forkIO doWork
