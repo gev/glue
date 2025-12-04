@@ -82,7 +82,7 @@ main = do
                                         }
                         client.sendMessage message
                         stat.tx.hit 1
-                yield
+                        yield
 
     traverse_ run (zip3 peers stats [1000, 2000 ..])
     void $ forkIO doWork

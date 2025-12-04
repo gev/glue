@@ -8,6 +8,6 @@ data RelayOptions = RelayOptions
 defaultRelayOptions :: RelayOptions
 defaultRelayOptions =
     RelayOptions
-        { inBound = 64
+        { inBound = 1
         , chunkSize = 64
         }

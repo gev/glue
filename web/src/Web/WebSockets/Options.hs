@@ -8,6 +8,6 @@ data WebSocketOptions = WebSocketOptions
 defaultWebSocketOptionsOptions :: WebSocketOptions
 defaultWebSocketOptionsOptions =
     WebSocketOptions
-        { bound = 64
+        { bound = 1
         , chunkSize = 64
         }
