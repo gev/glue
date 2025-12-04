@@ -34,4 +34,4 @@ makeWebSocketPendingConnection pending =
                         connection <- acceptRequestWith pending defaultAcceptRequest
                         pure $ makeWebSocketConnection connection
                     do throwIO . HandshakeError
-            do throwIO . IOException
+            do throwIO . IOError

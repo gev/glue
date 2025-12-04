@@ -25,7 +25,7 @@ makeWebSocketConnection connection =
                         do
                             receiveData connection
                         do throwIO . ReceiveError
-                do throwIO . IOException
+                do throwIO . IOError
 
         sendMessage = sendMessages . pure
 
@@ -35,7 +35,7 @@ makeWebSocketConnection connection =
                     catch @ConnectionException
                         do sendBinaryDatas connection messages
                         do throwIO . SendError
-                do throwIO . IOException
+                do throwIO . IOError
 
         close message =
             catch @IOException
@@ -43,6 +43,6 @@ makeWebSocketConnection connection =
                     catch @ConnectionException
                         do sendClose connection $ encodeUtf8 message
                         do throwIO . CloseError
-                do throwIO . IOException
+                do throwIO . IOError
      in
         WebSocketConnection{..}

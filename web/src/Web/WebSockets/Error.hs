@@ -7,9 +7,9 @@ data WebSocketError
     = SendError ConnectionException
     | ReceiveError ConnectionException
     | CloseError ConnectionException
-    | ConnectionError ConnectionException
+    | ConnectionError WebSocketError
     | HandshakeError HandshakeException
-    | IOException IOException
+    | IOError IOException
     deriving (Show)
 
 instance Exception WebSocketError
