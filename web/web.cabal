@@ -34,6 +34,7 @@ library
     cookie,
     http-types,
     lucid2,
+    random,
     text,
     transformers,
     unagi-chan,

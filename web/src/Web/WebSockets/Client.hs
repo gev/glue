@@ -10,6 +10,7 @@ import Data.ByteString (ByteString)
 import Data.Foldable (for_)
 import Data.IORef (newIORef, readIORef, writeIORef)
 import Network.WebSockets (HandshakeException, runClient)
+import System.Random (newStdGen, uniformR)
 import Web.WebSockets.Connection (WebSocketConnection (..), makeWebSocketConnection)
 import Web.WebSockets.Error (WebSocketError (..))
 import Web.WebSockets.Options (WebSocketOptions (..))
@@ -33,8 +34,8 @@ runWebSocketClient host port path = do
         receiveMessage = readChan outSource
         sendMessage = writeChan inSink
 
-        reconnectionLoop delay
-            | delay > 8 = reconnectionLoop 8
+        reconnectionLoop delay gen
+            | delay > 8 = reconnectionLoop 8 gen
             | otherwise = do
                 (e, actualDelay) <- catch @IOException
                     do
@@ -47,8 +48,11 @@ runWebSocketClient host port path = do
                 writeIORef connected False
                 for_ e print
                 print @String $ "Reconnect in " <> show actualDelay <> "s"
-                threadDelay $ actualDelay * 1_000_000
-                reconnectionLoop $ 2 * actualDelay
+                let usDelay = actualDelay * 1_000_000
+                let (usJitter, gen') = uniformR (0, usDelay `div` 4) gen
+                threadDelay $ usDelay + usJitter
+                let nextDelay = 2 * actualDelay
+                reconnectionLoop nextDelay gen'
 
         application connection = do
             writeIORef connected True
@@ -66,5 +70,5 @@ runWebSocketClient host port path = do
 
         wrap = handle @WebSocketError print
 
-    void . forkIO $ reconnectionLoop 1
+    void . forkIO $ reconnectionLoop 1 =<< newStdGen
     pure WebSocketClient{..}
