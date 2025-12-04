@@ -22,8 +22,6 @@ concurrency = 10_000
 
 main :: IO ()
 main = do
-    t0 <- getTime Monotonic
-    let (rx0, tx0) = (0, 0)
     peers <- replicateM concurrency nextRandom
     stats <- replicateM concurrency makeRelayStat
     clients <- newIORef empty
@@ -55,8 +53,8 @@ main = do
         fmt = unpack . prettyI (Just '.')
 
         showStat = forever do
-            -- t0 <- getTime Monotonic
-            -- (rx0, tx0) <- summarizeStat
+            t0 <- getTime Monotonic
+            (rx0, tx0) <- summarizeStat
             threadDelay 1_000_000
             t1 <- getTime Monotonic
             (rx1, tx1) <- summarizeStat
