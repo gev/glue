@@ -78,6 +78,7 @@ runWebSocketClient host port path = do
                                 if index > 0
                                     then sendBatch vector index
                                     else pure vector
+                            threadDelay ?options.delay
                             !message <- waitMessage
                             unsafeWrite actualVector 0 message
                             processMessageLoop actualVector 1

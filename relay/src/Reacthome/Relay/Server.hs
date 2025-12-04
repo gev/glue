@@ -1,5 +1,6 @@
 module Reacthome.Relay.Server where
 
+import Control.Concurrent (threadDelay)
 import Control.Concurrent.Async (race_)
 import Control.Exception (handle)
 import Control.Monad (forever, void)
@@ -52,6 +53,7 @@ makeRelayServer =
                                         if index > 0
                                             then sendBatch vector index
                                             else pure vector
+                                    threadDelay ?options.delay
                                     !message <- waitMessage
                                     unsafeWrite actualVector 0 message
                                     processMessageLoop actualVector 1
