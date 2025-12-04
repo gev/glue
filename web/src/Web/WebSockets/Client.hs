@@ -17,7 +17,7 @@ runWebSocketClient host port path application =
             do
                 catch @HandshakeException
                     do runClient host port path $ application . makeWebSocketConnection
-                    do throwIO . HandshakeError
+                    do print . HandshakeError
             do print . IOException
         threadDelay 1_000_000
         print @String "Reconnect"
