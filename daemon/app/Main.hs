@@ -1,4 +1,4 @@
-import Control.Concurrent (forkIO, threadDelay)
+import Control.Concurrent (forkIO, threadDelay, yield)
 import Control.Monad (filterM, forever, replicateM, void, when)
 import Data.ByteString (toStrict)
 import Data.Foldable (for_, traverse_)
@@ -82,6 +82,7 @@ main = do
                                         }
                         client.sendMessage message
                         stat.tx.hit 1
+                yield
 
     traverse_ run (zip3 peers stats [1000, 2000 ..])
     void $ forkIO doWork
