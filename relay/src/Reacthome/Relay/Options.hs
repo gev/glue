@@ -6,7 +6,8 @@ data RelayOptions = RelayOptions
     }
 
 defaultOptions :: RelayOptions
-defaultOptions = RelayOptions
-            { inBound = 64
-            , chunkSize = 64
-            }
+defaultOptions =
+    RelayOptions
+        { inBound = 4
+        , chunkSize = 64
+        }
