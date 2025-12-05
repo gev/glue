@@ -1,6 +1,7 @@
 module WebSockets.PendingConnection where
 
 import Control.Exception (catch, throwIO)
+import Control.Exception.Base (IOException)
 import Data.ByteString (ByteString)
 import Data.CaseInsensitive
 import Network.WebSockets (HandshakeException, RequestHead (..), pendingRequest)
@@ -29,8 +30,11 @@ makeWebSocketPendingConnection pending =
   where
     request = pendingRequest pending
     accept =
-        catch @HandshakeException
+        catch @IOException
             do
-                connection <- acceptRequestWith pending defaultAcceptRequest
-                pure $ makeWebSocketConnection connection
-            do throwIO . HandshakeError
+                catch @HandshakeException
+                    do
+                        connection <- acceptRequestWith pending defaultAcceptRequest
+                        pure $ makeWebSocketConnection connection
+                    do throwIO . HandshakeError
+            do throwIO . IOError

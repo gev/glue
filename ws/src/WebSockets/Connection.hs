@@ -2,6 +2,7 @@ module WebSockets.Connection where
 
 import Control.Concurrent (threadDelay)
 import Control.Exception (catch, throwIO)
+import Control.Exception.Base (IOException)
 import Control.Monad (forever)
 import Data.ByteString (ByteString)
 import Data.Text (Text)
@@ -28,15 +29,29 @@ makeWebSocketConnection ::
 makeWebSocketConnection connection =
     let
         receiveMessage =
-            catch @ConnectionException
+            catch @IOException
                 do
-                    receiveData connection
-                do throwIO . ReceiveError
+                    catch @ConnectionException
+                        do
+                            receiveData connection
+                        do throwIO . ReceiveError
+                do throwIO . IOError
 
         sendMessages messages =
-            catch @ConnectionException
-                do sendBinaryDatas connection messages
-                do throwIO . SendError
+            catch @IOException
+                do
+                    catch @ConnectionException
+                        do sendBinaryDatas connection messages
+                        do throwIO . SendError
+                do throwIO . IOError
+
+        close message =
+            catch @IOException
+                do
+                    catch @ConnectionException
+                        do sendClose connection $ encodeUtf8 message
+                        do throwIO . CloseError
+                do throwIO . IOError
 
         runReceiveMessageLoop writeToSink = forever do
             !message <- receiveMessage
@@ -74,10 +89,5 @@ makeWebSocketConnection connection =
 
             initialVector <- unsafeNew ?options.chunkSize
             processMessageLoop initialVector 0
-
-        close message =
-            catch @ConnectionException
-                do sendClose connection $ encodeUtf8 message
-                do throwIO . CloseError
      in
         WebSocketConnection{..}

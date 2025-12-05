@@ -3,6 +3,7 @@ module WebSockets.Client where
 import Control.Concurrent (forkIO, threadDelay)
 import Control.Concurrent.Async (race_)
 import Control.Exception (catch, handle)
+import Control.Exception.Base (IOException)
 import Control.Monad (void)
 import Data.Foldable (for_)
 import Data.IORef (newIORef, readIORef, writeIORef)
@@ -31,11 +32,14 @@ runWebSocketClient host port path = do
         reconnectionLoop delay gen
             | delay > 8 = reconnectionLoop 8 gen
             | otherwise = do
-                (e, actualDelay) <- catch @HandshakeException
+                (e, actualDelay) <- catch @IOException
                     do
-                        runClient host port path $ application . makeWebSocketConnection
-                        pure (Nothing, 1)
-                    \e -> pure (Just $ HandshakeError e, delay)
+                        catch @HandshakeException
+                            do
+                                runClient host port path $ application . makeWebSocketConnection
+                                pure (Nothing, 1)
+                            \e -> pure (Just $ HandshakeError e, delay)
+                    \e -> pure (Just $ IOError e, delay)
                 writeIORef connected False
                 for_ e print
                 print @String $ "Reconnect in " <> show actualDelay <> "s"
