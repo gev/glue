@@ -14,7 +14,7 @@ common common-options
     base,
     text,
     util,
-    web,
+    ws,
 
   default-language: GHC2024
   default-extensions:
@@ -54,6 +54,7 @@ executable reacthome-daemon
     reacthome-daemon,
     reacthome-relay,
     text,
+    unagi-chan,
     unordered-containers,
     uuid,
 

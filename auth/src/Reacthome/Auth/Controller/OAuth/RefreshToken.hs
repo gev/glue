@@ -11,8 +11,8 @@ import Reacthome.Auth.Domain.Hash
 import Reacthome.Auth.Domain.RefreshToken
 import Reacthome.Auth.Domain.RefreshTokens
 import Reacthome.Auth.Environment
-import Web.Rest
-import Web.Rest.Media
+import Rest
+import Rest.Media
 
 refreshToken ::
     ( ?environment :: Environment

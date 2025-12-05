@@ -1,5 +1,5 @@
 cabal-version: 3.8
-name: web
+name: rest
 version: 0.1.0.0
 synopsis: Web micro framework
 description: A collection of web utilities above WAI
@@ -13,36 +13,25 @@ library
   hs-source-dirs: src
   -- cabal-gild: discover src
   exposed-modules:
-    Web.Rest
-    Web.Rest.ContentType
-    Web.Rest.Media
-    Web.Rest.Method
-    Web.Rest.Status
-    Web.WebSockets.Client
-    Web.WebSockets.Connection
-    Web.WebSockets.Error
-    Web.WebSockets.Options
-    Web.WebSockets.PendingConnection
-    Web.WebSockets.Server
+    Rest
+    Rest.ContentType
+    Rest.Media
+    Rest.Method
+    Rest.Status
 
   build-depends:
     aeson,
-    async,
     base,
     bytestring,
     case-insensitive,
     cookie,
     http-types,
     lucid2,
-    random,
     text,
     transformers,
-    unagi-chan,
     util,
-    vector,
     wai,
     wai-extra,
-    websockets,
 
   default-language: GHC2024
   default-extensions:

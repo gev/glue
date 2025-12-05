@@ -7,7 +7,7 @@ import Data.HashMap.Strict (delete, empty, insert, lookup)
 import Data.IORef (newIORef, readIORef, writeIORef)
 import Data.Traversable (for)
 import Reacthome.Relay (StrictRaw, Uid)
-import Reacthome.Relay.Options (RelayOptions (..))
+import WebSockets.Options (WebSocketOptions (..))
 import Prelude hiding (lookup, show)
 
 data RelayDispatcher = RelayDispatcher
@@ -24,7 +24,7 @@ newtype RelaySink = RelaySink
     { sendMessage :: StrictRaw -> IO ()
     }
 
-makeRelayDispatcher :: (?options :: RelayOptions) => IO RelayDispatcher
+makeRelayDispatcher :: (?options :: WebSocketOptions) => IO RelayDispatcher
 makeRelayDispatcher = do
     !sources <- newIORef empty
     !lock <- newMVar ()
@@ -35,7 +35,7 @@ makeRelayDispatcher = do
             !lastSources <- readIORef sources
             (!actualSources, !actualOutChan) <- case lookup uid lastSources of
                 Nothing -> do
-                    (!newInChan, !newOutChan) <- newChan ?options.inBound
+                    (!newInChan, !newOutChan) <- newChan ?options.bound
                     pure (insert uid (newInChan, 0 :: Int) lastSources, newOutChan)
                 Just (!existedInChan, !count) -> do
                     !actualOutChan <- dupChan existedInChan

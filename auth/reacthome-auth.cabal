@@ -139,10 +139,10 @@ library
     lucid2,
     memory,
     resource-pool,
+    rest,
     time,
     unordered-containers,
     wai,
-    web,
 
 executable reacthome-auth
   import:

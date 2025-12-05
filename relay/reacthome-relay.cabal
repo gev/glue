@@ -13,7 +13,7 @@ common common-options
   build-depends:
     base,
     util,
-    web,
+    ws,
 
   default-language: GHC2024
   default-extensions:
@@ -39,7 +39,6 @@ library
     Reacthome.Relay.Dispatcher
     Reacthome.Relay.Error
     Reacthome.Relay.Message
-    Reacthome.Relay.Options
     Reacthome.Relay.Server
     Reacthome.Relay.Stat
 
@@ -71,7 +70,7 @@ executable reacthome-relay
     async,
     bytestring,
     reacthome-relay,
-    websockets,
+    ws,
 
   hs-source-dirs: app
   main-is: Main.hs

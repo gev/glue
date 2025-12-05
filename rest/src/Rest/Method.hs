@@ -1,9 +1,9 @@
-module Web.Rest.Method where
+module Rest.Method where
 
 import Control.Monad.Trans.Except
 import Network.HTTP.Types
-import Web.Rest
-import Web.Rest.Status
+import Rest
+import Rest.Status
 
 type Handler m =
     (?request :: Request) =>

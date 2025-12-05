@@ -8,8 +8,8 @@ import Reacthome.Auth.Controller.AuthFlowCookie
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.AuthFlow
 import Reacthome.Auth.Service.AuthFlows
-import Web.Rest
-import Web.Rest.Status
+import Rest
+import Rest.Status
 
 {-
     TODO: Should validate the `redirect_uri` parameter

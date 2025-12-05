@@ -29,8 +29,8 @@ import Reacthome.Yandex.Dialogs.DialogRequest.Session.User qualified
 import Reacthome.Yandex.Dialogs.DialogResponse
 import Reacthome.Yandex.Dialogs.DialogResponse.Response qualified as D
 import Reacthome.Yandex.Dialogs.DialogResponse.Response.Directives
-import Web.Rest
-import Web.Rest.Media
+import Rest
+import Rest.Media
 
 runDialog ::
     ( ?answers :: Answers

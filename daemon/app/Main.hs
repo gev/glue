@@ -1,9 +1,11 @@
-import Control.Concurrent (forkIO, threadDelay, yield)
+import Control.Concurrent (forkIO, threadDelay)
+import Control.Concurrent.Chan.Unagi.Bounded (Element (tryRead), newChan, tryReadChan, writeChan)
 import Control.Monad (filterM, forever, replicateM, void, when)
 import Data.ByteString (toStrict)
 import Data.Foldable (for_, traverse_)
 import Data.HashMap.Strict (elems, empty, insert)
 import Data.IORef (newIORef, readIORef)
+import Data.List (unzip4)
 import Data.Text (unpack)
 import Data.Text.Encoding (encodeUtf8)
 import Data.Text.Format.Numbers (prettyI)
@@ -13,19 +15,19 @@ import GHC.IORef (atomicModifyIORef'_)
 import Reacthome.Relay.Message (RelayMessage (..), serializeMessage)
 import Reacthome.Relay.Stat (RelayHits (hit, hits), RelayStat (rx, tx), makeRelayStat)
 import System.Clock (Clock (..), diffTimeSpec, getTime, toNanoSecs)
-import Web.WebSockets.Client (WebSocketClient (..), runWebSocketClient)
-import Web.WebSockets.Options (defaultWebSocketOptionsOptions)
+import WebSockets.Client (WebSocketClient (..), runWebSocketClient)
+import WebSockets.Options (bound, defaultWebSocketOptions)
 import Prelude hiding (last)
 
 concurrency :: Int
-concurrency = 10_000
+concurrency = 100
 
 main :: IO ()
 main = do
     peers <- replicateM concurrency nextRandom
     stats <- replicateM concurrency makeRelayStat
     clients <- newIORef empty
-    let ?options = defaultWebSocketOptionsOptions
+    let ?options = defaultWebSocketOptions
     let
         port = 3003
         host = "172.16.1.1"
@@ -35,11 +37,15 @@ main = do
             let uid = toStrict $ toByteString peer
             let path = "/" <> show peer
             let ?stat = stat
+            (inChan, outChan) <- newChan ?options.bound
+            let ?sink = const $ stat.rx.hit 1
+            let ?source =
+                    do
+                        (!element, !wait) <- tryReadChan outChan
+                        !message <- tryRead element
+                        pure (message, wait)
             client <- runWebSocketClient host port path
-            void $ atomicModifyIORef'_ clients $ insert uid (uid, client, stat)
-            void . forkIO $ forever do
-                void client.receiveMessage
-                stat.rx.hit 1
+            void $ atomicModifyIORef'_ clients $ insert uid (uid, inChan, client, stat)
 
         summarize x = sum <$> traverse (hits . x) stats
 
@@ -59,7 +65,7 @@ main = do
             t1 <- getTime Monotonic
             (rx1, tx1) <- summarizeStat
             let !dt = fromInteger $ toNanoSecs (diffTimeSpec t1 t0) `div` 1_000_000_000
-            (_, c, _) <- unzip3 . elems <$> readIORef clients
+            (_, _, c, _) <- unzip4 . elems <$> readIORef clients
             n <- length <$> filterM isConnected c
             putStrLn $ "<-> " <> fmt n <> " connections"
             when (dt > 0) do
@@ -72,7 +78,7 @@ main = do
                 clients' <- elems <$> readIORef clients
                 for_
                     clients'
-                    \(uid, client, stat) -> do
+                    \(uid, inChan, _, stat) -> do
                         let message =
                                 serializeMessage
                                     RelayMessage
@@ -80,7 +86,7 @@ main = do
                                         , from = uid
                                         , content = encodeUtf8 "Hello Reacthome Relay ;)"
                                         }
-                        client.sendMessage message
+                        writeChan inChan message
                         stat.tx.hit 1
 
     traverse_ run (zip3 peers stats [1000, 2000 ..])

@@ -6,9 +6,9 @@ import Reacthome.Assist.Controller.Yandex
 import Reacthome.Assist.Domain.Users
 import Reacthome.Assist.Service.Dialog
 import Reacthome.Gate.Connection.Pool
-import Web.Rest
-import Web.Rest.Method
-import Web.Rest.Status
+import Rest
+import Rest.Method
+import Rest.Status
 
 app ::
     ( ?answers :: Answers

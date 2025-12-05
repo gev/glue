@@ -6,8 +6,8 @@ import Data.Aeson (ToJSON)
 import Data.Text
 import GHC.Generics
 import Reacthome.Auth.Environment
-import Web.Rest
-import Web.Rest.Media (toJSON)
+import Rest
+import Rest.Media (toJSON)
 
 newtype AppleAppSiteAssociation = AppleAppSiteAssociation
     { webcredentials :: WebCredentials

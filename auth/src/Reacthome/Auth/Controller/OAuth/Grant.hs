@@ -5,7 +5,7 @@ import Data.ByteString
 import Data.ByteString.Base64.URL (decodeUnpadded)
 import Reacthome.Auth.Domain.Clients
 import Reacthome.Auth.Service.OAuth.Grant
-import Web.Rest
+import Rest
 
 getAuthorizationCode ::
     ( ?request :: Request

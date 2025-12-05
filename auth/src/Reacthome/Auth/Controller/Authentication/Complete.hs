@@ -18,8 +18,8 @@ import Reacthome.Auth.Service.AuthUsers
 import Reacthome.Auth.Service.Authentication.Complete
 import Util.Base64
 import Util.Base64.URL qualified as URL
-import Web.Rest
-import Web.Rest.Media
+import Rest
+import Rest.Media
 
 completeAuthentication ::
     ( ?request :: Request

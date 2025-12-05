@@ -1,4 +1,4 @@
-module Web.Rest.ContentType where
+module Rest.ContentType where
 
 import Data.ByteString
 

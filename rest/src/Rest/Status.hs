@@ -1,4 +1,4 @@
-module Web.Rest.Status where
+module Rest.Status where
 
 import Data.ByteString
 import Data.ByteString.Lazy qualified as Lazy
@@ -7,7 +7,7 @@ import Data.String
 import Network.HTTP.Types
 import Network.HTTP.Types.Header
 import Network.Wai
-import Web.Rest.ContentType
+import Rest.ContentType
 
 ok :: (Applicative a) => ByteString -> ResponseHeaders -> Lazy.ByteString -> a Response
 ok contentType headers =

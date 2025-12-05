@@ -1,4 +1,4 @@
-module Web.Rest where
+module Rest where
 
 import Control.Exception
 import Control.Monad
@@ -11,8 +11,8 @@ import Network.HTTP.Types.Header
 import Network.HTTP.Types.Method
 import Network.Wai qualified as W
 import Network.Wai.Parse
+import Rest.ContentType
 import Web.Cookie
-import Web.Rest.ContentType
 
 type Response = W.Response
 

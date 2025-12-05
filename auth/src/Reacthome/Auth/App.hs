@@ -22,9 +22,9 @@ import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.AuthFlows
 import Reacthome.Auth.Service.AuthUsers
-import Web.Rest
-import Web.Rest.Method
-import Web.Rest.Status
+import Rest
+import Rest.Method
+import Rest.Status
 
 app ::
     ( ?environment :: Environment

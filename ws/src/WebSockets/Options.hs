@@ -1,4 +1,4 @@
-module Web.WebSockets.Options where
+module WebSockets.Options where
 
 data WebSocketOptions = WebSocketOptions
     { bound :: !Int
@@ -6,8 +6,8 @@ data WebSocketOptions = WebSocketOptions
     , delay :: !Int
     }
 
-defaultWebSocketOptionsOptions :: WebSocketOptions
-defaultWebSocketOptionsOptions =
+defaultWebSocketOptions :: WebSocketOptions
+defaultWebSocketOptions =
     WebSocketOptions
         { bound = 2
         , chunkSize = 64

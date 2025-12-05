@@ -12,8 +12,8 @@ import Reacthome.Auth.Domain.RefreshTokens
 import Reacthome.Auth.Domain.User
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.AuthUsers
-import Web.Rest
-import Web.Rest.Media
+import Rest
+import Rest.Media
 
 exchangeCodeForToken ::
     ( ?environment :: Environment

@@ -6,8 +6,8 @@ import Data.Text.Encoding (decodeUtf8)
 import Data.UUID (fromText)
 import Reacthome.Relay.Error (RelayError (..), logError)
 import Reacthome.Relay.Server
-import Web.WebSockets.PendingConnection (WebSocketPendingConnection (..))
-import Web.WebSockets.Server (WebSocketServerApplication)
+import WebSockets.PendingConnection (WebSocketPendingConnection (..))
+import WebSockets.Server (WebSocketServerApplication)
 import Prelude hiding (length, splitAt, tail)
 
 application :: RelayServer -> WebSocketServerApplication

@@ -10,8 +10,8 @@ import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.AuthUsers
 import Reacthome.Auth.Service.Registration.Begin
-import Web.Rest
-import Web.Rest.Media
+import Rest
+import Rest.Media
 
 beginRegistration ::
     ( ?request :: Request

@@ -1,12 +1,12 @@
-module Web.Rest.Media where
+module Rest.Media where
 
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
 import Data.Aeson
 import Lucid
-import Web.Rest
-import Web.Rest.ContentType
-import Web.Rest.Status
+import Rest
+import Rest.ContentType
+import Rest.Status
 
 toJSON :: (ToJSON t, Applicative a) => t -> a Response
 toJSON = ok ctApplicationJson mempty . encode

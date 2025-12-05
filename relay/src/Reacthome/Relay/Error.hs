@@ -4,7 +4,7 @@ import Control.Exception (Exception)
 import Data.Text (Text)
 import Debug.Trace (traceIO)
 import Reacthome.Relay (StrictRaw, Uid)
-import Web.WebSockets.Error (WebSocketError)
+import WebSockets.Error (WebSocketError)
 import Prelude hiding (error)
 
 data RelayError

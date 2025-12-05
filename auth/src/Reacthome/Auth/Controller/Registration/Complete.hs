@@ -15,8 +15,8 @@ import Reacthome.Auth.Service.AuthUsers
 import Reacthome.Auth.Service.Registration.Complete
 import Util.Base64
 import Util.Base64.URL qualified as URL
-import Web.Rest
-import Web.Rest.Media
+import Rest
+import Rest.Media
 
 completeRegistration ::
     ( ?request :: Request

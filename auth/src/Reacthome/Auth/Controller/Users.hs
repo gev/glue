@@ -4,8 +4,8 @@ import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
 import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.View.Screen.Users
-import Web.Rest
-import Web.Rest.Media
+import Rest
+import Rest.Media
 
 showUsers ::
     ( ?users :: Users

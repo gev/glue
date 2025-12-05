@@ -7,8 +7,8 @@ import JOSE.JWKS
 import JOSE.PublicKey (makePublicKey)
 import Reacthome.Auth.Domain.PublicKey (PublicKey, bytes, kid)
 import Reacthome.Auth.Domain.PublicKeys (PublicKeys, getAll)
-import Web.Rest
-import Web.Rest.Media
+import Rest
+import Rest.Media
 
 jwks ::
     ( ?jwkPublicKeys :: PublicKeys
