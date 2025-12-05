@@ -12,7 +12,7 @@ build-type: Simple
 common common-options
   build-depends:
     base,
-    util,
+    bytestring,
     ws,
 
   default-language: GHC2024
@@ -44,21 +44,12 @@ library
 
   build-depends:
     async,
-    bytestring,
     clock,
-    containers,
-    hashable,
-    list-t,
-    split,
-    stm,
-    stm-containers,
     text,
     time,
-    transformers,
     unagi-chan,
     unordered-containers,
     uuid,
-    vector,
 
   hs-source-dirs: src
 
@@ -67,10 +58,7 @@ executable reacthome-relay
     common-options
 
   build-depends:
-    async,
-    bytestring,
-    reacthome-relay,
-    ws,
+    reacthome-relay
 
   hs-source-dirs: app
   main-is: Main.hs

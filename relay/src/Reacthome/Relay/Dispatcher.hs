@@ -6,22 +6,15 @@ import Data.Foldable (for_)
 import Data.HashMap.Strict (delete, empty, insert, lookup)
 import Data.IORef (newIORef, readIORef, writeIORef)
 import Data.Traversable (for)
-import Reacthome.Relay (StrictRaw, Uid)
+import Reacthome.Relay (Uid)
+import WebSockets.Connection (WebSocketSink, WebSocketSource)
 import WebSockets.Options (WebSocketOptions (..))
 import Prelude hiding (lookup, show)
 
 data RelayDispatcher = RelayDispatcher
-    { getSource :: Uid -> IO RelaySource
+    { getSource :: Uid -> IO WebSocketSource
     , freeSource :: Uid -> IO ()
-    , getSink :: Uid -> IO (Maybe RelaySink)
-    }
-
-newtype RelaySource = RelaySource
-    { tryReceiveMessage :: IO (Maybe StrictRaw, IO StrictRaw)
-    }
-
-newtype RelaySink = RelaySink
-    { sendMessage :: StrictRaw -> IO ()
+    , getSink :: Uid -> IO (Maybe WebSocketSink)
     }
 
 makeRelayDispatcher :: (?options :: WebSocketOptions) => IO RelayDispatcher
@@ -42,13 +35,10 @@ makeRelayDispatcher = do
                     pure (insert uid (existedInChan, count + 1) lastSources, actualOutChan)
             writeIORef sources actualSources
             putMVar lock ()
-            pure
-                RelaySource
-                    { tryReceiveMessage = do
-                        (!el, !wait) <- tryReadChan actualOutChan
-                        !m <- tryRead el
-                        pure (m, wait)
-                    }
+            pure do
+                (!element, !wait) <- tryReadChan actualOutChan
+                !message <- tryRead element
+                pure (message, wait)
 
         freeSource !uid = do
             takeMVar lock
@@ -63,10 +53,7 @@ makeRelayDispatcher = do
 
         getSink !uid = do
             !sources' <- readIORef sources
-            for (lookup uid sources') \(!sink, _) ->
-                pure
-                    RelaySink
-                        { sendMessage = writeChan sink
-                        }
+            for (lookup uid sources') \(!sink, _) -> pure do
+                writeChan sink
 
     pure RelayDispatcher{..}

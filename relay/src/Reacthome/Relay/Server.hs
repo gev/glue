@@ -4,7 +4,7 @@ import Control.Concurrent.Async (race_)
 import Control.Exception (handle)
 import Data.ByteString (toStrict)
 import Data.UUID (UUID, toByteString)
-import Reacthome.Relay.Dispatcher (RelayDispatcher (..), RelaySink (..), RelaySource (..))
+import Reacthome.Relay.Dispatcher (RelayDispatcher (..))
 import Reacthome.Relay.Error (RelayError (..), logError)
 import Reacthome.Relay.Message (getMessageDestination, isMessageDestinationValid)
 import WebSockets.Connection (WebSocketConnection (..))
@@ -34,7 +34,7 @@ makeRelayServer =
                         then do
                             !found <- ?dispatcher.getSink destination
                             case found of
-                                Just !sink -> sink.sendMessage message
+                                Just !sendMessage -> sendMessage message
                                 Nothing -> logError $ NoPeersFound destination
                         else logError $ InvalidDestination destination
 
@@ -45,11 +45,11 @@ makeRelayServer =
 
             wrap do
                 !connection <- pending.accept
-                !source <- ?dispatcher.getSource from
+                !tryReceiveMessage <- ?dispatcher.getSource from
                 -- print $ "Peer connected " <> show peer
                 race_
                     do wrap $ connection.runReceiveMessageLoop dispatch
-                    do wrap $ connection.runSendMessageLoop source.tryReceiveMessage
+                    do wrap $ connection.runSendMessageLoop tryReceiveMessage
                 ?dispatcher.freeSource from
      in
         RelayServer{..}
