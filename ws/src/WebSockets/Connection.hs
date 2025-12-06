@@ -1,9 +1,9 @@
 module WebSockets.Connection where
 
 import Control.Concurrent (threadDelay)
-import Control.Exception (catch, throwIO)
+import Control.Exception (try)
 import Control.Exception.Base (IOException)
-import Control.Monad (forever)
+import Control.Monad (void)
 import Data.ByteString (ByteString)
 import Data.Text (Text)
 import Data.Text.Encoding (encodeUtf8)
@@ -11,15 +11,15 @@ import Data.Vector (toList, unsafeFreeze, unsafeTake)
 import Data.Vector.Mutable (unsafeNew, unsafeWrite)
 import Network.WebSockets (ConnectionException)
 import Network.WebSockets.Connection (Connection, receiveData, sendBinaryDatas, sendClose)
-import WebSockets.Error (WebSocketError (..))
+import WebSockets.Error (WebSocketError (..), joinExceptions)
 import WebSockets.Options (WebSocketOptions (..))
 
 type WebSocketSink = ByteString -> IO ()
 type WebSocketSource = IO (Maybe ByteString, IO ByteString)
 
 data WebSocketConnection = WebSocketConnection
-    { runReceiveMessageLoop :: WebSocketSink -> IO ()
-    , runSendMessageLoop :: WebSocketSource -> IO ()
+    { runReceiveMessageLoop :: WebSocketSink -> IO WebSocketError
+    , runSendMessageLoop :: WebSocketSource -> IO WebSocketError
     , close :: Text -> IO ()
     }
 
@@ -29,65 +29,70 @@ makeWebSocketConnection ::
 makeWebSocketConnection connection =
     let
         receiveMessage =
-            catch @IOException
-                do
-                    catch @ConnectionException
-                        do
-                            receiveData connection
-                        do throwIO . ReceiveError
-                do throwIO . IOError
+            joinExceptions ReceiveError
+                <$> try @IOException do
+                    try @ConnectionException do
+                        receiveData connection
 
-        sendMessages messages =
-            catch @IOException
-                do
-                    catch @ConnectionException
-                        do sendBinaryDatas connection messages
-                        do throwIO . SendError
-                do throwIO . IOError
+        sendMessages message =
+            joinExceptions SendError
+                <$> try @IOException do
+                    try @ConnectionException do
+                        sendBinaryDatas connection message
 
-        close message =
-            catch @IOException
-                do
-                    catch @ConnectionException
-                        do sendClose connection $ encodeUtf8 message
-                        do throwIO . CloseError
-                do throwIO . IOError
+        close message = void do
+            try @IOException do
+                try @ConnectionException do
+                    sendClose connection $ encodeUtf8 message
 
-        runReceiveMessageLoop writeToSink = forever do
-            !message <- receiveMessage
-            writeToSink message
+        runReceiveMessageLoop writeToSink = processMessageLoop
+          where
+            processMessageLoop = do
+                !successful <- receiveMessage
+                case successful of
+                    Right message -> do
+                        writeToSink message
+                        processMessageLoop
+                    Left e -> pure e
 
         runSendMessageLoop tryReadFromSource = do
-            let
-                processMessageLoop !vector !index = do
-                    (!maybeMessage, !waitMessage) <- tryReadFromSource
-                    case maybeMessage of
-                        Nothing -> do
-                            !actualVector <-
-                                if index > 0
-                                    then sendBatch vector index
-                                    else pure vector
-                            threadDelay ?options.delay
-                            !message <- waitMessage
-                            unsafeWrite actualVector 0 message
-                            processMessageLoop actualVector 1
-                        Just !message -> do
-                            unsafeWrite vector index message
-                            let nextIndex = index + 1
-                            if nextIndex < ?options.chunkSize
-                                then do
-                                    processMessageLoop vector nextIndex
-                                else do
-                                    newVector <- sendBatch vector ?options.chunkSize
-                                    processMessageLoop newVector 0
-
-                sendBatch !vector !size = do
-                    !frozen <- unsafeFreeze vector
-                    let !messages = toList $ unsafeTake size frozen
-                    sendMessages messages
-                    unsafeNew ?options.chunkSize
-
             initialVector <- unsafeNew ?options.chunkSize
             processMessageLoop initialVector 0
+          where
+            processMessageLoop !vector !index = do
+                (!maybeMessage, !waitMessage) <- tryReadFromSource
+                case maybeMessage of
+                    Nothing -> do
+                        !successful <-
+                            if index > 0
+                                then sendBatch vector index
+                                else pure $ Right vector
+                        case successful of
+                            Right actualVector -> do
+                                threadDelay ?options.delay
+                                !message <- waitMessage
+                                unsafeWrite actualVector 0 message
+                                processMessageLoop actualVector 1
+                            Left e -> pure e
+                    Just !message -> do
+                        unsafeWrite vector index message
+                        let nextIndex = index + 1
+                        if nextIndex < ?options.chunkSize
+                            then do
+                                processMessageLoop vector nextIndex
+                            else do
+                                successful <- sendBatch vector ?options.chunkSize
+                                case successful of
+                                    Right newVector -> do
+                                        processMessageLoop newVector 0
+                                    Left e -> pure e
+
+            sendBatch !vector !size = do
+                !frozen <- unsafeFreeze vector
+                let !messages = toList $ unsafeTake size frozen
+                successful <- sendMessages messages
+                case successful of
+                    Right () -> Right <$> unsafeNew ?options.chunkSize
+                    Left e -> pure $ Left e
      in
         WebSocketConnection{..}

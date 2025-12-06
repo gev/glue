@@ -1,14 +1,12 @@
 module Reacthome.Relay.Server where
 
-import Control.Concurrent.Async (race_)
-import Control.Exception (handle)
+import Control.Concurrent.Async (race)
 import Data.ByteString (toStrict)
 import Data.UUID (UUID, toByteString)
 import Reacthome.Relay.Dispatcher (RelayDispatcher (..))
 import Reacthome.Relay.Error (RelayError (..), logError)
 import Reacthome.Relay.Message (getMessageDestination, isMessageDestinationValid)
 import WebSockets.Connection (WebSocketConnection (..))
-import WebSockets.Error (WebSocketError)
 import WebSockets.Options (WebSocketOptions)
 import WebSockets.PendingConnection (WebSocketPendingConnection (..))
 import Prelude hiding (lookup, take)
@@ -40,16 +38,17 @@ makeRelayServer =
 
                 from = toStrict $ toByteString peer
 
-                onError = logError . WebSocketError from
-                wrap = handle @WebSocketError onError
-
-            wrap do
-                !connection <- pending.accept
-                !tryReceiveMessage <- ?dispatcher.getSource from
-                -- print $ "Peer connected " <> show peer
-                race_
-                    do wrap $ connection.runReceiveMessageLoop dispatch
-                    do wrap $ connection.runSendMessageLoop tryReceiveMessage
-                ?dispatcher.freeSource from
+            !successful <- pending.accept
+            case successful of
+                Left !e -> logError $ WebSocketError from e
+                Right !connection -> do
+                    !tryReceiveMessage <- ?dispatcher.getSource from
+                    -- print $ "Peer connected " <> show peer
+                    res <-
+                        either id id <$> race
+                            do connection.runReceiveMessageLoop dispatch
+                            do connection.runSendMessageLoop tryReceiveMessage
+                    logError $ WebSocketError from res
+                    ?dispatcher.freeSource from
      in
         RelayServer{..}

@@ -20,7 +20,7 @@ import WebSockets.Options (bound, defaultWebSocketOptions)
 import Prelude hiding (last)
 
 concurrency :: Int
-concurrency = 100
+concurrency = 10_000
 
 main :: IO ()
 main = do
