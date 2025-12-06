@@ -2,12 +2,14 @@ module WebSockets.Client where
 
 import Control.Concurrent (forkIO, threadDelay)
 import Control.Concurrent.Async (race)
+import Control.Exception (try)
+import Control.Exception.Base (IOException)
 import Control.Monad (void)
 import Data.IORef (newIORef, readIORef, writeIORef)
-import Network.WebSockets (runClient)
+import Network.WebSockets (HandshakeException, runClient)
 import System.Random (newStdGen, uniformR)
 import WebSockets.Connection (WebSocketConnection (..), WebSocketSink, WebSocketSource, makeWebSocketConnection)
-import WebSockets.Error (WebSocketError (..))
+import WebSockets.Error (WebSocketError (..), joinExceptions)
 import WebSockets.Options (WebSocketOptions (..))
 
 newtype WebSocketClient = WebSocketClient
@@ -28,11 +30,9 @@ runWebSocketClient host port path = do
         reconnectionLoop delay gen
             | delay > 8 = reconnectionLoop 8 gen
             | otherwise = do
-                !res <- runClient host port path $ application . makeWebSocketConnection
-                let actualDelay = case res of
-                        HandshakeError _ -> 1
-                        _ -> delay
-                print res
+                !err <- run
+                let actualDelay = getActualDelay err delay
+                print err
                 writeIORef connected False
                 print @String $ "Reconnect in " <> show actualDelay <> "s"
                 let usDelay = actualDelay * 1_000_000
@@ -41,11 +41,22 @@ runWebSocketClient host port path = do
                 let nextDelay = 2 * actualDelay
                 reconnectionLoop nextDelay gen'
 
+        run =
+            selectError . joinExceptions HandshakeError
+                <$> try @IOException do
+                    try @HandshakeException do
+                        runClient host port path $ application . makeWebSocketConnection
+
         application connection = do
             writeIORef connected True
-            either id id <$> race
+            selectError <$> race
                 do connection.runReceiveMessageLoop ?sink
                 do connection.runSendMessageLoop ?source
+
+        selectError = either id id
+
+        getActualDelay (HandshakeError _) _ = 1
+        getActualDelay _ delay = delay
 
     void . forkIO $ reconnectionLoop 1 =<< newStdGen
     pure WebSocketClient{..}
