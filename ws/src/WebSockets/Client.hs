@@ -53,10 +53,10 @@ runWebSocketClient host port path = do
                 do connection.runReceiveMessageLoop ?sink
                 do connection.runSendMessageLoop ?source
 
-        selectError = either id id
-
         getActualDelay (HandshakeError _) _ = 1
         getActualDelay _ delay = delay
+
+        selectError = either id id
 
     void . forkIO $ reconnectionLoop 1 =<< newStdGen
     pure WebSocketClient{..}
