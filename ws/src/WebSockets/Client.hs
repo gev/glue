@@ -53,8 +53,8 @@ runWebSocketClient host port path = do
                 do connection.runReceiveMessageLoop ?sink
                 do connection.runSendMessageLoop ?source
 
-        getActualDelay (HandshakeError _) _ = 1
-        getActualDelay _ delay = delay
+        getActualDelay (HandshakeError _) = id
+        getActualDelay _ = const 1
 
         selectError = either id id
 
