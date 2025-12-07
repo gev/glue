@@ -34,7 +34,7 @@ makeWebSocketConnection connection =
                     try @ConnectionException do
                         receiveData connection
 
-        sendMessages message =
+        sendMessages !message =
             joinExceptions SendError
                 <$> try @IOException do
                     try @ConnectionException do
@@ -90,7 +90,7 @@ makeWebSocketConnection connection =
             sendChunk !vector !size = do
                 !frozen <- unsafeFreeze vector
                 let !chunk = toList $ unsafeTake size frozen
-                successful <- sendMessages chunk
+                !successful <- sendMessages chunk
                 case successful of
                     Right () -> Right <$> unsafeNew ?options.chunkSize
                     Left e -> pure $ Left e
