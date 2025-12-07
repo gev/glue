@@ -12,7 +12,6 @@ build-type: Simple
 common common-options
   build-depends:
     base,
-    bytestring,
     ws,
 
   default-language: GHC2024
@@ -44,6 +43,7 @@ library
 
   build-depends:
     async,
+    bytestring,
     clock,
     text,
     time,
