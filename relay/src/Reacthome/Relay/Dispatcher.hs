@@ -35,10 +35,11 @@ makeRelayDispatcher = do
                     pure (insert uid (existedInChan, count + 1) lastSources, actualOutChan)
             writeIORef sources actualSources
             putMVar lock ()
-            pure do
-                (!element, !wait) <- tryReadChan actualOutChan
-                !message <- tryRead element
-                pure (message, wait)
+            let tryReadMessage = do
+                    (!element, !wait) <- tryReadChan actualOutChan
+                    !message <- tryRead element
+                    pure (message, wait)
+            pure tryReadMessage
 
         freeSource !uid = do
             takeMVar lock

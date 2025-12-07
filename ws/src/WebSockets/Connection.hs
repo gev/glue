@@ -57,40 +57,40 @@ makeWebSocketConnection connection =
 
         runSendMessageLoop tryReadFromSource = do
             initialVector <- unsafeNew ?options.chunkSize
-            processMessageLoop initialVector 0
+            processChunksOfMessages initialVector 0
           where
-            processMessageLoop !vector !index = do
+            processChunksOfMessages !vector !index = do
                 (!maybeMessage, !waitMessage) <- tryReadFromSource
                 case maybeMessage of
                     Nothing -> do
                         !successful <-
                             if index > 0
-                                then sendBatch vector index
+                                then sendChunk vector index
                                 else pure $ Right vector
                         case successful of
                             Right actualVector -> do
                                 threadDelay ?options.delay
                                 !message <- waitMessage
                                 unsafeWrite actualVector 0 message
-                                processMessageLoop actualVector 1
+                                processChunksOfMessages actualVector 1
                             Left e -> pure e
                     Just !message -> do
                         unsafeWrite vector index message
                         let nextIndex = index + 1
                         if nextIndex < ?options.chunkSize
                             then do
-                                processMessageLoop vector nextIndex
+                                processChunksOfMessages vector nextIndex
                             else do
-                                successful <- sendBatch vector ?options.chunkSize
+                                successful <- sendChunk vector ?options.chunkSize
                                 case successful of
                                     Right newVector -> do
-                                        processMessageLoop newVector 0
+                                        processChunksOfMessages newVector 0
                                     Left e -> pure e
 
-            sendBatch !vector !size = do
+            sendChunk !vector !size = do
                 !frozen <- unsafeFreeze vector
-                let !messages = toList $ unsafeTake size frozen
-                successful <- sendMessages messages
+                let !chunk = toList $ unsafeTake size frozen
+                successful <- sendMessages chunk
                 case successful of
                     Right () -> Right <$> unsafeNew ?options.chunkSize
                     Left e -> pure $ Left e

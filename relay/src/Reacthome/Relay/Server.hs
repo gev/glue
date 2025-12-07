@@ -26,7 +26,7 @@ makeRelayServer =
     let
         accept pending peer = do
             let
-                dispatch message = do
+                dispatchMessage message = do
                     let destination = getMessageDestination message
                     if isMessageDestinationValid destination
                         then do
@@ -46,7 +46,7 @@ makeRelayServer =
                     -- print $ "Peer connected " <> show peer
                     res <-
                         either id id <$> race
-                            do connection.runReceiveMessageLoop dispatch
+                            do connection.runReceiveMessageLoop dispatchMessage
                             do connection.runSendMessageLoop tryReceiveMessage
                     logError $ WebSocketError from res
                     ?dispatcher.freeSource from
