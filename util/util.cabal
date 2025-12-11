@@ -34,7 +34,6 @@ library
     sqlite-simple,
     stm,
     text,
-    transformers,
 
   default-language: GHC2024
   default-extensions:
