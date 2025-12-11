@@ -1,6 +1,5 @@
 module Rest.Method where
 
-import Control.Monad.Trans.Except
 import Network.HTTP.Types
 import Rest
 import Rest.Status
@@ -8,7 +7,7 @@ import Rest.Status
 type Handler m =
     (?request :: Request) =>
     (Monad m) =>
-    ExceptT String m Response ->
+    m Response ->
     m Response
 
 get :: Handler m
@@ -20,5 +19,5 @@ post = match methodPost
 match :: Method -> Handler m
 match method controller =
     if ?request.method == method
-        then either badRequest pure =<< runExceptT controller
+        then controller
         else notAllowed method

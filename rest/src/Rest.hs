@@ -2,9 +2,6 @@ module Rest where
 
 import Control.Exception
 import Control.Monad
-import Control.Monad.Trans.Class
-import Control.Monad.Trans.Except
-import Control.Monad.Trans.Maybe
 import Data.ByteString
 import Data.ByteString.Lazy qualified as Lazy
 import Network.HTTP.Types.Header
@@ -20,7 +17,7 @@ data Request
     = Request
     { method :: Method
     , body :: IO Lazy.ByteString
-    , bodyParams :: ExceptT String IO BodyParams
+    , bodyParams :: IO (Either String BodyParams)
     , headers :: RequestHeaders
     , header :: HeaderName -> Maybe ByteString
     , query :: ByteString -> Maybe ByteString
@@ -30,42 +27,36 @@ data Request
     }
 
 data BodyParams = BodyParams
-    { lookup :: ByteString -> ExceptT String IO ByteString
+    { lookup :: ByteString -> Either String ByteString
     , list :: [Param]
     }
 
 rest :: W.Request -> Request
 rest request =
-    Request
-        { method
-        , body
-        , bodyParams
-        , headers
-        , header
-        , query
-        , hasContentType
-        , cookies
-        , cookie
-        }
-  where
-    method = request.requestMethod
-    body = W.lazyRequestBody request
-    bodyParams = do
-        list <-
-            withExceptT show . except
-                =<< lift do
-                    try @RequestParseException $
-                        fst <$> parseRequestBody lbsBackEnd request
-        let lookup' name =
-                maybeToExceptT ("Missing `" <> show name <> "` parameter")
-                    . hoistMaybe
-                    $ Prelude.lookup name list
-        pure $
-            BodyParams lookup' list
+    let
+        method = request.requestMethod
+        body = W.lazyRequestBody request
+        bodyParams =
+            try @RequestParseException
+                (parseRequestBody lbsBackEnd request)
+                >>= \case
+                    Left e -> pure . Left $ show e
+                    Right r -> do
+                        let list = fst r
 
-    headers = request.requestHeaders
-    header name = Prelude.lookup name headers
-    query name = join $ Prelude.lookup name request.queryString
-    hasContentType contentType = Just contentType == header hContentType
-    cookies = parseCookies <$> header hCookie
-    cookie name = Prelude.lookup name =<< cookies
+                        let lookup' name = do
+                                case Prelude.lookup name list of
+                                    Nothing -> Left $ "Missing `" <> show name <> "` parameter"
+                                    Just param -> Right param
+
+                        pure . Right $
+                            BodyParams lookup' list
+
+        headers = request.requestHeaders
+        header name = Prelude.lookup name headers
+        query name = join $ Prelude.lookup name request.queryString
+        hasContentType contentType = Just contentType == header hContentType
+        cookies = parseCookies <$> header hCookie
+        cookie name = Prelude.lookup name =<< cookies
+     in
+        Request{..}
