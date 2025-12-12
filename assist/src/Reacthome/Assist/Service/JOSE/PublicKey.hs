@@ -1,7 +1,10 @@
 module Reacthome.Assist.Service.JOSE.PublicKey where
 
 import Control.Concurrent
+import Control.Error.Util (exceptT)
 import Control.Monad
+import Control.Monad.Trans.Class (lift)
+import Control.Monad.Trans.Except (except)
 import Data.Aeson
 import JOSE.JWK
 import JOSE.JWKS
@@ -22,13 +25,11 @@ runPublicKeysUpdate = do
             {-
                 TODO: Handle the HTTP response status code
             -}
-            response <- responseBody <$> httpLbs req manager
-            either
-                print
-                ?publicKeys.store
-                do
-                    jwks <- eitherDecode @JWKS response
-                    traverse fromJWK jwks.keys
-    void . forkIO . forever $ do
+            response <- lift $ responseBody <$> httpLbs req manager
+            jwks <- except (eitherDecode @JWKS response)
+            keys <- except (traverse fromJWK jwks.keys)
+            lift (?publicKeys.store keys)
+
+    void . forkIO . forever $ exceptT error pure do
         updatePublicKeys
-        threadDelay $ 1_000_000 * ?environment.publicKeysUpdateInterval
+        lift (threadDelay $ 1_000_000 * ?environment.publicKeysUpdateInterval)

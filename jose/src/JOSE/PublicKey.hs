@@ -13,7 +13,7 @@ data PublicKey = PublicKey
 
 data PublicKeys m = PublicKeys
     { findBy :: UUID -> m (Either String PublicKey)
-    , store :: [PublicKey] -> m (Either String ())
+    , store :: [PublicKey] -> m ()
     }
 
 makePublicKey :: UUID -> ByteString -> Either String PublicKey
