@@ -1,12 +1,12 @@
-import Network.Wai.Handler.Warp
-import Reacthome.Assist.App
-import Reacthome.Assist.Controller.Dialog.Answer
-import Reacthome.Assist.Environment
-import Reacthome.Assist.Repository.Answers
+import Network.Wai.Handler.Warp (run)
+import Reacthome.Assist.App (app)
+import Reacthome.Assist.Controller.Dialog.Answer (handleAnswer)
+import Reacthome.Assist.Environment (Environment (..), GateConfig (..))
+import Reacthome.Assist.Repository.Answers (makeAnswers)
 import Reacthome.Assist.Repository.PublicKeys (makePublicKeys)
-import Reacthome.Assist.Repository.Users
+import Reacthome.Assist.Repository.Users (makeUsers)
 import Reacthome.Assist.Service.JOSE.PublicKey (runPublicKeysUpdate)
-import Reacthome.Gate.Connection.Pool
+import Reacthome.Gate.Connection.Pool (makeConnectionPool)
 
 main :: IO ()
 main = do

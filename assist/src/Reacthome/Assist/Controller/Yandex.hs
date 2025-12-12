@@ -1,35 +1,35 @@
 module Reacthome.Assist.Controller.Yandex where
 
 import Control.Error.Util (exceptT, (??))
-import Control.Monad.Trans.Class
-import Control.Monad.Trans.Except
-import Data.ByteString hiding (head, null)
-import Data.Maybe
-import JOSE.JWT
-import JOSE.Payload
-import JOSE.PublicKey
+import Control.Monad.Trans.Class (lift)
+import Control.Monad.Trans.Except (ExceptT, except, throwE)
+import Data.ByteString (stripPrefix)
+import Data.Maybe (fromMaybe)
+import JOSE.JWT (Token (..), isTokenValidNow)
+import JOSE.Payload (Payload (sub))
+import JOSE.PublicKey (PublicKeys)
 import JOSE.Verify (verifySignature)
-import Network.HTTP.Types.Header
-import Reacthome.Assist.Dialog.Gate
-import Reacthome.Assist.Domain.Answer
-import Reacthome.Assist.Domain.Query
-import Reacthome.Assist.Domain.Server.Id
-import Reacthome.Assist.Domain.User
-import Reacthome.Assist.Domain.User.Id
-import Reacthome.Assist.Domain.Users
-import Reacthome.Assist.Service.Dialog
-import Reacthome.Gate.Connection.Pool
-import Reacthome.Yandex.Dialogs.DialogRequest
-import Reacthome.Yandex.Dialogs.DialogRequest.Meta
+import Network.HTTP.Types.Header (hAuthorization)
+import Reacthome.Assist.Dialog.Gate (getAnswer)
+import Reacthome.Assist.Domain.Answer (Answer (..))
+import Reacthome.Assist.Domain.Query (Query (..))
+import Reacthome.Assist.Domain.Server.Id (ServerId)
+import Reacthome.Assist.Domain.User (User (servers))
+import Reacthome.Assist.Domain.User.Id (UserId (..))
+import Reacthome.Assist.Domain.Users (Users (..))
+import Reacthome.Assist.Service.Dialog (Answers)
+import Reacthome.Gate.Connection.Pool (GateConnectionPool)
+import Reacthome.Yandex.Dialogs.DialogRequest (DialogRequest (..))
+import Reacthome.Yandex.Dialogs.DialogRequest.Meta (Meta (..))
 import Reacthome.Yandex.Dialogs.DialogRequest.Request qualified
-import Reacthome.Yandex.Dialogs.DialogRequest.Session
-import Reacthome.Yandex.Dialogs.DialogRequest.Session.Application
+import Reacthome.Yandex.Dialogs.DialogRequest.Session (Session (..))
+import Reacthome.Yandex.Dialogs.DialogRequest.Session.Application (Application (..))
 import Reacthome.Yandex.Dialogs.DialogRequest.Session.User qualified
-import Reacthome.Yandex.Dialogs.DialogResponse
+import Reacthome.Yandex.Dialogs.DialogResponse (DialogResponse (..))
 import Reacthome.Yandex.Dialogs.DialogResponse.Response qualified as D
-import Reacthome.Yandex.Dialogs.DialogResponse.Response.Directives
-import Rest
-import Rest.Media
+import Reacthome.Yandex.Dialogs.DialogResponse.Response.Directives (start'account'linking)
+import Rest (Request (..), Response)
+import Rest.Media (fromJSON, toJSON)
 
 runDialog ::
     ( ?answers :: Answers
@@ -39,29 +39,19 @@ runDialog ::
     , ?users :: Users
     ) =>
     IO Response
-runDialog = do
-    response <- exceptT (const $ pure shouldAuthorize) pure run
-    toJSON
+runDialog = exceptT (const $ toJSON shouldAuthorize) toJSON do
+    response <-
+        getAuthorizedUser >>= \user ->
+            case user.servers of
+                [] -> pure shouldAddServer
+                (server : _) -> do
+                    request <- except =<< lift (fromJSON ?request)
+                    lift $ makeAnswer server request
+    pure
         DialogResponse
             { response
             , version = "1.0"
             }
-
-run ::
-    ( ?answers :: Answers
-    , ?gateConnectionPool :: GateConnectionPool
-    , ?request :: Request
-    , ?publicKeys :: PublicKeys IO
-    , ?users :: Users
-    ) =>
-    ExceptT String IO D.Response
-run =
-    getAuthorizedUser >>= \user ->
-        case user.servers of
-            [] -> pure shouldAddServer
-            (server : _) -> do
-                request <- except =<< lift (fromJSON ?request)
-                lift $ makeAnswer server request
 
 getAuthorizedUser ::
     ( ?request :: Request
@@ -119,7 +109,7 @@ makeAnswer server DialogRequest{meta, session, request} = do
             }
 
 shouldAuthorize :: D.Response
-shouldAuthorize = do
+shouldAuthorize =
     D.Response
         { text = "Привет!"
         , tts = Just "Привет!"
