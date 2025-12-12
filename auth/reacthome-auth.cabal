@@ -12,12 +12,7 @@ build-type: Simple
 common common-options
   build-depends:
     base,
-    bytestring,
-    sqlite-simple,
-    text,
-    transformers,
     util,
-    uuid,
 
   default-language: GHC2024
   default-extensions:
@@ -31,6 +26,7 @@ common common-options
     OverloadedStrings
     PatternSynonyms
     QuasiQuotes
+    RecordWildCards
 
 library
   import:
@@ -131,8 +127,10 @@ library
     asn1-encoding,
     asn1-types,
     base64-bytestring,
+    bytestring,
     cookie,
     crypton,
+    errors,
     hashable,
     http-types,
     jose,
@@ -140,8 +138,12 @@ library
     memory,
     resource-pool,
     rest,
+    sqlite-simple,
+    text,
     time,
+    transformers,
     unordered-containers,
+    uuid,
     wai,
 
 executable reacthome-auth

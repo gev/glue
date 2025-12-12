@@ -1,8 +1,8 @@
 module Reacthome.Auth.Repository.Challenges where
 
 import Control.Concurrent
+import Control.Error (note)
 import Control.Monad
-import Control.Monad.Trans.Maybe
 import Data.HashMap.Strict
 import Reacthome.Auth.Domain.Challenge
 import Reacthome.Auth.Domain.Challenges
@@ -22,13 +22,10 @@ makeChallenges = do
                 remove challenge
             pure challenge
 
-        findBy = MaybeT . runRead map' . lookup
+        findBy hash =
+            note ("Challenge " <> show hash <> " not found")
+                <$> runRead map' (lookup hash)
 
         remove = runModify map' . delete
 
-    pure
-        Challenges
-            { makeNew
-            , findBy
-            , remove
-            }
+    pure Challenges{..}

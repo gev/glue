@@ -1,8 +1,7 @@
 module Reacthome.Auth.Repository.RefreshTokens.InMemory where
 
 import Control.Concurrent
-import Control.Monad.Trans.Class
-import Control.Monad.Trans.Maybe
+import Control.Error (note)
 import Data.HashMap.Strict
 import Reacthome.Auth.Domain.RefreshToken
 import Reacthome.Auth.Domain.RefreshTokens
@@ -14,12 +13,7 @@ makeRefreshTokens :: (?environment :: Environment) => IO RefreshTokens
 makeRefreshTokens = do
     map' <- newMVar empty
     let
-        findByHash = MaybeT . runRead map' . lookup
-        store token = lift $ runModify map' $ insert token.hash token
-        remove token = runModify map' $ delete token.hash
-    pure
-        RefreshTokens
-            { findByHash
-            , store
-            , remove
-            }
+        findByHash hash = note ("Refresh token " <> show hash <> " not found") <$> runRead map' (lookup hash)
+        store token = Right <$> runModify map' (insert token.hash token)
+        remove token = Right <$> runModify map' (delete token.hash)
+    pure RefreshTokens{..}

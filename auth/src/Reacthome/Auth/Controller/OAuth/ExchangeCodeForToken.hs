@@ -1,10 +1,10 @@
 module Reacthome.Auth.Controller.OAuth.ExchangeCodeForToken where
 
+import Control.Error.Util (exceptT)
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
-import Control.Monad.Trans.Maybe
 import JOSE.KeyPair
-import Reacthome.Auth.Controller.OAuth.Grant
+import Reacthome.Auth.Controller.OAuth.Grant (getAuthorizationCode)
 import Reacthome.Auth.Controller.OAuth.Token
 import Reacthome.Auth.Domain.Challenge
 import Reacthome.Auth.Domain.Clients
@@ -14,6 +14,7 @@ import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.AuthUsers
 import Rest
 import Rest.Media
+import Rest.Status (badRequest)
 
 exchangeCodeForToken ::
     ( ?environment :: Environment
@@ -23,12 +24,12 @@ exchangeCodeForToken ::
     , ?refreshTokens :: RefreshTokens
     , ?keyPair :: KeyPair
     ) =>
-    ExceptT String IO Response
-exchangeCodeForToken = do
+    IO Response
+exchangeCodeForToken = exceptT badRequest toJSON do
     code <- makeChallenge <$> getAuthorizationCode
-    user <- maybeToExceptT "Invalid exchange code" $ ?authUsers.findBy code
+    user <- except =<< lift (?authUsers.findBy code)
     lift $ ?authUsers.remove code
-    toJSON =<< generateToken user.id
+    generateToken user.id
 
 {-
     TODO: What I should response on the error?

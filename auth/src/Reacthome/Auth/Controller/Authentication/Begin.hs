@@ -1,5 +1,7 @@
 module Reacthome.Auth.Controller.Authentication.Begin where
 
+import Control.Error.Util (exceptT)
+import Control.Monad.Trans.Class (lift)
 import Control.Monad.Trans.Except
 import Reacthome.Auth.Controller.Authentication.Options
 import Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialRequestOptions
@@ -12,6 +14,7 @@ import Reacthome.Auth.Service.AuthUsers
 import Reacthome.Auth.Service.Authentication.Begin
 import Rest
 import Rest.Media
+import Rest.Status (badRequest)
 
 beginAuthentication ::
     ( ?request :: Request
@@ -20,12 +23,9 @@ beginAuthentication ::
     , ?users :: Users
     , ?userPublicKeys :: PublicKeys
     ) =>
-    ExceptT String IO Response
-beginAuthentication = do
-    options <- fromJSON @AuthenticationOptions ?request
-    login <- makeUserLogin options.login
-    toJSON . makePublicKeyCredentialRequestOptions
-        =<< runBeginAuthentication
-            BeginAuthentication
-                { login
-                }
+    IO Response
+beginAuthentication = exceptT badRequest toJSON do
+    options <- except =<< lift (fromJSON @AuthenticationOptions ?request)
+    login <- except (makeUserLogin options.login)
+    preAuthentication <- except =<< lift (runBeginAuthentication BeginAuthentication{..})
+    pure (makePublicKeyCredentialRequestOptions preAuthentication)

@@ -1,13 +1,14 @@
 module Reacthome.Auth.Repository.Clients where
 
-import Control.Monad.Trans.Maybe (hoistMaybe)
+import Control.Error.Util (note)
 import Crypto.Random
 import Data.Aeson (FromJSON, decodeFileStrict)
 import Data.ByteString.Base64 (encode)
 import Data.ByteString.Base64.Lazy (decode)
-import Data.ByteString.Lazy as B hiding (filter)
+import Data.ByteString.Lazy qualified as B
 import Data.HashMap.Strict
-import Data.Text.Lazy as T hiding (filter)
+import Data.Text.Lazy (Text)
+import Data.Text.Lazy qualified as T
 import Data.Text.Lazy.Encoding
 import Data.UUID
 import Data.UUID.V4
@@ -21,24 +22,16 @@ import Prelude hiding (lookup)
 
 makeClients :: String -> IO Clients
 makeClients file = do
-    rows <-
-        maybe
-            (error $ "Can't read clients from `" <> file <> "`")
-            pure
-            =<< decodeFileStrict file
-    clients' <- traverse fromClientRow rows
-    let
-        clients =
-            fromList $
-                fmap (\client -> (client.id, client)) clients'
+    decodeFileStrict file >>= \case
+        Nothing -> error ("Can't read clients from `" <> file <> "`")
+        Just rows -> do
+            clients' <- traverse fromClientRow rows
+            let
+                clients = fromList do
+                    fmap (\client -> (client.id, client)) clients'
 
-        findById cid =
-            hoistMaybe $
-                lookup cid clients
-    pure
-        Clients
-            { findById
-            }
+                findById cid = note ("Client " <> show cid.value <> " not found") (lookup cid clients)
+            pure Clients{..}
 
 data ClientRow = ClientRow
     { id :: Text

@@ -3,7 +3,6 @@ module Reacthome.Auth.Service.Authentication.Begin where
 import Control.Monad
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
-import Control.Monad.Trans.Maybe
 import Reacthome.Auth.Domain.Authentication.Begin
 import Reacthome.Auth.Domain.Credential.PublicKeys
 import Reacthome.Auth.Domain.User
@@ -18,16 +17,12 @@ runBeginAuthentication ::
     , ?userPublicKeys :: PublicKeys
     ) =>
     BeginAuthentication ->
-    ExceptT String IO PreAuthentication
-runBeginAuthentication command = do
-    user <-
-        maybeToExceptT
-            ("User with login " <> show command.login.value <> " not found")
-            $ ?users.findByLogin command.login
-    allowCredentials <- lift $ ?userPublicKeys.findByUserId user.id
-    when
-        (null allowCredentials)
-        $ throwE ("User with login " <> show command.login.value <> " has no any credentials")
+    IO (Either String PreAuthentication)
+runBeginAuthentication command = runExceptT do
+    user <- except =<< lift (?users.findByLogin command.login)
+    allowCredentials <- except =<< lift (?userPublicKeys.findByUserId user.id)
+    when (null allowCredentials) do
+        throwE ("User with login " <> show command.login.value <> " has no any credentials")
     challenge <- lift $ ?authUsers.register user
     pure
         PreAuthentication

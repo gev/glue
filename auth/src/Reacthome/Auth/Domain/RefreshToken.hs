@@ -8,7 +8,7 @@ data RefreshToken = RefreshToken
     { userId :: UserId
     , hash :: Hash
     }
-    deriving stock (Show)
+    deriving stock (Show, Eq)
 
 makeRefreshToken ::
     UserId ->

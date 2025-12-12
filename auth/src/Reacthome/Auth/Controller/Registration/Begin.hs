@@ -1,5 +1,7 @@
 module Reacthome.Auth.Controller.Registration.Begin where
 
+import Control.Error.Util (exceptT)
+import Control.Monad.Trans.Class (lift)
 import Control.Monad.Trans.Except
 import Reacthome.Auth.Controller.Registration.Options
 import Reacthome.Auth.Controller.WebAuthn.PublicKeyCredentialCreationOptions
@@ -12,6 +14,7 @@ import Reacthome.Auth.Service.AuthUsers
 import Reacthome.Auth.Service.Registration.Begin
 import Rest
 import Rest.Media
+import Rest.Status (badRequest)
 
 beginRegistration ::
     ( ?request :: Request
@@ -19,14 +22,10 @@ beginRegistration ::
     , ?authUsers :: AuthUsers
     , ?users :: Users
     ) =>
-    ExceptT String IO Response
-beginRegistration = do
-    options <- fromJSON @RegistrationOptions ?request
-    login <- makeUserLogin options.login
-    name <- makeUserName options.name
-    toJSON . makePublicKeyCredentialCreationOptions
-        =<< runBeginRegistration
-            BeginRegistration
-                { login
-                , name
-                }
+    IO Response
+beginRegistration = exceptT badRequest toJSON do
+    options <- except =<< lift (fromJSON @RegistrationOptions ?request)
+    login <- except (makeUserLogin options.login)
+    name <- except (makeUserName options.name)
+    preRegistration <- except =<< lift (runBeginRegistration BeginRegistration{..})
+    pure (makePublicKeyCredentialCreationOptions preRegistration)

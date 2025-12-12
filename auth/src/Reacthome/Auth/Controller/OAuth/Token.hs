@@ -54,7 +54,7 @@ generateToken uid = do
                 uid.value
     challenge <- lift makeRandomChallenge
     let token = makeRefreshToken uid challenge.value
-    ?refreshTokens.store token
+    except =<< lift (?refreshTokens.store token)
     pure
         Token
             { access_token = decodeUtf8 access_token

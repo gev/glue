@@ -1,12 +1,11 @@
 module Reacthome.Auth.Repository.Credentials.PublicKeys.InMemory where
 
 import Control.Concurrent.MVar
-import Control.Monad.Trans.Except
-import Control.Monad.Trans.Maybe
 import Data.HashMap.Strict as M
 import Data.HashSet as S
 import Data.Maybe
 import Reacthome.Auth.Domain.Credential.PublicKey
+import Reacthome.Auth.Domain.Credential.PublicKey.Id
 import Reacthome.Auth.Domain.Credential.PublicKeys
 import Util.MVar
 
@@ -15,12 +14,15 @@ makePublicKeys = do
     map' <- newMVar (M.empty, M.empty)
     let
         findById id' =
-            MaybeT $ runRead
+            runRead
                 map'
-                \(byId, _) -> M.lookup id' byId
+                \(byId, _) ->
+                    case M.lookup id' byId of
+                        Nothing -> Left ("Public key " <> show id'.value <> " not found")
+                        Just user -> Right user
 
         findByUserId id' =
-            runRead
+            Right <$> runRead
                 map'
                 \(_, byUser) ->
                     S.toList $
@@ -28,27 +30,26 @@ makePublicKeys = do
                             M.lookup id' byUser
 
         store publicKey =
-            ExceptT $
-                modifyMVar
-                    map'
-                    \value@(byId, byUserId) -> do
-                        let existingPublicKey = M.lookup publicKey.id byId
-                        if isJust existingPublicKey
-                            then pure (value, Left "Public key already exists")
-                            else do
-                                let publicKeys' =
-                                        case M.lookup publicKey.userId byUserId of
-                                            Just publicKeys ->
-                                                S.insert publicKey publicKeys
-                                            Nothing ->
-                                                S.singleton publicKey
-                                pure
-                                    (
-                                        ( M.insert publicKey.id publicKey byId
-                                        , M.insert publicKey.userId publicKeys' byUserId
-                                        )
-                                    , Right ()
+            modifyMVar
+                map'
+                \value@(byId, byUserId) -> do
+                    let existingPublicKey = M.lookup publicKey.id byId
+                    if isJust existingPublicKey
+                        then pure (value, Left "Public key already exists")
+                        else do
+                            let publicKeys' =
+                                    case M.lookup publicKey.userId byUserId of
+                                        Just publicKeys ->
+                                            S.insert publicKey publicKeys
+                                        Nothing ->
+                                            S.singleton publicKey
+                            pure
+                                (
+                                    ( M.insert publicKey.id publicKey byId
+                                    , M.insert publicKey.userId publicKeys' byUserId
                                     )
+                                , Right ()
+                                )
 
         remove id' =
             modifyMVar
@@ -70,12 +71,6 @@ makePublicKeys = do
                                 ( M.delete id' byId
                                 , byUser
                                 )
-                        , ()
+                        , Right ()
                         )
-    pure
-        PublicKeys
-            { findById
-            , findByUserId
-            , store
-            , remove
-            }
+    pure PublicKeys{..}

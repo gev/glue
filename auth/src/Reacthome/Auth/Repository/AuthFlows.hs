@@ -12,9 +12,4 @@ makeAuthFlows = do
         start = challenges.makeNew ?environment.authFlowCookieTTL
         findBy = challenges.findBy
         stop = challenges.remove
-    pure
-        AuthFlows
-            { start
-            , findBy
-            , stop
-            }
+    pure AuthFlows{..}

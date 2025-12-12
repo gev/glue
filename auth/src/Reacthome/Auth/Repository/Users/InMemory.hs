@@ -1,11 +1,11 @@
 module Reacthome.Auth.Repository.Users.InMemory where
 
 import Control.Concurrent
-import Control.Monad.Trans.Except
-import Control.Monad.Trans.Maybe
+import Control.Error (note)
 import Data.Bifunctor
 import Data.HashMap.Strict
 import Reacthome.Auth.Domain.User
+import Reacthome.Auth.Domain.User.Id
 import Reacthome.Auth.Domain.User.Login
 import Reacthome.Auth.Domain.Users
 import Util.MVar
@@ -15,27 +15,22 @@ makeUsers :: IO Users
 makeUsers = do
     map' <- newMVar (empty, empty)
     let
-        getAll = runRead
-            map'
-            \(byId, _) -> snd <$> toList byId
+        getAll =
+            Right <$> runRead map' \(byId, _) -> snd <$> toList byId
 
         findById uid =
-            MaybeT $ runRead
-                map'
-                \(byId, _) -> lookup uid byId
+            note ("User " <> show uid.value <> " not found")
+                <$> runRead map' \(byId, _) -> lookup uid byId
 
         findByLogin login =
-            MaybeT $ runRead
-                map'
-                \(_, byLogin) -> lookup login byLogin
+            note ("User " <> show login.value <> " not found")
+                <$> runRead map' \(_, byLogin) -> lookup login byLogin
 
         has login =
-            runRead
-                map'
-                \(_, byLogin) -> member login byLogin
+            Right <$> runRead map' \(_, byLogin) -> member login byLogin
 
         store user =
-            ExceptT $ modifyMVar
+            modifyMVar
                 map'
                 \value@(byId, byLogin) ->
                     pure case lookup user.login byLogin of
@@ -64,17 +59,9 @@ makeUsers = do
                             )
 
         remove user =
-            runModify map' $
+            Right <$> runModify map' do
                 bimap
                     (delete user.id)
                     (delete user.login)
 
-    pure
-        Users
-            { getAll
-            , findById
-            , findByLogin
-            , has
-            , store
-            , remove
-            }
+    pure Users{..}

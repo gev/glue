@@ -1,5 +1,6 @@
 module Reacthome.Auth.Controller.OAuth.Grant where
 
+import Control.Monad.Trans.Class (MonadTrans (lift))
 import Control.Monad.Trans.Except
 import Data.ByteString
 import Data.ByteString.Base64.URL (decodeUnpadded)
@@ -29,9 +30,9 @@ run ::
     ByteString ->
     ExceptT String IO ByteString
 run grant name = do
-    params <- ?request.bodyParams
-    grant =<< params.lookup "grant_type"
-    client_id <- params.lookup "client_id"
-    client_secret <- params.lookup "client_secret"
-    grantClient client_id client_secret
-    except . decodeUnpadded =<< params.lookup name
+    params <- except =<< lift ?request.bodyParams
+    grant =<< except (params.lookup "grant_type")
+    client_id <- except (params.lookup "client_id")
+    client_secret <- except (params.lookup "client_secret")
+    except =<< lift (grantClient client_id client_secret)
+    except (decodeUnpadded =<< params.lookup name)

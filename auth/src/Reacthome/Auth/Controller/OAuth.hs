@@ -1,8 +1,8 @@
 module Reacthome.Auth.Controller.OAuth where
 
+import Control.Error.Util (exceptT, (??))
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
-import Control.Monad.Trans.Maybe
 import Data.String
 import Reacthome.Auth.Controller.AuthFlowCookie
 import Reacthome.Auth.Environment
@@ -20,8 +20,8 @@ oauth ::
     , ?environment :: Environment
     , ?authFlows :: AuthFlows
     ) =>
-    ExceptT String IO Response
-oauth = do
+    IO Response
+oauth = exceptT badRequest (redirect "/authentication") do
     responseType <- query "Not a valid `OAuth2` flow" "response_type"
     if responseType == "code"
         then do
@@ -33,18 +33,10 @@ oauth = do
             -}
             client_id <- flowParam "client_id"
             challenge <-
-                lift $
-                    ?authFlows.start
-                        AuthCodeGrant
-                            { scope
-                            , state
-                            , redirect_uri
-                            , client_id
-                            }
-            redirect [setAuthFlowCookie challenge] "/authentication"
+                lift (?authFlows.start AuthCodeGrant{..})
+            pure [setAuthFlowCookie challenge]
         else throwE "Unknown type of the OAuth2 authorization flow"
   where
-    query err name = maybeToExceptT err $ hoistMaybe $ ?request.query name
+    query err name = ?request.query name ?? err
     missParam name = "Missing parameter `" <> name <> "` of the `AuthorizationCodeGrant` flow"
-    flowParam name =
-        query (missParam name) $ fromString name
+    flowParam name = query (missParam name) $ fromString name

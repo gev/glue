@@ -1,5 +1,6 @@
 module Reacthome.Auth.Controller.WellKnown.JWKS where
 
+import Control.Error.Util (exceptT)
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
 import JOSE.JWK
@@ -9,23 +10,15 @@ import Reacthome.Auth.Domain.PublicKey (PublicKey, bytes, kid)
 import Reacthome.Auth.Domain.PublicKeys (PublicKeys, getAll)
 import Rest
 import Rest.Media
+import Rest.Status (badRequest)
 
 jwks ::
-    ( ?jwkPublicKeys :: PublicKeys
-    ) =>
-    ExceptT String IO Response
-jwks = do
-    keys <-
-        traverse makeJWK
-            =<< lift ?jwkPublicKeys.getAll
-    toJSON $
-        JWKS
-            { keys
-            }
+    (?jwkPublicKeys :: PublicKeys) =>
+    IO Response
+jwks = exceptT badRequest toJSON do
+    pks <- except =<< lift ?jwkPublicKeys.getAll
+    keys <- except (traverse makeJWK pks)
+    pure JWKS{..}
 
-makeJWK ::
-    (Monad m) =>
-    PublicKey ->
-    ExceptT String m JWK
-makeJWK key =
-    toJWK <$> except (makePublicKey key.kid key.bytes)
+makeJWK :: PublicKey -> Either String JWK
+makeJWK key = toJWK <$> makePublicKey key.kid key.bytes
