@@ -11,10 +11,7 @@ build-type: Simple
 
 common common-options
   build-depends:
-    base,
-    bytestring,
-    text,
-    transformers,
+    base
 
   default-language: GHC2024
   default-extensions:
@@ -25,6 +22,7 @@ common common-options
     ImplicitParams
     OverloadedRecordDot
     OverloadedStrings
+    RecordWildCards
 
 library
   import:
@@ -65,6 +63,8 @@ library
   build-depends:
     aeson,
     async,
+    bytestring,
+    errors,
     hashable,
     http-client,
     http-client-tls,
@@ -74,6 +74,8 @@ library
     rest,
     stm,
     stm-containers,
+    text,
+    transformers,
     unordered-containers,
     util,
     uuid,

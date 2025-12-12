@@ -1,11 +1,10 @@
 module Reacthome.Assist.Controller.Yandex where
 
+import Control.Error.Util (exceptT, (??))
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
-import Control.Monad.Trans.Maybe
 import Data.ByteString hiding (head, null)
 import Data.Maybe
-import Data.UUID hiding (null)
 import JOSE.JWT
 import JOSE.Payload
 import JOSE.PublicKey
@@ -39,9 +38,9 @@ runDialog ::
     , ?publicKeys :: PublicKeys IO
     , ?users :: Users
     ) =>
-    ExceptT String IO Response
+    IO Response
 runDialog = do
-    response <- handleE shouldAuthorize run
+    response <- exceptT (const $ pure shouldAuthorize) pure run
     toJSON
         DialogResponse
             { response
@@ -56,45 +55,29 @@ run ::
     , ?users :: Users
     ) =>
     ExceptT String IO D.Response
-run = do
-    maybe
-        shouldAddServer
-        ( \user -> case user.servers of
-            [] -> do
-                lift $
-                    print
-                        ( "User: `"
-                            <> toString user.id.value
-                            <> "` doesn't have the any known smart home server"
-                        )
-                shouldAddServer
-            (server : _) -> makeAnswer server =<< fromJSON ?request
-        )
-        =<< getAuthorizedUser
+run =
+    getAuthorizedUser >>= \user ->
+        case user.servers of
+            [] -> pure shouldAddServer
+            (server : _) -> do
+                request <- except =<< lift (fromJSON ?request)
+                lift $ makeAnswer server request
 
 getAuthorizedUser ::
     ( ?request :: Request
     , ?publicKeys :: PublicKeys IO
     , ?users :: Users
     ) =>
-    ExceptT String IO (Maybe User)
+    ExceptT String IO User
 getAuthorizedUser = do
-    authorization <-
-        maybeToExceptT
-            "Not authorized"
-            . hoistMaybe
-            $ ?request.header hAuthorization
-    jwt <-
-        maybeToExceptT
-            "Required `Bearer` authorization"
-            . hoistMaybe
-            $ stripPrefix "Bearer " authorization
-    token <- verifySignature ?publicKeys jwt
+    authorization <- ?request.header hAuthorization ?? "Not authorized"
+    jwt <- stripPrefix "Bearer " authorization ?? "Required `Bearer` authorization"
+    token <- except =<< lift (verifySignature ?publicKeys jwt)
     isValid <- lift $ isTokenValidNow token
     if isValid
         then do
             let uid = token.payload.sub
-            lift . runMaybeT $ ?users.findById $ UserId uid
+            except (?users.findById $ UserId uid)
         else throwE "Token is expired"
 
 makeAnswer ::
@@ -103,7 +86,7 @@ makeAnswer ::
     ) =>
     ServerId ->
     DialogRequest ->
-    ExceptT String IO D.Response
+    IO D.Response
 makeAnswer _ LinkingComplete{} =
     pure
         D.Response
@@ -117,17 +100,16 @@ makeAnswer server DialogRequest{meta, session, request} = do
         {-
             TODO: Add timeout
         -}
-        lift $
-            getAnswer
-                server
-                Query
-                    { user_agent = meta.client_id
-                    , session = session.session_id
-                    , skill = session.skill_id
-                    , skill_user = session.user.user_id
-                    , skill_application = session.application.application_id
-                    , message = request.command
-                    }
+        getAnswer
+            server
+            Query
+                { user_agent = meta.client_id
+                , session = session.session_id
+                , skill = session.skill_id
+                , skill_user = session.user.user_id
+                , skill_application = session.application.application_id
+                , message = request.command
+                }
     pure
         D.Response
             { text = answer.message
@@ -136,23 +118,20 @@ makeAnswer server DialogRequest{meta, session, request} = do
             , directives = Nothing
             }
 
-shouldAuthorize :: String -> ExceptT String IO D.Response
-shouldAuthorize err = do
-    lift $ print err
-    pure
-        D.Response
-            { text = "Привет!"
-            , tts = Just "Привет!"
-            , end_session = False
-            , directives = Just start'account'linking
-            }
+shouldAuthorize :: D.Response
+shouldAuthorize = do
+    D.Response
+        { text = "Привет!"
+        , tts = Just "Привет!"
+        , end_session = False
+        , directives = Just start'account'linking
+        }
 
-shouldAddServer :: ExceptT String IO D.Response
-shouldAddServer = do
-    pure
-        D.Response
-            { text = "Необходимо добавить сервер умного дома"
-            , tts = Just "Необходимо добавить сервер умного дома"
-            , end_session = False
-            , directives = Nothing
-            }
+shouldAddServer :: D.Response
+shouldAddServer =
+    D.Response
+        { text = "Необходимо добавить сервер умного дома"
+        , tts = Just "Необходимо добавить сервер умного дома"
+        , end_session = False
+        , directives = Nothing
+        }

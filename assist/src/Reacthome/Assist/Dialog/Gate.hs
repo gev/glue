@@ -13,16 +13,13 @@ getAnswer ::
     ( ?answers :: Answers
     , ?gateConnectionPool :: GateConnectionPool
     ) =>
-    ServerId ->
-    GetAnswer
+    ServerId -> GetAnswer
 getAnswer sid query = do
     uid <- nextRandom
     sendQuery sid $ pack uid query
     ?answers.takeAnswer uid
 
-setAnswer ::
-    (?answers :: Answers) =>
-    SetAnswer
+setAnswer :: (?answers :: Answers) => SetAnswer
 setAnswer uid answer =
     maybe (print $ "Could not put answer with id " <> show uid <> " into answers") pure
         =<< ?answers.putAnswer uid answer
