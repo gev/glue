@@ -1,6 +1,5 @@
 module Reacthome.Auth.Domain.Credential.PublicKey.Algorithm.RS256 where
 
-import Control.Monad.Trans.Except
 import Crypto.Number.Serialize
 import Data.ASN1.BitArray
 import Data.ASN1.Prim
@@ -9,7 +8,7 @@ import Data.ByteString.Builder
 import Util.ASN1 qualified as ASN1
 import Prelude hiding (length)
 
-decodePublicKey :: (Monad m) => [ASN1] -> ExceptT String m ByteString
+decodePublicKey :: [ASN1] -> Either String ByteString
 decodePublicKey = \case
     [ Start Sequence
         , Start Sequence
@@ -19,21 +18,21 @@ decodePublicKey = \case
         , BitString (BitArray _ keyBytes)
         , End Sequence
         ] -> decodeRSAKey keyBytes
-    _ -> throwE "Invalid RSA public key format"
+    _ -> Left "Invalid RSA public key format"
 
-decodeRSAKey :: (Monad m) => ByteString -> ExceptT String m ByteString
+decodeRSAKey :: ByteString -> Either String ByteString
 decodeRSAKey keyBytes = do
     bytes <- ASN1.berDecode keyBytes
     case bytes of
         [Start Sequence, IntVal n, IntVal e, End Sequence] ->
-            pure $
+            Right $
                 toStrict $
                     toLazyByteString $
                         mconcat
                             [ encodeMPI n -- modulus
                             , encodeMPI e -- public exponent
                             ]
-        _ -> throwE "Invalid RSA public key format"
+        _ -> Left "Invalid RSA public key format"
 
 encodeMPI :: Integer -> Builder
 encodeMPI i =
@@ -45,12 +44,11 @@ encodeMPI i =
             ]
 
 verifySignature ::
-    (Monad m) =>
     ByteString ->
     ByteString ->
     ByteString ->
-    ExceptT String m Bool
-verifySignature _ _ _ = pure False
+    Either String Bool
+verifySignature _ _ _ = Left "RS256 verify signature not implemented"
 
 {-
     TODO: WebAuthn. Implement RS256

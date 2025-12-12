@@ -1,8 +1,8 @@
 module Reacthome.Auth.Controller.Authentication.Complete where
 
+import Control.Error.Util (exceptT)
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
-import Control.Monad.Trans.Maybe
 import Reacthome.Auth.Controller.AuthFlowCookie
 import Reacthome.Auth.Controller.Authentication.Authenticated
 import Reacthome.Auth.Controller.WebAuthn.AuthenticatorAssertionResponse
@@ -16,10 +16,11 @@ import Reacthome.Auth.Environment
 import Reacthome.Auth.Service.AuthFlows
 import Reacthome.Auth.Service.AuthUsers
 import Reacthome.Auth.Service.Authentication.Complete
-import Util.Base64
-import Util.Base64.URL qualified as URL
 import Rest
 import Rest.Media
+import Rest.Status (badRequest)
+import Util.Base64
+import Util.Base64.URL qualified as URL
 
 completeAuthentication ::
     ( ?request :: Request
@@ -29,22 +30,17 @@ completeAuthentication ::
     , ?users :: Users
     , ?userPublicKeys :: PublicKeys
     ) =>
-    ExceptT String IO Response
-completeAuthentication = do
-    authFlow <- maybeToExceptT "Invalid auth flow" . ?authFlows.findBy =<< getAuthFlowCookie
-    credential <- fromJSON @(PublicKeyCredential AuthenticatorAssertionResponse) ?request
+    IO Response
+completeAuthentication = exceptT badRequest toJSON do
+    cookie <- getAuthFlowCookie
+    authFlow <- except =<< lift (?authFlows.findBy cookie)
+    credential <- except =<< lift (fromJSON @(PublicKeyCredential AuthenticatorAssertionResponse) ?request)
     user <- authenticateBy credential
-    toJSON =<< lift (makeAuthenticated authFlow user)
+    lift (makeAuthenticated authFlow user)
   where
     authenticateBy credential = do
-        cid <- makePublicKeyId <$> fromBase64 credential.id
-        challenge <- makeChallenge <$> URL.fromBase64 credential.response.challenge
-        message <- fromBase64 credential.response.message
-        signature <- fromBase64 credential.response.signature
-        runCompleteAuthentication
-            CompleteAuthentication
-                { id = cid
-                , challenge
-                , message
-                , signature
-                }
+        cid <- except (makePublicKeyId <$> fromBase64 credential.id)
+        challenge <- except (makeChallenge <$> URL.fromBase64 credential.response.challenge)
+        message <- except (fromBase64 credential.response.message)
+        signature <- except (fromBase64 credential.response.signature)
+        except =<< lift (runCompleteAuthentication CompleteAuthentication{id = cid, ..})

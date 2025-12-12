@@ -9,8 +9,8 @@ import Network.HTTP.Types
 import Network.HTTP.Types.Header
 import Reacthome.Auth.Domain.Challenge
 import Reacthome.Auth.Environment
-import Cookie
 import Rest
+import Web.Cookie
 
 cookieName :: ByteString
 cookieName = "auth_flow_challenge"

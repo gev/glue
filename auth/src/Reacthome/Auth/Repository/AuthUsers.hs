@@ -13,9 +13,4 @@ makeAuthUsers = do
         register = challenges.makeNew ?environment.authTimeout
         findBy = challenges.findBy
         remove = challenges.remove
-    pure
-        AuthUsers
-            { register
-            , findBy
-            , remove
-            }
+    pure AuthUsers{..}

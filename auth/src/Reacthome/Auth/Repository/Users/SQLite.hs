@@ -2,7 +2,6 @@ module Reacthome.Auth.Repository.Users.SQLite where
 
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
-import Control.Monad.Trans.Maybe
 import Data.ByteString.Lazy (ByteString)
 import Data.Foldable (traverse_)
 import Data.Maybe
@@ -30,36 +29,25 @@ makeUsers pool = do
             ]
 
     let
-        getAll = findAll pool getAllUsers
+        getAll = runExceptT do
+            findAll pool getAllUsers
 
-        findById uid =
-            findBy
-                pool
-                findUserById
-                $ toByteString uid.value
+        findById uid = runExceptT do
+            findBy pool findUserById (toByteString uid.value) >>= \case
+                [user] -> pure user
+                [] -> throwE ("User " <> show uid.value <> " not found")
+                (_ : _) -> throwE ("User " <> show uid.value <> " is not unique")
 
-        findByLogin login =
-            findBy
-                pool
-                findUserByLogin
-                login.value
+        findByLogin login = runExceptT do
+            findBy pool findUserByLogin login.value >>= \case
+                [user] -> pure user
+                [] -> throwE ("User " <> show login.value <> " not found")
+                (_ : _) -> throwE ("User " <> show login.value <> " is not unique")
 
-        has login =
-            either
-                ( \e -> do
-                    print e
-                    pure False
-                )
-                ( \case
-                    [Only count] -> pure $ count > (0 :: Int)
-                    _ -> pure False
-                )
-                =<< runExceptT
-                    ( tryQuery
-                        pool
-                        countUserByLogin
-                        (Only login.value)
-                    )
+        has login = runExceptT do
+            lift (tryQuery pool countUserByLogin $ Only login.value) >>= except >>= \case
+                [Only count] -> pure $ count > (0 :: Int)
+                _ -> pure False
 
         store user =
             tryExecute
@@ -68,25 +56,12 @@ makeUsers pool = do
                 (toUserRow user)
 
         remove user =
-            either
-                print
-                (const $ pure ())
-                =<< runExceptT
-                    ( tryExecute
-                        pool
-                        removeUser
-                        (Only $ toByteString user.id.value)
-                    )
+            tryExecute
+                pool
+                removeUser
+                (Only $ toByteString user.id.value)
 
-    pure
-        Users
-            { getAll
-            , findById
-            , findByLogin
-            , has
-            , store
-            , remove
-            }
+    pure Users{..}
 
 data UserRow = UserRow
     { id :: ByteString
@@ -117,29 +92,21 @@ toUserRow user =
 findAll ::
     Pool Connection ->
     Query ->
-    IO [User]
+    ExceptT String IO [User]
 findAll pool q = do
-    res <- runExceptT $ tryQuery_ pool q
-    case res of
-        Left e -> do
-            print e
-            pure []
-        Right rows -> do
-            let keys = fromUserRow <$> rows
-                valid = filter (/= Nothing) keys
-            pure $ fromJust <$> valid
+    rows <- except =<< lift (tryQuery_ pool q)
+    let users = fromUserRow <$> rows
+        valid = filter (/= Nothing) users
+    pure $ fromJust <$> valid
 
 findBy ::
     (ToField p) =>
     Pool Connection ->
     Query ->
     p ->
-    MaybeT IO User
+    ExceptT String IO [User]
 findBy pool q p = do
-    res <- lift . runExceptT $ tryQuery pool q (Only p)
-    case res of
-        Left e -> do
-            lift $ print e
-            hoistMaybe Nothing
-        Right [] -> hoistMaybe Nothing
-        Right (user : _) -> hoistMaybe $ fromUserRow user
+    rows <- except =<< lift (tryQuery pool q $ Only p)
+    let users = fromUserRow <$> rows
+        valid = filter (/= Nothing) users
+    pure $ fromJust <$> valid

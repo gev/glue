@@ -1,6 +1,5 @@
 module JOSE.PublicKey where
 
-import Control.Monad.Trans.Maybe
 import Crypto.Error
 import Crypto.PubKey.Ed25519 qualified as Ed
 import Data.ByteString
@@ -13,7 +12,7 @@ data PublicKey = PublicKey
     deriving stock (Show)
 
 data PublicKeys m = PublicKeys
-    { findBy :: UUID -> MaybeT m PublicKey
+    { findBy :: UUID -> m (Either String PublicKey)
     , store :: [PublicKey] -> m ()
     }
 
@@ -21,9 +20,4 @@ makePublicKey :: UUID -> ByteString -> Either String PublicKey
 makePublicKey kid bs = do
     case Ed.publicKey bs of
         CryptoFailed err -> Left $ show err
-        CryptoPassed publicKey ->
-            Right
-                PublicKey
-                    { kid
-                    , publicKey
-                    }
+        CryptoPassed publicKey -> Right PublicKey{..}

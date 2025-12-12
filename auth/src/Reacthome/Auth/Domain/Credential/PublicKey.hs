@@ -1,6 +1,5 @@
 module Reacthome.Auth.Domain.Credential.PublicKey where
 
-import Control.Monad.Trans.Except
 import Data.ByteString
 import Data.Hashable
 import Reacthome.Auth.Domain.Credential.PublicKey.Algorithm
@@ -32,10 +31,9 @@ instance Hashable PublicKey where
         hashWithSalt salt publicKey.id
 
 decodePublicKey ::
-    (Monad m) =>
     PublicKeyAlgorithm ->
     ByteString ->
-    ExceptT String m ByteString
+    Either String ByteString
 decodePublicKey algorithm bytes =
     derDecode bytes
         >>= case algorithm of
@@ -44,11 +42,10 @@ decodePublicKey algorithm bytes =
             RS256 -> RS256.decodePublicKey
 
 verifySignature ::
-    (Monad m) =>
     PublicKey ->
     ByteString ->
     ByteString ->
-    ExceptT String m Bool
+    Either String Bool
 verifySignature key =
     case key.algorithm of
         ED25519 -> ED25519.verifySignature key.bytes

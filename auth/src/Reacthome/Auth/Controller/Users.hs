@@ -1,17 +1,14 @@
 module Reacthome.Auth.Controller.Users where
 
-import Control.Monad.Trans.Class
-import Control.Monad.Trans.Except
 import Reacthome.Auth.Domain.Users
 import Reacthome.Auth.View.Screen.Users
 import Rest
 import Rest.Media
+import Rest.Status (badRequest)
 
 showUsers ::
-    ( ?users :: Users
-    ) =>
-    ExceptT String IO Response
+    (?users :: Users) =>
+    IO Response
 showUsers =
-    toHTML
-        <$> users
-        =<< lift ?users.getAll
+    ?users.getAll
+        >>= either badRequest (toHTML . users)

@@ -2,11 +2,8 @@ module Reacthome.Auth.Service.Authentication.Complete where
 
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
-import Control.Monad.Trans.Maybe
 import Reacthome.Auth.Domain.Authentication.Complete
-import Reacthome.Auth.Domain.Challenge
 import Reacthome.Auth.Domain.Credential.PublicKey
-import Reacthome.Auth.Domain.Credential.PublicKey.Id
 import Reacthome.Auth.Domain.Credential.PublicKeys
 import Reacthome.Auth.Domain.User
 import Reacthome.Auth.Domain.Users
@@ -20,17 +17,12 @@ runCompleteAuthentication ::
   , ?userPublicKeys :: PublicKeys
   ) =>
   CompleteAuthentication ->
-  ExceptT String IO User
-runCompleteAuthentication request = do
-  user <-
-    maybeToExceptT
-      ("Invalid challenge " <> show request.challenge.value)
-      $ ?authUsers.findBy request.challenge
+  IO (Either String User)
+runCompleteAuthentication request = runExceptT do
+  user <- except =<< lift (?authUsers.findBy request.challenge)
   lift $ ?authUsers.remove request.challenge
-  publicKey <-
-    maybeToExceptT ("Public key with id " <> show request.id.value <> " not found") $
-      ?userPublicKeys.findById request.id
-  isValidSignature <- verifySignature publicKey request.message request.signature
+  publicKey <- except =<< lift (?userPublicKeys.findById request.id)
+  isValidSignature <- except (verifySignature publicKey request.message request.signature)
   if isValidSignature
     then pure user
     else

@@ -1,6 +1,5 @@
 module Reacthome.Auth.Domain.Credential.PublicKey.Algorithm.ES256 where
 
-import Control.Monad.Trans.Except
 import Crypto.Error
 import Crypto.Hash
 import Crypto.PubKey.ECC.ECDSA qualified as ECDSA
@@ -12,7 +11,7 @@ import Data.ByteString
 import Util.ASN1
 import Prelude hiding (splitAt)
 
-decodePublicKey :: (Monad m) => [ASN1] -> ExceptT String m ByteString
+decodePublicKey :: [ASN1] -> Either String ByteString
 decodePublicKey = \case
     [ Start Sequence
         , Start Sequence
@@ -25,39 +24,35 @@ decodePublicKey = \case
             case uncons bytes of
                 Just (pointFormat, pointBytes) ->
                     if pointFormat == 0x04
-                        then pure pointBytes
-                        else throwE "Invalid p256 public key format: expected uncompressed point format (0x04)"
-                _ -> throwE "Invalid p256 public key format"
-    _ -> throwE "Invalid p256 public key format"
+                        then Right pointBytes
+                        else Left "Invalid p256 public key format: expected uncompressed point format (0x04)"
+                Nothing -> Left "Invalid p256 public key format"
+    _ -> Left "Invalid p256 public key format"
 
-makePublicKey :: (Monad m) => ByteString -> ExceptT String m ECDSA.PublicKey
+makePublicKey :: ByteString -> Either String ECDSA.PublicKey
 makePublicKey bytes =
     case pointFromBinary bytes of
         CryptoPassed point -> do
             let (x, y) = pointToIntegers point
-            pure $ ECDSA.PublicKey p256 $ Point x y
-        _ -> throwE "Invalid p256 public key format"
+            Right $ ECDSA.PublicKey p256 $ Point x y
+        _ -> Left "Invalid p256 public key format"
   where
     p256 = getCurveByName SEC_p256r1
 
-decodeSignature ::
-    (Monad m) =>
-    [ASN1] ->
-    ExceptT String m ECDSA.Signature
+decodeSignature :: [ASN1] -> Either String ECDSA.Signature
 decodeSignature = \case
     [ Start Sequence
         , IntVal r
         , IntVal s
         , End Sequence
-        ] -> pure $ ECDSA.Signature r s
-    _ -> throwE "Invalid ECDSA signature format"
+        ] -> Right $ ECDSA.Signature r s
+    _ -> Left "Invalid ECDSA signature format"
 
 verifySignature ::
-    (Monad m) =>
     ByteString ->
     ByteString ->
     ByteString ->
-    ExceptT String m Bool
+    Either String Bool
 verifySignature keyBytes message sigBytes = do
     key <- makePublicKey keyBytes
     signature <- decodeSignature =<< derDecode sigBytes

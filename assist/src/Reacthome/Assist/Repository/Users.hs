@@ -1,9 +1,10 @@
 module Reacthome.Assist.Repository.Users where
 
-import Control.Monad.Trans.Maybe
+import Control.Error.Util (exceptT, (!?))
+import Control.Monad.Trans.Class (lift)
 import Data.Aeson
-import Data.HashMap.Strict
-import Data.Text.Lazy
+import Data.HashMap.Strict (fromList, lookup)
+import Data.Text.Lazy (Text, toStrict)
 import Data.UUID
 import GHC.Generics
 import Reacthome.Assist.Domain.Server.Id
@@ -13,25 +14,18 @@ import Reacthome.Assist.Domain.Users
 import Prelude hiding (lookup)
 
 makeUsers :: String -> IO Users
-makeUsers file = do
-    rows <-
-        maybe
-            (error $ "Can't read users from `" <> file <> "`")
-            pure
-            =<< decodeFileStrict file
-    users' <- traverse fromUserRow rows
+makeUsers file = exceptT error pure do
+    rows <- decodeFileStrict file !? ("Can't read users from `" <> file <> "`")
+    users' <- lift $ traverse fromUserRow rows
     let
         users =
             fromList $
                 fmap (\user -> (user.id, user)) users'
 
-        findById cid =
-            hoistMaybe $
-                lookup cid users
-    pure
-        Users
-            { findById
-            }
+        findById cid = case lookup cid users of
+            Nothing -> Left $ "User " <> show cid.value <> " not found"
+            Just user -> Right user
+    pure Users{..}
 
 data UserRow = UserRow
     { user :: Text
@@ -50,7 +44,7 @@ fromUserRow row = do
             , servers = ServerId <$> servers
             }
 
-toUUID :: (Applicative a) => String -> LazyText -> a UUID
+toUUID :: String -> Text -> IO UUID
 toUUID err text =
     maybe (error err) pure $
         fromText (toStrict text)

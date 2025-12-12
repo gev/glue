@@ -2,8 +2,8 @@ module Reacthome.Auth.Repository.RefreshTokens.SQLite where
 
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
-import Control.Monad.Trans.Maybe
 import Data.ByteString.Lazy (ByteString, fromStrict, toStrict)
+import Data.Maybe (fromJust)
 import Data.Pool
 import Data.UUID
 import Database.SQLite.Simple
@@ -25,11 +25,11 @@ makeRefreshTokens ::
 makeRefreshTokens pool = do
     withResource pool (`execute_` createRefreshTokensTable)
     let
-        findByHash token =
-            findBy
-                pool
-                findRefreshTokenByToken
-                token.value
+        findByHash hash = runExceptT do
+            findBy pool findRefreshTokenByToken hash.value >>= \case
+                [token] -> pure token
+                [] -> throwE ("Refresh token " <> show hash <> " not found")
+                (_ : _) -> throwE ("Refresh token " <> show hash <> " not unique")
 
         store token = do
             tryExecute
@@ -38,15 +38,10 @@ makeRefreshTokens pool = do
                 (toRefreshTokenRow token)
 
         remove token =
-            either
-                print
-                (const $ pure ())
-                =<< runExceptT
-                    ( tryExecute
-                        pool
-                        removeRefreshToken
-                        (Only token.hash.value)
-                    )
+            tryExecute
+                pool
+                removeRefreshToken
+                (Only token.hash.value)
 
     pure
         RefreshTokens
@@ -83,12 +78,9 @@ findBy ::
     Pool Connection ->
     Query ->
     p ->
-    MaybeT IO RefreshToken
+    ExceptT String IO [RefreshToken]
 findBy pool q p = do
-    res <- lift . runExceptT $ tryQuery pool q (Only p)
-    case res of
-        Left e -> do
-            lift $ print e
-            hoistMaybe Nothing
-        Right [] -> hoistMaybe Nothing
-        Right (row : _) -> hoistMaybe $ fromRefreshTokenRow row
+    rows <- except =<< lift (tryQuery pool q $ Only p)
+    let tokens = fromRefreshTokenRow <$> rows
+        valid = filter (/= Nothing) tokens
+    pure $ fromJust <$> valid

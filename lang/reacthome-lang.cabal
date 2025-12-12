@@ -15,7 +15,6 @@ common common-options
     bytestring,
     sqlite-simple,
     text,
-    transformers,
     xeno,
 
   default-language: GHC2024

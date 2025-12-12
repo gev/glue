@@ -15,8 +15,8 @@ ok contentType headers =
         status200
         ((hContentType, contentType) : headers)
 
-redirect :: (Applicative a) => ResponseHeaders -> ByteString -> a Response
-redirect headers location =
+redirect :: (Applicative a) => ByteString -> ResponseHeaders -> a Response
+redirect location headers =
     response
         status302
         ((hLocation, location) : headers)

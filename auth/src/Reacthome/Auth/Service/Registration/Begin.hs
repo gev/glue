@@ -15,9 +15,9 @@ runBeginRegistration ::
     , ?users :: Users
     ) =>
     BeginRegistration ->
-    ExceptT String IO PreRegistration
-runBeginRegistration command = do
-    isUserExists <- lift $ ?users.has command.login
+    IO (Either String PreRegistration)
+runBeginRegistration command = runExceptT do
+    isUserExists <- except =<< lift (?users.has command.login)
     if isUserExists
         then
             throwE $
@@ -28,4 +28,4 @@ runBeginRegistration command = do
             uid <- lift makeRandomUserId
             let user = makeUser uid command.login command.name
             challenge <- lift $ ?authUsers.register user
-            pure $ PreRegistration user challenge
+            pure PreRegistration{..}

@@ -1,5 +1,6 @@
 module Reacthome.Auth.Repository.PublicKeys.SQLite where
 
+import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
 import Data.ByteString.Lazy (ByteString, fromStrict, toStrict)
 import Data.Foldable
@@ -22,36 +23,22 @@ makePublicKeys pool = do
             , createPublicKeysIndex
             ]
     let
-        getAll = findBy pool getAllPublicKeys
+        getAll = runExceptT do
+            findBy pool getAllPublicKeys
 
         store key =
-            either
-                print
-                (const $ pure ())
-                =<< runExceptT
-                    ( tryExecute
-                        pool
-                        storePublicKey
-                        (toPublicKeyRow key)
-                    )
+            tryExecute
+                pool
+                storePublicKey
+                (toPublicKeyRow key)
 
-        cleanUp t =
-            either
-                print
-                (const $ pure ())
-                =<< runExceptT
-                    ( tryExecute
-                        pool
-                        cleanUpPublicKeys
-                        (Only t)
-                    )
+        cleanUp t = do
+            tryExecute
+                pool
+                cleanUpPublicKeys
+                (Only t)
 
-    pure
-        PublicKeys
-            { getAll
-            , store
-            , cleanUp
-            }
+    pure PublicKeys{..}
 
 data PublicKeyRow = PublicKeyRow
     { id :: ByteString
@@ -82,14 +69,9 @@ toPublicKeyRow key =
 findBy ::
     Pool Connection ->
     Query ->
-    IO [PublicKey]
+    ExceptT String IO [PublicKey]
 findBy pool q = do
-    res <- runExceptT $ tryQuery_ pool q
-    case res of
-        Left e -> do
-            print e
-            pure []
-        Right rows -> do
-            let keys = fromPublicKeyRow <$> rows
-                valid = filter (/= Nothing) keys
-            pure $ fromJust <$> valid
+    rows <- except =<< lift (tryQuery_ pool q)
+    let keys = fromPublicKeyRow <$> rows
+        valid = filter (/= Nothing) keys
+    pure $ fromJust <$> valid

@@ -2,7 +2,6 @@ module Reacthome.Auth.Repository.Credentials.PublicKeys.SQLite where
 
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
-import Control.Monad.Trans.Maybe
 import Data.ByteString.Lazy (ByteString, fromStrict, toStrict)
 import Data.Foldable (traverse_)
 import Data.Maybe
@@ -30,17 +29,14 @@ makePublicKeys pool = do
             ]
 
     let
-        findById id' =
-            findBy
-                pool
-                findPublicKeyById
-                id'.value
+        findById id' = runExceptT do
+            findBy pool findPublicKeyById id'.value >>= \case
+                [key] -> pure key
+                [] -> throwE ("Public key " <> show id'.value <> " not found")
+                (_ : _) -> throwE ("Public key " <> show id'.value <> " is not unique")
 
-        findByUserId uid =
-            findBy'
-                pool
-                findPublicKeyByUserId
-                (toByteString uid.value)
+        findByUserId uid = runExceptT do
+            findBy pool findPublicKeyByUserId (toByteString uid.value)
 
         store key =
             tryExecute
@@ -49,23 +45,12 @@ makePublicKeys pool = do
                 (toPublicKeyRow key)
 
         remove kid =
-            either
-                print
-                (const $ pure ())
-                =<< runExceptT
-                    ( tryExecute
-                        pool
-                        removePublicKey
-                        (Only kid.value)
-                    )
+            tryExecute
+                pool
+                removePublicKey
+                (Only kid.value)
 
-    pure
-        PublicKeys
-            { findById
-            , findByUserId
-            , store
-            , remove
-            }
+    pure PublicKeys{..}
 
 data PublicKeyRow = PublicKeyRow
     { id :: ByteString
@@ -109,29 +94,9 @@ findBy ::
     Pool Connection ->
     Query ->
     p ->
-    MaybeT IO PublicKey
+    ExceptT String IO [PublicKey]
 findBy pool q p = do
-    res <- lift . runExceptT $ tryQuery pool q (Only p)
-    case res of
-        Left e -> do
-            lift $ print e
-            hoistMaybe Nothing
-        Right [] -> hoistMaybe Nothing
-        Right (user : _) -> hoistMaybe $ fromPublicKeyRow user
-
-findBy' ::
-    (ToField p) =>
-    Pool Connection ->
-    Query ->
-    p ->
-    IO [PublicKey]
-findBy' pool q p = do
-    res <- runExceptT $ tryQuery pool q (Only p)
-    case res of
-        Left e -> do
-            print e
-            pure []
-        Right rows -> do
-            let users = fromPublicKeyRow <$> rows
-                valid = filter (/= Nothing) users
-            pure $ fromJust <$> valid
+    rows <- except =<< lift (tryQuery pool q $ Only p)
+    let users = fromPublicKeyRow <$> rows
+        valid = filter (/= Nothing) users
+    pure (fromJust <$> valid)

@@ -8,17 +8,8 @@ import Util.MVar
 makePublicKeys :: IO PublicKeys
 makePublicKeys = do
     list <- newMVar []
-
-    let getAll = readMVar list
-
-        store key = runModify list (key :)
-
-        cleanUp t = runModify list $
-            filter
-                \key -> key.timestamp > t
-    pure
-        PublicKeys
-            { getAll
-            , store
-            , cleanUp
-            }
+    let
+        getAll = Right <$> readMVar list
+        store key = Right <$> runModify list (key :)
+        cleanUp t = Right <$> runModify list (filter \key -> key.timestamp > t)
+    pure PublicKeys{..}

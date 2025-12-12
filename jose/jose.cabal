@@ -40,8 +40,10 @@ library
 
   default-language: GHC2024
   default-extensions:
+    BlockArguments
     DeriveAnyClass
     DerivingStrategies
     DuplicateRecordFields
     OverloadedRecordDot
     OverloadedStrings
+    RecordWildCards
