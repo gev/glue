@@ -76,7 +76,7 @@ makeWebSocketConnection connection =
                             Left e -> pure e
                     Just !message -> do
                         unsafeWrite vector index message
-                        let nextIndex = index + 1
+                        let !nextIndex = index + 1
                         if nextIndex < ?options.chunkSize
                             then do
                                 processChunksOfMessages vector nextIndex
