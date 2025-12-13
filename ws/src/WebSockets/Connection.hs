@@ -81,7 +81,7 @@ makeWebSocketConnection connection =
                             then do
                                 processChunksOfMessages vector nextIndex
                             else do
-                                successful <- sendChunk vector ?options.chunkSize
+                                !successful <- sendChunk vector ?options.chunkSize
                                 case successful of
                                     Right newVector -> do
                                         processChunksOfMessages newVector 0
