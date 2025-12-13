@@ -83,7 +83,7 @@ makeWebSocketConnection connection =
                             else do
                                 !successful <- sendChunk vector ?options.chunkSize
                                 case successful of
-                                    Right newVector -> do
+                                    Right !newVector -> do
                                         processChunksOfMessages newVector 0
                                     Left e -> pure e
 
