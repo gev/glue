@@ -34,20 +34,20 @@ data Native m
 {- | Превращает дерево AST в дерево IR.
 Эта функция универсальна для любой монады m.
 -}
-prepare :: AST -> IR m
-prepare = \case
+compile :: AST -> IR m
+compile = \case
     AST.Number n -> Number n
     AST.String s -> String s
     AST.Symbol s -> Symbol s
-    AST.List body -> List (prepareBody body)
-    AST.Expr name body -> Call name (prepareBody body)
+    AST.List body -> List (compileBody body)
+    AST.Expr name body -> Call name (compileBody body)
 
 -- | Вспомогательная функция для обработки тел списков/выражений
-prepareBody :: AST.Body k -> [IR m]
-prepareBody = \case
-    AST.Atoms xs -> map prepare xs
+compileBody :: AST.Body k -> [IR m]
+compileBody = \case
+    AST.Atoms xs -> map compile xs
     -- Свойства разворачиваем в плоский список: [:key, val, :key2, val2]
-    AST.Props ps -> concatMap (\(k, v) -> [Symbol (":" <> k), prepare v]) ps
+    AST.Props ps -> concatMap (\(k, v) -> [Symbol (":" <> k), compile v]) ps
 
 -- Экземпляр Show для отладки
 instance Show (IR m) where
