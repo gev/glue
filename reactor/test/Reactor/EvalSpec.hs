@@ -13,9 +13,9 @@ runCode :: Text -> IO (Either ReactorError (Maybe E.IR))
 runCode input = case parseReactor input of
     Left err -> pure $ Left err
     Right ast -> do
-        let valTree = compile ast
+        let irTree = compile ast
         -- runEval возвращает IO (Either ReactorError (a, Env))
-        fullResult <- runEval (eval valTree) initialEnv
+        fullResult <- runEval (eval irTree) initialEnv
         case fullResult of
             Left err -> pure $ Left err -- Ошибка интерпретации
             Right (res, _finalEnv) -> pure $ Right res -- Успех: берем результат, игнорируем Env

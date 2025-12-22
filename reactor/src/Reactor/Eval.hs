@@ -12,7 +12,7 @@ type IR = V.IR Eval
 type Env = V.Env Eval
 
 newtype Eval a = Eval
-    { runEval :: V.Env Eval -> IO (Either ReactorError (a, Env))
+    { runEval :: Env -> IO (Either ReactorError (a, Env))
     }
 
 instance Functor Eval where
