@@ -8,12 +8,12 @@ import Reactor.Env qualified as E
 import Reactor.Error (ReactorError (..))
 import Reactor.Value qualified as V
 
-newtype Eval a = Eval
-    { runEval :: V.Env Eval -> IO (Either ReactorError (a, V.Env Eval))
-    }
-
 type Value = V.Value Eval
 type Env = V.Env Eval
+
+newtype Eval a = Eval
+    { runEval :: V.Env Eval -> IO (Either ReactorError (a, Env))
+    }
 
 instance Functor Eval where
     fmap = liftM
