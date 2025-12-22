@@ -3,7 +3,7 @@ module Reactor.EvalSpec (spec) where
 import Data.Text (Text)
 import Reactor.Error (ReactorError (..))
 import Reactor.Eval as E
-import Reactor.IR (IR (..), prepare)
+import Reactor.IR (IR (..), compile)
 import Reactor.Native (initialEnv)
 import Reactor.Parser (parseReactor)
 import Test.Hspec
@@ -13,7 +13,7 @@ runCode :: Text -> IO (Either ReactorError (Maybe E.IR))
 runCode input = case parseReactor input of
     Left err -> pure $ Left err
     Right ast -> do
-        let valTree = prepare ast
+        let valTree = compile ast
         -- runEval возвращает IO (Either ReactorError (a, Env))
         fullResult <- runEval (eval valTree) initialEnv
         case fullResult of
