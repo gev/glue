@@ -4,6 +4,7 @@ import Data.Map.Strict (Map)
 import Data.Scientific (Scientific)
 import Data.Text (Text)
 import Data.Text qualified as T
+import Reactor.AST (AST)
 import Reactor.AST qualified as AST
 
 -- Он тоже параметризован монадой m, так как хранит Value m.
@@ -33,20 +34,20 @@ data Native m
 {- | Превращает дерево AST в дерево Value.
 Эта функция универсальна для любой монады m.
 -}
-prepare :: AST.Reactor -> Value m
+prepare :: AST -> Value m
 prepare = \case
-    AST.RNumber n -> VNumber n
-    AST.RString s -> VString s
-    AST.RSymbol s -> VSymbol s
-    AST.RList body -> VList (prepareBody body)
-    AST.RExpr name body -> VCall name (prepareBody body)
+    AST.Number n -> VNumber n
+    AST.String s -> VString s
+    AST.Symbol s -> VSymbol s
+    AST.List body -> VList (prepareBody body)
+    AST.Expr name body -> VCall name (prepareBody body)
 
 -- | Вспомогательная функция для обработки тел списков/выражений
-prepareBody :: AST.RBody k -> [Value m]
+prepareBody :: AST.Body k -> [Value m]
 prepareBody = \case
-    AST.RAtoms xs -> map prepare xs
+    AST.Atoms xs -> map prepare xs
     -- Свойства разворачиваем в плоский список: [:key, val, :key2, val2]
-    AST.RProps ps -> concatMap (\(k, v) -> [VSymbol (":" <> k), prepare v]) ps
+    AST.Props ps -> concatMap (\(k, v) -> [VSymbol (":" <> k), prepare v]) ps
 
 -- Экземпляр Show для отладки
 instance Show (Value m) where

@@ -18,17 +18,17 @@ type Parser = Parsec ReactorError Text
 
 -- Вспомогательная структура для гетерогенных тел
 data SomeRBody where
-    SomeRBody :: RBody k -> SomeRBody
+    SomeRBody :: Body k -> SomeRBody
 
 -- | ГЛАВНАЯ ФУНКЦИЯ: Теперь возвращает чистый Either ReactorError Reactor
-parseReactor :: Text -> Either ReactorError Reactor
+parseReactor :: Text -> Either ReactorError AST
 parseReactor input =
     case parse (pReactor <* eof) "reactor-input" input of
         Left err -> Left (renderParserError err)
         Right ast -> Right ast
 
 -- | Вспомогательная функция для вывода текста (например, в консоль)
-parseReactorPretty :: Text -> Either Text Reactor
+parseReactorPretty :: Text -> Either Text AST
 parseReactorPretty input =
     case parseReactor input of
         Left err -> Left (T.pack $ show err) -- Или можно вызвать showErrorComponent
@@ -47,7 +47,7 @@ symbol = L.symbol sc
 
 -- --- Парсеры атомов ---
 
-pReactor :: Parser Reactor
+pReactor :: Parser AST
 pReactor =
     choice
         [ pQuoted -- 1. Добавляем сахар цитирования ПЕРВЫМ в список выбора
@@ -57,66 +57,66 @@ pReactor =
         , pSymbol
         ]
 
-pQuoted :: Parser Reactor
+pQuoted :: Parser AST
 pQuoted = do
     _ <- char '\''
     -- Рекурсивно вызываем pReactor: теперь можно цитировать и символ, и список, и число
     inner <- pReactor
-    pure $ RExpr "quote" (RAtoms [inner])
+    pure $ Expr "quote" (Atoms [inner])
 
-pNumber :: Parser Reactor
-pNumber = RNumber <$> lexeme L.scientific
+pNumber :: Parser AST
+pNumber = Number <$> lexeme L.scientific
 
-pString :: Parser Reactor
-pString = RString . T.pack <$> lexeme (char '"' >> manyTill L.charLiteral (char '"'))
+pString :: Parser AST
+pString = String . T.pack <$> lexeme (char '"' >> manyTill L.charLiteral (char '"'))
 
-pSymbol :: Parser Reactor
+pSymbol :: Parser AST
 pSymbol = do
     s <- lexeme $ T.pack <$> some (alphaNumChar <|> oneOf ("-._:!?" :: String))
-    pure $ RSymbol s
+    pure $ Symbol s
 
 -- --- Парсинг структур ( ... ) ---
 
-pExprOrList :: Parser Reactor
+pExprOrList :: Parser AST
 pExprOrList = between (symbol "(") (symbol ")") $ do
     optional pReactor >>= \case
         -- Пустые скобки () превращаются в пустой список атомов
-        Nothing -> pure $ RList (RAtoms [])
+        Nothing -> pure $ List (Atoms [])
         Just first -> case first of
-            -- Если первый элемент — не ключ, это вызов функции (RExpr)
-            RSymbol name | not (T.isPrefixOf ":" name) -> do
+            -- Если первый элемент — не ключ, это вызов функции (Expr)
+            Symbol name | not (T.isPrefixOf ":" name) -> do
                 SomeRBody body <- pBodyRest []
-                pure $ RExpr name body
+                pure $ Expr name body
             -- Во всех остальных случаях (число, строка, ключ) — это список данных
             _ -> do
                 SomeRBody body <- pBodyRest [first]
-                pure $ RList body
+                pure $ List body
 
-pBodyRest :: [Reactor] -> Parser SomeRBody
+pBodyRest :: [AST] -> Parser SomeRBody
 pBodyRest initial = do
     elems <- (initial ++) <$> many pReactor
     case elems of
-        [] -> pure $ SomeRBody (RAtoms [])
+        [] -> pure $ SomeRBody (Atoms [])
         (x : _) | isProp x -> do
             props <- validateProps elems
-            pure $ SomeRBody (RProps props)
+            pure $ SomeRBody (Props props)
         _ -> do
             validateNoProps elems
-            pure $ SomeRBody (RAtoms elems)
+            pure $ SomeRBody (Atoms elems)
   where
-    isProp (RSymbol s) = T.isPrefixOf ":" s
+    isProp (Symbol s) = T.isPrefixOf ":" s
     isProp _ = False
 
-validateProps :: [Reactor] -> Parser [(Text, Reactor)]
+validateProps :: [AST] -> Parser [(Text, AST)]
 validateProps = \case
     [] -> pure []
-    [RSymbol k] | T.isPrefixOf ":" k -> customFailure (UnpairedProperty k)
-    (RSymbol k : v : rest) | T.isPrefixOf ":" k -> do
+    [Symbol k] | T.isPrefixOf ":" k -> customFailure (UnpairedProperty k)
+    (Symbol k : v : rest) | T.isPrefixOf ":" k -> do
         others <- validateProps rest
         pure ((T.drop 1 k, v) : others)
     (x : _) -> customFailure (MixedContent (T.pack $ show x))
 
-validateNoProps :: [Reactor] -> Parser ()
+validateNoProps :: [AST] -> Parser ()
 validateNoProps = mapM_ \case
-    RSymbol s | T.isPrefixOf ":" s -> customFailure (MixedContent s)
+    Symbol s | T.isPrefixOf ":" s -> customFailure (MixedContent s)
     _ -> pure ()
