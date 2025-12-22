@@ -6,9 +6,9 @@ import Data.Text (Text)
 
 import Reactor.Env qualified as E
 import Reactor.Error (ReactorError (..))
-import Reactor.Value qualified as V
+import Reactor.IR qualified as V
 
-type Value = V.Value Eval
+type IR = V.IR Eval
 type Env = V.Env Eval
 
 newtype Eval a = Eval
@@ -43,39 +43,39 @@ liftIO action = Eval $ \env -> do
     a <- action
     pure $ Right (a, env)
 
-eval :: Value -> Eval (Maybe Value)
-eval (V.VSymbol name) = do
+eval :: IR -> Eval (Maybe IR)
+eval (V.Symbol name) = do
     env <- getEnv
     case E.lookupVar name env of
         Right val -> pure $ Just val
         Left err -> throwError err
-eval (V.VList xs) = do
+eval (V.List xs) = do
     results <- mapM eval xs
     let clean = catMaybes results
     case clean of
         (f : args) | isCallable f -> apply f args
-        _ -> pure . Just . V.VList $ clean
+        _ -> pure . Just . V.List $ clean
   where
-    isCallable (V.VNative _) = True
-    isCallable (V.VClosure{}) = True
+    isCallable (V.Native _) = True
+    isCallable (V.Closure{}) = True
     isCallable _ = False
-eval (V.VCall name rawArgs) = do
+eval (V.Call name rawArgs) = do
     env <- getEnv
     case E.lookupVar name env of
         Right func -> apply func rawArgs
         Left err -> throwError err
 eval v = pure $ Just v
 
-apply :: Value -> [Value] -> Eval (Maybe Value)
-apply (V.VNative native) rawArgs = case native of
-    V.VFunc f -> do
+apply :: IR -> [IR] -> Eval (Maybe IR)
+apply (V.Native native) rawArgs = case native of
+    V.Func f -> do
         args <- catMaybes <$> mapM eval rawArgs
         Just <$> f args
-    V.VCmd c -> do
+    V.Cmd c -> do
         args <- catMaybes <$> mapM eval rawArgs
         c args >> pure Nothing
-    V.VSpecial s -> s rawArgs
-apply (V.VClosure params body savedEnv) rawArgs = do
+    V.Special s -> s rawArgs
+apply (V.Closure params body savedEnv) rawArgs = do
     argValues <- catMaybes <$> mapM eval rawArgs
     if length params /= length argValues
         then throwError (SyntaxError "Wrong number of arguments")
@@ -86,21 +86,21 @@ apply (V.VClosure params body savedEnv) rawArgs = do
             res <- eval body
             putEnv currentEnv
             pure res
-apply (V.VSymbol name) _ = throwError $ SyntaxError ("Unbound variable: " <> name)
+apply (V.Symbol name) _ = throwError $ SyntaxError ("Unbound variable: " <> name)
 apply _ _ = throwError $ SyntaxError "Not a callable object"
 
-evalRequired :: Value -> Eval Value
+evalRequired :: IR -> Eval IR
 evalRequired v =
     eval v >>= \case
         Just val -> pure val
         Nothing -> throwError $ SyntaxError "Expected value, but got a command/effect"
 
-defineVarEval :: Text -> Value -> Eval ()
+defineVarEval :: Text -> IR -> Eval ()
 defineVarEval name val = do
     env <- getEnv
     putEnv (E.defineVar name val env)
 
-updateVarEval :: Text -> Value -> Eval ()
+updateVarEval :: Text -> IR -> Eval ()
 updateVarEval name val = do
     env <- getEnv
     case E.updateVar name val env of

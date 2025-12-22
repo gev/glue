@@ -14,19 +14,19 @@ import Test.QuickCheck.Instances ()
 import Data.Either (isLeft)
 import Reactor.Env
 import Reactor.Error (ReactorError (..))
-import Reactor.Value
+import Reactor.IR
 
 -- Настройка типов для тестов
-type V = Value Identity
+type V = IR Identity
 type E = Env Identity
 
--- Генератор для простейших значений Value
-instance Arbitrary (Value Identity) where
+-- Генератор для простейших значений IR
+instance Arbitrary (IR Identity) where
     arbitrary =
         oneof
-            [ VNumber <$> arbitrary
-            , VSymbol <$> arbitrary
-            , VString <$> arbitrary
+            [ Number <$> arbitrary
+            , Symbol <$> arbitrary
+            , String <$> arbitrary
             ]
 
 spec :: Spec
@@ -40,17 +40,17 @@ spec = describe "Reactor.Env (Тестирование системы памят
                 _ -> False
 
         it "fromList: корректно инициализирует начальный фрейм" do
-            let env = fromList [("a", VNumber 1), ("b", VNumber 2)] :: E
-            lookupLocal "a" env `shouldBe` Just (VNumber 1)
-            lookupVar "b" env `shouldBe` Right (VNumber 2)
+            let env = fromList [("a", Number 1), ("b", Number 2)] :: E
+            lookupLocal "a" env `shouldBe` Just (Number 1)
+            lookupVar "b" env `shouldBe` Right (Number 2)
 
         it "pushFrame / popFrame: управляют глубиной стека (LIFO)" do
-            let base = fromList [("x", VNumber 1)]
+            let base = fromList [("x", Number 1)]
             let pushed = pushFrame base
             -- В новом слое переменной "x" локально нет
             lookupLocal "x" pushed `shouldBe` Nothing
             -- Но через поиск вглубь она видна
-            lookupVar "x" pushed `shouldBe` Right (VNumber 1)
+            lookupVar "x" pushed `shouldBe` Right (Number 1)
             -- После popFrame возвращаемся к исходному состоянию
             popFrame pushed `shouldBe` base
 
@@ -59,7 +59,7 @@ spec = describe "Reactor.Env (Тестирование системы памят
 
     describe "Запись и поиск (Shadowing)" do
         prop "defineVar: всегда пишет в текущий (верхний) слой" $ \name (val :: V) -> do
-            let env = pushFrame (fromList [("other", VNumber 0)])
+            let env = pushFrame (fromList [("other", Number 0)])
             let newEnv = defineVar name val env
             lookupLocal name newEnv `shouldBe` Just val
 
@@ -74,8 +74,8 @@ spec = describe "Reactor.Env (Тестирование системы памят
 
     describe "Обновление переменных (updateVar)" do
         it "updateVar: меняет значение там, где оно найдено, не создавая новых записей" do
-            let vOld = VNumber 10
-            let vNew = VNumber 20
+            let vOld = Number 10
+            let vNew = Number 20
             -- Стек: [локальный (пустой), глобальный (x=10)]
             let env = pushFrame (fromList [("x", vOld)])
 
@@ -105,24 +105,24 @@ spec = describe "Reactor.Env (Тестирование системы памят
 
     describe "Специальные формы и валидация" do
         it "makeQuote: успешно извлекает единственный аргумент" do
-            makeQuote [VNumber 42] `shouldBe` Right (VNumber 42)
+            makeQuote [Number 42] `shouldBe` Right (Number 42)
 
         it "makeQuote: возвращает ошибку, если аргументов нет или их много" do
             makeQuote [] `shouldSatisfy` isLeft
-            makeQuote [VNumber 1, VNumber 2] `shouldSatisfy` isLeft
+            makeQuote [Number 1, Number 2] `shouldSatisfy` isLeft
 
         it "extractSymbols: корректно извлекает список имен" do
-            let input = [VSymbol "a", VSymbol "b"]
+            let input = [Symbol "a", Symbol "b"]
             extractSymbols input `shouldBe` Right ["a", "b"]
 
         it "extractSymbols: падает, если в списке есть не-символ" do
-            let input = [VSymbol "a", VNumber 1]
+            let input = [Symbol "a", Number 1]
             extractSymbols input `shouldSatisfy` isLeft
 
         it "makeClosure: упаковывает параметры и тело, сохраняя Env" do
-            let env = fromList [("x", VNumber 10)]
-            let closure = makeClosure ["a"] (VSymbol "x") env
+            let env = fromList [("x", Number 10)]
+            let closure = makeClosure ["a"] (Symbol "x") env
             case closure of
-                VClosure ["a"] (VSymbol "x") savedEnv ->
-                    lookupVar "x" savedEnv `shouldBe` Right (VNumber 10)
+                Closure ["a"] (Symbol "x") savedEnv ->
+                    lookupVar "x" savedEnv `shouldBe` Right (Number 10)
                 _ -> expectationFailure "Неверная структура замыкания"

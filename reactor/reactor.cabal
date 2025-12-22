@@ -18,9 +18,9 @@ library
     Reactor.Env
     Reactor.Error
     Reactor.Eval
+    Reactor.IR
     Reactor.Native
     Reactor.Parser
-    Reactor.Value
     Spec.Device
 
   build-depends:

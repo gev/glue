@@ -9,8 +9,10 @@ import Test.QuickCheck
 import Test.QuickCheck.Instances ()
 
 import Data.Functor.Identity (Identity)
-import Reactor.AST
-import Reactor.Value
+import Reactor.AST (AST)
+import Reactor.AST qualified as AST
+import Reactor.IR (IR, prepare)
+import Reactor.IR qualified as IR
 
 -- 1. Генератор для самого Reactor (AST)
 instance Arbitrary AST where
@@ -19,89 +21,89 @@ instance Arbitrary AST where
         genReactor n
             | n <= 0 =
                 oneof
-                    [ Symbol <$> arbitrary
-                    , Number <$> arbitrary
-                    , String <$> arbitrary
+                    [ AST.Symbol <$> arbitrary
+                    , AST.Number <$> arbitrary
+                    , AST.String <$> arbitrary
                     ]
         genReactor n =
             oneof
-                [ Symbol <$> arbitrary
-                , Number <$> arbitrary
-                , String <$> arbitrary
+                [ AST.Symbol <$> arbitrary
+                , AST.Number <$> arbitrary
+                , AST.String <$> arbitrary
                 , -- Генерируем вложенные структуры
-                  List . Atoms <$> resize (n `div` 2) arbitrary
-                , List . Props <$> resize (n `div` 2) arbitrary
-                , Expr <$> arbitrary <*> (Atoms <$> resize (n `div` 2) arbitrary)
-                , Expr <$> arbitrary <*> (Props <$> resize (n `div` 2) arbitrary)
+                  AST.List . AST.Atoms <$> resize (n `div` 2) arbitrary
+                , AST.List . AST.Props <$> resize (n `div` 2) arbitrary
+                , AST.Expr <$> arbitrary <*> (AST.Atoms <$> resize (n `div` 2) arbitrary)
+                , AST.Expr <$> arbitrary <*> (AST.Props <$> resize (n `div` 2) arbitrary)
                 ]
 
 spec :: Spec
-spec = describe "Трансформация AST -> Value (prepare)" do
+spec = describe "Трансформация AST -> IR (prepare)" do
     -- Позиционные списки
     prop "атомы: длина списка сохраняется 1 к 1" $ \(xs :: [AST]) -> do
-        let ast = List (Atoms xs)
-        let val = prepare ast :: Value Identity
+        let ast = AST.List (AST.Atoms xs)
+        let val = prepare ast :: IR Identity
         case val of
-            VList ys -> length ys `shouldBe` length xs
-            _ -> expectationFailure "Ожидался VList"
+            IR.List ys -> length ys `shouldBe` length xs
+            _ -> expectationFailure "Ожидался List"
 
     -- Списки свойств (ключ-значение)
-    prop "свойства: количество элементов удваивается (ключ + значение)" $ \(ps :: [(T.Text, eactor)]) -> do
-        let ast = List (Props ps)
-        let val = prepare ast :: Value Identity
+    prop "свойства: количество элементов удваивается (ключ + значение)" $ \(ps :: [(T.Text, AST)]) -> do
+        let ast = AST.List (AST.Props ps)
+        let val = prepare ast :: IR Identity
         case val of
-            VList ys -> length ys `shouldBe` (length ps * 2)
-            _ -> expectationFailure "Ожидался VList"
+            IR.List ys -> length ys `shouldBe` (length ps * 2)
+            _ -> expectationFailure "Ожидался List"
 
     -- Проверка префикса свойств
-    prop "ключи в Value всегда начинаются с ':'" $ \(ps :: [(T.Text, AST)]) ->
+    prop "ключи в IR всегда начинаются с ':'" $ \(ps :: [(T.Text, AST)]) ->
         not (null ps) ==> do
-            let ast = List (Props ps)
-            let val = prepare ast :: Value Identity
+            let ast = AST.List (AST.Props ps)
+            let val = prepare ast :: IR Identity
             case val of
-                VList (VSymbol k : _) -> T.isPrefixOf ":" k `shouldBe` True
+                IR.List (IR.Symbol k : _) -> T.isPrefixOf ":" k `shouldBe` True
                 _ -> expectationFailure "Первый элемент должен быть символом-ключом"
 
     -- Вызовы функций (Expr)
-    prop "имя вызова VCall совпадает с именем Expr" $ \(name :: T.Text) (xs :: [AST]) -> do
-        let ast = Expr name (Atoms xs)
-        let val = prepare ast :: Value Identity
+    prop "имя вызова Call совпадает с именем Expr" $ \(name :: T.Text) (xs :: [AST]) -> do
+        let ast = AST.Expr name (AST.Atoms xs)
+        let val = prepare ast :: IR Identity
         case val of
-            VCall n _ -> n `shouldBe` name
-            _ -> expectationFailure "Ожидался VCall"
+            IR.Call n _ -> n `shouldBe` name
+            _ -> expectationFailure "Ожидался Call"
 
     -- Рекурсивная целостность (не падает ли на глубоких деревьях)
     prop "целостность: любая структура AST успешно трансформируется" $ \(ast :: AST) -> do
-        let val = prepare ast :: Value Identity
+        let val = prepare ast :: IR Identity
         -- Если prepare не упал с исключением, тест пройден
         seq val True `shouldBe` True
 
     -- Кейс из визуального редактора (свойства в вызове)
-    prop "вызов со свойствами разворачивается корректно" $ \(name :: T.Text) (ps :: [(T.Text, eactor)]) -> do
-        let ast = Expr name (Props ps)
-        let val = prepare ast :: Value Identity
+    prop "вызов со свойствами разворачивается корректно" $ \(name :: T.Text) (ps :: [(T.Text, AST)]) -> do
+        let ast = AST.Expr name (AST.Props ps)
+        let val = prepare ast :: IR Identity
         case val of
-            VCall _ args -> length args `shouldBe` (length ps * 2)
-            _ -> expectationFailure "Ожидался VCall"
+            IR.Call _ args -> length args `shouldBe` (length ps * 2)
+            _ -> expectationFailure "Ожидался Call"
 
     prop "пустые атомы и пропсы не создают мусорных данных" $ \name -> do
-        let ast1 = List (Atoms [])
-        let ast2 = Expr name (Props [])
-        (prepare ast1 :: Value Identity) `shouldBe` VList []
-        (prepare ast2 :: Value Identity) `shouldBe` VCall name []
+        let ast1 = AST.List (AST.Atoms [])
+        let ast2 = AST.Expr name (AST.Props [])
+        (prepare ast1 :: IR Identity) `shouldBe` IR.List []
+        (prepare ast2 :: IR Identity) `shouldBe` IR.Call name []
 
-    prop "RSymbol переходит в VSymbol без изменений (идемпотентность)" $ \s -> do
-        let ast = Symbol s
-        let val = prepare ast :: Value Identity
+    prop "RSymbol переходит в Symbol без изменений (идемпотентность)" $ \s -> do
+        let ast = AST.Symbol s
+        let val = prepare ast :: IR Identity
         case val of
-            VSymbol s' -> s' `shouldBe` s
-            _ -> expectationFailure "Должен быть VSymbol"
+            IR.Symbol s' -> s' `shouldBe` s
+            _ -> expectationFailure "Должен быть Symbol"
 
     prop "рекурсивная развертка: свойства могут содержать вложенные вызовы" $ \k (astInner :: AST) -> do
-        let ast = List (Props [(k, astInner)])
-        let val = prepare ast :: Value Identity
+        let ast = AST.List (AST.Props [(k, astInner)])
+        let val = prepare ast :: IR Identity
         case val of
-            VList [VSymbol k', valInner] -> do
+            IR.List [IR.Symbol k', valInner] -> do
                 k' `shouldBe` (":" <> k)
-                valInner `shouldBe` (prepare astInner :: Value Identity)
+                valInner `shouldBe` (prepare astInner :: IR Identity)
             _ -> expectationFailure "Ошибка рекурсивной развертки"
