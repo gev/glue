@@ -1,0 +1,88 @@
+cabal-version: 3.8
+name: reactor
+version: 0.1.0.0
+synopsis: Reactor language
+description: Reactor is a LISP-inspired language.
+license: BSD-3-Clause
+author: ReactHome Team
+maintainer: gazdovsky@gmail.com
+category: language
+build-type: Simple
+
+library
+  hs-source-dirs: src
+  -- cabal-gild: discover src
+  exposed-modules:
+    Reactor
+    Reactor.AST
+    Reactor.Env
+    Reactor.Error
+    Reactor.Eval
+    Reactor.Native
+    Reactor.Parser
+    Reactor.Value
+    Spec.Device
+
+  build-depends:
+    base,
+    bytestring,
+    containers,
+    megaparsec,
+    scientific,
+    text,
+    transformers,
+
+  default-language: GHC2024
+  default-extensions:
+    BlockArguments
+    DefaultSignatures
+    DuplicateRecordFields
+    OverloadedRecordDot
+    OverloadedStrings
+    RecordWildCards
+
+test-suite reactor-test
+  type: exitcode-stdio-1.0
+  hs-source-dirs: test
+  -- cabal-gild: discover test --exclude=*/Spec.hs
+  other-modules:
+    Reactor.EnvSpec
+    Reactor.EvalSpec
+    Reactor.ParserSpec
+    Reactor.ValueSpec
+
+  main-is: Spec.hs
+  build-depends:
+    QuickCheck,
+    base,
+    hspec,
+    quickcheck-instances,
+    reactor,
+    scientific,
+    text,
+
+  build-tool-depends: hspec-discover:hspec-discover
+  default-language: GHC2024
+  default-extensions:
+    BlockArguments
+    DefaultSignatures
+    DuplicateRecordFields
+    OverloadedRecordDot
+    OverloadedStrings
+    RecordWildCards
+
+executable reactor
+  hs-source-dirs: app
+  main-is: Main.hs
+  build-depends:
+    base,
+    reactor,
+    text,
+
+  default-language: GHC2024
+  default-extensions:
+    BlockArguments
+    DuplicateRecordFields
+    OverloadedRecordDot
+    OverloadedStrings
+    RecordWildCards

@@ -1,0 +1,61 @@
+{
+	"scopeName": "source.reactor",
+	"name": "Reactor",
+	"fileTypes": [
+		"rct",
+		"reactor"
+	],
+	"patterns": [
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#numbers"
+		},
+		{
+			"include": "#lists"
+		},
+		{
+			"include": "#symbols"
+		}
+	],
+	"repository": {
+		"comments": {
+			"match": ";.*$",
+			"name": "comment.line.semicolon.reactor"
+		},
+		"keywords": {
+			"match": ":[a-zA-Z0-9\\-/\\.]+",
+			"name": "keyword.other.reactor"
+		},
+		"strings": {
+			"begin": "\"",
+			"end": "\"",
+			"name": "string.quoted.double.reactor"
+		},
+		"numbers": {
+			"match": "\\b\\d+\\b",
+			"name": "constant.numeric.reactor"
+		},
+		"symbols": {
+			"match": "\\b[a-zA-Z_][a-zA-Z0-9_\\-]*\\b",
+			"name": "variable.other.reactor"
+		},
+		"lists": {
+			"begin": "\\(",
+			"end": "\\)",
+			"name": "meta.list.reactor",
+			"patterns": [
+				{
+					"include": "$self"
+				}
+			]
+		}
+	}
+}

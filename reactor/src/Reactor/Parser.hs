@@ -1,5 +1,7 @@
 module Reactor.Parser (
     parseReactor,
+    parseReactorPretty,
+    Parser,
 ) where
 
 import Data.Text (Text)
@@ -11,36 +13,56 @@ import Text.Megaparsec.Char.Lexer qualified as L
 import Reactor.AST
 import Reactor.Error (ReactorError (..), renderParserError)
 
+-- Используем наш кастомный тип ошибки в Parsec
 type Parser = Parsec ReactorError Text
 
--- | Главная точка входа
+-- Вспомогательная структура для гетерогенных тел
+data SomeRBody where
+    SomeRBody :: RBody k -> SomeRBody
+
+-- | ГЛАВНАЯ ФУНКЦИЯ: Теперь возвращает чистый Either ReactorError Reactor
 parseReactor :: Text -> Either ReactorError Reactor
 parseReactor input =
     case parse (pReactor <* eof) "reactor-input" input of
         Left err -> Left (renderParserError err)
         Right ast -> Right ast
 
--- --- Основные парсеры ---
+-- | Вспомогательная функция для вывода текста (например, в консоль)
+parseReactorPretty :: Text -> Either Text Reactor
+parseReactorPretty input =
+    case parseReactor input of
+        Left err -> Left (T.pack $ show err) -- Или можно вызвать showErrorComponent
+        Right ast -> Right ast
+
+-- --- Лексер ---
+
+sc :: Parser ()
+sc = L.space space1 (L.skipLineComment ";") (L.skipBlockComment "#|" "|#")
+
+lexeme :: Parser a -> Parser a
+lexeme = L.lexeme sc
+
+symbol :: Text -> Parser Text
+symbol = L.symbol sc
+
+-- --- Парсеры атомов ---
 
 pReactor :: Parser Reactor
 pReactor =
     choice
-        [ pQuoted -- Сахар должен быть перед остальными!
+        [ pQuoted -- 1. Добавляем сахар цитирования ПЕРВЫМ в список выбора
         , pExprOrList
         , pString
         , pNumber
         , pSymbol
         ]
 
--- | Реализация цитирования: 'something -> (quote something)
 pQuoted :: Parser Reactor
 pQuoted = do
     _ <- char '\''
-    inner <- pReactor -- рекурсивно парсим то, что идет за кавычкой
-    -- Генерируем AST эквивалентное (quote ...)
+    -- Рекурсивно вызываем pReactor: теперь можно цитировать и символ, и список, и число
+    inner <- pReactor
     pure $ RExpr "quote" (RAtoms [inner])
-
--- --- Атомы и лексер ---
 
 pNumber :: Parser Reactor
 pNumber = RNumber <$> lexeme L.scientific
@@ -53,34 +75,48 @@ pSymbol = do
     s <- lexeme $ T.pack <$> some (alphaNumChar <|> oneOf ("-._:!?" :: String))
     pure $ RSymbol s
 
--- --- Структуры ( ... ) ---
+-- --- Парсинг структур ( ... ) ---
 
 pExprOrList :: Parser Reactor
-pExprOrList = between (symbol "(") (symbol ")") do
-    lookAhead (optional anySingle) >>= \case
+pExprOrList = between (symbol "(") (symbol ")") $ do
+    optional pReactor >>= \case
+        -- Пустые скобки () превращаются в пустой список атомов
         Nothing -> pure $ RList (RAtoms [])
-        Just _ -> do
-            first <- pReactor
-            case first of
-                -- Если первый элемент - символ и не ключ, это выражение (RExpr)
-                RSymbol name | not (T.isPrefixOf ":" name) -> do
-                    if name == "error"
-                        then customFailure (ReservedKeyword "error")
-                        else do
-                            atoms <- many pReactor
-                            -- Мы упростили здесь: pBodyRest можно встроить или вызвать
-                            pure $ RExpr name (RAtoms (first : atoms))
-                _ -> do
-                    -- Логика парсинга свойств (RProps) или атомов (RAtoms)
-                    -- (используйте вашу существующую pBodyRest)
-                    undefined
+        Just first -> case first of
+            -- Если первый элемент — не ключ, это вызов функции (RExpr)
+            RSymbol name | not (T.isPrefixOf ":" name) -> do
+                SomeRBody body <- pBodyRest []
+                pure $ RExpr name body
+            -- Во всех остальных случаях (число, строка, ключ) — это список данных
+            _ -> do
+                SomeRBody body <- pBodyRest [first]
+                pure $ RList body
 
--- --- Хелперы лексера ---
-sc :: Parser ()
-sc = L.space space1 (L.skipLineComment ";") (L.skipBlockComment "#|" "|#")
+pBodyRest :: [Reactor] -> Parser SomeRBody
+pBodyRest initial = do
+    elems <- (initial ++) <$> many pReactor
+    case elems of
+        [] -> pure $ SomeRBody (RAtoms [])
+        (x : _) | isProp x -> do
+            props <- validateProps elems
+            pure $ SomeRBody (RProps props)
+        _ -> do
+            validateNoProps elems
+            pure $ SomeRBody (RAtoms elems)
+  where
+    isProp (RSymbol s) = T.isPrefixOf ":" s
+    isProp _ = False
 
-lexeme :: Parser a -> Parser a
-lexeme = L.lexeme sc
+validateProps :: [Reactor] -> Parser [(Text, Reactor)]
+validateProps = \case
+    [] -> pure []
+    [RSymbol k] | T.isPrefixOf ":" k -> customFailure (UnpairedProperty k)
+    (RSymbol k : v : rest) | T.isPrefixOf ":" k -> do
+        others <- validateProps rest
+        pure ((T.drop 1 k, v) : others)
+    (x : _) -> customFailure (MixedContent (T.pack $ show x))
 
-symbol :: Text -> Parser Text
-symbol = L.symbol sc
+validateNoProps :: [Reactor] -> Parser ()
+validateNoProps = mapM_ \case
+    RSymbol s | T.isPrefixOf ":" s -> customFailure (MixedContent s)
+    _ -> pure ()
