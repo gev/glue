@@ -17,8 +17,8 @@ import Reactor.Error (ReactorError (..), renderParserError)
 type Parser = Parsec ReactorError Text
 
 -- Вспомогательная структура для гетерогенных тел
-data SomeRBody where
-    SomeRBody :: Body k -> SomeRBody
+data SomeBody where
+    SomeBody :: Body k -> SomeBody
 
 -- | ГЛАВНАЯ ФУНКЦИЯ: Теперь возвращает чистый Either ReactorError Reactor
 parseReactor :: Text -> Either ReactorError AST
@@ -85,24 +85,24 @@ pExprOrList = between (symbol "(") (symbol ")") $ do
         Just first -> case first of
             -- Если первый элемент — не ключ, это вызов функции (Expr)
             Symbol name | not (T.isPrefixOf ":" name) -> do
-                SomeRBody body <- pBodyRest []
+                SomeBody body <- pBodyRest []
                 pure $ Expr name body
             -- Во всех остальных случаях (число, строка, ключ) — это список данных
             _ -> do
-                SomeRBody body <- pBodyRest [first]
+                SomeBody body <- pBodyRest [first]
                 pure $ List body
 
-pBodyRest :: [AST] -> Parser SomeRBody
+pBodyRest :: [AST] -> Parser SomeBody
 pBodyRest initial = do
     elems <- (initial ++) <$> many pReactor
     case elems of
-        [] -> pure $ SomeRBody (Atoms [])
+        [] -> pure $ SomeBody (Atoms [])
         (x : _) | isProp x -> do
             props <- validateProps elems
-            pure $ SomeRBody (Props props)
+            pure $ SomeBody (Props props)
         _ -> do
             validateNoProps elems
-            pure $ SomeRBody (Atoms elems)
+            pure $ SomeBody (Atoms elems)
   where
     isProp (Symbol s) = T.isPrefixOf ":" s
     isProp _ = False
