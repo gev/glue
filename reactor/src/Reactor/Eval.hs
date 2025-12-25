@@ -58,32 +58,36 @@ eval (IR.Symbol name) = do
     case E.lookupVar name env of
         Right val -> pure $ Just val
         Left err -> throwError err
-eval (IR.List (IR.Symbol name : rawArgs)) = do
+eval (IR.AtomList (IR.Symbol name : rawArgs)) = do
     env <- getEnv
     case E.lookupVar name env of
         Right func -> apply func rawArgs
         Left err -> throwError err
-eval (IR.List xs) = do
+eval (IR.AtomList xs) = do
     results <- mapM eval xs
     let clean = catMaybes results
     case clean of
         (f : args) | isCallable f -> apply f args
-        _ -> pure . Just . IR.List $ clean
+        _ -> pure . Just . IR.AtomList $ clean
   where
     isCallable (IR.Native _) = True
     isCallable (IR.Closure{}) = True
     isCallable _ = False
+eval (IR.PropList ps) = pure . Just . IR.Object $ Map.fromList ps
 eval (IR.PropAccess objExpr prop) = do
     objVal <- evalRequired objExpr
     case objVal of
         IR.Object objMap -> case Map.lookup prop objMap of
             Just val -> pure $ Just val
             Nothing -> throwError $ PropertyNotFound prop
-        IR.List xs -> case listToObject xs of
+        IR.AtomList xs -> case listToObject xs of
             Just objMap -> case Map.lookup prop objMap of
                 Just val -> pure $ Just val
                 Nothing -> throwError $ PropertyNotFound prop
             Nothing -> throwError $ NotAnObject (T.pack $ show objVal)
+        IR.PropList ps -> case Map.lookup prop (Map.fromList ps) of
+            Just val -> pure $ Just val
+            Nothing -> throwError $ PropertyNotFound prop
         _ -> throwError $ NotAnObject (T.pack $ show objVal)
 eval v = pure $ Just v
 

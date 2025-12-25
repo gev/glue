@@ -23,14 +23,14 @@ spec = do
             it "successfully parses pure positional list" $ do
                 let input = "(1 2 \"test\")"
                 case parseReactor input of
-                    Right (List (Atoms [Number 1, Number 2, String "test"])) -> pure ()
-                    _ -> expectationFailure "Should be Atoms"
+                    Right (AtomList [Number 1, Number 2, String "test"]) -> pure ()
+                    _ -> expectationFailure "Should be AtomList"
 
             it "successfully parses pure property list" $ do
                 let input = "(:id 1 :type \"lamp\")"
                 case parseReactor input of
-                    Right (List (Props [("id", Number 1), ("type", String "lamp")])) -> pure ()
-                    _ -> expectationFailure "Should be Props"
+                    Right (PropList [("id", Number 1), ("type", String "lamp")]) -> pure ()
+                    _ -> expectationFailure "Should be PropList"
 
             it "FAILS when mixing atoms and properties" $ do
                 parseReactor "(:id 1 \"oops\")" `shouldBe` Left (MixedContent "\"oops\"")
@@ -50,51 +50,51 @@ spec = do
 
         describe "Quote sugar" $ do
             it "parses quoted symbols as (quote symbol)" $ do
-                parseReactor "'foo" `shouldBe` Right (List (Atoms [Symbol "quote", Symbol "foo"]))
+                parseReactor "'foo" `shouldBe` Right (AtomList [Symbol "quote", Symbol "foo"])
 
             it "parses quoted lists" $ do
-                parseReactor "'(1 2)" `shouldBe` Right (List (Atoms [Symbol "quote", List (Atoms [Number 1, Number 2])]))
+                parseReactor "'(1 2)" `shouldBe` Right (AtomList [Symbol "quote", AtomList [Number 1, Number 2]])
 
         describe "Advanced Quote sugar" do
             it "parses nested quotes (quote of quote)" do
                 -- ''foo -> (quote (quote foo))
                 parseReactor "''foo"
                     `shouldBe` Right
-                        (List (Atoms [Symbol "quote", List (Atoms [Symbol "quote", Symbol "foo"])]))
+                        (AtomList [Symbol "quote", AtomList [Symbol "quote", Symbol "foo"]])
 
             it "parses quote inside a list" do
                 -- (list 'a 1) -> (list (quote a) 1)
                 parseReactor "(list 'a 1)"
                     `shouldBe` Right
-                        (List (Atoms [Symbol "list", List (Atoms [Symbol "quote", Symbol "a"]), Number 1]))
+                        (AtomList [Symbol "list", AtomList [Symbol "quote", Symbol "a"], Number 1])
 
             it "parses quote of a list with properties" do
                 -- '(:id 1) -> (quote (:id 1))
                 parseReactor "'(:id 1)"
                     `shouldBe` Right
-                        (List (Atoms [Symbol "quote", List (Props [("id", Number 1)])]))
+                        (AtomList [Symbol "quote", PropList [("id", Number 1)]])
 
             it "parses quote of an expression" do
                 -- '(set :x 1) -> (quote (set :x 1))
                 parseReactor "'(set :x 1)"
                     `shouldBe` Right
-                        (List (Atoms [Symbol "quote", List (Atoms [Symbol "set", List (Props [("x", Number 1)])])]))
+                        (AtomList [Symbol "quote", AtomList [Symbol "set", PropList [("x", Number 1)]]])
 
             it "parses multiple quotes in different places" do
                 -- (f 'a 'b)
                 parseReactor "(f 'a 'b)"
                     `shouldBe` Right
-                        (List (Atoms [Symbol "f", List (Atoms [Symbol "quote", Symbol "a"]), List (Atoms [Symbol "quote", Symbol "b"])]))
+                        (AtomList [Symbol "f", AtomList [Symbol "quote", Symbol "a"], AtomList [Symbol "quote", Symbol "b"]])
 
             it "parses quote of a quote of a list" do
                 -- ''(1 2)
                 parseReactor "''(1 2)"
                     `shouldBe` Right
-                        (List (Atoms [Symbol "quote", List (Atoms [Symbol "quote", List (Atoms [Number 1, Number 2])])]))
+                        (AtomList [Symbol "quote", AtomList [Symbol "quote", AtomList [Number 1, Number 2]]])
 
         describe "Property Access" $ do
             it "parses property access" $ do
                 parseReactor "obj.name" `shouldBe` Right (PropAccess (Symbol "obj") "name")
 
             it "parses property access with complex object" $ do
-                parseReactor "(f x).name" `shouldBe` Right (PropAccess (List (Atoms [Symbol "f", Symbol "x"])) "name")
+                parseReactor "(f x).name" `shouldBe` Right (PropAccess (AtomList [Symbol "f", Symbol "x"]) "name")

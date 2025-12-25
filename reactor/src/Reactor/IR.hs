@@ -14,7 +14,8 @@ data IR m
     = Number Scientific
     | String Text
     | Symbol Text
-    | List [IR m]
+    | AtomList [IR m]
+    | PropList [(Text, IR m)]
     | Object (Map Text (IR m))
     | PropAccess (IR m) Text
     | Native (Native m)
@@ -30,20 +31,17 @@ compile = \case
     AST.Number n -> Number n
     AST.String s -> String s
     AST.Symbol s -> Symbol s
-    AST.List body -> compileBody body
+    AST.AtomList xs -> AtomList (map compile xs)
+    AST.PropList ps -> PropList (map (\(k, v) -> (k, compile v)) ps)
     AST.PropAccess obj prop -> PropAccess (compile obj) prop
-
-compileBody :: AST.Body k -> IR m
-compileBody = \case
-    AST.Atoms xs -> List (map compile xs)
-    AST.Props ps -> Object (Map.fromList (map (\(k, v) -> (k, compile v)) ps))
 
 instance Show (IR m) where
     show = \case
         Number n -> show n
         String s -> "\"" <> T.unpack s <> "\""
         Symbol s -> T.unpack s
-        List xs -> "(" <> unwords (map show xs) <> ")"
+        AtomList xs -> "(" <> unwords (map show xs) <> ")"
+        PropList ps -> "{" <> unwords (map (\(k, v) -> T.unpack k <> ": " <> show v) ps) <> "}"
         PropAccess obj prop -> "(" <> show obj <> "." <> T.unpack prop <> ")"
         Native _ -> "<native>"
         Closure{} -> "<closure>"
@@ -53,7 +51,8 @@ instance Eq (IR m) where
     (Number a) == (Number b) = a == b
     (String a) == (String b) = a == b
     (Symbol a) == (Symbol b) = a == b
-    (List a) == (List b) = a == b
+    (AtomList a) == (AtomList b) = a == b
+    (PropList a) == (PropList b) = a == b
     (Object a) == (Object b) = a == b
     (PropAccess o1 p1) == (PropAccess o2 p2) = o1 == o2 && p1 == p2
     _ == _ = False

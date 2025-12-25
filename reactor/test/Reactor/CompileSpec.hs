@@ -31,36 +31,28 @@ instance Arbitrary AST where
                 , AST.Number <$> arbitrary
                 , AST.String <$> arbitrary
                 , -- Generate nested structures
-                  AST.List . AST.Atoms <$> resize (n `div` 2) arbitrary
-                , AST.List . AST.Props <$> resize (n `div` 2) arbitrary
+                  AST.AtomList <$> resize (n `div` 2) arbitrary
+                , AST.PropList <$> resize (n `div` 2) arbitrary
+                , AST.PropAccess <$> resize (n `div` 2) arbitrary <*> arbitrary
                 ]
 
 spec :: Spec
 spec = describe "AST -> IR transformation (compile)" do
     -- Positional lists
     prop "atoms: list length is preserved 1 to 1" $ \(xs :: [AST]) -> do
-        let ast = AST.List (AST.Atoms xs)
+        let ast = AST.AtomList xs
         let val = compile ast :: IR Identity
         case val of
-            IR.List ys -> length ys `shouldBe` length xs
-            _ -> expectationFailure "Expected List"
+            IR.AtomList ys -> length ys `shouldBe` length xs
+            _ -> expectationFailure "Expected AtomList"
 
     -- Property lists (key-value)
-    prop "properties: number of elements doubles (key + value)" $ \(ps :: [(T.Text, AST)]) -> do
-        let ast = AST.List (AST.Props ps)
+    prop "properties: PropList length equals number of properties" $ \(ps :: [(T.Text, AST)]) -> do
+        let ast = AST.PropList ps
         let val = compile ast :: IR Identity
         case val of
-            IR.List ys -> length ys `shouldBe` (length ps * 2)
-            _ -> expectationFailure "Expected List"
-
-    -- Property prefix check
-    prop "keys in IR always start with ':'" $ \(ps :: [(T.Text, AST)]) ->
-        not (null ps) ==> do
-            let ast = AST.List (AST.Props ps)
-            let val = compile ast :: IR Identity
-            case val of
-                IR.List (IR.Symbol k : _) -> T.isPrefixOf ":" k `shouldBe` True
-                _ -> expectationFailure "First element should be key symbol"
+            IR.PropList ys -> length ys `shouldBe` length ps
+            _ -> expectationFailure "Expected PropList"
 
     -- Recursive integrity (doesn't crash on deep trees)
     prop "integrity: any AST structure transforms successfully" $ \(ast :: AST) -> do
@@ -69,10 +61,10 @@ spec = describe "AST -> IR transformation (compile)" do
         seq val True `shouldBe` True
 
     prop "empty atoms and props don't create garbage data" do
-        let ast1 = AST.List (AST.Atoms [])
-        let ast2 = AST.List (AST.Props [])
-        (compile ast1 :: IR Identity) `shouldBe` IR.List []
-        (compile ast2 :: IR Identity) `shouldBe` IR.List []
+        let ast1 = AST.AtomList []
+        let ast2 = AST.PropList []
+        (compile ast1 :: IR Identity) `shouldBe` IR.AtomList []
+        (compile ast2 :: IR Identity) `shouldBe` IR.PropList []
 
     prop "Symbol becomes Symbol unchanged (idempotent)" $ \s -> do
         let ast = AST.Symbol s
@@ -82,10 +74,15 @@ spec = describe "AST -> IR transformation (compile)" do
             _ -> expectationFailure "Should be Symbol"
 
     prop "recursive expansion: properties can contain nested calls" $ \k (astInner :: AST) -> do
-        let ast = AST.List (AST.Props [(k, astInner)])
+        let ast = AST.PropList [(k, astInner)]
         let val = compile ast :: IR Identity
         case val of
-            IR.List [IR.Symbol k', valInner] -> do
-                k' `shouldBe` (":" <> k)
+            IR.PropList [(k', valInner)] -> do
+                k' `shouldBe` k
                 valInner `shouldBe` (compile astInner :: IR Identity)
             _ -> expectationFailure "Recursive expansion error"
+
+    prop "PropAccess compiles correctly" $ \(obj :: AST) prop -> do
+        let ast = AST.PropAccess obj prop
+        let val = compile ast :: IR Identity
+        val `shouldBe` IR.PropAccess (compile obj) prop

@@ -40,13 +40,19 @@ builtinSet [PropAccess (Symbol objName) prop, rawVal] = do
                 let newObj = Object newMap
                 updateVarEval objName newObj
                 pure Nothing
-            List xs -> case listToObject xs of
+            AtomList xs -> case listToObject xs of
                 Just objMap -> do
                     let newMap = Map.insert prop val objMap
                     let newObj = Object newMap
                     updateVarEval objName newObj
                     pure Nothing
                 Nothing -> throwError $ NotAnObject (T.pack $ show currentObj)
+            PropList ps -> do
+                let objMap = Map.fromList ps
+                let newMap = Map.insert prop val objMap
+                let newObj = Object newMap
+                updateVarEval objName newObj
+                pure Nothing
             _ -> throwError $ NotAnObject (T.pack $ show currentObj)
         Left err -> throwError err
 builtinSet _ = throwError SetExpectedSymbolAndValue
@@ -54,7 +60,7 @@ builtinSet _ = throwError SetExpectedSymbolAndValue
 builtinLambda :: [V] -> Eval (Maybe V)
 builtinLambda [argsNode, body] = do
     rawArgs <- case argsNode of
-        List xs -> pure xs
+        AtomList xs -> pure xs
         _ -> throwError LambdaExpectedArgumentsList
     params <- case E.extractSymbols rawArgs of
         Right ps -> pure ps
@@ -64,7 +70,7 @@ builtinLambda [argsNode, body] = do
 builtinLambda _ = throwError LambdaExpectedArgumentsAndBody
 
 builtinList :: [V] -> Eval V
-builtinList args = pure (List args)
+builtinList args = pure (AtomList args)
 
 listToObject :: [V] -> Maybe (Map.Map Text V)
 listToObject = go Map.empty

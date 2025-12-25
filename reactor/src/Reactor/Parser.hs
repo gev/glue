@@ -5,16 +5,13 @@ module Reactor.Parser (
 
 import Data.Text (Text)
 import Data.Text qualified as T
-import Reactor.AST (AST (..), Body (..))
+import Reactor.AST (AST (..))
 import Reactor.Parser.Error (ParserError (..), parserError)
 import Text.Megaparsec
 import Text.Megaparsec.Char (alphaNumChar, char, space1)
 import Text.Megaparsec.Char.Lexer qualified as L
 
 type Parser = Parsec ParserError Text
-
-data SomeBody where
-    SomeBody :: Body k -> SomeBody
 
 parseReactor :: Text -> Either ParserError AST
 parseReactor input =
@@ -49,7 +46,7 @@ pQuoted :: Parser AST
 pQuoted = do
     _ <- char '\''
     inner <- pReactor
-    pure $ List (Atoms (Symbol "quote" : [inner]))
+    pure $ AtomList [Symbol "quote", inner]
 
 pNumber :: Parser AST
 pNumber = Number <$> lexeme L.scientific
@@ -63,28 +60,26 @@ pSymbol = Symbol . T.pack <$> lexeme (some (alphaNumChar <|> oneOf ("-_:!?" :: S
 pExprOrList :: Parser AST
 pExprOrList = between (symbol "(") (symbol ")") $ do
     optional pReactor >>= \case
-        Nothing -> pure $ List (Atoms [])
+        Nothing -> pure $ AtomList []
         Just first -> case first of
             Symbol name | not (T.isPrefixOf ":" name) -> do
-                SomeBody body <- pBodyRest []
-                pure . List . Atoms $ case body of
-                    Atoms atoms -> Symbol name : atoms
-                    props -> [Symbol name, List props]
-            _ -> do
-                SomeBody body <- pBodyRest [first]
-                pure $ List body
+                body <- pBodyRest []
+                case body of
+                    AtomList atoms -> pure $ AtomList (Symbol name : atoms)
+                    propList -> pure $ AtomList [Symbol name, propList]
+            _ -> pBodyRest [first]
 
-pBodyRest :: [AST] -> Parser SomeBody
+pBodyRest :: [AST] -> Parser AST
 pBodyRest initial = do
     elems <- (initial <>) <$> many pReactor
     case elems of
-        [] -> pure $ SomeBody (Atoms [])
+        [] -> pure $ AtomList []
         (x : _) | isProp x -> do
             props <- validateProps elems
-            pure $ SomeBody (Props props)
+            pure $ PropList props
         _ -> do
             validateNoProps elems
-            pure $ SomeBody (Atoms elems)
+            pure $ AtomList elems
   where
     isProp (Symbol s) = T.isPrefixOf ":" s
     isProp _ = False

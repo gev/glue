@@ -27,7 +27,7 @@ spec = describe "Reactor.Eval (System Integration)" do
 
     it "executes (def) and (set) chain" do
         let code = "(list (def x 1) (set x 2) x)"
-        runCode code `shouldReturn` Right (Just (List [Number 2]))
+        runCode code `shouldReturn` Right (Just (AtomList [Number 2]))
 
     it "implements full closures (Lexical Shadowing)" do
         let code = "(((lambda (x) (lambda (y) x)) 100) 1)"
@@ -35,7 +35,7 @@ spec = describe "Reactor.Eval (System Integration)" do
 
     it "checks that (def) inside (lambda) doesn't corrupt global scope" do
         let code = "(list (def x 1) ((lambda () (def x 2))) x)"
-        runCode code `shouldReturn` Right (Just (List [Number 1]))
+        runCode code `shouldReturn` Right (Just (AtomList [Number 1]))
 
     it "handles property access on property lists" do
         let code = "(:foo 42).foo"
