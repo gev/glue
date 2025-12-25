@@ -7,7 +7,6 @@ import Data.Text qualified as T
 data BodyKind = PropsKind | AtomsKind
 
 data AST where
-    Expr :: Text -> Body k -> AST
     String :: Text -> AST
     Number :: Scientific -> AST
     Symbol :: Text -> AST
@@ -19,7 +18,6 @@ data Body (k :: BodyKind) where
 
 -- Ручная реализация Show для красивого вывода
 instance Show AST where
-    show (Expr name body) = "(" ++ T.unpack name ++ " " ++ show body ++ ")"
     show (String s) = "\"" ++ T.unpack s ++ "\""
     show (Number n) = show n
     show (Symbol s) = T.unpack s
@@ -36,8 +34,6 @@ instance Eq AST where
     (String a) == (String b) = a == b
     (Number a) == (Number b) = a == b
     (Symbol a) == (Symbol b) = a == b
-    -- Сравнение выражений
-    (Expr n1 b1) == (Expr n2 b2) = n1 == n2 && compareBodies b1 b2
     -- Сравнение списков
     (List b1) == (List b2) = compareBodies b1 b2
     _ == _ = False

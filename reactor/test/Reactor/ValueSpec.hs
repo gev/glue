@@ -33,8 +33,6 @@ instance Arbitrary AST where
                 , -- Генерируем вложенные структуры
                   AST.List . AST.Atoms <$> resize (n `div` 2) arbitrary
                 , AST.List . AST.Props <$> resize (n `div` 2) arbitrary
-                , AST.Expr <$> arbitrary <*> (AST.Atoms <$> resize (n `div` 2) arbitrary)
-                , AST.Expr <$> arbitrary <*> (AST.Props <$> resize (n `div` 2) arbitrary)
                 ]
 
 spec :: Spec
@@ -64,33 +62,17 @@ spec = describe "Трансформация AST -> IR (compile)" do
                 IR.List (IR.Symbol k : _) -> T.isPrefixOf ":" k `shouldBe` True
                 _ -> expectationFailure "Первый элемент должен быть символом-ключом"
 
-    -- Вызовы функций (Expr)
-    prop "имя вызова Call совпадает с именем Expr" $ \(name :: T.Text) (xs :: [AST]) -> do
-        let ast = AST.Expr name (AST.Atoms xs)
-        let val = compile ast :: IR Identity
-        case val of
-            IR.Call n _ -> n `shouldBe` name
-            _ -> expectationFailure "Ожидался Call"
-
     -- Рекурсивная целостность (не падает ли на глубоких деревьях)
     prop "целостность: любая структура AST успешно трансформируется" $ \(ast :: AST) -> do
         let val = compile ast :: IR Identity
         -- Если compile не упал с исключением, тест пройден
         seq val True `shouldBe` True
 
-    -- Кейс из визуального редактора (свойства в вызове)
-    prop "вызов со свойствами разворачивается корректно" $ \(name :: T.Text) (ps :: [(T.Text, AST)]) -> do
-        let ast = AST.Expr name (AST.Props ps)
-        let val = compile ast :: IR Identity
-        case val of
-            IR.Call _ args -> length args `shouldBe` (length ps * 2)
-            _ -> expectationFailure "Ожидался Call"
-
-    prop "пустые атомы и пропсы не создают мусорных данных" $ \name -> do
+    prop "пустые атомы и пропсы не создают мусорных данных" do
         let ast1 = AST.List (AST.Atoms [])
-        let ast2 = AST.Expr name (AST.Props [])
+        let ast2 = AST.List (AST.Props [])
         (compile ast1 :: IR Identity) `shouldBe` IR.List []
-        (compile ast2 :: IR Identity) `shouldBe` IR.Call name []
+        (compile ast2 :: IR Identity) `shouldBe` IR.List []
 
     prop "RSymbol переходит в Symbol без изменений (идемпотентность)" $ \s -> do
         let ast = AST.Symbol s

@@ -35,10 +35,8 @@ builtinSet _ = throwError $ SyntaxError "set: expected symbol and value"
 -- | Реализация (lambda (arg1 arg2) body)
 builtinLambda :: [V] -> Eval (Maybe V)
 builtinLambda [argsNode, body] = do
-    -- Извлекаем список аргументов независимо от того, List это или Call
     rawArgs <- case argsNode of
         List xs -> pure xs
-        Call n xs -> pure (Symbol n : xs) -- Если это (x y), то n="x", xs=["y"]
         _ -> throwError $ SyntaxError "lambda: first argument must be a list of parameters"
 
     params <- case E.extractSymbols rawArgs of

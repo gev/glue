@@ -62,7 +62,7 @@ pQuoted = do
     _ <- char '\''
     -- Рекурсивно вызываем pReactor: теперь можно цитировать и символ, и список, и число
     inner <- pReactor
-    pure $ Expr "quote" (Atoms [inner])
+    pure $ List (Atoms (Symbol "quote" : [inner]))
 
 pNumber :: Parser AST
 pNumber = Number <$> lexeme L.scientific
@@ -75,19 +75,16 @@ pSymbol = do
     s <- lexeme $ T.pack <$> some (alphaNumChar <|> oneOf ("-._:!?" :: String))
     pure $ Symbol s
 
--- --- Парсинг структур ( ... ) ---
-
 pExprOrList :: Parser AST
 pExprOrList = between (symbol "(") (symbol ")") $ do
     optional pReactor >>= \case
-        -- Пустые скобки () превращаются в пустой список атомов
         Nothing -> pure $ List (Atoms [])
         Just first -> case first of
-            -- Если первый элемент — не ключ, это вызов функции (Expr)
             Symbol name | not (T.isPrefixOf ":" name) -> do
                 SomeBody body <- pBodyRest []
-                pure $ Expr name body
-            -- Во всех остальных случаях (число, строка, ключ) — это список данных
+                pure . List . Atoms $ case body of
+                    Atoms atoms -> Symbol name : atoms
+                    props -> [Symbol name, List props]
             _ -> do
                 SomeBody body <- pBodyRest [first]
                 pure $ List body

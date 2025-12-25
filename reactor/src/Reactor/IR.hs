@@ -17,7 +17,6 @@ data IR m
     | Symbol Text
     | List [IR m]
     | Object (Map Text (IR m))
-    | Call Text [IR m]
     | Native (Native m)
     | Closure [Text] (IR m) (Env m) -- Тело теперь тоже IR m
 
@@ -40,7 +39,6 @@ compile = \case
     AST.String s -> String s
     AST.Symbol s -> Symbol s
     AST.List body -> List (compileBody body)
-    AST.Expr name body -> Call name (compileBody body)
 
 -- | Вспомогательная функция для обработки тел списков/выражений
 compileBody :: AST.Body k -> [IR m]
@@ -56,7 +54,6 @@ instance Show (IR m) where
         String s -> "\"" ++ T.unpack s ++ "\""
         Symbol s -> T.unpack s
         List xs -> "(" ++ unwords (map show xs) ++ ")"
-        Call n as -> "(" ++ T.unpack n ++ " " ++ unwords (map show as) ++ ")"
         Native _ -> "<native>"
         Closure{} -> "<closure>"
         Object _ -> "{object}"
@@ -66,7 +63,6 @@ instance Eq (IR m) where
     (String a) == (String b) = a == b
     (Symbol a) == (Symbol b) = a == b
     (List a) == (List b) = a == b
-    (Call n1 a1) == (Call n2 a2) = n1 == n2 && a1 == a2
     (Object a) == (Object b) = a == b
     -- Функции и замыкания считаем неравными в целях тестирования данных
     _ == _ = False

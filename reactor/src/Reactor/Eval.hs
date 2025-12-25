@@ -49,6 +49,11 @@ eval (V.Symbol name) = do
     case E.lookupVar name env of
         Right val -> pure $ Just val
         Left err -> throwError err
+eval (V.List (V.Symbol name : rawArgs)) = do
+    env <- getEnv
+    case E.lookupVar name env of
+        Right func -> apply func rawArgs
+        Left err -> throwError err
 eval (V.List xs) = do
     results <- mapM eval xs
     let clean = catMaybes results
@@ -59,11 +64,6 @@ eval (V.List xs) = do
     isCallable (V.Native _) = True
     isCallable (V.Closure{}) = True
     isCallable _ = False
-eval (V.Call name rawArgs) = do
-    env <- getEnv
-    case E.lookupVar name env of
-        Right func -> apply func rawArgs
-        Left err -> throwError err
 eval v = pure $ Just v
 
 apply :: IR -> [IR] -> Eval (Maybe IR)
