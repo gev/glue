@@ -13,11 +13,11 @@ main = do
 
     let inputs =
             [ "(light :id 1 :state :on)"
-            , "(device 123 :broken t)" -- Тут будет ошибка
+            , "(device 123 :broken t)" -- This will cause an error
             ]
     forM_ inputs \input -> do
         TIO.putStrLn $ "Testing: " <> input
         case parseReactor input of
-            Left err -> print err -- Печатаем готовую красивую ошибку
+            Left err -> print err -- Print the formatted error
             Right ast -> print ast
         TIO.putStrLn "---"

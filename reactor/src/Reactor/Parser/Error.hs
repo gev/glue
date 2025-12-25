@@ -21,15 +21,15 @@ instance ShowErrorComponent ParserError where
     showErrorComponent = \case
         MixedContent k ->
             "Syntax Error: Property '"
-                ++ T.unpack k
-                ++ "' cannot be mixed with positional arguments.\n"
-                ++ "In Reactor LISP, a list must be EITHER all properties (:key val) OR all atoms."
+                <> T.unpack k
+                <> "' cannot be mixed with positional arguments.\n"
+                <> "In Reactor LISP, a list must be EITHER all properties (:key val) OR all atoms."
         UnpairedProperty k ->
-            "Syntax Error: The property '" ++ T.unpack k ++ "' is missing a value."
+            "Syntax Error: The property '" <> T.unpack k <> "' is missing a value."
         ReservedKeyword s ->
-            "Syntax Error: '" ++ T.unpack s ++ "' is a reserved keyword."
+            "Syntax Error: '" <> T.unpack s <> "' is a reserved keyword."
         SyntaxError e ->
-            "Syntax Error: '" ++ T.unpack e
+            "Syntax Error: '" <> T.unpack e
 
 parserError :: ParseErrorBundle Text ParserError -> ParserError
 parserError bundle =

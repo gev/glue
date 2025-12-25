@@ -6,10 +6,6 @@ module Spec.Device (
 
 import Data.Text (Text)
 
--- ===================================
--- Доменная модель
--- ===================================
-
 data PortType
   = Relay
   | Dimmer

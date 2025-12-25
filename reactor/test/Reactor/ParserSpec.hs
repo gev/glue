@@ -24,16 +24,15 @@ spec = do
                 let input = "(1 2 \"test\")"
                 case parseReactor input of
                     Right (List (Atoms [Number 1, Number 2, String "test"])) -> pure ()
-                    _ -> expectationFailure "Should be RAtoms"
+                    _ -> expectationFailure "Should be Atoms"
 
             it "successfully parses pure property list" $ do
                 let input = "(:id 1 :type \"lamp\")"
                 case parseReactor input of
                     Right (List (Props [("id", Number 1), ("type", String "lamp")])) -> pure ()
-                    _ -> expectationFailure "Should be RProps"
+                    _ -> expectationFailure "Should be Props"
 
             it "FAILS when mixing atoms and properties" $ do
-                -- Прямое сравнение с конструктором ошибки
                 parseReactor "(:id 1 \"oops\")" `shouldBe` Left (MixedContent "\"oops\"")
 
             it "FAILS when mixing properties and atoms" $ do

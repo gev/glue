@@ -48,10 +48,10 @@ test-suite reactor-test
   hs-source-dirs: test
   -- cabal-gild: discover test --exclude=*/Spec.hs
   other-modules:
+    Reactor.CompileSpec
     Reactor.EnvSpec
     Reactor.EvalSpec
     Reactor.ParserSpec
-    Reactor.ValueSpec
 
   main-is: Spec.hs
   build-depends:

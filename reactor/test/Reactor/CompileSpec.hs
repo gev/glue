@@ -1,6 +1,6 @@
 {-# OPTIONS_GHC -Wno-orphans #-}
 
-module Reactor.ValueSpec (spec) where
+module Reactor.CompileSpec (spec) where
 
 import Data.Text qualified as T
 import Test.Hspec
@@ -14,7 +14,7 @@ import Reactor.AST qualified as AST
 import Reactor.IR (IR, compile)
 import Reactor.IR qualified as IR
 
--- 1. Генератор для самого Reactor (AST)
+-- 1. Generator for Reactor AST itself
 instance Arbitrary AST where
     arbitrary = sized genReactor
       where
@@ -30,62 +30,62 @@ instance Arbitrary AST where
                 [ AST.Symbol <$> arbitrary
                 , AST.Number <$> arbitrary
                 , AST.String <$> arbitrary
-                , -- Генерируем вложенные структуры
+                , -- Generate nested structures
                   AST.List . AST.Atoms <$> resize (n `div` 2) arbitrary
                 , AST.List . AST.Props <$> resize (n `div` 2) arbitrary
                 ]
 
 spec :: Spec
-spec = describe "Трансформация AST -> IR (compile)" do
-    -- Позиционные списки
-    prop "атомы: длина списка сохраняется 1 к 1" $ \(xs :: [AST]) -> do
+spec = describe "AST -> IR transformation (compile)" do
+    -- Positional lists
+    prop "atoms: list length is preserved 1 to 1" $ \(xs :: [AST]) -> do
         let ast = AST.List (AST.Atoms xs)
         let val = compile ast :: IR Identity
         case val of
             IR.List ys -> length ys `shouldBe` length xs
-            _ -> expectationFailure "Ожидался List"
+            _ -> expectationFailure "Expected List"
 
-    -- Списки свойств (ключ-значение)
-    prop "свойства: количество элементов удваивается (ключ + значение)" $ \(ps :: [(T.Text, AST)]) -> do
+    -- Property lists (key-value)
+    prop "properties: number of elements doubles (key + value)" $ \(ps :: [(T.Text, AST)]) -> do
         let ast = AST.List (AST.Props ps)
         let val = compile ast :: IR Identity
         case val of
             IR.List ys -> length ys `shouldBe` (length ps * 2)
-            _ -> expectationFailure "Ожидался List"
+            _ -> expectationFailure "Expected List"
 
-    -- Проверка префикса свойств
-    prop "ключи в IR всегда начинаются с ':'" $ \(ps :: [(T.Text, AST)]) ->
+    -- Property prefix check
+    prop "keys in IR always start with ':'" $ \(ps :: [(T.Text, AST)]) ->
         not (null ps) ==> do
             let ast = AST.List (AST.Props ps)
             let val = compile ast :: IR Identity
             case val of
                 IR.List (IR.Symbol k : _) -> T.isPrefixOf ":" k `shouldBe` True
-                _ -> expectationFailure "Первый элемент должен быть символом-ключом"
+                _ -> expectationFailure "First element should be key symbol"
 
-    -- Рекурсивная целостность (не падает ли на глубоких деревьях)
-    prop "целостность: любая структура AST успешно трансформируется" $ \(ast :: AST) -> do
+    -- Recursive integrity (doesn't crash on deep trees)
+    prop "integrity: any AST structure transforms successfully" $ \(ast :: AST) -> do
         let val = compile ast :: IR Identity
-        -- Если compile не упал с исключением, тест пройден
+        -- If compile doesn't throw exception, test passes
         seq val True `shouldBe` True
 
-    prop "пустые атомы и пропсы не создают мусорных данных" do
+    prop "empty atoms and props don't create garbage data" do
         let ast1 = AST.List (AST.Atoms [])
         let ast2 = AST.List (AST.Props [])
         (compile ast1 :: IR Identity) `shouldBe` IR.List []
         (compile ast2 :: IR Identity) `shouldBe` IR.List []
 
-    prop "RSymbol переходит в Symbol без изменений (идемпотентность)" $ \s -> do
+    prop "Symbol becomes Symbol unchanged (idempotent)" $ \s -> do
         let ast = AST.Symbol s
         let val = compile ast :: IR Identity
         case val of
             IR.Symbol s' -> s' `shouldBe` s
-            _ -> expectationFailure "Должен быть Symbol"
+            _ -> expectationFailure "Should be Symbol"
 
-    prop "рекурсивная развертка: свойства могут содержать вложенные вызовы" $ \k (astInner :: AST) -> do
+    prop "recursive expansion: properties can contain nested calls" $ \k (astInner :: AST) -> do
         let ast = AST.List (AST.Props [(k, astInner)])
         let val = compile ast :: IR Identity
         case val of
             IR.List [IR.Symbol k', valInner] -> do
                 k' `shouldBe` (":" <> k)
                 valInner `shouldBe` (compile astInner :: IR Identity)
-            _ -> expectationFailure "Ошибка рекурсивной развертки"
+            _ -> expectationFailure "Recursive expansion error"

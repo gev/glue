@@ -74,7 +74,7 @@ pExprOrList = between (symbol "(") (symbol ")") $ do
 
 pBodyRest :: [AST] -> Parser SomeBody
 pBodyRest initial = do
-    elems <- (initial ++) <$> many pReactor
+    elems <- (initial <>) <$> many pReactor
     case elems of
         [] -> pure $ SomeBody (Atoms [])
         (x : _) | isProp x -> do

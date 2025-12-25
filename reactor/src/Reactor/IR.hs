@@ -7,10 +7,8 @@ import Data.Text qualified as T
 import Reactor.AST (AST)
 import Reactor.AST qualified as AST
 
--- Он тоже параметризован монадой m, так как хранит IR m.
 type Env m = [Map Text (IR m)]
 
--- | Рантайм-значение, параметризованное монадой исполнения 'm'
 data IR m
     = Number Scientific
     | String Text
@@ -18,21 +16,13 @@ data IR m
     | List [IR m]
     | Object (Map Text (IR m))
     | Native (Native m)
-    | Closure [Text] (IR m) (Env m) -- Тело теперь тоже IR m
+    | Closure [Text] (IR m) (Env m)
 
--- | Типы нативных функций
 data Native m
     = Func ([IR m] -> m (IR m))
     | Cmd ([IR m] -> m ())
     | Special ([IR m] -> m (Maybe (IR m)))
 
--- =============================================================================
--- ТРАНСФОРМАЦИЯ: AST -> IR m
--- =============================================================================
-
-{- | Превращает дерево AST в дерево IR.
-Эта функция универсальна для любой монады m.
--}
 compile :: AST -> IR m
 compile = \case
     AST.Number n -> Number n
@@ -40,20 +30,17 @@ compile = \case
     AST.Symbol s -> Symbol s
     AST.List body -> List (compileBody body)
 
--- | Вспомогательная функция для обработки тел списков/выражений
 compileBody :: AST.Body k -> [IR m]
 compileBody = \case
     AST.Atoms xs -> map compile xs
-    -- Свойства разворачиваем в плоский список: [:key, val, :key2, val2]
     AST.Props ps -> concatMap (\(k, v) -> [Symbol (":" <> k), compile v]) ps
 
--- Экземпляр Show для отладки
 instance Show (IR m) where
     show = \case
         Number n -> show n
-        String s -> "\"" ++ T.unpack s ++ "\""
+        String s -> "\"" <> T.unpack s <> "\""
         Symbol s -> T.unpack s
-        List xs -> "(" ++ unwords (map show xs) ++ ")"
+        List xs -> "(" <> unwords (map show xs) <> ")"
         Native _ -> "<native>"
         Closure{} -> "<closure>"
         Object _ -> "{object}"
@@ -64,5 +51,4 @@ instance Eq (IR m) where
     (Symbol a) == (Symbol b) = a == b
     (List a) == (List b) = a == b
     (Object a) == (Object b) = a == b
-    -- Функции и замыкания считаем неравными в целях тестирования данных
     _ == _ = False
