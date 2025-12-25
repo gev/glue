@@ -82,7 +82,7 @@ spec = describe "AST -> IR transformation (compile)" do
                 valInner `shouldBe` (compile astInner :: IR Identity)
             _ -> expectationFailure "Recursive expansion error"
 
-    prop "PropAccess compiles correctly" $ \(obj :: AST) prop -> do
-        let ast = AST.PropAccess obj prop
+    prop "PropAccess compiles correctly" $ \(obj :: AST) pro -> do
+        let ast = AST.PropAccess obj pro
         let val = compile ast :: IR Identity
-        val `shouldBe` IR.PropAccess (compile obj) prop
+        val `shouldBe` IR.PropAccess (compile obj) pro
