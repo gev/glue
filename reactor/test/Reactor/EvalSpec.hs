@@ -1,6 +1,7 @@
 module Reactor.EvalSpec (spec) where
 
 import Data.Text (Text)
+import Reactor.Error (ReactorError (..))
 import Reactor.Eval as E
 import Reactor.Eval.Error (EvalError (..))
 import Reactor.IR (IR (..), compile)
@@ -9,15 +10,15 @@ import Reactor.Parser (parseReactor)
 import Test.Hspec
 
 -- Исправленный хелпер для запуска кода
-runCode :: Text -> IO (Either EvalError (Maybe E.IR))
+runCode :: Text -> IO (Either ReactorError (Maybe E.IR))
 runCode input = case parseReactor input of
-    Left err -> error (show err)
+    Left err -> pure $ Left (ReactorError err)
     Right ast -> do
         let irTree = compile ast
         -- runEval возвращает IO (Either ReactorError (a, Env))
         fullResult <- runEval (eval irTree) initialEnv
         case fullResult of
-            Left err -> pure $ Left err
+            Left err -> pure $ Left (ReactorError err)
             Right (res, _finalEnv) -> pure $ Right res
 
 spec :: Spec
@@ -45,8 +46,8 @@ spec = describe "Reactor.Eval (Интеграция системы)" do
 
     it "ошибается при вызове несуществующей функции" do
         runCode "(non-existent 1 2)"
-            `shouldReturn` Left (EvalError "Unbound variable: non-existent")
+            `shouldReturn` Left (ReactorError $ UnboundVariable "non-existent")
 
     it "ошибается при передаче неверного количества аргументов" do
         runCode "((lambda (a b) a) 1)"
-            `shouldReturn` Left (EvalError "Wrong number of arguments")
+            `shouldReturn` Left (ReactorError WrongNumberOfArguments)

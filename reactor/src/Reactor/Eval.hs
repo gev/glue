@@ -77,7 +77,7 @@ apply (IR.Native native) rawArgs = case native of
 apply (IR.Closure params body savedEnv) rawArgs = do
     argValues <- catMaybes <$> mapM eval rawArgs
     if length params /= length argValues
-        then throwError (EvalError "Wrong number of arguments")
+        then throwError WrongNumberOfArguments
         else do
             currentEnv <- getEnv
             let newEnv = foldr (\(p, v) e -> E.defineVar p v e) (E.pushFrame savedEnv) (zip params argValues)
@@ -85,14 +85,14 @@ apply (IR.Closure params body savedEnv) rawArgs = do
             res <- eval body
             putEnv currentEnv
             pure res
-apply (IR.Symbol name) _ = throwError $ EvalError ("Unbound variable: " <> name)
-apply _ _ = throwError $ EvalError "Not a callable object"
+apply (IR.Symbol name) _ = throwError $ UnboundVariable name
+apply _ _ = throwError NotCallableObject
 
 evalRequired :: IR -> Eval IR
 evalRequired v =
     eval v >>= \case
         Just val -> pure val
-        Nothing -> throwError $ EvalError "Expected value, but got a command/effect"
+        Nothing -> throwError ExpectedValue
 
 defineVarEval :: Text -> IR -> Eval ()
 defineVarEval name val = do

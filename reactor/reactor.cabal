@@ -16,6 +16,7 @@ library
     Reactor
     Reactor.AST
     Reactor.Env
+    Reactor.Error
     Reactor.Eval
     Reactor.Eval.Error
     Reactor.IR

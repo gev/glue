@@ -31,7 +31,7 @@ lookupLocal _ [] = Nothing
 
 -- Поиск (от локального к глобальному)
 lookupVar :: Text -> Env m -> Either EvalError (IR m)
-lookupVar name [] = Left $ EvalError ("Unbound variable: " <> name)
+lookupVar name [] = Left $ UnboundVariable name
 lookupVar name (f : fs) = case Map.lookup name f of
     Just val -> Right val
     Nothing -> lookupVar name fs
@@ -43,7 +43,7 @@ defineVar name val (f : fs) = Map.insert name val f : fs
 
 -- Обновление (там, где найдено)
 updateVar :: Text -> IR m -> Env m -> Either EvalError (Env m)
-updateVar name _ [] = Left $ EvalError ("Cannot set unbound variable: " <> name)
+updateVar name _ [] = Left $ CanNotSetUnboundVariable name
 updateVar name val (f : fs)
     | Map.member name f = Right (Map.insert name val f : fs)
     | otherwise = (f :) <$> updateVar name val fs
@@ -59,7 +59,7 @@ makeClosure = Closure
 -}
 makeQuote :: [IR m] -> Either EvalError (IR m)
 makeQuote [v] = Right v
-makeQuote _ = Left $ EvalError "quote: expected exactly 1 argument"
+makeQuote _ = Left QuoteExpectedExactlyOneArgument
 
 {- | Хелпер для извлечения имен аргументов.
 Полезен для подготовки данных перед созданием замыкания.
@@ -67,4 +67,4 @@ makeQuote _ = Left $ EvalError "quote: expected exactly 1 argument"
 extractSymbols :: [IR m] -> Either EvalError [Text]
 extractSymbols = mapM \case
     Symbol s -> Right s
-    _ -> Left $ EvalError "Expected a list of symbols for arguments"
+    _ -> Left ExpectedListOfSymbols

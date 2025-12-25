@@ -22,7 +22,7 @@ builtinDef [Symbol name, rawVal] = do
     val <- evalRequired rawVal
     defineVarEval name val
     pure Nothing
-builtinDef _ = throwError $ EvalError "def: expected symbol and value"
+builtinDef _ = throwError DefExpectedSymbolAndValue
 
 -- | Реализация (set symbol value)
 builtinSet :: [V] -> Eval (Maybe V)
@@ -30,14 +30,14 @@ builtinSet [Symbol name, rawVal] = do
     val <- evalRequired rawVal
     updateVarEval name val
     pure Nothing
-builtinSet _ = throwError $ EvalError "set: expected symbol and value"
+builtinSet _ = throwError SetExpectedSymbolAndValue
 
 -- | Реализация (lambda (arg1 arg2) body)
 builtinLambda :: [V] -> Eval (Maybe V)
 builtinLambda [argsNode, body] = do
     rawArgs <- case argsNode of
         List xs -> pure xs
-        _ -> throwError $ EvalError "lambda: first argument must be a list of parameters"
+        _ -> throwError LambdaExpectedArgumentsList
 
     params <- case E.extractSymbols rawArgs of
         Right ps -> pure ps
@@ -45,7 +45,7 @@ builtinLambda [argsNode, body] = do
 
     capturedEnv <- getEnv
     pure . Just $ E.makeClosure params body capturedEnv
-builtinLambda _ = throwError $ EvalError "lambda: expected (lambda (args) body)"
+builtinLambda _ = throwError LambdaExpectedArgumentsAndBody
 
 builtinList :: [V] -> Eval V
 builtinList args = pure (List args)

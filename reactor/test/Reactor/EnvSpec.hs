@@ -13,14 +13,11 @@ import Test.QuickCheck.Instances ()
 
 import Data.Either (isLeft)
 import Reactor.Env
-import Reactor.Eval.Error (EvalError (..))
 import Reactor.IR
 
--- Настройка типов для тестов
 type V = IR Identity
 type E = Env Identity
 
--- Генератор для простейших значений IR
 instance Arbitrary (IR Identity) where
     arbitrary =
         oneof
@@ -36,7 +33,7 @@ spec = describe "Reactor.Env (Тестирование системы памят
             let env = emptyEnv :: E
             lookupLocal "any" env `shouldBe` Nothing
             lookupVar "any" env `shouldSatisfy` \case
-                Left (EvalError _) -> True
+                Left _ -> True
                 _ -> False
 
         it "fromList: корректно инициализирует начальный фрейм" do
@@ -47,11 +44,8 @@ spec = describe "Reactor.Env (Тестирование системы памят
         it "pushFrame / popFrame: управляют глубиной стека (LIFO)" do
             let base = fromList [("x", Number 1)]
             let pushed = pushFrame base
-            -- В новом слое переменной "x" локально нет
             lookupLocal "x" pushed `shouldBe` Nothing
-            -- Но через поиск вглубь она видна
             lookupVar "x" pushed `shouldBe` Right (Number 1)
-            -- После popFrame возвращаемся к исходному состоянию
             popFrame pushed `shouldBe` base
 
         it "popFrame на пустом списке не падает" do
@@ -91,7 +85,7 @@ spec = describe "Reactor.Env (Тестирование системы памят
             \name (v :: V) -> do
                 let env = emptyEnv :: E
                 updateVar name v env `shouldSatisfy` \case
-                    Left (EvalError _) -> True
+                    Left _ -> True
                     _ -> False
 
     describe "Безопасность и Lookup" do
@@ -100,7 +94,7 @@ spec = describe "Reactor.Env (Тестирование системы памят
 
         prop "lookupVar на пустом стеке возвращает EvalError" $ \name -> do
             lookupVar name [] `shouldSatisfy` \case
-                Left (EvalError _) -> True
+                Left _ -> True
                 _ -> False
 
     describe "Специальные формы и валидация" do
