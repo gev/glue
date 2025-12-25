@@ -1,5 +1,6 @@
 module Reactor.IR where
 
+import Data.Bifunctor (second)
 import Data.Map.Strict (Map)
 import Data.Map.Strict qualified as Map
 import Data.Scientific (Scientific)
@@ -32,7 +33,7 @@ compile = \case
     AST.String s -> String s
     AST.Symbol s -> Symbol s
     AST.AtomList xs -> AtomList (map compile xs)
-    AST.PropList ps -> PropList (map (\(k, v) -> (k, compile v)) ps)
+    AST.PropList ps -> PropList (map (second compile) ps)
     AST.PropAccess obj prop -> PropAccess (compile obj) prop
 
 instance Show (IR m) where
