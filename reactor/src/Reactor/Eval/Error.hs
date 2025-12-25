@@ -9,6 +9,8 @@ data EvalError
     | ExpectedValue
     | ExpectedListOfSymbols
     | WrongNumberOfArguments
+    | PropertyNotFound Text
+    | NotAnObject Text
     | DefExpectedSymbolAndValue
     | SetExpectedSymbolAndValue
     | LambdaExpectedArgumentsList
@@ -24,6 +26,8 @@ prettyShow = \case
     ExpectedValue -> "Expected value, but got a command/effect"
     ExpectedListOfSymbols -> "Expected a list of symbols"
     WrongNumberOfArguments -> "Wrong number of arguments"
+    PropertyNotFound prop -> "Property not found: " <> prop
+    NotAnObject obj -> "Not an object: " <> obj
     DefExpectedSymbolAndValue -> "def: expected symbol and value"
     SetExpectedSymbolAndValue -> "set: expected symbol and value"
     LambdaExpectedArgumentsList -> "lambda: expected list of arguments"

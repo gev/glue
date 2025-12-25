@@ -91,3 +91,10 @@ spec = do
                 parseReactor "''(1 2)"
                     `shouldBe` Right
                         (List (Atoms [Symbol "quote", List (Atoms [Symbol "quote", List (Atoms [Number 1, Number 2])])]))
+
+        describe "Property Access" $ do
+            it "parses property access" $ do
+                parseReactor "obj.name" `shouldBe` Right (PropAccess (Symbol "obj") "name")
+
+            it "parses property access with complex object" $ do
+                parseReactor "(f x).name" `shouldBe` Right (PropAccess (List (Atoms [Symbol "f", Symbol "x"])) "name")

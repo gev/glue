@@ -11,6 +11,7 @@ data AST where
     Number :: Scientific -> AST
     Symbol :: Text -> AST
     List :: Body k -> AST
+    PropAccess :: AST -> Text -> AST
 
 data Body (k :: BodyKind) where
     Props :: [(Text, AST)] -> Body 'PropsKind
@@ -21,6 +22,7 @@ instance Show AST where
     show (Number n) = show n
     show (Symbol s) = T.unpack s
     show (List body) = "(" <> show body <> ")"
+    show (PropAccess obj prop) = "(" <> show obj <> "." <> T.unpack prop <> ")"
 
 instance Show (Body k) where
     show (Atoms xs) = unwords (map show xs)
@@ -33,6 +35,7 @@ instance Eq AST where
     (Number a) == (Number b) = a == b
     (Symbol a) == (Symbol b) = a == b
     (List b1) == (List b2) = compareBodies b1 b2
+    (PropAccess o1 p1) == (PropAccess o2 p2) = o1 == o2 && p1 == p2
     _ == _ = False
 
 compareBodies :: Body k1 -> Body k2 -> Bool

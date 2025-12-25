@@ -1,8 +1,10 @@
 module Reactor.Eval where
 
 import Control.Monad (ap, liftM)
+import Data.Map.Strict qualified as Map
 import Data.Maybe (catMaybes)
 import Data.Text (Text)
+import Data.Text qualified as T
 import Reactor.Env qualified as E
 import Reactor.Eval.Error (EvalError (..))
 import Reactor.IR qualified as IR
@@ -42,6 +44,14 @@ liftIO action = Eval $ \env -> do
     a <- action
     pure $ Right (a, env)
 
+-- Convert a property list to an Object
+listToObject :: [IR] -> Maybe (Map.Map Text IR)
+listToObject = go Map.empty
+  where
+    go acc [] = Just acc
+    go acc (IR.Symbol k : v : rest) | T.isPrefixOf ":" k = go (Map.insert (T.drop 1 k) v acc) rest
+    go _ _ = Nothing
+
 eval :: IR -> Eval (Maybe IR)
 eval (IR.Symbol name) = do
     env <- getEnv
@@ -63,6 +73,18 @@ eval (IR.List xs) = do
     isCallable (IR.Native _) = True
     isCallable (IR.Closure{}) = True
     isCallable _ = False
+eval (IR.PropAccess objExpr prop) = do
+    objVal <- evalRequired objExpr
+    case objVal of
+        IR.Object objMap -> case Map.lookup prop objMap of
+            Just val -> pure $ Just val
+            Nothing -> throwError $ PropertyNotFound prop
+        IR.List xs -> case listToObject xs of
+            Just objMap -> case Map.lookup prop objMap of
+                Just val -> pure $ Just val
+                Nothing -> throwError $ PropertyNotFound prop
+            Nothing -> throwError $ NotAnObject (T.pack $ show objVal)
+        _ -> throwError $ NotAnObject (T.pack $ show objVal)
 eval v = pure $ Just v
 
 apply :: IR -> [IR] -> Eval (Maybe IR)

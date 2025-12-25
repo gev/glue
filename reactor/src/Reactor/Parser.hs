@@ -32,14 +32,18 @@ symbol :: Text -> Parser Text
 symbol = L.symbol sc
 
 pReactor :: Parser AST
-pReactor =
-    choice
-        [ pQuoted
-        , pExprOrList
-        , pString
-        , pNumber
-        , pSymbol
-        ]
+pReactor = do
+    base <-
+        choice
+            [ pQuoted
+            , pExprOrList
+            , pString
+            , pNumber
+            , pSymbol
+            ]
+    optional (char '.' >> some (alphaNumChar <|> oneOf ("-._:!?" :: String))) >>= \case
+        Nothing -> pure base
+        Just prop -> pure $ PropAccess base (T.pack prop)
 
 pQuoted :: Parser AST
 pQuoted = do
@@ -54,9 +58,7 @@ pString :: Parser AST
 pString = String . T.pack <$> lexeme (char '"' >> manyTill L.charLiteral (char '"'))
 
 pSymbol :: Parser AST
-pSymbol = do
-    s <- lexeme $ T.pack <$> some (alphaNumChar <|> oneOf ("-._:!?" :: String))
-    pure $ Symbol s
+pSymbol = Symbol . T.pack <$> lexeme (some (alphaNumChar <|> oneOf ("-_:!?" :: String)))
 
 pExprOrList :: Parser AST
 pExprOrList = between (symbol "(") (symbol ")") $ do

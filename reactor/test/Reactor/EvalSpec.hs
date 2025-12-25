@@ -37,6 +37,10 @@ spec = describe "Reactor.Eval (System Integration)" do
         let code = "(list (def x 1) ((lambda () (def x 2))) x)"
         runCode code `shouldReturn` Right (Just (List [Number 1]))
 
+    it "handles property access on property lists" do
+        let code = "(:foo 42).foo"
+        runCode code `shouldReturn` Right (Just (Number 42))
+
     it "fails when calling non-existent function" do
         runCode "(non-existent 1 2)"
             `shouldReturn` Left (ReactorError $ UnboundVariable "non-existent")
