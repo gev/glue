@@ -1,40 +1,26 @@
 module Reactor.Parser (
-    parseReactor,
-    parseReactorPretty,
     Parser,
+    parseReactor,
 ) where
 
 import Data.Text (Text)
 import Data.Text qualified as T
+import Reactor.AST (AST (..), Body (..))
+import Reactor.Parser.Error (ParserError (..), parserError)
 import Text.Megaparsec
-import Text.Megaparsec.Char
+import Text.Megaparsec.Char (alphaNumChar, char, space1)
 import Text.Megaparsec.Char.Lexer qualified as L
 
-import Reactor.AST
-import Reactor.Error (ReactorError (..), renderParserError)
+type Parser = Parsec ParserError Text
 
--- Используем наш кастомный тип ошибки в Parsec
-type Parser = Parsec ReactorError Text
-
--- Вспомогательная структура для гетерогенных тел
 data SomeBody where
     SomeBody :: Body k -> SomeBody
 
--- | ГЛАВНАЯ ФУНКЦИЯ: Теперь возвращает чистый Either ReactorError Reactor
-parseReactor :: Text -> Either ReactorError AST
+parseReactor :: Text -> Either ParserError AST
 parseReactor input =
     case parse (pReactor <* eof) "reactor-input" input of
-        Left err -> Left (renderParserError err)
+        Left err -> Left (parserError err)
         Right ast -> Right ast
-
--- | Вспомогательная функция для вывода текста (например, в консоль)
-parseReactorPretty :: Text -> Either Text AST
-parseReactorPretty input =
-    case parseReactor input of
-        Left err -> Left (T.pack $ show err) -- Или можно вызвать showErrorComponent
-        Right ast -> Right ast
-
--- --- Лексер ---
 
 sc :: Parser ()
 sc = L.space space1 (L.skipLineComment ";") (L.skipBlockComment "#|" "|#")
@@ -45,12 +31,10 @@ lexeme = L.lexeme sc
 symbol :: Text -> Parser Text
 symbol = L.symbol sc
 
--- --- Парсеры атомов ---
-
 pReactor :: Parser AST
 pReactor =
     choice
-        [ pQuoted -- 1. Добавляем сахар цитирования ПЕРВЫМ в список выбора
+        [ pQuoted
         , pExprOrList
         , pString
         , pNumber
@@ -60,7 +44,6 @@ pReactor =
 pQuoted :: Parser AST
 pQuoted = do
     _ <- char '\''
-    -- Рекурсивно вызываем pReactor: теперь можно цитировать и символ, и список, и число
     inner <- pReactor
     pure $ List (Atoms (Symbol "quote" : [inner]))
 

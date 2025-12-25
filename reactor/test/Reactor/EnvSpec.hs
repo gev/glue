@@ -13,7 +13,7 @@ import Test.QuickCheck.Instances ()
 
 import Data.Either (isLeft)
 import Reactor.Env
-import Reactor.Error (ReactorError (..))
+import Reactor.Eval.Error (EvalError (..))
 import Reactor.IR
 
 -- Настройка типов для тестов
@@ -36,7 +36,7 @@ spec = describe "Reactor.Env (Тестирование системы памят
             let env = emptyEnv :: E
             lookupLocal "any" env `shouldBe` Nothing
             lookupVar "any" env `shouldSatisfy` \case
-                Left (SyntaxError _) -> True
+                Left (EvalError _) -> True
                 _ -> False
 
         it "fromList: корректно инициализирует начальный фрейм" do
@@ -91,16 +91,16 @@ spec = describe "Reactor.Env (Тестирование системы памят
             \name (v :: V) -> do
                 let env = emptyEnv :: E
                 updateVar name v env `shouldSatisfy` \case
-                    Left (SyntaxError _) -> True
+                    Left (EvalError _) -> True
                     _ -> False
 
     describe "Безопасность и Lookup" do
         it "lookupLocal на пустом стеке возвращает Nothing" do
             lookupLocal "x" [] `shouldBe` Nothing
 
-        prop "lookupVar на пустом стеке возвращает SyntaxError" $ \name -> do
+        prop "lookupVar на пустом стеке возвращает EvalError" $ \name -> do
             lookupVar name [] `shouldSatisfy` \case
-                Left (SyntaxError _) -> True
+                Left (EvalError _) -> True
                 _ -> False
 
     describe "Специальные формы и валидация" do

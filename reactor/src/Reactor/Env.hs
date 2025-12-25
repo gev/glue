@@ -2,7 +2,7 @@ module Reactor.Env where
 
 import Data.Map.Strict qualified as Map
 import Data.Text (Text)
-import Reactor.Error (ReactorError (..))
+import Reactor.Eval.Error (EvalError (..))
 import Reactor.IR (Env, IR (..))
 
 -- Пустое окружение
@@ -30,8 +30,8 @@ lookupLocal name (f : _) = Map.lookup name f
 lookupLocal _ [] = Nothing
 
 -- Поиск (от локального к глобальному)
-lookupVar :: Text -> Env m -> Either ReactorError (IR m)
-lookupVar name [] = Left $ SyntaxError ("Unbound variable: " <> name)
+lookupVar :: Text -> Env m -> Either EvalError (IR m)
+lookupVar name [] = Left $ EvalError ("Unbound variable: " <> name)
 lookupVar name (f : fs) = case Map.lookup name f of
     Just val -> Right val
     Nothing -> lookupVar name fs
@@ -42,8 +42,8 @@ defineVar name val [] = [Map.singleton name val]
 defineVar name val (f : fs) = Map.insert name val f : fs
 
 -- Обновление (там, где найдено)
-updateVar :: Text -> IR m -> Env m -> Either ReactorError (Env m)
-updateVar name _ [] = Left $ SyntaxError ("Cannot set unbound variable: " <> name)
+updateVar :: Text -> IR m -> Env m -> Either EvalError (Env m)
+updateVar name _ [] = Left $ EvalError ("Cannot set unbound variable: " <> name)
 updateVar name val (f : fs)
     | Map.member name f = Right (Map.insert name val f : fs)
     | otherwise = (f :) <$> updateVar name val fs
@@ -57,14 +57,14 @@ makeClosure = Closure
 {- | Чистая логика цитирования.
 Отделяем проверку аргументов от монады Eval.
 -}
-makeQuote :: [IR m] -> Either ReactorError (IR m)
+makeQuote :: [IR m] -> Either EvalError (IR m)
 makeQuote [v] = Right v
-makeQuote _ = Left $ SyntaxError "quote: expected exactly 1 argument"
+makeQuote _ = Left $ EvalError "quote: expected exactly 1 argument"
 
 {- | Хелпер для извлечения имен аргументов.
 Полезен для подготовки данных перед созданием замыкания.
 -}
-extractSymbols :: [IR m] -> Either ReactorError [Text]
+extractSymbols :: [IR m] -> Either EvalError [Text]
 extractSymbols = mapM \case
     Symbol s -> Right s
-    _ -> Left $ SyntaxError "Expected a list of symbols for arguments"
+    _ -> Left $ EvalError "Expected a list of symbols for arguments"

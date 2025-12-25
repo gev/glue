@@ -16,11 +16,12 @@ library
     Reactor
     Reactor.AST
     Reactor.Env
-    Reactor.Error
     Reactor.Eval
+    Reactor.Eval.Error
     Reactor.IR
     Reactor.Native
     Reactor.Parser
+    Reactor.Parser.Error
     Spec.Device
 
   build-depends:

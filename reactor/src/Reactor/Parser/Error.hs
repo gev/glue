@@ -1,6 +1,6 @@
 {-# LANGUAGE ViewPatterns #-}
 
-module Reactor.Error where
+module Reactor.Parser.Error where
 
 import Data.List.NonEmpty (head)
 import Data.Set qualified as Set
@@ -10,16 +10,14 @@ import Text.Megaparsec (ParseErrorBundle (bundleErrors))
 import Text.Megaparsec.Error (ErrorFancy (..), ParseError (..), ShowErrorComponent (..), errorBundlePretty)
 import Prelude hiding (head)
 
-data ReactorError
-    = MixedContent Text -- Имя ключа, который нарушил структуру
-    | UnpairedProperty Text -- Ключ, которому не хватило значения
-    | ReservedKeyword Text -- Использование зарезервированного слова не по назначению
+data ParserError
+    = MixedContent Text
+    | UnpairedProperty Text
+    | ReservedKeyword Text
     | SyntaxError Text
     deriving (Eq, Show, Ord)
 
--- Реализуем инстанс для красивого вывода
-instance ShowErrorComponent ReactorError where
-    showErrorComponent :: ReactorError -> String
+instance ShowErrorComponent ParserError where
     showErrorComponent = \case
         MixedContent k ->
             "Syntax Error: Property '"
@@ -33,11 +31,8 @@ instance ShowErrorComponent ReactorError where
         SyntaxError e ->
             "Syntax Error: '" ++ T.unpack e
 
--- Эта функция "схлопывает" Megaparsec Bundle в один ReactorError
-renderParserError :: ParseErrorBundle Text ReactorError -> ReactorError
-renderParserError bundle =
+parserError :: ParseErrorBundle Text ParserError -> ParserError
+parserError bundle =
     case head (bundleErrors bundle) of
-        -- Если это наша кастомная ошибка через customFailure
         FancyError _ (Set.toList -> [ErrorCustom e]) -> e
-        -- Во всех остальных случаях (системные ошибки) берем красивый текст Megaparsec
         _ -> SyntaxError (T.pack $ errorBundlePretty bundle)

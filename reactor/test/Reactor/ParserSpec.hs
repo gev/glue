@@ -1,8 +1,8 @@
 module Reactor.ParserSpec (spec) where
 
 import Reactor.AST
-import Reactor.Error (ReactorError (..))
 import Reactor.Parser (parseReactor)
+import Reactor.Parser.Error (ParserError (..))
 import Test.Hspec
 
 spec :: Spec
