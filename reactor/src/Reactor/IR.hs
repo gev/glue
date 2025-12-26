@@ -54,3 +54,40 @@ instance Eq (IR m) where
     (Object a) == (Object b) = a == b
     (PropAccess o1 p1) == (PropAccess o2 p2) = o1 == o2 && p1 == p2
     _ == _ = False
+
+-- Accessor functions for abstraction
+isList :: IR m -> Bool
+isList (List _) = True
+isList _ = False
+
+listLength :: IR m -> Int
+listLength (List xs) = length xs
+listLength _ = 0
+
+isObject :: IR m -> Bool
+isObject (Object _) = True
+isObject _ = False
+
+objectSize :: IR m -> Int
+objectSize (Object m) = Map.size m
+objectSize _ = 0
+
+objectLookup :: Text -> IR m -> Maybe (IR m)
+objectLookup k (Object m) = Map.lookup k m
+objectLookup _ _ = Nothing
+
+isSymbol :: IR m -> Bool
+isSymbol (Symbol _) = True
+isSymbol _ = False
+
+getSymbol :: IR m -> Text
+getSymbol (Symbol s) = s
+getSymbol _ = ""
+
+isPropAccess :: IR m -> Bool
+isPropAccess (PropAccess _ _) = True
+isPropAccess _ = False
+
+getPropAccess :: IR m -> (IR m, Text)
+getPropAccess (PropAccess o p) = (o, p)
+getPropAccess _ = error "Not a PropAccess"
