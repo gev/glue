@@ -48,3 +48,15 @@ spec = describe "Reactor.Eval (System Integration)" do
     it "fails when passing wrong number of arguments" do
         runCode "((lambda (a b) a) 1)"
             `shouldReturn` Left (ReactorError WrongNumberOfArguments)
+
+    it "supports named arguments" do
+        runCode "((lambda (it) it) (:it 1))"
+            `shouldReturn` Right (Just (Number 1))
+
+    it "fails named arguments with extra objects" do
+        runCode "((lambda (it) it) (:it 1) (:yet 2))"
+            `shouldReturn` Left (ReactorError WrongNumberOfArguments)
+
+    it "supports named arguments in any order" do
+        runCode "((lambda (a b) (list a b)) (:b 2 :a 1))"
+            `shouldReturn` Right (Just (List [Number 1, Number 2]))

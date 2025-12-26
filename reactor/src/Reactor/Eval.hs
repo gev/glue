@@ -92,16 +92,55 @@ apply (IR.Native native) rawArgs = case native of
         c args >> pure Nothing
     IR.Special s -> s rawArgs
 apply (IR.Closure params body savedEnv) rawArgs = do
-    argValues <- catMaybes <$> mapM eval rawArgs
-    if length params /= length argValues
-        then throwError WrongNumberOfArguments
-        else do
+    argValue <- case rawArgs of
+        [arg] -> eval arg
+        _ -> do
+            argValues <- catMaybes <$> mapM eval rawArgs
+            pure $ Just $ IR.List argValues
+    case argValue of
+        Just (IR.Object objMap) | all (`Map.member` objMap) params -> do
+            -- named
             currentEnv <- getEnv
-            let newEnv = foldr (\(p, v) e -> E.defineVar p v e) (E.pushFrame savedEnv) (zip params argValues)
+            let bindings = map (\p -> (p, objMap Map.! p)) params
+            let newEnv = foldl (\e (p, v) -> E.defineVar p v e) (E.pushFrame savedEnv) bindings
             putEnv newEnv
             res <- eval body
             putEnv currentEnv
             pure res
+        Just (IR.List argValues) -> do
+            -- positional with multiple
+            if length params /= length argValues
+                then throwError WrongNumberOfArguments
+                else do
+                    currentEnv <- getEnv
+                    let newEnv = foldl (\e (p, v) -> E.defineVar p v e) (E.pushFrame savedEnv) (zip params argValues)
+                    putEnv newEnv
+                    res <- eval body
+                    putEnv currentEnv
+                    pure res
+        Just (IR.Object objMap) -> do
+            -- positional with single object
+            if length params /= 1
+                then throwError WrongNumberOfArguments
+                else do
+                    currentEnv <- getEnv
+                    let newEnv = foldl (\e (p, v) -> E.defineVar p v e) (E.pushFrame savedEnv) [(head params, IR.Object objMap)]
+                    putEnv newEnv
+                    res <- eval body
+                    putEnv currentEnv
+                    pure res
+        Just val -> do
+            -- positional with single value
+            if length params /= 1
+                then throwError WrongNumberOfArguments
+                else do
+                    currentEnv <- getEnv
+                    let newEnv = foldl (\e (p, v) -> E.defineVar p v e) (E.pushFrame savedEnv) [(head params, val)]
+                    putEnv newEnv
+                    res <- eval body
+                    putEnv currentEnv
+                    pure res
+        Nothing -> throwError WrongNumberOfArguments
 apply (IR.Symbol name) _ = throwError $ UnboundVariable name
 apply _ _ = throwError NotCallableObject
 
