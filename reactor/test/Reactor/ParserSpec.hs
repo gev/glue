@@ -98,3 +98,26 @@ spec = do
 
             it "parses property access with complex object" $ do
                 parseReactor "(f x).name" `shouldBe` Right (PropAccess (AtomList [Symbol "f", Symbol "x"]) "name")
+
+        describe "Equivalent Syntaxes" $ do
+            it "parses (f :x 1) and (f (:x 1)) identically" $ do
+                let expected = Right (AtomList [Symbol "f", PropList [("x", Number 1)]])
+                parseReactor "(f :x 1)" `shouldBe` expected
+                parseReactor "(f (:x 1))" `shouldBe` expected
+
+            it "parses (f :x 1 :y 2) and (f (:x 1) (:y 2)) differently" $ do
+                let grouped = parseReactor "(f :x 1 :y 2)"
+                let separate = parseReactor "(f (:x 1) (:y 2))"
+                grouped `shouldNotBe` separate
+                grouped `shouldBe` Right (AtomList [Symbol "f", PropList [("x", Number 1), ("y", Number 2)]])
+                separate `shouldBe` Right (AtomList [Symbol "f", PropList [("x", Number 1)], PropList [("y", Number 2)]])
+
+            it "parses lambda with named arg" $ do
+                let input = "((lambda (it) it) (:it 1))"
+                let expected = Right (AtomList [AtomList [Symbol "lambda", AtomList [Symbol "it"], Symbol "it"], PropList [("it", Number 1)]])
+                parseReactor input `shouldBe` expected
+
+            it "parses lambda with multiple named args" $ do
+                let input = "((lambda (it) it) (:it 1) (:yet 2))"
+                let expected = Right (AtomList [AtomList [Symbol "lambda", AtomList [Symbol "it"], Symbol "it"], PropList [("it", Number 1)], PropList [("yet", Number 2)]])
+                parseReactor input `shouldBe` expected
