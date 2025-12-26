@@ -9,6 +9,8 @@ import Test.QuickCheck
 import Test.QuickCheck.Instances ()
 
 import Data.Functor.Identity (Identity)
+import Data.Map.Strict qualified as Map
+import Data.Monoid (mempty)
 import Reactor.AST (AST)
 import Reactor.AST qualified as AST
 import Reactor.IR (IR, compile)
@@ -43,16 +45,16 @@ spec = describe "AST -> IR transformation (compile)" do
         let ast = AST.AtomList xs
         let val = compile ast :: IR Identity
         case val of
-            IR.AtomList ys -> length ys `shouldBe` length xs
-            _ -> expectationFailure "Expected AtomList"
+            IR.List ys -> length ys `shouldBe` length xs
+            _ -> expectationFailure "Expected List"
 
     -- Property lists (key-value)
-    prop "properties: PropList length equals number of properties" $ \(ps :: [(T.Text, AST)]) -> do
+    prop "properties: Object size <= number of properties (duplicates removed)" $ \(ps :: [(T.Text, AST)]) -> do
         let ast = AST.PropList ps
         let val = compile ast :: IR Identity
         case val of
-            IR.PropList ys -> length ys `shouldBe` length ps
-            _ -> expectationFailure "Expected PropList"
+            IR.Object objMap -> Map.size objMap `shouldSatisfy` (<= length ps)
+            _ -> expectationFailure "Expected Object"
 
     -- Recursive integrity (doesn't crash on deep trees)
     prop "integrity: any AST structure transforms successfully" $ \(ast :: AST) -> do
@@ -63,8 +65,8 @@ spec = describe "AST -> IR transformation (compile)" do
     prop "empty atoms and props don't create garbage data" do
         let ast1 = AST.AtomList []
         let ast2 = AST.PropList []
-        (compile ast1 :: IR Identity) `shouldBe` IR.AtomList []
-        (compile ast2 :: IR Identity) `shouldBe` IR.PropList []
+        (compile ast1 :: IR Identity) `shouldBe` IR.List []
+        (compile ast2 :: IR Identity) `shouldBe` IR.Object mempty
 
     prop "Symbol becomes Symbol unchanged (idempotent)" $ \s -> do
         let ast = AST.Symbol s
@@ -77,9 +79,9 @@ spec = describe "AST -> IR transformation (compile)" do
         let ast = AST.PropList [(k, astInner)]
         let val = compile ast :: IR Identity
         case val of
-            IR.PropList [(k', valInner)] -> do
-                k' `shouldBe` k
-                valInner `shouldBe` (compile astInner :: IR Identity)
+            IR.Object objMap -> case Map.lookup k objMap of
+                Just valInner -> valInner `shouldBe` (compile astInner :: IR Identity)
+                Nothing -> expectationFailure "Key not found"
             _ -> expectationFailure "Recursive expansion error"
 
     prop "PropAccess compiles correctly" $ \(obj :: AST) pro -> do
