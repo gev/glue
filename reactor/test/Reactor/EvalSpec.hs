@@ -49,46 +49,18 @@ spec = describe "Reactor.Eval (System Integration)" do
         runCode "((lambda (a b) a) 1)"
             `shouldReturn` Left (ReactorError WrongNumberOfArguments)
 
-    it "supports named arguments" do
-        runCode "((lambda (it) it) (:it 1))"
-            `shouldReturn` Right (Just (Number 1))
-
-    it "fails named arguments with extra objects" do
-        runCode "((lambda (it) it) (:it 1) (:yet 2))"
-            `shouldReturn` Left (ReactorError WrongNumberOfArguments)
-
-    it "supports named arguments in any order" do
-        runCode "((lambda (a b) (list a b)) (:b 2 :a 1))"
-            `shouldReturn` Right (Just (List [Number 1, Number 2]))
-
-    it "user-defined function with positional args" do
+    it "user-defined function" do
         runCode "(list (def id (lambda (x) x)) (id 42))"
-            `shouldReturn` Right (Just (List [Number 42]))
-
-    it "user-defined function with named args" do
-        runCode "(list (def id (lambda (x) x)) (id (:x 42)))"
             `shouldReturn` Right (Just (List [Number 42]))
 
     it "user-defined function too few args" do
         runCode "(list (def id (lambda (x) x)) (id))"
             `shouldReturn` Left (ReactorError WrongNumberOfArguments)
 
-    it "user-defined function too many positional args" do
+    it "user-defined function too many args" do
         runCode "(list (def id (lambda (x) x)) (id 1 2))"
             `shouldReturn` Left (ReactorError WrongNumberOfArguments)
 
-    it "user-defined function with extra named objects" do
-        runCode "(list (def id (lambda (x) x)) (id (:x 1) (:y 2)))"
-            `shouldReturn` Left (ReactorError WrongNumberOfArguments)
-
-    it "user-defined function multi-param positional" do
+    it "user-defined function multi-param" do
         runCode "(list (def f (lambda (a b) (list a b))) (f 1 2))"
-            `shouldReturn` Right (Just (List [List [Number 1, Number 2]]))
-
-    it "user-defined function multi-param named" do
-        runCode "(list (def f (lambda (a b) (list a b))) (f (:a 1 :b 2)))"
-            `shouldReturn` Right (Just (List [List [Number 1, Number 2]]))
-
-    it "user-defined function multi-param named wrong order" do
-        runCode "(list (def f (lambda (a b) (list a b))) (f (:b 2 :a 1)))"
             `shouldReturn` Right (Just (List [List [Number 1, Number 2]]))

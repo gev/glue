@@ -1,8 +1,9 @@
 module Reactor.Eval where
 
 import Control.Monad (ap, liftM)
+import Data.Map (Map)
 import Data.Map.Strict qualified as Map
-import Data.Maybe (catMaybes)
+import Data.Maybe (catMaybes, fromMaybe)
 import Data.Text (Text)
 import Data.Text qualified as T
 import Reactor.Env qualified as E
@@ -44,103 +45,113 @@ liftIO action = Eval $ \env -> do
     a <- action
     pure $ Right (a, env)
 
--- Convert a property list to an Object
-listToObject :: [IR] -> Maybe (Map.Map Text IR)
-listToObject = go Map.empty
-  where
-    go acc [] = Just acc
-    go acc (IR.Symbol k : v : rest) | T.isPrefixOf ":" k = go (Map.insert (T.drop 1 k) v acc) rest
-    go _ _ = Nothing
+-- Helper to determine if an IR value can be called
+isCallable :: IR -> Bool
+isCallable (IR.Native _) = True
+isCallable (IR.Closure{}) = True
+isCallable _ = False
 
-eval :: IR -> Eval (Maybe IR)
-eval (IR.Symbol name) = do
+-- Helper for managing environment frames during function calls
+withSavedEnv :: Env -> Eval a -> Eval a
+withSavedEnv savedEnv action = do
+    currentEnv <- getEnv
+    putEnv savedEnv
+    result <- action
+    putEnv currentEnv
+    pure result
+
+-- Safely build environment with parameter bindings
+buildEnvWithBindings :: Env -> [(Text, IR)] -> Env
+buildEnvWithBindings savedEnv = foldl defineBinding (E.pushFrame savedEnv)
+  where
+    defineBinding env (param, value) = E.defineVar param value env
+
+-- Safely extract single parameter from parameter list
+extractSingleParam :: [Text] -> Maybe Text
+extractSingleParam [param] = Just param
+extractSingleParam _ = Nothing
+
+-- Safely create bindings from object map and parameters
+createNamedBindings :: Map Text IR -> [Text] -> [(Text, IR)]
+createNamedBindings objMap = map createBinding
+  where
+    createBinding param =
+        ( param
+        , fromMaybe
+            (error "impossible: param not in map")
+            (Map.lookup param objMap)
+        )
+
+-- Evaluate a symbol by looking it up in the environment
+evalSymbol :: Text -> Eval (Maybe IR)
+evalSymbol name = do
     env <- getEnv
     case E.lookupVar name env of
         Right val -> pure $ Just val
         Left err -> throwError err
-eval (IR.List (IR.Symbol name : rawArgs)) = do
+
+-- Evaluate a list (function call or literal list)
+evalList :: [IR] -> Eval (Maybe IR)
+evalList (IR.Symbol name : rawArgs) = do
     env <- getEnv
     case E.lookupVar name env of
         Right func -> apply func rawArgs
         Left err -> throwError err
-eval (IR.List xs) = do
+evalList xs = do
     results <- mapM eval xs
     let clean = catMaybes results
     case clean of
         (f : args) | isCallable f -> apply f args
         _ -> pure . Just . IR.List $ clean
-  where
-    isCallable (IR.Native _) = True
-    isCallable (IR.Closure{}) = True
-    isCallable _ = False
-eval (IR.PropAccess objExpr prop) = do
+
+-- Evaluate property access on an object
+evalPropAccess :: IR -> Text -> Eval (Maybe IR)
+evalPropAccess objExpr prop = do
     objVal <- evalRequired objExpr
     case objVal of
         IR.Object objMap -> case Map.lookup prop objMap of
             Just val -> pure $ Just val
             Nothing -> throwError $ PropertyNotFound prop
         _ -> throwError $ NotAnObject (T.pack $ show objVal)
-eval v = pure $ Just v
+
+-- Evaluate literal values (numbers, strings, etc.)
+evalLiteral :: IR -> Eval (Maybe IR)
+evalLiteral v = pure $ Just v
+
+-- Evaluate arguments for function calls
+evalArguments :: [IR] -> Eval [IR]
+evalArguments rawArgs = catMaybes <$> mapM eval rawArgs
+
+-- Apply a native function/command/special
+applyNative :: IR.Native Eval -> [IR] -> Eval (Maybe IR)
+applyNative (IR.Func f) rawArgs = do
+    args <- evalArguments rawArgs
+    Just <$> f args
+applyNative (IR.Cmd c) rawArgs = do
+    args <- evalArguments rawArgs
+    c args >> pure Nothing
+applyNative (IR.Special s) rawArgs = s rawArgs
+
+-- Apply a closure with the given arguments
+applyClosure :: [Text] -> IR -> Env -> [IR] -> Eval (Maybe IR)
+applyClosure params body savedEnv rawArgs = do
+    argValues <- evalArguments rawArgs
+    if length params /= length argValues
+        then throwError WrongNumberOfArguments
+        else do
+            let bindings = zip params argValues
+            let newEnv = buildEnvWithBindings savedEnv bindings
+            withSavedEnv newEnv (eval body)
+
+eval :: IR -> Eval (Maybe IR)
+eval (IR.Symbol name) = evalSymbol name
+eval (IR.List xs) = evalList xs
+eval (IR.PropAccess objExpr prop) = evalPropAccess objExpr prop
+eval v = evalLiteral v
 
 apply :: IR -> [IR] -> Eval (Maybe IR)
-apply (IR.Native native) rawArgs = case native of
-    IR.Func f -> do
-        args <- catMaybes <$> mapM eval rawArgs
-        Just <$> f args
-    IR.Cmd c -> do
-        args <- catMaybes <$> mapM eval rawArgs
-        c args >> pure Nothing
-    IR.Special s -> s rawArgs
-apply (IR.Closure params body savedEnv) rawArgs = do
-    argValue <- case rawArgs of
-        [arg] -> eval arg
-        _ -> do
-            argValues <- catMaybes <$> mapM eval rawArgs
-            pure $ Just $ IR.List argValues
-    case argValue of
-        Just (IR.Object objMap) | all (`Map.member` objMap) params -> do
-            -- named
-            currentEnv <- getEnv
-            let bindings = map (\p -> (p, objMap Map.! p)) params
-            let newEnv = foldl (\e (p, v) -> E.defineVar p v e) (E.pushFrame savedEnv) bindings
-            putEnv newEnv
-            res <- eval body
-            putEnv currentEnv
-            pure res
-        Just (IR.List argValues) -> do
-            -- positional with multiple
-            if length params /= length argValues
-                then throwError WrongNumberOfArguments
-                else do
-                    currentEnv <- getEnv
-                    let newEnv = foldl (\e (p, v) -> E.defineVar p v e) (E.pushFrame savedEnv) (zip params argValues)
-                    putEnv newEnv
-                    res <- eval body
-                    putEnv currentEnv
-                    pure res
-        Just (IR.Object objMap) -> do
-            -- positional with single object
-            if length params /= 1
-                then throwError WrongNumberOfArguments
-                else do
-                    currentEnv <- getEnv
-                    let newEnv = foldl (\e (p, v) -> E.defineVar p v e) (E.pushFrame savedEnv) [(head params, IR.Object objMap)]
-                    putEnv newEnv
-                    res <- eval body
-                    putEnv currentEnv
-                    pure res
-        Just val -> do
-            -- positional with single value
-            if length params /= 1
-                then throwError WrongNumberOfArguments
-                else do
-                    currentEnv <- getEnv
-                    let newEnv = foldl (\e (p, v) -> E.defineVar p v e) (E.pushFrame savedEnv) [(head params, val)]
-                    putEnv newEnv
-                    res <- eval body
-                    putEnv currentEnv
-                    pure res
-        Nothing -> throwError WrongNumberOfArguments
+apply (IR.Native native) rawArgs = applyNative native rawArgs
+apply (IR.Closure params body savedEnv) rawArgs = applyClosure params body savedEnv rawArgs
 apply (IR.Symbol name) _ = throwError $ UnboundVariable name
 apply _ _ = throwError NotCallableObject
 
