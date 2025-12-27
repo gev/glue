@@ -1,4 +1,4 @@
-module Reactor.Lib.Arithmetic.SubSpec (spec) where
+module Reactor.Lib.Math.Arithmetic.SubSpec (spec) where
 
 import Data.Either (isLeft)
 import Data.Scientific (fromFloatDigits)
@@ -6,7 +6,7 @@ import Reactor.Env qualified as E
 import Reactor.Eval (runEval)
 import Reactor.IR (IR (..))
 import Reactor.Lib (lib)
-import qualified Reactor.Lib.Arithmetic.Sub as Sub
+import Reactor.Lib.Math.Arithmetic.Sub qualified as Sub
 import Test.Hspec
 
 spec :: Spec

@@ -22,11 +22,6 @@ library
     Reactor.IR
     Reactor.Lib
     Reactor.Lib.Arithmetic
-    Reactor.Lib.Arithmetic.Add
-    Reactor.Lib.Arithmetic.Div
-    Reactor.Lib.Arithmetic.Mod
-    Reactor.Lib.Arithmetic.Mul
-    Reactor.Lib.Arithmetic.Sub
     Reactor.Lib.Bool
     Reactor.Lib.Bool.Eq
     Reactor.Lib.Bool.Ge
@@ -46,6 +41,11 @@ library
     Reactor.Lib.Builtin.Quote
     Reactor.Lib.Builtin.Set
     Reactor.Lib.Math
+    Reactor.Lib.Math.Arithmetic.Add
+    Reactor.Lib.Math.Arithmetic.Div
+    Reactor.Lib.Math.Arithmetic.Mod
+    Reactor.Lib.Math.Arithmetic.Mul
+    Reactor.Lib.Math.Arithmetic.Sub
     Reactor.Lib.Math.Trigonometric
     Reactor.Lib.Math.Trigonometric.Acos
     Reactor.Lib.Math.Trigonometric.Asin
@@ -95,11 +95,6 @@ test-suite reactor-test
     Reactor.CompileSpec
     Reactor.EnvSpec
     Reactor.EvalSpec
-    Reactor.Lib.Arithmetic.AddSpec
-    Reactor.Lib.Arithmetic.DivSpec
-    Reactor.Lib.Arithmetic.ModSpec
-    Reactor.Lib.Arithmetic.MulSpec
-    Reactor.Lib.Arithmetic.SubSpec
     Reactor.Lib.Bool.EqSpec
     Reactor.Lib.Bool.GeSpec
     Reactor.Lib.Bool.GtSpec
@@ -117,6 +112,11 @@ test-suite reactor-test
     Reactor.Lib.Builtin.ListSpec
     Reactor.Lib.Builtin.QuoteSpec
     Reactor.Lib.Builtin.SetSpec
+    Reactor.Lib.Math.Arithmetic.AddSpec
+    Reactor.Lib.Math.Arithmetic.DivSpec
+    Reactor.Lib.Math.Arithmetic.ModSpec
+    Reactor.Lib.Math.Arithmetic.MulSpec
+    Reactor.Lib.Math.Arithmetic.SubSpec
     Reactor.Lib.Math.Trigonometric.AcosSpec
     Reactor.Lib.Math.Trigonometric.AsinSpec
     Reactor.Lib.Math.Trigonometric.AtanSpec

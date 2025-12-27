@@ -1,4 +1,4 @@
-module Reactor.Lib.Arithmetic.Div where
+module Reactor.Lib.Math.Arithmetic.Div where
 
 import Reactor.Eval (Eval, evalRequired, throwError)
 import Reactor.Eval.Error (EvalError (..))

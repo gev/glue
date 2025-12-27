@@ -1,4 +1,4 @@
-module Reactor.Lib.Arithmetic.MulSpec (spec) where
+module Reactor.Lib.Math.Arithmetic.MulSpec (spec) where
 
 import Data.Either (isLeft)
 import Data.Scientific (fromFloatDigits)
@@ -6,7 +6,7 @@ import Reactor.Env qualified as E
 import Reactor.Eval (runEval)
 import Reactor.IR (IR (..))
 import Reactor.Lib (lib)
-import qualified Reactor.Lib.Arithmetic.Mul as Mul
+import Reactor.Lib.Math.Arithmetic.Mul qualified as Mul
 import Test.Hspec
 
 spec :: Spec
