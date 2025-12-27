@@ -41,6 +41,7 @@ library
     Reactor.Lib.Builtin.Set
     Reactor.Lib.Math.Trigonometric.Acos
     Reactor.Lib.Math.Trigonometric.Asin
+    Reactor.Lib.Math.Trigonometric.Atan
     Reactor.Lib.Math.Trigonometric.Cos
     Reactor.Lib.Math.Trigonometric.Sin
     Reactor.Lib.Math.Trigonometric.Tan
@@ -93,6 +94,7 @@ test-suite reactor-test
     Reactor.Lib.Builtin.SetSpec
     Reactor.Lib.Math.Trigonometric.AcosSpec
     Reactor.Lib.Math.Trigonometric.AsinSpec
+    Reactor.Lib.Math.Trigonometric.AtanSpec
     Reactor.Lib.Math.Trigonometric.CosSpec
     Reactor.Lib.Math.Trigonometric.SinSpec
     Reactor.Lib.Math.Trigonometric.TanSpec
