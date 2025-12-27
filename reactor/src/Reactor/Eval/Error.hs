@@ -39,6 +39,7 @@ data EvalError
     | AtanExpectedOneNumber
     | AbsExpectedOneNumber
     | SqrtExpectedOneNumber
+    | ExpExpectedOneNumber
     deriving (Show, Eq)
 
 prettyShow :: EvalError -> Text
@@ -79,3 +80,4 @@ prettyShow = \case
     AtanExpectedOneNumber -> "atan: expected one number"
     AbsExpectedOneNumber -> "abs: expected one number"
     SqrtExpectedOneNumber -> "sqrt: expected one number"
+    ExpExpectedOneNumber -> "exp: expected one number"
