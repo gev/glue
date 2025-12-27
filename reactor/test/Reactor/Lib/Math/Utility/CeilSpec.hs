@@ -1,11 +1,12 @@
 module Reactor.Lib.Math.Utility.CeilSpec (spec) where
 
 import Data.Either (isLeft)
+import Data.Scientific (fromFloatDigits)
 import Reactor.Env qualified as E
 import Reactor.Eval (runEval)
 import Reactor.IR (IR (..))
 import Reactor.Lib (lib)
-import qualified Reactor.Lib.Math.Utility.Ceil as Ceil
+import Reactor.Lib.Math.Utility.Ceil qualified as Ceil
 import Test.Hspec
 
 spec :: Spec
