@@ -46,6 +46,7 @@ library
     Reactor.Lib.Math.Trigonometric.Sin
     Reactor.Lib.Math.Trigonometric.Tan
     Reactor.Lib.Math.Utility.Abs
+    Reactor.Lib.Math.Utility.Sqrt
     Reactor.Parser
     Reactor.Parser.Error
     Spec.Device
@@ -100,6 +101,7 @@ test-suite reactor-test
     Reactor.Lib.Math.Trigonometric.SinSpec
     Reactor.Lib.Math.Trigonometric.TanSpec
     Reactor.Lib.Math.Utility.AbsSpec
+    Reactor.Lib.Math.Utility.SqrtSpec
     Reactor.ParserSpec
     Reactor.TestUtils
 

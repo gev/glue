@@ -1,0 +1,18 @@
+module Reactor.Lib.Math.Utility.Sqrt where
+
+import Data.Scientific (Scientific, fromFloatDigits, toRealFloat)
+import Reactor.Eval (Eval, evalRequired, throwError)
+import Reactor.Eval.Error (EvalError (..))
+import Reactor.IR (IR (..))
+
+sqrt :: [IR Eval] -> Eval (IR Eval)
+sqrt [arg] = do
+    va <- evalRequired arg
+    case va of
+        Number n -> do
+            let realVal = toRealFloat n
+            if realVal < 0
+                then throwError SqrtExpectedOneNumber
+                else pure $ Number (fromFloatDigits (Prelude.sqrt realVal))
+        _ -> throwError SqrtExpectedOneNumber
+sqrt _ = throwError WrongNumberOfArguments
