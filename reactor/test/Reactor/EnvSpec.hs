@@ -1,23 +1,18 @@
-{-# LANGUAGE BlockArguments #-}
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE ScopedTypeVariables #-}
 {-# OPTIONS_GHC -Wno-orphans #-}
 
 module Reactor.EnvSpec (spec) where
 
+import Data.Either (isLeft)
 import Data.Functor.Identity (Identity)
+import Reactor.Env
+import Reactor.IR
 import Test.Hspec
 import Test.Hspec.QuickCheck
 import Test.QuickCheck
 import Test.QuickCheck.Instances ()
 
-import Data.Either (isLeft)
-import Reactor.Env
-import Reactor.IR
-
 type V = IR Identity
 type E = Env Identity
-
 instance Arbitrary (IR Identity) where
     arbitrary =
         oneof
@@ -91,27 +86,3 @@ spec = describe "Reactor.Env (Test stack memory model)" do
             "lookupVar: returns error on empty stack "
             \name -> do
                 lookupVar name [] `shouldSatisfy` isLeft
-
-    describe "Special form and validations" do
-        it "makeQuote: successfully return exactly one argument" do
-            makeQuote [Number 42] `shouldBe` Right (Number 42)
-
-        it "makeQuote: returns error if no arguments or too many" do
-            makeQuote [] `shouldSatisfy` isLeft
-            makeQuote [Number 1, Number 2] `shouldSatisfy` isLeft
-
-        it "extractSymbols: correctly extracts list of names" do
-            let input = [Symbol "a", Symbol "b"]
-            extractSymbols input `shouldBe` Right ["a", "b"]
-
-        it "extractSymbols: fails if list contains non-symbols" do
-            let input = [Symbol "a", Number 1]
-            extractSymbols input `shouldSatisfy` isLeft
-
-        it "makeClosure: packs parameters and body, preserving Env" do
-            let env = fromList [("x", Number 10)]
-            let closure = makeClosure ["a"] (Symbol "x") env
-            case closure of
-                Closure ["a"] (Symbol "x") savedEnv ->
-                    lookupVar "x" savedEnv `shouldBe` Right (Number 10)
-                _ -> expectationFailure "Invalid closure structure"

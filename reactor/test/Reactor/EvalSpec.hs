@@ -5,7 +5,7 @@ import Reactor.Error (ReactorError (..))
 import Reactor.Eval as E
 import Reactor.Eval.Error (EvalError (..))
 import Reactor.IR (IR (..), compile)
-import Reactor.Native (initialEnv)
+import Reactor.Lib.Builtin (builtin)
 import Reactor.Parser (parseReactor)
 import Test.Hspec
 
@@ -14,7 +14,7 @@ runCode input = case parseReactor input of
     Left err -> pure $ Left (ReactorError err)
     Right ast -> do
         let irTree = compile ast
-        fullResult <- runEval (eval irTree) initialEnv
+        fullResult <- runEval (eval irTree) builtin
         case fullResult of
             Left err -> pure $ Left (ReactorError err)
             Right (res, _finalEnv) -> pure $ Right res

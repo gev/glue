@@ -2,18 +2,16 @@
 
 module Reactor.CompileSpec (spec) where
 
+import Data.Functor.Identity (Identity)
 import Data.Text qualified as T
+import Reactor.AST (AST)
+import Reactor.AST qualified as AST
+import Reactor.IR (IR, compile, getPropAccess, getSymbol, isList, isObject, isPropAccess, isSymbol, listLength, objectLookup, objectSize)
 import Test.Hspec
 import Test.Hspec.QuickCheck
 import Test.QuickCheck
 import Test.QuickCheck.Instances ()
 
-import Data.Functor.Identity (Identity)
-import Reactor.AST (AST)
-import Reactor.AST qualified as AST
-import Reactor.IR (IR, compile, getPropAccess, getSymbol, isList, isObject, isPropAccess, isSymbol, listLength, objectLookup, objectSize)
-
--- 1. Generator for Reactor AST itself
 instance Arbitrary AST where
     arbitrary = sized genReactor
       where

@@ -20,7 +20,12 @@ library
     Reactor.Eval
     Reactor.Eval.Error
     Reactor.IR
-    Reactor.Native
+    Reactor.Lib.Builtin
+    Reactor.Lib.Builtin.Def
+    Reactor.Lib.Builtin.Lambda
+    Reactor.Lib.Builtin.List
+    Reactor.Lib.Builtin.Quote
+    Reactor.Lib.Builtin.Set
     Reactor.Parser
     Reactor.Parser.Error
     Spec.Device
@@ -51,6 +56,8 @@ test-suite reactor-test
     Reactor.CompileSpec
     Reactor.EnvSpec
     Reactor.EvalSpec
+    Reactor.Lib.Builtin.ClosureSpec
+    Reactor.Lib.Builtin.QuoteSpec
     Reactor.ParserSpec
 
   main-is: Spec.hs
