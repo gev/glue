@@ -48,6 +48,8 @@ data EvalError
     | MaxExpectedTwoNumbers
     | RoundExpectedOneNumber
     | TruncExpectedOneNumber
+    | AddExpectedAtLeastOneArgument
+    | AddExpectedNumbers
     deriving (Show, Eq)
 
 prettyShow :: EvalError -> Text
@@ -97,3 +99,5 @@ prettyShow = \case
     MaxExpectedTwoNumbers -> "max: expected two numbers"
     RoundExpectedOneNumber -> "round: expected one number"
     TruncExpectedOneNumber -> "trunc: expected one number"
+    AddExpectedAtLeastOneArgument -> "+: expected at least one argument"
+    AddExpectedNumbers -> "+: expected numbers"

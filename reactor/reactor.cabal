@@ -21,6 +21,8 @@ library
     Reactor.Eval.Error
     Reactor.IR
     Reactor.Lib
+    Reactor.Lib.Arithmetic
+    Reactor.Lib.Arithmetic.Add
     Reactor.Lib.Bool
     Reactor.Lib.Bool.Eq
     Reactor.Lib.Bool.Ge
@@ -89,6 +91,7 @@ test-suite reactor-test
     Reactor.CompileSpec
     Reactor.EnvSpec
     Reactor.EvalSpec
+    Reactor.Lib.Arithmetic.AddSpec
     Reactor.Lib.Bool.EqSpec
     Reactor.Lib.Bool.GeSpec
     Reactor.Lib.Bool.GtSpec
