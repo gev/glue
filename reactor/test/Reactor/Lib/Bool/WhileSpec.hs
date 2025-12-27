@@ -13,14 +13,14 @@ spec = describe "Reactor.Lib.Bool.While (Test while special form)" do
     describe "Loop while condition" do
         it "returns nothing when condition is false and no body" do
             let args = [Symbol "false"] -- No body, should return nothing
-            result <- runEval (while_ args) lib
+            result <- runEval (while_ args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "While failed: " <> show err
                 Right (res, _) -> res `shouldBe` Nothing
 
         it "executes body and modifies environment flag" do
             -- Set up environment with flag = true
-            let initialEnv = E.defineVar "flag" (Symbol "true") lib
+            let initialEnv = E.defineVar "flag" (Symbol "true") ((E.fromFrame lib))
             -- while flag: set flag to false
             let args = [Symbol "flag", List [Symbol "set", Symbol "flag", Symbol "false"]]
             result <- runEval (while_ args) initialEnv
@@ -33,5 +33,5 @@ spec = describe "Reactor.Lib.Bool.While (Test while special form)" do
 
         it "fails with wrong number of arguments" do
             let args = [] -- No condition
-            result <- runEval (while_ args) lib
+            result <- runEval (while_ args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft

@@ -2,7 +2,7 @@ module Reactor.Lib.Bool where
 
 import Reactor.Env qualified as E
 import Reactor.Eval (Eval)
-import Reactor.IR (Env, IR (..), Native (..))
+import Reactor.IR (Frame, IR (..), Native (..))
 import Reactor.Lib.Bool.Eq (eq)
 import Reactor.Lib.Bool.Ge (ge)
 import Reactor.Lib.Bool.Gt (gt)
@@ -15,9 +15,9 @@ import Reactor.Lib.Bool.Until (until_)
 import Reactor.Lib.Bool.When (when_)
 import Reactor.Lib.Bool.While (while_)
 
-bool :: Env Eval
+bool :: Frame Eval
 bool =
-    E.fromList
+    E.frameFromList
         [ ("true", Symbol "true")
         , ("false", Symbol "false")
         , ("eq", Native (Func eq))

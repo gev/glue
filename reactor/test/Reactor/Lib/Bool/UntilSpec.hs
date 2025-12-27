@@ -13,14 +13,14 @@ spec = describe "Reactor.Lib.Bool.Until (Test until special form)" do
     describe "Loop until condition" do
         it "returns nothing when condition is true and no body" do
             let args = [Symbol "true"] -- No body, should return nothing
-            result <- runEval (until_ args) lib
+            result <- runEval (until_ args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Until failed: " <> show err
                 Right (res, _) -> res `shouldBe` Nothing
 
         it "executes body and modifies environment flag" do
             -- Set up environment with flag = false
-            let initialEnv = E.defineVar "flag" (Symbol "false") lib
+            let initialEnv = E.defineVar "flag" (Symbol "false") ((E.fromFrame lib))
             -- until flag: set flag to true
             let args = [Symbol "flag", List [Symbol "set", Symbol "flag", Symbol "true"]]
             result <- runEval (until_ args) initialEnv
@@ -33,5 +33,5 @@ spec = describe "Reactor.Lib.Bool.Until (Test until special form)" do
 
         it "fails with wrong number of arguments" do
             let args = [] -- No condition
-            result <- runEval (until_ args) lib
+            result <- runEval (until_ args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft

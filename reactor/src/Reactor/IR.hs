@@ -9,7 +9,8 @@ import Data.Text qualified as T
 import Reactor.AST (AST)
 import Reactor.AST qualified as AST
 
-type Env m = [Map.Map Text (IR m)]
+type Frame m = Map.Map Text (IR m)
+type Env m = [Frame m]
 
 data IR m
     = Number Scientific
