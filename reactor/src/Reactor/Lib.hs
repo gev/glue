@@ -5,6 +5,7 @@ import Reactor.Eval (Eval)
 import Reactor.IR (Frame)
 import Reactor.Lib.Bool qualified as Bool
 import Reactor.Lib.Builtin qualified as Builtin
+import Reactor.Lib.Math qualified as Math
 
 lib :: Frame Eval
-lib = E.unionFrames Builtin.builtin Bool.bool
+lib = E.unionFrames Builtin.builtin (E.unionFrames Bool.bool Math.math)

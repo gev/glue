@@ -39,12 +39,15 @@ library
     Reactor.Lib.Builtin.List
     Reactor.Lib.Builtin.Quote
     Reactor.Lib.Builtin.Set
+    Reactor.Lib.Math
+    Reactor.Lib.Math.Trigonometric
     Reactor.Lib.Math.Trigonometric.Acos
     Reactor.Lib.Math.Trigonometric.Asin
     Reactor.Lib.Math.Trigonometric.Atan
     Reactor.Lib.Math.Trigonometric.Cos
     Reactor.Lib.Math.Trigonometric.Sin
     Reactor.Lib.Math.Trigonometric.Tan
+    Reactor.Lib.Math.Utility
     Reactor.Lib.Math.Utility.Abs
     Reactor.Lib.Math.Utility.Ceil
     Reactor.Lib.Math.Utility.Exp
