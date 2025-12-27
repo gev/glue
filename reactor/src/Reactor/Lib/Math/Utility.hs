@@ -30,8 +30,8 @@ utility =
         , ("trunc", Native (Func Trunc.trunc))
         , ("min", Native (Func Min.min))
         , ("max", Native (Func Max.max))
-        , ("pi", Number (fromFloatDigits pi))
-        , ("e", Number (fromFloatDigits (exp 1)))
+        , ("pi", Number (fromFloatDigits @Double pi))
+        , ("e", Number (fromFloatDigits @Double (exp 1)))
         ]
 
 -- Note: exp, log, pow, floor, ceil, round, trunc, min, max are not yet integrated

@@ -27,11 +27,11 @@ spec = describe "Reactor.Lib.Arithmetic.Add (Test add function)" do
                 Right (res, _) -> res `shouldBe` Number 10
 
         it "returns 3.5 for (+ 1.5 2)" do
-            let args = [Number (fromFloatDigits 1.5), Number 2]
+            let args = [Number (fromFloatDigits @Double 1.5), Number 2]
             result <- runEval (Add.add args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Add failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number (fromFloatDigits 3.5)
+                Right (res, _) -> res `shouldBe` Number (fromFloatDigits @Double 3.5)
 
         it "returns 0 for (+) with no arguments" do
             let args = []

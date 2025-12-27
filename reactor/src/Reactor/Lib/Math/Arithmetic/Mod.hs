@@ -12,6 +12,6 @@ mod [arg1, arg2] = do
         (Number n1, Number n2) -> do
             if n2 == 0
                 then throwError ModByZero
-                else pure $ Number (fromIntegral (truncate n1 `Prelude.mod` truncate n2))
+                else pure $ Number (fromIntegral @Int (truncate n1 `Prelude.mod` truncate n2))
         _ -> throwError ModExpectedTwoNumbers
 mod _ = throwError ModExpectedTwoNumbers

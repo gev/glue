@@ -24,7 +24,7 @@ div args = do
                 then throwError DivExpectedNumbers
                 else do
                     let result = foldl (/) first (tail nums)
-                    if any (== 0) (tail nums)
+                    if 0 `elem` tail nums
                         then throwError DivByZero
                         else pure $ Number result
         _ -> throwError DivExpectedNumbers

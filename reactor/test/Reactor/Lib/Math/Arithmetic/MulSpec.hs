@@ -27,11 +27,11 @@ spec = describe "Reactor.Lib.Arithmetic.Mul (Test mul function)" do
                 Right (res, _) -> res `shouldBe` Number 24
 
         it "returns 7.5 for (* 2.5 3)" do
-            let args = [Number (fromFloatDigits 2.5), Number 3]
+            let args = [Number (fromFloatDigits @Double 2.5), Number 3]
             result <- runEval (Mul.mul args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Mul failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number (fromFloatDigits 7.5)
+                Right (res, _) -> res `shouldBe` Number (fromFloatDigits @Double 7.5)
 
         it "fails with no arguments" do
             let args = []

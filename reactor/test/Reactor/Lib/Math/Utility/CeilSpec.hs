@@ -13,21 +13,21 @@ spec :: Spec
 spec = describe "Reactor.Lib.Math.Utility.Ceil (Test ceil function)" do
     describe "Ceil function" do
         it "returns 4 for ceil(3.1)" do
-            let args = [Number (fromFloatDigits 3.1)]
+            let args = [Number (fromFloatDigits @Double 3.1)]
             result <- runEval (Ceil.ceil args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Ceil failed: " <> show err
                 Right (res, _) -> res `shouldBe` Number 4
 
         it "returns 3 for ceil(2.9)" do
-            let args = [Number (fromFloatDigits 2.9)]
+            let args = [Number (fromFloatDigits @Double 2.9)]
             result <- runEval (Ceil.ceil args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Ceil failed: " <> show err
                 Right (res, _) -> res `shouldBe` Number 3
 
         it "returns -3 for ceil(-3.1)" do
-            let args = [Number (fromFloatDigits (-3.1))]
+            let args = [Number (fromFloatDigits @Double (-3.1))]
             result <- runEval (Ceil.ceil args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Ceil failed: " <> show err
