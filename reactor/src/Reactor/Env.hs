@@ -3,13 +3,19 @@ module Reactor.Env where
 import Data.Map.Strict qualified as Map
 import Data.Text (Text)
 import Reactor.Eval.Error (EvalError (..))
-import Reactor.IR (Env, IR (..))
+import Reactor.IR (Env, Frame, IR (..))
 
 emptyEnv :: Env m
 emptyEnv = [Map.empty]
 
 fromList :: [(Text, IR m)] -> Env m
 fromList pairs = [Map.fromList pairs]
+
+frameFromList :: [(Text, IR m)] -> Frame m
+frameFromList = Map.fromList
+
+fromFrame :: Frame m -> Env m
+fromFrame = (: [])
 
 pushFrame :: Env m -> Env m
 pushFrame env = Map.empty : env
@@ -37,3 +43,6 @@ updateVar name _ [] = Left $ CanNotSetUnboundVariable name
 updateVar name val (f : fs)
     | Map.member name f = Right (Map.insert name val f : fs)
     | otherwise = (f :) <$> updateVar name val fs
+
+unionFrames :: Frame m -> Frame m -> Frame m
+unionFrames = Map.union
