@@ -23,6 +23,7 @@ library
     Reactor.Lib
     Reactor.Lib.Arithmetic
     Reactor.Lib.Arithmetic.Add
+    Reactor.Lib.Arithmetic.Div
     Reactor.Lib.Arithmetic.Mul
     Reactor.Lib.Arithmetic.Sub
     Reactor.Lib.Bool
@@ -94,6 +95,7 @@ test-suite reactor-test
     Reactor.EnvSpec
     Reactor.EvalSpec
     Reactor.Lib.Arithmetic.AddSpec
+    Reactor.Lib.Arithmetic.DivSpec
     Reactor.Lib.Arithmetic.MulSpec
     Reactor.Lib.Arithmetic.SubSpec
     Reactor.Lib.Bool.EqSpec

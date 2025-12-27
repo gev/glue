@@ -54,6 +54,9 @@ data EvalError
     | SubExpectedNumbers
     | MulExpectedAtLeastOneArgument
     | MulExpectedNumbers
+    | DivExpectedAtLeastOneArgument
+    | DivExpectedNumbers
+    | DivByZero
     deriving (Show, Eq)
 
 prettyShow :: EvalError -> Text
@@ -109,3 +112,6 @@ prettyShow = \case
     SubExpectedNumbers -> "-: expected numbers"
     MulExpectedAtLeastOneArgument -> "*: expected at least one argument"
     MulExpectedNumbers -> "*: expected numbers"
+    DivExpectedAtLeastOneArgument -> "/: expected at least one argument"
+    DivExpectedNumbers -> "/: expected numbers"
+    DivByZero -> "/: division by zero"
