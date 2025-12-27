@@ -23,6 +23,12 @@ utility =
         , ("exp", Native (Func Exp.exp))
         , ("log", Native (Func Log.log))
         , ("pow", Native (Func Pow.pow))
+        , ("floor", Native (Func Floor.floor))
+        , ("ceil", Native (Func Ceil.ceil))
+        , ("round", Native (Func Round.round))
+        , ("trunc", Native (Func Trunc.trunc))
+        , ("min", Native (Func Min.min))
+        , ("max", Native (Func Max.max))
         ]
 
 -- Note: exp, log, pow, floor, ceil, round, trunc, min, max are not yet integrated

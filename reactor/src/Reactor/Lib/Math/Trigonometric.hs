@@ -16,6 +16,9 @@ trigonometric =
         [ ("sin", Native (Func Sin.sin))
         , ("cos", Native (Func Cos.cos))
         , ("tan", Native (Func Tan.tan))
+        , ("asin", Native (Func Asin.asin))
+        , ("acos", Native (Func Acos.acos))
+        , ("atan", Native (Func Atan.atan))
         ]
 
 -- Note: tan, asin, acos, atan are not yet integrated
