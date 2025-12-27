@@ -20,6 +20,19 @@ library
     Reactor.Eval
     Reactor.Eval.Error
     Reactor.IR
+    Reactor.Lib
+    Reactor.Lib.Bool
+    Reactor.Lib.Bool.Eq
+    Reactor.Lib.Bool.Ge
+    Reactor.Lib.Bool.Gt
+    Reactor.Lib.Bool.If
+    Reactor.Lib.Bool.Le
+    Reactor.Lib.Bool.Lt
+    Reactor.Lib.Bool.Ne
+    Reactor.Lib.Bool.Not
+    Reactor.Lib.Bool.Until
+    Reactor.Lib.Bool.When
+    Reactor.Lib.Bool.While
     Reactor.Lib.Builtin
     Reactor.Lib.Builtin.Def
     Reactor.Lib.Builtin.Lambda
@@ -56,6 +69,17 @@ test-suite reactor-test
     Reactor.CompileSpec
     Reactor.EnvSpec
     Reactor.EvalSpec
+    Reactor.Lib.Bool.EqSpec
+    Reactor.Lib.Bool.GeSpec
+    Reactor.Lib.Bool.GtSpec
+    Reactor.Lib.Bool.IfSpec
+    Reactor.Lib.Bool.LeSpec
+    Reactor.Lib.Bool.LtSpec
+    Reactor.Lib.Bool.NeSpec
+    Reactor.Lib.Bool.NotSpec
+    Reactor.Lib.Bool.UntilSpec
+    Reactor.Lib.Bool.WhenSpec
+    Reactor.Lib.Bool.WhileSpec
     Reactor.Lib.Builtin.ClosureSpec
     Reactor.Lib.Builtin.DefSpec
     Reactor.Lib.Builtin.LambdaSpec
@@ -63,6 +87,7 @@ test-suite reactor-test
     Reactor.Lib.Builtin.QuoteSpec
     Reactor.Lib.Builtin.SetSpec
     Reactor.ParserSpec
+    Reactor.TestUtils
 
   main-is: Spec.hs
   build-depends:

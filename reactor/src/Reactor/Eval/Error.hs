@@ -16,6 +16,21 @@ data EvalError
     | LambdaExpectedArgumentsList
     | LambdaExpectedArgumentsAndBody
     | QuoteExpectedExactlyOneArgument
+    | EqExpectedTwoArguments
+    | NeExpectedTwoArguments
+    | LtExpectedTwoArguments
+    | LtExpectedNumbers
+    | LeExpectedTwoArguments
+    | LeExpectedNumbers
+    | GtExpectedTwoArguments
+    | GtExpectedNumbers
+    | GeExpectedTwoArguments
+    | GeExpectedNumbers
+    | IfExpectedThreeArguments
+    | WhenExpectedAtLeastOneArgument
+    | WhileExpectedAtLeastOneArgument
+    | UntilExpectedAtLeastOneArgument
+    | NotExpectedOneArgument
     deriving (Show, Eq)
 
 prettyShow :: EvalError -> Text
@@ -33,3 +48,18 @@ prettyShow = \case
     LambdaExpectedArgumentsList -> "lambda: expected list of arguments"
     LambdaExpectedArgumentsAndBody -> "lambda: expected arguments and body"
     QuoteExpectedExactlyOneArgument -> "quote: expected exactly one argument"
+    EqExpectedTwoArguments -> "eq: expected two arguments"
+    NeExpectedTwoArguments -> "ne: expected two arguments"
+    LtExpectedTwoArguments -> "lt: expected two arguments"
+    LtExpectedNumbers -> "lt: expected numbers"
+    LeExpectedTwoArguments -> "le: expected two arguments"
+    LeExpectedNumbers -> "le: expected numbers"
+    GtExpectedTwoArguments -> "gt: expected two arguments"
+    GtExpectedNumbers -> "gt: expected numbers"
+    GeExpectedTwoArguments -> "ge: expected two arguments"
+    GeExpectedNumbers -> "ge: expected numbers"
+    IfExpectedThreeArguments -> "if: expected condition, then, and else expressions"
+    WhenExpectedAtLeastOneArgument -> "when: expected condition and body"
+    WhileExpectedAtLeastOneArgument -> "while: expected condition and body"
+    UntilExpectedAtLeastOneArgument -> "until: expected condition and body"
+    NotExpectedOneArgument -> "not: expected one argument"

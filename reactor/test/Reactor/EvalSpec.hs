@@ -5,7 +5,7 @@ import Reactor.Error (ReactorError (..))
 import Reactor.Eval as E
 import Reactor.Eval.Error (EvalError (..))
 import Reactor.IR (IR (..), compile)
-import Reactor.Lib.Builtin (builtin)
+import Reactor.Lib (lib)
 import Reactor.Parser (parseReactor)
 import Test.Hspec
 
@@ -14,7 +14,7 @@ runCode input = case parseReactor input of
     Left err -> pure $ Left (ReactorError err)
     Right ast -> do
         let irTree = compile ast
-        fullResult <- runEval (eval irTree) builtin
+        fullResult <- runEval (eval irTree) lib
         case fullResult of
             Left err -> pure $ Left (ReactorError err)
             Right (res, _finalEnv) -> pure $ Right res
@@ -84,3 +84,31 @@ spec = describe "Reactor.Eval (System Integration)" do
     it "\\ alias works like lambda (multi-param)" do
         runCode "(list (def f (\\ (a b) (list a b))) (f 1 2))"
             `shouldReturn` Right (Just (List [List [Number 1, Number 2]]))
+
+    it "== alias works like eq" do
+        runCode "(== 42 42)" `shouldReturn` Right (Just (Symbol "true"))
+        runCode "(== 42 43)" `shouldReturn` Right (Just (Symbol "false"))
+
+    it "\\= alias works like ne" do
+        runCode "(\\= 42 43)" `shouldReturn` Right (Just (Symbol "true"))
+        runCode "(\\= 42 42)" `shouldReturn` Right (Just (Symbol "false"))
+
+    it "< alias works like lt" do
+        runCode "(< 5 10)" `shouldReturn` Right (Just (Symbol "true"))
+        runCode "(< 10 5)" `shouldReturn` Right (Just (Symbol "false"))
+
+    it "<= alias works like le" do
+        runCode "(<= 5 5)" `shouldReturn` Right (Just (Symbol "true"))
+        runCode "(<= 10 5)" `shouldReturn` Right (Just (Symbol "false"))
+
+    it "> alias works like gt" do
+        runCode "(> 10 5)" `shouldReturn` Right (Just (Symbol "true"))
+        runCode "(> 5 10)" `shouldReturn` Right (Just (Symbol "false"))
+
+    it ">= alias works like ge" do
+        runCode "(>= 5 5)" `shouldReturn` Right (Just (Symbol "true"))
+        runCode "(>= 5 10)" `shouldReturn` Right (Just (Symbol "false"))
+
+    it "! alias works like not" do
+        runCode "(! false)" `shouldReturn` Right (Just (Symbol "true"))
+        runCode "(! true)" `shouldReturn` Right (Just (Symbol "false"))
