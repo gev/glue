@@ -46,6 +46,10 @@ library
     Reactor.Lib.Math.Arithmetic.Mod
     Reactor.Lib.Math.Arithmetic.Mul
     Reactor.Lib.Math.Arithmetic.Sub
+    Reactor.Lib.Math.Power
+    Reactor.Lib.Math.Power.Exp
+    Reactor.Lib.Math.Power.Pow
+    Reactor.Lib.Math.Power.Sqrt
     Reactor.Lib.Math.Trigonometric
     Reactor.Lib.Math.Trigonometric.Acos
     Reactor.Lib.Math.Trigonometric.Asin
@@ -56,14 +60,11 @@ library
     Reactor.Lib.Math.Utility
     Reactor.Lib.Math.Utility.Abs
     Reactor.Lib.Math.Utility.Ceil
-    Reactor.Lib.Math.Utility.Exp
     Reactor.Lib.Math.Utility.Floor
     Reactor.Lib.Math.Utility.Log
     Reactor.Lib.Math.Utility.Max
     Reactor.Lib.Math.Utility.Min
-    Reactor.Lib.Math.Utility.Pow
     Reactor.Lib.Math.Utility.Round
-    Reactor.Lib.Math.Utility.Sqrt
     Reactor.Lib.Math.Utility.Trunc
     Reactor.Parser
     Reactor.Parser.Error
@@ -117,6 +118,9 @@ test-suite reactor-test
     Reactor.Lib.Math.Arithmetic.ModSpec
     Reactor.Lib.Math.Arithmetic.MulSpec
     Reactor.Lib.Math.Arithmetic.SubSpec
+    Reactor.Lib.Math.Power.ExpSpec
+    Reactor.Lib.Math.Power.PowSpec
+    Reactor.Lib.Math.Power.SqrtSpec
     Reactor.Lib.Math.Trigonometric.AcosSpec
     Reactor.Lib.Math.Trigonometric.AsinSpec
     Reactor.Lib.Math.Trigonometric.AtanSpec
@@ -125,14 +129,11 @@ test-suite reactor-test
     Reactor.Lib.Math.Trigonometric.TanSpec
     Reactor.Lib.Math.Utility.AbsSpec
     Reactor.Lib.Math.Utility.CeilSpec
-    Reactor.Lib.Math.Utility.ExpSpec
     Reactor.Lib.Math.Utility.FloorSpec
     Reactor.Lib.Math.Utility.LogSpec
     Reactor.Lib.Math.Utility.MaxSpec
     Reactor.Lib.Math.Utility.MinSpec
-    Reactor.Lib.Math.Utility.PowSpec
     Reactor.Lib.Math.Utility.RoundSpec
-    Reactor.Lib.Math.Utility.SqrtSpec
     Reactor.Lib.Math.Utility.TruncSpec
     Reactor.ParserSpec
     Reactor.TestUtils

@@ -1,4 +1,4 @@
-module Reactor.Lib.Math.Utility.Sqrt where
+module Reactor.Lib.Math.Power.Sqrt where
 
 import Data.Scientific (Scientific, fromFloatDigits, toRealFloat)
 import Reactor.Eval (Eval, evalRequired, throwError)

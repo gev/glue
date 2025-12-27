@@ -1,4 +1,4 @@
-module Reactor.Lib.Math.Utility.ExpSpec (spec) where
+module Reactor.Lib.Math.Power.ExpSpec (spec) where
 
 import Data.Either (isLeft)
 import Data.Scientific (toRealFloat)
@@ -6,11 +6,11 @@ import Reactor.Env qualified as E
 import Reactor.Eval (runEval)
 import Reactor.IR (IR (..))
 import Reactor.Lib (lib)
-import qualified Reactor.Lib.Math.Utility.Exp as Exp
+import Reactor.Lib.Math.Power.Exp qualified as Exp
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Math.Utility.Exp (Test exp function)" do
+spec = describe "Reactor.Lib.Math.Power.Exp (Test exp function)" do
     describe "Exponential function" do
         it "returns e^0 = 1" do
             let args = [Number 0]

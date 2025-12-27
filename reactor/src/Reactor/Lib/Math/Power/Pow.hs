@@ -1,4 +1,4 @@
-module Reactor.Lib.Math.Utility.Pow where
+module Reactor.Lib.Math.Power.Pow where
 
 import Data.Scientific (Scientific, fromFloatDigits, toRealFloat)
 import Reactor.Eval (Eval, evalRequired, throwError)

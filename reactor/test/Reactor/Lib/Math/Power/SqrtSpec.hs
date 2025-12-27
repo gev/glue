@@ -1,15 +1,15 @@
-module Reactor.Lib.Math.Utility.SqrtSpec (spec) where
+module Reactor.Lib.Math.Power.SqrtSpec (spec) where
 
 import Data.Either (isLeft)
 import Reactor.Env qualified as E
 import Reactor.Eval (runEval)
 import Reactor.IR (IR (..))
 import Reactor.Lib (lib)
-import qualified Reactor.Lib.Math.Utility.Sqrt as Sqrt
+import Reactor.Lib.Math.Power.Sqrt qualified as Sqrt
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Math.Utility.Sqrt (Test sqrt function)" do
+spec = describe "Reactor.Lib.Math.Power.Sqrt (Test sqrt function)" do
     describe "Square root function" do
         it "returns 2 for sqrt(4)" do
             let args = [Number 4]

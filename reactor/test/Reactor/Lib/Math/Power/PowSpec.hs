@@ -1,4 +1,4 @@
-module Reactor.Lib.Math.Utility.PowSpec (spec) where
+module Reactor.Lib.Math.Power.PowSpec (spec) where
 
 import Data.Either (isLeft)
 import Data.Scientific (toRealFloat)
@@ -6,11 +6,11 @@ import Reactor.Env qualified as E
 import Reactor.Eval (runEval)
 import Reactor.IR (IR (..))
 import Reactor.Lib (lib)
-import qualified Reactor.Lib.Math.Utility.Pow as Pow
+import Reactor.Lib.Math.Power.Pow qualified as Pow
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Math.Utility.Pow (Test pow function)" do
+spec = describe "Reactor.Lib.Math.Power.Pow (Test pow function)" do
     describe "Power function" do
         it "returns 2^3 = 8" do
             let args = [Number 2, Number 3]
