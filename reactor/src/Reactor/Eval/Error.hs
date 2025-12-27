@@ -34,6 +34,7 @@ data EvalError
     | SinExpectedOneNumber
     | CosExpectedOneNumber
     | TanExpectedOneNumber
+    | AsinExpectedOneNumber
     deriving (Show, Eq)
 
 prettyShow :: EvalError -> Text
@@ -69,3 +70,4 @@ prettyShow = \case
     SinExpectedOneNumber -> "sin: expected one number"
     CosExpectedOneNumber -> "cos: expected one number"
     TanExpectedOneNumber -> "tan: expected one number"
+    AsinExpectedOneNumber -> "asin: expected one number"
