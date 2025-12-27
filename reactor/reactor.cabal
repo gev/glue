@@ -57,7 +57,11 @@ test-suite reactor-test
     Reactor.EnvSpec
     Reactor.EvalSpec
     Reactor.Lib.Builtin.ClosureSpec
+    Reactor.Lib.Builtin.DefSpec
+    Reactor.Lib.Builtin.LambdaSpec
+    Reactor.Lib.Builtin.ListSpec
     Reactor.Lib.Builtin.QuoteSpec
+    Reactor.Lib.Builtin.SetSpec
     Reactor.ParserSpec
 
   main-is: Spec.hs
