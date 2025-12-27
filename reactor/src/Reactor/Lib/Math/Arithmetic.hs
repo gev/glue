@@ -1,4 +1,4 @@
-module Reactor.Lib.Arithmetic where
+module Reactor.Lib.Math.Arithmetic where
 
 import Reactor.Env qualified as E
 import Reactor.Eval (Eval)
