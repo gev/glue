@@ -44,6 +44,7 @@ data EvalError
     | PowExpectedTwoNumbers
     | FloorExpectedOneNumber
     | CeilExpectedOneNumber
+    | MinExpectedTwoNumbers
     deriving (Show, Eq)
 
 prettyShow :: EvalError -> Text
@@ -89,3 +90,4 @@ prettyShow = \case
     PowExpectedTwoNumbers -> "pow: expected two numbers"
     FloorExpectedOneNumber -> "floor: expected one number"
     CeilExpectedOneNumber -> "ceil: expected one number"
+    MinExpectedTwoNumbers -> "min: expected two numbers"
