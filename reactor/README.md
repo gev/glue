@@ -415,17 +415,48 @@ company.ceo.name  ; → "Bob"
 
 ```
 reactor/
-├── src/Reactor/
-│   ├── AST.hs        # Abstract Syntax Tree definitions
-│   ├── Parser.hs     # Parser implementation
-│   ├── Eval.hs       # Evaluator (interpreter)
-│   ├── IR.hs         # Intermediate Representation
-│   ├── Env.hs        # Environment management
-│   ├── Native.hs     # Built-in functions
-│   └── Error.hs      # Error types
-├── test/Reactor/     # Comprehensive test suite
-├── app/Main.hs       # REPL/CLI entry point
-└── reactor.cabal     # Haskell package configuration
+├── reactor.cabal     # Haskell package configuration
+├── app/
+│   └── Main.hs       # REPL/CLI entry point
+├── src/
+│   ├── Reactor.hs    # Main module
+│   └── Reactor/
+│       ├── AST.hs        # Abstract Syntax Tree definitions
+│       ├── Parser.hs     # Parser implementation
+│       ├── Eval.hs       # Evaluator (interpreter)
+│       ├── IR.hs         # Intermediate Representation
+│       ├── Env.hs        # Environment management
+│       ├── Error.hs      # Error types
+│       ├── Eval/
+│       │   └── Error.hs  # Evaluation errors
+│       ├── Lib/
+│       │   ├── Builtin.hs    # Built-in functions
+│       │   └── Builtin/      # Built-in implementations
+│       │       ├── Def.hs
+│       │       ├── Set.hs
+│       │       ├── List.hs
+│       │       ├── Lambda.hs
+│       │       ├── Quote.hs
+│       │       └── Closure.hs
+│       ├── Parser/
+│       │   └── Error.hs  # Parser errors
+│       └── Spec/
+│           └── Device.hs # Device specifications
+├── test/
+│   ├── Spec.hs       # Test entry point
+│   └── Reactor/
+│       ├── CompileSpec.hs
+│       ├── EnvSpec.hs
+│       ├── EvalSpec.hs
+│       ├── ParserSpec.hs
+│       └── Lib/
+│           └── Builtin/
+│               ├── DefSpec.hs
+│               ├── SetSpec.hs
+│               ├── ListSpec.hs
+│               ├── LambdaSpec.hs
+│               ├── QuoteSpec.hs
+│               └── ClosureSpec.hs
 ```
 
 ### 🔄 Evaluation Model
@@ -437,37 +468,10 @@ reactor/
 
 ### 🛡️ Safety Features
 
-- **No null values** - everything is defined
 - **Type-safe evaluation** - runtime type checking
 - **Lexical scoping** - proper variable isolation
-- **Immutable data** - functional programming paradigm
 - **Comprehensive error handling** - detailed error messages
 
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Haskell toolchain (GHC 9.0+)
-- Cabal build system
-
-### Building
-
-```bash
-cd reactor
-cabal build reactor
-```
-
-### Running Tests
-
-```bash
-cabal test reactor
-```
-
-### REPL
-
-```bash
-cabal run reactor
-```
 
 ## 📖 Grammar Reference
 
