@@ -46,6 +46,7 @@ library
     Reactor.Lib.Math.Arithmetic.Mod
     Reactor.Lib.Math.Arithmetic.Mul
     Reactor.Lib.Math.Arithmetic.Sub
+    Reactor.Lib.Math.Const
     Reactor.Lib.Math.Power
     Reactor.Lib.Math.Power.Exp
     Reactor.Lib.Math.Power.Pow
