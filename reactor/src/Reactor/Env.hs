@@ -37,15 +37,3 @@ updateVar name _ [] = Left $ CanNotSetUnboundVariable name
 updateVar name val (f : fs)
     | Map.member name f = Right (Map.insert name val f : fs)
     | otherwise = (f :) <$> updateVar name val fs
-
-makeClosure :: [Text] -> IR m -> Env m -> IR m
-makeClosure = Closure
-
-makeQuote :: [IR m] -> Either EvalError (IR m)
-makeQuote [v] = Right v
-makeQuote _ = Left QuoteExpectedExactlyOneArgument
-
-extractSymbols :: [IR m] -> Either EvalError [Text]
-extractSymbols = mapM \case
-    Symbol s -> Right s
-    _ -> Left ExpectedListOfSymbols
