@@ -47,6 +47,7 @@ library
     Reactor.Lib.Math.Trigonometric.Tan
     Reactor.Lib.Math.Utility.Abs
     Reactor.Lib.Math.Utility.Exp
+    Reactor.Lib.Math.Utility.Floor
     Reactor.Lib.Math.Utility.Log
     Reactor.Lib.Math.Utility.Pow
     Reactor.Lib.Math.Utility.Sqrt
@@ -105,6 +106,7 @@ test-suite reactor-test
     Reactor.Lib.Math.Trigonometric.TanSpec
     Reactor.Lib.Math.Utility.AbsSpec
     Reactor.Lib.Math.Utility.ExpSpec
+    Reactor.Lib.Math.Utility.FloorSpec
     Reactor.Lib.Math.Utility.LogSpec
     Reactor.Lib.Math.Utility.PowSpec
     Reactor.Lib.Math.Utility.SqrtSpec
