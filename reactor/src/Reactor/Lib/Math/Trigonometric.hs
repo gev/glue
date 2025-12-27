@@ -11,7 +11,12 @@ import Reactor.Lib.Math.Trigonometric.Sin qualified as Sin
 import Reactor.Lib.Math.Trigonometric.Tan qualified as Tan
 
 trigonometric :: Frame Eval
-trigonometric = E.frameFromList [("sin", Native (Func Sin.sin)), ("cos", Native (Func Cos.cos))]
+trigonometric =
+    E.frameFromList
+        [ ("sin", Native (Func Sin.sin))
+        , ("cos", Native (Func Cos.cos))
+        , ("tan", Native (Func Tan.tan))
+        ]
 
 -- Note: tan, asin, acos, atan are not yet integrated
 -- tanFrame = E.singletonFrame "tan" Tan.tan

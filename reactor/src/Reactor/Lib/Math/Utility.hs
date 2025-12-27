@@ -16,7 +16,14 @@ import Reactor.Lib.Math.Utility.Sqrt qualified as Sqrt
 import Reactor.Lib.Math.Utility.Trunc qualified as Trunc
 
 utility :: Frame Eval
-utility = E.frameFromList [("abs", Native (Func Abs.abs)), ("sqrt", Native (Func Sqrt.sqrt))]
+utility =
+    E.frameFromList
+        [ ("abs", Native (Func Abs.abs))
+        , ("sqrt", Native (Func Sqrt.sqrt))
+        , ("exp", Native (Func Exp.exp))
+        , ("log", Native (Func Log.log))
+        , ("pow", Native (Func Pow.pow))
+        ]
 
 -- Note: exp, log, pow, floor, ceil, round, trunc, min, max are not yet integrated
 -- expFrame = E.singletonFrame "exp" Exp.exp
