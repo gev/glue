@@ -1,5 +1,6 @@
 module Reactor.Lib.Math.Utility where
 
+import Data.Scientific (fromFloatDigits)
 import Reactor.Env qualified as E
 import Reactor.Eval (Eval)
 import Reactor.IR (Frame, IR (..), Native (..))
@@ -29,6 +30,8 @@ utility =
         , ("trunc", Native (Func Trunc.trunc))
         , ("min", Native (Func Min.min))
         , ("max", Native (Func Max.max))
+        , ("pi", Number (fromFloatDigits pi))
+        , ("e", Number (fromFloatDigits (exp 1)))
         ]
 
 -- Note: exp, log, pow, floor, ceil, round, trunc, min, max are not yet integrated
