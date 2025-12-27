@@ -41,6 +41,7 @@ data EvalError
     | SqrtExpectedOneNumber
     | ExpExpectedOneNumber
     | LogExpectedPositiveNumber
+    | PowExpectedTwoNumbers
     deriving (Show, Eq)
 
 prettyShow :: EvalError -> Text
@@ -83,3 +84,4 @@ prettyShow = \case
     SqrtExpectedOneNumber -> "sqrt: expected one number"
     ExpExpectedOneNumber -> "exp: expected one number"
     LogExpectedPositiveNumber -> "log: expected positive number"
+    PowExpectedTwoNumbers -> "pow: expected two numbers"
