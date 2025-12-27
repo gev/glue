@@ -33,6 +33,7 @@ data EvalError
     | NotExpectedOneArgument
     | SinExpectedOneNumber
     | CosExpectedOneNumber
+    | TanExpectedOneNumber
     deriving (Show, Eq)
 
 prettyShow :: EvalError -> Text
@@ -67,3 +68,4 @@ prettyShow = \case
     NotExpectedOneArgument -> "not: expected one argument"
     SinExpectedOneNumber -> "sin: expected one number"
     CosExpectedOneNumber -> "cos: expected one number"
+    TanExpectedOneNumber -> "tan: expected one number"
