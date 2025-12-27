@@ -55,7 +55,7 @@ pString :: Parser AST
 pString = String . T.pack <$> lexeme (char '"' >> manyTill L.charLiteral (char '"'))
 
 pSymbol :: Parser AST
-pSymbol = Symbol . T.pack <$> lexeme (some (alphaNumChar <|> oneOf ("-_:!?" :: String)))
+pSymbol = Symbol . T.pack <$> lexeme (some (alphaNumChar <|> oneOf ("-_:!?\\" :: String)))
 
 pExprOrList :: Parser AST
 pExprOrList = between (symbol "(") (symbol ")") $ do

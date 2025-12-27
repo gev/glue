@@ -16,5 +16,6 @@ builtin =
         , ("def", Native (Special def))
         , ("set", Native (Special set))
         , ("lambda", Native (Special lambda))
+        , ("\\", Native (Special lambda))
         , ("list", Native (Func list))
         ]

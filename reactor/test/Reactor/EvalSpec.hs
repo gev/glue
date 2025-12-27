@@ -64,3 +64,23 @@ spec = describe "Reactor.Eval (System Integration)" do
     it "user-defined function multi-param" do
         runCode "(list (def f (lambda (a b) (list a b))) (f 1 2))"
             `shouldReturn` Right (Just (List [List [Number 1, Number 2]]))
+
+    it "\\ alias works like lambda (lexical shadowing)" do
+        let code = "((( \\ (x) ( \\ (y) x)) 100) 1)"
+        runCode code `shouldReturn` Right (Just (Number 100))
+
+    it "\\ alias works like lambda (user-defined function)" do
+        runCode "(list (def id (\\ (x) x)) (id 42))"
+            `shouldReturn` Right (Just (List [Number 42]))
+
+    it "\\ alias works like lambda (too few args)" do
+        runCode "(list (def id (\\ (x) x)) (id))"
+            `shouldReturn` Left (ReactorError WrongNumberOfArguments)
+
+    it "\\ alias works like lambda (too many args)" do
+        runCode "(list (def id (\\ (x) x)) (id 1 2))"
+            `shouldReturn` Left (ReactorError WrongNumberOfArguments)
+
+    it "\\ alias works like lambda (multi-param)" do
+        runCode "(list (def f (\\ (a b) (list a b))) (f 1 2))"
+            `shouldReturn` Right (Just (List [List [Number 1, Number 2]]))
