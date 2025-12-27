@@ -50,6 +50,8 @@ data EvalError
     | TruncExpectedOneNumber
     | AddExpectedAtLeastOneArgument
     | AddExpectedNumbers
+    | SubExpectedAtLeastOneArgument
+    | SubExpectedNumbers
     deriving (Show, Eq)
 
 prettyShow :: EvalError -> Text
@@ -101,3 +103,5 @@ prettyShow = \case
     TruncExpectedOneNumber -> "trunc: expected one number"
     AddExpectedAtLeastOneArgument -> "+: expected at least one argument"
     AddExpectedNumbers -> "+: expected numbers"
+    SubExpectedAtLeastOneArgument -> "-: expected at least one argument"
+    SubExpectedNumbers -> "-: expected numbers"
