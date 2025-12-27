@@ -32,6 +32,7 @@ data EvalError
     | UntilExpectedAtLeastOneArgument
     | NotExpectedOneArgument
     | SinExpectedOneNumber
+    | CosExpectedOneNumber
     deriving (Show, Eq)
 
 prettyShow :: EvalError -> Text
@@ -65,3 +66,4 @@ prettyShow = \case
     UntilExpectedAtLeastOneArgument -> "until: expected condition and body"
     NotExpectedOneArgument -> "not: expected one argument"
     SinExpectedOneNumber -> "sin: expected one number"
+    CosExpectedOneNumber -> "cos: expected one number"
