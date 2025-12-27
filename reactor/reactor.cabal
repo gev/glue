@@ -53,6 +53,7 @@ library
     Reactor.Lib.Math.Utility.Max
     Reactor.Lib.Math.Utility.Min
     Reactor.Lib.Math.Utility.Pow
+    Reactor.Lib.Math.Utility.Round
     Reactor.Lib.Math.Utility.Sqrt
     Reactor.Parser
     Reactor.Parser.Error
@@ -115,6 +116,7 @@ test-suite reactor-test
     Reactor.Lib.Math.Utility.MaxSpec
     Reactor.Lib.Math.Utility.MinSpec
     Reactor.Lib.Math.Utility.PowSpec
+    Reactor.Lib.Math.Utility.RoundSpec
     Reactor.Lib.Math.Utility.SqrtSpec
     Reactor.ParserSpec
     Reactor.TestUtils
