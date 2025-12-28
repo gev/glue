@@ -11,6 +11,7 @@ import Reactor.Lib.List.Cons (cons)
 import Reactor.Lib.List.Drop qualified as Drop
 import Reactor.Lib.List.Filter qualified as Filter
 import Reactor.Lib.List.Find qualified as Find
+import Reactor.Lib.List.Flatten qualified as Flatten
 import Reactor.Lib.List.Last qualified as Last
 import Reactor.Lib.List.Length qualified as Length
 import Reactor.Lib.List.Map qualified as Map
@@ -32,6 +33,7 @@ list =
         , ("drop", Native (Func Drop.drop))
         , ("filter", Native (Func Filter.filter))
         , ("find", Native (Func Find.find))
+        , ("flatten", Native (Func Flatten.flatten))
         , ("last", Native (Func Last.last))
         , ("length", Native (Func Length.length))
         , ("map", Native (Func Map.map))
