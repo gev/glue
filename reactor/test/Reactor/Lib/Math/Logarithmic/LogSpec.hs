@@ -11,16 +11,17 @@ import Test.Hspec
 
 spec :: Spec
 spec = describe "Reactor.Lib.Math.Logarithmic.Log (Test log function)" do
-    describe "Natural logarithm function" do
-        it "returns ln(1) = 0" do
-            let args = [Number 1]
+    describe "Logarithm function with base" do
+        it "returns log(1, e) = 0" do
+            let args = [Number 1, Number (fromFloatDigits @Double (exp 1))]
             result <- runEval (Log.log args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Log failed: " <> show err
                 Right (res, _) -> res `shouldBe` Number 0
 
-        it "returns ln(e) = 1" do
-            let args = [Number (fromFloatDigits @Double (exp 1))]
+        it "returns log(e, e) = 1" do
+            let e = fromFloatDigits @Double (exp 1)
+            let args = [Number e, Number e]
             result <- runEval (Log.log args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Log failed: " <> show err
@@ -28,8 +29,10 @@ spec = describe "Reactor.Lib.Math.Logarithmic.Log (Test log function)" do
                     Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x - 1) < 1e-10)
                     _ -> expectationFailure "Expected a number"
 
-        it "returns ln(e^2) = 2" do
-            let args = [Number (fromFloatDigits @Double (exp 2))]
+        it "returns log(e^2, e) = 2" do
+            let e = fromFloatDigits @Double (exp 1)
+            let e2 = fromFloatDigits @Double (exp 2)
+            let args = [Number e2, Number e]
             result <- runEval (Log.log args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Log failed: " <> show err
@@ -37,23 +40,62 @@ spec = describe "Reactor.Lib.Math.Logarithmic.Log (Test log function)" do
                     Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x - 2) < 1e-10)
                     _ -> expectationFailure "Expected a number"
 
-        it "fails with zero" do
-            let args = [Number 0]
+        it "returns log(100, 10) = 2" do
+            let args = [Number 100, Number 10]
+            result <- runEval (Log.log args) (E.fromFrame lib)
+            case result of
+                Left err -> expectationFailure $ "Log failed: " <> show err
+                Right (res, _) -> res `shouldBe` Number 2
+
+        it "returns log(8, 2) = 3" do
+            let args = [Number 8, Number 2]
+            result <- runEval (Log.log args) (E.fromFrame lib)
+            case result of
+                Left err -> expectationFailure $ "Log failed: " <> show err
+                Right (res, _) -> res `shouldBe` Number 3
+
+        it "fails with zero value" do
+            let args = [Number 0, Number 10]
             result <- runEval (Log.log args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft
 
-        it "fails with negative numbers" do
-            let args = [Number (-1)]
+        it "fails with negative value" do
+            let args = [Number (-1), Number 10]
             result <- runEval (Log.log args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft
 
-        it "fails with non-numbers" do
-            let args = [String "hello"]
+        it "fails with zero base" do
+            let args = [Number 10, Number 0]
             result <- runEval (Log.log args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft
 
-        it "fails with wrong number of arguments" do
-            let args = [Number 1, Number 2]
+        it "fails with negative base" do
+            let args = [Number 10, Number (-1)]
+            result <- runEval (Log.log args) (E.fromFrame lib)
+            result `shouldSatisfy` isLeft
+
+        it "fails with base 1" do
+            let args = [Number 10, Number 1]
+            result <- runEval (Log.log args) (E.fromFrame lib)
+            result `shouldSatisfy` isLeft
+
+        it "fails with non-numbers (value)" do
+            let args = [String "hello", Number 10]
+            result <- runEval (Log.log args) (E.fromFrame lib)
+            result `shouldSatisfy` isLeft
+
+        it "fails with non-numbers (base)" do
+            let args = [Number 10, String "hello"]
+            result <- runEval (Log.log args) (E.fromFrame lib)
+            result `shouldSatisfy` isLeft
+
+        it "fails with wrong number of arguments (one)" do
+            let args = [Number 1]
+            result <- runEval (Log.log args) (E.fromFrame lib)
+            result `shouldSatisfy` isLeft
+
+        it "fails with wrong number of arguments (three)" do
+            let args = [Number 1, Number 2, Number 3]
             result <- runEval (Log.log args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft
 
