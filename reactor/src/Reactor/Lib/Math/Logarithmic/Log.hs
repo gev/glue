@@ -15,6 +15,6 @@ log [arg, base] = do
             let realBase = toRealFloat @Double b
             if realVal <= 0 || realBase <= 0 || realBase == 1
                 then throwError LogExpectedPositiveNumber
-                else pure $ Number (fromFloatDigits (Prelude.log realVal / Prelude.log realBase))
+                else pure $ Number (fromFloatDigits (Prelude.logBase realBase realVal))
         _ -> throwError LogExpectedPositiveNumber
 log _ = throwError WrongNumberOfArguments
