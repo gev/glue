@@ -4,7 +4,6 @@ import Data.Scientific (fromFloatDigits, toRealFloat)
 import Reactor.Eval (Eval, evalRequired, throwError)
 import Reactor.Eval.Error (GeneralError (..))
 import Reactor.IR (IR (..))
-import Reactor.Lib.Math.Error (MathError (..))
 
 pow :: [IR Eval] -> Eval (IR Eval)
 pow [arg1, arg2] = do
@@ -12,5 +11,5 @@ pow [arg1, arg2] = do
     va2 <- evalRequired arg2
     case (va1, va2) of
         (Number n1, Number n2) -> pure $ Number (fromFloatDigits @Double (toRealFloat n1 ** toRealFloat n2))
-        _ -> throwError PowExpectedTwoNumbers
+        _ -> throwError $ WrongArgumentType "pow" ["number", "number"]
 pow _ = throwError WrongNumberOfArguments

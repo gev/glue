@@ -4,7 +4,6 @@ import Data.Scientific (fromFloatDigits, toRealFloat)
 import Reactor.Eval (Eval, evalRequired, throwError)
 import Reactor.Eval.Error (GeneralError (..))
 import Reactor.IR (IR (..))
-import Reactor.Lib.Math.Error (MathError (..))
 
 ln :: [IR Eval] -> Eval (IR Eval)
 ln [arg] = do
@@ -13,7 +12,7 @@ ln [arg] = do
         Number n -> do
             let realVal = toRealFloat @Double n
             if realVal <= 0
-                then throwError LogExpectedPositiveNumber
+                then throwError $ WrongArgumentType "ln" ["positive number"]
                 else pure $ Number (fromFloatDigits (Prelude.log realVal))
-        _ -> throwError LogExpectedPositiveNumber
+        _ -> throwError $ WrongArgumentType "ln" ["number"]
 ln _ = throwError WrongNumberOfArguments

@@ -4,7 +4,6 @@ import Data.Scientific (fromFloatDigits, toRealFloat)
 import Reactor.Eval (Eval, evalRequired, throwError)
 import Reactor.Eval.Error (GeneralError (..))
 import Reactor.IR (IR (..))
-import Reactor.Lib.Math.Error (MathError (..))
 
 sqrt :: [IR Eval] -> Eval (IR Eval)
 sqrt [arg] = do
@@ -13,7 +12,7 @@ sqrt [arg] = do
         Number n -> do
             let realVal = toRealFloat @Double n
             if realVal < 0
-                then throwError SqrtExpectedOneNumber
+                then throwError $ WrongArgumentType "sqrt" ["number"]
                 else pure $ Number (fromFloatDigits (Prelude.sqrt realVal))
-        _ -> throwError SqrtExpectedOneNumber
+        _ -> throwError $ WrongArgumentType "sqrt" ["number"]
 sqrt _ = throwError WrongNumberOfArguments

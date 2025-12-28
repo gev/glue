@@ -4,12 +4,11 @@ import Data.Scientific (toRealFloat)
 import Reactor.Eval (Eval, evalRequired, throwError)
 import Reactor.Eval.Error (GeneralError (..))
 import Reactor.IR (IR (..))
-import Reactor.Lib.Math.Error (MathError (..))
 
 trunc :: [IR Eval] -> Eval (IR Eval)
 trunc [arg] = do
     va <- evalRequired arg
     case va of
         Number n -> pure $ Number (fromIntegral @Int (Prelude.truncate @Double (toRealFloat n)))
-        _ -> throwError TruncExpectedOneNumber
+        _ -> throwError $ WrongArgumentType "trunc" ["number"]
 trunc _ = throwError WrongNumberOfArguments

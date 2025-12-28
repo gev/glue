@@ -6,6 +6,7 @@ module Reactor.Eval.Error (
 ) where
 
 import Data.Text (Text)
+import Data.Text qualified as T
 import Data.Typeable (Typeable, cast)
 
 class Error e where
@@ -28,6 +29,8 @@ data GeneralError
     | ExpectedValue
     | ExpectedListOfSymbols
     | WrongNumberOfArguments
+    | WrongArgumentType Text [Text]
+    | DivByZero
     | PropertyNotFound Text
     | NotAnObject Text
     deriving (Show, Eq)
@@ -40,6 +43,8 @@ instance Error GeneralError where
         ExpectedValue -> "Expected value, but got a command/effect"
         ExpectedListOfSymbols -> "Expected a list of symbols"
         WrongNumberOfArguments -> "Wrong number of arguments"
+        WrongArgumentType func expected -> func <> ": expected [" <> T.intercalate ", " expected <> "]"
+        DivByZero -> "Division by zero"
         PropertyNotFound prop -> "Property not found: " <> prop
         NotAnObject obj -> "Not an object: " <> obj
 

@@ -49,7 +49,6 @@ library
     Reactor.Lib.Math.Arithmetic.Mul
     Reactor.Lib.Math.Arithmetic.Sub
     Reactor.Lib.Math.Const
-    Reactor.Lib.Math.Error
     Reactor.Lib.Math.Logarithmic
     Reactor.Lib.Math.Logarithmic.Lg
     Reactor.Lib.Math.Logarithmic.Ln

@@ -1,8 +1,8 @@
 module Reactor.Lib.Math.Arithmetic.Mod where
 
 import Reactor.Eval (Eval, evalRequired, throwError)
+import Reactor.Eval.Error (GeneralError (..))
 import Reactor.IR (IR (..))
-import Reactor.Lib.Math.Error (MathError (..))
 
 mod :: [IR Eval] -> Eval (IR Eval)
 mod [arg1, arg2] = do
@@ -11,7 +11,7 @@ mod [arg1, arg2] = do
     case (va1, va2) of
         (Number n1, Number n2) -> do
             if n2 == 0
-                then throwError ModByZero
+                then throwError DivByZero
                 else pure $ Number (fromIntegral @Int (truncate n1 `Prelude.mod` truncate n2))
-        _ -> throwError ModExpectedTwoNumbers
-mod _ = throwError ModExpectedTwoNumbers
+        _ -> throwError $ WrongArgumentType "%" ["number", "number"]
+mod _ = throwError WrongNumberOfArguments
