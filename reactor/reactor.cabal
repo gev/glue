@@ -60,6 +60,7 @@ library
     Reactor.Lib.List.Remove
     Reactor.Lib.List.Reverse
     Reactor.Lib.List.Take
+    Reactor.Lib.List.Zip
     Reactor.Lib.Math
     Reactor.Lib.Math.Arithmetic
     Reactor.Lib.Math.Arithmetic.Add
@@ -158,6 +159,7 @@ test-suite reactor-test
     Reactor.Lib.List.RemoveSpec
     Reactor.Lib.List.ReverseSpec
     Reactor.Lib.List.TakeSpec
+    Reactor.Lib.List.ZipSpec
     Reactor.Lib.Math.Arithmetic.AddSpec
     Reactor.Lib.Math.Arithmetic.DivSpec
     Reactor.Lib.Math.Arithmetic.ModSpec
