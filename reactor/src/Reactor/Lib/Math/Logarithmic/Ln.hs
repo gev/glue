@@ -1,12 +1,12 @@
-module Reactor.Lib.Math.Utility.Log where
+module Reactor.Lib.Math.Logarithmic.Ln where
 
 import Data.Scientific (fromFloatDigits, toRealFloat)
 import Reactor.Eval (Eval, evalRequired, throwError)
 import Reactor.Eval.Error (EvalError (..))
 import Reactor.IR (IR (..))
 
-log :: [IR Eval] -> Eval (IR Eval)
-log [arg] = do
+ln :: [IR Eval] -> Eval (IR Eval)
+ln [arg] = do
     va <- evalRequired arg
     case va of
         Number n -> do
@@ -15,4 +15,4 @@ log [arg] = do
                 then throwError LogExpectedPositiveNumber
                 else pure $ Number (fromFloatDigits (Prelude.log realVal))
         _ -> throwError LogExpectedPositiveNumber
-log _ = throwError WrongNumberOfArguments
+ln _ = throwError WrongNumberOfArguments

@@ -6,7 +6,7 @@ import Reactor.IR (Frame, IR (..), Native (..))
 import Reactor.Lib.Math.Utility.Abs qualified as Abs
 import Reactor.Lib.Math.Utility.Ceil qualified as Ceil
 import Reactor.Lib.Math.Utility.Floor qualified as Floor
-import Reactor.Lib.Math.Utility.Log qualified as Log
+
 import Reactor.Lib.Math.Utility.Max qualified as Max
 import Reactor.Lib.Math.Utility.Min qualified as Min
 import Reactor.Lib.Math.Utility.Round qualified as Round
@@ -16,7 +16,6 @@ utility :: Frame Eval
 utility =
     E.frameFromList
         [ ("abs", Native (Func Abs.abs))
-        , ("log", Native (Func Log.log))
         , ("floor", Native (Func Floor.floor))
         , ("ceil", Native (Func Ceil.ceil))
         , ("round", Native (Func Round.round))

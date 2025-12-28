@@ -1,4 +1,4 @@
-module Reactor.Lib.Math.Utility.LogSpec (spec) where
+module Reactor.Lib.Math.Logarithmic.LogSpec (spec) where
 
 import Data.Either (isLeft)
 import Data.Scientific (fromFloatDigits, toRealFloat)
@@ -6,11 +6,11 @@ import Reactor.Env qualified as E
 import Reactor.Eval (runEval)
 import Reactor.IR (IR (..))
 import Reactor.Lib (lib)
-import Reactor.Lib.Math.Utility.Log qualified as Log
+import Reactor.Lib.Math.Logarithmic.Log qualified as Log
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Math.Utility.Log (Test log function)" do
+spec = describe "Reactor.Lib.Math.Logarithmic.Log (Test log function)" do
     describe "Natural logarithm function" do
         it "returns ln(1) = 0" do
             let args = [Number 1]

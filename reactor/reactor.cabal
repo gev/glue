@@ -47,6 +47,10 @@ library
     Reactor.Lib.Math.Arithmetic.Mul
     Reactor.Lib.Math.Arithmetic.Sub
     Reactor.Lib.Math.Const
+    Reactor.Lib.Math.Logarithmic
+    Reactor.Lib.Math.Logarithmic.Lg
+    Reactor.Lib.Math.Logarithmic.Ln
+    Reactor.Lib.Math.Logarithmic.Log
     Reactor.Lib.Math.Power
     Reactor.Lib.Math.Power.Exp
     Reactor.Lib.Math.Power.Pow
@@ -62,7 +66,6 @@ library
     Reactor.Lib.Math.Utility.Abs
     Reactor.Lib.Math.Utility.Ceil
     Reactor.Lib.Math.Utility.Floor
-    Reactor.Lib.Math.Utility.Log
     Reactor.Lib.Math.Utility.Max
     Reactor.Lib.Math.Utility.Min
     Reactor.Lib.Math.Utility.Round
@@ -119,6 +122,9 @@ test-suite reactor-test
     Reactor.Lib.Math.Arithmetic.ModSpec
     Reactor.Lib.Math.Arithmetic.MulSpec
     Reactor.Lib.Math.Arithmetic.SubSpec
+    Reactor.Lib.Math.Logarithmic.LgSpec
+    Reactor.Lib.Math.Logarithmic.LnSpec
+    Reactor.Lib.Math.Logarithmic.LogSpec
     Reactor.Lib.Math.Power.ExpSpec
     Reactor.Lib.Math.Power.PowSpec
     Reactor.Lib.Math.Power.SqrtSpec
@@ -131,7 +137,6 @@ test-suite reactor-test
     Reactor.Lib.Math.Utility.AbsSpec
     Reactor.Lib.Math.Utility.CeilSpec
     Reactor.Lib.Math.Utility.FloorSpec
-    Reactor.Lib.Math.Utility.LogSpec
     Reactor.Lib.Math.Utility.MaxSpec
     Reactor.Lib.Math.Utility.MinSpec
     Reactor.Lib.Math.Utility.RoundSpec
