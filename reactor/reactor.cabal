@@ -48,6 +48,7 @@ library
     Reactor.Lib.List.Cons
     Reactor.Lib.List.Last
     Reactor.Lib.List.Length
+    Reactor.Lib.List.Map
     Reactor.Lib.List.Member
     Reactor.Lib.List.Nth
     Reactor.Lib.List.Remove
@@ -138,6 +139,7 @@ test-suite reactor-test
     Reactor.Lib.List.ConsSpec
     Reactor.Lib.List.LastSpec
     Reactor.Lib.List.LengthSpec
+    Reactor.Lib.List.MapSpec
     Reactor.Lib.List.MemberSpec
     Reactor.Lib.List.NthSpec
     Reactor.Lib.List.RemoveSpec
