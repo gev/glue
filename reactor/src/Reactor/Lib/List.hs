@@ -8,6 +8,7 @@ import Reactor.Lib.List.Butlast (butlast)
 import Reactor.Lib.List.Car (car)
 import Reactor.Lib.List.Cdr (cdr)
 import Reactor.Lib.List.Cons (cons)
+import Reactor.Lib.List.Filter qualified as Filter
 import Reactor.Lib.List.Last qualified as Last
 import Reactor.Lib.List.Length qualified as Length
 import Reactor.Lib.List.Map qualified as Map
@@ -24,6 +25,7 @@ list =
         , ("car", Native (Func car))
         , ("cdr", Native (Func cdr))
         , ("cons", Native (Func cons))
+        , ("filter", Native (Func Filter.filter))
         , ("last", Native (Func Last.last))
         , ("length", Native (Func Length.length))
         , ("map", Native (Func Map.map))

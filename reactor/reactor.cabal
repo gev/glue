@@ -46,6 +46,7 @@ library
     Reactor.Lib.List.Car
     Reactor.Lib.List.Cdr
     Reactor.Lib.List.Cons
+    Reactor.Lib.List.Filter
     Reactor.Lib.List.Last
     Reactor.Lib.List.Length
     Reactor.Lib.List.Map
@@ -137,6 +138,7 @@ test-suite reactor-test
     Reactor.Lib.List.CarSpec
     Reactor.Lib.List.CdrSpec
     Reactor.Lib.List.ConsSpec
+    Reactor.Lib.List.FilterSpec
     Reactor.Lib.List.LastSpec
     Reactor.Lib.List.LengthSpec
     Reactor.Lib.List.MapSpec
