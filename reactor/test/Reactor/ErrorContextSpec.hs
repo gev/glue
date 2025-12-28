@@ -43,8 +43,6 @@ spec = describe "Reactor.ErrorContext (Call Stack Tracking)" do
         runCode "(list (def id (lambda (x) x)) (id))"
             `shouldReturn` Left (ReactorError $ EvalError ["id", "list"] WrongNumberOfArguments)
 
-    -- Note: Math operations and property access syntax need to be verified
-    -- These tests are commented out until proper syntax is determined
     it "shows context for math operations" do
         runCode "(+ non-existent 1)"
             `shouldReturn` Left (ReactorError $ EvalError ["+"] $ UnboundVariable "non-existent")
