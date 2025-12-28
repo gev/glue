@@ -1,8 +1,9 @@
 module Reactor.Lib.Math.Arithmetic.Mod where
 
 import Reactor.Eval (Eval, evalRequired, throwError)
-import Reactor.Eval.Error (EvalError (..))
+import Reactor.Eval.Error (Error)
 import Reactor.IR (IR (..))
+import Reactor.Lib.Math.Error (MathError (..))
 
 mod :: [IR Eval] -> Eval (IR Eval)
 mod [arg1, arg2] = do

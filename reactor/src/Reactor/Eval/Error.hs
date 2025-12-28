@@ -1,8 +1,27 @@
-module Reactor.Eval.Error where
+module Reactor.Eval.Error (
+    Error (..),
+    EvalError (..),
+    GeneralError (..),
+    prettyShow,
+) where
 
 import Data.Text (Text)
+import Data.Typeable (Typeable, cast)
 
-data EvalError
+class Error e where
+    pretty :: e -> Text
+
+data EvalError = forall e. (Error e, Show e, Eq e, Typeable e) => EvalError e
+
+instance Show EvalError where
+    show (EvalError e) = show e
+
+instance Eq EvalError where
+    EvalError a == EvalError b = case cast a of
+        Just a' -> a' == b
+        Nothing -> False
+
+data GeneralError
     = UnboundVariable Text
     | CanNotSetUnboundVariable Text
     | NotCallableObject
@@ -11,111 +30,18 @@ data EvalError
     | WrongNumberOfArguments
     | PropertyNotFound Text
     | NotAnObject Text
-    | DefExpectedSymbolAndValue
-    | SetExpectedSymbolAndValue
-    | LambdaExpectedArgumentsList
-    | LambdaExpectedArgumentsAndBody
-    | QuoteExpectedExactlyOneArgument
-    | EqExpectedTwoArguments
-    | NeExpectedTwoArguments
-    | LtExpectedTwoArguments
-    | LtExpectedNumbers
-    | LeExpectedTwoArguments
-    | LeExpectedNumbers
-    | GtExpectedTwoArguments
-    | GtExpectedNumbers
-    | GeExpectedTwoArguments
-    | GeExpectedNumbers
-    | IfExpectedThreeArguments
-    | WhenExpectedAtLeastOneArgument
-    | WhileExpectedAtLeastOneArgument
-    | UntilExpectedAtLeastOneArgument
-    | NotExpectedOneArgument
-    | SinExpectedOneNumber
-    | CosExpectedOneNumber
-    | TanExpectedOneNumber
-    | AsinExpectedOneNumber
-    | AcosExpectedOneNumber
-    | AtanExpectedOneNumber
-    | AbsExpectedOneNumber
-    | SqrtExpectedOneNumber
-    | ExpExpectedOneNumber
-    | LogExpectedPositiveNumber
-    | PowExpectedTwoNumbers
-    | FloorExpectedOneNumber
-    | CeilExpectedOneNumber
-    | MinExpectedTwoNumbers
-    | MaxExpectedTwoNumbers
-    | RoundExpectedOneNumber
-    | TruncExpectedOneNumber
-    | AddExpectedAtLeastOneArgument
-    | AddExpectedNumbers
-    | SubExpectedAtLeastOneArgument
-    | SubExpectedNumbers
-    | MulExpectedAtLeastOneArgument
-    | MulExpectedNumbers
-    | DivExpectedAtLeastOneArgument
-    | DivExpectedNumbers
-    | DivByZero
-    | ModExpectedTwoNumbers
-    | ModByZero
-    deriving (Show, Eq)
+    deriving (Show, Eq, Typeable)
+
+instance Error GeneralError where
+    pretty = \case
+        UnboundVariable name -> "Unbound variable: " <> name
+        CanNotSetUnboundVariable name -> "Cannot set unbound variable: " <> name
+        NotCallableObject -> "Not a callable object"
+        ExpectedValue -> "Expected value, but got a command/effect"
+        ExpectedListOfSymbols -> "Expected a list of symbols"
+        WrongNumberOfArguments -> "Wrong number of arguments"
+        PropertyNotFound prop -> "Property not found: " <> prop
+        NotAnObject obj -> "Not an object: " <> obj
 
 prettyShow :: EvalError -> Text
-prettyShow = \case
-    UnboundVariable name -> "Unbound variable: " <> name
-    CanNotSetUnboundVariable name -> "Cannot set unbound variable: " <> name
-    NotCallableObject -> "Not a callable object"
-    ExpectedValue -> "Expected value, but got a command/effect"
-    ExpectedListOfSymbols -> "Expected a list of symbols"
-    WrongNumberOfArguments -> "Wrong number of arguments"
-    PropertyNotFound prop -> "Property not found: " <> prop
-    NotAnObject obj -> "Not an object: " <> obj
-    DefExpectedSymbolAndValue -> "def: expected symbol and value"
-    SetExpectedSymbolAndValue -> "set: expected symbol and value"
-    LambdaExpectedArgumentsList -> "lambda: expected list of arguments"
-    LambdaExpectedArgumentsAndBody -> "lambda: expected arguments and body"
-    QuoteExpectedExactlyOneArgument -> "quote: expected exactly one argument"
-    EqExpectedTwoArguments -> "eq: expected two arguments"
-    NeExpectedTwoArguments -> "ne: expected two arguments"
-    LtExpectedTwoArguments -> "lt: expected two arguments"
-    LtExpectedNumbers -> "lt: expected numbers"
-    LeExpectedTwoArguments -> "le: expected two arguments"
-    LeExpectedNumbers -> "le: expected numbers"
-    GtExpectedTwoArguments -> "gt: expected two arguments"
-    GtExpectedNumbers -> "gt: expected numbers"
-    GeExpectedTwoArguments -> "ge: expected two arguments"
-    GeExpectedNumbers -> "ge: expected numbers"
-    IfExpectedThreeArguments -> "if: expected condition, then, and else expressions"
-    WhenExpectedAtLeastOneArgument -> "when: expected condition and body"
-    WhileExpectedAtLeastOneArgument -> "while: expected condition and body"
-    UntilExpectedAtLeastOneArgument -> "until: expected condition and body"
-    NotExpectedOneArgument -> "not: expected one argument"
-    SinExpectedOneNumber -> "sin: expected one number"
-    CosExpectedOneNumber -> "cos: expected one number"
-    TanExpectedOneNumber -> "tan: expected one number"
-    AsinExpectedOneNumber -> "asin: expected one number"
-    AcosExpectedOneNumber -> "acos: expected one number"
-    AtanExpectedOneNumber -> "atan: expected one number"
-    AbsExpectedOneNumber -> "abs: expected one number"
-    SqrtExpectedOneNumber -> "sqrt: expected one number"
-    ExpExpectedOneNumber -> "exp: expected one number"
-    LogExpectedPositiveNumber -> "log: expected positive number"
-    PowExpectedTwoNumbers -> "pow: expected two numbers"
-    FloorExpectedOneNumber -> "floor: expected one number"
-    CeilExpectedOneNumber -> "ceil: expected one number"
-    MinExpectedTwoNumbers -> "min: expected two numbers"
-    MaxExpectedTwoNumbers -> "max: expected two numbers"
-    RoundExpectedOneNumber -> "round: expected one number"
-    TruncExpectedOneNumber -> "trunc: expected one number"
-    AddExpectedAtLeastOneArgument -> "+: expected at least one argument"
-    AddExpectedNumbers -> "+: expected numbers"
-    SubExpectedAtLeastOneArgument -> "-: expected at least one argument"
-    SubExpectedNumbers -> "-: expected numbers"
-    MulExpectedAtLeastOneArgument -> "*: expected at least one argument"
-    MulExpectedNumbers -> "*: expected numbers"
-    DivExpectedAtLeastOneArgument -> "/: expected at least one argument"
-    DivExpectedNumbers -> "/: expected numbers"
-    DivByZero -> "/: division by zero"
-    ModExpectedTwoNumbers -> "%: expected two numbers"
-    ModByZero -> "%: modulo by zero"
+prettyShow (EvalError e) = pretty e

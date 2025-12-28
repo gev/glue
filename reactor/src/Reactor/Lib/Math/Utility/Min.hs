@@ -1,8 +1,9 @@
 module Reactor.Lib.Math.Utility.Min where
 
 import Reactor.Eval (Eval, evalRequired, throwError)
-import Reactor.Eval.Error (EvalError (..))
+import Reactor.Eval.Error (GeneralError (..))
 import Reactor.IR (IR (..))
+import Reactor.Lib.Math.Error (MathError (..))
 
 min :: [IR Eval] -> Eval (IR Eval)
 min [arg1, arg2] = do

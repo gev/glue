@@ -4,7 +4,7 @@ import Data.Text (Text)
 import Reactor.Env qualified as E
 import Reactor.Error (ReactorError (..))
 import Reactor.Eval (Eval, eval, runEval)
-import Reactor.Eval.Error (EvalError (..))
+import Reactor.Eval.Error (EvalError (..), GeneralError (..))
 import Reactor.IR (IR (..), compile)
 import Reactor.Lib (lib)
 import Reactor.Parser (parseReactor)
@@ -44,11 +44,11 @@ spec = describe "Reactor.Eval (System Integration)" do
 
     it "fails when calling non-existent function" do
         runCode "(non-existent 1 2)"
-            `shouldReturn` Left (ReactorError $ UnboundVariable "non-existent")
+            `shouldReturn` Left (ReactorError $ EvalError $ UnboundVariable "non-existent")
 
     it "fails when passing wrong number of arguments" do
         runCode "((lambda (a b) a) 1)"
-            `shouldReturn` Left (ReactorError WrongNumberOfArguments)
+            `shouldReturn` Left (ReactorError $ EvalError WrongNumberOfArguments)
 
     it "user-defined function" do
         runCode "(list (def id (lambda (x) x)) (id 42))"
@@ -56,11 +56,11 @@ spec = describe "Reactor.Eval (System Integration)" do
 
     it "user-defined function too few args" do
         runCode "(list (def id (lambda (x) x)) (id))"
-            `shouldReturn` Left (ReactorError WrongNumberOfArguments)
+            `shouldReturn` Left (ReactorError $ EvalError WrongNumberOfArguments)
 
     it "user-defined function too many args" do
         runCode "(list (def id (lambda (x) x)) (id 1 2))"
-            `shouldReturn` Left (ReactorError WrongNumberOfArguments)
+            `shouldReturn` Left (ReactorError $ EvalError WrongNumberOfArguments)
 
     it "user-defined function multi-param" do
         runCode "(list (def f (lambda (a b) (list a b))) (f 1 2))"
@@ -76,11 +76,11 @@ spec = describe "Reactor.Eval (System Integration)" do
 
     it "\\ alias works like lambda (too few args)" do
         runCode "(list (def id (\\ (x) x)) (id))"
-            `shouldReturn` Left (ReactorError WrongNumberOfArguments)
+            `shouldReturn` Left (ReactorError $ EvalError WrongNumberOfArguments)
 
     it "\\ alias works like lambda (too many args)" do
         runCode "(list (def id (\\ (x) x)) (id 1 2))"
-            `shouldReturn` Left (ReactorError WrongNumberOfArguments)
+            `shouldReturn` Left (ReactorError $ EvalError WrongNumberOfArguments)
 
     it "\\ alias works like lambda (multi-param)" do
         runCode "(list (def f (\\ (a b) (list a b))) (f 1 2))"

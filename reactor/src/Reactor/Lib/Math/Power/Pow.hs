@@ -2,8 +2,9 @@ module Reactor.Lib.Math.Power.Pow where
 
 import Data.Scientific (fromFloatDigits, toRealFloat)
 import Reactor.Eval (Eval, evalRequired, throwError)
-import Reactor.Eval.Error (EvalError (..))
+import Reactor.Eval.Error (Error, GeneralError (..))
 import Reactor.IR (IR (..))
+import Reactor.Lib.Math.Error (MathError (..))
 
 pow :: [IR Eval] -> Eval (IR Eval)
 pow [arg1, arg2] = do

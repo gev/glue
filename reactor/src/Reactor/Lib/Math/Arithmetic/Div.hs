@@ -1,11 +1,12 @@
 module Reactor.Lib.Math.Arithmetic.Div where
 
 import Reactor.Eval (Eval, evalRequired, throwError)
-import Reactor.Eval.Error (EvalError (..))
+import Reactor.Eval.Error (Error)
 import Reactor.IR (IR (..))
+import Reactor.Lib.Math.Error (MathError (..))
 
 div :: [IR Eval] -> Eval (IR Eval)
-div [] = throwError DivExpectedAtLeastOneArgument
+div [] = throwError DivExpectedAtLeastOneArg
 div [arg] = do
     va <- evalRequired arg
     case va of
@@ -17,7 +18,7 @@ div [arg] = do
 div args = do
     values <- mapM evalRequired args
     case values of
-        [] -> throwError DivExpectedAtLeastOneArgument
+        [] -> throwError DivExpectedAtLeastOneArg
         (Number first : rest) -> do
             let nums = first : [n | Number n <- rest]
             if length nums /= length values

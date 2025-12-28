@@ -2,8 +2,9 @@ module Reactor.Lib.Builtin.Lambda where
 
 import Data.Text (Text)
 import Reactor.Eval (Eval, getEnv, throwError)
-import Reactor.Eval.Error (EvalError (..))
+import Reactor.Eval.Error (Error, EvalError, GeneralError (..))
 import Reactor.IR (Env, IR (..))
+import Reactor.Lib.Builtin.Error (BuiltinError (..))
 
 lambda :: [IR Eval] -> Eval (Maybe (IR Eval))
 lambda [argsNode, body] = do
@@ -20,7 +21,7 @@ lambda _ = throwError LambdaExpectedArgumentsAndBody
 makeClosure :: [Text] -> IR m -> Env m -> IR m
 makeClosure = Closure
 
-extractSymbols :: [IR m] -> Either EvalError [Text]
+extractSymbols :: [IR m] -> Either GeneralError [Text]
 extractSymbols = mapM \case
     Symbol s -> Right s
     _ -> Left ExpectedListOfSymbols

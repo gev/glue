@@ -2,8 +2,9 @@ module Reactor.Lib.Math.Utility.Ceil where
 
 import Data.Scientific (toRealFloat)
 import Reactor.Eval (Eval, evalRequired, throwError)
-import Reactor.Eval.Error (EvalError (..))
+import Reactor.Eval.Error (GeneralError (..))
 import Reactor.IR (IR (..))
+import Reactor.Lib.Math.Error (MathError (..))
 
 ceil :: [IR Eval] -> Eval (IR Eval)
 ceil [arg] = do

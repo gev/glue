@@ -6,8 +6,9 @@ import Data.Map.Strict qualified as Map
 import Data.Maybe (catMaybes, fromMaybe)
 import Data.Text (Text)
 import Data.Text qualified as T
+import Data.Typeable (Typeable)
 import Reactor.Env qualified as E
-import Reactor.Eval.Error (EvalError (..))
+import Reactor.Eval.Error (Error, EvalError (EvalError), GeneralError (..))
 import Reactor.IR qualified as IR
 
 type IR = IR.IR Eval
@@ -37,8 +38,8 @@ getEnv = Eval $ \env -> pure $ Right (env, env)
 putEnv :: Env -> Eval ()
 putEnv newEnv = Eval $ \_ -> pure $ Right ((), newEnv)
 
-throwError :: EvalError -> Eval a
-throwError err = Eval $ \_ -> pure $ Left err
+throwError :: (Error e, Show e, Eq e, Typeable e) => e -> Eval a
+throwError err = Eval $ \_ -> pure $ Left (EvalError err)
 
 liftIO :: IO a -> Eval a
 liftIO action = Eval $ \env -> do

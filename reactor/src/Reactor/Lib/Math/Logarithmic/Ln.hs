@@ -2,8 +2,9 @@ module Reactor.Lib.Math.Logarithmic.Ln where
 
 import Data.Scientific (fromFloatDigits, toRealFloat)
 import Reactor.Eval (Eval, evalRequired, throwError)
-import Reactor.Eval.Error (EvalError (..))
+import Reactor.Eval.Error (Error, GeneralError (..))
 import Reactor.IR (IR (..))
+import Reactor.Lib.Math.Error (MathError (..))
 
 ln :: [IR Eval] -> Eval (IR Eval)
 ln [arg] = do

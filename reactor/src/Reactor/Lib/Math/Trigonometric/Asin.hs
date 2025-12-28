@@ -2,8 +2,9 @@ module Reactor.Lib.Math.Trigonometric.Asin where
 
 import Data.Scientific (fromFloatDigits, toRealFloat)
 import Reactor.Eval (Eval, evalRequired, throwError)
-import Reactor.Eval.Error (EvalError (..))
+import Reactor.Eval.Error (GeneralError (..))
 import Reactor.IR (IR (..))
+import Reactor.Lib.Math.Error (MathError (..))
 
 asin :: [IR Eval] -> Eval (IR Eval)
 asin [arg] = do

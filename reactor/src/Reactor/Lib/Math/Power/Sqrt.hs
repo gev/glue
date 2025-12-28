@@ -2,8 +2,9 @@ module Reactor.Lib.Math.Power.Sqrt where
 
 import Data.Scientific (fromFloatDigits, toRealFloat)
 import Reactor.Eval (Eval, evalRequired, throwError)
-import Reactor.Eval.Error (EvalError (..))
+import Reactor.Eval.Error (Error, GeneralError (..))
 import Reactor.IR (IR (..))
+import Reactor.Lib.Math.Error (MathError (..))
 
 sqrt :: [IR Eval] -> Eval (IR Eval)
 sqrt [arg] = do

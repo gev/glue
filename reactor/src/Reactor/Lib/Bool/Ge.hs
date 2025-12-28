@@ -1,8 +1,9 @@
 module Reactor.Lib.Bool.Ge where
 
 import Reactor.Eval (Eval, evalRequired, throwError)
-import Reactor.Eval.Error (EvalError (..))
+import Reactor.Eval.Error (Error)
 import Reactor.IR (IR (..))
+import Reactor.Lib.Bool.Error (BoolError (..))
 
 ge :: [IR Eval] -> Eval (IR Eval)
 ge [a, b] = do
@@ -11,4 +12,4 @@ ge [a, b] = do
     case (va, vb) of
         (Number na, Number nb) -> pure $ if na >= nb then Symbol "true" else Symbol "false"
         _ -> throwError GeExpectedNumbers
-ge _ = throwError GeExpectedTwoArguments
+ge _ = throwError GeExpectedTwoArgs

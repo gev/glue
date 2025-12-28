@@ -23,6 +23,7 @@ library
     Reactor.Lib
     Reactor.Lib.Bool
     Reactor.Lib.Bool.Eq
+    Reactor.Lib.Bool.Error
     Reactor.Lib.Bool.Ge
     Reactor.Lib.Bool.Gt
     Reactor.Lib.Bool.If
@@ -35,6 +36,7 @@ library
     Reactor.Lib.Bool.While
     Reactor.Lib.Builtin
     Reactor.Lib.Builtin.Def
+    Reactor.Lib.Builtin.Error
     Reactor.Lib.Builtin.Lambda
     Reactor.Lib.Builtin.List
     Reactor.Lib.Builtin.Quote
@@ -47,6 +49,7 @@ library
     Reactor.Lib.Math.Arithmetic.Mul
     Reactor.Lib.Math.Arithmetic.Sub
     Reactor.Lib.Math.Const
+    Reactor.Lib.Math.Error
     Reactor.Lib.Math.Logarithmic
     Reactor.Lib.Math.Logarithmic.Lg
     Reactor.Lib.Math.Logarithmic.Ln

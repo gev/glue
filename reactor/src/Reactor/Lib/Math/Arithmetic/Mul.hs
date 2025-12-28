@@ -1,15 +1,16 @@
 module Reactor.Lib.Math.Arithmetic.Mul where
 
 import Reactor.Eval (Eval, evalRequired, throwError)
-import Reactor.Eval.Error (EvalError (..))
+import Reactor.Eval.Error (Error)
 import Reactor.IR (IR (..))
+import Reactor.Lib.Math.Error (MathError (..))
 
 mul :: [IR Eval] -> Eval (IR Eval)
-mul [] = throwError MulExpectedAtLeastOneArgument
+mul [] = throwError MulExpectedAtLeastOneArg
 mul args = do
     values <- mapM evalRequired args
     case values of
-        [] -> throwError MulExpectedAtLeastOneArgument
+        [] -> throwError MulExpectedAtLeastOneArg
         (Number first : rest) -> do
             let nums = first : [n | Number n <- rest]
             if length nums /= length values
