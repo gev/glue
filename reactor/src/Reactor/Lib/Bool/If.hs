@@ -1,8 +1,8 @@
 module Reactor.Lib.Bool.If where
 
 import Reactor.Eval (Eval, eval, evalRequired, throwError)
+import Reactor.Eval.Error (GeneralError (..))
 import Reactor.IR (IR (..))
-import Reactor.Lib.Bool.Error (BoolError (..))
 
 if_ :: [IR Eval] -> Eval (Maybe (IR Eval))
 if_ [cond, thenExpr, elseExpr] = do
@@ -10,4 +10,4 @@ if_ [cond, thenExpr, elseExpr] = do
     case condVal of
         Symbol "false" -> eval elseExpr
         _ -> eval thenExpr
-if_ _ = throwError IfExpectedThreeArgs
+if_ _ = throwError $ WrongArgumentType "if" ["condition", "then", "else"]

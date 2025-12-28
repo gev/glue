@@ -1,8 +1,8 @@
 module Reactor.Lib.Bool.When where
 
 import Reactor.Eval (Eval, eval, evalRequired, throwError)
+import Reactor.Eval.Error (GeneralError (..))
 import Reactor.IR (IR (..))
-import Reactor.Lib.Bool.Error (BoolError (..))
 
 when_ :: [IR Eval] -> Eval (Maybe (IR Eval))
 when_ (cond : body) = do
@@ -14,4 +14,4 @@ when_ (cond : body) = do
             _ -> do
                 results <- mapM eval body
                 pure $ last results
-when_ _ = throwError WhenExpectedAtLeastOneArg
+when_ _ = throwError $ WrongArgumentType "when" ["condition", "body"]

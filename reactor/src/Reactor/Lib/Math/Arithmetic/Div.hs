@@ -6,7 +6,7 @@ import Reactor.Eval (Eval, evalRequired, throwError)
 import Reactor.IR (IR (..))
 
 div :: [IR Eval] -> Eval (IR Eval)
-div [] = throwError WrongNumberOfArguments
+div [] = throwError $ WrongArgumentType "/" ["number"]
 div [arg] = do
     va <- evalRequired arg
     case va of

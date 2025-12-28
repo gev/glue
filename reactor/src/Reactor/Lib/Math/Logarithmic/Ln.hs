@@ -15,4 +15,4 @@ ln [arg] = do
                 then throwError $ WrongArgumentType "ln" ["positive number"]
                 else pure $ Number (fromFloatDigits (Prelude.log realVal))
         _ -> throwError $ WrongArgumentType "ln" ["number"]
-ln _ = throwError WrongNumberOfArguments
+ln _ = throwError $ WrongArgumentType "ln" ["number"]

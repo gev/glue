@@ -6,7 +6,7 @@ import Reactor.Eval (Eval, evalRequired, throwError)
 import Reactor.IR (IR (..))
 
 sub :: [IR Eval] -> Eval (IR Eval)
-sub [] = throwError WrongNumberOfArguments
+sub [] = throwError $ WrongArgumentType "-" ["number"]
 sub [arg] = do
     va <- evalRequired arg
     case va of
@@ -15,7 +15,7 @@ sub [arg] = do
 sub args = do
     values <- mapM evalRequired args
     case values of
-        [] -> throwError WrongNumberOfArguments
+        [] -> throwError $ WrongArgumentType "-" ["number"]
         (Number first : rest) -> do
             let nums = first : [n | Number n <- rest]
             if length nums /= length values

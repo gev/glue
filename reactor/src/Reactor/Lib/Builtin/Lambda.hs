@@ -4,19 +4,18 @@ import Data.Text (Text)
 import Reactor.Eval (Eval, getEnv, throwError)
 import Reactor.Eval.Error (GeneralError (..))
 import Reactor.IR (Env, IR (..))
-import Reactor.Lib.Builtin.Error (BuiltinError (..))
 
 lambda :: [IR Eval] -> Eval (Maybe (IR Eval))
 lambda [argsNode, body] = do
     rawArgs <- case argsNode of
         List xs -> pure xs
-        _ -> throwError LambdaExpectedArgumentsList
+        _ -> throwError $ WrongArgumentType "lambda" ["arguments list", "body"]
     params <- case extractSymbols rawArgs of
         Right ps -> pure ps
-        Left err -> throwError err
+        Left _ -> throwError $ WrongArgumentType "lambda" ["symbols in arguments", "body"]
     capturedEnv <- getEnv
     pure . Just $ makeClosure params body capturedEnv
-lambda _ = throwError LambdaExpectedArgumentsAndBody
+lambda _ = throwError $ WrongArgumentType "lambda" ["arguments", "body"]
 
 makeClosure :: [Text] -> IR m -> Env m -> IR m
 makeClosure = Closure

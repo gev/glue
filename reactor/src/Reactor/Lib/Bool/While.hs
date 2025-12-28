@@ -1,8 +1,8 @@
 module Reactor.Lib.Bool.While where
 
 import Reactor.Eval (Eval, eval, evalRequired, throwError)
+import Reactor.Eval.Error (GeneralError (..))
 import Reactor.IR (IR (..))
-import Reactor.Lib.Bool.Error (BoolError (..))
 
 while_ :: [IR Eval] -> Eval (Maybe (IR Eval))
 while_ (cond : body) = loop
@@ -16,4 +16,4 @@ while_ (cond : body) = loop
         _ -> do
           _ <- mapM eval body
           loop
-while_ _ = throwError WhileExpectedAtLeastOneArg
+while_ _ = throwError $ WrongArgumentType "while" ["condition", "body"]

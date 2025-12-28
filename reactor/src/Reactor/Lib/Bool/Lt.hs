@@ -1,8 +1,8 @@
 module Reactor.Lib.Bool.Lt where
 
 import Reactor.Eval (Eval, evalRequired, throwError)
+import Reactor.Eval.Error (GeneralError (..))
 import Reactor.IR (IR (..))
-import Reactor.Lib.Bool.Error (BoolError (..))
 
 lt :: [IR Eval] -> Eval (IR Eval)
 lt [a, b] = do
@@ -10,5 +10,5 @@ lt [a, b] = do
     vb <- evalRequired b
     case (va, vb) of
         (Number na, Number nb) -> pure $ if na < nb then Symbol "true" else Symbol "false"
-        _ -> throwError LtExpectedNumbers
-lt _ = throwError LtExpectedTwoArgs
+        _ -> throwError $ WrongArgumentType "lt" ["number", "number"]
+lt _ = throwError $ WrongArgumentType "lt" ["number", "number"]

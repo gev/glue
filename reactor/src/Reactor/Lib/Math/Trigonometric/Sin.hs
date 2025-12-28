@@ -11,4 +11,4 @@ sin [arg] = do
     case va of
         Number n -> pure $ Number (fromFloatDigits @Double (Prelude.sin (toRealFloat n)))
         _ -> throwError $ WrongArgumentType "sin" ["number"]
-sin _ = throwError WrongNumberOfArguments
+sin _ = throwError $ WrongArgumentType "sin" ["number"]

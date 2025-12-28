@@ -6,7 +6,6 @@ import Reactor.Env (lookupVar)
 import Reactor.Eval (Eval, evalRequired, getEnv, throwError, updateVarEval)
 import Reactor.Eval.Error (GeneralError (..))
 import Reactor.IR (IR (..))
-import Reactor.Lib.Builtin.Error (BuiltinError (..))
 
 set :: [IR Eval] -> Eval (Maybe (IR Eval))
 set [Symbol name, rawVal] = do
@@ -25,4 +24,4 @@ set [PropAccess (Symbol objName) prop, rawVal] = do
                 pure Nothing
             _ -> throwError $ NotAnObject (T.pack $ show currentObj)
         Left err -> throwError err
-set _ = throwError SetExpectedSymbolAndValue
+set _ = throwError $ WrongArgumentType "set" ["target", "value"]
