@@ -7,6 +7,7 @@ import Reactor.Lib.List.Append (append)
 import Reactor.Lib.List.Car (car)
 import Reactor.Lib.List.Cdr (cdr)
 import Reactor.Lib.List.Cons (cons)
+import Reactor.Lib.List.Last qualified as Last
 import Reactor.Lib.List.Length qualified as Length
 import Reactor.Lib.List.Member (member)
 import Reactor.Lib.List.Nth (nth)
@@ -20,6 +21,7 @@ list =
         , ("car", Native (Func car))
         , ("cdr", Native (Func cdr))
         , ("cons", Native (Func cons))
+        , ("last", Native (Func Last.last))
         , ("length", Native (Func Length.length))
         , ("member", Native (Func member))
         , ("nth", Native (Func nth))
