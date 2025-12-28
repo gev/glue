@@ -17,7 +17,7 @@ spec = describe "Reactor.Lib.Builtin.Set (Test set special form)" do
             result <- runEval (set args) initialEnv
             case result of
                 Left err -> expectationFailure $ "Set failed: " <> show err
-                Right (res, finalEnv) -> do
+                Right (res, finalEnv, _) -> do
                     res `shouldBe` Nothing
                     E.lookupVar "x" finalEnv `shouldBe` Right (Number 20)
 
@@ -35,7 +35,7 @@ spec = describe "Reactor.Lib.Builtin.Set (Test set special form)" do
             result <- runEval (set args) initialEnv
             case result of
                 Left err -> expectationFailure $ "Set failed: " <> show err
-                Right (res, finalEnv) -> do
+                Right (res, finalEnv, _) -> do
                     res `shouldBe` Nothing
                     case E.lookupVar "obj" finalEnv of
                         Right (Object newMap) -> do

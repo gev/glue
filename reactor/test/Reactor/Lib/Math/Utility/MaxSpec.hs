@@ -16,28 +16,28 @@ spec = describe "Reactor.Lib.Math.Utility.Max (Test max function)" do
             result <- runEval (Max.max args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Max failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 5
+                Right (res, _, _) -> res `shouldBe` Number 5
 
         it "returns 3 for max(3, 3)" do
             let args = [Number 3, Number 3]
             result <- runEval (Max.max args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Max failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 3
+                Right (res, _, _) -> res `shouldBe` Number 3
 
         it "returns -2 for max(-5, -2)" do
             let args = [Number (-5), Number (-2)]
             result <- runEval (Max.max args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Max failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number (-2)
+                Right (res, _, _) -> res `shouldBe` Number (-2)
 
         it "returns 10 for max(1, 10)" do
             let args = [Number 1, Number 10]
             result <- runEval (Max.max args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Max failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 10
+                Right (res, _, _) -> res `shouldBe` Number 10
 
         it "fails with non-numbers (first arg)" do
             let args = [String "hello", Number 2]

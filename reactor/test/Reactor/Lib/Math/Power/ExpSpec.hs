@@ -17,14 +17,14 @@ spec = describe "Reactor.Lib.Math.Power.Exp (Test exp function)" do
             result <- runEval (Exp.exp args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Exp failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 1
+                Right (res, _, _) -> res `shouldBe` Number 1
 
         it "returns e^1 = e" do
             let args = [Number 1]
             result <- runEval (Exp.exp args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Exp failed: " <> show err
-                Right (res, _) -> case res of
+                Right (res, _, _) -> case res of
                     Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x - exp 1) < 1e-10)
                     _ -> expectationFailure "Expected a number"
 
@@ -33,7 +33,7 @@ spec = describe "Reactor.Lib.Math.Power.Exp (Test exp function)" do
             result <- runEval (Exp.exp args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Exp failed: " <> show err
-                Right (res, _) -> case res of
+                Right (res, _, _) -> case res of
                     Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x - exp 2) < 1e-10)
                     _ -> expectationFailure "Expected a number"
 

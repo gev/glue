@@ -16,21 +16,21 @@ spec = describe "Reactor.Lib.Bool.Le (Test le function)" do
             result <- runEval (le args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Le failed: " <> show err
-                Right (res, _) -> res `shouldBe` Symbol "true"
+                Right (res, _, _) -> res `shouldBe` Symbol "true"
 
         it "returns true for lesser number" do
             let args = [Number 5, Number 10]
             result <- runEval (le args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Le failed: " <> show err
-                Right (res, _) -> res `shouldBe` Symbol "true"
+                Right (res, _, _) -> res `shouldBe` Symbol "true"
 
         it "returns false for greater number" do
             let args = [Number 10, Number 5]
             result <- runEval (le args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Le failed: " <> show err
-                Right (res, _) -> res `shouldBe` Symbol "false"
+                Right (res, _, _) -> res `shouldBe` Symbol "false"
 
         it "fails with non-numbers" do
             let args = [String "hello", String "world"]
@@ -50,5 +50,5 @@ spec = describe "Reactor.Lib.Bool.Le (Test le function)" do
             result2 <- runEval (le args2) (E.fromFrame lib)
             result3 <- runEval (le args3) (E.fromFrame lib)
             case (result1, result2, result3) of
-                (Right (Symbol "true", _), Right (Symbol "true", _), Right (Symbol "false", _)) -> pure ()
+                (Right (Symbol "true", _, _), Right (Symbol "true", _, _), Right (Symbol "false", _, _)) -> pure ()
                 _ -> expectationFailure "<= alias should work like le"

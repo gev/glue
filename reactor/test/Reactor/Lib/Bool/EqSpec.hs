@@ -15,28 +15,28 @@ spec = describe "Reactor.Lib.Bool.Eq (Test eq function)" do
             result <- runEval (eq args) []
             case result of
                 Left err -> expectationFailure $ "Eq failed: " <> show err
-                Right (res, _) -> res `shouldBe` Symbol "true"
+                Right (res, _, _) -> res `shouldBe` Symbol "true"
 
         it "returns false for unequal numbers" do
             let args = [Number 42, Number 43]
             result <- runEval (eq args) []
             case result of
                 Left err -> expectationFailure $ "Eq failed: " <> show err
-                Right (res, _) -> res `shouldBe` Symbol "false"
+                Right (res, _, _) -> res `shouldBe` Symbol "false"
 
         it "returns true for equal strings" do
             let args = [String "hello", String "hello"]
             result <- runEval (eq args) []
             case result of
                 Left err -> expectationFailure $ "Eq failed: " <> show err
-                Right (res, _) -> res `shouldBe` Symbol "true"
+                Right (res, _, _) -> res `shouldBe` Symbol "true"
 
         it "returns false for unequal strings" do
             let args = [String "hello", String "world"]
             result <- runEval (eq args) []
             case result of
                 Left err -> expectationFailure $ "Eq failed: " <> show err
-                Right (res, _) -> res `shouldBe` Symbol "false"
+                Right (res, _, _) -> res `shouldBe` Symbol "false"
 
         it "fails with wrong number of arguments" do
             let args = [Number 42]

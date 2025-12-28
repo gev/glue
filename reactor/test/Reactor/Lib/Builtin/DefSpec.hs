@@ -16,7 +16,7 @@ spec = describe "Reactor.Lib.Builtin.Def (Test def special form)" do
             result <- runEval (def args) initialEnv
             case result of
                 Left err -> expectationFailure $ "Def failed: " <> show err
-                Right (res, finalEnv) -> do
+                Right (res, finalEnv, _) -> do
                     res `shouldBe` Nothing
                     E.lookupLocal "x" finalEnv `shouldBe` Just (Number 42)
 

@@ -17,28 +17,28 @@ spec = describe "Reactor.Lib.Arithmetic.Sub (Test sub function)" do
             result <- runEval (Sub.sub args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Sub failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number (-5)
+                Right (res, _, _) -> res `shouldBe` Number (-5)
 
         it "returns -3 for (- 1 4)" do
             let args = [Number 1, Number 4]
             result <- runEval (Sub.sub args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Sub failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number (-3)
+                Right (res, _, _) -> res `shouldBe` Number (-3)
 
         it "returns 2 for (- 10 4 4)" do
             let args = [Number 10, Number 4, Number 4]
             result <- runEval (Sub.sub args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Sub failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 2
+                Right (res, _, _) -> res `shouldBe` Number 2
 
         it "returns 2.5 for (- 5.5 3)" do
             let args = [Number (fromFloatDigits @Double 5.5), Number 3]
             result <- runEval (Sub.sub args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Sub failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number (fromFloatDigits @Double 2.5)
+                Right (res, _, _) -> res `shouldBe` Number (fromFloatDigits @Double 2.5)
 
         it "fails with no arguments" do
             let args = []

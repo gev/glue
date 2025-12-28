@@ -16,21 +16,21 @@ spec = describe "Reactor.Lib.Math.Power.Sqrt (Test sqrt function)" do
             result <- runEval (Sqrt.sqrt args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Sqrt failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 2
+                Right (res, _, _) -> res `shouldBe` Number 2
 
         it "returns 3 for sqrt(9)" do
             let args = [Number 9]
             result <- runEval (Sqrt.sqrt args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Sqrt failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 3
+                Right (res, _, _) -> res `shouldBe` Number 3
 
         it "returns 0 for sqrt(0)" do
             let args = [Number 0]
             result <- runEval (Sqrt.sqrt args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Sqrt failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 0
+                Right (res, _, _) -> res `shouldBe` Number 0
 
         it "fails with negative numbers" do
             let args = [Number (-4)]

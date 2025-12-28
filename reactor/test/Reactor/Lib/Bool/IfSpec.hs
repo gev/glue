@@ -16,14 +16,14 @@ spec = describe "Reactor.Lib.Bool.If (Test if special form)" do
             result <- runEval (if_ args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "If failed: " <> show err
-                Right (res, _) -> res `shouldBe` Just (Number 42)
+                Right (res, _, _) -> res `shouldBe` Just (Number 42)
 
         it "executes else branch when condition is false" do
             let args = [Symbol "false", Number 42, Number 0]
             result <- runEval (if_ args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "If failed: " <> show err
-                Right (res, _) -> res `shouldBe` Just (Number 0)
+                Right (res, _, _) -> res `shouldBe` Just (Number 0)
 
         it "fails with wrong number of arguments" do
             let args = [Symbol "true", Number 42]

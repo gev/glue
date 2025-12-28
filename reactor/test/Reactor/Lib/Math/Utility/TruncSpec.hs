@@ -17,28 +17,28 @@ spec = describe "Reactor.Lib.Math.Utility.Trunc (Test trunc function)" do
             result <- runEval (Trunc.trunc args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Trunc failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 3
+                Right (res, _, _) -> res `shouldBe` Number 3
 
         it "returns 2 for trunc(2.1)" do
             let args = [Number (fromFloatDigits @Double 2.1)]
             result <- runEval (Trunc.trunc args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Trunc failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 2
+                Right (res, _, _) -> res `shouldBe` Number 2
 
         it "returns -3 for trunc(-3.7)" do
             let args = [Number (fromFloatDigits @Double (-3.7))]
             result <- runEval (Trunc.trunc args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Trunc failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number (-3)
+                Right (res, _, _) -> res `shouldBe` Number (-3)
 
         it "returns 5 for trunc(5.0)" do
             let args = [Number 5]
             result <- runEval (Trunc.trunc args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Trunc failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 5
+                Right (res, _, _) -> res `shouldBe` Number 5
 
         it "fails with non-numbers" do
             let args = [String "hello"]

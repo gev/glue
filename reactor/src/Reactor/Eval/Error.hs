@@ -2,6 +2,7 @@ module Reactor.Eval.Error (
     Error (..),
     EvalError (..),
     GeneralError (..),
+    Context,
     prettyShow,
 ) where
 
@@ -9,18 +10,24 @@ import Data.Text (Text)
 import Data.Text qualified as T
 import Data.Typeable (Typeable, cast)
 
+type Context = [Text]
+
 class Error e where
     pretty :: e -> Text
 
-data EvalError = forall e. (Error e, Show e, Eq e, Typeable e) => EvalError e
+data EvalError
+    = forall e.
+        (Error e, Show e, Eq e, Typeable e) =>
+      EvalError Context e
 
 instance Show EvalError where
-    show (EvalError e) = show e
+    show (EvalError ctx e) = show ctx ++ ": " ++ show e
 
 instance Eq EvalError where
-    EvalError a == EvalError b = case cast a of
-        Just a' -> a' == b
-        Nothing -> False
+    EvalError ctxA a == EvalError ctxB b =
+        ctxA == ctxB && case cast a of
+            Just a' -> a' == b
+            Nothing -> False
 
 data GeneralError
     = UnboundVariable Text
@@ -49,4 +56,7 @@ instance Error GeneralError where
         NotAnObject obj -> "Not an object: " <> obj
 
 prettyShow :: EvalError -> Text
-prettyShow (EvalError e) = pretty e
+prettyShow (EvalError ctx e) =
+    if null ctx
+        then pretty e
+        else T.intercalate " -> " (reverse ctx) <> ": " <> pretty e

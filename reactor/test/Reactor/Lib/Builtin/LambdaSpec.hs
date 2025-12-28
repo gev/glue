@@ -16,7 +16,7 @@ spec = describe "Reactor.Lib.Builtin.Lambda (Test lambda special form)" do
             result <- runEval (lambda args) initialEnv
             case result of
                 Left err -> expectationFailure $ "Lambda failed: " <> show err
-                Right (res, _) -> case res of
+                Right (res, _, _) -> case res of
                     Just (Closure params body capturedEnv) -> do
                         params `shouldBe` ["a", "b"]
                         body `shouldBe` Symbol "body"
@@ -30,7 +30,7 @@ spec = describe "Reactor.Lib.Builtin.Lambda (Test lambda special form)" do
             result <- runEval (lambda args) initialEnv
             case result of
                 Left err -> expectationFailure $ "Lambda failed: " <> show err
-                Right (res, _) -> case res of
+                Right (res, _, _) -> case res of
                     Just (Closure params body _) -> do
                         params `shouldBe` []
                         body `shouldBe` Number 42

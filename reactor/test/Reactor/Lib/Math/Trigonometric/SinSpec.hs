@@ -17,14 +17,14 @@ spec = describe "Reactor.Lib.Math.Trigonometric.Sin (Test sin function)" do
             result <- runEval (Sin.sin args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Sin failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 0
+                Right (res, _, _) -> res `shouldBe` Number 0
 
         it "returns 1 for sin(π/2)" do
             let args = [Number (fromFloatDigits @Double (pi / 2))]
             result <- runEval (Sin.sin args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Sin failed: " <> show err
-                Right (res, _) -> case res of
+                Right (res, _, _) -> case res of
                     Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x - 1) < 1e-10)
                     _ -> expectationFailure "Expected Number"
 
@@ -33,7 +33,7 @@ spec = describe "Reactor.Lib.Math.Trigonometric.Sin (Test sin function)" do
             result <- runEval (Sin.sin args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Sin failed: " <> show err
-                Right (res, _) -> case res of
+                Right (res, _, _) -> case res of
                     Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x) < 1e-10)
                     _ -> expectationFailure "Expected Number"
 

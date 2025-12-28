@@ -15,7 +15,7 @@ spec = describe "Reactor.Lib.Builtin.List (Test list function)" do
             result <- runEval (list args) initialEnv
             case result of
                 Left err -> expectationFailure $ "List failed: " <> show err
-                Right (res, _) -> res `shouldBe` List [Number 1, Number 2, Number 3]
+                Right (res, _, _) -> res `shouldBe` List [Number 1, Number 2, Number 3]
 
         it "creates an empty list" do
             let initialEnv = E.emptyEnv
@@ -23,7 +23,7 @@ spec = describe "Reactor.Lib.Builtin.List (Test list function)" do
             result <- runEval (list args) initialEnv
             case result of
                 Left err -> expectationFailure $ "List failed: " <> show err
-                Right (res, _) -> res `shouldBe` List []
+                Right (res, _, _) -> res `shouldBe` List []
 
         it "creates a list with mixed types" do
             let initialEnv = E.emptyEnv
@@ -31,4 +31,4 @@ spec = describe "Reactor.Lib.Builtin.List (Test list function)" do
             result <- runEval (list args) initialEnv
             case result of
                 Left err -> expectationFailure $ "List failed: " <> show err
-                Right (res, _) -> res `shouldBe` List [Number 42, String "hello", Symbol "x"]
+                Right (res, _, _) -> res `shouldBe` List [Number 42, String "hello", Symbol "x"]

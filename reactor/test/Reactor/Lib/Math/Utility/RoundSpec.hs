@@ -17,28 +17,28 @@ spec = describe "Reactor.Lib.Math.Utility.Round (Test round function)" do
             result <- runEval (Round.round args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Round failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 4
+                Right (res, _, _) -> res `shouldBe` Number 4
 
         it "returns 2 for round(2.4)" do
             let args = [Number (fromFloatDigits @Double 2.4)]
             result <- runEval (Round.round args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Round failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 2
+                Right (res, _, _) -> res `shouldBe` Number 2
 
         it "returns -3 for round(-3.5)" do
             let args = [Number (fromFloatDigits @Double (-3.5))]
             result <- runEval (Round.round args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Round failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number (-4)
+                Right (res, _, _) -> res `shouldBe` Number (-4)
 
         it "returns 5 for round(5.0)" do
             let args = [Number 5]
             result <- runEval (Round.round args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Round failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 5
+                Right (res, _, _) -> res `shouldBe` Number 5
 
         it "fails with non-numbers" do
             let args = [String "hello"]

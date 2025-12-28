@@ -16,21 +16,21 @@ spec = describe "Reactor.Lib.Math.Utility.Abs (Test abs function)" do
             result <- runEval (Abs.abs args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Abs failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 5
+                Right (res, _, _) -> res `shouldBe` Number 5
 
         it "returns 5 for abs(-5)" do
             let args = [Number (-5)]
             result <- runEval (Abs.abs args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Abs failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 5
+                Right (res, _, _) -> res `shouldBe` Number 5
 
         it "returns 0 for abs(0)" do
             let args = [Number 0]
             result <- runEval (Abs.abs args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Abs failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 0
+                Right (res, _, _) -> res `shouldBe` Number 0
 
         it "fails with non-numbers" do
             let args = [String "hello"]

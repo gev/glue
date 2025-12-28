@@ -17,7 +17,7 @@ spec = describe "Reactor.Lib.Math.Trigonometric.Acos (Test acos function)" do
             result <- runEval (Acos.acos args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Acos failed: " <> show err
-                Right (res, _) -> case res of
+                Right (res, _, _) -> case res of
                     Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x - pi) < 1e-10)
                     _ -> expectationFailure "Expected Number"
 
@@ -26,7 +26,7 @@ spec = describe "Reactor.Lib.Math.Trigonometric.Acos (Test acos function)" do
             result <- runEval (Acos.acos args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Acos failed: " <> show err
-                Right (res, _) -> case res of
+                Right (res, _, _) -> case res of
                     Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x - pi / 2) < 1e-10)
                     _ -> expectationFailure "Expected Number"
 
@@ -35,7 +35,7 @@ spec = describe "Reactor.Lib.Math.Trigonometric.Acos (Test acos function)" do
             result <- runEval (Acos.acos args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Acos failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 0
+                Right (res, _, _) -> res `shouldBe` Number 0
 
         it "fails with non-numbers" do
             let args = [String "hello"]

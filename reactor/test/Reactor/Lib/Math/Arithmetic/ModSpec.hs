@@ -16,21 +16,21 @@ spec = describe "Reactor.Lib.Arithmetic.Mod (Test mod function)" do
             result <- runEval (Mod.mod args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Mod failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 1
+                Right (res, _, _) -> res `shouldBe` Number 1
 
         it "returns 0 for (% 6 3)" do
             let args = [Number 6, Number 3]
             result <- runEval (Mod.mod args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Mod failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 0
+                Right (res, _, _) -> res `shouldBe` Number 0
 
         it "returns 2 for (% 17 5)" do
             let args = [Number 17, Number 5]
             result <- runEval (Mod.mod args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Mod failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 2
+                Right (res, _, _) -> res `shouldBe` Number 2
 
         it "fails with wrong number of arguments" do
             let args = [Number 7]

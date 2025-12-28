@@ -17,28 +17,28 @@ spec = describe "Reactor.Lib.Arithmetic.Div (Test div function)" do
             result <- runEval (Div.div args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Div failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number (fromFloatDigits @Double 0.5)
+                Right (res, _, _) -> res `shouldBe` Number (fromFloatDigits @Double 0.5)
 
         it "returns 2 for (/ 10 5)" do
             let args = [Number 10, Number 5]
             result <- runEval (Div.div args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Div failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 2
+                Right (res, _, _) -> res `shouldBe` Number 2
 
         it "returns 2.5 for (/ 10 2 2)" do
             let args = [Number 10, Number 2, Number 2]
             result <- runEval (Div.div args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Div failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number (fromFloatDigits @Double 2.5)
+                Right (res, _, _) -> res `shouldBe` Number (fromFloatDigits @Double 2.5)
 
         it "returns 2.5 for (/ 10 4)" do
             let args = [Number 10, Number 4]
             result <- runEval (Div.div args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Div failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number (fromFloatDigits @Double 2.5)
+                Right (res, _, _) -> res `shouldBe` Number (fromFloatDigits @Double 2.5)
 
         it "fails with no arguments" do
             let args = []

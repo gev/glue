@@ -17,14 +17,14 @@ spec = describe "Reactor.Lib.Math.Logarithmic.Ln (Test ln function)" do
             result <- runEval (Ln.ln args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Ln failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 0
+                Right (res, _, _) -> res `shouldBe` Number 0
 
         it "returns ln(e) = 1" do
             let args = [Number (fromFloatDigits @Double (exp 1))]
             result <- runEval (Ln.ln args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Ln failed: " <> show err
-                Right (res, _) -> case res of
+                Right (res, _, _) -> case res of
                     Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x - 1) < 1e-10)
                     _ -> expectationFailure "Expected a number"
 
@@ -33,7 +33,7 @@ spec = describe "Reactor.Lib.Math.Logarithmic.Ln (Test ln function)" do
             result <- runEval (Ln.ln args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Ln failed: " <> show err
-                Right (res, _) -> case res of
+                Right (res, _, _) -> case res of
                     Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x - 2) < 1e-10)
                     _ -> expectationFailure "Expected a number"
 

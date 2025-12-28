@@ -16,7 +16,7 @@ spec = describe "Reactor.Lib.Bool.Until (Test until special form)" do
             result <- runEval (until_ args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Until failed: " <> show err
-                Right (res, _) -> res `shouldBe` Nothing
+                Right (res, _, _) -> res `shouldBe` Nothing
 
         it "executes body and modifies environment flag" do
             -- Set up environment with flag = false
@@ -26,7 +26,7 @@ spec = describe "Reactor.Lib.Bool.Until (Test until special form)" do
             result <- runEval (until_ args) initialEnv
             case result of
                 Left err -> expectationFailure $ "Until failed: " <> show err
-                Right (res, finalEnv) -> do
+                Right (res, finalEnv, _) -> do
                     res `shouldBe` Nothing
                     -- Check that flag was changed to true
                     E.lookupLocal "flag" finalEnv `shouldBe` Just (Symbol "true")

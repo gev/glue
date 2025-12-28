@@ -26,7 +26,7 @@ spec = describe "Reactor.Lib.Builtin.Quote (Test quotes)" do
             result <- runEval (quote args) initialEnv
             case result of
                 Left err -> expectationFailure $ "Quote failed: " <> show err
-                Right (res, _) -> res `shouldBe` Just (Number 42)
+                Right (res, _, _) -> res `shouldBe` Just (Number 42)
 
         it "fails with wrong number of arguments" do
             let initialEnv = E.emptyEnv

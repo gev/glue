@@ -1,4 +1,13 @@
-module Reactor.Eval where
+module Reactor.Eval (
+    Eval,
+    eval,
+    runEval,
+    evalRequired,
+    throwError,
+    getEnv,
+    defineVarEval,
+    updateVarEval,
+) where
 
 import Control.Monad (ap, liftM)
 import Data.Map (Map)
@@ -8,43 +17,51 @@ import Data.Text (Text)
 import Data.Text qualified as T
 import Data.Typeable (Typeable)
 import Reactor.Env qualified as E
-import Reactor.Eval.Error (Error, EvalError (EvalError), GeneralError (..))
+import Reactor.Eval.Error (Context, Error, EvalError (EvalError), GeneralError (..))
 import Reactor.IR qualified as IR
 
 type IR = IR.IR Eval
 type Env = IR.Env Eval
 
 newtype Eval a = Eval
-    { runEval :: Env -> IO (Either EvalError (a, Env))
+    { runEvalInternal :: Env -> Context -> IO (Either EvalError (a, Env, Context))
     }
 
 instance Functor Eval where
     fmap = liftM
 
 instance Applicative Eval where
-    pure a = Eval $ \env -> pure $ Right (a, env)
+    pure a = Eval $ \env ctx -> pure $ Right (a, env, ctx)
     (<*>) = ap
 
 instance Monad Eval where
-    (Eval m) >>= f = Eval $ \env -> do
-        res <- m env
+    (Eval m) >>= f = Eval $ \env ctx -> do
+        res <- m env ctx
         case res of
             Left err -> pure $ Left err
-            Right (a, env') -> runEval (f a) env'
+            Right (a, env', ctx') -> runEvalInternal (f a) env' ctx'
 
 getEnv :: Eval Env
-getEnv = Eval $ \env -> pure $ Right (env, env)
+getEnv = Eval $ \env ctx -> pure $ Right (env, env, ctx)
 
 putEnv :: Env -> Eval ()
-putEnv newEnv = Eval $ \_ -> pure $ Right ((), newEnv)
+putEnv newEnv = Eval $ \env ctx -> pure $ Right ((), newEnv, ctx)
+
+pushContext :: Text -> Eval ()
+pushContext name = Eval $ \env ctx -> pure $ Right ((), env, name : ctx)
+
+popContext :: Eval ()
+popContext = Eval $ \env ctx -> case ctx of
+    (_ : rest) -> pure $ Right ((), env, rest)
+    [] -> pure $ Right ((), env, []) -- shouldn't happen, but safe
 
 throwError :: (Error e, Show e, Eq e, Typeable e) => e -> Eval a
-throwError err = Eval $ \_ -> pure $ Left (EvalError err)
+throwError err = Eval $ \env ctx -> pure $ Left (EvalError ctx err)
 
 liftIO :: IO a -> Eval a
-liftIO action = Eval $ \env -> do
+liftIO action = Eval $ \env ctx -> do
     a <- action
-    pure $ Right (a, env)
+    pure $ Right (a, env, ctx)
 
 -- Helper to determine if an IR value can be called
 isCallable :: IR -> Bool
@@ -94,15 +111,25 @@ evalSymbol name = do
 -- Evaluate a list (function call or literal list)
 evalList :: [IR] -> Eval (Maybe IR)
 evalList (IR.Symbol name : rawArgs) = do
+    pushContext name
     env <- getEnv
     case E.lookupVar name env of
-        Right func -> apply func rawArgs
-        Left err -> throwError err
+        Right func -> do
+            result <- apply func rawArgs
+            popContext
+            pure result
+        Left err -> do
+            popContext
+            throwError err
 evalList xs = do
     results <- mapM eval xs
     let clean = catMaybes results
     case clean of
-        (f : args) | isCallable f -> apply f args
+        (f : args) | isCallable f -> do
+            pushContext "<call>"
+            result <- apply f args
+            popContext
+            pure result
         _ -> pure . Just . IR.List $ clean
 
 -- Evaluate property access on an object
@@ -173,3 +200,6 @@ updateVarEval name val = do
     case E.updateVar name val env of
         Right nextEnv -> putEnv nextEnv
         Left err -> throwError err
+
+runEval :: Eval a -> Env -> IO (Either EvalError (a, Env, Context))
+runEval (Eval f) env = f env []

@@ -17,14 +17,14 @@ spec = describe "Reactor.Lib.Math.Trigonometric.Cos (Test cos function)" do
             result <- runEval (Cos.cos args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Cos failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 1
+                Right (res, _, _) -> res `shouldBe` Number 1
 
         it "returns 0 for cos(π/2)" do
             let args = [Number (fromFloatDigits @Double (pi / 2))]
             result <- runEval (Cos.cos args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Cos failed: " <> show err
-                Right (res, _) -> case res of
+                Right (res, _, _) -> case res of
                     Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x) < 1e-10)
                     _ -> expectationFailure "Expected Number"
 
@@ -33,7 +33,7 @@ spec = describe "Reactor.Lib.Math.Trigonometric.Cos (Test cos function)" do
             result <- runEval (Cos.cos args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Cos failed: " <> show err
-                Right (res, _) -> case res of
+                Right (res, _, _) -> case res of
                     Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x - (-1)) < 1e-10)
                     _ -> expectationFailure "Expected Number"
 

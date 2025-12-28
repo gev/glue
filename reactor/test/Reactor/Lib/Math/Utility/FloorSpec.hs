@@ -17,28 +17,28 @@ spec = describe "Reactor.Lib.Math.Utility.Floor (Test floor function)" do
             result <- runEval (Floor.floor args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Floor failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 3
+                Right (res, _, _) -> res `shouldBe` Number 3
 
         it "returns 2 for floor(2.1)" do
             let args = [Number (fromFloatDigits @Double 2.1)]
             result <- runEval (Floor.floor args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Floor failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 2
+                Right (res, _, _) -> res `shouldBe` Number 2
 
         it "returns -4 for floor(-3.1)" do
             let args = [Number (fromFloatDigits @Double (-3.1))]
             result <- runEval (Floor.floor args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Floor failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number (-4)
+                Right (res, _, _) -> res `shouldBe` Number (-4)
 
         it "returns 5 for floor(5.0)" do
             let args = [Number 5]
             result <- runEval (Floor.floor args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Floor failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 5
+                Right (res, _, _) -> res `shouldBe` Number 5
 
         it "fails with non-numbers" do
             let args = [String "hello"]

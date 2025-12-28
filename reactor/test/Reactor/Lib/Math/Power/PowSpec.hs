@@ -16,28 +16,28 @@ spec = describe "Reactor.Lib.Math.Power.Pow (Test pow function)" do
             result <- runEval (Pow.pow args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Pow failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 8
+                Right (res, _, _) -> res `shouldBe` Number 8
 
         it "returns 3^2 = 9" do
             let args = [Number 3, Number 2]
             result <- runEval (Pow.pow args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Pow failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 9
+                Right (res, _, _) -> res `shouldBe` Number 9
 
         it "returns 2^0 = 1" do
             let args = [Number 2, Number 0]
             result <- runEval (Pow.pow args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Pow failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 1
+                Right (res, _, _) -> res `shouldBe` Number 1
 
         it "returns 0^5 = 0" do
             let args = [Number 0, Number 5]
             result <- runEval (Pow.pow args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Pow failed: " <> show err
-                Right (res, _) -> res `shouldBe` Number 0
+                Right (res, _, _) -> res `shouldBe` Number 0
 
         it "fails with non-numbers (first arg)" do
             let args = [String "hello", Number 2]
