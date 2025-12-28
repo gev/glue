@@ -6,7 +6,7 @@ import Reactor.Env qualified as E
 import Reactor.Eval (runEval)
 import Reactor.IR (IR (..))
 import Reactor.Lib (lib)
-import qualified Reactor.Lib.Math.Utility.Log as Log
+import Reactor.Lib.Math.Utility.Log qualified as Log
 import Test.Hspec
 
 spec :: Spec
@@ -20,21 +20,21 @@ spec = describe "Reactor.Lib.Math.Utility.Log (Test log function)" do
                 Right (res, _) -> res `shouldBe` Number 0
 
         it "returns ln(e) = 1" do
-            let args = [Number (fromFloatDigits (exp 1))]
+            let args = [Number (fromFloatDigits @Double (exp 1))]
             result <- runEval (Log.log args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Log failed: " <> show err
                 Right (res, _) -> case res of
-                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat x - 1) < 1e-10)
+                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x - 1) < 1e-10)
                     _ -> expectationFailure "Expected a number"
 
         it "returns ln(e^2) = 2" do
-            let args = [Number (fromFloatDigits (exp 2))]
+            let args = [Number (fromFloatDigits @Double (exp 2))]
             result <- runEval (Log.log args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Log failed: " <> show err
                 Right (res, _) -> case res of
-                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat x - 2) < 1e-10)
+                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x - 2) < 1e-10)
                     _ -> expectationFailure "Expected a number"
 
         it "fails with zero" do

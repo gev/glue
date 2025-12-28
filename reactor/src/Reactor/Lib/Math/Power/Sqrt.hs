@@ -1,6 +1,6 @@
 module Reactor.Lib.Math.Power.Sqrt where
 
-import Data.Scientific (Scientific, fromFloatDigits, toRealFloat)
+import Data.Scientific (fromFloatDigits, toRealFloat)
 import Reactor.Eval (Eval, evalRequired, throwError)
 import Reactor.Eval.Error (EvalError (..))
 import Reactor.IR (IR (..))
@@ -10,7 +10,7 @@ sqrt [arg] = do
     va <- evalRequired arg
     case va of
         Number n -> do
-            let realVal = toRealFloat n
+            let realVal = toRealFloat @Double n
             if realVal < 0
                 then throwError SqrtExpectedOneNumber
                 else pure $ Number (fromFloatDigits (Prelude.sqrt realVal))

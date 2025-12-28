@@ -1,7 +1,6 @@
 module Reactor.Lib.Math.Power.PowSpec (spec) where
 
 import Data.Either (isLeft)
-import Data.Scientific (toRealFloat)
 import Reactor.Env qualified as E
 import Reactor.Eval (runEval)
 import Reactor.IR (IR (..))

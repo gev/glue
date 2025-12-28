@@ -6,7 +6,7 @@ import Reactor.Env qualified as E
 import Reactor.Eval (runEval)
 import Reactor.IR (IR (..))
 import Reactor.Lib (lib)
-import qualified Reactor.Lib.Math.Trigonometric.Cos as Cos (cos)
+import Reactor.Lib.Math.Trigonometric.Cos qualified as Cos (cos)
 import Test.Hspec
 
 spec :: Spec
@@ -20,21 +20,21 @@ spec = describe "Reactor.Lib.Math.Trigonometric.Cos (Test cos function)" do
                 Right (res, _) -> res `shouldBe` Number 1
 
         it "returns 0 for cos(π/2)" do
-            let args = [Number (fromFloatDigits (pi / 2))]
+            let args = [Number (fromFloatDigits @Double (pi / 2))]
             result <- runEval (Cos.cos args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Cos failed: " <> show err
                 Right (res, _) -> case res of
-                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat x) < 1e-10)
+                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x) < 1e-10)
                     _ -> expectationFailure "Expected Number"
 
         it "returns -1 for cos(π)" do
-            let args = [Number (fromFloatDigits pi)]
+            let args = [Number (fromFloatDigits @Double pi)]
             result <- runEval (Cos.cos args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Cos failed: " <> show err
                 Right (res, _) -> case res of
-                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat x - (-1)) < 1e-10)
+                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x - (-1)) < 1e-10)
                     _ -> expectationFailure "Expected Number"
 
         it "fails with non-numbers" do

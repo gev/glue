@@ -1,6 +1,5 @@
 module Reactor.Lib.Math.Utility where
 
-import Data.Scientific (fromFloatDigits)
 import Reactor.Env qualified as E
 import Reactor.Eval (Eval)
 import Reactor.IR (Frame, IR (..), Native (..))

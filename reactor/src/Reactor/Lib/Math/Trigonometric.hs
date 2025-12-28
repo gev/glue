@@ -20,9 +20,3 @@ trigonometric =
         , ("acos", Native (Func Acos.acos))
         , ("atan", Native (Func Atan.atan))
         ]
-
--- Note: tan, asin, acos, atan are not yet integrated
--- tanFrame = E.singletonFrame "tan" Tan.tan
--- asinFrame = E.singletonFrame "asin" Asin.asin
--- acosFrame = E.singletonFrame "acos" Acos.acos
--- atanFrame = E.singletonFrame "atan" Atan.atan

@@ -1,12 +1,12 @@
 module Reactor.Lib.Math.Trigonometric.AsinSpec (spec) where
 
 import Data.Either (isLeft)
-import Data.Scientific (fromFloatDigits, toRealFloat)
+import Data.Scientific (toRealFloat)
 import Reactor.Env qualified as E
 import Reactor.Eval (runEval)
 import Reactor.IR (IR (..))
 import Reactor.Lib (lib)
-import qualified Reactor.Lib.Math.Trigonometric.Asin as Asin (asin)
+import Reactor.Lib.Math.Trigonometric.Asin qualified as Asin (asin)
 import Test.Hspec
 
 spec :: Spec
@@ -25,7 +25,7 @@ spec = describe "Reactor.Lib.Math.Trigonometric.Asin (Test asin function)" do
             case result of
                 Left err -> expectationFailure $ "Asin failed: " <> show err
                 Right (res, _) -> case res of
-                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat x - pi/2) < 1e-10)
+                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x - pi / 2) < 1e-10)
                     _ -> expectationFailure "Expected Number"
 
         it "fails with non-numbers" do

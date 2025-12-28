@@ -6,19 +6,19 @@ import Reactor.Env qualified as E
 import Reactor.Eval (runEval)
 import Reactor.IR (IR (..))
 import Reactor.Lib (lib)
-import qualified Reactor.Lib.Math.Trigonometric.Acos as Acos (acos)
+import Reactor.Lib.Math.Trigonometric.Acos qualified as Acos (acos)
 import Test.Hspec
 
 spec :: Spec
 spec = describe "Reactor.Lib.Math.Trigonometric.Acos (Test acos function)" do
     describe "Arccosine function" do
         it "returns π for acos(-1)" do
-            let args = [Number (fromFloatDigits (-1))]
+            let args = [Number (fromFloatDigits @Double (-1))]
             result <- runEval (Acos.acos args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Acos failed: " <> show err
                 Right (res, _) -> case res of
-                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat x - pi) < 1e-10)
+                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x - pi) < 1e-10)
                     _ -> expectationFailure "Expected Number"
 
         it "returns π/2 for acos(0)" do
@@ -27,7 +27,7 @@ spec = describe "Reactor.Lib.Math.Trigonometric.Acos (Test acos function)" do
             case result of
                 Left err -> expectationFailure $ "Acos failed: " <> show err
                 Right (res, _) -> case res of
-                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat x - pi/2) < 1e-10)
+                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x - pi / 2) < 1e-10)
                     _ -> expectationFailure "Expected Number"
 
         it "returns 0 for acos(1)" do

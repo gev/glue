@@ -25,7 +25,7 @@ spec = describe "Reactor.Lib.Math.Power.Exp (Test exp function)" do
             case result of
                 Left err -> expectationFailure $ "Exp failed: " <> show err
                 Right (res, _) -> case res of
-                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat x - exp 1) < 1e-10)
+                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x - exp 1) < 1e-10)
                     _ -> expectationFailure "Expected a number"
 
         it "returns e^2" do
@@ -34,7 +34,7 @@ spec = describe "Reactor.Lib.Math.Power.Exp (Test exp function)" do
             case result of
                 Left err -> expectationFailure $ "Exp failed: " <> show err
                 Right (res, _) -> case res of
-                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat x - exp 2) < 1e-10)
+                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x - exp 2) < 1e-10)
                     _ -> expectationFailure "Expected a number"
 
         it "fails with non-numbers" do

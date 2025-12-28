@@ -6,9 +6,8 @@ import Reactor.Env qualified as E
 import Reactor.Eval (runEval)
 import Reactor.IR (IR (..))
 import Reactor.Lib (lib)
-import qualified Reactor.Lib.Math.Trigonometric.Sin as Sin (sin)
+import Reactor.Lib.Math.Trigonometric.Sin qualified as Sin (sin)
 import Test.Hspec
-import Test.QuickCheck
 
 spec :: Spec
 spec = describe "Reactor.Lib.Math.Trigonometric.Sin (Test sin function)" do
@@ -21,21 +20,21 @@ spec = describe "Reactor.Lib.Math.Trigonometric.Sin (Test sin function)" do
                 Right (res, _) -> res `shouldBe` Number 0
 
         it "returns 1 for sin(π/2)" do
-            let args = [Number (fromFloatDigits (pi / 2))]
+            let args = [Number (fromFloatDigits @Double (pi / 2))]
             result <- runEval (Sin.sin args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Sin failed: " <> show err
                 Right (res, _) -> case res of
-                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat x - 1) < 1e-10)
+                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x - 1) < 1e-10)
                     _ -> expectationFailure "Expected Number"
 
         it "returns 0 for sin(π)" do
-            let args = [Number (fromFloatDigits pi)]
+            let args = [Number (fromFloatDigits @Double pi)]
             result <- runEval (Sin.sin args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Sin failed: " <> show err
                 Right (res, _) -> case res of
-                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat x) < 1e-10)
+                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x) < 1e-10)
                     _ -> expectationFailure "Expected Number"
 
         it "fails with non-numbers" do
@@ -53,4 +52,4 @@ spec = describe "Reactor.Lib.Math.Trigonometric.Sin (Test sin function)" do
             result <- runEval (Sin.sin args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft
 
-    -- QuickCheck properties removed for now - need proper IO testing setup
+-- QuickCheck properties removed for now - need proper IO testing setup

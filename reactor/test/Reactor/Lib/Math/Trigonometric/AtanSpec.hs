@@ -1,7 +1,7 @@
 module Reactor.Lib.Math.Trigonometric.AtanSpec (spec) where
 
 import Data.Either (isLeft)
-import Data.Scientific (fromFloatDigits, toRealFloat)
+import Data.Scientific (toRealFloat)
 import Reactor.Env qualified as E
 import Reactor.Eval (runEval)
 import Reactor.IR (IR (..))
@@ -25,7 +25,7 @@ spec = describe "Reactor.Lib.Math.Trigonometric.Atan (Test atan function)" do
             case result of
                 Left err -> expectationFailure $ "Atan failed: " <> show err
                 Right (res, _) -> case res of
-                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat x - pi/4) < 1e-10)
+                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x - pi/4) < 1e-10)
                     _ -> expectationFailure "Expected Number"
 
         it "fails with non-numbers" do
