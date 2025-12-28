@@ -10,6 +10,7 @@ import Reactor.Lib.List.Cons (cons)
 import Reactor.Lib.List.Length qualified as Length
 import Reactor.Lib.List.Member (member)
 import Reactor.Lib.List.Nth (nth)
+import Reactor.Lib.List.Remove (remove)
 import Reactor.Lib.List.Reverse qualified as Reverse
 
 list :: Frame Eval
@@ -22,5 +23,6 @@ list =
         , ("length", Native (Func Length.length))
         , ("member", Native (Func member))
         , ("nth", Native (Func nth))
+        , ("remove", Native (Func remove))
         , ("reverse", Native (Func Reverse.reverse))
         ]

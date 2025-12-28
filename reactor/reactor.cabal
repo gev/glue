@@ -48,6 +48,7 @@ library
     Reactor.Lib.List.Length
     Reactor.Lib.List.Member
     Reactor.Lib.List.Nth
+    Reactor.Lib.List.Remove
     Reactor.Lib.List.Reverse
     Reactor.Lib.Math
     Reactor.Lib.Math.Arithmetic
@@ -135,6 +136,7 @@ test-suite reactor-test
     Reactor.Lib.List.LengthSpec
     Reactor.Lib.List.MemberSpec
     Reactor.Lib.List.NthSpec
+    Reactor.Lib.List.RemoveSpec
     Reactor.Lib.List.ReverseSpec
     Reactor.Lib.Math.Arithmetic.AddSpec
     Reactor.Lib.Math.Arithmetic.DivSpec
