@@ -42,6 +42,7 @@ library
     Reactor.Lib.Builtin.Set
     Reactor.Lib.List
     Reactor.Lib.List.Append
+    Reactor.Lib.List.Butlast
     Reactor.Lib.List.Car
     Reactor.Lib.List.Cdr
     Reactor.Lib.List.Cons
@@ -131,6 +132,7 @@ test-suite reactor-test
     Reactor.Lib.Builtin.QuoteSpec
     Reactor.Lib.Builtin.SetSpec
     Reactor.Lib.List.AppendSpec
+    Reactor.Lib.List.ButlastSpec
     Reactor.Lib.List.CarSpec
     Reactor.Lib.List.CdrSpec
     Reactor.Lib.List.ConsSpec

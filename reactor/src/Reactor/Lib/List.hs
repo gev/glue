@@ -4,6 +4,7 @@ import Reactor.Env qualified as E
 import Reactor.Eval (Eval)
 import Reactor.IR (Frame, IR (..), Native (..))
 import Reactor.Lib.List.Append (append)
+import Reactor.Lib.List.Butlast (butlast)
 import Reactor.Lib.List.Car (car)
 import Reactor.Lib.List.Cdr (cdr)
 import Reactor.Lib.List.Cons (cons)
@@ -18,6 +19,7 @@ list :: Frame Eval
 list =
     E.frameFromList
         [ ("append", Native (Func append))
+        , ("butlast", Native (Func butlast))
         , ("car", Native (Func car))
         , ("cdr", Native (Func cdr))
         , ("cons", Native (Func cons))
