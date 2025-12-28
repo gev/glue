@@ -9,4 +9,4 @@ def [Symbol name, rawVal] = do
     val <- evalRequired rawVal
     defineVarEval name val
     pure Nothing
-def _ = throwError $ WrongArgumentType "def" ["symbol", "value"]
+def _ = throwError $ WrongArgumentType ["symbol", "value"]

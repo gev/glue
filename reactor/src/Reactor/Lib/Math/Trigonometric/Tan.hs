@@ -10,5 +10,5 @@ tan [arg] = do
     va <- evalRequired arg
     case va of
         Number n -> pure $ Number (fromFloatDigits @Double (Prelude.tan (toRealFloat n)))
-        _ -> throwError $ WrongArgumentType "tan" ["number"]
+        _ -> throwError $ WrongArgumentType ["number"]
 tan _ = throwError WrongNumberOfArguments

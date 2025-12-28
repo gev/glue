@@ -11,4 +11,4 @@ quote args = case makeQuote args of
 
 makeQuote :: [IR m] -> Either GeneralError (IR m)
 makeQuote [v] = Right v
-makeQuote _ = Left $ WrongArgumentType "quote" ["argument"]
+makeQuote _ = Left $ WrongArgumentType ["argument"]

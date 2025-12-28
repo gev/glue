@@ -24,4 +24,4 @@ set [PropAccess (Symbol objName) prop, rawVal] = do
                 pure Nothing
             _ -> throwError $ NotAnObject (T.pack $ show currentObj)
         Left err -> throwError err
-set _ = throwError $ WrongArgumentType "set" ["target", "value"]
+set _ = throwError $ WrongArgumentType ["target", "value"]

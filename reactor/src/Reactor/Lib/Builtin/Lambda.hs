@@ -9,13 +9,13 @@ lambda :: [IR Eval] -> Eval (Maybe (IR Eval))
 lambda [argsNode, body] = do
     rawArgs <- case argsNode of
         List xs -> pure xs
-        _ -> throwError $ WrongArgumentType "lambda" ["arguments list", "body"]
+        _ -> throwError $ WrongArgumentType ["arguments list", "body"]
     params <- case extractSymbols rawArgs of
         Right ps -> pure ps
-        Left _ -> throwError $ WrongArgumentType "lambda" ["symbols in arguments", "body"]
+        Left _ -> throwError $ WrongArgumentType ["symbols in arguments", "body"]
     capturedEnv <- getEnv
     pure . Just $ makeClosure params body capturedEnv
-lambda _ = throwError $ WrongArgumentType "lambda" ["arguments", "body"]
+lambda _ = throwError $ WrongArgumentType ["arguments", "body"]
 
 makeClosure :: [Text] -> IR m -> Env m -> IR m
 makeClosure = Closure

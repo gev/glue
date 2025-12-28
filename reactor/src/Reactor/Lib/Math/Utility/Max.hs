@@ -10,5 +10,5 @@ max [arg1, arg2] = do
     va2 <- evalRequired arg2
     case (va1, va2) of
         (Number n1, Number n2) -> pure $ Number (Prelude.max n1 n2)
-        _ -> throwError $ WrongArgumentType "max" ["number", "number"]
+        _ -> throwError $ WrongArgumentType ["number", "number"]
 max _ = throwError WrongNumberOfArguments

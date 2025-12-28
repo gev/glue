@@ -12,7 +12,7 @@ sqrt [arg] = do
         Number n -> do
             let realVal = toRealFloat @Double n
             if realVal < 0
-                then throwError $ WrongArgumentType "sqrt" ["number"]
+                then throwError $ WrongArgumentType ["number"]
                 else pure $ Number (fromFloatDigits (Prelude.sqrt realVal))
-        _ -> throwError $ WrongArgumentType "sqrt" ["number"]
+        _ -> throwError $ WrongArgumentType ["number"]
 sqrt _ = throwError WrongNumberOfArguments

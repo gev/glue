@@ -13,5 +13,5 @@ mod [arg1, arg2] = do
             if n2 == 0
                 then throwError DivByZero
                 else pure $ Number (fromIntegral @Int (truncate n1 `Prelude.mod` truncate n2))
-        _ -> throwError $ WrongArgumentType "%" ["number", "number"]
+        _ -> throwError $ WrongArgumentType ["number", "number"]
 mod _ = throwError WrongNumberOfArguments

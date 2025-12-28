@@ -16,4 +16,4 @@ while_ (cond : body) = loop
         _ -> do
           _ <- mapM eval body
           loop
-while_ _ = throwError $ WrongArgumentType "while" ["condition", "body"]
+while_ _ = throwError $ WrongArgumentType ["condition", "body"]

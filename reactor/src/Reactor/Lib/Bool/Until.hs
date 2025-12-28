@@ -20,4 +20,4 @@ until_ (cond : body) = loop
                 case condVal of
                     Symbol "false" -> loop
                     _ -> pure Nothing
-until_ _ = throwError $ WrongArgumentType "until" ["condition", "body"]
+until_ _ = throwError $ WrongArgumentType ["condition", "body"]

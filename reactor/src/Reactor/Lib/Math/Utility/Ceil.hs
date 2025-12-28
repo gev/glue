@@ -10,5 +10,5 @@ ceil [arg] = do
     va <- evalRequired arg
     case va of
         Number n -> pure $ Number (fromIntegral @Int (Prelude.ceiling @Double (toRealFloat n)))
-        _ -> throwError $ WrongArgumentType "ceil" ["number"]
+        _ -> throwError $ WrongArgumentType ["number"]
 ceil _ = throwError WrongNumberOfArguments

@@ -29,7 +29,7 @@ data GeneralError
     | ExpectedValue
     | ExpectedListOfSymbols
     | WrongNumberOfArguments
-    | WrongArgumentType Text [Text]
+    | WrongArgumentType [Text]
     | DivByZero
     | PropertyNotFound Text
     | NotAnObject Text
@@ -43,7 +43,7 @@ instance Error GeneralError where
         ExpectedValue -> "Expected value, but got a command/effect"
         ExpectedListOfSymbols -> "Expected a list of symbols"
         WrongNumberOfArguments -> "Wrong number of arguments"
-        WrongArgumentType func expected -> func <> ": expected [" <> T.intercalate ", " expected <> "]"
+        WrongArgumentType expected -> "Expected [" <> T.intercalate ", " expected <> "]"
         DivByZero -> "Division by zero"
         PropertyNotFound prop -> "Property not found: " <> prop
         NotAnObject obj -> "Not an object: " <> obj

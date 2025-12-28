@@ -14,4 +14,4 @@ when_ (cond : body) = do
             _ -> do
                 results <- mapM eval body
                 pure $ last results
-when_ _ = throwError $ WrongArgumentType "when" ["condition", "body"]
+when_ _ = throwError $ WrongArgumentType ["condition", "body"]

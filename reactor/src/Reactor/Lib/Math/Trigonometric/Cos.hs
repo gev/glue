@@ -10,5 +10,5 @@ cos [arg] = do
     va <- evalRequired arg
     case va of
         Number n -> pure $ Number (fromFloatDigits @Double (Prelude.cos (toRealFloat n)))
-        _ -> throwError $ WrongArgumentType "cos" ["number"]
+        _ -> throwError $ WrongArgumentType ["number"]
 cos _ = throwError WrongNumberOfArguments

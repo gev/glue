@@ -14,7 +14,7 @@ log [arg, base] = do
             let realVal = toRealFloat @Double n
             let realBase = toRealFloat @Double b
             if realVal <= 0 || realBase <= 0 || realBase == 1
-                then throwError $ WrongArgumentType "log" ["positive number", "positive number != 1"]
+                then throwError $ WrongArgumentType ["positive number", "positive number != 1"]
                 else pure $ Number (fromFloatDigits (Prelude.logBase realBase realVal))
-        _ -> throwError $ WrongArgumentType "log" ["number", "number"]
+        _ -> throwError $ WrongArgumentType ["number", "number"]
 log _ = throwError WrongNumberOfArguments

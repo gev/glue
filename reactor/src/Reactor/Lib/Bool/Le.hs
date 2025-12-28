@@ -10,5 +10,5 @@ le [a, b] = do
     vb <- evalRequired b
     case (va, vb) of
         (Number na, Number nb) -> pure $ if na <= nb then Symbol "true" else Symbol "false"
-        _ -> throwError $ WrongArgumentType "le" ["number", "number"]
-le _ = throwError $ WrongArgumentType "le" ["number", "number"]
+        _ -> throwError $ WrongArgumentType ["number", "number"]
+le _ = throwError $ WrongArgumentType ["number", "number"]

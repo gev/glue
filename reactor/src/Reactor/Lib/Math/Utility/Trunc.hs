@@ -10,5 +10,5 @@ trunc [arg] = do
     va <- evalRequired arg
     case va of
         Number n -> pure $ Number (fromIntegral @Int (Prelude.truncate @Double (toRealFloat n)))
-        _ -> throwError $ WrongArgumentType "trunc" ["number"]
+        _ -> throwError $ WrongArgumentType ["number"]
 trunc _ = throwError WrongNumberOfArguments

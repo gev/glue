@@ -10,4 +10,4 @@ if_ [cond, thenExpr, elseExpr] = do
     case condVal of
         Symbol "false" -> eval elseExpr
         _ -> eval thenExpr
-if_ _ = throwError $ WrongArgumentType "if" ["condition", "then", "else"]
+if_ _ = throwError $ WrongArgumentType ["condition", "then", "else"]

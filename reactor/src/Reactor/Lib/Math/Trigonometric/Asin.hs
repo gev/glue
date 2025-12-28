@@ -10,5 +10,5 @@ asin [arg] = do
     va <- evalRequired arg
     case va of
         Number n -> pure $ Number (fromFloatDigits @Double (Prelude.asin (toRealFloat n)))
-        _ -> throwError $ WrongArgumentType "asin" ["number"]
+        _ -> throwError $ WrongArgumentType ["number"]
 asin _ = throwError WrongNumberOfArguments

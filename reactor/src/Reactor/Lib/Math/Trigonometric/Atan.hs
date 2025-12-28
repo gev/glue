@@ -10,5 +10,5 @@ atan [arg] = do
     va <- evalRequired arg
     case va of
         Number n -> pure $ Number (fromFloatDigits @Double (Prelude.atan (toRealFloat n)))
-        _ -> throwError $ WrongArgumentType "atan" ["number"]
+        _ -> throwError $ WrongArgumentType ["number"]
 atan _ = throwError WrongNumberOfArguments

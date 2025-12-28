@@ -10,5 +10,5 @@ abs [arg] = do
     va <- evalRequired arg
     case va of
         Number n -> pure $ Number (fromFloatDigits @Double (Prelude.abs (toRealFloat n)))
-        _ -> throwError $ WrongArgumentType "abs" ["number"]
+        _ -> throwError $ WrongArgumentType ["number"]
 abs _ = throwError WrongNumberOfArguments

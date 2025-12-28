@@ -12,7 +12,7 @@ ln [arg] = do
         Number n -> do
             let realVal = toRealFloat @Double n
             if realVal <= 0
-                then throwError $ WrongArgumentType "ln" ["positive number"]
+                then throwError $ WrongArgumentType ["positive number"]
                 else pure $ Number (fromFloatDigits (Prelude.log realVal))
-        _ -> throwError $ WrongArgumentType "ln" ["number"]
-ln _ = throwError $ WrongArgumentType "ln" ["number"]
+        _ -> throwError $ WrongArgumentType ["number"]
+ln _ = throwError $ WrongArgumentType ["number"]

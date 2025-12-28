@@ -10,5 +10,5 @@ acos [arg] = do
     va <- evalRequired arg
     case va of
         Number n -> pure $ Number (fromFloatDigits @Double (Prelude.acos (toRealFloat n)))
-        _ -> throwError $ WrongArgumentType "acos" ["number"]
+        _ -> throwError $ WrongArgumentType ["number"]
 acos _ = throwError WrongNumberOfArguments

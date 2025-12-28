@@ -10,4 +10,4 @@ not_ [arg] = do
     case val of
         Symbol "false" -> pure $ Symbol "true"
         _ -> pure $ Symbol "false"
-not_ _ = throwError $ WrongArgumentType "not" ["arg"]
+not_ _ = throwError $ WrongArgumentType ["arg"]

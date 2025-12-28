@@ -10,5 +10,5 @@ ge [a, b] = do
     vb <- evalRequired b
     case (va, vb) of
         (Number na, Number nb) -> pure $ if na >= nb then Symbol "true" else Symbol "false"
-        _ -> throwError $ WrongArgumentType "ge" ["number", "number"]
-ge _ = throwError $ WrongArgumentType "ge" ["number", "number"]
+        _ -> throwError $ WrongArgumentType ["number", "number"]
+ge _ = throwError $ WrongArgumentType ["number", "number"]

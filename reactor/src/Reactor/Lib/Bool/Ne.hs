@@ -9,4 +9,4 @@ ne [a, b] = do
     va <- evalRequired a
     vb <- evalRequired b
     pure $ if va /= vb then Symbol "true" else Symbol "false"
-ne _ = throwError $ WrongArgumentType "ne" ["arg", "arg"]
+ne _ = throwError $ WrongArgumentType ["arg", "arg"]
