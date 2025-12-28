@@ -7,6 +7,7 @@ import Reactor.Lib.List.Car (car)
 import Reactor.Lib.List.Cdr (cdr)
 import Reactor.Lib.List.Cons (cons)
 import Reactor.Lib.List.Length qualified as Length
+import Reactor.Lib.List.Reverse qualified as Reverse
 
 list :: Frame Eval
 list =
@@ -15,4 +16,5 @@ list =
         , ("cdr", Native (Func cdr))
         , ("cons", Native (Func cons))
         , ("length", Native (Func Length.length))
+        , ("reverse", Native (Func Reverse.reverse))
         ]
