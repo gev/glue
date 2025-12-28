@@ -6,7 +6,7 @@ import Reactor.Env qualified as E
 import Reactor.Eval (runEval)
 import Reactor.IR (IR (..))
 import Reactor.Lib (lib)
-import qualified Reactor.Lib.Math.Trigonometric.Tan as Tan (tan)
+import Reactor.Lib.Math.Trigonometric.Tan qualified as Tan (tan)
 import Test.Hspec
 
 spec :: Spec
@@ -20,12 +20,12 @@ spec = describe "Reactor.Lib.Math.Trigonometric.Tan (Test tan function)" do
                 Right (res, _) -> res `shouldBe` Number 0
 
         it "returns 1 for tan(π/4)" do
-            let args = [Number (fromFloatDigits (pi / 4))]
+            let args = [Number (fromFloatDigits @Double (pi / 4))]
             result <- runEval (Tan.tan args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Tan failed: " <> show err
                 Right (res, _) -> case res of
-                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat x - 1) < 1e-10)
+                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x - 1) < 1e-10)
                     _ -> expectationFailure "Expected Number"
 
         it "fails with non-numbers" do
