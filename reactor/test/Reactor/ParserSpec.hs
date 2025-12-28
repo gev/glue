@@ -23,6 +23,7 @@ spec = do
             it "parses arithmetic operators" $ do
                 parseReactor "+" `shouldBe` Right (Symbol "+")
                 parseReactor "*" `shouldBe` Right (Symbol "*")
+                parseReactor "/" `shouldBe` Right (Symbol "/")
                 parseReactor "%" `shouldBe` Right (Symbol "%")
 
             it "parses comparison operators" $ do
