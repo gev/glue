@@ -46,6 +46,7 @@ library
     Reactor.Lib.List.Car
     Reactor.Lib.List.Cdr
     Reactor.Lib.List.Cons
+    Reactor.Lib.List.Drop
     Reactor.Lib.List.Filter
     Reactor.Lib.List.Last
     Reactor.Lib.List.Length
@@ -54,6 +55,7 @@ library
     Reactor.Lib.List.Nth
     Reactor.Lib.List.Remove
     Reactor.Lib.List.Reverse
+    Reactor.Lib.List.Take
     Reactor.Lib.Math
     Reactor.Lib.Math.Arithmetic
     Reactor.Lib.Math.Arithmetic.Add
@@ -138,6 +140,7 @@ test-suite reactor-test
     Reactor.Lib.List.CarSpec
     Reactor.Lib.List.CdrSpec
     Reactor.Lib.List.ConsSpec
+    Reactor.Lib.List.DropSpec
     Reactor.Lib.List.FilterSpec
     Reactor.Lib.List.LastSpec
     Reactor.Lib.List.LengthSpec
@@ -146,6 +149,7 @@ test-suite reactor-test
     Reactor.Lib.List.NthSpec
     Reactor.Lib.List.RemoveSpec
     Reactor.Lib.List.ReverseSpec
+    Reactor.Lib.List.TakeSpec
     Reactor.Lib.Math.Arithmetic.AddSpec
     Reactor.Lib.Math.Arithmetic.DivSpec
     Reactor.Lib.Math.Arithmetic.ModSpec
