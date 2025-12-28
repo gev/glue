@@ -21,6 +21,7 @@ import Reactor.Lib.List.Partition qualified as Partition
 import Reactor.Lib.List.Position qualified as Position
 import Reactor.Lib.List.Remove (remove)
 import Reactor.Lib.List.Reverse qualified as Reverse
+import Reactor.Lib.List.Sort qualified as Sort
 import Reactor.Lib.List.Take qualified as Take
 import Reactor.Lib.List.Zip qualified as Zip
 
@@ -45,6 +46,7 @@ list =
         , ("position", Native (Func Position.position))
         , ("remove", Native (Func remove))
         , ("reverse", Native (Func Reverse.reverse))
+        , ("sort", Native (Func Sort.sort))
         , ("take", Native (Func Take.take))
         , ("zip", Native (Func Zip.zip))
         ]

@@ -59,6 +59,7 @@ library
     Reactor.Lib.List.Position
     Reactor.Lib.List.Remove
     Reactor.Lib.List.Reverse
+    Reactor.Lib.List.Sort
     Reactor.Lib.List.Take
     Reactor.Lib.List.Zip
     Reactor.Lib.Math
@@ -158,6 +159,7 @@ test-suite reactor-test
     Reactor.Lib.List.PositionSpec
     Reactor.Lib.List.RemoveSpec
     Reactor.Lib.List.ReverseSpec
+    Reactor.Lib.List.SortSpec
     Reactor.Lib.List.TakeSpec
     Reactor.Lib.List.ZipSpec
     Reactor.Lib.Math.Arithmetic.AddSpec
