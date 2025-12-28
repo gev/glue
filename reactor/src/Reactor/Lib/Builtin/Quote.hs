@@ -1,7 +1,6 @@
 module Reactor.Lib.Builtin.Quote where
 
 import Reactor.Eval (Eval, throwError)
-import Reactor.Eval.Error (Error, EvalError (EvalError))
 import Reactor.IR (IR (..))
 import Reactor.Lib.Builtin.Error (BuiltinError (..))
 

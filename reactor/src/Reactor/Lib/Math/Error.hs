@@ -1,6 +1,5 @@
 module Reactor.Lib.Math.Error where
 
-import Data.Typeable (Typeable)
 import Reactor.Eval.Error (Error (..))
 
 data MathError
@@ -32,7 +31,7 @@ data MathError
     | MaxExpectedTwoNumbers
     | RoundExpectedOneNumber
     | TruncExpectedOneNumber
-    deriving (Show, Eq, Typeable)
+    deriving (Show, Eq)
 
 instance Error MathError where
     pretty = \case

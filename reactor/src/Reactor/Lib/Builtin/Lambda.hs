@@ -2,7 +2,7 @@ module Reactor.Lib.Builtin.Lambda where
 
 import Data.Text (Text)
 import Reactor.Eval (Eval, getEnv, throwError)
-import Reactor.Eval.Error (Error, EvalError, GeneralError (..))
+import Reactor.Eval.Error (GeneralError (..))
 import Reactor.IR (Env, IR (..))
 import Reactor.Lib.Builtin.Error (BuiltinError (..))
 

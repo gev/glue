@@ -2,7 +2,7 @@ module Reactor.Lib.Math.Logarithmic.Lg where
 
 import Data.Scientific (fromFloatDigits, toRealFloat)
 import Reactor.Eval (Eval, evalRequired, throwError)
-import Reactor.Eval.Error (Error, GeneralError (..))
+import Reactor.Eval.Error (GeneralError (..))
 import Reactor.IR (IR (..))
 import Reactor.Lib.Math.Error (MathError (..))
 

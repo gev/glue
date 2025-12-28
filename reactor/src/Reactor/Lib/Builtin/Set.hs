@@ -4,7 +4,7 @@ import Data.Map.Strict qualified as Map
 import Data.Text qualified as T
 import Reactor.Env (lookupVar)
 import Reactor.Eval (Eval, evalRequired, getEnv, throwError, updateVarEval)
-import Reactor.Eval.Error (Error, GeneralError (..))
+import Reactor.Eval.Error (GeneralError (..))
 import Reactor.IR (IR (..))
 import Reactor.Lib.Builtin.Error (BuiltinError (..))
 

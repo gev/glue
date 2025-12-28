@@ -1,7 +1,6 @@
 module Reactor.Lib.Bool.When where
 
 import Reactor.Eval (Eval, eval, evalRequired, throwError)
-import Reactor.Eval.Error (Error)
 import Reactor.IR (IR (..))
 import Reactor.Lib.Bool.Error (BoolError (..))
 

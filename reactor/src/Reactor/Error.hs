@@ -1,7 +1,6 @@
 module Reactor.Error where
 
-import Data.Typeable (Typeable, cast)
-import Reactor.Eval.Error (EvalError)
+import Data.Typeable (Typeable)
 
 data ReactorError
     = forall e. (Show e, Eq e, Typeable e) => ReactorError e

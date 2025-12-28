@@ -4,7 +4,6 @@ import Reactor.Env qualified as E
 import Reactor.Eval (Eval)
 import Reactor.IR (Frame, IR (..), Native (..))
 import Reactor.Lib.Bool.Eq (eq)
-import Reactor.Lib.Bool.Error (BoolError (..))
 import Reactor.Lib.Bool.Ge (ge)
 import Reactor.Lib.Bool.Gt (gt)
 import Reactor.Lib.Bool.If (if_)

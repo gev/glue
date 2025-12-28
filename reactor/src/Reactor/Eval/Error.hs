@@ -30,7 +30,7 @@ data GeneralError
     | WrongNumberOfArguments
     | PropertyNotFound Text
     | NotAnObject Text
-    deriving (Show, Eq, Typeable)
+    deriving (Show, Eq)
 
 instance Error GeneralError where
     pretty = \case

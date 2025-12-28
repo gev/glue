@@ -1,7 +1,6 @@
 module Reactor.Lib.Math.Arithmetic.Mod where
 
 import Reactor.Eval (Eval, evalRequired, throwError)
-import Reactor.Eval.Error (Error)
 import Reactor.IR (IR (..))
 import Reactor.Lib.Math.Error (MathError (..))
 
