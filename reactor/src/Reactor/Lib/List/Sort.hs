@@ -1,17 +1,15 @@
 module Reactor.Lib.List.Sort where
 
-import Reactor.Eval (Eval, evalRequired, throwError)
+import Reactor.Eval (Eval, throwError)
 import Reactor.Eval.Error (GeneralError (..))
 import Reactor.IR (IR (..))
 
 sort :: [IR Eval] -> Eval (IR Eval)
-sort [listIR] = do
-    list <- evalRequired listIR
-    case list of
-        List xs -> do
-            sorted <- sortList xs
-            pure $ List sorted
-        _ -> throwError $ WrongArgumentType ["list"]
+sort [listIR] = case listIR of
+    List xs -> do
+        sorted <- sortList xs
+        pure $ List sorted
+    _ -> throwError $ WrongArgumentType ["list"]
 sort _ = throwError WrongNumberOfArguments
 
 -- Helper function to sort a list using merge sort
