@@ -7,6 +7,7 @@ module Reactor.Eval (
     getEnv,
     defineVarEval,
     updateVarEval,
+    liftIO,
 ) where
 
 import Control.Monad (ap, liftM)
@@ -45,7 +46,7 @@ getEnv :: Eval Env
 getEnv = Eval $ \env ctx -> pure $ Right (env, env, ctx)
 
 putEnv :: Env -> Eval ()
-putEnv newEnv = Eval $ \env ctx -> pure $ Right ((), newEnv, ctx)
+putEnv newEnv = Eval $ \_ ctx -> pure $ Right ((), newEnv, ctx)
 
 pushContext :: Text -> Eval ()
 pushContext name = Eval $ \env ctx -> pure $ Right ((), env, name : ctx)
@@ -56,7 +57,7 @@ popContext = Eval $ \env ctx -> case ctx of
     [] -> pure $ Right ((), env, []) -- shouldn't happen, but safe
 
 throwError :: (Error e, Show e, Eq e, Typeable e) => e -> Eval a
-throwError err = Eval $ \env ctx -> pure $ Left (EvalError ctx err)
+throwError err = Eval $ \_ ctx -> pure $ Left (EvalError ctx err)
 
 liftIO :: IO a -> Eval a
 liftIO action = Eval $ \env ctx -> do
@@ -83,22 +84,6 @@ buildEnvWithBindings :: Env -> [(Text, IR)] -> Env
 buildEnvWithBindings savedEnv = foldl defineBinding (E.pushFrame savedEnv)
   where
     defineBinding env (param, value) = E.defineVar param value env
-
--- Safely extract single parameter from parameter list
-extractSingleParam :: [Text] -> Maybe Text
-extractSingleParam [param] = Just param
-extractSingleParam _ = Nothing
-
--- Safely create bindings from object map and parameters
-createNamedBindings :: Map Text IR -> [Text] -> [(Text, IR)]
-createNamedBindings objMap = map createBinding
-  where
-    createBinding param =
-        ( param
-        , fromMaybe
-            (error "impossible: param not in map")
-            (Map.lookup param objMap)
-        )
 
 -- Evaluate a symbol by looking it up in the environment
 evalSymbol :: Text -> Eval (Maybe IR)

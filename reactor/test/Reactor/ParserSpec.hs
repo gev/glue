@@ -19,6 +19,28 @@ spec = do
                 parseReactor "void" `shouldBe` Right (Symbol "void")
                 parseReactor "my-func" `shouldBe` Right (Symbol "my-func")
 
+        describe "Operator Symbols" $ do
+            it "parses arithmetic operators" $ do
+                parseReactor "+" `shouldBe` Right (Symbol "+")
+                parseReactor "*" `shouldBe` Right (Symbol "*")
+                parseReactor "%" `shouldBe` Right (Symbol "%")
+
+            it "parses comparison operators" $ do
+                parseReactor "<" `shouldBe` Right (Symbol "<")
+                parseReactor ">" `shouldBe` Right (Symbol ">")
+                parseReactor "<=" `shouldBe` Right (Symbol "<=")
+                parseReactor ">=" `shouldBe` Right (Symbol ">=")
+                parseReactor "==" `shouldBe` Right (Symbol "==")
+                parseReactor "\\=" `shouldBe` Right (Symbol "\\=")
+
+            it "parses logical operators" $ do
+                parseReactor "!" `shouldBe` Right (Symbol "!")
+
+            it "parses complex operator expressions" $ do
+                parseReactor "(+ 2 3)" `shouldBe` Right (AtomList [Symbol "+", Number 2, Number 3])
+                parseReactor "(< x y)" `shouldBe` Right (AtomList [Symbol "<", Symbol "x", Symbol "y"])
+                parseReactor "(== a b)" `shouldBe` Right (AtomList [Symbol "==", Symbol "a", Symbol "b"])
+
         describe "Rule: No Mixed Content" $ do
             it "successfully parses pure positional list" $ do
                 let input = "(1 2 \"test\")"

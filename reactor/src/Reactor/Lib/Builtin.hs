@@ -5,7 +5,8 @@ import Reactor.Eval (Eval)
 import Reactor.IR (Frame, IR (..), Native (..))
 import Reactor.Lib.Builtin.Def (def)
 import Reactor.Lib.Builtin.Lambda (lambda)
-import Reactor.Lib.Builtin.List (list)
+import Reactor.Lib.Builtin.List (car, list)
+import Reactor.Lib.Builtin.Object (object)
 import Reactor.Lib.Builtin.Quote (quote)
 import Reactor.Lib.Builtin.Set (set)
 
@@ -18,4 +19,6 @@ builtin =
         , ("lambda", Native (Special lambda))
         , ("\\", Native (Special lambda))
         , ("list", Native (Func list))
+        , ("car", Native (Func car))
+        , ("object", Native (Func object))
         ]

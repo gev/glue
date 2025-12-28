@@ -45,13 +45,13 @@ spec = describe "Reactor.ErrorContext (Call Stack Tracking)" do
 
     -- Note: Math operations and property access syntax need to be verified
     -- These tests are commented out until proper syntax is determined
-    -- it "shows context for math operations" do
-    --     runCode "(+ non-existent 1)"
-    --         `shouldReturn` Left (ReactorError $ EvalError ["+"] $ UnboundVariable "non-existent")
+    it "shows context for math operations" do
+        runCode "(+ non-existent 1)"
+            `shouldReturn` Left (ReactorError $ EvalError ["+"] $ UnboundVariable "non-existent")
 
-    -- it "shows context for property access errors" do
-    --     runCode "((lambda (obj) obj.missing) (object :x 42))"
-    --         `shouldReturn` Left (ReactorError $ EvalError ["<call>"] $ PropertyNotFound "missing")
+    it "shows context for property access errors" do
+        runCode "((lambda (obj) obj.missing) (object :x 42))"
+            `shouldReturn` Left (ReactorError $ EvalError ["<call>"] $ PropertyNotFound "missing")
 
     it "handles anonymous function calls" do
         runCode "((lambda () (non-existent)))"

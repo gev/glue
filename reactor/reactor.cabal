@@ -37,6 +37,7 @@ library
     Reactor.Lib.Builtin.Def
     Reactor.Lib.Builtin.Lambda
     Reactor.Lib.Builtin.List
+    Reactor.Lib.Builtin.Object
     Reactor.Lib.Builtin.Quote
     Reactor.Lib.Builtin.Set
     Reactor.Lib.Math
