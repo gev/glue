@@ -3,7 +3,7 @@ module Reactor.Module.ModuleSpec where
 import Data.IORef (readIORef)
 import Data.Map.Strict qualified as Map
 import Reactor.Env qualified as E
-import Reactor.Eval (Eval, runEval)
+import Reactor.Eval (Eval, liftIO, runEval)
 import Reactor.IR (IR (..))
 import Reactor.Module (Module (..), ModuleRegistry, lookupModule)
 import Reactor.Module.Import (newImportedCache)
@@ -45,11 +45,10 @@ spec = do
                         ]
 
             -- Register the module
-            let env = E.fromFrame (libWithModules registry cache)
-            result <- runEval (registerModuleFromIR registry moduleIR) env
+            result <- registerModuleFromIR registry moduleIR
 
             case result of
-                Right (_, _, _) -> do
+                Right () -> do
                     -- Check that module was registered
                     regMap <- readIORef registry
                     case Map.lookup "test.math" regMap of
@@ -70,11 +69,10 @@ spec = do
                         , List [Symbol "def", Symbol "x", Number 42]
                         ]
 
-            let env = E.fromFrame (libWithModules registry cache)
-            result <- runEval (registerModuleFromIR registry moduleIR) env
+            result <- registerModuleFromIR registry moduleIR
 
             case result of
-                Right (_, _, _) -> do
+                Right () -> do
                     regMap <- readIORef registry
                     case Map.lookup "test.empty" regMap of
                         Just mod -> do

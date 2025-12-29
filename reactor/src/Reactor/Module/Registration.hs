@@ -3,9 +3,8 @@ module Reactor.Module.Registration where
 import Control.Monad (foldM)
 import Data.IORef (IORef, modifyIORef, newIORef)
 import Data.Map.Strict qualified as Map
-import Data.Text (Text, pack)
-import Reactor.Eval (Eval, liftIO, throwError)
-import Reactor.Eval.Error (GeneralError (..))
+import Data.Text (Text)
+import Reactor.Eval (Eval)
 import Reactor.IR (IR (..))
 import Reactor.Module (Module (..), ModuleRegistry)
 
@@ -85,12 +84,13 @@ newRegistry :: IO (RegistryRef m)
 newRegistry = newIORef Map.empty
 
 -- | Register a module from IR using pure parsing
-registerModuleFromIR :: RegistryRef Eval -> IR Eval -> Eval ()
+registerModuleFromIR :: RegistryRef Eval -> IR Eval -> IO (Either ModuleRegistryError ())
 registerModuleFromIR registry moduleIR = do
     -- Parse module using pure functions
     case parseModule moduleIR of
         Right moduleInfo -> do
             -- Convert to Module and add to registry
             let mod = moduleInfoToModule moduleInfo
-            liftIO $ modifyIORef registry (Map.insert moduleInfo.moduleName mod)
-        Left err -> throwError $ WrongArgumentType [pack $ show err]
+            modifyIORef registry (Map.insert moduleInfo.moduleName mod)
+            pure $ Right ()
+        Left err -> pure $ Left err
