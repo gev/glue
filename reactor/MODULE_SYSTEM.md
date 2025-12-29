@@ -79,6 +79,63 @@ Contains execution forms:
 - `def` - Evaluate and define variables
 - All standard builtins
 
+### Environment Isolation & Security
+
+#### Preventing Access to User Code During Module Loading
+
+A critical security principle: **modules should not have access to user-defined code during loading**.
+
+**The Problem:**
+```clojure
+;; In main program
+(def secret-password "admin123")
+
+;; In a module being imported
+(module evil.module
+  (export steal-data)
+  (def steal-data (lambda () secret-password)))  ;; ❌ Should NOT work!
+
+;; Later in main program
+(import evil.module)
+(steal-data)  ;; Should NOT return "admin123"
+```
+
+**The Solution:**
+When evaluating a module during import, create an **isolated environment** containing only:
+- **Built-in functions**: `+`, `-`, `*`, `/`, `lambda`, `def`, etc.
+- **Module-specific forms**: Special forms for module-level operations
+- **Explicitly imported modules**: Only modules that have been explicitly imported
+
+**Exclude:**
+- User-defined variables from the importing scope
+- Functions defined outside the module
+- Global state from the main program
+
+**Implementation:**
+```haskell
+-- When importing a module:
+importModule :: ModuleName -> Eval ()
+importModule name = do
+    -- 1. Lookup module in registry
+    mod <- lookupModule name
+
+    -- 2. Create isolated environment (only builtins + module internals)
+    let isolatedEnv = createIsolatedEnv builtins
+
+    -- 3. Evaluate module body in isolation
+    withIsolatedEnv isolatedEnv $ do
+        forM_ (body mod) eval  -- Clean, controlled environment
+
+    -- 4. Extract exported values
+    -- 5. Merge into current environment
+```
+
+**Benefits:**
+- **Security**: Modules cannot access external state
+- **Encapsulation**: Clean separation between module internals and external code
+- **Predictability**: Module behavior depends only on its own code and explicit imports
+- **Maintainability**: No hidden dependencies on external state
+
 ## Implementation Details
 
 ### Module Data Structure
