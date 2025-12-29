@@ -93,6 +93,10 @@ library
     Reactor.Lib.Math.Utility.Min
     Reactor.Lib.Math.Utility.Round
     Reactor.Lib.Math.Utility.Trunc
+    Reactor.Module
+    Reactor.Module.Import
+    Reactor.Module.Registration
+    Reactor.Module.System
     Reactor.Parser
     Reactor.Parser.Error
     Spec.Device
@@ -186,6 +190,7 @@ test-suite reactor-test
     Reactor.Lib.Math.Utility.MinSpec
     Reactor.Lib.Math.Utility.RoundSpec
     Reactor.Lib.Math.Utility.TruncSpec
+    Reactor.ModuleSpec
     Reactor.ParserSpec
     Reactor.TestUtils
 

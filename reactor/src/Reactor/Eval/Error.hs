@@ -40,6 +40,7 @@ data GeneralError
     | DivByZero
     | PropertyNotFound Text
     | NotAnObject Text
+    | ModuleNotFound Text
     deriving (Show, Eq)
 
 instance Error GeneralError where
@@ -54,6 +55,7 @@ instance Error GeneralError where
         DivByZero -> "Division by zero"
         PropertyNotFound prop -> "Property not found: " <> prop
         NotAnObject obj -> "Not an object: " <> obj
+        ModuleNotFound name -> "Module not found: " <> name
 
 prettyShow :: EvalError -> Text
 prettyShow (EvalError ctx e) =

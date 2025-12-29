@@ -5,6 +5,7 @@ module Reactor.Eval (
     evalRequired,
     throwError,
     getEnv,
+    putEnv,
     defineVarEval,
     updateVarEval,
     liftIO,
