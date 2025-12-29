@@ -57,25 +57,23 @@ Reactor implements a clean module system providing separation of code into reusa
 
 ### Two-Phase Process
 
-#### 1. Registration Phase
-- Evaluate module IR with registration environment
-- `module`, `export`, `def` special forms perform registration
+#### 1. Registration Phase (Pure Parsing)
+- Parse module IR structure directly (no evaluation)
+- Extract module name, exports, and definitions from IR
 - Store complete module metadata in global registry
-- Module bodies preserved for runtime evaluation
+- Module bodies preserved as IR for runtime evaluation
 
 #### 2. Runtime Phase
 - `(import module.name)` triggers module loading
 - Evaluate module body in isolated environment
 - Extract exported symbol values
-- Merge into current scope
+- Merge into current environment
 
 ### Environments
 
 #### Registration Environment
 Contains special forms for parsing modules:
-- `module` - Parse module declarations
-- `export` - Collect export lists
-- `def` - Record symbol definitions (no evaluation)
+- `module` - Parse complete module structure and return `IR.Module ModuleInfo`
 
 #### Runtime Environment
 Contains execution forms:
@@ -142,8 +140,28 @@ importModule name = do
 
 ## Implementation Details
 
-### Module Data Structure
+### IR Data Type Extension
 ```haskell
+data IR m
+    = Module ModuleInfo        -- New: structured module data
+    | Number Scientific
+    | String Text
+    | Symbol Text
+    | List [IR m]
+    | Object (Map Text (IR m))
+    | PropAccess (IR m) Text
+    | Native (Native m)
+    | Closure [Text] (IR m) (Env m)
+```
+
+### Module Data Structures
+```haskell
+data ModuleInfo = ModuleInfo
+    { moduleName :: Text
+    , exports :: [Text]
+    , definitions :: [(Text, IR Eval)]
+    }
+
 data Module = Module
     { moduleName :: Text
     , exportedSymbols :: [Text]     -- Symbol names only
@@ -156,20 +174,31 @@ data Module = Module
 type ModuleRegistry = Map Text Module
 ```
 
-### Special Forms
+### Pure Parsing Functions
 
-#### `module` (Registration)
-- Parses module structure
-- Records metadata in registry
-- Stores body for later evaluation
+#### Module Registration (Pure)
+```haskell
+parseModule :: IR Eval -> Either ModuleRegistryError ModuleInfo
+buildRegistry :: [IR Eval] -> Either ModuleRegistryError (ModuleRegistry Eval)
+```
 
-#### `export` (Registration)
-- Collects symbol names for export
-- Only works during module registration
+- `parseModule`: Parses single module IR into structured `ModuleInfo`
+- `buildRegistry`: Builds complete registry from multiple module IRs
+- Pure functions with no evaluation or IO
+- Comprehensive error handling for malformed modules
+
+#### Error Types
+```haskell
+data ModuleRegistryError
+    = InvalidModuleStructure Text
+    | InvalidExportList [IR Eval]
+    | InvalidDefinition (Text, IR Eval)
+    | DuplicateModuleName Text
+```
 
 #### `import` (Runtime)
 - Looks up module in registry
-- Evaluates module body
+- Evaluates module body in isolated environment
 - Merges exported symbols into current environment
 
 ## File Organization
