@@ -3,6 +3,10 @@
 ## Overview
 This document outlines the step-by-step implementation of Reactor's module system with eager registration and lazy evaluation.
 
+**📚 Related Documentation:**
+- [Module System Specification](MODULE_SYSTEM.md) - Complete feature overview and examples
+- [Environment Architecture](MODULE_ENVIRONMENTS.md) - Detailed environment structure for imported modules
+
 ## Current Status
 - ✅ **Design Complete**: Architecture, syntax, and data structures designed
 - ✅ **Documentation**: Comprehensive specification in MODULE_SYSTEM.md

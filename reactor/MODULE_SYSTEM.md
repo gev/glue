@@ -2,6 +2,10 @@
 
 ## Overview
 
+**📚 Related Documentation:**
+- [Environment Architecture](MODULE_ENVIRONMENTS.md) - Detailed environment structure for imported modules
+- [Implementation TODO](MODULE_SYSTEM_TODO.md) - Current implementation progress and roadmap
+
 Reactor implements a clean module system providing separation of code into reusable units with explicit imports and exports.
 
 ## Key Features

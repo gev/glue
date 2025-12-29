@@ -4,6 +4,10 @@
 
 This document describes the environment structure and isolation strategy for Reactor's module system, addressing the question: "Should each imported module have its own environment?"
 
+**📚 Related Documentation:**
+- [Module System Specification](MODULE_SYSTEM.md) - Complete feature overview and examples
+- [Implementation TODO](MODULE_SYSTEM_TODO.md) - Current implementation progress and roadmap
+
 ## Current Environment Structure
 
 ```haskell
