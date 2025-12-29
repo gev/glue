@@ -83,17 +83,21 @@ Single Global Env: [all_modules, all_user_vars, builtins]
 
 #### During Module Import
 
-**Correct Implementation: Fresh Environment with Static Builtins**
+**Correct Implementation: Use Root Environment**
 ```haskell
 importModule :: ModuleName -> Eval ()
 importModule name = do
-    -- Create isolated environment with static builtins only
-    let isolatedEnv = pushFrame (fromFrame Lib.lib)  -- [temp_frame, builtins]
+    -- Get the root environment (original passed to runEval)
+    rootEnv <- getRootEnv  -- [original_libWithModules_frame]
+
+    -- Extract pristine builtins from root environment
+    let builtinsFrame = last rootEnv  -- Always original builtins
+    let isolatedEnv = pushFrame [builtinsFrame]  -- [temp_frame, original_builtins]
 
     -- Evaluate module in isolation
     withIsolatedEnv isolatedEnv $ do
         mod <- lookupModule name
-        forM_ (body mod) eval  -- Only sees builtins + module internals
+        forM_ (body mod) eval  -- Only sees original builtins + module internals
 
     -- Extract exported values
     exportedValues <- extractExports isolatedEnv (exports mod)
@@ -102,8 +106,8 @@ importModule name = do
     mergeExportsIntoCurrent exportedValues
 ```
 
-**Why Static Builtins?**
-Since modules are **eagerly registered** before any Reactor code runs, builtins are static and cannot be dynamically extended. The registration environment contains only the special forms needed for parsing, not the full runtime builtins.
+**Why Root Environment?**
+The root environment contains the **original, unmodified** builtins and module system that were passed to `runEval`. Even if user code modifies the current environment during execution, the root environment remains pristine, ensuring modules always get consistent builtins.
 
 #### Environment Transitions
 
@@ -170,10 +174,18 @@ Each evaluation context maintains its own stack while sharing the common builtin
 
 ### Implementation Considerations
 
-#### Simplified Environment Creation
+#### Root Environment Access
 ```haskell
-createModuleEnv :: Env Eval
-createModuleEnv = pushFrame (fromFrame Lib.lib)  -- [temp_frame, builtins]
+-- Eval monad needs to track root environment separately
+data EvalState = EvalState
+    { currentEnv :: Env Eval
+    , rootEnv :: Env Eval  -- Original environment passed to runEval
+    }
+
+getRootEnv :: Eval (Env Eval)
+getRootEnv = do
+    -- Access the preserved root environment
+    -- Implementation depends on Eval monad structure
 ```
 
 #### Export Merging
