@@ -8,6 +8,7 @@ import Reactor.Env qualified as E
 import Reactor.Eval (Eval, eval, getEnv, liftIO, putEnv, throwError)
 import Reactor.Eval.Error (GeneralError (..))
 import Reactor.IR (Frame, IR (..), Native (..))
+import Reactor.Lib qualified as Lib
 import Reactor.Module (Module (..), ModuleRegistry)
 import Reactor.Module.Registration (RegistryRef)
 
@@ -24,7 +25,7 @@ importForm registry [Symbol moduleName] = do
 
             -- Create isolated environment for module evaluation
             -- Include builtins but not user code
-            let isolatedEnv = E.pushFrame E.emptyEnv  -- Start with builtins frame
+            let isolatedEnv = E.pushFrame (E.fromFrame Lib.lib) -- [temp_frame, builtins]
 
             -- Evaluate each form in the module body
             putEnv isolatedEnv
@@ -34,12 +35,15 @@ importForm registry [Symbol moduleName] = do
             moduleEnv <- getEnv
 
             -- Extract exported symbols
-            let exportedValues = Map.fromList
-                    [ (exportName, case E.lookupVar exportName moduleEnv of
-                        Right val -> val
-                        Left _ -> error $ "Exported symbol not defined: " <> T.unpack exportName)
-                    | exportName <- mod.exports
-                    ]
+            let exportedValues =
+                    Map.fromList
+                        [ ( exportName
+                          , case E.lookupVar exportName moduleEnv of
+                                Right val -> val
+                                Left _ -> error $ "Exported symbol not defined: " <> T.unpack exportName
+                          )
+                        | exportName <- mod.exports
+                        ]
 
             -- Restore original environment
             putEnv currentEnv

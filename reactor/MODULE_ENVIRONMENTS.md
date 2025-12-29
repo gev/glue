@@ -83,43 +83,27 @@ Single Global Env: [all_modules, all_user_vars, builtins]
 
 #### During Module Import
 
-**Current Implementation (Recommended):**
+**Correct Implementation: Fresh Environment with Static Builtins**
 ```haskell
 importModule :: ModuleName -> Eval ()
 importModule name = do
-    -- 1. Get current environment (builtins + user code)
-    currentEnv <- getEnv  -- [user_vars, builtins]
-
-    -- 2. Create isolated evaluation environment
-    let builtinsOnly = extractBuiltinFrames currentEnv  -- [builtins]
-    let isolatedEnv = pushFrame builtinsOnly            -- [temp_frame, builtins]
-
-    -- 3. Evaluate module in isolation
-    withIsolatedEnv isolatedEnv $ do
-        mod <- lookupModule name
-        forM_ (body mod) eval  -- Only sees builtins + module internals
-
-    -- 4. Extract exported values
-    exportedValues <- extractExports isolatedEnv (exports mod)
-
-    -- 5. Merge into current environment
-    mergeExportsIntoCurrent exportedValues
-```
-
-**Alternative: Fresh Environment with Static Builtins**
-```haskell
-importModule :: ModuleName -> Eval ()
-importModule name = do
-    -- Create completely fresh environment with only static builtins
-    let isolatedEnv = pushFrame (fromFrame Lib.lib)  -- [temp_frame, static_builtins]
+    -- Create isolated environment with static builtins only
+    let isolatedEnv = pushFrame (fromFrame Lib.lib)  -- [temp_frame, builtins]
 
     -- Evaluate module in isolation
     withIsolatedEnv isolatedEnv $ do
         mod <- lookupModule name
-        forM_ (body mod) eval  -- Only sees static builtins + module internals
+        forM_ (body mod) eval  -- Only sees builtins + module internals
 
-    -- Extract and merge exported values...
+    -- Extract exported values
+    exportedValues <- extractExports isolatedEnv (exports mod)
+
+    -- Merge into current environment
+    mergeExportsIntoCurrent exportedValues
 ```
+
+**Why Static Builtins?**
+Since modules are **eagerly registered** before any Reactor code runs, builtins are static and cannot be dynamically extended. The registration environment contains only the special forms needed for parsing, not the full runtime builtins.
 
 #### Environment Transitions
 
@@ -186,10 +170,10 @@ Each evaluation context maintains its own stack while sharing the common builtin
 
 ### Implementation Considerations
 
-#### Frame Extraction
+#### Simplified Environment Creation
 ```haskell
-extractBuiltinFrames :: Env m -> Env m
-extractBuiltinFrames env = [last env]  -- Assume builtins are bottom frame
+createModuleEnv :: Env Eval
+createModuleEnv = pushFrame (fromFrame Lib.lib)  -- [temp_frame, builtins]
 ```
 
 #### Export Merging
