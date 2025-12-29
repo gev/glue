@@ -54,10 +54,10 @@ Reactor implements a clean module system providing separation of code into reusa
 ### Two-Phase Process
 
 #### 1. Registration Phase
-- Parse all module IR (pre-compiled)
-- Extract module structure (name, exports, body)
-- Store in global module registry
-- **No evaluation** of module code
+- Evaluate module IR with registration environment
+- `module`, `export`, `def` special forms perform registration
+- Store complete module metadata in global registry
+- Module bodies preserved for runtime evaluation
 
 #### 2. Runtime Phase
 - `(import module.name)` triggers module loading

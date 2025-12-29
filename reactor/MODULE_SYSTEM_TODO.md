@@ -32,12 +32,12 @@ This document outlines the step-by-step implementation of Reactor's module syste
 
 ## Phase 2: Registration System
 
-### 2.1 Module Registration Function
-- [ ] Create `registerModules :: [IR Eval] -> IO ModuleRegistry`
-- [ ] Parse module IR structures
-- [ ] Extract name, exports, body
-- [ ] Store in registry
-- [ ] Handle duplicate modules
+### 2.1 Module Evaluation During Registration
+- [ ] Evaluate module IR with registration environment
+- [ ] `module` special form parses structure and coordinates registration
+- [ ] `def` special forms (registration version) record symbols in registry
+- [ ] `export` special forms collect export lists
+- [ ] Store complete module metadata in global registry
 
 ### 2.2 Module Parsing Logic
 - [ ] Parse `(module name ...)` IR structures
