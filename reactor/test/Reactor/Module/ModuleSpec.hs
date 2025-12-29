@@ -8,6 +8,7 @@ import Reactor.Env qualified as E
 import Reactor.Eval (Eval, runEval)
 import Reactor.IR (IR (..))
 import Reactor.Module (Module (..), ModuleRegistry)
+import Reactor.Module.Import (newImportedCache)
 import Reactor.Module.Registration (RegistryRef, newRegistry, registerModuleFromIR)
 import Reactor.Module.System (libWithModules)
 import Test.Hspec
@@ -45,6 +46,7 @@ spec = do
     describe "Evaluation-based module registration" $ do
         it "registers module with export collection" $ do
             registry <- newRegistry
+            cache <- newImportedCache
             let moduleIR =
                     List
                         [ Symbol "module"
@@ -55,7 +57,7 @@ spec = do
                         ]
 
             -- Register the module
-            let env = E.fromFrame (libWithModules registry)
+            let env = E.fromFrame (libWithModules registry cache)
             result <- runEval (registerModuleFromIR registry moduleIR) env
 
             case result of
@@ -72,6 +74,7 @@ spec = do
 
         it "handles module without exports" $ do
             registry <- newRegistry
+            cache <- newImportedCache
             let moduleIR =
                     List
                         [ Symbol "module"
@@ -79,7 +82,7 @@ spec = do
                         , List [Symbol "def", Symbol "x", Number 42]
                         ]
 
-            let env = E.fromFrame (libWithModules registry)
+            let env = E.fromFrame (libWithModules registry cache)
             result <- runEval (registerModuleFromIR registry moduleIR) env
 
             case result of

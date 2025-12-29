@@ -13,6 +13,7 @@ This document outlines the step-by-step implementation of Reactor's module syste
 - ✅ **Parser Support**: Dots allowed in symbols for module names
 - ✅ **Phase 1 Complete**: Core infrastructure implemented and tested
 - ✅ **Phase 2 Complete**: Enhanced registration system with evaluation-based parsing
+- ✅ **Phase 3 Complete**: Runtime import system with caching implemented and tested
 
 ## Phase 1: Core Infrastructure ✅
 
@@ -67,25 +68,30 @@ This document outlines the step-by-step implementation of Reactor's module syste
 - [x] Test export collection during evaluation
 - [x] Test module registration with complex structures
 
-## Phase 3: Runtime Import System
+## Phase 3: Runtime Import System ✅
 
-### 3.1 Import Evaluation
-- [ ] Lookup module in registry
-- [ ] Evaluate module body in isolated environment
-- [ ] Extract exported symbol values
-- [ ] Merge into current environment frame
+### 3.1 Import Evaluation with Caching
+- [x] Lookup module in registry
+- [x] Check imported module cache first
+- [x] Evaluate module body in isolated environment (first import only)
+- [x] Cache evaluated results for subsequent imports
+- [x] Extract exported symbol values
+- [x] Merge into current environment frame
 
 ### 3.2 Environment Isolation
-- [ ] Create module evaluation environment
-- [ ] Include builtins needed for module execution
-- [ ] Prevent access to user code during module loading
-- [ ] Handle module-level closures correctly
+- [x] Create module evaluation environment with root builtins
+- [x] Include builtins needed for module execution
+- [x] Prevent access to user code during module loading
+- [x] Handle module-level closures correctly
+- [x] Store evaluation context in cache
 
-### 3.3 Symbol Merging
-- [ ] Extract values for exported symbols
-- [ ] Merge into current environment frame
-- [ ] Handle naming conflicts
-- [ ] Preserve lexical scoping
+### 3.3 Symbol Merging and Caching
+- [x] Extract values for exported symbols
+- [x] Merge into current environment frame
+- [x] Handle naming conflicts
+- [x] Preserve lexical scoping
+- [x] Implement ImportedModule data structure
+- [x] Create ImportedModuleCache registry
 
 ## Phase 4: Integration & Testing
 
@@ -135,7 +141,7 @@ This document outlines the step-by-step implementation of Reactor's module syste
 ### Immediate Next Steps
 1. ✅ **Phase 1 Complete** - Core infrastructure implemented
 2. ✅ **Phase 2 Complete** - Enhanced registration with evaluation-based parsing
-3. **Phase 3: Runtime Import System** - Improve import with environment isolation
+3. ✅ **Phase 3 Complete** - Runtime import system with caching implemented
 4. **Phase 4: Integration & Testing** - End-to-end testing and examples
 
 ### Priority Order
@@ -176,10 +182,10 @@ This document outlines the step-by-step implementation of Reactor's module syste
 - [ ] Module functions capture module-level variables correctly
 
 ### Non-Functional Requirements
-- [ ] Efficient: Modules loaded once, cached
-- [ ] Safe: Explicit exports, no accidental pollution
-- [ ] Simple: No complex dependency resolution
-- [ ] Extensible: Easy to add qualified imports, etc.
+- [x] Efficient: Modules loaded once, cached
+- [x] Safe: Explicit exports, no accidental pollution
+- [x] Simple: No complex dependency resolution
+- [x] Extensible: Easy to add qualified imports, etc.
 
 ## Dependencies
 
