@@ -8,6 +8,7 @@ This document outlines the step-by-step implementation of Reactor's module syste
 - ✅ **Documentation**: Comprehensive specification in MODULE_SYSTEM.md
 - ✅ **Parser Support**: Dots allowed in symbols for module names
 - ✅ **Phase 1 Complete**: Core infrastructure implemented and tested
+- ✅ **Phase 2 Complete**: Enhanced registration system with evaluation-based parsing
 
 ## Phase 1: Core Infrastructure ✅
 
@@ -35,27 +36,32 @@ This document outlines the step-by-step implementation of Reactor's module syste
 - [x] Separate module system from core Lib
 - [x] Verify compilation and basic functionality
 
-## Phase 2: Registration System
+## Phase 2: Registration System ✅
 
 ### 2.1 Registration is Evaluation with Special Environment
-- [ ] **Registration = `eval moduleIR` with registration environment**
-- [ ] Create registration environment with special forms: `module`, `export`, `def`
-- [ ] `module` special form: parses structure, coordinates registration
-- [ ] `export` special form: collects export symbol lists
-- [ ] `def` special form: records symbol definitions (no evaluation)
-- [ ] Store complete module metadata in global registry
+- [x] **Registration = `eval moduleIR` with registration environment**
+- [x] Create registration environment with special forms: `module`, `export`, `def`
+- [x] `module` special form: parses structure, coordinates registration
+- [x] `export` special form: collects export symbol lists
+- [x] `def` special form: records symbol definitions (no evaluation)
+- [x] Store complete module metadata in global registry
 
 ### 2.2 Module Parsing Logic
-- [ ] Parse `(module name ...)` IR structures
-- [ ] Extract export lists from `(export ...)` forms
-- [ ] Collect body forms for later evaluation
-- [ ] Validate module structure
+- [x] Parse `(module name ...)` IR structures
+- [x] Extract export lists from `(export ...)` forms
+- [x] Collect body forms for later evaluation
+- [x] Validate module structure
 
 ### 2.3 Registry Management
-- [ ] Global registry storage 
-- [ ] Registry lookup functions
-- [ ] Registry modification functions
-- [ ] Thread-safe operations
+- [x] Global registry storage
+- [x] Registry lookup functions
+- [x] Registry modification functions
+- [x] Thread-safe operations
+
+### 2.4 Testing
+- [x] Unit tests for evaluation-based registration
+- [x] Test export collection during evaluation
+- [x] Test module registration with complex structures
 
 ## Phase 3: Runtime Import System
 
@@ -124,7 +130,7 @@ This document outlines the step-by-step implementation of Reactor's module syste
 
 ### Immediate Next Steps
 1. ✅ **Phase 1 Complete** - Core infrastructure implemented
-2. **Phase 2: Registration System** - Enhance registration with proper environment
+2. ✅ **Phase 2 Complete** - Enhanced registration with evaluation-based parsing
 3. **Phase 3: Runtime Import System** - Improve import with environment isolation
 4. **Phase 4: Integration & Testing** - End-to-end testing and examples
 
