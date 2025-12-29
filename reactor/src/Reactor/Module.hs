@@ -1,6 +1,6 @@
 module Reactor.Module where
 
-import Data.Map.Strict (Map, empty, insert, keys, lookup)
+import Data.Map.Strict (Map, keys, lookup)
 import Data.Text (Text)
 import Reactor.IR (Env, IR)
 import Prelude hiding (lookup)
@@ -20,14 +20,6 @@ instance Eq (Module m) where
 
 -- | Global registry of registered modules
 type ModuleRegistry m = Map Text (Module m)
-
--- | Create an empty module registry
-emptyRegistry :: ModuleRegistry m
-emptyRegistry = empty
-
--- | Insert a module into the registry
-insertModule :: Text -> Module m -> ModuleRegistry m -> ModuleRegistry m
-insertModule = insert
 
 -- | Lookup a module in the registry
 lookupModule :: Text -> ModuleRegistry m -> Maybe (Module m)
