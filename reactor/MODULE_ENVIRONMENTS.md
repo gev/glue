@@ -83,6 +83,7 @@ Single Global Env: [all_modules, all_user_vars, builtins]
 
 #### During Module Import
 
+**Current Implementation (Recommended):**
 ```haskell
 importModule :: ModuleName -> Eval ()
 importModule name = do
@@ -103,6 +104,21 @@ importModule name = do
 
     -- 5. Merge into current environment
     mergeExportsIntoCurrent exportedValues
+```
+
+**Alternative: Fresh Environment with Static Builtins**
+```haskell
+importModule :: ModuleName -> Eval ()
+importModule name = do
+    -- Create completely fresh environment with only static builtins
+    let isolatedEnv = pushFrame (fromFrame Lib.lib)  -- [temp_frame, static_builtins]
+
+    -- Evaluate module in isolation
+    withIsolatedEnv isolatedEnv $ do
+        mod <- lookupModule name
+        forM_ (body mod) eval  -- Only sees static builtins + module internals
+
+    -- Extract and merge exported values...
 ```
 
 #### Environment Transitions
