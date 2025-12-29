@@ -2,11 +2,11 @@
 
 ## Overview
 
-Reactor implements a module system inspired by OCaml, providing clean separation of code into reusable units with explicit imports and exports.
+Reactor implements a clean module system providing separation of code into reusable units with explicit imports and exports.
 
 ## Key Features
 
-- **OCaml-style imports**: `(import module.name)` brings symbols directly into scope
+- **Direct imports**: `(import module.name)` brings symbols directly into scope
 - **Explicit exports**: Only specified symbols are exported from modules
 - **Eager registration, lazy evaluation**: Modules are registered upfront but evaluated only when imported
 - **Lexical scoping**: Imports respect block structure and nesting levels
@@ -147,19 +147,19 @@ stdlib/
 ## Benefits
 
 1. **Clean interfaces**: Explicit exports prevent accidental dependencies
-2. **Flexible imports**: OCaml-style unqualified imports
+2. **Flexible imports**: Direct unqualified imports
 3. **Efficient loading**: Modules loaded once, cached globally
 4. **Scoped imports**: Lexical scoping prevents pollution
 5. **Simple implementation**: No complex dependency resolution
 
 ## Comparison to Other Systems
 
-| Feature | Reactor | Python | JavaScript | OCaml |
-|---------|---------|--------|------------|-------|
-| Import style | Direct | `import`/`from` | `import` | `open` |
-| Export control | Explicit | Implicit | Explicit | Explicit |
-| Scoping | Lexical | Global | Module | Lexical |
-| Loading | Eager reg, lazy eval | Lazy | Lazy | Eager |
+| Feature | Reactor | Python | JavaScript |
+|---------|---------|--------|------------|
+| Import style | Direct | `import`/`from` | `import` |
+| Export control | Explicit | Implicit | Explicit |
+| Scoping | Lexical | Global | Module |
+| Loading | Eager reg, lazy eval | Lazy | Lazy |
 
 ## Future Extensions
 
