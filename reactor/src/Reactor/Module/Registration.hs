@@ -7,15 +7,8 @@ import Data.Text (Text)
 import Reactor.Eval (Eval)
 import Reactor.IR (IR (..))
 import Reactor.Module (Module (..), ModuleRegistry)
+import Reactor.Module.Error (ModuleRegistryError (..))
 import Prelude hiding (mod)
-
--- | Errors during module parsing
-data ModuleRegistryError
-    = InvalidModuleStructure Text
-    | InvalidExportList [IR Eval]
-    | InvalidDefinition (Text, IR Eval)
-    | DuplicateModuleName Text
-    deriving (Show, Eq)
 
 -- | Parse a single module from IR
 parseModule :: IR Eval -> Either ModuleRegistryError ModuleInfo
