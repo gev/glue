@@ -1,8 +1,9 @@
 module Reactor.Module where
 
-import Data.Map.Strict (Map, keys)
+import Data.Map.Strict (Map, empty, insert, keys, lookup)
 import Data.Text (Text)
 import Reactor.IR (Env, IR)
+import Prelude hiding (lookup)
 
 -- | A registered module containing metadata and body for evaluation
 data Module m = Module
@@ -19,6 +20,18 @@ instance Eq (Module m) where
 
 -- | Global registry of registered modules
 type ModuleRegistry m = Map Text (Module m)
+
+-- | Create an empty module registry
+emptyRegistry :: ModuleRegistry m
+emptyRegistry = empty
+
+-- | Insert a module into the registry
+insertModule :: Text -> Module m -> ModuleRegistry m -> ModuleRegistry m
+insertModule = insert
+
+-- | Lookup a module in the registry
+lookupModule :: Text -> ModuleRegistry m -> Maybe (Module m)
+lookupModule = lookup
 
 -- | A cached imported module with evaluated exports and evaluation context
 data ImportedModule m = ImportedModule

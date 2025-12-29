@@ -1,17 +1,16 @@
 module Reactor.Module.ModuleSpec where
 
-import Control.Monad (void)
 import Data.IORef (readIORef)
 import Data.Map.Strict qualified as Map
-import Data.Text (Text)
 import Reactor.Env qualified as E
 import Reactor.Eval (Eval, runEval)
 import Reactor.IR (IR (..))
-import Reactor.Module (Module (..), ModuleRegistry)
+import Reactor.Module (Module (..), ModuleRegistry, emptyRegistry, insertModule, lookupModule)
 import Reactor.Module.Import (newImportedCache)
-import Reactor.Module.Registration (RegistryRef, newRegistry, registerModuleFromIR)
+import Reactor.Module.Registration (newRegistry, registerModuleFromIR)
 import Reactor.Module.System (libWithModules)
 import Test.Hspec
+import Prelude hiding (mod)
 
 spec :: Spec
 spec = do
@@ -29,19 +28,19 @@ spec = do
 
     describe "ModuleRegistry operations" $ do
         it "empty registry" $ do
-            let registry = Map.empty :: ModuleRegistry Eval
+            let registry = emptyRegistry :: ModuleRegistry Eval
             Map.size registry `shouldBe` 0
 
         it "adds and retrieves modules" $ do
             let mod = Module "test.mod" ["x"] [Number 1]
-                registry = Map.singleton "test.mod" mod
-            case Map.lookup "test.mod" registry of
+                registry = insertModule "test.mod" mod emptyRegistry
+            case lookupModule "test.mod" registry of
                 Just m -> name m `shouldBe` "test.mod"
                 Nothing -> expectationFailure "Module not found"
 
         it "handles missing modules" $ do
-            let registry = Map.empty :: ModuleRegistry Eval
-            Map.lookup "nonexistent" registry `shouldBe` Nothing
+            let registry = emptyRegistry :: ModuleRegistry Eval
+            lookupModule "nonexistent" registry `shouldBe` Nothing
 
     describe "Evaluation-based module registration" $ do
         it "registers module with export collection" $ do
