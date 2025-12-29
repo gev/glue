@@ -2,11 +2,56 @@
 
 ## Overview
 
-This document describes the **root environment approach** for Reactor's module system, where each imported module gets its own evaluation environment derived from the original environment passed to `runEval`.
+This document describes Reactor's **dual-registry module system** with lazy evaluation and caching. The system uses separate registries for module registration (metadata) and imported modules (cached evaluation results), ensuring modules are evaluated once and cached globally.
 
 **📚 Related Documentation:**
 - [Module System Specification](MODULE_SYSTEM.md) - Complete feature overview and examples
 - [Implementation TODO](MODULE_SYSTEM_TODO.md) - Current implementation progress and roadmap
+
+## Dual-Registry Architecture
+
+Reactor uses **two separate registries** to manage the module lifecycle:
+
+### 1. Module Registry (Registration)
+```haskell
+type ModuleRegistry m = Map Text (Module m)
+
+data Module m = Module
+    { name :: Text
+    , exports :: [Text]
+    , body :: [IR m]  -- IR forms for evaluation
+    }
+```
+- **Purpose**: Stores module metadata from registration phase
+- **Population**: Filled during module declaration evaluation
+- **Content**: Static metadata, never modified after registration
+
+### 2. Imported Module Cache (Runtime)
+```haskell
+type ImportedModuleCache m = Map Text (ImportedModule m)
+
+data ImportedModule m = ImportedModule
+    { moduleName :: Text
+    , exportedValues :: Map Text (IR m)  -- Cached exports
+    , evaluationRootEnv :: Env m         -- Root env used for evaluation
+    }
+```
+- **Purpose**: Caches evaluated module results for reuse
+- **Population**: Filled lazily on first import
+- **Content**: Runtime evaluation results + evaluation context
+
+### Lazy Evaluation with Caching
+
+**Registration Phase** (Eager):
+- Parse module declarations
+- Store metadata in Module Registry
+- No evaluation of module body
+
+**Import Phase** (Lazy with Caching):
+- **First import**: Evaluate module body, cache results in Imported Cache
+- **Subsequent imports**: Return cached results directly
+
+This ensures modules are evaluated **once globally**, matching JavaScript's behavior while avoiding unnecessary computation for unused modules.
 
 ## Environment Structure
 
@@ -41,27 +86,35 @@ Root Environment (original passed to runEval)
 
 #### During Module Import
 
-**Correct Implementation: Use Root Environment**
+**Implementation: Check Cache First, Evaluate if Needed**
 ```haskell
 importModule :: ModuleName -> Eval ()
 importModule name = do
-    -- Get the root environment (original passed to runEval)
-    rootEnv <- getRootEnv  -- [original_libWithModules_frame]
+    -- Check if module already imported (cached)
+    cached <- lookupImportedCache name
+    case cached of
+        Just imported -> do
+            -- Use cached results
+            mergeExportsIntoCurrent (exportedValues imported)
+        Nothing -> do
+            -- First import: evaluate and cache
+            rootEnv <- getRootEnv
 
-    -- Extract pristine builtins from root environment
-    let builtinsFrame = last rootEnv  -- Always original builtins
-    let isolatedEnv = pushFrame [builtinsFrame]  -- [temp_frame, original_builtins]
+            -- Create isolated environment for evaluation
+            let builtinsFrame = last rootEnv
+            let isolatedEnv = pushFrame [builtinsFrame]
 
-    -- Evaluate module in isolation
-    withIsolatedEnv isolatedEnv $ do
-        mod <- lookupModule name
-        forM_ (body mod) eval  -- Only sees original builtins + module internals
+            -- Evaluate module in isolation
+            withIsolatedEnv isolatedEnv $ do
+                mod <- lookupModule name
+                forM_ (body mod) eval
 
-    -- Extract exported values
-    exportedValues <- extractExports isolatedEnv (exports mod)
+            -- Extract and cache exported values
+            exportedValues <- extractExports isolatedEnv (exports mod)
+            cacheImportedModule name exportedValues rootEnv
 
-    -- Merge into current environment
-    mergeExportsIntoCurrent exportedValues
+            -- Merge into current environment
+            mergeExportsIntoCurrent exportedValues
 ```
 
 **Why Root Environment?**
@@ -121,14 +174,22 @@ Each evaluation context maintains its own stack while sharing the common builtin
 ### Performance Characteristics
 
 #### Memory Efficiency
-- Builtins shared across all modules (not duplicated)
-- Temporary evaluation frames cleaned up after import
-- Only exported values retained in importing environment
+- **Builtins shared** across all modules (not duplicated)
+- **Cached exports** stored globally in Imported Cache
+- **Temporary frames** cleaned up after first evaluation
+- **Per-import environments** created but reused from cache
 
 #### Lookup Performance
-- Variable lookups: O(depth) where depth is stack height
-- Shared builtins reduce average lookup time
-- Cache-friendly for frequently accessed builtins
+- **First import**: O(evaluation_cost) - module body execution
+- **Subsequent imports**: O(1) - direct cache lookup
+- **Variable lookups**: O(depth) where depth is stack height
+- **Shared builtins** reduce average lookup time
+- **Cache-friendly** for frequently accessed modules
+
+#### Caching Benefits
+- **Global sharing**: One evaluation serves all importers
+- **Lazy loading**: Unused modules never evaluated
+- **Consistent performance**: Predictable import costs after first use
 
 ### Implementation Considerations
 
@@ -165,15 +226,6 @@ withIsolatedEnv isolatedEnv action = do
     putEnv originalEnv
     pure result
 ```
-
-## Comparison with Other Languages
-
-| Language | Environment Structure | Isolation Level |
-|----------|----------------------|-----------------|
-| Reactor | Shared builtins, isolated stacks | High (module-level) |
-| Python | Global module dicts | Medium (module-level) |
-| JavaScript | Prototype chains | Low (property access) |
-| Common Lisp | Dynamic environments | High (lexical + dynamic) |
 
 ## Future Extensions
 
