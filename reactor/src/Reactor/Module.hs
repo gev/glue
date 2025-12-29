@@ -3,7 +3,7 @@ module Reactor.Module where
 import Data.Map.Strict (Map, keys, lookup)
 import Data.Text (Text)
 import Reactor.IR (Env, IR)
-import Prelude hiding (lookup)
+import Prelude hiding (lookup, mod)
 
 -- | A registered module containing metadata and body for evaluation
 data Module m = Module

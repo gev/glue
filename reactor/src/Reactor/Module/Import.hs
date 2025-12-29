@@ -2,15 +2,14 @@ module Reactor.Module.Import where
 
 import Data.IORef (IORef, modifyIORef, newIORef, readIORef)
 import Data.Map.Strict qualified as Map
-import Data.Text (Text)
 import Data.Text qualified as T
 import Reactor.Env qualified as E
 import Reactor.Eval (Eval, eval, getEnv, liftIO, putEnv, throwError)
 import Reactor.Eval.Error (GeneralError (..))
-import Reactor.IR (Env, Frame, IR (..), Native (..))
-import Reactor.Lib qualified as Lib
-import Reactor.Module (ImportedModule (..), ImportedModuleCache, Module (..), ModuleRegistry)
+import Reactor.IR (Frame, IR (..), Native (..))
+import Reactor.Module (ImportedModule (..), ImportedModuleCache, Module (..))
 import Reactor.Module.Registration (RegistryRef)
+import Prelude hiding (mod)
 
 -- | Global cache reference for imported modules
 type ImportedCacheRef m = IORef (ImportedModuleCache m)

@@ -12,9 +12,8 @@ module Reactor.Eval (
 ) where
 
 import Control.Monad (ap, liftM)
-import Data.Map (Map)
 import Data.Map.Strict qualified as Map
-import Data.Maybe (catMaybes, fromMaybe)
+import Data.Maybe (catMaybes)
 import Data.Text (Text)
 import Data.Text qualified as T
 import Data.Typeable (Typeable)
