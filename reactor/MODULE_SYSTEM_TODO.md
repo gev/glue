@@ -32,11 +32,12 @@ This document outlines the step-by-step implementation of Reactor's module syste
 
 ## Phase 2: Registration System
 
-### 2.1 Module Evaluation During Registration
-- [ ] Evaluate module IR with registration environment
-- [ ] `module` special form parses structure and coordinates registration
-- [ ] `def` special forms (registration version) record symbols in registry
-- [ ] `export` special forms collect export lists
+### 2.1 Registration is Evaluation with Special Environment
+- [ ] **Registration = `eval moduleIR` with registration environment**
+- [ ] Create registration environment with special forms: `module`, `export`, `def`
+- [ ] `module` special form: parses structure, coordinates registration
+- [ ] `export` special form: collects export symbol lists
+- [ ] `def` special form: records symbol definitions (no evaluation)
 - [ ] Store complete module metadata in global registry
 
 ### 2.2 Module Parsing Logic
