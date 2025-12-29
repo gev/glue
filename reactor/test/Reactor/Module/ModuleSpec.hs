@@ -1,11 +1,11 @@
-module Reactor.ModuleSpec where
+module Reactor.Module.ModuleSpec where
 
 import Control.Monad (void)
 import Data.IORef (readIORef)
 import Data.Map.Strict qualified as Map
 import Data.Text (Text)
-import Reactor.Eval (Eval, runEval)
 import Reactor.Env qualified as E
+import Reactor.Eval (Eval, runEval)
 import Reactor.IR (IR (..))
 import Reactor.Module (Module (..), ModuleRegistry)
 import Reactor.Module.Registration (RegistryRef, newRegistry, registerModuleFromIR)
@@ -16,11 +16,12 @@ spec :: Spec
 spec = do
     describe "Module data structure" $ do
         it "creates module correctly" $ do
-            let mod = Module
-                    { name = "test.module"
-                    , exports = ["func1", "func2"]
-                    , body = [Symbol "def", Symbol "func1", Number 42]
-                    }
+            let mod =
+                    Module
+                        { name = "test.module"
+                        , exports = ["func1", "func2"]
+                        , body = [Symbol "def", Symbol "func1", Number 42]
+                        }
             name mod `shouldBe` "test.module"
             exports mod `shouldBe` ["func1", "func2"]
             length (body mod) `shouldBe` 3
@@ -44,13 +45,14 @@ spec = do
     describe "Evaluation-based module registration" $ do
         it "registers module with export collection" $ do
             registry <- newRegistry
-            let moduleIR = List
-                    [ Symbol "module"
-                    , Symbol "test.math"
-                    , List [Symbol "export", Symbol "add", Symbol "multiply"]
-                    , List [Symbol "def", Symbol "add", List [Symbol "lambda", List [Symbol "a", Symbol "b"], List [Symbol "+", Symbol "a", Symbol "b"]]]
-                    , List [Symbol "def", Symbol "multiply", List [Symbol "lambda", List [Symbol "a", Symbol "b"], List [Symbol "*", Symbol "a", Symbol "b"]]]
-                    ]
+            let moduleIR =
+                    List
+                        [ Symbol "module"
+                        , Symbol "test.math"
+                        , List [Symbol "export", Symbol "add", Symbol "multiply"]
+                        , List [Symbol "def", Symbol "add", List [Symbol "lambda", List [Symbol "a", Symbol "b"], List [Symbol "+", Symbol "a", Symbol "b"]]]
+                        , List [Symbol "def", Symbol "multiply", List [Symbol "lambda", List [Symbol "a", Symbol "b"], List [Symbol "*", Symbol "a", Symbol "b"]]]
+                        ]
 
             -- Register the module
             let env = E.fromFrame (libWithModules registry)
@@ -64,17 +66,18 @@ spec = do
                         Just mod -> do
                             name mod `shouldBe` "test.math"
                             exports mod `shouldBe` ["add", "multiply"]
-                            length (body mod) `shouldBe` 2  -- Two def forms
+                            length (body mod) `shouldBe` 2 -- Two def forms
                         Nothing -> expectationFailure "Module not registered"
                 Left err -> expectationFailure $ "Registration failed: " ++ show err
 
         it "handles module without exports" $ do
             registry <- newRegistry
-            let moduleIR = List
-                    [ Symbol "module"
-                    , Symbol "test.empty"
-                    , List [Symbol "def", Symbol "x", Number 42]
-                    ]
+            let moduleIR =
+                    List
+                        [ Symbol "module"
+                        , Symbol "test.empty"
+                        , List [Symbol "def", Symbol "x", Number 42]
+                        ]
 
             let env = E.fromFrame (libWithModules registry)
             result <- runEval (registerModuleFromIR registry moduleIR) env
