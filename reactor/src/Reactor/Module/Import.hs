@@ -24,8 +24,9 @@ importForm registry [Symbol moduleName] = do
             currentEnv <- getEnv
 
             -- Create isolated environment for module evaluation
-            -- Include builtins but not user code
-            let isolatedEnv = E.pushFrame (E.fromFrame Lib.lib) -- [temp_frame, builtins]
+            -- Extract initial builtins frame from current environment
+            let builtinsFrame = last currentEnv -- Builtins are the bottom frame
+            let isolatedEnv = E.pushFrame [builtinsFrame] -- [temp_frame, builtins]
 
             -- Evaluate each form in the module body
             putEnv isolatedEnv
