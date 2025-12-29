@@ -7,6 +7,7 @@ import Data.Text (Text)
 import Reactor.Eval (Eval)
 import Reactor.IR (IR (..))
 import Reactor.Module (Module (..), ModuleRegistry)
+import Prelude hiding (mod)
 
 -- | Errors during module parsing
 data ModuleRegistryError

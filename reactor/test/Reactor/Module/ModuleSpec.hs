@@ -2,13 +2,10 @@ module Reactor.Module.ModuleSpec where
 
 import Data.IORef (readIORef)
 import Data.Map.Strict qualified as Map
-import Reactor.Env qualified as E
-import Reactor.Eval (Eval, liftIO, runEval)
+import Reactor.Eval (Eval)
 import Reactor.IR (IR (..))
 import Reactor.Module (Module (..), ModuleRegistry, lookupModule)
-import Reactor.Module.Import (newImportedCache)
 import Reactor.Module.Registration (newRegistry, registerModuleFromIR)
-import Reactor.Module.System (libWithModules)
 import Test.Hspec
 import Prelude hiding (mod)
 
@@ -34,7 +31,6 @@ spec = do
     describe "Evaluation-based module registration" $ do
         it "registers module with export collection" $ do
             registry <- newRegistry
-            cache <- newImportedCache
             let moduleIR =
                     List
                         [ Symbol "module"
@@ -61,7 +57,6 @@ spec = do
 
         it "handles module without exports" $ do
             registry <- newRegistry
-            cache <- newImportedCache
             let moduleIR =
                     List
                         [ Symbol "module"
