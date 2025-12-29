@@ -47,7 +47,7 @@ This document outlines the step-by-step implementation of Reactor's module syste
 - [ ] Validate module structure
 
 ### 2.3 Registry Management
-- [ ] Global registry storage (IORef)
+- [ ] Global registry storage 
 - [ ] Registry lookup functions
 - [ ] Registry modification functions
 - [ ] Thread-safe operations
