@@ -2,13 +2,13 @@
 
 ## Overview
 
-This document describes the environment structure and isolation strategy for Reactor's module system, addressing the question: "Should each imported module have its own environment?"
+This document describes the **root environment approach** for Reactor's module system, where each imported module gets its own evaluation environment derived from the original environment passed to `runEval`.
 
 **📚 Related Documentation:**
 - [Module System Specification](MODULE_SYSTEM.md) - Complete feature overview and examples
 - [Implementation TODO](MODULE_SYSTEM_TODO.md) - Current implementation progress and roadmap
 
-## Current Environment Structure
+## Environment Structure
 
 ```haskell
 type Env m = [Frame m]        -- Stack of frames
@@ -17,67 +17,25 @@ type Frame m = Map Text (IR m) -- Single frame with bindings
 
 Environments are stacks of frames, searched from top to bottom for variable lookups.
 
-## Environment Structure Options
+## Root Environment Approach
 
-### Option 1: Each Module Gets Its Own Complete Env Stack
-
-```
-Main Program Env: [user_vars, builtins]
-├── Module A Env: [module_a_vars, builtins]
-├── Module B Env: [module_b_vars, builtins]
-└── Module C Env: [module_c_vars, builtins]
-```
-
-**Characteristics:**
-- Each module has a complete, independent environment stack
-- Redundant builtin frames across modules
-- No sharing of imported modules
-- Complex tree management and memory usage
-
-**Problems:**
-- Memory inefficient (builtins duplicated)
-- No sharing of transitively imported modules
-- Complex ownership and lifecycle management
-
-### Option 2: Shared Builtins, Isolated Evaluation Stacks ⭐ (Recommended)
+The system maintains a **tree of evaluation environments** where each module import creates a new branch from the root environment.
 
 ```
-Global Builtins: [builtins_frame] (shared)
-
-Main Program: [user_vars, builtins_frame]
-├── Module A Evaluation: [module_a_temp_vars, builtins_frame]
-├── Module B Evaluation: [module_b_temp_vars, builtins_frame]
-└── Module C Evaluation: [module_c_temp_vars, builtins_frame]
-
-After Import: [imported_symbols, user_vars, builtins_frame]
+Root Environment (original passed to runEval)
+├── Main Program: [user_vars, builtins_frame]
+│   ├── Module A Import: [module_temp, builtins_frame]
+│   ├── Module B Import: [module_temp, builtins_frame]
+│   └── Function Call: [local_vars, user_vars, builtins_frame]
+└── REPL Session: [repl_vars, builtins_frame]
 ```
 
-**Characteristics:**
-- Builtins shared across all contexts
-- Each module evaluation gets isolated stack
-- Exported values merge into importing environment
-- Tree-like structure emerges naturally
+### Key Properties
 
-### Option 3: Flat Global Environment
-
-```
-Single Global Env: [all_modules, all_user_vars, builtins]
-```
-
-**Problems:**
-- No isolation during module loading
-- Security vulnerabilities (modules can access user code)
-- Naming conflicts between modules
-- No proper scoping
-
-## Recommended Approach: Option 2
-
-### Why This Structure?
-
-**Security:** Modules cannot access user code during loading
-**Efficiency:** Builtins shared, not duplicated
-**Isolation:** Each evaluation context is separate
-**Clean Merging:** Exported values integrate seamlessly
+- **Root Preservation**: Original environment never modified
+- **Branch Isolation**: Each evaluation context gets its own stack
+- **Shared Builtins**: Common builtin frame shared across all contexts
+- **Clean Merging**: Exported symbols integrate into importing scope
 
 ### Implementation Details
 
