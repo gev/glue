@@ -10,4 +10,13 @@ import Reactor.Lib.Math qualified as Math
 import Reactor.Lib.Math.Arithmetic qualified as Arithmetic
 
 lib :: Frame Eval
-lib = E.unionFrames Builtin.builtin (E.unionFrames Bool.bool (E.unionFrames List.list (E.unionFrames Arithmetic.arithmetic Math.math)))
+lib =
+    E.unionFrames
+        Builtin.builtin
+        ( E.unionFrames
+            Bool.bool
+            ( E.unionFrames
+                List.list
+                (E.unionFrames Arithmetic.arithmetic Math.math)
+            )
+        )

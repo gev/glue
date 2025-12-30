@@ -6,6 +6,7 @@ import Reactor.Eval (Eval, EvalState (..), eval, runEval)
 import Reactor.IR (IR (..))
 import Reactor.Lib (lib)
 import Reactor.Module (Module (..), ModuleRegistry)
+import Reactor.Module.Cache qualified as Cache
 import Reactor.Module.Registration (buildRegistry)
 import Reactor.Module.System (libWithModules)
 import Test.Hspec
@@ -31,12 +32,13 @@ spec = do
                     let initialEnv = E.fromFrame (Map.union lib libWithModules)
 
                     -- Create initial eval state with registry
-                    let initialState = EvalState
-                            { env = initialEnv
-                            , context = []
-                            , registry = registry
-                            , importCache = Map.empty
-                            }
+                    let initialState =
+                            EvalState
+                                { env = initialEnv
+                                , context = []
+                                , registry = registry
+                                , importCache = Cache.emptyCache
+                                }
 
                     -- Evaluate import
                     let importIR = List [Symbol "import", Symbol "test.import"]

@@ -2,9 +2,9 @@ module Reactor.Module.RegistrationSpec where
 
 import Data.Map.Strict qualified as Map
 import Reactor.Eval (Eval)
+import Reactor.IR (IR (..))
 import Reactor.Module (Module (..), ModuleRegistry, lookupModule)
 import Reactor.Module.Registration (buildRegistry, registerModule, registerModules)
-import Reactor.IR (IR (..))
 import Test.Hspec
 import Prelude hiding (mod)
 
@@ -43,7 +43,7 @@ spec = do
             case registerModule registry moduleIR of
                 Right newRegistry -> do
                     -- Check that module was registered
-                    case Map.lookup "test.math" newRegistry of
+                    case lookupModule "test.math" newRegistry of
                         Just mod -> do
                             name mod `shouldBe` "test.math"
                             exports mod `shouldBe` ["add", "multiply"]
@@ -62,7 +62,7 @@ spec = do
 
             case registerModule registry moduleIR of
                 Right newRegistry -> do
-                    case Map.lookup "test.empty" newRegistry of
+                    case lookupModule "test.empty" newRegistry of
                         Just mod -> do
                             name mod `shouldBe` "test.empty"
                             exports mod `shouldBe` []

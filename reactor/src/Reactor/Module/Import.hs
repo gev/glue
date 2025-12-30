@@ -37,7 +37,7 @@ importForm [Symbol moduleName] = do
 
                     -- Evaluate module body in isolation
                     putEnv isolatedEnv
-                    mapM_ (\form -> eval form >> pure ()) mod.body
+                    mapM_ eval mod.body
 
                     -- Get the environment after evaluation
                     moduleEnv <- getEnv
