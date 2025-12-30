@@ -36,6 +36,7 @@ spec = do
                                 , context = []
                                 , registry = registry
                                 , importCache = Cache.emptyCache
+                                , rootEnv = initialEnv
                                 }
 
                     -- Evaluate import
@@ -49,5 +50,59 @@ spec = do
                                 Right (Number 123) -> pure ()
                                 Right val -> expectationFailure $ "Wrong value imported: " ++ show val
                                 Left err -> expectationFailure $ "Symbol not found after import: " ++ show err
+                        Right (val, _) -> expectationFailure $ "Import should return Nothing, got: " ++ show val
+                        Left err -> expectationFailure $ "Import failed: " ++ show err
+
+        it "does not pollute the current environment during import" $ do
+            -- Create module IR that defines some internal variables
+            let moduleIR =
+                    List
+                        [ Symbol "module"
+                        , Symbol "test.pollution"
+                        , List [Symbol "export", Symbol "public"]
+                        , List [Symbol "def", Symbol "internal", Number 999] -- Internal variable
+                        , List [Symbol "def", Symbol "public", Number 456] -- Exported variable
+                        ]
+
+            -- Build registry
+            case buildRegistry [moduleIR] of
+                Left err -> expectationFailure $ "Registry build failed: " ++ show err
+                Right registry -> do
+                    -- Create initial environment with some pre-existing variables
+                    let baseEnv = E.fromFrame (E.unionFrames lib libWithModules)
+                    let initialEnv = E.defineVar "preexisting" (Number 123) baseEnv
+
+                    -- Create initial eval state with registry
+                    let initialState =
+                            EvalState
+                                { env = initialEnv
+                                , context = []
+                                , registry = registry
+                                , importCache = Cache.emptyCache
+                                , rootEnv = initialEnv
+                                }
+
+                    -- Evaluate import
+                    let importIR = List [Symbol "import", Symbol "test.pollution"]
+                    result <- runEval (eval importIR) initialState
+
+                    case result of
+                        Right (Nothing, finalState) -> do
+                            -- Check that pre-existing variable is still there
+                            case E.lookupVar "preexisting" finalState.env of
+                                Right (Number 123) -> pure ()
+                                Right val -> expectationFailure $ "Pre-existing variable changed: " ++ show val
+                                Left err -> expectationFailure $ "Pre-existing variable lost: " ++ show err
+
+                            -- Check that exported symbol is available
+                            case E.lookupVar "public" finalState.env of
+                                Right (Number 456) -> pure ()
+                                Right val -> expectationFailure $ "Wrong exported value: " ++ show val
+                                Left err -> expectationFailure $ "Exported symbol not found: " ++ show err
+
+                            -- Check that internal module variable is NOT available (no pollution)
+                            case E.lookupVar "internal" finalState.env of
+                                Right _ -> expectationFailure "Internal module variable leaked into environment"
+                                Left _ -> pure () -- This is expected - internal vars should not be visible
                         Right (val, _) -> expectationFailure $ "Import should return Nothing, got: " ++ show val
                         Left err -> expectationFailure $ "Import failed: " ++ show err

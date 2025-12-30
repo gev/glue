@@ -8,6 +8,8 @@ module Reactor.Eval (
     throwError,
     getEnv,
     putEnv,
+    getRootEnv,
+    putRootEnv,
     getState,
     putState,
     getRegistry,
@@ -39,6 +41,7 @@ data EvalState = EvalState
     , context :: Context
     , registry :: ModuleRegistry Eval
     , importCache :: ImportedModuleCache Eval
+    , rootEnv :: Env
     }
 
 newtype Eval a = Eval
@@ -64,6 +67,12 @@ getEnv = Eval $ \state -> pure $ Right (state.env, state)
 
 putEnv :: Env -> Eval ()
 putEnv newEnv = Eval $ \state -> pure $ Right ((), state{env = newEnv})
+
+getRootEnv :: Eval Env
+getRootEnv = Eval $ \state -> pure $ Right (state.rootEnv, state)
+
+putRootEnv :: Env -> Eval ()
+putRootEnv newRootEnv = Eval $ \state -> pure $ Right ((), state{rootEnv = newRootEnv})
 
 getState :: Eval EvalState
 getState = Eval $ \state -> pure $ Right (state, state)
@@ -230,6 +239,7 @@ runEvalLegacy evalAction initialEnv = do
                 , context = []
                 , registry = emptyRegistry -- Empty registry for legacy compatibility
                 , importCache = Map.empty
+                , rootEnv = initialEnv
                 }
     result <- runEval evalAction initialState
     case result of

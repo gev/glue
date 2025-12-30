@@ -3,8 +3,8 @@ module Reactor.Module.Import where
 import Data.Map.Strict qualified as Map
 import Data.Text qualified as T
 import Reactor.Env qualified as E
-import Reactor.Eval (Eval, eval, getCache, getEnv, getRegistry, putCache, putEnv, throwError)
-import Reactor.Eval.Error (GeneralError (..))
+import Reactor.Eval (Eval, EvalState (..), eval, getCache, getEnv, getRegistry, getRootEnv, getState, liftIO, putCache, putEnv, runEval, throwError)
+import Reactor.Eval.Error (EvalError (..), GeneralError (..))
 import Reactor.IR (Frame, IR (..), Native (..))
 import Reactor.Module (ImportedModule (..), RegisteredModule (..))
 import Reactor.Module.Cache qualified as Cache
@@ -30,32 +30,35 @@ importForm [Symbol moduleName] = do
                 Nothing -> do
                     -- First import: evaluate module
                     -- Get root environment for consistent evaluation
-                    rootEnv <- getEnv -- Current env contains root builtins
+                    rootEnv <- getRootEnv -- Initial env contains root builtins
 
                     -- Create isolated environment for module evaluation
                     let builtinsFrame = last rootEnv -- Builtins are the bottom frame
                     let isolatedEnv = E.pushFrame [builtinsFrame] -- [temp_frame, builtins]
 
-                    -- Evaluate module body in isolation
-                    putEnv isolatedEnv
-                    mapM_ eval mod.body
+                    -- Get current evaluation state for isolated evaluation
+                    currentState <- Reactor.Eval.getState
 
-                    -- Get the environment after evaluation
-                    moduleEnv <- getEnv
+                    -- Create isolated state for module evaluation
+                    let isolatedState = currentState{Reactor.Eval.env = isolatedEnv}
 
-                    -- Extract exported symbols
-                    let exportedValues =
-                            Map.fromList
-                                [ ( exportName
-                                  , case E.lookupVar exportName moduleEnv of
-                                        Right val -> val
-                                        Left _ -> error $ "Exported symbol not defined: " <> T.unpack exportName
-                                  )
-                                | exportName <- mod.exports
-                                ]
+                    -- Evaluate module in complete isolation (doesn't affect current state)
+                    moduleEvalResult <- liftIO $ runEval (mapM eval mod.body) isolatedState
 
-                    -- Restore original environment
-                    putEnv rootEnv
+                    -- Extract exported symbols from isolated evaluation
+                    exportedValues <- case moduleEvalResult of
+                        Left (EvalError _ innerErr) -> throwError innerErr
+                        Right (_, finalIsolatedState) -> do
+                            let moduleEnv = Reactor.Eval.env finalIsolatedState
+                            pure $
+                                Map.fromList
+                                    [ ( exportName
+                                      , case E.lookupVar exportName moduleEnv of
+                                            Right val -> val
+                                            Left _ -> error $ "Exported symbol not defined: " <> T.unpack exportName
+                                      )
+                                    | exportName <- mod.exports
+                                    ]
 
                     -- Create imported module record
                     let importedModule =
