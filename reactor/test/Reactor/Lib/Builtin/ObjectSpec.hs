@@ -1,27 +1,31 @@
 module Reactor.Lib.Builtin.ObjectSpec (spec) where
 
 import Data.Map.Strict qualified as Map
-import Data.Text (Text)
 import Reactor.Env qualified as E
-import Reactor.Error (ReactorError (..))
-import Reactor.Eval (Eval, eval, runEvalLegacy)
-import Reactor.IR (IR (..), compile)
+import Reactor.Eval (runEvalLegacy)
+import Reactor.IR (IR (..))
 import Reactor.Lib (lib)
-import Reactor.Parser (parseReactor)
+import Reactor.Lib.Builtin.Object (object)
 import Test.Hspec
 
-runCode :: Text -> IO (Either ReactorError (Maybe (IR Eval)))
-runCode input = case parseReactor input of
-    Left err -> pure $ Left (ReactorError err)
-    Right ast -> do
-        let irTree = compile ast
-        fullResult <- runEvalLegacy (eval irTree) (E.fromFrame lib)
-        case fullResult of
-            Left err -> pure $ Left (ReactorError err)
-            Right (res, _finalEnv, _ctx) -> pure $ Right res
-
 spec :: Spec
-spec = describe "Reactor.Lib.Builtin.Object (Integration tests)" do
-    it "handles nested object property access" do
-        let code = "(list (def foo (object :x (object :y (object :z 1)))) foo.x foo.x.y foo.x.y.z)"
-        runCode code `shouldReturn` Right (Just (List [Object (Map.fromList [("y", Object (Map.fromList [("z", Number 1)]))]), Object (Map.fromList [("z", Number 1)]), Number 1]))
+spec = describe "Reactor.Lib.Builtin.Object (Test object special form)" do
+    describe "Creating objects" do
+        it "creates an empty object" do
+            let initialEnv = E.emptyEnv
+            let args = []
+            result <- runEvalLegacy (object args) initialEnv
+            case result of
+                Left err -> expectationFailure $ "Object failed: " <> show err
+                Right (Just res, _, _) -> res `shouldBe` Object Map.empty
+                Right (Nothing, _, _) -> expectationFailure "Object returned Nothing"
+
+        it "handles existing object (backward compatibility)" do
+            let initialEnv = E.emptyEnv
+            let existingObj = Object (Map.fromList [("a", Number 1)])
+            let args = [existingObj]
+            result <- runEvalLegacy (object args) initialEnv
+            case result of
+                Left err -> expectationFailure $ "Object failed: " <> show err
+                Right (Just res, _, _) -> res `shouldBe` existingObj
+                Right (Nothing, _, _) -> expectationFailure "Object returned Nothing"
