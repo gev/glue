@@ -10,6 +10,9 @@ module Reactor.Eval (
     putEnv,
     getState,
     putState,
+    getRegistry,
+    getCache,
+    putCache,
     defineVarEval,
     updateVarEval,
     liftIO,
@@ -66,6 +69,15 @@ getState = Eval $ \state -> pure $ Right (state, state)
 
 putState :: EvalState -> Eval ()
 putState newState = Eval $ \_ -> pure $ Right ((), newState)
+
+getRegistry :: Eval (ModuleRegistry Eval)
+getRegistry = Eval $ \state -> pure $ Right (state.registry, state)
+
+getCache :: Eval (ImportedModuleCache Eval)
+getCache = Eval $ \state -> pure $ Right (state.importCache, state)
+
+putCache :: ImportedModuleCache Eval -> Eval ()
+putCache newCache = Eval $ \state -> pure $ Right ((), state{importCache = newCache})
 
 pushContext :: Text -> Eval ()
 pushContext name = Eval $ \state -> pure $ Right ((), state{context = name : state.context})
