@@ -1,6 +1,5 @@
 module Reactor.Module.ImportSpec where
 
-import Data.Map.Strict qualified as Map
 import Reactor.Env qualified as E
 import Reactor.Eval (EvalState (..), eval, runEval)
 import Reactor.IR (IR (..))
@@ -28,7 +27,7 @@ spec = do
                 Left err -> expectationFailure $ "Registry build failed: " ++ show err
                 Right registry -> do
                     -- Create initial environment with import function
-                    let initialEnv = E.fromFrame (Map.union lib libWithModules)
+                    let initialEnv = E.fromFrame (E.unionFrames lib libWithModules)
 
                     -- Create initial eval state with registry
                     let initialState =
