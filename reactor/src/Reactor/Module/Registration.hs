@@ -1,7 +1,6 @@
 module Reactor.Module.Registration where
 
 import Control.Monad (foldM)
-import Data.IORef (IORef, modifyIORef, newIORef)
 import Data.Map.Strict qualified as Map
 import Data.Text (Text)
 import Reactor.Eval (Eval)
@@ -70,21 +69,15 @@ data ModuleInfo = ModuleInfo
     }
     deriving (Show, Eq)
 
--- | Global registry reference
-type RegistryRef m = IORef (ModuleRegistry m)
+-- | Register a single module into an existing registry (pure)
+registerModule :: ModuleRegistry Eval -> IR Eval -> Either ModuleRegistryError (ModuleRegistry Eval)
+registerModule registry moduleIR = do
+    moduleInfo <- parseModule moduleIR
+    let mod = moduleInfoToModule moduleInfo
+    if Map.member moduleInfo.moduleName registry
+        then Left $ DuplicateModuleName moduleInfo.moduleName
+        else Right $ Map.insert moduleInfo.moduleName mod registry
 
--- | Create a new empty registry
-newRegistry :: IO (RegistryRef m)
-newRegistry = newIORef Map.empty
-
--- | Register a module from IR using pure parsing
-registerModuleFromIR :: RegistryRef Eval -> IR Eval -> IO (Either ModuleRegistryError ())
-registerModuleFromIR registry moduleIR = do
-    -- Parse module using pure functions
-    case parseModule moduleIR of
-        Right moduleInfo -> do
-            -- Convert to Module and add to registry
-            let mod = moduleInfoToModule moduleInfo
-            modifyIORef registry (Map.insert moduleInfo.moduleName mod)
-            pure $ Right ()
-        Left err -> pure $ Left err
+-- | Register multiple modules into a registry (pure)
+registerModules :: ModuleRegistry Eval -> [IR Eval] -> Either ModuleRegistryError (ModuleRegistry Eval)
+registerModules = foldM registerModule

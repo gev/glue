@@ -1,10 +1,9 @@
 module Reactor.Module.RegistrationSpec where
 
-import Data.IORef (readIORef)
 import Data.Map.Strict qualified as Map
 import Reactor.Eval (Eval)
 import Reactor.Module (Module (..), ModuleRegistry, lookupModule)
-import Reactor.Module.Registration (newRegistry, registerModuleFromIR)
+import Reactor.Module.Registration (buildRegistry, registerModule, registerModules)
 import Reactor.IR (IR (..))
 import Test.Hspec
 import Prelude hiding (mod)
@@ -28,9 +27,9 @@ spec = do
             let registry = Map.empty :: ModuleRegistry Eval
             lookupModule "nonexistent" registry `shouldBe` Nothing
 
-    describe "Evaluation-based module registration" $ do
+    describe "Pure module registration" $ do
         it "registers module with export collection" $ do
-            registry <- newRegistry
+            let registry = Map.empty :: ModuleRegistry Eval
             let moduleIR =
                     List
                         [ Symbol "module"
@@ -41,13 +40,10 @@ spec = do
                         ]
 
             -- Register the module
-            result <- registerModuleFromIR registry moduleIR
-
-            case result of
-                Right () -> do
+            case registerModule registry moduleIR of
+                Right newRegistry -> do
                     -- Check that module was registered
-                    regMap <- readIORef registry
-                    case Map.lookup "test.math" regMap of
+                    case Map.lookup "test.math" newRegistry of
                         Just mod -> do
                             name mod `shouldBe` "test.math"
                             exports mod `shouldBe` ["add", "multiply"]
@@ -56,7 +52,7 @@ spec = do
                 Left err -> expectationFailure $ "Registration failed: " ++ show err
 
         it "handles module without exports" $ do
-            registry <- newRegistry
+            let registry = Map.empty :: ModuleRegistry Eval
             let moduleIR =
                     List
                         [ Symbol "module"
@@ -64,15 +60,34 @@ spec = do
                         , List [Symbol "def", Symbol "x", Number 42]
                         ]
 
-            result <- registerModuleFromIR registry moduleIR
-
-            case result of
-                Right () -> do
-                    regMap <- readIORef registry
-                    case Map.lookup "test.empty" regMap of
+            case registerModule registry moduleIR of
+                Right newRegistry -> do
+                    case Map.lookup "test.empty" newRegistry of
                         Just mod -> do
                             name mod `shouldBe` "test.empty"
                             exports mod `shouldBe` []
                             length (body mod) `shouldBe` 1
                         Nothing -> expectationFailure "Module not registered"
                 Left err -> expectationFailure $ "Registration failed: " ++ show err
+
+        it "builds registry from multiple modules" $ do
+            let modules =
+                    [ List [Symbol "module", Symbol "math.add", List [Symbol "export", Symbol "add"], List [Symbol "def", Symbol "add", Number 1]]
+                    , List [Symbol "module", Symbol "math.mul", List [Symbol "export", Symbol "mul"], List [Symbol "def", Symbol "mul", Number 2]]
+                    ]
+
+            case buildRegistry modules of
+                Right registry -> do
+                    Map.size registry `shouldBe` 2
+                    lookupModule "math.add" registry `shouldNotBe` Nothing
+                    lookupModule "math.mul" registry `shouldNotBe` Nothing
+                Left err -> expectationFailure $ "Registry build failed: " ++ show err
+
+        it "rejects duplicate module names" $ do
+            let registry = Map.empty :: ModuleRegistry Eval
+            let moduleIR1 = List [Symbol "module", Symbol "test.dup", List [Symbol "export", Symbol "x"], List [Symbol "def", Symbol "x", Number 1]]
+            let moduleIR2 = List [Symbol "module", Symbol "test.dup", List [Symbol "export", Symbol "y"], List [Symbol "def", Symbol "y", Number 2]]
+
+            case registerModules registry [moduleIR1, moduleIR2] of
+                Right _ -> expectationFailure "Should have rejected duplicate module"
+                Left _ -> pure () -- Expected error
