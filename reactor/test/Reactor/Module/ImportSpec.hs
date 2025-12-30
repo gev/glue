@@ -1,5 +1,6 @@
 module Reactor.Module.ImportSpec where
 
+import Data.Map.Strict qualified as Map
 import Reactor.Env qualified as E
 import Reactor.Eval (EvalState (..), eval, runEval)
 import Reactor.IR (IR (..))
@@ -104,5 +105,211 @@ spec = do
                             case E.lookupVar "internal" finalState.env of
                                 Right _ -> expectationFailure "Internal module variable leaked into environment"
                                 Left _ -> pure () -- This is expected - internal vars should not be visible
+                        Right (val, _) -> expectationFailure $ "Import should return Nothing, got: " ++ show val
+                        Left err -> expectationFailure $ "Import failed: " ++ show err
+
+        it "provides both direct and dotted access to imported symbols" $ do
+            -- Create module IR
+            let moduleIR =
+                    List
+                        [ Symbol "module"
+                        , Symbol "test.dual"
+                        , List [Symbol "export", Symbol "add", Symbol "multiply"]
+                        , List [Symbol "def", Symbol "add", List [Symbol "+", Number 1, Number 2]]
+                        , List [Symbol "def", Symbol "multiply", List [Symbol "*", Number 3, Number 4]]
+                        ]
+
+            -- Build registry
+            case buildRegistry [moduleIR] of
+                Left err -> expectationFailure $ "Registry build failed: " ++ show err
+                Right registry -> do
+                    -- Create initial environment with import function
+                    let initialEnv = E.fromFrame (E.unionFrames lib libWithModules)
+
+                    -- Create initial eval state with registry
+                    let initialState =
+                            EvalState
+                                { env = initialEnv
+                                , context = []
+                                , registry = registry
+                                , importCache = Cache.emptyCache
+                                , rootEnv = initialEnv
+                                }
+
+                    -- Evaluate import
+                    let importIR = List [Symbol "import", Symbol "test.dual"]
+                    result <- runEval (eval importIR) initialState
+
+                    case result of
+                        Right (Nothing, finalState) -> do
+                            -- Check direct access works
+                            case E.lookupVar "add" finalState.env of
+                                Right _ -> pure ()
+                                Left err -> expectationFailure $ "Direct access failed: " ++ show err
+
+                            -- Check module value is stored
+                            case E.lookupVar "test.dual" finalState.env of
+                                Right (Module moduleMap) -> do
+                                    case Map.lookup "add" moduleMap of
+                                        Just _ -> pure ()
+                                        Nothing -> expectationFailure "Module missing 'add' property"
+                                    case Map.lookup "multiply" moduleMap of
+                                        Just _ -> pure ()
+                                        Nothing -> expectationFailure "Module missing 'multiply' property"
+                                Right val -> expectationFailure $ "Expected Module, got: " ++ show val
+                                Left err -> expectationFailure $ "Module not found: " ++ show err
+                        Right (val, _) -> expectationFailure $ "Import should return Nothing, got: " ++ show val
+                        Left err -> expectationFailure $ "Import failed: " ++ show err
+
+        it "prevents modification of module properties" $ do
+            -- Create module IR
+            let moduleIR =
+                    List
+                        [ Symbol "module"
+                        , Symbol "test.immutable"
+                        , List [Symbol "export", Symbol "value"]
+                        , List [Symbol "def", Symbol "value", Number 42]
+                        ]
+
+            -- Build registry
+            case buildRegistry [moduleIR] of
+                Left err -> expectationFailure $ "Registry build failed: " ++ show err
+                Right registry -> do
+                    -- Create initial environment with import function
+                    let initialEnv = E.fromFrame (E.unionFrames lib libWithModules)
+
+                    -- Create initial eval state with registry
+                    let initialState =
+                            EvalState
+                                { env = initialEnv
+                                , context = []
+                                , registry = registry
+                                , importCache = Cache.emptyCache
+                                , rootEnv = initialEnv
+                                }
+
+                    -- Evaluate import
+                    let importIR = List [Symbol "import", Symbol "test.immutable"]
+                    result <- runEval (eval importIR) initialState
+
+                    case result of
+                        Right (Nothing, finalState) -> do
+                            -- Try to set module property - should fail
+                            let setIR = List [Symbol "set", Symbol "test.immutable.value", Number 999]
+                            setResult <- runEval (eval setIR) finalState
+
+                            case setResult of
+                                Left _ -> pure () -- Expected to fail
+                                Right _ -> expectationFailure "Setting module property should fail"
+                        Right (val, _) -> expectationFailure $ "Import should return Nothing, got: " ++ show val
+                        Left err -> expectationFailure $ "Import failed: " ++ show err
+
+        it "allows local definitions to shadow imported symbols" $ do
+            -- Create module IR
+            let moduleIR =
+                    List
+                        [ Symbol "module"
+                        , Symbol "test.shadow"
+                        , List [Symbol "export", Symbol "x"]
+                        , List [Symbol "def", Symbol "x", Number 100]
+                        ]
+
+            -- Build registry
+            case buildRegistry [moduleIR] of
+                Left err -> expectationFailure $ "Registry build failed: " ++ show err
+                Right registry -> do
+                    -- Create initial environment with import function
+                    let initialEnv = E.fromFrame (E.unionFrames lib libWithModules)
+
+                    -- Create initial eval state with registry
+                    let initialState =
+                            EvalState
+                                { env = initialEnv
+                                , context = []
+                                , registry = registry
+                                , importCache = Cache.emptyCache
+                                , rootEnv = initialEnv
+                                }
+
+                    -- Evaluate import
+                    let importIR = List [Symbol "import", Symbol "test.shadow"]
+                    result <- runEval (eval importIR) initialState
+
+                    case result of
+                        Right (Nothing, importState) -> do
+                            -- Check imported value
+                            case E.lookupVar "x" importState.env of
+                                Right (Number 100) -> pure ()
+                                Right val -> expectationFailure $ "Wrong imported value: " ++ show val
+                                Left err -> expectationFailure $ "Imported value not found: " ++ show err
+
+                            -- Define local x that shadows the imported one
+                            let defIR = List [Symbol "def", Symbol "x", Number 200]
+                            defResult <- runEval (eval defIR) importState
+
+                            case defResult of
+                                Right (Nothing, finalState) -> do
+                                    -- Check that local definition shadows imported one
+                                    case E.lookupVar "x" finalState.env of
+                                        Right (Number 200) -> pure ()
+                                        Right val -> expectationFailure $ "Wrong shadowed value: " ++ show val
+                                        Left err -> expectationFailure $ "Local value not found: " ++ show err
+
+                                    -- Check that module still has original value
+                                    case E.lookupVar "test.shadow" finalState.env of
+                                        Right (Module moduleMap) -> do
+                                            case Map.lookup "x" moduleMap of
+                                                Just (Number 100) -> pure ()
+                                                Just val -> expectationFailure $ "Module value changed: " ++ show val
+                                                Nothing -> expectationFailure "Module missing 'x' property"
+                                        Right val -> expectationFailure $ "Expected Module, got: " ++ show val
+                                        Left err -> expectationFailure $ "Module not found: " ++ show err
+                                Right (val, _) -> expectationFailure $ "Def should return Nothing, got: " ++ show val
+                                Left err -> expectationFailure $ "Def failed: " ++ show err
+                        Right (val, _) -> expectationFailure $ "Import should return Nothing, got: " ++ show val
+                        Left err -> expectationFailure $ "Import failed: " ++ show err
+
+        it "supports dotted property access on modules" $ do
+            -- Create module IR
+            let moduleIR =
+                    List
+                        [ Symbol "module"
+                        , Symbol "test.dotted"
+                        , List [Symbol "export", Symbol "value"]
+                        , List [Symbol "def", Symbol "value", Number 42]
+                        ]
+
+            -- Build registry
+            case buildRegistry [moduleIR] of
+                Left err -> expectationFailure $ "Registry build failed: " ++ show err
+                Right registry -> do
+                    -- Create initial environment with import function
+                    let initialEnv = E.fromFrame (E.unionFrames lib libWithModules)
+
+                    -- Create initial eval state with registry
+                    let initialState =
+                            EvalState
+                                { env = initialEnv
+                                , context = []
+                                , registry = registry
+                                , importCache = Cache.emptyCache
+                                , rootEnv = initialEnv
+                                }
+
+                    -- Evaluate import
+                    let importIR = List [Symbol "import", Symbol "test.dotted"]
+                    result <- runEval (eval importIR) initialState
+
+                    case result of
+                        Right (Nothing, finalState) -> do
+                            -- Test dotted access to module property
+                            let accessIR = DottedSymbol ["test", "dotted", "value"]
+                            accessResult <- runEval (eval accessIR) finalState
+
+                            case accessResult of
+                                Right (Just (Number 42), _) -> pure ()
+                                Right (Just val, _) -> expectationFailure $ "Wrong value: " ++ show val
+                                Right (Nothing, _) -> expectationFailure "Dotted access should return a value"
+                                Left err -> expectationFailure $ "Dotted access failed: " ++ show err
                         Right (val, _) -> expectationFailure $ "Import should return Nothing, got: " ++ show val
                         Left err -> expectationFailure $ "Import failed: " ++ show err

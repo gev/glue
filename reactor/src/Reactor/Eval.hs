@@ -21,6 +21,7 @@ module Reactor.Eval (
 ) where
 
 import Control.Monad (ap, liftM)
+import Data.List (inits)
 import Data.Map.Strict qualified as Map
 import Data.Maybe (catMaybes)
 import Data.Text (Text)
@@ -140,12 +141,17 @@ evalDottedSymbol parts = do
     case parts of
         [] -> throwError $ UnboundVariable "" -- shouldn't happen
         [base] -> evalSymbol base
-        (base : props) -> do
-            env <- getEnv
-            case E.lookupVar base env of
-                Right val -> evalNestedAccess val props
-                Left err -> throwError err
+        _ -> evalWithPrefixes (init $ inits parts) -- All proper prefixes
   where
+    -- Try to find the longest prefix that exists as a symbol
+    evalWithPrefixes [] = throwError $ UnboundVariable (T.intercalate "." parts)
+    evalWithPrefixes (prefix : restPrefixes) = do
+        let prefixName = T.intercalate "." prefix
+        env <- getEnv
+        case E.lookupVar prefixName env of
+            Right val -> evalNestedAccess val (drop (length prefix) parts)
+            Left _ -> evalWithPrefixes restPrefixes
+
     evalNestedAccess obj [] = pure $ Just obj
     evalNestedAccess obj (prop : rest) = do
         case obj of
