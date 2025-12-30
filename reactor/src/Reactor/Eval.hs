@@ -126,17 +126,20 @@ buildEnvWithBindings savedEnv = foldl defineBinding (E.pushFrame savedEnv)
   where
     defineBinding env (param, value) = E.defineVar param value env
 
--- Evaluate a symbol by looking it up in the environment, handling property access with dots
+-- Evaluate a symbol by looking it up in the environment
 evalSymbol :: Text -> Eval (Maybe IR)
 evalSymbol name = do
-    let parts = T.splitOn "." name
+    env <- getEnv
+    case E.lookupVar name env of
+        Right val -> pure $ Just val
+        Left err -> throwError err
+
+-- Evaluate dotted symbol access
+evalDottedSymbol :: [Text] -> Eval (Maybe IR)
+evalDottedSymbol parts = do
     case parts of
-        [] -> throwError $ UnboundVariable name -- shouldn't happen
-        [base] -> do
-            env <- getEnv
-            case E.lookupVar base env of
-                Right val -> pure $ Just val
-                Left err -> throwError err
+        [] -> throwError $ UnboundVariable "" -- shouldn't happen
+        [base] -> evalSymbol base
         (base : props) -> do
             env <- getEnv
             case E.lookupVar base env of
@@ -175,16 +178,6 @@ evalList xs = do
             pure result
         _ -> pure . Just . IR.List $ clean
 
--- Evaluate property access on an object
-evalPropAccess :: IR -> Text -> Eval (Maybe IR)
-evalPropAccess objExpr prop = do
-    objVal <- evalRequired objExpr
-    case objVal of
-        IR.Object objMap -> case Map.lookup prop objMap of
-            Just val -> pure $ Just val
-            Nothing -> throwError $ PropertyNotFound prop
-        _ -> throwError $ NotAnObject (T.pack $ show objVal)
-
 -- Evaluate literal values (numbers, strings, etc.)
 evalLiteral :: IR -> Eval (Maybe IR)
 evalLiteral v = pure $ Just v
@@ -216,6 +209,7 @@ applyClosure params body savedEnv rawArgs = do
 
 eval :: IR -> Eval (Maybe IR)
 eval (IR.Symbol name) = evalSymbol name
+eval (IR.DottedSymbol parts) = evalDottedSymbol parts
 eval (IR.List xs) = evalList xs
 eval v = evalLiteral v
 

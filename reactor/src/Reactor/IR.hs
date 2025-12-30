@@ -16,6 +16,7 @@ data IR m
     = Number Scientific
     | String Text
     | Symbol Text
+    | DottedSymbol [Text]
     | List [IR m]
     | Object (Map Text (IR m))
     | Native (Native m)
@@ -30,7 +31,10 @@ compile :: AST -> IR m
 compile = \case
     AST.Number n -> Number n
     AST.String s -> String s
-    AST.Symbol s -> Symbol s
+    AST.Symbol s ->
+        if T.isInfixOf "." s
+            then DottedSymbol (T.splitOn "." s)
+            else Symbol s
     AST.AtomList xs -> List (map compile xs)
     AST.PropList ps -> Object $ Map.fromList (map (second compile) ps)
 
@@ -39,6 +43,7 @@ instance Show (IR m) where
         Number n -> show n
         String s -> "\"" <> T.unpack s <> "\""
         Symbol s -> T.unpack s
+        DottedSymbol parts -> T.unpack (T.intercalate "." parts)
         List xs -> "(" <> unwords (map show xs) <> ")"
         Native _ -> "<native>"
         Closure{} -> "<closure>"
@@ -48,6 +53,7 @@ instance Eq (IR m) where
     (Number a) == (Number b) = a == b
     (String a) == (String b) = a == b
     (Symbol a) == (Symbol b) = a == b
+    (DottedSymbol a) == (DottedSymbol b) = a == b
     (List a) == (List b) = a == b
     (Object a) == (Object b) = a == b
     _ == _ = False
@@ -75,8 +81,10 @@ objectLookup _ _ = Nothing
 
 isSymbol :: IR m -> Bool
 isSymbol (Symbol _) = True
+isSymbol (DottedSymbol _) = True
 isSymbol _ = False
 
 getSymbol :: IR m -> Text
 getSymbol (Symbol s) = s
+getSymbol (DottedSymbol parts) = T.intercalate "." parts
 getSymbol _ = ""
