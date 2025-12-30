@@ -1,12 +1,11 @@
 module Reactor.Module.Error where
 
 import Data.Text (Text)
-import Reactor.Eval (Eval)
 import Reactor.IR (IR)
 
 -- | Errors during module parsing and registration
-data ModuleRegistryError
+data ModuleRegistryError m
     = InvalidModuleStructure Text
-    | InvalidExportList [IR Eval]
+    | InvalidExportList [IR m]
     | DuplicateModuleName Text
     deriving (Show, Eq)
