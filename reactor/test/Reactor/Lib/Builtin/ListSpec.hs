@@ -32,3 +32,19 @@ spec = describe "Reactor.Lib.Builtin.List (Test list function)" do
             case result of
                 Left err -> expectationFailure $ "List failed: " <> show err
                 Right (res, _, _) -> res `shouldBe` List [Number 42, String "hello", Symbol "x"]
+
+        it "creates nested lists" do
+            let initialEnv = E.emptyEnv
+            let args = [Number 1, List [Number 2, Number 3], Number 4]
+            result <- runEvalLegacy (list args) initialEnv
+            case result of
+                Left err -> expectationFailure $ "List failed: " <> show err
+                Right (res, _, _) -> res `shouldBe` List [Number 1, List [Number 2, Number 3], Number 4]
+
+        it "handles deeply nested lists" do
+            let initialEnv = E.emptyEnv
+            let args = [Number 1, List [Symbol "list", Number 2, List [Symbol "list", Number 3, Number 4]], Number 5]
+            result <- runEvalLegacy (list args) initialEnv
+            case result of
+                Left err -> expectationFailure $ "List failed: " <> show err
+                Right (res, _, _) -> res `shouldBe` List [Number 1, List [Symbol "list", Number 2, List [Symbol "list", Number 3, Number 4]], Number 5]
