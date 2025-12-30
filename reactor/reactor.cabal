@@ -97,6 +97,7 @@ library
     Reactor.Module.Cache
     Reactor.Module.Error
     Reactor.Module.Import
+    Reactor.Module.Loader
     Reactor.Module.Registration
     Reactor.Module.Registry
     Reactor.Module.System
@@ -108,6 +109,8 @@ library
     base,
     bytestring,
     containers,
+    directory,
+    filepath,
     megaparsec,
     scientific,
     text,

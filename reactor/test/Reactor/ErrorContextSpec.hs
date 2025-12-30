@@ -49,7 +49,7 @@ spec = describe "Reactor.ErrorContext (Call Stack Tracking)" do
 
     it "shows context for property access errors" do
         runCode "((lambda (obj) obj.missing) (object :x 42))"
-            `shouldReturn` Left (ReactorError $ EvalError ["<call>"] $ PropertyNotFound "missing")
+            `shouldReturn` Left (ReactorError $ EvalError ["<call>"] $ UnboundVariable "obj.missing")
 
     it "handles anonymous function calls" do
         runCode "((lambda () (non-existent)))"

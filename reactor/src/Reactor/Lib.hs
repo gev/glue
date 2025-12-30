@@ -8,15 +8,14 @@ import Reactor.Lib.Builtin qualified as Builtin
 import Reactor.Lib.List qualified as List
 import Reactor.Lib.Math qualified as Math
 import Reactor.Lib.Math.Arithmetic qualified as Arithmetic
+import Reactor.Module.System qualified as Module
 
 lib :: Frame Eval
-lib =
-    E.unionFrames
-        Builtin.builtin
-        ( E.unionFrames
-            Bool.bool
-            ( E.unionFrames
-                List.list
-                (E.unionFrames Arithmetic.arithmetic Math.math)
-            )
-        )
+lib = E.unionFramesList
+    [ Builtin.builtin
+    , Bool.bool
+    , List.list
+    , Arithmetic.arithmetic
+    , Math.math
+    , Module.libWithModules
+    ]

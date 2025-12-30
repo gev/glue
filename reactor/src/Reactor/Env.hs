@@ -46,3 +46,6 @@ updateVar name val (f : fs)
 
 unionFrames :: Frame m -> Frame m -> Frame m
 unionFrames = Map.union
+
+unionFramesList :: [Frame m] -> Frame m
+unionFramesList = foldl unionFrames Map.empty

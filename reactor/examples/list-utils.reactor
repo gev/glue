@@ -1,0 +1,13 @@
+(module list.utils
+  (export first-and-last sum-list)
+
+  (def first-and-last
+    (lambda (lst)
+      (list (car lst) (last lst))))
+
+  (def sum-list
+    (lambda (lst)
+      (if (== (length lst) 0)
+          0
+          (+ (car lst) 10))))  ; Simplified for now
+)

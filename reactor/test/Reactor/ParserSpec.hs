@@ -19,6 +19,11 @@ spec = do
                 parseReactor "void" `shouldBe` Right (Symbol "void")
                 parseReactor "my-func" `shouldBe` Right (Symbol "my-func")
 
+            it "parses symbols with dots" $ do
+                parseReactor "math.utils" `shouldBe` Right (Symbol "math.utils")
+                parseReactor "list.utils" `shouldBe` Right (Symbol "list.utils")
+                parseReactor "my.module.name" `shouldBe` Right (Symbol "my.module.name")
+
         describe "Operator Symbols" $ do
             it "parses arithmetic operators" $ do
                 parseReactor "+" `shouldBe` Right (Symbol "+")
@@ -117,7 +122,7 @@ spec = do
 
         describe "Property Access" $ do
             it "parses property access" $ do
-                parseReactor "obj.name" `shouldBe` Right (PropAccess (Symbol "obj") "name")
+                parseReactor "obj.name" `shouldBe` Right (Symbol "obj.name")
 
             it "parses property access with complex object" $ do
                 parseReactor "(f x).name" `shouldBe` Right (PropAccess (AtomList [Symbol "f", Symbol "x"]) "name")

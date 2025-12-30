@@ -1,0 +1,6 @@
+(module math.utils
+  (export add-ten multiply-by-two)
+
+  (def add-ten (lambda (x) (+ x 10)))
+  (def multiply-by-two (lambda (x) (* x 2)))
+)
