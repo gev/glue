@@ -94,6 +94,7 @@ library
     Reactor.Lib.Math.Utility.Round
     Reactor.Lib.Math.Utility.Trunc
     Reactor.Module
+    Reactor.Module.Cache
     Reactor.Module.Error
     Reactor.Module.Import
     Reactor.Module.Registration

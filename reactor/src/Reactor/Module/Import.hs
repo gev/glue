@@ -7,6 +7,7 @@ import Reactor.Eval (Eval, EvalState (..), eval, getEnv, getState, putEnv, putSt
 import Reactor.Eval.Error (GeneralError (..))
 import Reactor.IR (Frame, IR (..), Native (..))
 import Reactor.Module (ImportedModule (..), Module (..))
+import Reactor.Module.Cache qualified as Cache
 import Prelude hiding (mod)
 
 -- | Import special form - loads and evaluates a module
@@ -17,7 +18,7 @@ importForm [Symbol moduleName] = do
         Nothing -> throwError $ ModuleNotFound moduleName
         Just mod -> do
             -- Check if already imported (cached)
-            case Map.lookup moduleName state.importCache of
+            case Cache.lookupCachedModule moduleName state.importCache of
                 Just imported -> do
                     -- Use cached results - merge into current environment
                     let updatedEnv = foldl (\env (name, val) -> E.defineVar name val env) state.env (Map.toList (exportedValues imported))
@@ -62,7 +63,7 @@ importForm [Symbol moduleName] = do
                                 }
 
                     -- Update cache immutably
-                    let newCache = Map.insert moduleName importedModule state.importCache
+                    let newCache = Cache.cacheModule importedModule state.importCache
                     let newState = state{importCache = newCache}
                     putState newState
 
