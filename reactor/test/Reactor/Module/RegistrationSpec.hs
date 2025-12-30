@@ -1,10 +1,9 @@
 module Reactor.Module.RegistrationSpec where
 
-import Reactor.Eval (Eval)
 import Reactor.IR (IR (..))
 import Reactor.Module (RegisteredModule (..))
 import Reactor.Module.Registration (buildRegistry, registerModule, registerModules)
-import Reactor.Module.Registry (ModuleRegistry, emptyRegistry, lookupModule, registrySize)
+import Reactor.Module.Registry (emptyRegistry, lookupModule, registrySize)
 import Test.Hspec
 import Prelude hiding (mod)
 
@@ -12,7 +11,7 @@ spec :: Spec
 spec = do
     describe "Pure module registration" $ do
         it "registers module with export collection" $ do
-            let registry = emptyRegistry :: ModuleRegistry Eval
+            let registry = emptyRegistry
             let moduleIR =
                     List
                         [ Symbol "module"
@@ -35,7 +34,7 @@ spec = do
                 Left err -> expectationFailure $ "Registration failed: " ++ show err
 
         it "handles module without exports" $ do
-            let registry = emptyRegistry :: ModuleRegistry Eval
+            let registry = emptyRegistry
             let moduleIR =
                     List
                         [ Symbol "module"
@@ -67,7 +66,7 @@ spec = do
                 Left err -> expectationFailure $ "Registry build failed: " ++ show err
 
         it "rejects duplicate module names" $ do
-            let registry = emptyRegistry :: ModuleRegistry Eval
+            let registry = emptyRegistry
             let moduleIR1 = List [Symbol "module", Symbol "test.dup", List [Symbol "export", Symbol "x"], List [Symbol "def", Symbol "x", Number 1]]
             let moduleIR2 = List [Symbol "module", Symbol "test.dup", List [Symbol "export", Symbol "y"], List [Symbol "def", Symbol "y", Number 2]]
 
