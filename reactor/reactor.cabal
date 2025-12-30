@@ -193,6 +193,7 @@ test-suite reactor-test
     Reactor.Lib.Math.Utility.MinSpec
     Reactor.Lib.Math.Utility.RoundSpec
     Reactor.Lib.Math.Utility.TruncSpec
+    Reactor.Module.CacheSpec
     Reactor.Module.ImportSpec
     Reactor.Module.RegistrationSpec
     Reactor.ParserSpec
