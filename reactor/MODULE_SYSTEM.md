@@ -257,3 +257,4 @@ stdlib/
 - **Selective imports**: `(import (add multiply) from math.basic)`
 - **Documentation**: `(doc "Description" (def func ...))`
 - **Versioning**: Module version specifications
+- **Concurrency support**: When Reactor adds concurrency, upgrade from `IORef` to STM-based `TVar` for thread-safe module registry and import cache access

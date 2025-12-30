@@ -1,11 +1,15 @@
 module Reactor.Eval (
     Eval,
+    EvalState (..),
     eval,
     runEval,
+    runEvalLegacy,
     evalRequired,
     throwError,
     getEnv,
     putEnv,
+    getState,
+    putState,
     defineVarEval,
     updateVarEval,
     liftIO,
@@ -20,49 +24,64 @@ import Data.Typeable (Typeable)
 import Reactor.Env qualified as E
 import Reactor.Eval.Error (Context, Error, EvalError (EvalError), GeneralError (..))
 import Reactor.IR qualified as IR
+import Reactor.Module (ImportedModuleCache, ModuleRegistry)
 
 type IR = IR.IR Eval
 type Env = IR.Env Eval
 
+-- | Complete evaluation state
+data EvalState = EvalState
+    { env :: Env
+    , context :: Context
+    , registry :: ModuleRegistry Eval
+    , importCache :: ImportedModuleCache Eval
+    }
+
 newtype Eval a = Eval
-    { runEvalInternal :: Env -> Context -> IO (Either EvalError (a, Env, Context))
+    { runEvalInternal :: EvalState -> IO (Either EvalError (a, EvalState))
     }
 
 instance Functor Eval where
     fmap = liftM
 
 instance Applicative Eval where
-    pure a = Eval $ \env ctx -> pure $ Right (a, env, ctx)
+    pure a = Eval $ \state -> pure $ Right (a, state)
     (<*>) = ap
 
 instance Monad Eval where
-    (Eval m) >>= f = Eval $ \env ctx -> do
-        res <- m env ctx
+    (Eval m) >>= f = Eval $ \state -> do
+        res <- m state
         case res of
             Left err -> pure $ Left err
-            Right (a, env', ctx') -> runEvalInternal (f a) env' ctx'
+            Right (a, state') -> runEvalInternal (f a) state'
 
 getEnv :: Eval Env
-getEnv = Eval $ \env ctx -> pure $ Right (env, env, ctx)
+getEnv = Eval $ \state -> pure $ Right (state.env, state)
 
 putEnv :: Env -> Eval ()
-putEnv newEnv = Eval $ \_ ctx -> pure $ Right ((), newEnv, ctx)
+putEnv newEnv = Eval $ \state -> pure $ Right ((), state{env = newEnv})
+
+getState :: Eval EvalState
+getState = Eval $ \state -> pure $ Right (state, state)
+
+putState :: EvalState -> Eval ()
+putState newState = Eval $ \_ -> pure $ Right ((), newState)
 
 pushContext :: Text -> Eval ()
-pushContext name = Eval $ \env ctx -> pure $ Right ((), env, name : ctx)
+pushContext name = Eval $ \state -> pure $ Right ((), state{context = name : state.context})
 
 popContext :: Eval ()
-popContext = Eval $ \env ctx -> case ctx of
-    (_ : rest) -> pure $ Right ((), env, rest)
-    [] -> pure $ Right ((), env, []) -- shouldn't happen, but safe
+popContext = Eval $ \state -> case state.context of
+    (_ : rest) -> pure $ Right ((), state{context = rest})
+    [] -> pure $ Right ((), state) -- shouldn't happen, but safe
 
 throwError :: (Error e, Show e, Eq e, Typeable e) => e -> Eval a
-throwError err = Eval $ \_ ctx -> pure $ Left (EvalError ctx err)
+throwError err = Eval $ \state -> pure $ Left (EvalError state.context err)
 
 liftIO :: IO a -> Eval a
-liftIO action = Eval $ \env ctx -> do
+liftIO action = Eval $ \state -> do
     a <- action
-    pure $ Right (a, env, ctx)
+    pure $ Right (a, state)
 
 -- Helper to determine if an IR value can be called
 isCallable :: IR -> Bool
@@ -186,5 +205,20 @@ updateVarEval name val = do
         Right nextEnv -> putEnv nextEnv
         Left err -> throwError err
 
-runEval :: Eval a -> Env -> IO (Either EvalError (a, Env, Context))
-runEval (Eval f) env = f env []
+runEval :: Eval a -> EvalState -> IO (Either EvalError (a, EvalState))
+runEval (Eval f) initialState = f initialState
+
+-- | Legacy runEval for backward compatibility (deprecated)
+runEvalLegacy :: Eval a -> Env -> IO (Either EvalError (a, Env, Context))
+runEvalLegacy evalAction initialEnv = do
+    let initialState =
+            EvalState
+                { env = initialEnv
+                , context = []
+                , registry = Map.empty -- Empty registry for legacy compatibility
+                , importCache = Map.empty
+                }
+    result <- runEval evalAction initialState
+    case result of
+        Left err -> pure $ Left err
+        Right (a, finalState) -> pure $ Right (a, finalState.env, finalState.context)
