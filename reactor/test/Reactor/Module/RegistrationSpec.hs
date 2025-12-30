@@ -1,11 +1,11 @@
-module Reactor.Module.ModuleSpec where
+module Reactor.Module.RegistrationSpec where
 
 import Data.IORef (readIORef)
 import Data.Map.Strict qualified as Map
 import Reactor.Eval (Eval)
-import Reactor.IR (IR (..))
 import Reactor.Module (Module (..), ModuleRegistry, lookupModule)
 import Reactor.Module.Registration (newRegistry, registerModuleFromIR)
+import Reactor.IR (IR (..))
 import Test.Hspec
 import Prelude hiding (mod)
 
