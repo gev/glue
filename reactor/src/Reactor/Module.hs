@@ -30,3 +30,6 @@ data ImportedModule m = ImportedModule
 
 instance Show (ImportedModule m) where
     show im = "ImportedModule {moduleName = " <> show (moduleName im) <> ", exports = " <> show (keys (exportedValues im)) <> "}"
+
+instance Eq (ImportedModule m) where
+    im1 == im2 = moduleName im1 == moduleName im2
