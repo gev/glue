@@ -98,6 +98,7 @@ library
     Reactor.Module.Error
     Reactor.Module.Import
     Reactor.Module.Registration
+    Reactor.Module.Registry
     Reactor.Module.System
     Reactor.Parser
     Reactor.Parser.Error

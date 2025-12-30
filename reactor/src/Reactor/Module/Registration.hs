@@ -5,8 +5,9 @@ import Data.Map.Strict qualified as Map
 import Data.Text (Text)
 import Reactor.Eval (Eval)
 import Reactor.IR (IR (..))
-import Reactor.Module (Module (..), ModuleRegistry)
+import Reactor.Module (RegisteredModule (..))
 import Reactor.Module.Error (ModuleRegistryError (..))
+import Reactor.Module.Registry (ModuleRegistry)
 import Prelude hiding (mod)
 
 -- | Parse a single module from IR
@@ -43,7 +44,7 @@ extractSymbolList (Symbol s : rest) = do
 extractSymbolList invalid = Left $ InvalidExportList invalid
 
 -- | Build registry from multiple modules
-buildRegistry :: [IR Eval] -> Either ModuleRegistryError (ModuleRegistry Eval)
+buildRegistry :: [IR Eval] -> Either ModuleRegistryError (ModuleRegistry (IR Eval))
 buildRegistry modules = do
     moduleInfos <- mapM parseModule modules
     foldM addModuleToRegistry Map.empty moduleInfos
@@ -53,9 +54,9 @@ buildRegistry modules = do
         | otherwise = pure $ Map.insert info.moduleName (moduleInfoToModule info) reg
 
 -- | Convert ModuleInfo to Module
-moduleInfoToModule :: ModuleInfo -> Module Eval
+moduleInfoToModule :: ModuleInfo -> RegisteredModule (IR Eval)
 moduleInfoToModule info =
-    Module
+    RegisteredModule
         { name = info.moduleName
         , exports = info.exports
         , body = map (\(sym, val) -> List [Symbol "def", Symbol sym, val]) info.definitions
@@ -70,7 +71,7 @@ data ModuleInfo = ModuleInfo
     deriving (Show, Eq)
 
 -- | Register a single module into an existing registry (pure)
-registerModule :: ModuleRegistry Eval -> IR Eval -> Either ModuleRegistryError (ModuleRegistry Eval)
+registerModule :: ModuleRegistry (IR Eval) -> IR Eval -> Either ModuleRegistryError (ModuleRegistry (IR Eval))
 registerModule registry moduleIR = do
     moduleInfo <- parseModule moduleIR
     let mod = moduleInfoToModule moduleInfo
@@ -79,5 +80,5 @@ registerModule registry moduleIR = do
         else Right $ Map.insert moduleInfo.moduleName mod registry
 
 -- | Register multiple modules into a registry (pure)
-registerModules :: ModuleRegistry Eval -> [IR Eval] -> Either ModuleRegistryError (ModuleRegistry Eval)
+registerModules :: ModuleRegistry (IR Eval) -> [IR Eval] -> Either ModuleRegistryError (ModuleRegistry (IR Eval))
 registerModules = foldM registerModule

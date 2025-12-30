@@ -27,7 +27,8 @@ import Data.Typeable (Typeable)
 import Reactor.Env qualified as E
 import Reactor.Eval.Error (Context, Error, EvalError (EvalError), GeneralError (..))
 import Reactor.IR qualified as IR
-import Reactor.Module (ImportedModuleCache, ModuleRegistry)
+import Reactor.Module.Cache (ImportedModuleCache)
+import Reactor.Module.Registry (ModuleRegistry, emptyRegistry)
 
 type IR = IR.IR Eval
 type Env = IR.Env Eval
@@ -36,7 +37,7 @@ type Env = IR.Env Eval
 data EvalState = EvalState
     { env :: Env
     , context :: Context
-    , registry :: ModuleRegistry Eval
+    , registry :: ModuleRegistry IR
     , importCache :: ImportedModuleCache Eval
     }
 
@@ -70,7 +71,7 @@ getState = Eval $ \state -> pure $ Right (state, state)
 putState :: EvalState -> Eval ()
 putState newState = Eval $ \_ -> pure $ Right ((), newState)
 
-getRegistry :: Eval (ModuleRegistry Eval)
+getRegistry :: Eval (ModuleRegistry IR)
 getRegistry = Eval $ \state -> pure $ Right (state.registry, state)
 
 getCache :: Eval (ImportedModuleCache Eval)
@@ -227,7 +228,7 @@ runEvalLegacy evalAction initialEnv = do
             EvalState
                 { env = initialEnv
                 , context = []
-                , registry = Map.empty -- Empty registry for legacy compatibility
+                , registry = emptyRegistry -- Empty registry for legacy compatibility
                 , importCache = Map.empty
                 }
     result <- runEval evalAction initialState

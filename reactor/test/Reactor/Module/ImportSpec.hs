@@ -2,10 +2,9 @@ module Reactor.Module.ImportSpec where
 
 import Data.Map.Strict qualified as Map
 import Reactor.Env qualified as E
-import Reactor.Eval (Eval, EvalState (..), eval, runEval)
+import Reactor.Eval (EvalState (..), eval, runEval)
 import Reactor.IR (IR (..))
 import Reactor.Lib (lib)
-import Reactor.Module (Module (..), ModuleRegistry)
 import Reactor.Module.Cache qualified as Cache
 import Reactor.Module.Registration (buildRegistry)
 import Reactor.Module.System (libWithModules)

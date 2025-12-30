@@ -1,37 +1,25 @@
-module Reactor.Module where
+module Reactor.Module (
+    RegisteredModule (..),
+    ImportedModule (..),
+) where
 
-import Data.Map.Strict (Map, empty, keys, lookup, size)
+import Data.Map.Strict (Map, keys)
 import Data.Text (Text)
 import Reactor.IR (Env, IR)
-import Prelude hiding (lookup, mod)
+import Prelude hiding (mod)
 
 -- | A registered module containing metadata and body for evaluation
-data Module m = Module
+data RegisteredModule ir = RegisteredModule
     { name :: Text
     , exports :: [Text]
-    , body :: [IR m]
+    , body :: [ir] -- Generic IR type
     }
 
-instance Show (Module m) where
+instance Show (RegisteredModule ir) where
     show mod = "Module {name = " <> show (name mod) <> ", exports = " <> show (exports mod) <> ", body = <" <> show (length (body mod)) <> " forms>}"
 
-instance Eq (Module m) where
+instance (Eq ir) => Eq (RegisteredModule ir) where
     m1 == m2 = name m1 == name m2 && exports m1 == exports m2 && body m1 == body m2
-
--- | Global registry of registered modules
-type ModuleRegistry m = Map Text (Module m)
-
--- | Lookup a module in the registry
-lookupModule :: Text -> ModuleRegistry m -> Maybe (Module m)
-lookupModule = lookup
-
--- | Create an empty registry
-emptyRegistry :: ModuleRegistry m
-emptyRegistry = empty
-
--- | Get the number of modules in the registry
-registrySize :: ModuleRegistry m -> Int
-registrySize = size
 
 -- | A cached imported module with evaluated exports and evaluation context
 data ImportedModule m = ImportedModule
@@ -42,6 +30,3 @@ data ImportedModule m = ImportedModule
 
 instance Show (ImportedModule m) where
     show im = "ImportedModule {moduleName = " <> show (moduleName im) <> ", exports = " <> show (keys (exportedValues im)) <> "}"
-
--- | Global cache of imported modules (evaluated results)
-type ImportedModuleCache m = Map Text (ImportedModule m)
