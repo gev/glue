@@ -3,7 +3,7 @@ module Reactor.EvalSpec (spec) where
 import Data.Text (Text)
 import Reactor.Env qualified as E
 import Reactor.Error (ReactorError (..))
-import Reactor.Eval (Eval, eval, runEval)
+import Reactor.Eval (Eval, eval, runEvalLegacy)
 import Reactor.Eval.Error (EvalError (..), GeneralError (..))
 import Reactor.IR (IR (..), compile)
 import Reactor.Lib (lib)
@@ -15,7 +15,7 @@ runCode input = case parseReactor input of
     Left err -> pure $ Left (ReactorError err)
     Right ast -> do
         let irTree = compile ast
-        fullResult <- runEval (eval irTree) (E.fromFrame lib)
+        fullResult <- runEvalLegacy (eval irTree) (E.fromFrame lib)
         case fullResult of
             Left err -> pure $ Left (ReactorError err)
             Right (res, _finalEnv, _ctx) -> pure $ Right res

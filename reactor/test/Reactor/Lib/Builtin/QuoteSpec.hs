@@ -5,7 +5,7 @@ import Test.QuickCheck.Instances ()
 
 import Data.Either (isLeft)
 import Reactor.Env qualified as E
-import Reactor.Eval (runEval)
+import Reactor.Eval (runEvalLegacy)
 import Reactor.IR
 import Reactor.Lib.Builtin.Quote (makeQuote, quote)
 
@@ -23,7 +23,7 @@ spec = describe "Reactor.Lib.Builtin.Quote (Test quotes)" do
         it "quotes a value" do
             let initialEnv = E.emptyEnv
             let args = [Number 42]
-            result <- runEval (quote args) initialEnv
+            result <- runEvalLegacy (quote args) initialEnv
             case result of
                 Left err -> expectationFailure $ "Quote failed: " <> show err
                 Right (res, _, _) -> res `shouldBe` Just (Number 42)
@@ -31,5 +31,5 @@ spec = describe "Reactor.Lib.Builtin.Quote (Test quotes)" do
         it "fails with wrong number of arguments" do
             let initialEnv = E.emptyEnv
             let args = []
-            result <- runEval (quote args) initialEnv
+            result <- runEvalLegacy (quote args) initialEnv
             result `shouldSatisfy` isLeft

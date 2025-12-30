@@ -1,7 +1,7 @@
 module Reactor.Lib.List.ReverseSpec (spec) where
 
 import Reactor.Env qualified as E
-import Reactor.Eval (runEval)
+import Reactor.Eval (runEvalLegacy)
 import Reactor.IR (IR (..))
 import Reactor.Lib.List.Reverse qualified as Reverse
 import Test.Hspec
@@ -11,7 +11,7 @@ spec = describe "Reactor.Lib.List.Reverse (Test reverse function)" do
     it "reverses a list" do
         let initialEnv = E.emptyEnv
         let args = [List [Number 1, Number 2, Number 3]]
-        result <- runEval (Reverse.reverse args) initialEnv
+        result <- runEvalLegacy (Reverse.reverse args) initialEnv
         case result of
             Left err -> expectationFailure $ "Reverse failed: " <> show err
             Right (res, _, _) -> res `shouldBe` List [Number 3, Number 2, Number 1]
@@ -19,7 +19,7 @@ spec = describe "Reactor.Lib.List.Reverse (Test reverse function)" do
     it "reverses an empty list" do
         let initialEnv = E.emptyEnv
         let args = [List []]
-        result <- runEval (Reverse.reverse args) initialEnv
+        result <- runEvalLegacy (Reverse.reverse args) initialEnv
         case result of
             Left err -> expectationFailure $ "Reverse failed: " <> show err
             Right (res, _, _) -> res `shouldBe` List []
@@ -27,7 +27,7 @@ spec = describe "Reactor.Lib.List.Reverse (Test reverse function)" do
     it "reverses a single element list" do
         let initialEnv = E.emptyEnv
         let args = [List [String "hello"]]
-        result <- runEval (Reverse.reverse args) initialEnv
+        result <- runEvalLegacy (Reverse.reverse args) initialEnv
         case result of
             Left err -> expectationFailure $ "Reverse failed: " <> show err
             Right (res, _, _) -> res `shouldBe` List [String "hello"]
@@ -35,7 +35,7 @@ spec = describe "Reactor.Lib.List.Reverse (Test reverse function)" do
     it "fails on non-list" do
         let initialEnv = E.emptyEnv
         let args = [Number 42]
-        result <- runEval (Reverse.reverse args) initialEnv
+        result <- runEvalLegacy (Reverse.reverse args) initialEnv
         case result of
             Left _ -> pure () -- Expected error
             Right _ -> expectationFailure "Reverse should fail on non-list"

@@ -2,7 +2,7 @@ module Reactor.Lib.Bool.WhileSpec (spec) where
 
 import Data.Either (isLeft)
 import Reactor.Env qualified as E
-import Reactor.Eval (runEval)
+import Reactor.Eval (runEvalLegacy)
 import Reactor.IR (IR (..))
 import Reactor.Lib (lib)
 import Reactor.Lib.Bool.While (while_)
@@ -13,7 +13,7 @@ spec = describe "Reactor.Lib.Bool.While (Test while special form)" do
     describe "Loop while condition" do
         it "returns nothing when condition is false and no body" do
             let args = [Symbol "false"] -- No body, should return nothing
-            result <- runEval (while_ args) (E.fromFrame lib)
+            result <- runEvalLegacy (while_ args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "While failed: " <> show err
                 Right (res, _, _) -> res `shouldBe` Nothing
@@ -23,7 +23,7 @@ spec = describe "Reactor.Lib.Bool.While (Test while special form)" do
             let initialEnv = E.defineVar "flag" (Symbol "true") ((E.fromFrame lib))
             -- while flag: set flag to false
             let args = [Symbol "flag", List [Symbol "set", Symbol "flag", Symbol "false"]]
-            result <- runEval (while_ args) initialEnv
+            result <- runEvalLegacy (while_ args) initialEnv
             case result of
                 Left err -> expectationFailure $ "While failed: " <> show err
                 Right (res, finalEnv, _) -> do
@@ -33,5 +33,5 @@ spec = describe "Reactor.Lib.Bool.While (Test while special form)" do
 
         it "fails with wrong number of arguments" do
             let args = [] -- No condition
-            result <- runEval (while_ args) (E.fromFrame lib)
+            result <- runEvalLegacy (while_ args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft

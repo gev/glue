@@ -1,7 +1,7 @@
 module Reactor.Lib.List.AppendSpec (spec) where
 
 import Reactor.Env qualified as E
-import Reactor.Eval (runEval)
+import Reactor.Eval (runEvalLegacy)
 import Reactor.IR (IR (..))
 import Reactor.Lib.List.Append (append)
 import Test.Hspec
@@ -11,7 +11,7 @@ spec = describe "Reactor.Lib.List.Append (Test append function)" do
     it "appends two lists" do
         let initialEnv = E.emptyEnv
         let args = [List [Number 1, Number 2], List [Number 3, Number 4]]
-        result <- runEval (append args) initialEnv
+        result <- runEvalLegacy (append args) initialEnv
         case result of
             Left err -> expectationFailure $ "Append failed: " <> show err
             Right (res, _, _) -> res `shouldBe` List [Number 1, Number 2, Number 3, Number 4]
@@ -19,7 +19,7 @@ spec = describe "Reactor.Lib.List.Append (Test append function)" do
     it "appends empty list to non-empty list" do
         let initialEnv = E.emptyEnv
         let args = [List [Number 1, Number 2], List []]
-        result <- runEval (append args) initialEnv
+        result <- runEvalLegacy (append args) initialEnv
         case result of
             Left err -> expectationFailure $ "Append failed: " <> show err
             Right (res, _, _) -> res `shouldBe` List [Number 1, Number 2]
@@ -27,7 +27,7 @@ spec = describe "Reactor.Lib.List.Append (Test append function)" do
     it "appends non-empty list to empty list" do
         let initialEnv = E.emptyEnv
         let args = [List [], List [Number 3, Number 4]]
-        result <- runEval (append args) initialEnv
+        result <- runEvalLegacy (append args) initialEnv
         case result of
             Left err -> expectationFailure $ "Append failed: " <> show err
             Right (res, _, _) -> res `shouldBe` List [Number 3, Number 4]
@@ -35,7 +35,7 @@ spec = describe "Reactor.Lib.List.Append (Test append function)" do
     it "appends two empty lists" do
         let initialEnv = E.emptyEnv
         let args = [List [], List []]
-        result <- runEval (append args) initialEnv
+        result <- runEvalLegacy (append args) initialEnv
         case result of
             Left err -> expectationFailure $ "Append failed: " <> show err
             Right (res, _, _) -> res `shouldBe` List []
@@ -43,7 +43,7 @@ spec = describe "Reactor.Lib.List.Append (Test append function)" do
     it "fails on non-list first argument" do
         let initialEnv = E.emptyEnv
         let args = [Number 42, List [Number 1]]
-        result <- runEval (append args) initialEnv
+        result <- runEvalLegacy (append args) initialEnv
         case result of
             Left _ -> pure () -- Expected error
             Right _ -> expectationFailure "Append should fail on non-list first argument"
@@ -51,7 +51,7 @@ spec = describe "Reactor.Lib.List.Append (Test append function)" do
     it "fails on non-list second argument" do
         let initialEnv = E.emptyEnv
         let args = [List [Number 1], Number 42]
-        result <- runEval (append args) initialEnv
+        result <- runEvalLegacy (append args) initialEnv
         case result of
             Left _ -> pure () -- Expected error
             Right _ -> expectationFailure "Append should fail on non-list second argument"

@@ -1,7 +1,7 @@
 module Reactor.Lib.List.ButlastSpec (spec) where
 
 import Reactor.Env qualified as E
-import Reactor.Eval (runEval)
+import Reactor.Eval (runEvalLegacy)
 import Reactor.IR (IR (..))
 import Reactor.Lib.List.Butlast (butlast)
 import Test.Hspec
@@ -11,7 +11,7 @@ spec = describe "Reactor.Lib.List.Butlast (Test butlast function)" do
     it "returns all elements except the last one" do
         let initialEnv = E.emptyEnv
         let args = [List [Number 1, Number 2, Number 3]]
-        result <- runEval (butlast args) initialEnv
+        result <- runEvalLegacy (butlast args) initialEnv
         case result of
             Left err -> expectationFailure $ "Butlast failed: " <> show err
             Right (res, _, _) -> res `shouldBe` List [Number 1, Number 2]
@@ -19,7 +19,7 @@ spec = describe "Reactor.Lib.List.Butlast (Test butlast function)" do
     it "returns empty list for single-element list" do
         let initialEnv = E.emptyEnv
         let args = [List [Number 42]]
-        result <- runEval (butlast args) initialEnv
+        result <- runEvalLegacy (butlast args) initialEnv
         case result of
             Left err -> expectationFailure $ "Butlast failed: " <> show err
             Right (res, _, _) -> res `shouldBe` List []
@@ -27,7 +27,7 @@ spec = describe "Reactor.Lib.List.Butlast (Test butlast function)" do
     it "returns string elements except last" do
         let initialEnv = E.emptyEnv
         let args = [List [String "hello", String "world", String "test"]]
-        result <- runEval (butlast args) initialEnv
+        result <- runEvalLegacy (butlast args) initialEnv
         case result of
             Left err -> expectationFailure $ "Butlast failed: " <> show err
             Right (res, _, _) -> res `shouldBe` List [String "hello", String "world"]
@@ -35,7 +35,7 @@ spec = describe "Reactor.Lib.List.Butlast (Test butlast function)" do
     it "fails on empty list" do
         let initialEnv = E.emptyEnv
         let args = [List []]
-        result <- runEval (butlast args) initialEnv
+        result <- runEvalLegacy (butlast args) initialEnv
         case result of
             Left _ -> pure () -- Expected error
             Right _ -> expectationFailure "Butlast should fail on empty list"
@@ -43,7 +43,7 @@ spec = describe "Reactor.Lib.List.Butlast (Test butlast function)" do
     it "fails on non-list argument" do
         let initialEnv = E.emptyEnv
         let args = [Number 42]
-        result <- runEval (butlast args) initialEnv
+        result <- runEvalLegacy (butlast args) initialEnv
         case result of
             Left _ -> pure () -- Expected error
             Right _ -> expectationFailure "Butlast should fail on non-list"

@@ -1,7 +1,7 @@
 module Reactor.Lib.List.MapSpec (spec) where
 
 import Reactor.Env qualified as E
-import Reactor.Eval (runEval)
+import Reactor.Eval (runEvalLegacy)
 import Reactor.IR (IR (..), Native (..))
 import Reactor.Lib.List.Map qualified as Map
 import Test.Hspec
@@ -12,7 +12,7 @@ spec = describe "Reactor.Lib.List.Map (Test map function)" do
         let initialEnv = E.emptyEnv
         let func = Native (Func (\[Number x] -> pure $ Number (x * 2)))
         let args = [func, List [Number 1, Number 2, Number 3]]
-        result <- runEval (Map.map args) initialEnv
+        result <- runEvalLegacy (Map.map args) initialEnv
         case result of
             Left err -> expectationFailure $ "Map failed: " <> show err
             Right (res, _, _) -> res `shouldBe` List [Number 2, Number 4, Number 6]
@@ -21,7 +21,7 @@ spec = describe "Reactor.Lib.List.Map (Test map function)" do
         let initialEnv = E.emptyEnv
         let func = Native (Func (\[Number x] -> pure $ Number (x + 1)))
         let args = [func, List []]
-        result <- runEval (Map.map args) initialEnv
+        result <- runEvalLegacy (Map.map args) initialEnv
         case result of
             Left err -> expectationFailure $ "Map failed: " <> show err
             Right (res, _, _) -> res `shouldBe` List []
@@ -30,7 +30,7 @@ spec = describe "Reactor.Lib.List.Map (Test map function)" do
         let initialEnv = E.emptyEnv
         let func = Native (Func (\[Number x] -> pure $ Number (x + 1)))
         let args = [func, Number 42]
-        result <- runEval (Map.map args) initialEnv
+        result <- runEvalLegacy (Map.map args) initialEnv
         case result of
             Left _ -> pure () -- Expected error
             Right _ -> expectationFailure "Map should fail on non-list"

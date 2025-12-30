@@ -30,7 +30,7 @@ spec = do
                     -- Create initial environment with import function
                     let initialEnv = E.fromFrame (Map.union lib libWithModules)
 
-                    -- Create initial eval state
+                    -- Create initial eval state with registry
                     let initialState = EvalState
                             { env = initialEnv
                             , context = []
