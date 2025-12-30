@@ -19,5 +19,5 @@ builtin =
         , ("lambda", Native (Special lambda))
         , ("\\", Native (Special lambda))
         , ("list", Native (Func list))
-        , ("object", Native (Func object))
+        , ("object", Native (Special object))
         ]

@@ -1,5 +1,6 @@
 module Reactor.EvalSpec (spec) where
 
+import Data.Map.Strict qualified as Map
 import Data.Text (Text)
 import Reactor.Env qualified as E
 import Reactor.Error (ReactorError (..))
@@ -41,6 +42,14 @@ spec = describe "Reactor.Eval (System Integration)" do
     it "handles property access on property lists" do
         let code = "((lambda (obj) obj.foo) (object :foo 42))"
         runCode code `shouldReturn` Right (Just (Number 42))
+
+    it "handles nested property access" do
+        let code = "(list (def foo (:x (:y (:z 1)))) foo.x foo.x.y foo.x.y.z)"
+        runCode code `shouldReturn` Right (Just (List [Object (Map.fromList [("y", Object (Map.fromList [("z", Number 1)]))]), Object (Map.fromList [("z", Number 1)]), Number 1]))
+
+    it "handles nested property access" do
+        let code = "(list (def foo (object :x (object :y (object :z 1)))) foo.x foo.x.y foo.x.y.z)"
+        runCode code `shouldReturn` Right (Just (List [Object (Map.fromList [("y", Object (Map.fromList [("z", Number 1)]))]), Object (Map.fromList [("z", Number 1)]), Number 1]))
 
     it "fails when calling non-existent function" do
         runCode "(non-existent 1 2)"
