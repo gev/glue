@@ -126,13 +126,30 @@ buildEnvWithBindings savedEnv = foldl defineBinding (E.pushFrame savedEnv)
   where
     defineBinding env (param, value) = E.defineVar param value env
 
--- Evaluate a symbol by looking it up in the environment
+-- Evaluate a symbol by looking it up in the environment, handling property access with dots
 evalSymbol :: Text -> Eval (Maybe IR)
 evalSymbol name = do
-    env <- getEnv
-    case E.lookupVar name env of
-        Right val -> pure $ Just val
-        Left err -> throwError err
+    let parts = T.splitOn "." name
+    case parts of
+        [] -> throwError $ UnboundVariable name -- shouldn't happen
+        [base] -> do
+            env <- getEnv
+            case E.lookupVar base env of
+                Right val -> pure $ Just val
+                Left err -> throwError err
+        (base : props) -> do
+            env <- getEnv
+            case E.lookupVar base env of
+                Right val -> evalNestedAccess val props
+                Left err -> throwError err
+  where
+    evalNestedAccess obj [] = pure $ Just obj
+    evalNestedAccess obj (prop : rest) = do
+        case obj of
+            IR.Object objMap -> case Map.lookup prop objMap of
+                Just val -> evalNestedAccess val rest
+                Nothing -> throwError $ PropertyNotFound prop
+            _ -> throwError $ NotAnObject (T.pack $ show obj)
 
 -- Evaluate a list (function call or literal list)
 evalList :: [IR] -> Eval (Maybe IR)
@@ -200,7 +217,6 @@ applyClosure params body savedEnv rawArgs = do
 eval :: IR -> Eval (Maybe IR)
 eval (IR.Symbol name) = evalSymbol name
 eval (IR.List xs) = evalList xs
-eval (IR.PropAccess objExpr prop) = evalPropAccess objExpr prop
 eval v = evalLiteral v
 
 apply :: IR -> [IR] -> Eval (Maybe IR)

@@ -6,7 +6,7 @@ import Data.Functor.Identity (Identity)
 import Data.Text qualified as T
 import Reactor.AST (AST)
 import Reactor.AST qualified as AST
-import Reactor.IR (IR, compile, getPropAccess, getSymbol, isList, isObject, isPropAccess, isSymbol, listLength, objectLookup, objectSize)
+import Reactor.IR (IR, compile, getSymbol, isList, isObject, isSymbol, listLength, objectLookup, objectSize)
 import Test.Hspec
 import Test.Hspec.QuickCheck
 import Test.QuickCheck
@@ -30,7 +30,6 @@ instance Arbitrary AST where
                 , -- Generate nested structures
                   AST.AtomList <$> resize (n `div` 2) arbitrary
                 , AST.PropList <$> resize (n `div` 2) arbitrary
-                , AST.PropAccess <$> resize (n `div` 2) arbitrary <*> arbitrary
                 ]
 
 spec :: Spec
@@ -80,13 +79,3 @@ spec = describe "AST -> IR transformation (compile)" do
                 Just valInner -> valInner `shouldBe` (compile astInner :: IR Identity)
                 Nothing -> expectationFailure "Key not found"
             else expectationFailure "Recursive expansion error"
-
-    prop "PropAccess compiles correctly" $ \(obj :: AST) pro -> do
-        let ast = AST.PropAccess obj pro
-        let val = compile ast :: IR Identity
-        if isPropAccess val
-            then do
-                let (o, p) = getPropAccess val
-                o `shouldBe` compile obj
-                p `shouldBe` pro
-            else expectationFailure "Expected PropAccess"

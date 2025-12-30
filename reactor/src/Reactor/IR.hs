@@ -18,7 +18,6 @@ data IR m
     | Symbol Text
     | List [IR m]
     | Object (Map Text (IR m))
-    | PropAccess (IR m) Text
     | Native (Native m)
     | Closure [Text] (IR m) (Env m)
 
@@ -34,7 +33,6 @@ compile = \case
     AST.Symbol s -> Symbol s
     AST.AtomList xs -> List (map compile xs)
     AST.PropList ps -> Object $ Map.fromList (map (second compile) ps)
-    AST.PropAccess obj prop -> PropAccess (compile obj) prop
 
 instance Show (IR m) where
     show = \case
@@ -42,7 +40,6 @@ instance Show (IR m) where
         String s -> "\"" <> T.unpack s <> "\""
         Symbol s -> T.unpack s
         List xs -> "(" <> unwords (map show xs) <> ")"
-        PropAccess obj prop -> "(" <> show obj <> "." <> T.unpack prop <> ")"
         Native _ -> "<native>"
         Closure{} -> "<closure>"
         Object _ -> "{object}"
@@ -53,7 +50,6 @@ instance Eq (IR m) where
     (Symbol a) == (Symbol b) = a == b
     (List a) == (List b) = a == b
     (Object a) == (Object b) = a == b
-    (PropAccess o1 p1) == (PropAccess o2 p2) = o1 == o2 && p1 == p2
     _ == _ = False
 
 -- Accessor functions for abstraction
@@ -84,11 +80,3 @@ isSymbol _ = False
 getSymbol :: IR m -> Text
 getSymbol (Symbol s) = s
 getSymbol _ = ""
-
-isPropAccess :: IR m -> Bool
-isPropAccess (PropAccess _ _) = True
-isPropAccess _ = False
-
-getPropAccess :: IR m -> (IR m, Text)
-getPropAccess (PropAccess o p) = (o, p)
-getPropAccess _ = error "Not a PropAccess"

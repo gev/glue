@@ -29,18 +29,14 @@ symbol :: Text -> Parser Text
 symbol = L.symbol sc
 
 pReactor :: Parser AST
-pReactor = do
-    base <-
-        choice
-            [ pQuoted
-            , pExprOrList
-            , pString
-            , pNumber
-            , pSymbol
-            ]
-    optional (char '.' >> some (alphaNumChar <|> oneOf ("-._:!?" :: String))) >>= \case
-        Nothing -> pure base
-        Just prop -> pure $ PropAccess base (T.pack prop)
+pReactor =
+    choice
+        [ pQuoted
+        , pExprOrList
+        , pString
+        , pNumber
+        , pSymbol
+        ]
 
 pQuoted :: Parser AST
 pQuoted = do

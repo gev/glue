@@ -10,7 +10,6 @@ data AST where
     Symbol :: Text -> AST
     AtomList :: [AST] -> AST
     PropList :: [(Text, AST)] -> AST
-    PropAccess :: AST -> Text -> AST
 
 instance Show AST where
     show (String s) = "\"" <> T.unpack s <> "\""
@@ -20,7 +19,6 @@ instance Show AST where
     show (PropList ps) = "(" <> unwords (map showProp ps) <> ")"
       where
         showProp (k, v) = ":" <> T.unpack k <> " " <> show v
-    show (PropAccess obj prop) = "(" <> show obj <> "." <> T.unpack prop <> ")"
 
 instance Eq AST where
     (String a) == (String b) = a == b
@@ -28,5 +26,4 @@ instance Eq AST where
     (Symbol a) == (Symbol b) = a == b
     (AtomList a) == (AtomList b) = a == b
     (PropList a) == (PropList b) = a == b
-    (PropAccess o1 p1) == (PropAccess o2 p2) = o1 == o2 && p1 == p2
     _ == _ = False

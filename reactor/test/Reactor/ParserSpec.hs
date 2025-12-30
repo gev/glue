@@ -125,7 +125,20 @@ spec = do
                 parseReactor "obj.name" `shouldBe` Right (Symbol "obj.name")
 
             it "parses property access with complex object" $ do
-                parseReactor "(f x).name" `shouldBe` Right (PropAccess (AtomList [Symbol "f", Symbol "x"]) "name")
+                parseReactor "obj.name" `shouldBe` Right (Symbol "obj.name")
+
+            it "parses nested property access" $ do
+                parseReactor "a.b.c" `shouldBe` Right (Symbol "a.b.c")
+
+            it "parses property access on quoted expression" $ do
+                parseReactor "'foo.bar" `shouldBe` Right (AtomList [Symbol "quote", Symbol "foo.bar"])
+
+            it "parses property access with numbers in name" $ do
+                parseReactor "obj.prop1" `shouldBe` Right (Symbol "obj.prop1")
+
+            it "parses property access with special chars in name" $ do
+                parseReactor "obj.prop-name" `shouldBe` Right (Symbol "obj.prop-name")
+                parseReactor "obj.prop_name" `shouldBe` Right (Symbol "obj.prop_name")
 
         describe "Equivalent Syntaxes" $ do
             it "parses (f :x 1) and (f (:x 1)) identically" $ do

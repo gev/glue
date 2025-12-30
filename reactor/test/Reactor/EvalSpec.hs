@@ -39,7 +39,7 @@ spec = describe "Reactor.Eval (System Integration)" do
         runCode code `shouldReturn` Right (Just (List [Number 1]))
 
     it "handles property access on property lists" do
-        let code = "(:foo 42).foo"
+        let code = "((lambda (obj) obj.foo) (object :foo 42))"
         runCode code `shouldReturn` Right (Just (Number 42))
 
     it "fails when calling non-existent function" do

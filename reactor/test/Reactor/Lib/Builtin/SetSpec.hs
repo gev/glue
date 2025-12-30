@@ -31,7 +31,7 @@ spec = describe "Reactor.Lib.Builtin.Set (Test set special form)" do
         it "sets a property on an object" do
             let obj = Object (Map.fromList [("a", Number 1)])
             let initialEnv = E.fromList [("obj", obj)]
-            let args = [PropAccess (Symbol "obj") "b", Number 2]
+            let args = [Symbol "obj.b", Number 2]
             result <- runEvalLegacy (set args) initialEnv
             case result of
                 Left err -> expectationFailure $ "Set failed: " <> show err
@@ -45,7 +45,7 @@ spec = describe "Reactor.Lib.Builtin.Set (Test set special form)" do
 
         it "fails to set property on non-object" do
             let initialEnv = E.fromList [("x", Number 10)]
-            let args = [PropAccess (Symbol "x") "prop", Number 42]
+            let args = [Symbol "x.prop", Number 42]
             result <- runEvalLegacy (set args) initialEnv
             result `shouldSatisfy` isLeft
 
