@@ -9,16 +9,16 @@ import Reactor.IR (Env, IR)
 import Prelude hiding (mod)
 
 -- | A registered module containing metadata and body for evaluation
-data RegisteredModule ir = RegisteredModule
+data RegisteredModule m = RegisteredModule
     { name :: Text
     , exports :: [Text]
-    , body :: [ir] -- Generic IR type
+    , body :: [IR m] -- Generic IR type
     }
 
 instance Show (RegisteredModule ir) where
     show mod = "Module {name = " <> show (name mod) <> ", exports = " <> show (exports mod) <> ", body = <" <> show (length (body mod)) <> " forms>}"
 
-instance (Eq ir) => Eq (RegisteredModule ir) where
+instance Eq (RegisteredModule m) where
     m1 == m2 = name m1 == name m2 && exports m1 == exports m2 && body m1 == body m2
 
 -- | A cached imported module with evaluated exports and evaluation context

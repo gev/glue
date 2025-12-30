@@ -196,6 +196,7 @@ test-suite reactor-test
     Reactor.Module.CacheSpec
     Reactor.Module.ImportSpec
     Reactor.Module.RegistrationSpec
+    Reactor.Module.RegistrySpec
     Reactor.ParserSpec
     Reactor.TestUtils
 

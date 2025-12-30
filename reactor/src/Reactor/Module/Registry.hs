@@ -6,16 +6,16 @@ import Data.Text (Text)
 import Reactor.Module (RegisteredModule)
 
 -- | Global registry of registered modules
-type ModuleRegistry ir = Map Text (RegisteredModule ir)
+type ModuleRegistry m = Map Text (RegisteredModule m)
 
 -- | Lookup a module in the registry
-lookupModule :: Text -> ModuleRegistry ir -> Maybe (RegisteredModule ir)
+lookupModule :: Text -> ModuleRegistry m -> Maybe (RegisteredModule m)
 lookupModule = Map.lookup
 
 -- | Create an empty registry
-emptyRegistry :: ModuleRegistry ir
+emptyRegistry :: ModuleRegistry m
 emptyRegistry = empty
 
 -- | Get the number of modules in the registry
-registrySize :: ModuleRegistry ir -> Int
+registrySize :: ModuleRegistry m -> Int
 registrySize = size

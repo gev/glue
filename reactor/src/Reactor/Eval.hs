@@ -37,7 +37,7 @@ type Env = IR.Env Eval
 data EvalState = EvalState
     { env :: Env
     , context :: Context
-    , registry :: ModuleRegistry IR
+    , registry :: ModuleRegistry Eval
     , importCache :: ImportedModuleCache Eval
     }
 
@@ -71,7 +71,7 @@ getState = Eval $ \state -> pure $ Right (state, state)
 putState :: EvalState -> Eval ()
 putState newState = Eval $ \_ -> pure $ Right ((), newState)
 
-getRegistry :: Eval (ModuleRegistry IR)
+getRegistry :: Eval (ModuleRegistry Eval)
 getRegistry = Eval $ \state -> pure $ Right (state.registry, state)
 
 getCache :: Eval (ImportedModuleCache Eval)

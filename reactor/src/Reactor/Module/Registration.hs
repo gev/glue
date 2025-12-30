@@ -44,7 +44,7 @@ extractSymbolList (Symbol s : rest) = do
 extractSymbolList invalid = Left $ InvalidExportList invalid
 
 -- | Build registry from multiple modules
-buildRegistry :: [IR Eval] -> Either ModuleRegistryError (ModuleRegistry (IR Eval))
+buildRegistry :: [IR Eval] -> Either ModuleRegistryError (ModuleRegistry Eval)
 buildRegistry modules = do
     moduleInfos <- mapM parseModule modules
     foldM addModuleToRegistry Map.empty moduleInfos
@@ -54,7 +54,7 @@ buildRegistry modules = do
         | otherwise = pure $ Map.insert info.moduleName (moduleInfoToModule info) reg
 
 -- | Convert ModuleInfo to Module
-moduleInfoToModule :: ModuleInfo -> RegisteredModule (IR Eval)
+moduleInfoToModule :: ModuleInfo -> RegisteredModule Eval
 moduleInfoToModule info =
     RegisteredModule
         { name = info.moduleName
@@ -71,7 +71,7 @@ data ModuleInfo = ModuleInfo
     deriving (Show, Eq)
 
 -- | Register a single module into an existing registry (pure)
-registerModule :: ModuleRegistry (IR Eval) -> IR Eval -> Either ModuleRegistryError (ModuleRegistry (IR Eval))
+registerModule :: ModuleRegistry Eval -> IR Eval -> Either ModuleRegistryError (ModuleRegistry Eval)
 registerModule registry moduleIR = do
     moduleInfo <- parseModule moduleIR
     let mod = moduleInfoToModule moduleInfo
@@ -80,5 +80,5 @@ registerModule registry moduleIR = do
         else Right $ Map.insert moduleInfo.moduleName mod registry
 
 -- | Register multiple modules into a registry (pure)
-registerModules :: ModuleRegistry (IR Eval) -> [IR Eval] -> Either ModuleRegistryError (ModuleRegistry (IR Eval))
+registerModules :: ModuleRegistry Eval -> [IR Eval] -> Either ModuleRegistryError (ModuleRegistry Eval)
 registerModules = foldM registerModule

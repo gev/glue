@@ -4,14 +4,15 @@ import Reactor.Eval (Eval)
 import Reactor.IR (IR (..))
 import Reactor.Module (RegisteredModule (..))
 import Reactor.Module.Registration (buildRegistry, registerModule, registerModules)
-import Reactor.Module.Registry qualified as Registry
+import Reactor.Module.Registry (ModuleRegistry, emptyRegistry, lookupModule, registrySize)
 import Test.Hspec
+import Prelude hiding (mod)
 
 spec :: Spec
 spec = do
     describe "Pure module registration" $ do
         it "registers module with export collection" $ do
-            let registry = Registry.emptyRegistry :: Registry.ModuleRegistry (IR Eval)
+            let registry = emptyRegistry :: ModuleRegistry Eval
             let moduleIR =
                     List
                         [ Symbol "module"
@@ -25,7 +26,7 @@ spec = do
             case registerModule registry moduleIR of
                 Right newRegistry -> do
                     -- Check that module was registered
-                    case Registry.lookupModule "test.math" newRegistry of
+                    case lookupModule "test.math" newRegistry of
                         Just mod -> do
                             name mod `shouldBe` "test.math"
                             exports mod `shouldBe` ["add", "multiply"]
@@ -34,7 +35,7 @@ spec = do
                 Left err -> expectationFailure $ "Registration failed: " ++ show err
 
         it "handles module without exports" $ do
-            let registry = Registry.emptyRegistry :: Registry.ModuleRegistry (IR Eval)
+            let registry = emptyRegistry :: ModuleRegistry Eval
             let moduleIR =
                     List
                         [ Symbol "module"
@@ -44,7 +45,7 @@ spec = do
 
             case registerModule registry moduleIR of
                 Right newRegistry -> do
-                    case Registry.lookupModule "test.empty" newRegistry of
+                    case lookupModule "test.empty" newRegistry of
                         Just mod -> do
                             name mod `shouldBe` "test.empty"
                             exports mod `shouldBe` []
@@ -60,13 +61,13 @@ spec = do
 
             case buildRegistry modules of
                 Right registry -> do
-                    Registry.registrySize registry `shouldBe` 2
-                    Registry.lookupModule "math.add" registry `shouldNotBe` Nothing
-                    Registry.lookupModule "math.mul" registry `shouldNotBe` Nothing
+                    registrySize registry `shouldBe` 2
+                    lookupModule "math.add" registry `shouldNotBe` Nothing
+                    lookupModule "math.mul" registry `shouldNotBe` Nothing
                 Left err -> expectationFailure $ "Registry build failed: " ++ show err
 
         it "rejects duplicate module names" $ do
-            let registry = Registry.emptyRegistry :: Registry.ModuleRegistry (IR Eval)
+            let registry = emptyRegistry :: ModuleRegistry Eval
             let moduleIR1 = List [Symbol "module", Symbol "test.dup", List [Symbol "export", Symbol "x"], List [Symbol "def", Symbol "x", Number 1]]
             let moduleIR2 = List [Symbol "module", Symbol "test.dup", List [Symbol "export", Symbol "y"], List [Symbol "def", Symbol "y", Number 2]]
 

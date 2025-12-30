@@ -1,17 +1,15 @@
 module Reactor.Module.RegistrySpec where
 
-import Reactor.Eval (Eval)
-import Reactor.IR (IR (..))
-import Reactor.Module.Registry qualified as Registry
-import Test.Hspec
+import Reactor.Module.Registry (emptyRegistry, lookupModule, registrySize)
+import Test.Hspec (Spec, describe, it, shouldBe)
 
 spec :: Spec
 spec = do
     describe "ModuleRegistry operations" $ do
         it "emptyRegistry creates empty registry" $ do
-            let registry = Registry.emptyRegistry :: Registry.ModuleRegistry (IR Eval)
-            Registry.lookupModule "nonexistent" registry `shouldBe` Nothing
+            let registry = emptyRegistry
+            lookupModule "nonexistent" registry `shouldBe` Nothing
 
         it "registrySize returns correct count" $ do
-            let emptyReg = Registry.emptyRegistry :: Registry.ModuleRegistry (IR Eval)
-            Registry.registrySize emptyReg `shouldBe` 0
+            let emptyReg = emptyRegistry
+            registrySize emptyReg `shouldBe` 0
