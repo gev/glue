@@ -30,12 +30,12 @@ spec = describe "Reactor.Lib.Builtin.Object (Test object special form)" do
                 Right (Just res, _, _) -> res `shouldBe` existingObj
                 Right (Nothing, _, _) -> expectationFailure "Object returned Nothing"
 
-        it "handles nested objects (backward compatibility)" do
-            let initialEnv = E.emptyEnv
-            let nestedObj = Object (Map.fromList [("x", Object (Map.fromList [("y", Object (Map.fromList [("z", Number 1)]))]))])
+        it "handles nested objects with unevaluated expressions" do
+            let initialEnv = E.fromFrame lib
+            let nestedObj = Object (Map.fromList [("x", List [Symbol "object", Object (Map.fromList [("y", List [Symbol "object", Object (Map.fromList [("z", Number 1)])])])])])
             let args = [nestedObj]
             result <- runEvalLegacy (object args) initialEnv
             case result of
                 Left err -> expectationFailure $ "Object failed: " <> show err
-                Right (Just res, _, _) -> res `shouldBe` nestedObj
+                Right (Just res, _, _) -> res `shouldBe` Object (Map.fromList [("x", Object (Map.fromList [("y", Object (Map.fromList [("z", Number 1)]))]))])
                 Right (Nothing, _, _) -> expectationFailure "Object returned Nothing"
