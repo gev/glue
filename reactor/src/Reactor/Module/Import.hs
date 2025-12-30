@@ -6,7 +6,7 @@ import Reactor.Env qualified as E
 import Reactor.Eval (Eval, eval, getCache, getEnv, getRegistry, putCache, putEnv, throwError)
 import Reactor.Eval.Error (GeneralError (..))
 import Reactor.IR (Frame, IR (..), Native (..))
-import Reactor.Module (ImportedModule (..), Module (..))
+import Reactor.Module (ImportedModule (..), Module (..), lookupModule)
 import Reactor.Module.Cache qualified as Cache
 import Prelude hiding (mod)
 
@@ -14,7 +14,7 @@ import Prelude hiding (mod)
 importForm :: [IR Eval] -> Eval (Maybe (IR Eval))
 importForm [Symbol moduleName] = do
     registry <- getRegistry
-    case Map.lookup moduleName registry of
+    case lookupModule moduleName registry of
         Nothing -> throwError $ ModuleNotFound moduleName
         Just mod -> do
             cache <- getCache
