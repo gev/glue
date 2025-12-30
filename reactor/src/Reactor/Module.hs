@@ -1,6 +1,6 @@
 module Reactor.Module where
 
-import Data.Map.Strict (Map, keys, lookup)
+import Data.Map.Strict (Map, empty, keys, lookup, size)
 import Data.Text (Text)
 import Reactor.IR (Env, IR)
 import Prelude hiding (lookup, mod)
@@ -24,6 +24,14 @@ type ModuleRegistry m = Map Text (Module m)
 -- | Lookup a module in the registry
 lookupModule :: Text -> ModuleRegistry m -> Maybe (Module m)
 lookupModule = lookup
+
+-- | Create an empty registry
+emptyRegistry :: ModuleRegistry m
+emptyRegistry = empty
+
+-- | Get the number of modules in the registry
+registrySize :: ModuleRegistry m -> Int
+registrySize = size
 
 -- | A cached imported module with evaluated exports and evaluation context
 data ImportedModule m = ImportedModule

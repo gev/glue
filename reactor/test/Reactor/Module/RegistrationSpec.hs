@@ -1,9 +1,8 @@
 module Reactor.Module.RegistrationSpec where
 
-import Data.Map.Strict qualified as Map
 import Reactor.Eval (Eval)
 import Reactor.IR (IR (..))
-import Reactor.Module (Module (..), ModuleRegistry, lookupModule)
+import Reactor.Module (Module (..), ModuleRegistry, emptyRegistry, lookupModule, registrySize)
 import Reactor.Module.Registration (buildRegistry, registerModule, registerModules)
 import Test.Hspec
 import Prelude hiding (mod)
@@ -24,12 +23,12 @@ spec = do
 
     describe "ModuleRegistry operations" $ do
         it "handles missing modules" $ do
-            let registry = Map.empty :: ModuleRegistry Eval
+            let registry = emptyRegistry :: ModuleRegistry Eval
             lookupModule "nonexistent" registry `shouldBe` Nothing
 
     describe "Pure module registration" $ do
         it "registers module with export collection" $ do
-            let registry = Map.empty :: ModuleRegistry Eval
+            let registry = emptyRegistry :: ModuleRegistry Eval
             let moduleIR =
                     List
                         [ Symbol "module"
@@ -52,7 +51,7 @@ spec = do
                 Left err -> expectationFailure $ "Registration failed: " ++ show err
 
         it "handles module without exports" $ do
-            let registry = Map.empty :: ModuleRegistry Eval
+            let registry = emptyRegistry :: ModuleRegistry Eval
             let moduleIR =
                     List
                         [ Symbol "module"
@@ -78,13 +77,13 @@ spec = do
 
             case buildRegistry modules of
                 Right registry -> do
-                    Map.size registry `shouldBe` 2
+                    registrySize registry `shouldBe` 2
                     lookupModule "math.add" registry `shouldNotBe` Nothing
                     lookupModule "math.mul" registry `shouldNotBe` Nothing
                 Left err -> expectationFailure $ "Registry build failed: " ++ show err
 
         it "rejects duplicate module names" $ do
-            let registry = Map.empty :: ModuleRegistry Eval
+            let registry = emptyRegistry :: ModuleRegistry Eval
             let moduleIR1 = List [Symbol "module", Symbol "test.dup", List [Symbol "export", Symbol "x"], List [Symbol "def", Symbol "x", Number 1]]
             let moduleIR2 = List [Symbol "module", Symbol "test.dup", List [Symbol "export", Symbol "y"], List [Symbol "def", Symbol "y", Number 2]]
 
