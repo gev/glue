@@ -152,6 +152,9 @@ evalDottedSymbol parts = do
             IR.Object objMap -> case Map.lookup prop objMap of
                 Just val -> evalNestedAccess val rest
                 Nothing -> throwError $ PropertyNotFound prop
+            IR.Module moduleMap -> case Map.lookup prop moduleMap of
+                Just val -> evalNestedAccess val rest
+                Nothing -> throwError $ PropertyNotFound prop
             _ -> throwError $ NotAnObject (T.pack $ show obj)
 
 -- Evaluate a list (function call or literal list)

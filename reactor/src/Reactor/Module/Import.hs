@@ -22,10 +22,14 @@ importForm [Symbol moduleName] = do
             -- Check if already imported (cached)
             case Cache.lookupCachedModule moduleName cache of
                 Just imported -> do
-                    -- Use cached results - merge into current environment
+                    -- Use cached results - merge into current environment (direct access)
                     env <- getEnv
                     let updatedEnv = foldl (\e (name, val) -> E.defineVar name val e) env (Map.toList (exportedValues imported))
-                    putEnv updatedEnv
+
+                    -- Also store Module under module name (dotted access)
+                    let moduleValue = Module (exportedValues imported)
+                    let finalEnv = E.defineVar moduleName moduleValue updatedEnv
+                    putEnv finalEnv
                     pure Nothing
                 Nothing -> do
                     -- First import: evaluate module
@@ -72,9 +76,13 @@ importForm [Symbol moduleName] = do
                     let newCache = Cache.cacheModule importedModule cache
                     putCache newCache
 
-                    -- Merge exported symbols into current environment
+                    -- Merge exported symbols into current environment (direct access)
                     let updatedEnv = foldl (\env (name, val) -> E.defineVar name val env) rootEnv (Map.toList exportedValues)
-                    putEnv updatedEnv
+
+                    -- Also store Module under module name (dotted access)
+                    let moduleValue = Module exportedValues
+                    let finalEnv = E.defineVar moduleName moduleValue updatedEnv
+                    putEnv finalEnv
 
                     pure Nothing
 importForm _ = throwError $ WrongArgumentType ["module-name"]

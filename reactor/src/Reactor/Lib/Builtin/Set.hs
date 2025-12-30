@@ -25,6 +25,7 @@ set [Symbol name, rawVal] = do
                         let newObj = Object newMap
                         updateVarEval objName newObj
                         pure Nothing
+                    Module _ -> throwError CannotModifyModule
                     _ -> throwError $ NotAnObject (T.pack $ show currentObj)
                 Left err -> throwError err
         _ -> throwError $ WrongArgumentType ["target", "value"]

@@ -41,6 +41,7 @@ data GeneralError
     | PropertyNotFound Text
     | NotAnObject Text
     | ModuleNotFound Text
+    | CannotModifyModule
     deriving (Show, Eq)
 
 instance Error GeneralError where
@@ -56,6 +57,7 @@ instance Error GeneralError where
         PropertyNotFound prop -> "Property not found: " <> prop
         NotAnObject obj -> "Not an object: " <> obj
         ModuleNotFound name -> "Module not found: " <> name
+        CannotModifyModule -> "Cannot modify module properties - modules are immutable"
 
 prettyShow :: EvalError -> Text
 prettyShow (EvalError ctx e) =

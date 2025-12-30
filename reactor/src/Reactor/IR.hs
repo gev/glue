@@ -19,6 +19,7 @@ data IR m
     | DottedSymbol [Text]
     | List [IR m]
     | Object (Map Text (IR m))
+    | Module (Map Text (IR m))
     | Native (Native m)
     | Closure [Text] (IR m) (Env m)
 
@@ -45,9 +46,10 @@ instance Show (IR m) where
         Symbol s -> T.unpack s
         DottedSymbol parts -> T.unpack (T.intercalate "." parts)
         List xs -> "(" <> unwords (map show xs) <> ")"
+        Object _ -> "{object}"
+        Module _ -> "{module}"
         Native _ -> "<native>"
         Closure{} -> "<closure>"
-        Object _ -> "{object}"
 
 instance Eq (IR m) where
     (Number a) == (Number b) = a == b
@@ -56,6 +58,7 @@ instance Eq (IR m) where
     (DottedSymbol a) == (DottedSymbol b) = a == b
     (List a) == (List b) = a == b
     (Object a) == (Object b) = a == b
+    (Module a) == (Module b) = a == b
     _ == _ = False
 
 -- Accessor functions for abstraction
