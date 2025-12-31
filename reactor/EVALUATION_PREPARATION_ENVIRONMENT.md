@@ -4,7 +4,9 @@ Environment preparation establishes the execution context for Reactor programs t
 
 ## Root Environment Concept
 
-At the foundation of Reactor's environment system is the **root environment** - the original, unmodified environment passed to `runEval`. This root environment:
+At the foundation of Reactor's environment system is the **root environment** - the original, unmodified environment passed to `runEval`. **The primary purpose of the root environment is to serve as the initial environment for imported modules**, ensuring they are evaluated in a consistent, controlled context.
+
+This root environment:
 
 - Contains either the pristine builtins and standard library, or a custom environment
 - Remains unchanged throughout program execution
