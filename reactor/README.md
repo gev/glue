@@ -84,7 +84,7 @@ For detailed information about binding semantics, scope rules, and the differenc
 
 For a complete syntax reference including grammar, operators, and advanced features, see [`SYNTAX.md`](SYNTAX.md).
 
-For technical details about the AST and IR representations, see [`AST.md`](AST.md), [`IR.md`](IR.md), [`COMPILATION.md`](COMPILATION.md), [`EVALUATION.md`](EVALUATION.md), and [`EVALSTATE.md`](EVALSTATE.md). For detailed evaluation rules, see [`EVALUATION_PRIMITIVES.md`](EVALUATION_PRIMITIVES.md), [`EVALUATION_SYMBOLS.md`](EVALUATION_SYMBOLS.md), [`EVALUATION_FUNCTIONS.md`](EVALUATION_FUNCTIONS.md), [`EVALUATION_DATA.md`](EVALUATION_DATA.md), and [`EVALUATION_MODULES.md`](EVALUATION_MODULES.md).
+For technical details about the AST and IR representations, see [`AST.md`](AST.md), [`IR.md`](IR.md), [`COMPILATION.md`](COMPILATION.md), [`EVALUATION.md`](EVALUATION.md), and [`EVALSTATE.md`](EVALSTATE.md). For detailed evaluation rules, see [`EVALUATION_PRIMITIVES.md`](EVALUATION_PRIMITIVES.md), [`EVALUATION_SYMBOLS.md`](EVALUATION_SYMBOLS.md), [`EVALUATION_FUNCTIONS.md`](EVALUATION_FUNCTIONS.md), [`EVALUATION_DATA.md`](EVALUATION_DATA.md), [`EVALUATION_MODULES.md`](EVALUATION_MODULES.md), and [`EVALUATION_SPECIAL_FORMS.md`](EVALUATION_SPECIAL_FORMS.md).
 
 ### λ Lambda Functions
 

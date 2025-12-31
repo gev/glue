@@ -52,6 +52,12 @@ When accessing properties on modules:
 - Look up export name in module's export map
 - Return exported value or `PropertyNotFound` error
 
+### Module Access via Dotted Symbols
+Dotted symbols can access module exports:
+- `math.pi` → access "pi" export from "math" module
+- `utils.string.trim` → access "trim" from "string" submodule of "utils"
+- Module access happens through the module registry and import cache
+
 ## Error Conditions
 
 ### UnboundVariable

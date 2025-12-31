@@ -32,6 +32,8 @@ Reactor evaluates different types of IR nodes through specific evaluation rules.
 ### Special Forms
 - **Modules** - Registration and import handling
 - **[Detailed Documentation](EVALUATION_MODULES.md)**
+- **Special Forms** - def, lambda, quote, set operations
+- **[Detailed Documentation](EVALUATION_SPECIAL_FORMS.md)**
 
 ## Evaluation Process
 
