@@ -84,11 +84,6 @@ config.database.connection.url  ;; Module → Object → Property
 - **Simple:** O(depth + path_length)
 - **Cached:** Module results avoid re-evaluation
 
-### Optimization Opportunities
-- **Prefix caching:** Cache resolved prefixes
-- **Property indexing:** Fast map lookups
-- **Module caching:** Avoid re-evaluation of imported modules
-
 ## Implementation Details
 
 ### Resolution Strategy
