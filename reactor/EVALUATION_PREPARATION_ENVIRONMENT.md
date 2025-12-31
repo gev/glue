@@ -6,7 +6,7 @@ Environment preparation establishes the execution context for Reactor programs t
 
 At the foundation of Reactor's environment system is the **root environment** - the original, unmodified environment passed to `runEval`. This root environment:
 
-- Contains the pristine builtins and standard library
+- Contains either the pristine builtins and standard library, or a custom environment
 - Remains unchanged throughout program execution
 - Ensures consistent module evaluation across different contexts
 - Provides the stable foundation for the "tree of evaluation environments"
