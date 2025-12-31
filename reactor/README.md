@@ -84,6 +84,8 @@ For detailed information about binding semantics, scope rules, and the differenc
 
 For a complete syntax reference including grammar, operators, and advanced features, see [`SYNTAX.md`](SYNTAX.md).
 
+For technical details about the AST and IR representations, see [`AST.md`](AST.md).
+
 ### λ Lambda Functions
 
 ```clojure
