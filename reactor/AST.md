@@ -91,150 +91,125 @@ Represents property objects (dictionaries/maps).
 (:x (+ 1 2) :y (* 3 4))
 ```
 
-## Parsing Process
+## Parsing Rules
 
-The AST is constructed from source text through the `parseReactor` function:
+Reactor's parser follows these rules to convert source text into AST:
 
-```haskell
-parseReactor :: Text -> Either ParserError AST
-```
+### Expression Priority
 
-### Parser Architecture
+Expressions are parsed in this order of priority (highest first):
 
-Reactor uses **Megaparsec** for parsing with custom error handling. The parser is structured as follows:
+1. **Quoted expressions** (`'expr`)
+2. **Lists and property objects** (`(expr...)`, `(:key val...)`)
+3. **String literals** (`"text"`)
+4. **Numbers** (`42`, `3.14`)
+5. **Symbols** (`x`, `+`, `obj.field`)
 
-```haskell
-type Parser = Parsec ParserError Text
+### Whitespace & Comments
 
-parseReactor input =
-    case parse (pReactor <* eof) "reactor-input" input of
-        Left err -> Left (parserError err)
-        Right ast -> Right ast
-```
+- **Whitespace**: Spaces, tabs, newlines are ignored (except in strings)
+- **Line comments**: `;` followed by any text until end of line
+- **Block comments**: `#|` followed by any text until `|#`
 
-### Parsing Rules
+### Numbers
 
-#### Whitespace & Comments
-```haskell
-sc :: Parser ()  -- Space consumer
-sc = L.space space1 (L.skipLineComment ";") (L.skipBlockComment "#|" "|#")
-```
+**Rule:** Parse numeric literals using scientific notation.
 
-- **Spaces**: Any whitespace characters
-- **Line comments**: `;` until end of line
-- **Block comments**: `#|` ... `|#`
+**Valid patterns:**
+- Integers: `42`, `-15`, `0`
+- Decimals: `3.14159`, `-273.15`
+- Scientific: `1.23e-4`, `6.02e23`
 
-#### Lexemes
-```haskell
-lexeme :: Parser a -> Parser a  -- Consumes trailing whitespace
-symbol :: Text -> Parser Text   -- Matches exact text with whitespace
-```
+**Invalid patterns:**
+- Multiple dots: `1.2.3`
+- Hex/binary: `0xFF`, `0b1010`
+- Leading zeros: `007` (parsed as `7`)
 
-#### Expression Parsing Order
-```haskell
-pReactor :: Parser AST
-pReactor = choice
-    [ pQuoted      -- 'expr
-    , pExprOrList  -- (expr...) or (:key val...)
-    , pString      -- "text"
-    , pNumber      -- 42, 3.14
-    , pSymbol      -- identifier
-    ]
-```
+### Strings
 
-### Detailed Parsing Rules
+**Rule:** Parse text between double quotes with escape sequences.
 
-#### Numbers
-```haskell
-pNumber :: Parser AST
-pNumber = Number <$> lexeme L.scientific
-```
+**Valid patterns:**
+- Simple: `"hello"`
+- With escapes: `"with \"quotes\" and \n newlines"`
+- Empty: `""`
 
-**Valid:** `42`, `3.14159`, `-273.15`, `1.23e-4`
-**Invalid:** `1..2`, `0xFF` (hex not supported)
+**Invalid patterns:**
+- Unclosed: `"missing end`
+- Invalid escapes: `"bad \x escape"`
 
-#### Strings
-```haskell
-pString :: Parser AST
-pString = String . T.pack <$> lexeme (char '"' >> manyTill L.charLiteral (char '"'))
-```
+### Symbols
 
-**Valid:** `"hello"`, `"with \"quotes\""`, `"multi\nline"`
-**Invalid:** `"unclosed`, `"no escapes \x allowed"`
+**Rule:** Parse identifiers starting with letter, containing letters, digits, and special chars.
 
-#### Symbols
-```haskell
-pSymbol :: Parser AST
-pSymbol = Symbol . T.pack <$> lexeme (some (alphaNumChar <|> oneOf "-._:!?\\=<>/*+%"))
-```
+**Valid characters:** letters, digits, `-`, `.`, `_`, `:`, `!`, `?`, `\`, `=`, `>`, `<`, `/`, `*`, `+`, `%`
 
-**Valid:** `x`, `my-var`, `+`, `math.pi`, `obj.field.method`
-**Invalid:** `123abc` (must start with letter), `sym bol` (spaces not allowed)
+**Valid patterns:**
+- Variables: `x`, `my-var`, `result_1`
+- Operators: `+`, `-`, `*`, `/`, `=`, `>`, `<`
+- Dotted paths: `math.pi`, `obj.field.method`
 
-#### Quoted Expressions
-```haskell
-pQuoted :: Parser AST
-pQuoted = do
-    _ <- char '\''
-    inner <- pReactor
-    pure $ AtomList [Symbol "quote", inner]
-```
+**Invalid patterns:**
+- Starting with digit: `123abc`
+- Containing spaces: `my var`
+- Empty symbols
 
-**Input:** `'expr`
-**Output:** `(quote expr)`
+### Quoted Expressions
 
-#### Lists and Property Objects
-```haskell
-pExprOrList :: Parser AST
-pExprOrList = between (symbol "(") (symbol ")") $ do
-    optional pReactor >>= \case
-        Nothing -> pure $ AtomList []  -- ()
-        Just first -> case first of
-            Symbol name | not (T.isPrefixOf ":" name) -> do
-                body <- pBodyRest []
-                case body of
-                    AtomList atoms -> pure $ AtomList (Symbol name : atoms)
-                    propList -> pure $ AtomList [Symbol name, propList]
-            _ -> pBodyRest [first]
-```
+**Rule:** `'` followed by any expression becomes `(quote expression)`.
 
-### Property Object Validation
+**Examples:**
+- `'x` → `(quote x)`
+- `'(+ 1 2)` → `(quote (+ 1 2))`
+- `''foo` → `(quote (quote foo))`
 
-#### Property Recognition
-```haskell
-isProp :: AST -> Bool
-isProp (Symbol s) = T.isPrefixOf ":" s
-isProp _ = False
-```
+### Lists
 
-#### Validation Rules
-```haskell
-validateProps :: [AST] -> Parser [(Text, AST)]
-validateProps = \case
-    [] -> pure []
-    [Symbol k] | T.isPrefixOf ":" k -> customFailure (UnpairedProperty k)
-    (Symbol k : v : rest) | T.isPrefixOf ":" k -> do
-        others <- validateProps rest
-        pure ((T.drop 1 k, v) : others)
-    (x : _) -> customFailure (MixedContent (T.pack $ show x))
+**Rule:** Parenthesized expressions create lists.
 
-validateNoProps :: [AST] -> Parser ()
-validateNoProps = mapM_ \case
-    Symbol s | T.isPrefixOf ":" s -> customFailure (MixedContent s)
-    _ -> pure ()
-```
+**Syntax:** `(expr1 expr2 expr3 ...)`
+
+**Special cases:**
+- Empty list: `()` → `AtomList []`
+- Single element: `(x)` → `AtomList [x]`
+- Nested: `((+ 1 2))` → `AtomList [AtomList [Symbol "+", Number 1, Number 2]]`
+
+### Property Objects
+
+**Rule:** Lists starting with `:`-prefixed symbols create property objects.
+
+**Syntax:** `(:key1 value1 :key2 value2 ...)`
+
+**Validation:**
+- Keys must start with `:`
+- Each key must have a corresponding value
+- Cannot mix properties with regular arguments
+
+**Examples:**
+- Valid: `(:name "Alice" :age 30)`
+- Invalid: `(:name)` (missing value)
+- Invalid: `(:name "Alice" arg)` (mixed content)
 
 ### Parsing Pipeline
 
 ```
 Source Text
-    ↓ (tokenize & lex)
-Character Stream
-    ↓ (parse grammar)
-AST Nodes
-    ↓ (validate structure)
+    ↓ Tokenize (split into meaningful units)
+Tokens
+    ↓ Parse grammar (apply parsing rules)
+Raw AST
+    ↓ Validate structure (check property objects, etc.)
 Validated AST
 ```
+
+### Error Prevention
+
+The parser prevents invalid AST through:
+
+1. **Grammar rules** - Only valid syntax parses
+2. **Type safety** - Haskell types prevent invalid combinations
+3. **Validation** - Property objects checked for correctness
+4. **Lexical rules** - Invalid characters rejected
 
 ## Syntax Errors
 
