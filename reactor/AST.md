@@ -187,7 +187,7 @@ Expressions are parsed in this order of priority (highest first):
 
 **Examples:**
 - Valid: `(:name "Alice" :age 30)`
-- Valid: `(foo :x 1 :y 2)` - function call with keyword arguments
+- Valid: `(foo :x 1 :y 2)` - function call with object argument
 - Valid: `(:user (:name "Bob" :age 25) :config (:theme "dark"))` - nested objects
 - Invalid: `(:name)` (missing value)
 - Invalid: `(:name "Alice" arg)` (mixed content)
@@ -321,7 +321,7 @@ PropList [
 ]
 ```
 
-#### Function Call with Keyword Arguments
+#### Function Call with Object Argument
 ```reactor
 (foo :x 1 :y 2)
 ```
