@@ -25,7 +25,7 @@ For a dotted path like `a.b.c.d`:
 3. **If `a` is module:** Look up export `b` from `a`
 4. **Continue with `c`** on the result from step 2/3
 5. **Repeat for `d`**
-6. **Otherwise:** Fail with NotAnObject error
+6. **If current value is not object/module:** Fail with type-specific error
 
 ## Property vs Export Access
 
@@ -67,8 +67,12 @@ config.database.connection.url  ;; Module → Object → Property
 **Context:** Export name, module being accessed
 
 ### NotAnObject
-**Cause:** Attempted property access on non-object value
-**Context:** Value type, attempted property name
+**Cause:** Attempted property access on value that is not an object or module
+**Context:** Actual value type (string, number, function, etc.), attempted property name
+**Examples:**
+- `"hello".invalid` → NotAnObject with type "string"
+- `42.field` → NotAnObject with type "number"
+- `(fn [] 1).prop` → NotAnObject with type "closure"
 
 ### Circular Dependencies
 **Cause:** Module traversal creates circular reference
