@@ -24,26 +24,6 @@ type Frame m = Map Text (IR m)
 type Context = [Text]
 ```
 
-### IR Types
-
-```haskell
-data IR m
-    = Number Scientific
-    | String Text
-    | Symbol Text
-    | DottedSymbol [Text]
-    | List [IR m]
-    | Object (Map Text (IR m))
-    | Module (Map Text (IR m))
-    | Native (Native m)
-    | Closure [Text] (IR m) (Env m)
-
-data Native m
-    = Func ([IR m] -> m (IR m))
-    | Cmd ([IR m] -> m ())
-    | Special ([IR m] -> m (Maybe (IR m)))
-```
-
 ## EvalState Components
 
 ### Environment (env)
