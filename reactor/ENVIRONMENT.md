@@ -8,12 +8,7 @@ The Reactor environment manages variable bindings and scoping during program exe
 
 ### Stack of Frames
 
-Environments are organized as a stack (list) of frames:
-
-```haskell
-type Environment = [Frame]        -- Stack of frames, searched top to bottom
-type Frame = Map Text Value       -- Single frame with symbol-to-value mappings
-```
+Environments are organized as a stack of frames, where each frame contains a mapping of symbols to values.
 
 ### Frame Types
 
@@ -124,17 +119,7 @@ obj.field        ;; Access 'field' property of 'obj'
 obj.nested.value ;; Deep property access
 ```
 
-## Environment Operations
-
-### Frame Creation
-
-```haskell
-pushFrame :: Environment -> Environment    -- Add new empty frame
-defineVar :: Text -> Value -> Frame -> Frame  -- Add binding to frame
-lookupVar :: Text -> Environment -> Maybe Value  -- Search for binding
-```
-
-### Error Handling
+## Error Handling
 
 - **Unbound Variable**: Symbol not found in any frame
 - **Scope Violations**: Attempting to access variables outside their scope
