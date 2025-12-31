@@ -31,10 +31,10 @@ Once modules are registered and the environment is prepared, the initial EvalSta
 Reactor evaluation follows a pattern-matching approach where each IR node type is handled by a specific evaluation case. For complete IR type definitions, see [Intermediate Representation](IR.md).
 
 ### Symbol Evaluation
-Resolves identifiers to their bound values in the environment. For detailed information, see [Symbol Evaluation](EVALUATION_SYMBOLS.md).
+Resolves simple identifiers to their bound values in the environment. For detailed information, see [Symbol Evaluation](EVALUATION_SYMBOLS.md).
 
 ### Dotted Symbol Evaluation
-Traverses object/module properties hierarchically. For detailed information, see [Symbol Evaluation](EVALUATION_SYMBOLS.md).
+Traverses object/module properties hierarchically using dot notation. For detailed information, see [Dotted Symbol Evaluation](EVALUATION_DOTTED_SYMBOLS.md).
 
 ### List Evaluation
 Analyzes list structure for function calls or data. For detailed information, see [List Evaluation](EVALUATION_LISTS.md).
