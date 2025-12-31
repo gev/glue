@@ -242,14 +242,6 @@ The parser prevents invalid AST through:
 (:name "Alice" :age 30)
 ```
 
-#### Reserved Keyword Error
-**Trigger:** Using reserved identifiers
-
-**Invalid example:**
-```reactor
-(def x 1)  ;; ERROR: 'def' is reserved (if applicable)
-```
-
 #### General Syntax Error
 **Trigger:** Various parsing failures
 
