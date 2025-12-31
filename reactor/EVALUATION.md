@@ -4,28 +4,6 @@
 
 Reactor's evaluation process transforms Intermediate Representation (IR) code into executable runtime values. This document describes the complete evaluation lifecycle, from initial preparation through execution of different code constructs.
 
-## Core Data Types
-
-Reactor uses these Haskell data types for representing programs:
-
-```haskell
-data IR m
-    = Number Scientific
-    | String Text
-    | Symbol Text
-    | DottedSymbol [Text]
-    | List [IR m]
-    | Object (Map Text (IR m))
-    | Module (Map Text (IR m))
-    | Native (Native m)
-    | Closure [Text] (IR m) (Env m)
-
-data Native m
-    = Func ([IR m] -> m (IR m))
-    | Cmd ([IR m] -> m ())
-    | Special ([IR m] -> m (Maybe (IR m)))
-```
-
 ## Evaluation Preparation
 
 Before any code can be evaluated, the Reactor runtime environment must be properly established. This preparation phase ensures that all necessary components are available for program execution.
