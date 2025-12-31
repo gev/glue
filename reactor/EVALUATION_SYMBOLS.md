@@ -1,95 +1,103 @@
-# Evaluation: Symbol Resolution
+# Symbol Evaluation
 
-## Overview
-
-Symbol evaluation resolves identifiers to their bound values in the current environment. Reactor supports both simple symbols and dotted symbols for hierarchical access.
+Symbol evaluation resolves identifiers to their bound values in the current environment.
 
 ## Simple Symbol Evaluation
 
 **Input IR:** `Symbol name`
-**Process:** Look up `name` in environment frames
-**Output:** Bound value or error
+**Process:** Look up `name` in environment frames from top to bottom
+**Output:** Bound value or UnboundVariable error
 
 ### Lookup Process
-1. Start with current environment (innermost frame)
+1. Start with current environment (top frame)
 2. Search each frame from top to bottom
 3. Return first matching binding
-4. If no binding found, throw `UnboundVariable` error
+4. Raise UnboundVariable if not found
 
-### Examples
-- `Symbol "x"` → looks up variable `x`
-- `Symbol "+"` → looks up addition function
-- `Symbol "my-function"` → looks up user-defined function
+### Environment Frames
+- **Local Frames:** Function parameters, local variables
+- **Global Frame:** Builtin functions, user-defined globals
+- **Search Order:** Local → Function → Global
 
 ## Dotted Symbol Evaluation
 
 **Input IR:** `DottedSymbol [part1, part2, ...]`
-**Process:** Resolve hierarchical property access
-**Output:** Nested property value or error
+**Process:** Traverse object/module properties hierarchically
+**Output:** Final property value or error
 
-### Resolution Algorithm
-1. Try full dotted path as simple symbol first
-2. If not found, try progressively shorter prefixes
-3. For longest matching prefix, access remaining parts as properties
-4. Properties can be accessed on objects or modules
+### Traversal Process
+1. Evaluate first part as symbol
+2. For each subsequent part:
+   - Access property on current object
+   - Update current object to property value
+3. Return final value
 
-### Examples
-- `DottedSymbol ["math", "pi"]` → find "math", access property "pi"
-- `DottedSymbol ["obj", "field", "sub"]` → find "obj", access "field", then "sub"
-- `DottedSymbol ["module", "func"]` → find "module", access exported "func"
+### Property Access
+- **Objects:** Access by key in map
+- **Modules:** Access exported symbols
+- **Errors:** PropertyNotFound, NotAnObject
 
-## Property Access
+## Symbol Resolution Examples
 
-### Object Properties
-When accessing properties on objects:
-- Check if target is an `Object` type
-- Look up property name in object's property map
-- Return property value or `PropertyNotFound` error
+```reactor
+;; Simple symbol
+x  ;; Lookup 'x' in environment
 
-### Module Properties
-When accessing properties on modules:
-- Check if target is a `Module` type
-- Look up export name in module's export map
-- Return exported value or `PropertyNotFound` error
-
-### Module Access via Dotted Symbols
-Dotted symbols can access module exports:
-- `math.pi` → access "pi" export from "math" module
-- `utils.string.trim` → access "trim" from "string" submodule of "utils"
-- Module access happens through the module registry and import cache
+;; Dotted access
+obj.field        ;; Access 'field' property of obj
+module.func      ;; Access 'func' export from module
+data.user.name   ;; Deep property access
+```
 
 ## Error Conditions
 
 ### UnboundVariable
 **Cause:** Symbol name not found in any environment frame
-**Context:** Includes symbol name and current call stack
+**Context:** Symbol name, current environment state
 
 ### PropertyNotFound
-**Cause:** Property name doesn't exist on target object/module
-**Context:** Includes property name and target type
+**Cause:** Object/module doesn't have requested property
+**Context:** Property name, object type
 
 ### NotAnObject
 **Cause:** Attempted property access on non-object value
-**Context:** Includes actual type of target value
+**Context:** Value type, property name
 
-## Environment Scoping
+## Performance Characteristics
 
-### Lexical Scoping
-Symbols are resolved using lexical scoping rules:
-- Local variables shadow global ones
-- Function parameters are accessible in function body
-- Closures capture their definition environment
+- **Simple Lookup:** O(depth) where depth is frame stack height
+- **Dotted Access:** O(depth + path_length)
+- **Caching:** No caching - resolved on each access
+- **Sharing:** Environment frames shared between calls
+
+## Implementation Notes
 
 ### Frame Structure
-Environment is a stack of frames:
-- Top frame: current function locals
-- Middle frames: enclosing scopes
-- Bottom frame: global definitions
+```haskell
+type Frame = Map Text IR
+type Environment = [Frame]  -- Stack
+```
 
-## Special Cases
+### Lookup Function
+```haskell
+lookupVar :: Text -> Environment -> Maybe IR
+lookupVar name [] = Nothing
+lookupVar name (frame:rest) =
+    case Map.lookup name frame of
+        Just val -> Just val
+        Nothing -> lookupVar name rest
+```
 
-### Reserved Symbols
-Certain symbols may be bound to built-in functions or special forms by the runtime environment.
+### Dotted Resolution
+```haskell
+resolveDotted :: [Text] -> Environment -> Either Error IR
+resolveDotted [] _ = Left EmptyDottedPath
+resolveDotted (first:rest) env = do
+    obj <- lookupVar first env
+    resolvePath obj rest
+```
 
-### Dynamic Lookup
-Symbol resolution happens at evaluation time, enabling dynamic binding and late resolution.
+## See Also
+
+- [Environment](ENVIRONMENT.md) - Environment structure and frame management
+- [Evaluation](EVALUATION.md) - Main evaluation overview

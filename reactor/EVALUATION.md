@@ -28,60 +28,22 @@ Once modules are registered and the environment is prepared, the initial EvalSta
 
 ## Evaluation Rules
 
-### Primitive Values
-
-Numbers, strings, and other literals evaluate to themselves.
+Reactor evaluation follows a pattern-matching approach where each IR node type is handled by a specific evaluation case:
 
 ### Symbol Evaluation
-
-1. Search environment frames from top to bottom
-2. Return bound value or raise UnboundVariable error
-3. Dotted symbols traverse object/module properties
+Resolves identifiers to their bound values in the environment. For detailed information, see [Symbol Evaluation](EVALUATION_SYMBOLS.md).
 
 ### List Evaluation
-
-Lists are evaluated based on their first element:
-
-#### Case 1: Single Symbol `[symbol]`
-- Look up symbol in environment
-- If result is callable: apply with no arguments
-- If result is not callable: return the value
-- Error if symbol not found
-
-#### Case 2: Symbol with Arguments `[symbol, arg1, arg2, ...]`
-- Look up symbol in environment
-- Apply result to unevaluated arguments
-- Error if symbol not found
-
-#### Case 3: General List `[item1, item2, ...]`
-- Evaluate all items in the list
-- If first evaluated item is callable: apply it to remaining evaluated items
-- Otherwise: return new list with all evaluated items
+Analyzes list structure for function calls or data. For detailed information, see [List Evaluation](EVALUATION_LISTS.md).
 
 ### Object Evaluation
+Evaluates property values while preserving keys. For detailed information, see [Object Evaluation](EVALUATION_OBJECTS.md).
 
-1. Evaluate all property values
-2. Preserve property keys unchanged
-3. Return new object with evaluated values
+### Literal Evaluation
+Handles self-evaluating values. For detailed information, see [Literal Evaluation](EVALUATION_LITERALS.md).
 
 ### Function Application
-
-#### Native Functions
-- Evaluate all arguments first (eager evaluation)
-- Pass evaluated arguments to native function
-- Return function result
-
-#### Closures
-- Evaluate all arguments first
-- Create new environment frame
-- Bind parameters to evaluated arguments
-- Evaluate closure body in extended environment
-- Return body evaluation result
-
-#### Symbol Resolution
-- Look up symbol in current environment
-- Apply resolved value if callable
-- Error if not callable or not found
+All function application logic is handled within the list evaluation cases. For comprehensive details about function calling semantics, see [Function Application](EVALUATION_FUNCTIONS.md).
 
 ## Error Conditions
 
