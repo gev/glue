@@ -33,9 +33,32 @@ Symbol evaluation resolves identifiers to their bound values in the current envi
 3. Return final value
 
 ### Property Access
-- **Objects:** Access by key in map
-- **Modules:** Access exported symbols
-- **Errors:** PropertyNotFound, NotAnObject
+
+#### Objects
+- **Structure:** `Object (Map Text IR)` - key-value mappings
+- **Access:** Direct key lookup in the map
+- **Evaluation:** Property values are already evaluated when stored
+- **Errors:** PropertyNotFound when key doesn't exist
+
+#### Modules
+- **Structure:** `Module (Map Text IR)` - exported symbol mappings
+- **Access:** Lookup in module's export map
+- **Evaluation:** Module body evaluated once at import time
+- **Caching:** Imported modules cached to avoid re-evaluation
+- **Isolation:** Module evaluation uses separate environment branch
+- **Errors:** PropertyNotFound when export doesn't exist
+
+#### Traversal Process
+For dotted access like `module.submodule.function`:
+1. Resolve `module` in current environment
+2. Access `submodule` property on the module
+3. Access `function` property on the submodule
+4. Return final resolved value
+
+#### Error Handling
+- **PropertyNotFound:** Requested property doesn't exist in object/module
+- **NotAnObject:** Attempted property access on non-object value (numbers, strings, etc.)
+- **Circular Dependencies:** Detected during module import resolution
 
 ## Symbol Resolution Examples
 
