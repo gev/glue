@@ -39,11 +39,15 @@ When encountering a symbol, Reactor looks up its value in the current environmen
 Lists in Reactor serve dual purposes: they can represent literal data structures or function applications. The evaluation depends on the first element:
 
 **Function Application:**
-- `[Native func, arg1, arg2, ...]` - Native function with unevaluated arguments
-- `[Closure, arg1, arg2, ...]` - Closure with unevaluated arguments
-- `[Symbol, arg1, arg2, ...]` - Symbol that evaluates to a callable
 
-For function application, arguments are evaluated and passed to the callable. For closures and symbols that resolve to callables, the first element is evaluated to obtain the callable.
+- **Input:** `[Native func, arg1, arg2, ...]`
+  **Process:** Evaluate `arg1`, `arg2`, ... and apply `Native func` to the results
+
+- **Input:** `[Closure, arg1, arg2, ...]`
+  **Process:** Evaluate `arg1`, `arg2`, ... and apply `Closure` to the results
+
+- **Input:** `[Symbol, arg1, arg2, ...]`
+  **Process:** Evaluate `Symbol` to get callable, then evaluate `arg1`, `arg2`, ... and apply callable to the results
 
 **Data Lists:**
 When the first element evaluates to a non-callable value, the entire list is treated as literal data. All elements are evaluated and the result is a list of evaluated values.
