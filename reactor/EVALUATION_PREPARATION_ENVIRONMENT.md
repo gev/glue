@@ -1,38 +1,83 @@
 # Environment Preparation
 
-Environment preparation establishes the execution context for Reactor programs by setting up variable bindings and scoping rules.
+Environment preparation establishes the execution context for Reactor programs through a sophisticated dual-registry system with lazy evaluation and caching.
 
-## Environment Types
+## Root Environment Concept
 
-### Empty Environment
-An empty environment contains no predefined bindings. Programs must define all symbols they use or import them from modules.
+At the foundation of Reactor's environment system is the **root environment** - the original, unmodified environment passed to `runEval`. This root environment:
 
-### Standard Environment
-The standard environment includes the complete standard library with all builtin functions, data types, and module system support.
+- Contains the pristine builtins and standard library
+- Remains unchanged throughout program execution
+- Ensures consistent module evaluation across different contexts
+- Provides the stable foundation for the "tree of evaluation environments"
 
-### Custom Environments
-Custom environments can be created with specific sets of bindings for specialized execution contexts:
+## Dual-Registry Architecture
 
-- **Minimal Environment** - Contains only essential builtin forms (def, lambda, quote)
-- **Domain-Specific Environment** - Includes bindings tailored for specific application domains
-- **Sandbox Environment** - Restricted environment for safe code execution
+Reactor uses **two separate registries** to manage modules and their evaluation:
+
+### Module Registry (Static Metadata)
+Stores module declarations with name, exports, and unevaluated body forms. This registry is populated during the registration phase and contains static information.
+
+### Imported Module Cache (Runtime Results)
+Caches evaluated module results for reuse. This cache is populated lazily on first import and ensures modules are evaluated only once globally.
+
+## Tree of Evaluation Environments
+
+The root environment serves as the base for a tree structure where each evaluation context creates its own branch:
+
+```
+Root Environment (original builtins + std lib)
+├── Main Program: [user_vars, builtins_frame]
+│   ├── Module A Import: [module_temp, builtins_frame]
+│   ├── Module B Import: [module_temp, builtins_frame]
+│   └── Function Call: [local_vars, user_vars, builtins_frame]
+└── REPL Session: [repl_vars, builtins_frame]
+```
+
+### Key Properties
+- **Root Preservation**: Original environment never modified
+- **Branch Isolation**: Each context gets its own evaluation stack
+- **Shared Builtins**: Common builtin frame shared across all branches
+- **Clean Merging**: Exported symbols integrate into importing scope
+
+## Lazy Evaluation with Caching
+
+**Registration Phase** (Eager):
+- Parse module declarations
+- Store metadata in Module Registry
+- No evaluation of module body
+
+**Import Phase** (Lazy with Caching):
+- **First import**: Evaluate module using root environment, cache results
+- **Subsequent imports**: Return cached results directly
+
+This ensures modules are evaluated **once globally** while maintaining evaluation isolation.
 
 ## Environment Structure
 
-Environments are organized as frames that can be pushed and popped to manage scoping:
+Environments are organized as stacks of frames:
 
-- **Global Frame** - Contains builtin functions and constants
-- **Module Frames** - Contain imported module bindings
-- **Local Frames** - Contain function parameters and local variables
+- **Root Frame**: Contains builtin functions and constants (shared)
+- **Module Frames**: Contain imported module bindings
+- **Local Frames**: Contain function parameters and local variables
+- **Temporary Frames**: Used during module evaluation (isolated)
 
-## Preparation Process
+## Security and Isolation
 
-1. **Base Environment Creation** - Start with empty or standard environment
-2. **Module Loading** - Import required modules and merge their exports
-3. **Custom Binding Addition** - Add any additional bindings needed for the program
-4. **Environment Validation** - Ensure all required symbols are available
+The root environment approach provides security benefits:
+- Modules cannot access variables from importing scope during evaluation
+- Clean separation between module internals and external state
+- Consistent evaluation context regardless of current environment state
+
+## Performance Characteristics
+
+- **Memory Efficient**: Shared builtins, cached exports, temporary frame cleanup
+- **Lookup Performance**: O(depth) for variable lookups, O(1) for cached imports
+- **Lazy Loading**: Unused modules never evaluated
+- **Global Sharing**: One evaluation serves all importers
 
 ## See Also
 
-- [Module Registration](EVALUATION_PREPARATION_MODULE_REGISTRATION.md)
-- [Standard Library Documentation](../STDLIB_INTRO.md)
+- [Module Environment Architecture](MODULE_ENVIRONMENTS.md) - Detailed implementation and architecture
+- [Module System Specification](MODULE_SYSTEM.md) - Complete feature overview and examples
+- [Module Registration](EVALUATION_PREPARATION_MODULE_REGISTRATION.md) - Module registration process
