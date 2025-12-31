@@ -37,16 +37,16 @@ Reactor provides sophisticated variable binding semantics with clear distinction
 (set x 100)       ;; Updates global variable x to 100
 ```
 
-#### Dotted Strings (Property Setting)
+#### Dotted Symbols (Property Setting)
 ```reactor
-(set "obj.field" value)  ;; Updates global obj.field
+(set obj.field value)  ;; Updates global obj.field
 ```
 
 **Key Properties**:
 - ✅ Modifies existing global variables
 - ✅ Requires target to already exist
 - ✅ Global scope (affects all code)
-- ✅ For dotted notation: uses string syntax `"obj.field"`
+- ✅ For dotted notation: uses `DottedSymbol` AST nodes
 
 ### `import` - Module Incorporation (Lexical Scope)
 
@@ -54,12 +54,12 @@ Reactor provides sophisticated variable binding semantics with clear distinction
 
 #### Simple Modules
 ```reactor
-(import math.x)   ;; Creates local x = math.x module
+(import math.x)   ;; Creates local math = (:x module)
 ```
 
 #### Dotted Modules
 ```reactor
-(import math.x.y) ;; Creates hierarchical local structure
+(import math.x.y) ;; Creates hierarchical local structure math = (:x (:y module))
 ```
 
 **Key Properties**:
@@ -164,8 +164,8 @@ x                          ;; → 1 (global still exists)
 ### `set` Errors
 ```reactor
 (set nonexistent 1)        ;; ERROR: unbound variable
-(set "nonexistent.field" 1) ;; ERROR: object doesn't exist
-(set x.y 1)               ;; ERROR: x must be string for dotted
+(set nonexistent.field 1)  ;; ERROR: object doesn't exist
+;; No other errors - set accepts DottedSymbol directly
 ```
 
 ### `import` Errors
@@ -217,8 +217,8 @@ ui.components.button.cos  ;; Access imported function through data structure
 
 ### AST Representation
 - `Symbol "x"` → simple variable
-- `DottedSymbol ["x", "y", "z"]` → hierarchical path
-- `String "x.y"` → dotted string for `set`
+- `DottedSymbol ["x", "y", "z"]` → hierarchical path (used by `def`, `set`, `import`)
+- `String "literal"` → string literals
 
 ### Evaluation Strategy
 1. **Parse** → Convert dotted notation to appropriate AST nodes
