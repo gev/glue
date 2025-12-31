@@ -148,7 +148,7 @@ user.address.city              ;; → nested access
 ### Import (`import`)
 ```reactor
 ;; Module import
-(import math.x)         ;; Import specific submodule
+(import math.x)         ;; Import specific module
 (import math)           ;; Import namespace (if supported)
 
 ;; Selective import (if supported)
@@ -430,9 +430,9 @@ Reactor is a Lisp-1 with no operator precedence:
 
 ### Object Processing
 ```reactor
-(def users '((:name "Alice" :age 30)
-             (:name "Bob" :age 25)
-             (:name "Charlie" :age 35)))
+(def users ((:name "Alice" :age 30)
+            (:name "Bob" :age 25)
+            (:name "Charlie" :age 35)))
 
 (def get-names
   (lambda (users)
