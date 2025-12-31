@@ -14,7 +14,7 @@ The first step in preparation is module registration, where Reactor modules are 
 
 ### Environment Preparation
 
-Once modules are registered, the evaluation environment must be configured. The environment provides the context in which code executes, including variable bindings, function definitions, and scoping rules. Reactor supports different types of environments - from minimal setups containing only essential operations to full standard environments with complete library access. Environment preparation can include custom configurations for specific use cases, such as sandboxed execution or domain-specific functionality. For comprehensive details about environment setup and configuration options, see [Environment Preparation](EVALUATION_PREPARATION_ENVIRONMENT.md).
+Once modules are registered, the initial EvalState must be constructed. The EvalState provides the complete runtime context for evaluation, including environment, call stack, module registries, and caching infrastructure. Reactor supports different EvalState configurations for various execution scenarios. For comprehensive details about EvalState construction and component initialization, see [EvalState Preparation](EVALUATION_PREPARATION_EVALSTATE.md).
 
 ## Evaluation Process
 

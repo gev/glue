@@ -1,13 +1,46 @@
-# Environment Preparation
+# EvalState Preparation
 
-Environment preparation establishes the execution context for Reactor programs through a sophisticated dual-registry system with lazy evaluation and caching.
+EvalState preparation establishes the complete initial state for Reactor's evaluation system. The EvalState contains all the components needed to execute Reactor programs safely and efficiently.
+
+## EvalState Structure
+
+The initial EvalState is constructed with these components:
+
+```haskell
+data EvalState = EvalState
+    { env :: Env           -- Current environment (initial bindings)
+    , context :: Context   -- Call stack (initially empty)
+    , registry :: ModuleRegistry Eval    -- Module metadata (initially empty)
+    , importCache :: ImportedModuleCache Eval  -- Cached imports (initially empty)
+    , rootEnv :: Env       -- Preserved root environment
+    }
+```
+
+## Initial EvalState Construction
+
+### Environment (env)
+The starting environment containing initial variable bindings. This can be:
+- **Standard environment**: Includes complete builtins and standard library
+- **Custom environment**: Specific bindings for specialized execution contexts
+- **Minimal environment**: Only essential operations
+
+### Context (context)
+Initialized as an empty list `[]` representing the initial call stack state.
+
+### Registry (registry)
+Initialized as `emptyRegistry` - no modules registered initially.
+
+### Import Cache (importCache)
+Initialized as `Map.empty` - no modules cached initially.
+
+### Root Environment (rootEnv)
+Set to the same environment as `env`. **The primary purpose of the root environment is to serve as the initial environment for imported modules**, ensuring they are evaluated in a consistent, controlled context.
 
 ## Root Environment Concept
 
-At the foundation of Reactor's environment system is the **root environment** - the original, unmodified environment passed to `runEval`. **The primary purpose of the root environment is to serve as the initial environment for imported modules**, ensuring they are evaluated in a consistent, controlled context.
+At the foundation of Reactor's evaluation system is the **root environment** - the original, unmodified environment preserved in EvalState. **The primary purpose of the root environment is to serve as the initial environment for imported modules**, ensuring they are evaluated in a consistent, controlled context.
 
 This root environment:
-
 - Contains either the pristine builtins and standard library, or a custom environment
 - Remains unchanged throughout program execution
 - Ensures consistent module evaluation across different contexts
@@ -15,7 +48,7 @@ This root environment:
 
 ## Dual-Registry Architecture
 
-Reactor uses **two separate registries** to manage modules and their evaluation:
+Reactor uses **two separate registries** within EvalState to manage modules and their evaluation:
 
 ### Module Registry (Static Metadata)
 Stores module declarations with name, exports, and unevaluated body forms. This registry is populated during the registration phase and contains static information.
@@ -57,7 +90,7 @@ This ensures modules are evaluated **once globally** while maintaining evaluatio
 
 ## Environment Structure
 
-Environments are organized as stacks of frames:
+Environments within EvalState are organized as stacks of frames:
 
 - **Root Frame**: Contains builtin functions and constants (shared)
 - **Module Frames**: Contain imported module bindings
@@ -80,6 +113,7 @@ The root environment approach provides security benefits:
 
 ## See Also
 
+- [EvalState Data Structure](EVALSTATE.md) - Detailed EvalState component descriptions
 - [Module Environment Architecture](MODULE_ENVIRONMENTS.md) - Detailed implementation and architecture
 - [Module System Specification](MODULE_SYSTEM.md) - Complete feature overview and examples
 - [Module Registration](EVALUATION_PREPARATION_MODULE_REGISTRATION.md) - Module registration process
