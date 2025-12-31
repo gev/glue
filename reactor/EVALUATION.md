@@ -36,7 +36,7 @@ Objects represent structured data with named properties. During evaluation, all 
 
 Literal values such as numbers, strings, and other primitive types evaluate to themselves. These self-evaluating forms provide the atomic building blocks of Reactor programs. For information about all supported primitive types, see [Primitive Values](EVALUATION_PRIMITIVES.md).
 
-## Special forms, operators evaluation
+## Special forms and operators evaluation
 
 To evaluate special forms and operators in Reactor programs, the runtime relies on the standard library for their implementation. Special forms like `import`, `def`, `lambda`, `set`, `quote`, and `if`, along with boolean values `true` and `false`, and operators such as `+`, `-`, `/`, `%`, `*`, `**`, `<`, `<=`, `==`, `=>`, `>`, `\`, and others, are all defined in the standard library modules.
 
