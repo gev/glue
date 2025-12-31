@@ -82,7 +82,6 @@ config.database.connection.url  ;; Module → Object → Property
 
 ### Access Cost
 - **Simple:** O(depth + path_length)
-- **Worst case:** One environment lookup + N property lookups for N path components
 - **Cached:** Module results avoid re-evaluation
 
 ### Optimization Opportunities
@@ -96,7 +95,7 @@ config.database.connection.url  ;; Module → Object → Property
 The evaluation follows a sequential approach:
 1. Receive pre-split components: `["a", "b", "c", "d"]` (already split in DottedSymbol IR)
 2. Look up the first component `"a"` as a symbol
-3. For each remaining component, perform property access on the current value
+3. For each remaining component, perform property access (export) on the current value
 4. Each step validates the current value is an object or module
 
 ### Property Access Logic

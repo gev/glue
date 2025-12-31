@@ -49,34 +49,6 @@ pi          ;; Find 'pi' constant
 - **Worst Case:** Deep recursion with many frames
 - **Caching:** No caching - resolved on each access
 
-## Implementation Details
-
-### Frame Structure
-```haskell
-type Frame = Map Text IR
-type Environment = [Frame]  -- Stack of frames
-```
-
-### Lookup Function
-```haskell
-lookupVar :: Text -> Environment -> Maybe IR
-lookupVar name [] = Nothing
-lookupVar name (frame:rest) =
-    case Map.lookup name frame of
-        Just val -> Just val
-        Nothing -> lookupVar name rest
-```
-
-### Symbol Evaluation
-```haskell
-evalSymbol :: Text -> Eval (Maybe IR)
-evalSymbol name = do
-    env <- getEnv
-    case lookupVar name env of
-        Right val -> pure (Just val)
-        Left err -> throwError err
-```
-
 ## Scope Resolution
 
 ### Local Scope
