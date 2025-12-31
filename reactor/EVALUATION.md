@@ -1,52 +1,8 @@
-# Reactor Evaluation Specification
-
-This specification defines the complete evaluation semantics for Reactor. It provides all information needed to implement Reactor evaluation in any host language.
+# Reactor Evaluation
 
 ## Overview
 
 Reactor's evaluation process transforms Intermediate Representation (IR) code into executable runtime values. This document describes the complete evaluation lifecycle, from initial preparation through execution of different code constructs.
-
-## Data Types
-
-### IR (Intermediate Representation)
-
-Reactor programs are represented as IR values with these types:
-
-- **Number**: Numeric literals (integers, floats)
-- **String**: Text literals
-- **Symbol**: Variable/function names
-- **DottedSymbol**: Hierarchical property access (e.g., `obj.field.subfield`)
-- **List**: Ordered sequences that can represent both data and function calls
-- **Object**: Key-value mappings with string keys
-- **Module**: Exported symbol collections (similar to objects)
-- **Native**: Host language functions and special forms
-- **Closure**: User-defined functions with captured environment
-
-### Native Functions
-
-Native functions come in three types:
-
-- **Functions**: Take arguments, return a result value
-- **Commands**: Take arguments, perform side effects, return no value
-- **Special Forms**: Handle special evaluation rules (macros, control flow, etc.)
-
-### Environment
-
-The environment is a stack of frames, where each frame maps symbol names to IR values.
-
-- **Global Frame**: Contains builtin functions and global variables
-- **Function Frames**: Contain function parameters and local variables
-- **Lookup**: Search from top frame downward
-
-### Evaluation State
-
-The evaluation state tracks:
-
-- **Current Environment**: Variable bindings
-- **Call Stack**: Function call context for error reporting
-- **Module Registry**: Registered module metadata
-- **Import Cache**: Cached evaluated modules
-- **Root Environment**: Original environment for module isolation
 
 ## Evaluation Preparation
 
