@@ -91,10 +91,10 @@ spec = do
                         (AtomList [Symbol "quote", AtomList [Symbol "quote", Symbol "foo"]])
 
             it "parses quote inside a list" do
-                -- (list 'a 1) -> (list (quote a) 1)
-                parseReactor "(list 'a 1)"
+                -- ('a 1) -> ((quote a) 1)
+                parseReactor "('a 1)"
                     `shouldBe` Right
-                        (AtomList [Symbol "list", AtomList [Symbol "quote", Symbol "a"], Number 1])
+                        (AtomList [AtomList [Symbol "quote", Symbol "a"], Number 1])
 
             it "parses quote of a list with properties" do
                 -- '(:id 1) -> (quote (:id 1))

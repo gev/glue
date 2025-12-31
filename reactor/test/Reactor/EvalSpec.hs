@@ -28,7 +28,7 @@ spec = describe "Reactor.Eval (System Integration)" do
         runCode "\"test\"" `shouldReturn` Right (Just (String "test"))
 
     it "executes (def) and (set) chain" do
-        let code = "(list (def x 1) (set x 2) x)"
+        let code = "((def x 1) (set x 2) x)"
         runCode code `shouldReturn` Right (Just (List [Number 2]))
 
     it "implements full closures (Lexical Shadowing)" do
@@ -36,19 +36,15 @@ spec = describe "Reactor.Eval (System Integration)" do
         runCode code `shouldReturn` Right (Just (Number 100))
 
     it "checks that (def) inside (lambda) doesn't corrupt global scope" do
-        let code = "(list (def x 1) ((lambda () (def x 2))) x)"
+        let code = "((def x 1) ((lambda () (def x 2))) x)"
         runCode code `shouldReturn` Right (Just (List [Number 1]))
 
     it "handles property access on property lists" do
-        let code = "((lambda (obj) obj.foo) (object :foo 42))"
+        let code = "((lambda (obj) obj.foo) (:foo 42))"
         runCode code `shouldReturn` Right (Just (Number 42))
 
     it "handles nested property access" do
-        let code = "(list (def foo (:x (:y (:z 1)))) foo.x foo.x.y foo.x.y.z)"
-        runCode code `shouldReturn` Right (Just (List [Object (Map.fromList [("y", Object (Map.fromList [("z", Number 1)]))]), Object (Map.fromList [("z", Number 1)]), Number 1]))
-
-    it "handles nested property access" do
-        let code = "(list (def foo (object :x (object :y (object :z 1)))) foo.x foo.x.y foo.x.y.z)"
+        let code = "((def foo (:x (:y (:z 1)))) foo.x foo.x.y foo.x.y.z)"
         runCode code `shouldReturn` Right (Just (List [Object (Map.fromList [("y", Object (Map.fromList [("z", Number 1)]))]), Object (Map.fromList [("z", Number 1)]), Number 1]))
 
     it "fails when calling non-existent function" do
@@ -60,19 +56,19 @@ spec = describe "Reactor.Eval (System Integration)" do
             `shouldReturn` Left (ReactorError $ EvalError ["<call>"] WrongNumberOfArguments)
 
     it "user-defined function" do
-        runCode "(list (def id (lambda (x) x)) (id 42))"
+        runCode "((def id (lambda (x) x)) (id 42))"
             `shouldReturn` Right (Just (List [Number 42]))
 
     it "user-defined function too few args" do
-        runCode "(list (def id (lambda (x) x)) (id))"
-            `shouldReturn` Left (ReactorError $ EvalError ["id", "list"] WrongNumberOfArguments)
+        runCode "((def id (lambda (x) x)) (id))"
+            `shouldReturn` Left (ReactorError $ EvalError ["id"] WrongNumberOfArguments)
 
     it "user-defined function too many args" do
-        runCode "(list (def id (lambda (x) x)) (id 1 2))"
-            `shouldReturn` Left (ReactorError $ EvalError ["id", "list"] WrongNumberOfArguments)
+        runCode "((def id (lambda (x) x)) (id 1 2))"
+            `shouldReturn` Left (ReactorError $ EvalError ["id"] WrongNumberOfArguments)
 
     it "user-defined function multi-param" do
-        runCode "(list (def f (lambda (a b) (list a b))) (f 1 2))"
+        runCode "((def f (lambda (a b) ((a) (b)))) (f 1 2))"
             `shouldReturn` Right (Just (List [List [Number 1, Number 2]]))
 
     it "\\ alias works like lambda (lexical shadowing)" do
@@ -80,19 +76,19 @@ spec = describe "Reactor.Eval (System Integration)" do
         runCode code `shouldReturn` Right (Just (Number 100))
 
     it "\\ alias works like lambda (user-defined function)" do
-        runCode "(list (def id (\\ (x) x)) (id 42))"
+        runCode "((def id (\\ (x) x)) (id 42))"
             `shouldReturn` Right (Just (List [Number 42]))
 
     it "\\ alias works like lambda (too few args)" do
-        runCode "(list (def id (\\ (x) x)) (id))"
-            `shouldReturn` Left (ReactorError $ EvalError ["id", "list"] WrongNumberOfArguments)
+        runCode "((def id (\\ (x) x)) (id))"
+            `shouldReturn` Left (ReactorError $ EvalError ["id"] WrongNumberOfArguments)
 
     it "\\ alias works like lambda (too many args)" do
-        runCode "(list (def id (\\ (x) x)) (id 1 2))"
-            `shouldReturn` Left (ReactorError $ EvalError ["id", "list"] WrongNumberOfArguments)
+        runCode "((def id (\\ (x) x)) (id 1 2))"
+            `shouldReturn` Left (ReactorError $ EvalError ["id"] WrongNumberOfArguments)
 
     it "\\ alias works like lambda (multi-param)" do
-        runCode "(list (def f (\\ (a b) (list a b))) (f 1 2))"
+        runCode "((def f (\\ (a b) ((a) (b)))) (f 1 2))"
             `shouldReturn` Right (Just (List [List [Number 1, Number 2]]))
 
     it "== alias works like eq" do

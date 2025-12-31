@@ -47,9 +47,6 @@ function-name
 ; Function call
 (+ 1 2 3)  ; → 6
 
-; List literal
-(list 1 2 3)  ; → [1, 2, 3]
-
 ; Nested calls
 (* (+ 1 2) (+ 3 4))  ; → 21
 ```
@@ -239,7 +236,7 @@ env <- bindFunction env "process-payment" processPayment
 
 -- Reactor script processes API request
 reactorScript = "
-(def request (:order (:items (list \"laptop\" \"mouse\") :total 1299.99)
+(def request (:order (:items (\"laptop\" \"mouse\") :total 1299.99)
                :payment (:method \"credit\" :amount 1299.99)))
 
 (if (validate-order request.order)
@@ -308,7 +305,7 @@ env <- bindFunction env "process-payment" processPayment
 
 -- Reactor script processes API request
 reactorScript = "
-(def request (:order (:items (list \"laptop\" \"mouse\") :total 1299.99)
+(def request (:order (:items (\"laptop\" \"mouse\") :total 1299.99)
                :payment (:method \"credit\" :amount 1299.99)))
 
 (if (validate-order request.order)
@@ -371,12 +368,12 @@ class OrderProcessor {
 
 ```clojure
 ; Create user object
-(def user (:name "Alice" :age 30 :hobbies (list "reading" "coding")))
+(def user (:name "Alice" :age 30 :hobbies ("reading" "coding")))
 
 ; Access properties
 user.name      ; → "Alice"
 user.age       ; → 30
-(list user.hobbies)  ; → ["reading", "coding"]
+(user.hobbies)  ; → ["reading", "coding"]
 
 ; Update properties
 (set user.age 31)
@@ -396,10 +393,9 @@ company.ceo.name  ; → "Bob"
 ; Function pipelines
 (def process-data
   (lambda (data)
-    (list
-      (validate data)
-      (transform data)
-      (save data))))
+    ((validate data)
+     (transform data)
+     (save data))))
 
 ; Error handling patterns
 (def safe-divide

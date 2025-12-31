@@ -7,7 +7,7 @@ import Reactor.Env qualified as E
 import Reactor.Eval (Eval, EvalState (..), eval, runEval)
 import Reactor.IR (IR (..), compile)
 import Reactor.Lib (lib)
-import Reactor.Module (RegisteredModule(..))
+import Reactor.Module (RegisteredModule (..))
 import Reactor.Module.Cache qualified as Cache
 import Reactor.Module.Loader qualified as Loader
 import Reactor.Module.Registry qualified as Registry
@@ -36,13 +36,14 @@ runInteractive = do
                     Left regErr -> error $ "Registry build failed: " ++ show regErr
                     Right reg -> reg
             let initialEnv = E.fromFrame lib
-            let initialState = EvalState
-                    { env = initialEnv
-                    , context = []
-                    , registry = registry
-                    , importCache = Cache.emptyCache
-                    , rootEnv = initialEnv
-                    }
+            let initialState =
+                    EvalState
+                        { env = initialEnv
+                        , context = []
+                        , registry = registry
+                        , importCache = Cache.emptyCache
+                        , rootEnv = initialEnv
+                        }
 
             -- Example usage - evaluate sequentially with state updates
             let examples =
@@ -50,15 +51,15 @@ runInteractive = do
                     , "(add-ten 5)"
                     , "(multiply-by-two 3)"
                     , "(import list.utils)"
-                    , "(first-and-last (list 1 2 3 4 5))"
-                    , "(sum-list (list 1 2 3 4 5))"
+                    , "(first-and-last (1 2 3 4 5))"
+                    , "(sum-list (1 2 3 4 5))"
                     ]
 
             evalSequentially examples initialState
 
 evalSequentially :: [String] -> EvalState -> IO ()
 evalSequentially [] _ = pure ()
-evalSequentially (input:rest) currentState = do
+evalSequentially (input : rest) currentState = do
     TIO.putStrLn $ "Evaluating: " <> T.pack input
     case parseReactor (T.pack input) of
         Left err -> do
@@ -95,5 +96,5 @@ loadAndTestModules dir = do
         Left err -> putStrLn $ "Error loading modules: " ++ err
         Right modules -> do
             putStrLn $ "Successfully loaded " ++ show (length modules) ++ " modules:"
-            forM_ modules \(RegisteredModule {name = n, exports = e}) -> do
+            forM_ modules \(RegisteredModule{name = n, exports = e}) -> do
                 putStrLn $ "  - " ++ T.unpack n ++ " (exports: " ++ show e ++ ")"

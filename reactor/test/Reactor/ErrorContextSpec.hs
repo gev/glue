@@ -31,24 +31,24 @@ spec = describe "Reactor.ErrorContext (Call Stack Tracking)" do
             `shouldReturn` Left (ReactorError $ EvalError ["<call>"] WrongNumberOfArguments)
 
     it "shows nested call stack" do
-        runCode "(list (def f (lambda () (non-existent))) (f))"
-            `shouldReturn` Left (ReactorError $ EvalError ["f", "list"] $ UnboundVariable "non-existent")
+        runCode "((def f (lambda () (non-existent))) (f))"
+            `shouldReturn` Left (ReactorError $ EvalError ["f"] $ UnboundVariable "non-existent")
 
     it "shows deep call stack with multiple levels" do
-        let code = "(list (def a (lambda () (b))) (def b (lambda () (non-existent))) (a))"
+        let code = "((def a (lambda () (b))) (def b (lambda () (non-existent))) (a))"
         runCode code
-            `shouldReturn` Left (ReactorError $ EvalError ["a", "list"] $ UnboundVariable "b")
+            `shouldReturn` Left (ReactorError $ EvalError ["a"] $ UnboundVariable "b")
 
     it "shows context for user-defined functions" do
-        runCode "(list (def id (lambda (x) x)) (id))"
-            `shouldReturn` Left (ReactorError $ EvalError ["id", "list"] WrongNumberOfArguments)
+        runCode "((def id (lambda (x) x)) (id))"
+            `shouldReturn` Left (ReactorError $ EvalError ["id"] WrongNumberOfArguments)
 
     it "shows context for math operations" do
         runCode "(+ non-existent 1)"
             `shouldReturn` Left (ReactorError $ EvalError ["+"] $ UnboundVariable "non-existent")
 
     it "shows context for property access errors" do
-        runCode "((lambda (obj) obj.missing) (object :x 42))"
+        runCode "((lambda (obj) obj.missing) (:x 42))"
             `shouldReturn` Left (ReactorError $ EvalError ["<call>"] $ PropertyNotFound "missing")
 
     it "handles anonymous function calls" do

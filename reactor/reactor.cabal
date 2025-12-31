@@ -36,8 +36,6 @@ library
     Reactor.Lib.Builtin
     Reactor.Lib.Builtin.Def
     Reactor.Lib.Builtin.Lambda
-    Reactor.Lib.Builtin.List
-    Reactor.Lib.Builtin.Object
     Reactor.Lib.Builtin.Quote
     Reactor.Lib.Builtin.Set
     Reactor.Lib.List
@@ -148,7 +146,6 @@ test-suite reactor-test
     Reactor.Lib.Builtin.ClosureSpec
     Reactor.Lib.Builtin.DefSpec
     Reactor.Lib.Builtin.LambdaSpec
-    Reactor.Lib.Builtin.ListSpec
     Reactor.Lib.Builtin.QuoteSpec
     Reactor.Lib.Builtin.SetSpec
     Reactor.Lib.List.AppendSpec

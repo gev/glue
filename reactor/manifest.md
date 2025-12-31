@@ -35,34 +35,33 @@ Beyond being a programming language, Reactor serves as an excellent **configurat
 Reactor uses **only parentheses `()`** for its syntax, following traditional Lisp conventions. This provides a uniform, programmable approach to configuration:
 
 ```clojure
-;; Dictyanaris config using Reactor syntax - only parentheses
-(dictyanaris-config
+;; Config using Reactor syntax - only parentheses
+(config
     (version "1.0.0")
     (services
         (web-server
             (:port 8080
              :host "0.0.0.0"
-             :routes (list
-                     (:method "GET" :path "/" :handler "home")
-                     (:method "POST" :path "/api/users"
-                      :handler "create-user"
-                      :middleware (list auth logging)))))
+             :routes ( (:method "GET" :path "/" :handler "home")
+                       (:method "POST" :path "/api/users"
+                        :handler "create-user"
+                        :middleware (auth logging)))))
         (database
             (:type "postgresql"
              :connection (:host "localhost"
                            :port 5432
                            :database "myapp"
                            :credentials (:username (env "DB_USER")
-                                          :password (env "DB_PASS")))))
+                                         :password (env "DB_PASS")))))
         (:features (:authentication (:enabled true
-                                    :providers (list github google local))
+                                    :providers (github google local))
                    :caching (:redis (:host "redis:6379"
-                                     :ttl 3600)))))
+                                     :ttl 3600))))))
 ```
 
 **Key Features:**
 - **Property objects**: `(:key1 value1 :key2 value2)` for structured data
-- **List construction**: `(list item1 item2)` for arrays
+- **List construction**: `(item1 item2)` for arrays
 - **Property access**: `object.key` for accessing properties
 - **Programmable**: Embed logic, references, and computations
 - **Composable**: Mix and match config fragments
@@ -101,8 +100,8 @@ Reactor's object and list syntax provides a natural way to define DTOs:
      :path "/users/{id}/profile"
      :params (:id uuid)
      :response user-profile
-     :errors (list (:code 404 :message "User not found")
-                   (:code 403 :message "Access denied"))))
+     :errors ((:code 404 :message "User not found")
+              (:code 403 :message "Access denied"))))
 ```
 
 **Benefits for RPC:**
@@ -145,7 +144,7 @@ Reactor's syntax is ideal for IoT and home automation commands:
               :unit "celsius"))
 
 ;; Batch operations
-(execute-commands (list
+(execute-commands (
     (turn-off :device-id "light-001" :zone "living-room")
     (turn-on :device-id "light-002" :zone "bedroom")
     (setpoint :device-id "thermostat-001" :value 20.0)))

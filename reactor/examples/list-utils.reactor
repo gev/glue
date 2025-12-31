@@ -3,7 +3,7 @@
 
   (def first-and-last
     (lambda (lst)
-      (list (car lst) (last lst))))
+      ((car lst) (last lst))))
 
   (def sum-list
     (lambda (lst)
