@@ -7,13 +7,16 @@ Function application evaluates lists where the first element is callable. Reacto
 ## Function Call Detection
 
 **Input IR:** `List [first, arg1, arg2, ...]`
-**Process:** Check if `first` evaluates to a callable value
+**Process:** Check the type of `first`:
+- If `first` is `Native` or `Closure`: Direct function application
+- If `first` is `Symbol`: Evaluate symbol, check if result is callable
+- Otherwise: Treat as data list
 **Output:** Function result or data list
 
 ### Callable Types
-- `Native` - Host language functions and special forms
-- `Closure` - User-defined functions with captured environment
-- Functions resolved through symbol lookup
+- `Native` - Host language functions and special forms (first element IS the callable)
+- `Closure` - User-defined functions with captured environment (first element IS the callable)
+- Functions resolved through symbol lookup (first element evaluates to callable)
 
 ## Native Function Application
 
