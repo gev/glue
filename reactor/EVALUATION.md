@@ -38,4 +38,6 @@ Literal values such as numbers, strings, and other primitive types evaluate to t
 
 ## Standard Library
 
-Reactor includes a comprehensive standard library that provides essential functionality for program development. The standard library is organized into modules, each focusing on specific domains of functionality. Core modules include fundamental operations, boolean logic, mathematical functions, and data structure manipulation. For detailed documentation of available modules and their functions, see the [Standard Library Documentation](STDLIB_INTRO.md).
+To evaluate special forms and operators in Reactor programs, the runtime relies on the standard library for their implementation. Special forms like `import`, `def`, `lambda`, `set`, `quote`, and `if`, along with boolean values `true` and `false`, and operators such as `+`, `-`, `/`, `%`, `*`, `**`, `<`, `<=`, `==`, `=>`, `>`, `\`, and others, are all defined in the standard library modules.
+
+The standard library provides the essential functionality that makes Reactor programs executable. Without these library definitions, special forms and operators would not be available during evaluation. For detailed documentation of all available modules and their functions, see the [Standard Library Documentation](STDLIB_INTRO.md).
