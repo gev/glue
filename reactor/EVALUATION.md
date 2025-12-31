@@ -40,13 +40,13 @@ Lists in Reactor serve dual purposes: they can represent literal data structures
 
 **Function Application:**
 
-- **Input:** `[Native func, arg1, arg2, ...]`
+- **Input:** `List [Native func, arg1, arg2, ...]`
   **Process:** Evaluate `arg1`, `arg2`, ... and apply `Native func` to the results
 
-- **Input:** `[Closure, arg1, arg2, ...]`
+- **Input:** `List [Closure, arg1, arg2, ...]`
   **Process:** Evaluate `arg1`, `arg2`, ... and apply `Closure` to the results
 
-- **Input:** `[Symbol, arg1, arg2, ...]`
+- **Input:** `List [Symbol, arg1, arg2, ...]`
   **Process:** Evaluate `Symbol` to get callable, then evaluate `arg1`, `arg2`, ... and apply callable to the results
 
 **Data Lists:**
