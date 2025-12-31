@@ -215,9 +215,10 @@ ui.components.button.cos  ;; Access imported function through data structure
 
 ## Implementation Notes
 
-### AST Representation
-- `Symbol "x"` → simple variable
-- `DottedSymbol ["x", "y", "z"]` → hierarchical path (used by `def`, `set`, `import`)
+### AST/IR Representation
+- **AST**: `Symbol "x"` → simple variable, `Symbol "x.y.z"` → dotted symbol as string
+- **IR**: `Symbol "x"` → simple variable, `DottedSymbol ["x", "y", "z"]` → parsed hierarchical path
+- **Compilation**: `Symbol "x.y.z"` → `DottedSymbol ["x", "y", "z"]` (string splitting on ".")
 - `String "literal"` → string literals
 
 ### Evaluation Strategy
