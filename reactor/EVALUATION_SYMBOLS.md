@@ -15,9 +15,9 @@ Symbol evaluation resolves identifiers to their bound values in the current envi
 4. Raise UnboundVariable if not found
 
 ### Environment Frames
-- **Local Frames:** Function parameters, local variables
-- **Global Frame:** Builtin functions, user-defined globals
-- **Search Order:** Local → Function → Global
+- **Top Frame:** Most recently pushed frame (current scope)
+- **Bottom Frame:** First pushed frame (contains initial bindings)
+- **Search Order:** Top → Bottom (most local to most global)
 
 ## Dotted Symbol Evaluation
 
