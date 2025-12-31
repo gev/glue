@@ -1,8 +1,52 @@
-# Reactor Evaluation
+# Reactor Evaluation Specification
+
+This specification defines the complete evaluation semantics for Reactor. It provides all information needed to implement Reactor evaluation in any host language.
 
 ## Overview
 
 Reactor's evaluation process transforms Intermediate Representation (IR) code into executable runtime values. This document describes the complete evaluation lifecycle, from initial preparation through execution of different code constructs.
+
+## Data Types
+
+### IR (Intermediate Representation)
+
+Reactor programs are represented as IR values with these types:
+
+- **Number**: Numeric literals (integers, floats)
+- **String**: Text literals
+- **Symbol**: Variable/function names
+- **DottedSymbol**: Hierarchical property access (e.g., `obj.field.subfield`)
+- **List**: Ordered sequences that can represent both data and function calls
+- **Object**: Key-value mappings with string keys
+- **Module**: Exported symbol collections (similar to objects)
+- **Native**: Host language functions and special forms
+- **Closure**: User-defined functions with captured environment
+
+### Native Functions
+
+Native functions come in three types:
+
+- **Functions**: Take arguments, return a result value
+- **Commands**: Take arguments, perform side effects, return no value
+- **Special Forms**: Handle special evaluation rules (macros, control flow, etc.)
+
+### Environment
+
+The environment is a stack of frames, where each frame maps symbol names to IR values.
+
+- **Global Frame**: Contains builtin functions and global variables
+- **Function Frames**: Contain function parameters and local variables
+- **Lookup**: Search from top frame downward
+
+### Evaluation State
+
+The evaluation state tracks:
+
+- **Current Environment**: Variable bindings
+- **Call Stack**: Function call context for error reporting
+- **Module Registry**: Registered module metadata
+- **Import Cache**: Cached evaluated modules
+- **Root Environment**: Original environment for module isolation
 
 ## Evaluation Preparation
 
@@ -26,39 +70,128 @@ The environment serves as the foundation for symbol resolution during evaluation
 
 Once modules are registered and the environment is prepared, the initial EvalState must be constructed. The EvalState provides the complete runtime context for evaluation, including environment, call stack, module registries, and caching infrastructure. Reactor supports different EvalState configurations for various execution scenarios. For comprehensive details about EvalState construction and component initialization, see [EvalState Preparation](EVALUATION_PREPARATION_EVALSTATE.md).
 
-## Evaluation Process
+## Evaluation Rules
 
-With the environment prepared, Reactor can begin evaluating code. The evaluation process recursively processes different types of IR nodes according to their semantic meaning:
+### Primitive Values
+
+Numbers, strings, and other literals evaluate to themselves.
 
 ### Symbol Evaluation
 
-When encountering a symbol, Reactor looks up its value in the current environment. This includes both simple variable names and dotted notation for accessing nested properties or module exports. Symbol evaluation forms the foundation of variable access and function calls. For detailed information about environment structure and symbol resolution, see [Environment](ENVIRONMENT.md).
+1. Search environment frames from top to bottom
+2. Return bound value or raise UnboundVariable error
+3. Dotted symbols traverse object/module properties
 
 ### List Evaluation
 
-List evaluation analyzes the input list structure and transforms it into a callable IR if possible, otherwise evaluates list elements. The process follows these cases:
+Lists are evaluated based on their first element:
 
-**Single Symbol Lists:**
-- **Input:** `List [Symbol name]`
-  **Process:** Look up `name` in environment. If callable, apply with no arguments. If not callable, return the looked-up value.
+#### Case 1: Single Symbol `[symbol]`
+- Look up symbol in environment
+- If result is callable: apply with no arguments
+- If result is not callable: return the value
+- Error if symbol not found
 
-**Symbol with Arguments:**
-- **Input:** `List [Symbol name, arg1, arg2, ...]`
-  **Process:** Look up `name` in environment and apply the result to unevaluated `arg1`, `arg2`, ...`
+#### Case 2: Symbol with Arguments `[symbol, arg1, arg2, ...]`
+- Look up symbol in environment
+- Apply result to unevaluated arguments
+- Error if symbol not found
 
-**General Lists:**
-- **Input:** `List [item1, item2, ...]`
-  **Process:** Evaluate all items. If first evaluated item is callable, apply it to remaining evaluated items. Otherwise return list of all evaluated items.
-
-This analysis-first approach enables efficient function detection without unnecessary evaluation. For comprehensive details about function application and data structures, see [Function Application](EVALUATION_FUNCTIONS.md) and [Data Structures](EVALUATION_DATA.md).
+#### Case 3: General List `[item1, item2, ...]`
+- Evaluate all items in the list
+- If first evaluated item is callable: apply it to remaining evaluated items
+- Otherwise: return new list with all evaluated items
 
 ### Object Evaluation
 
-Objects represent structured data with named properties. During evaluation, all property values are recursively evaluated, creating a fully resolved data structure. Objects support dynamic property access and form the basis for complex data modeling. For detailed information about object evaluation and manipulation, see [Data Structures](EVALUATION_DATA.md).
+1. Evaluate all property values
+2. Preserve property keys unchanged
+3. Return new object with evaluated values
 
-### Literal Evaluation
+### Function Application
 
-Literal values such as numbers, strings, and other primitive types evaluate to themselves. These self-evaluating forms provide the atomic building blocks of Reactor programs. For information about all supported primitive types, see [Primitive Values](EVALUATION_PRIMITIVES.md).
+#### Native Functions
+- Evaluate all arguments first (eager evaluation)
+- Pass evaluated arguments to native function
+- Return function result
+
+#### Closures
+- Evaluate all arguments first
+- Create new environment frame
+- Bind parameters to evaluated arguments
+- Evaluate closure body in extended environment
+- Return body evaluation result
+
+#### Symbol Resolution
+- Look up symbol in current environment
+- Apply resolved value if callable
+- Error if not callable or not found
+
+## Error Conditions
+
+- **UnboundVariable**: Symbol not found in environment
+- **NotCallableObject**: Attempted to call non-callable value
+- **WrongNumberOfArguments**: Parameter/argument count mismatch
+- **PropertyNotFound**: Object/module property access failed
+- **NotAnObject**: Dotted access on non-object value
+
+## Module System
+
+### Module Registration
+- Store module metadata (name, exports, body)
+- Body remains unevaluated until import
+
+### Module Import
+- **First Import**: Evaluate module body in isolated environment, cache results
+- **Subsequent Imports**: Return cached results directly
+- Merge exported symbols into importing environment
+
+### Environment Isolation
+- Modules evaluate in separate environment branch
+- Cannot access importing scope variables
+- Share common builtin functions
+
+## Evaluation Order
+
+- **Arguments**: Evaluated left-to-right before function application
+- **List Elements**: Evaluated left-to-right for data lists
+- **Object Properties**: Property values evaluated (order not guaranteed)
+- **Nested Structures**: Evaluation proceeds depth-first
+
+## Special Considerations
+
+### Call Stack Management
+- Push function names before evaluation
+- Pop after completion
+- Include in error messages for debugging
+
+### Lazy vs Eager Evaluation
+- Reactor uses eager evaluation for all arguments
+- No lazy evaluation of unused expressions
+- Consistent with function argument evaluation
+
+### Immutability
+- Evaluated data structures are immutable
+- New structures created for each evaluation
+- Supports functional programming patterns
+
+### Type System
+- Dynamic typing with runtime type checks
+- IR types provide structural typing
+- Host language integration through Native functions
+
+## Implementation Requirements
+
+To implement Reactor evaluation, a host language must provide:
+
+1. **IR Data Structures**: All IR types with proper equality/comparison
+2. **Environment Management**: Frame stack with lookup operations
+3. **Error Handling**: All specified error conditions
+4. **Function Application**: Native function integration
+5. **Module System**: Registration, import, and caching
+6. **Evaluation Loop**: Recursive evaluation of IR expressions
+
+This specification enables Reactor implementation in any Turing-complete programming language.
 
 ## Special forms and operators evaluation
 
