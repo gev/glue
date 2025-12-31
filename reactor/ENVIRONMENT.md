@@ -17,20 +17,18 @@ type Frame = Map Text IR          -- Single frame with symbol-to-IR mappings
 
 ### Frame Types
 
-Frames are added to the environment stack in this order:
-
-- **Top Frame** (newest): Current function parameters and local variables
-- **Middle Frames**: Parameters and locals from calling functions
-- **Bottom Frame** (oldest): Global builtins, constants, and user-defined globals
+- **Global Frame**: Contains builtin functions, constants, and user-defined globals
+- **Function Frames**: Contain function parameters and local variables
+- **Block Frames**: Contain variables defined within code blocks
 
 ### Lookup Process
 
-Variable lookup searches from top frame to bottom frame:
+Variable lookup searches frames from top to bottom:
 
 ```
-[Current Function Frame]     ← Searched first (most local)
-[Calling Function Frame]
-[Global Frame]               ← Searched last (most global)
+[Local Frame]     ← Searched first
+[Function Frame]
+[Global Frame]    ← Searched last
 ```
 
 ## Variable Binding Operations
