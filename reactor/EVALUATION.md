@@ -12,9 +12,19 @@ Before any code can be evaluated, the Reactor runtime environment must be proper
 
 The first step in preparation is module registration, where Reactor modules are made available to the evaluation system. Each module defines its exported symbols and implementation details. Module registration establishes the available code libraries that programs can import and use. For detailed information about the module registration process, see [Module Registration](EVALUATION_PREPARATION_MODULE_REGISTRATION.md).
 
+### Environment Preparation
+
+Environment preparation establishes the variable bindings and scoping context that will be used during evaluation. The environment contains all the symbols (variables, functions, constants) that code can reference. Reactor supports different types of environments:
+
+- **Standard Environment**: Includes the complete standard library with all builtin functions and operators
+- **Custom Environment**: Contains specific bindings tailored for particular execution contexts
+- **Minimal Environment**: Provides only essential operations for constrained execution
+
+The environment serves as the foundation for symbol resolution during evaluation. For detailed information about environment structure and the dual-registry module system, see [EvalState Preparation](EVALUATION_PREPARATION_EVALSTATE.md).
+
 ### Evaluation State Preparation
 
-Once modules are registered, the initial EvalState must be constructed. The EvalState provides the complete runtime context for evaluation, including environment, call stack, module registries, and caching infrastructure. Reactor supports different EvalState configurations for various execution scenarios. For comprehensive details about EvalState construction and component initialization, see [EvalState Preparation](EVALUATION_PREPARATION_EVALSTATE.md).
+Once modules are registered and the environment is prepared, the initial EvalState must be constructed. The EvalState provides the complete runtime context for evaluation, including environment, call stack, module registries, and caching infrastructure. Reactor supports different EvalState configurations for various execution scenarios. For comprehensive details about EvalState construction and component initialization, see [EvalState Preparation](EVALUATION_PREPARATION_EVALSTATE.md).
 
 ## Evaluation Process
 
