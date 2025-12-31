@@ -46,7 +46,7 @@ Symbol evaluation resolves identifiers to their bound values in the current envi
 - **Evaluation:** Module body evaluated once at import time
 - **Caching:** Imported modules cached to avoid re-evaluation
 - **Isolation:** Module evaluation uses separate environment branch
-- **Errors:** PropertyNotFound when export doesn't exist (same error as objects)
+- **Errors:** Should use different error than PropertyNotFound (e.g., ExportNotFound)
 
 #### Traversal Process
 For dotted access like `module.submodule.function`:
@@ -56,7 +56,8 @@ For dotted access like `module.submodule.function`:
 4. Return final resolved value
 
 #### Error Handling
-- **PropertyNotFound:** Requested property doesn't exist in object/module
+- **PropertyNotFound:** Requested property doesn't exist in object
+- **ExportNotFound:** Requested export doesn't exist in module (should be different from PropertyNotFound)
 - **NotAnObject:** Attempted property access on non-object value (numbers, strings, etc.)
 - **Circular Dependencies:** Detected during module import resolution
 
