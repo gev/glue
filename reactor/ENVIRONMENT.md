@@ -15,20 +15,22 @@ type Environment = [Frame]        -- Stack of frames, searched top to bottom
 type Frame = Map Text IR          -- Single frame with symbol-to-IR mappings
 ```
 
-### Frame Types
+### Frame Stack
 
-- **Global Frame**: Contains builtin functions, constants, and user-defined globals
-- **Function Frames**: Contain function parameters and local variables
-- **Block Frames**: Contain variables defined within code blocks
+Reactor uses a simple stack of frames:
+
+- **Top Frame**: Most recently pushed frame (current scope)
+- **Bottom Frame**: First pushed frame (contains initial bindings)
+- **Middle Frames**: Any frames between top and bottom
 
 ### Lookup Process
 
-Variable lookup searches frames from top to bottom:
+Variable lookup searches from top frame to bottom frame:
 
 ```
-[Local Frame]     ← Searched first
-[Function Frame]
-[Global Frame]    ← Searched last
+[Top Frame]     ← Searched first (most local)
+[Middle Frame]
+[Bottom Frame]  ← Searched last (most global)
 ```
 
 ## Variable Binding Operations
@@ -57,11 +59,11 @@ Updates existing bindings by searching through the frame stack:
 Variables are resolved in the environment where they are defined:
 
 ```reactor
-(def global 1)           ;; Global frame
+(def x 1)               ;; Bottom frame
 
 (lambda ()
-  (def local 2)         ;; Function frame
-  (+ global local)      ;; → 3
+  (def y 2)            ;; New top frame
+  (+ x y)              ;; → 3
 )
 ```
 
@@ -94,16 +96,16 @@ Each function call creates a new frame:
 
 Execution creates frames:
 ```
-[Function Frame: local-var=42, param=value]
-[Caller Frame]
-[Global Frame]
+[New Frame: local-var=42, param=value]  ;; Top frame
+[Previous Frame]                        ;; Middle frame(s)
+[Bottom Frame]                          ;; Original frame
 ```
 
 ### Frame Lifecycle
 
 - **Push**: New frames added when entering functions/blocks
 - **Pop**: Frames removed when exiting functions/blocks
-- **Persistence**: Global frame persists throughout program execution
+- **Persistence**: Bottom frame persists throughout program execution
 
 ## Symbol Resolution
 
