@@ -36,23 +36,21 @@ When encountering a symbol, Reactor looks up its value in the current environmen
 
 ### List Evaluation
 
-Lists in Reactor serve dual purposes: they can represent literal data structures or function applications. The evaluation depends on the first element:
+List evaluation analyzes the input list structure and transforms it into a callable IR if possible, otherwise evaluates list elements. The process follows these cases:
 
-**Function Application:**
+**Single Symbol Lists:**
+- **Input:** `List [Symbol name]`
+  **Process:** Look up `name` in environment. If callable, apply with no arguments. If not callable, return the looked-up value.
 
-- **Input:** `List [Native func, arg1, arg2, ...]`
-  **Process:** Evaluate `arg1`, `arg2`, ... and apply `Native func` to the results
+**Symbol with Arguments:**
+- **Input:** `List [Symbol name, arg1, arg2, ...]`
+  **Process:** Look up `name` in environment and apply the result to unevaluated `arg1`, `arg2`, ...`
 
-- **Input:** `List [Closure, arg1, arg2, ...]`
-  **Process:** Evaluate `arg1`, `arg2`, ... and apply `Closure` to the results
+**General Lists:**
+- **Input:** `List [item1, item2, ...]`
+  **Process:** Evaluate all items. If first evaluated item is callable, apply it to remaining evaluated items. Otherwise return list of all evaluated items.
 
-- **Input:** `List [Symbol, arg1, arg2, ...]`
-  **Process:** Evaluate `Symbol` to get callable, then evaluate `arg1`, `arg2`, ... and apply callable to the results
-
-**Data Lists:**
-When the first element evaluates to a non-callable value, the entire list is treated as literal data. All elements are evaluated and the result is a list of evaluated values.
-
-This mechanism enables both data manipulation and computational operations. For comprehensive details about function application and data structures, see [Function Application](EVALUATION_FUNCTIONS.md) and [Data Structures](EVALUATION_DATA.md).
+This analysis-first approach enables efficient function detection without unnecessary evaluation. For comprehensive details about function application and data structures, see [Function Application](EVALUATION_FUNCTIONS.md) and [Data Structures](EVALUATION_DATA.md).
 
 ### Object Evaluation
 
