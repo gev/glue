@@ -35,7 +35,7 @@ For a dotted path like `a.b.c.d`:
 - **Evaluation:** Property values are pre-evaluated
 
 ### Modules
-- **Access:** Lookup in `Module (Map Text IR)` export map
+- **Access:** First lookup module name in environment, then access its export map
 - **Errors:** Should use `ExportNotFound` (different from `PropertyNotFound`)
 - **Evaluation:** Module evaluated once at import time
 - **Caching:** Results cached to avoid re-evaluation
