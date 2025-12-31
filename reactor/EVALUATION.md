@@ -20,7 +20,7 @@ Environment preparation establishes the variable bindings and scoping context th
 - **Custom Environment**: Contains specific bindings tailored for particular execution contexts
 - **Minimal Environment**: Provides only essential operations for constrained execution
 
-The environment serves as the foundation for symbol resolution during evaluation. For detailed information about environment structure and the dual-registry module system, see [EvalState Preparation](EVALUATION_PREPARATION_EVALSTATE.md).
+The environment serves as the foundation for symbol resolution during evaluation. For detailed information about environment structure, binding semantics, and the dual-registry module system, see [Module Environment Architecture](MODULE_ENVIRONMENTS.md) and [Binding Semantics](BINDING_SEMANTICS.md).
 
 ### Evaluation State Preparation
 
