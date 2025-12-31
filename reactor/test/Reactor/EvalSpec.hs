@@ -124,3 +124,7 @@ spec = describe "Reactor.Eval (System Integration)" do
 
     it "literal objects evaluate values" do
         runCode "(:x (+ 1 2) :y (* 3 4))" `shouldReturn` Right (Just (Object (Map.fromList [("x", Number 3), ("y", Number 12)])))
+
+    it "dotted symbols work in function calls" do
+        runCode "((def obj (:x (:y (:z (lambda (n) (+ n 10)))))) (obj.x.y.z 5))"
+            `shouldReturn` Right (Just (List [Number 15]))
