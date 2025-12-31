@@ -8,7 +8,12 @@ The Reactor environment manages variable bindings and scoping during program exe
 
 ### Stack of Frames
 
-Environments are organized as a stack of frames, where each frame contains a mapping of symbols to values.
+Environments are organized as a stack of frames:
+
+```haskell
+type Environment = [Frame]        -- Stack of frames, searched top to bottom
+type Frame = Map Text IR          -- Single frame with symbol-to-IR mappings
+```
 
 ### Frame Types
 
