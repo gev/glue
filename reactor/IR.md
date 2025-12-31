@@ -113,27 +113,7 @@ Represents user-defined functions with captured environment.
 **Examples:**
 - `Closure ["x"] (List [Symbol "+", Symbol "x", Number 1.0]) <env>` - (lambda (x) (+ x 1))
 
-## Environment Types
 
-### Frame
-```haskell
-type Frame m = Map.Map Text (IR m)
-```
-
-**Purpose:** Single scope level containing variable bindings
-**Structure:** Map from symbol names to IR values
-**Examples:**
-- `fromList [("x", Number 42.0), ("y", String "hello")]`
-
-### Environment
-```haskell
-type Env m = [Frame m]
-```
-
-**Purpose:** Stack of frames representing lexical scope
-**Structure:** List of frames (innermost first)
-**Examples:**
-- `[globalFrame, functionFrame, blockFrame]` - nested scopes
 
 ## IR Operations
 
@@ -148,37 +128,14 @@ listLength :: IR m -> Int
 **Purpose:** Check if IR node is a list and get its length
 
 #### Object Operations
-```haskell
-isObject :: IR m -> Bool
-objectSize :: IR m -> Int
-objectLookup :: Text -> IR m -> Maybe (IR m)
-```
 
 **Purpose:** Work with object properties and size
 
 #### Symbol Operations
-```haskell
-isSymbol :: IR m -> Bool
-getSymbol :: IR m -> Text
-```
 
 **Purpose:** Check symbol types and extract symbol text
 
 ## IR Show Instance
-
-```haskell
-instance Show (IR m) where
-    show = \case
-        Number n -> show n
-        String s -> "\"" <> T.unpack s <> "\""
-        Symbol s -> T.unpack s
-        DottedSymbol parts -> T.unpack (T.intercalate "." parts)
-        List xs -> "(" <> unwords (map show xs) <> ")"
-        Object _ -> "{object}"
-        Module _ -> "{module}"
-        Native _ -> "<native>"
-        Closure{} -> "<closure>"
-```
 
 **Purpose:** Convert IR to readable string representation
 **Behavior:**
@@ -190,18 +147,6 @@ instance Show (IR m) where
 - Complex types: Descriptive placeholders
 
 ## IR Equality
-
-```haskell
-instance Eq (IR m) where
-    (Number a) == (Number b) = a == b
-    (String a) == (String b) = a == b
-    (Symbol a) == (Symbol b) = a == b
-    (DottedSymbol a) == (DottedSymbol b) = a == b
-    (List a) == (List b) = a == b
-    (Object a) == (Object b) = a == b
-    (Module a) == (Module b) = a == b
-    _ == _ = False
-```
 
 **Purpose:** Structural equality comparison between IR nodes
 **Behavior:**
