@@ -18,17 +18,14 @@ data.user.name      ;; Deep property access
 ## Evaluation Process
 
 ### Traversal Algorithm
-1. **Resolve first part** as symbol in current environment
-2. **For each subsequent part:**
-   - Access property/export on current object/module
-   - Update current value to the accessed result
-3. **Return final value**
+For a dotted path like `a.b.c.d`:
 
-### Prefix Resolution
-For complex dotted paths like `a.b.c.d`:
-- Try `a.b.c.d` as a single symbol first
-- Fall back to `a.b.c`, then `a.b`, then `a`
-- Use the longest matching prefix as starting point
+1. **Look up `a`** as symbol in environment
+2. **If `a` is object:** Look up property `b` on `a`
+3. **If `a` is module:** Look up export `b` from `a`
+4. **Continue with `c`** on the result from step 2/3
+5. **Repeat for `d`**
+6. **Otherwise:** Fail with NotAnObject error
 
 ## Property vs Export Access
 
@@ -81,7 +78,7 @@ config.database.connection.url  ;; Module → Object → Property
 
 ### Access Cost
 - **Simple:** O(depth + path_length)
-- **Complex:** Multiple environment lookups for prefix resolution
+- **Worst case:** One environment lookup + N property lookups for N path components
 - **Cached:** Module results avoid re-evaluation
 
 ### Optimization Opportunities
@@ -92,11 +89,11 @@ config.database.connection.url  ;; Module → Object → Property
 ## Implementation Details
 
 ### Resolution Strategy
-The evaluation follows a hierarchical approach:
-1. Parse the dotted path into individual components
-2. Try to resolve the longest possible prefix as a symbol
-3. For remaining components, perform property access on the resolved value
-4. Continue until all components are resolved or an error occurs
+The evaluation follows a sequential approach:
+1. Split the dotted path into components: `["a", "b", "c", "d"]`
+2. Look up the first component `"a"` as a symbol
+3. For each remaining component, perform property access on the current value
+4. Each step validates the current value is an object or module
 
 ### Property Access Logic
 - **Object Access:** Direct key lookup in the object's property map
