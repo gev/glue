@@ -104,28 +104,6 @@ The evaluation follows a sequential approach:
 - **Type Checking:** Ensure the base value is an object or module before access
 - **Error Differentiation:** Use appropriate error types for different access failures
 
-## Common Patterns
-
-### Configuration Access
-```reactor
-config.database.host     ;; Database host
-config.logging.level     ;; Log level
-settings.ui.theme        ;; UI theme
-```
-
-### API Access
-```reactor
-http.get                 ;; HTTP GET function
-json.parse               ;; JSON parser
-fs.readFile              ;; File system access
-```
-
-### Data Structure Navigation
-```reactor
-response.data.users[0].name    ;; API response navigation
-document.body.children[1]      ;; DOM traversal
-```
-
 ## See Also
 
 - [Symbol Evaluation](EVALUATION_SYMBOLS.md) - Simple symbol resolution
