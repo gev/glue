@@ -22,6 +22,7 @@ module Reactor.Eval (
 
 import Control.Monad (ap, liftM)
 import Data.List (inits)
+import Data.Map (Map)
 import Data.Map.Strict qualified as Map
 import Data.Maybe (catMaybes)
 import Data.Text (Text)
@@ -201,6 +202,13 @@ evalList xs = do
             pure result
         _ -> pure . Just . IR.List $ clean
 
+-- Evaluate an object
+evalObject :: Map Text IR -> Eval (Maybe IR)
+evalObject objMap = do
+    evaluatedMap <- mapM eval objMap
+    let cleanMap = Map.mapMaybe id evaluatedMap
+    pure $ Just $ IR.Object cleanMap
+
 -- Evaluate literal values (numbers, strings, etc.)
 evalLiteral :: IR -> Eval (Maybe IR)
 evalLiteral v = pure $ Just v
@@ -234,6 +242,7 @@ eval :: IR -> Eval (Maybe IR)
 eval (IR.Symbol name) = evalSymbol name
 eval (IR.DottedSymbol parts) = evalDottedSymbol parts
 eval (IR.List xs) = evalList xs
+eval (IR.Object objMap) = evalObject objMap
 eval v = evalLiteral v
 
 apply :: IR -> [IR] -> Eval (Maybe IR)

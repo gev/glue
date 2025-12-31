@@ -118,3 +118,9 @@ spec = describe "Reactor.Eval (System Integration)" do
     it "! alias works like not" do
         runCode "(! false)" `shouldReturn` Right (Just (Symbol "true"))
         runCode "(! true)" `shouldReturn` Right (Just (Symbol "false"))
+
+    it "literal lists evaluate expressions" do
+        runCode "((+ 1 2) (* 3 4))" `shouldReturn` Right (Just (List [Number 3, Number 12]))
+
+    it "literal objects evaluate values" do
+        runCode "(:x (+ 1 2) :y (* 3 4))" `shouldReturn` Right (Just (Object (Map.fromList [("x", Number 3), ("y", Number 12)])))
