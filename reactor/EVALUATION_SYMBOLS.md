@@ -80,12 +80,20 @@ data.user.name   ;; Deep property access
 **Context:** Symbol name, current environment state
 
 ### PropertyNotFound
-**Cause:** Object/module doesn't have requested property
+**Cause:** Object doesn't have requested property
 **Context:** Property name, object type
+
+### ExportNotFound
+**Cause:** Module doesn't have requested export
+**Context:** Export name, module name
 
 ### NotAnObject
 **Cause:** Attempted property access on non-object value
 **Context:** Value type, property name
+
+### Circular Dependencies
+**Cause:** Module import creates circular dependency
+**Context:** Module names involved in the cycle
 
 ## Performance Characteristics
 
@@ -94,31 +102,7 @@ data.user.name   ;; Deep property access
 - **Caching:** No caching - resolved on each access
 - **Sharing:** Environment frames shared between calls
 
-## Implementation Notes
 
-### Frame Structure
-```haskell
-type Frame = Map Text IR
-type Environment = [Frame]  -- Stack
-```
-
-### Lookup Function
-```haskell
-lookupVar :: Text -> Environment -> Maybe IR
-lookupVar name [] = Nothing
-lookupVar name (frame:rest) =
-    case Map.lookup name frame of
-        Just val -> Just val
-        Nothing -> lookupVar name rest
-```
-
-### Dotted Resolution
-```haskell
-resolveDotted :: [Text] -> Environment -> Either Error IR
-resolveDotted [] _ = Left EmptyDottedPath
-resolveDotted (first:rest) env = do
-    obj <- lookupVar first env
-    resolvePath obj rest
 ```
 
 ## See Also
