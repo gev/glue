@@ -116,9 +116,9 @@ Expressions are parsed in this order of priority (highest first):
 **Rule:** Parse numeric literals using scientific notation.
 
 **Valid patterns:**
-- Integers: `42`, `-15`, `0`
-- Decimals: `3.14159`, `-273.15`
-- Scientific: `1.23e-4`, `6.02e23`
+- Integers: `42` → `Number 42`, `-15` → `Number (-15)`, `0` → `Number 0`
+- Decimals: `3.14159` → `Number 3.14159`, `-273.15` → `Number (-273.15)`
+- Scientific: `1.23e-4` → `Number 0.000123`, `6.02e23` → `Number 6.02e+23`
 
 **Invalid patterns:**
 - Multiple dots: `1.2.3`
@@ -130,9 +130,9 @@ Expressions are parsed in this order of priority (highest first):
 **Rule:** Parse text between double quotes with escape sequences.
 
 **Valid patterns:**
-- Simple: `"hello"`
-- With escapes: `"with \"quotes\" and \n newlines"`
-- Empty: `""`
+- Simple: `"hello"` → `String "hello"`
+- With escapes: `"with \"quotes\" and \n newlines"` → `String "with \"quotes\" and \n newlines"`
+- Empty: `""` → `String ""`
 
 **Invalid patterns:**
 - Unclosed: `"missing end`
@@ -145,9 +145,9 @@ Expressions are parsed in this order of priority (highest first):
 **Valid characters:** letters, digits, `-`, `.`, `_`, `:`, `!`, `?`, `\`, `=`, `>`, `<`, `/`, `*`, `+`, `%`
 
 **Valid patterns:**
-- Variables: `x`, `my-var`, `result_1`
-- Operators: `+`, `-`, `*`, `/`, `=`, `>`, `<`
-- Dotted paths: `math.pi`, `obj.field.method`
+- Variables: `x` → `Symbol "x"`, `my-var` → `Symbol "my-var"`, `result_1` → `Symbol "result_1"`
+- Operators: `+` → `Symbol "+"`, `-` → `Symbol "-"`, `*` → `Symbol "*"`, `/` → `Symbol "/"`
+- Dotted paths: `math.pi` → `Symbol "math.pi"`, `obj.field.method` → `Symbol "obj.field.method"`
 
 **Invalid patterns:**
 - Starting with digit: `123abc`
@@ -159,9 +159,9 @@ Expressions are parsed in this order of priority (highest first):
 **Rule:** `'` followed by any expression becomes `(quote expression)`.
 
 **Examples:**
-- `'x` → `(quote x)`
-- `'(+ 1 2)` → `(quote (+ 1 2))`
-- `''foo` → `(quote (quote foo))`
+- `'x` → `AtomList [Symbol "quote", Symbol "x"]`
+- `'(+ 1 2)` → `AtomList [Symbol "quote", AtomList [Symbol "+", Number 1, Number 2]]`
+- `''foo` → `AtomList [Symbol "quote", AtomList [Symbol "quote", Symbol "foo"]]`
 
 ### Lists
 
