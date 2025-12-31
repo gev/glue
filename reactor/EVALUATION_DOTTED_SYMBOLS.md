@@ -94,7 +94,7 @@ config.database.connection.url  ;; Module → Object → Property
 
 ### Resolution Strategy
 The evaluation follows a sequential approach:
-1. Split the dotted path into components: `["a", "b", "c", "d"]`
+1. Receive pre-split components: `["a", "b", "c", "d"]` (already split in DottedSymbol IR)
 2. Look up the first component `"a"` as a symbol
 3. For each remaining component, perform property access on the current value
 4. Each step validates the current value is an object or module
