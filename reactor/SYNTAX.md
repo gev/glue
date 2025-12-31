@@ -342,17 +342,14 @@ math.y.sin               ;; → sine function
   _                       "Unknown")
 ```
 
-### Macros (if supported)
-```reactor
-;; Hypothetical macro definition
-(defmacro when (condition &body)
-  `(if ,condition (do ,@body)))
-
-;; Usage
-(when (> x 0)
-  (print "Positive")
-  (set result x))
-```
+### Special Forms
+Reactor provides special forms for control flow and evaluation:
+- `if` - conditional execution
+- `lambda` - function creation
+- `quote` - data literals
+- `def` - variable definition
+- `set` - variable mutation
+- `import` - module loading
 
 ### Error Handling
 ```reactor
