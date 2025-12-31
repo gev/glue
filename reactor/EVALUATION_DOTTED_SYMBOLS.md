@@ -92,28 +92,17 @@ config.database.connection.url  ;; Module → Object → Property
 ## Implementation Details
 
 ### Resolution Strategy
-```haskell
-evalDottedSymbol :: [Text] -> Eval (Maybe IR)
-evalDottedSymbol parts = do
-    case parts of
-        [] -> throwError EmptyDottedPath
-        [single] -> evalSymbol single
-        _ -> evalWithPrefixes (init $ inits parts)
-```
+The evaluation follows a hierarchical approach:
+1. Parse the dotted path into individual components
+2. Try to resolve the longest possible prefix as a symbol
+3. For remaining components, perform property access on the resolved value
+4. Continue until all components are resolved or an error occurs
 
-### Property Access
-```haskell
-accessProperty :: IR -> Text -> Eval (Maybe IR)
-accessProperty (IR.Object map) prop =
-    case Map.lookup prop map of
-        Just val -> pure (Just val)
-        Nothing -> throwError $ PropertyNotFound prop
-accessProperty (IR.Module map) prop =
-    case Map.lookup prop map of
-        Just val -> pure (Just val)
-        Nothing -> throwError $ ExportNotFound prop  -- Should be different error
-accessProperty _ _ = throwError NotAnObject
-```
+### Property Access Logic
+- **Object Access:** Direct key lookup in the object's property map
+- **Module Access:** Lookup in the module's export table
+- **Type Checking:** Ensure the base value is an object or module before access
+- **Error Differentiation:** Use appropriate error types for different access failures
 
 ## Common Patterns
 
