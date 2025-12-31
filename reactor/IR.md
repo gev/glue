@@ -120,10 +120,6 @@ Represents user-defined functions with captured environment.
 ### Type Predicates
 
 #### List Operations
-```haskell
-isList :: IR m -> Bool
-listLength :: IR m -> Int
-```
 
 **Purpose:** Check if IR node is a list and get its length
 
@@ -153,23 +149,6 @@ listLength :: IR m -> Int
 - Compares primitive values directly
 - Compares collections structurally
 - Treats functions/closures as unequal (not comparable)
-
-## IR Design Principles
-
-### Type Safety
-- Strong typing through Haskell's type system
-- Parametric polymorphism with effect type `m`
-- Safe representation of all Reactor values
-
-### Extensibility
-- Open union type for adding new IR nodes
-- Generic operations work with all IR types
-- Environment abstraction supports different evaluation strategies
-
-### Performance
-- Efficient Map-based objects and modules
-- Lazy evaluation support through effect type
-- Minimal boxing/unboxing of primitive values
 
 ### Composability
 - All IR nodes can contain other IR nodes
