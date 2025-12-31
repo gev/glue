@@ -116,9 +116,9 @@ Expressions are parsed in this order of priority (highest first):
 **Rule:** Parse numeric literals using scientific notation.
 
 **Valid patterns:**
-- Integers: `42` → `Number 42`, `-15` → `Number (-15)`, `0` → `Number 0`
+- Integers: `42` → `Number 42.0`, `-15` → `Number (-15.0)`, `0` → `Number 0.0`
 - Decimals: `3.14159` → `Number 3.14159`, `-273.15` → `Number (-273.15)`
-- Scientific: `1.23e-4` → `Number 0.000123`, `6.02e23` → `Number 6.02e+23`
+- Scientific: `1.23e-4` → `Number 0.000123`, `6.02e23` → `Number 60200000000000000000000`
 
 **Invalid patterns:**
 - Multiple dots: `1.2.3`
