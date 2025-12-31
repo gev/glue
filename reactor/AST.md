@@ -187,6 +187,8 @@ Expressions are parsed in this order of priority (highest first):
 
 **Examples:**
 - Valid: `(:name "Alice" :age 30)`
+- Valid: `(foo :x 1 :y 2)` - function call with keyword arguments
+- Valid: `(:user (:name "Bob" :age 25) :config (:theme "dark"))` - nested objects
 - Invalid: `(:name)` (missing value)
 - Invalid: `(:name "Alice" arg)` (mixed content)
 
@@ -316,6 +318,36 @@ AtomList [
 PropList [
     ("name", String "Alice"),
     ("age", Number 30)
+]
+```
+
+#### Function Call with Keyword Arguments
+```reactor
+(foo :x 1 :y 2)
+```
+```haskell
+AtomList [
+    Symbol "foo",
+    PropList [
+        ("x", Number 1),
+        ("y", Number 2)
+    ]
+]
+```
+
+#### Nested Objects
+```reactor
+(:user (:name "Bob" :age 25) :config (:theme "dark"))
+```
+```haskell
+PropList [
+    ("user", PropList [
+        ("name", String "Bob"),
+        ("age", Number 25)
+    ]),
+    ("config", PropList [
+        ("theme", String "dark")
+    ])
 ]
 ```
 
