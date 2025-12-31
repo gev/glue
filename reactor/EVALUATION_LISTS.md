@@ -16,13 +16,21 @@ List evaluation analyzes the input list structure and transforms it into a calla
 ## Symbol with Arguments
 
 **Input IR:** `List [Symbol name, arg1, arg2, ...]`
-**Process:** Look up `name` in environment and apply the result to unevaluated `arg1`, `arg2`, ...`
+**Process:**
+1. Look up `name` in environment → resolves to `Closure` or `Native`
+2. Apply the resolved `Closure` or `Native` to unevaluated `arg1`, `arg2`, ...`
 **Output:** Function application result
 
+### Callable Resolution
+- Symbol first resolves to callable value (`Closure` or `Native`)
+- Then callable gets applied with arguments
+- For `Closure` evaluation details, see [Closure Evaluation](EVALUATION_CLOSURES.md)
+- For `Native` evaluation details, see [Native Evaluation](EVALUATION_NATIVES.md)
+
 ### Argument Handling
-- Arguments passed unevaluated to function
-- Function receives raw IR nodes
-- Function decides whether to evaluate arguments
+- Arguments passed unevaluated to callable
+- Callable receives raw IR nodes
+- Callable decides whether to evaluate arguments
 
 ## General Lists
 
