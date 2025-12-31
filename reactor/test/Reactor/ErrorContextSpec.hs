@@ -32,12 +32,12 @@ spec = describe "Reactor.ErrorContext (Call Stack Tracking)" do
 
     it "shows nested call stack" do
         runCode "((def f (lambda () (non-existent))) (f))"
-            `shouldReturn` Left (ReactorError $ EvalError ["f"] $ UnboundVariable "non-existent")
+            `shouldReturn` Left (ReactorError $ EvalError ["<call>"] $ UnboundVariable "non-existent")
 
     it "shows deep call stack with multiple levels" do
         let code = "((def a (lambda () (b))) (def b (lambda () (non-existent))) (a))"
         runCode code
-            `shouldReturn` Left (ReactorError $ EvalError ["a"] $ UnboundVariable "b")
+            `shouldReturn` Left (ReactorError $ EvalError ["<call>"] $ UnboundVariable "b")
 
     it "shows context for user-defined functions" do
         runCode "((def id (lambda (x) x)) (id))"

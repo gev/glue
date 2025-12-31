@@ -165,6 +165,20 @@ evalDottedSymbol parts = do
 
 -- Evaluate a list (function call or literal list)
 evalList :: [IR] -> Eval (Maybe IR)
+evalList [IR.Symbol name] = do
+    pushContext name
+    env <- getEnv
+    case E.lookupVar name env of
+        Right func | isCallable func -> do
+            result <- apply func []
+            popContext
+            pure result
+        Right val -> do
+            popContext
+            pure $ Just val
+        Left err -> do
+            popContext
+            throwError err
 evalList (IR.Symbol name : rawArgs) = do
     pushContext name
     env <- getEnv
@@ -247,7 +261,7 @@ updateVarEval name val = do
         Left err -> throwError err
 
 runEval :: Eval a -> EvalState -> IO (Either EvalError (a, EvalState))
-runEval (Eval f) initialState = f initialState
+runEval (Eval f) = f
 
 -- | Legacy runEval for backward compatibility (deprecated)
 runEvalLegacy :: Eval a -> Env -> IO (Either EvalError (a, Env, Context))
