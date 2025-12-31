@@ -82,6 +82,8 @@ Reactor has built-in support for structured data using property lists:
 
 For detailed information about binding semantics, scope rules, and the differences between `def`, `set`, and `import` operations, see [`BINDING_SEMANTICS.md`](BINDING_SEMANTICS.md).
 
+For a complete syntax reference including grammar, operators, and advanced features, see [`SYNTAX.md`](SYNTAX.md).
+
 ### λ Lambda Functions
 
 ```clojure
