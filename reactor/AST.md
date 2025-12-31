@@ -91,65 +91,245 @@ Represents property objects (dictionaries/maps).
 (:x (+ 1 2) :y (* 3 4))
 ```
 
-## Compilation to IR
+## Parsing Process
 
-The AST is compiled to Intermediate Representation (IR) through the `compile` function:
-
-```haskell
-compile :: AST -> IR m
-```
-
-### Compilation Rules
-
-| AST Node | IR Result | Notes |
-|----------|-----------|-------|
-| `String s` | `String s` | Direct mapping |
-| `Number n` | `Number n` | Direct mapping |
-| `Symbol s` | `Symbol s` or `DottedSymbol [...]` | Splits on "." |
-| `AtomList xs` | `List (map compile xs)` | Function calls, data |
-| `PropList ps` | `Object (Map.fromList (map compile ps))` | Property objects |
-
-### Dotted Symbol Resolution
-
-The key transformation happens with symbols containing dots:
+The AST is constructed from source text through the `parseReactor` function:
 
 ```haskell
--- In AST
-Symbol "obj.field.method"
-
--- After compilation
-DottedSymbol ["obj", "field", "method"]
+parseReactor :: Text -> Either ParserError AST
 ```
 
-This enables hierarchical property access and namespace resolution.
+### Parser Architecture
 
-## AST vs IR
+Reactor uses **Megaparsec** for parsing with custom error handling. The parser is structured as follows:
 
-### Design Philosophy
+```haskell
+type Parser = Parsec ParserError Text
 
-- **AST**: Faithful representation of source syntax
-- **IR**: Optimized for evaluation and analysis
+parseReactor input =
+    case parse (pReactor <* eof) "reactor-input" input of
+        Left err -> Left (parserError err)
+        Right ast -> Right ast
+```
 
-### Key Differences
+### Parsing Rules
 
-| Aspect | AST | IR |
-|--------|-----|----|
-| **Purpose** | Syntax representation | Evaluation preparation |
-| **Dotted symbols** | `Symbol "x.y.z"` | `DottedSymbol ["x", "y", "z"]` |
-| **Complexity** | Simple, direct | Rich, optimized |
-| **Evaluation** | Not evaluated directly | Evaluated by interpreter |
+#### Whitespace & Comments
+```haskell
+sc :: Parser ()  -- Space consumer
+sc = L.space space1 (L.skipLineComment ";") (L.skipBlockComment "#|" "|#")
+```
 
-### Compilation Pipeline
+- **Spaces**: Any whitespace characters
+- **Line comments**: `;` until end of line
+- **Block comments**: `#|` ... `|#`
+
+#### Lexemes
+```haskell
+lexeme :: Parser a -> Parser a  -- Consumes trailing whitespace
+symbol :: Text -> Parser Text   -- Matches exact text with whitespace
+```
+
+#### Expression Parsing Order
+```haskell
+pReactor :: Parser AST
+pReactor = choice
+    [ pQuoted      -- 'expr
+    , pExprOrList  -- (expr...) or (:key val...)
+    , pString      -- "text"
+    , pNumber      -- 42, 3.14
+    , pSymbol      -- identifier
+    ]
+```
+
+### Detailed Parsing Rules
+
+#### Numbers
+```haskell
+pNumber :: Parser AST
+pNumber = Number <$> lexeme L.scientific
+```
+
+**Valid:** `42`, `3.14159`, `-273.15`, `1.23e-4`
+**Invalid:** `1..2`, `0xFF` (hex not supported)
+
+#### Strings
+```haskell
+pString :: Parser AST
+pString = String . T.pack <$> lexeme (char '"' >> manyTill L.charLiteral (char '"'))
+```
+
+**Valid:** `"hello"`, `"with \"quotes\""`, `"multi\nline"`
+**Invalid:** `"unclosed`, `"no escapes \x allowed"`
+
+#### Symbols
+```haskell
+pSymbol :: Parser AST
+pSymbol = Symbol . T.pack <$> lexeme (some (alphaNumChar <|> oneOf "-._:!?\\=<>/*+%"))
+```
+
+**Valid:** `x`, `my-var`, `+`, `math.pi`, `obj.field.method`
+**Invalid:** `123abc` (must start with letter), `sym bol` (spaces not allowed)
+
+#### Quoted Expressions
+```haskell
+pQuoted :: Parser AST
+pQuoted = do
+    _ <- char '\''
+    inner <- pReactor
+    pure $ AtomList [Symbol "quote", inner]
+```
+
+**Input:** `'expr`
+**Output:** `(quote expr)`
+
+#### Lists and Property Objects
+```haskell
+pExprOrList :: Parser AST
+pExprOrList = between (symbol "(") (symbol ")") $ do
+    optional pReactor >>= \case
+        Nothing -> pure $ AtomList []  -- ()
+        Just first -> case first of
+            Symbol name | not (T.isPrefixOf ":" name) -> do
+                body <- pBodyRest []
+                case body of
+                    AtomList atoms -> pure $ AtomList (Symbol name : atoms)
+                    propList -> pure $ AtomList [Symbol name, propList]
+            _ -> pBodyRest [first]
+```
+
+### Property Object Validation
+
+#### Property Recognition
+```haskell
+isProp :: AST -> Bool
+isProp (Symbol s) = T.isPrefixOf ":" s
+isProp _ = False
+```
+
+#### Validation Rules
+```haskell
+validateProps :: [AST] -> Parser [(Text, AST)]
+validateProps = \case
+    [] -> pure []
+    [Symbol k] | T.isPrefixOf ":" k -> customFailure (UnpairedProperty k)
+    (Symbol k : v : rest) | T.isPrefixOf ":" k -> do
+        others <- validateProps rest
+        pure ((T.drop 1 k, v) : others)
+    (x : _) -> customFailure (MixedContent (T.pack $ show x))
+
+validateNoProps :: [AST] -> Parser ()
+validateNoProps = mapM_ \case
+    Symbol s | T.isPrefixOf ":" s -> customFailure (MixedContent s)
+    _ -> pure ()
+```
+
+### Parsing Pipeline
 
 ```
-Source Code
-    ↓ (parse)
-AST
-    ↓ (compile)
-IR
-    ↓ (eval)
-Result
+Source Text
+    ↓ (tokenize & lex)
+Character Stream
+    ↓ (parse grammar)
+AST Nodes
+    ↓ (validate structure)
+Validated AST
 ```
+
+## Syntax Errors
+
+### Error Types
+
+#### `MixedContent`
+```haskell
+data ParserError = MixedContent Text
+```
+
+**Trigger:** Mixing properties and positional arguments
+```reactor
+;; Invalid
+(+ :x 1 2)  ;; ERROR: Property ':x' mixed with positional args
+
+;; Valid alternatives
+(+ 1 2)           ;; All positional
+(:x 1 :y 2)       ;; All properties
+```
+
+#### `UnpairedProperty`
+```haskell
+data ParserError = UnpairedProperty Text
+```
+
+**Trigger:** Property without value
+```reactor
+;; Invalid
+(:name "Alice" :age)  ;; ERROR: ':age' has no value
+
+;; Valid
+(:name "Alice" :age 30)
+```
+
+#### `ReservedKeyword`
+```haskell
+data ParserError = ReservedKeyword Text
+```
+
+**Trigger:** Using reserved identifiers
+```reactor
+;; Invalid (if 'def' is reserved)
+(def x 1)  ;; ERROR: 'def' is reserved
+```
+
+#### `SyntaxError`
+```haskell
+data ParserError = SyntaxError Text
+```
+
+**Trigger:** General parsing failures
+- Unmatched parentheses
+- Invalid characters
+- Malformed numbers/strings
+- Unexpected tokens
+
+### Error Examples
+
+#### Unmatched Parentheses
+```reactor
+;; Input: (+ 1 2
+;; Error: SyntaxError "unexpected end of input"
+```
+
+#### Invalid Number
+```reactor
+;; Input: 1.2.3
+;; Error: SyntaxError "unexpected '.'"
+```
+
+#### Mixed Content
+```reactor
+;; Input: (f arg1 :key val)
+;; Error: MixedContent ":key"
+```
+
+#### Unpaired Property
+```reactor
+;; Input: (:name "Alice" :age)
+;; Error: UnpairedProperty ":age"
+```
+
+### Error Recovery
+
+The parser uses Megaparsec's error reporting for detailed diagnostics:
+
+```haskell
+parserError :: ParseErrorBundle Text ParserError -> ParserError
+parserError bundle =
+    case head (bundleErrors bundle) of
+        FancyError _ (Set.toList -> [ErrorCustom e]) -> e
+        _ -> SyntaxError (T.pack $ errorBundlePretty bundle)
+```
+
+This provides both custom Reactor errors and fallback to Megaparsec's detailed error messages.
 
 ## AST Construction
 
