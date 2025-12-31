@@ -215,55 +215,48 @@ The parser prevents invalid AST through:
 
 ### Error Types
 
-#### `MixedContent`
-```haskell
-data ParserError = MixedContent Text
+#### Mixed Content Error
+**Trigger:** Mixing properties and positional arguments in the same list
+
+**Invalid example:**
+```reactor
+(+ :x 1 2)  ;; ERROR: Cannot mix ':x' property with positional args
 ```
 
-**Trigger:** Mixing properties and positional arguments
+**Valid alternatives:**
 ```reactor
-;; Invalid
-(+ :x 1 2)  ;; ERROR: Property ':x' mixed with positional args
-
-;; Valid alternatives
-(+ 1 2)           ;; All positional
+(+ 1 2)           ;; All positional arguments
 (:x 1 :y 2)       ;; All properties
 ```
 
-#### `UnpairedProperty`
-```haskell
-data ParserError = UnpairedProperty Text
+#### Unpaired Property Error
+**Trigger:** Property key without a corresponding value
+
+**Invalid example:**
+```reactor
+(:name "Alice" :age)  ;; ERROR: ':age' has no value
 ```
 
-**Trigger:** Property without value
+**Valid example:**
 ```reactor
-;; Invalid
-(:name "Alice" :age)  ;; ERROR: ':age' has no value
-
-;; Valid
 (:name "Alice" :age 30)
 ```
 
-#### `ReservedKeyword`
-```haskell
-data ParserError = ReservedKeyword Text
-```
-
+#### Reserved Keyword Error
 **Trigger:** Using reserved identifiers
+
+**Invalid example:**
 ```reactor
-;; Invalid (if 'def' is reserved)
-(def x 1)  ;; ERROR: 'def' is reserved
+(def x 1)  ;; ERROR: 'def' is reserved (if applicable)
 ```
 
-#### `SyntaxError`
-```haskell
-data ParserError = SyntaxError Text
-```
+#### General Syntax Error
+**Trigger:** Various parsing failures
 
-**Trigger:** General parsing failures
-- Unmatched parentheses
-- Invalid characters
-- Malformed numbers/strings
+**Common causes:**
+- Unmatched parentheses: `( + 1 2`
+- Invalid characters: `1.2.3` (multiple dots in number)
+- Malformed strings: `"unclosed string`
 - Unexpected tokens
 
 ### Error Examples
@@ -271,40 +264,33 @@ data ParserError = SyntaxError Text
 #### Unmatched Parentheses
 ```reactor
 ;; Input: (+ 1 2
-;; Error: SyntaxError "unexpected end of input"
+;; Error: Unexpected end of input
 ```
 
-#### Invalid Number
+#### Invalid Number Format
 ```reactor
 ;; Input: 1.2.3
-;; Error: SyntaxError "unexpected '.'"
+;; Error: Multiple decimal points not allowed
 ```
 
-#### Mixed Content
+#### Mixed Content in Lists
 ```reactor
 ;; Input: (f arg1 :key val)
-;; Error: MixedContent ":key"
+;; Error: Cannot mix positional and property arguments
 ```
 
-#### Unpaired Property
+#### Missing Property Values
 ```reactor
 ;; Input: (:name "Alice" :age)
-;; Error: UnpairedProperty ":age"
+;; Error: Property ':age' requires a value
 ```
 
 ### Error Recovery
 
-The parser uses Megaparsec's error reporting for detailed diagnostics:
-
-```haskell
-parserError :: ParseErrorBundle Text ParserError -> ParserError
-parserError bundle =
-    case head (bundleErrors bundle) of
-        FancyError _ (Set.toList -> [ErrorCustom e]) -> e
-        _ -> SyntaxError (T.pack $ errorBundlePretty bundle)
-```
-
-This provides both custom Reactor errors and fallback to Megaparsec's detailed error messages.
+The parser provides detailed error messages to help identify and fix syntax issues. Errors include:
+- Exact location of the problem
+- Clear description of what went wrong
+- Suggestions for valid alternatives
 
 ## AST Construction
 
