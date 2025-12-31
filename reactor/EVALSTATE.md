@@ -16,14 +16,6 @@ data EvalState = EvalState
     }
 ```
 
-### Environment Types
-
-```haskell
-type Env m = [Frame m]
-type Frame m = Map Text (IR m)
-type Context = [Text]
-```
-
 ## EvalState Components
 
 ### Environment (env)
