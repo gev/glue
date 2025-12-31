@@ -32,7 +32,7 @@ With the environment prepared, Reactor can begin evaluating code. The evaluation
 
 ### Symbol Evaluation
 
-When encountering a symbol, Reactor looks up its value in the current environment. This includes both simple variable names and dotted notation for accessing nested properties or module exports. Symbol evaluation forms the foundation of variable access and function calls. For detailed information about symbol resolution mechanisms, see [Symbol Evaluation](EVALUATION_SYMBOLS.md).
+When encountering a symbol, Reactor looks up its value in the current environment. This includes both simple variable names and dotted notation for accessing nested properties or module exports. Symbol evaluation forms the foundation of variable access and function calls. For detailed information about environment structure and symbol resolution, see [Environment](ENVIRONMENT.md).
 
 ### List Evaluation
 
