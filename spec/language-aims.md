@@ -30,19 +30,35 @@ Reactor is a modern Lisp-inspired programming language designed for embedded scr
 - Evaluation model avoids undefined behavior
 - Comprehensive error messages for debugging
 
-### 3. Flexibility and Extensibility
+### 3. Embedding and Scripting
 
-**Host Language Integration**
+**Seamless Host Integration**
 - Designed to embed seamlessly in existing applications
-- Minimal runtime dependencies
+- Minimal runtime dependencies and footprint
 - Clean FFI (Foreign Function Interface) for host language calls
+- Shared memory and object references with host
 
-**Domain Adaptation**
+**Scripting Capabilities**
+- Configuration and automation scripts
+- Business logic embedded in larger applications
+- Plugin and extension systems
+- Runtime code evaluation and modification
+
+### 4. Domain-Specific Language (DSL) Creation
+
+**DSL Construction Framework**
 - Easy creation of domain-specific languages
 - Configurable evaluation environments
-- Extensible standard library
+- Syntax extension and customization
+- Domain-specific optimizations
 
-### 4. Server-Driven UI (SDUI) / Backend-Driven UI (BDUI) Support
+**Language Composition**
+- Mix and match language features
+- Hierarchical DSL embedding
+- Controlled scoping and isolation
+- Safe language boundaries
+
+### 5. Server-Driven UI (SDUI) / Backend-Driven UI (BDUI) Support
 
 **Dynamic UI Generation**
 - Runtime UI component creation and manipulation
@@ -59,7 +75,7 @@ Reactor is a modern Lisp-inspired programming language designed for embedded scr
 - Reusable UI building blocks
 - Functional composition of UI elements
 
-### 5. Modern Language Features
+### 6. Modern Language Features
 
 **Functional Programming**
 - First-class functions and closures
