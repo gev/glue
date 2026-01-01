@@ -1,18 +1,18 @@
-# Reactor Language Overview
+# 🌟 Reactor Language Overview
 
-## What is Reactor?
+## 🤔 What is Reactor?
 
 Reactor is a modern, Lisp-inspired programming language designed for embedded scripting, domain-specific languages (DSLs), and functional programming. It combines the elegance of Lisp with contemporary features for property-based objects, modules, and server-driven UI development.
 
-## Key Characteristics
+## ✨ Key Characteristics
 
-### Simple Yet Powerful
+### 🎯 Simple Yet Powerful
 Reactor uses a clean, consistent syntax with minimal ceremony. Every construct follows uniform rules, allowing complex operations to emerge from simple, composable primitives.
 
-### Safe by Design
+### 🛡️ Safe by Design
 Built-in type checking, immutable data structures by default, and controlled mutation prevent common programming errors. The evaluation model avoids undefined behavior with comprehensive error handling.
 
-### Flexible Integration
+### 🔗 Flexible Integration
 Designed to embed seamlessly in existing applications with minimal runtime footprint. Clean foreign function interfaces enable integration with host languages while maintaining safety boundaries.
 
 ## Core Features
@@ -46,7 +46,7 @@ user.age       ;; → 30
 ```reactor
 ;; Module definition and imports
 (import math)
-(import ui.components (button text-input))
+(import ui.components button text-input)
 
 ;; Qualified access
 math.sin  ;; Sine function
@@ -94,7 +94,7 @@ math.pi   ;; Pi constant
 ## Advanced Capabilities
 
 ### DSL Creation
-Reactor excels at creating domain-specific languages through its configurable evaluation environment and syntax extension capabilities.
+Reactor excels at creating domain-specific languages through its configurable evaluation environment.
 
 ### Server-Driven UI
 Built-in support for dynamic UI generation with property-based component configuration and backend integration.
@@ -138,11 +138,6 @@ Minimal footprint and clean host language integration make Reactor ideal for emb
 (def config (:debug false
               :server (:host "localhost" :port 8080)
               :database (:type "postgres" :name "myapp")))
-
-;; Environment-specific overrides
-(if (= (getenv "NODE_ENV") "development")
-    (set config.debug true))
-```
 
 ## Why Reactor?
 

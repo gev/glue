@@ -1,8 +1,8 @@
-# Reactor Language Specification
+# 🚀 Reactor Language Specification
 
 Complete specification for the Reactor programming language, a Lisp-inspired language with modern enhancements for property objects, functional programming, and module systems.
 
-## Overview
+## 🎯 Overview
 
 Reactor is designed to be:
 - **Simple**: Minimal syntax with maximal expressiveness
