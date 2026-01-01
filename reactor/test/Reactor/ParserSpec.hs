@@ -12,12 +12,34 @@ spec = do
             it "parses integers" $ do
                 parseReactor "123" `shouldBe` Right (Number 123)
 
+            it "parses negative numbers" $ do
+                case parseReactor "-42" of
+                    Right (Number n) -> n `shouldBe` -42
+                    _ -> expectationFailure "Should parse as negative number"
+
+            it "parses floats" $ do
+                parseReactor "3.14" `shouldBe` Right (Number 3.14)
+
+            it "parses negative floats" $ do
+                case parseReactor "-2.71" of
+                    Right (Number n) -> n `shouldSatisfy` (\x -> abs (x - (-2.71)) < 0.001)
+                    _ -> expectationFailure "Should parse as negative float"
+
+            it "parses scientific notation" $ do
+                parseReactor "1.23e4" `shouldBe` Right (Number 12300)
+
             it "parses strings" $ do
                 parseReactor "\"hello\"" `shouldBe` Right (String "hello")
 
             it "parses symbols" $ do
                 parseReactor "void" `shouldBe` Right (Symbol "void")
                 parseReactor "my-func" `shouldBe` Right (Symbol "my-func")
+
+            it "parses symbols starting with letter" $ do
+                parseReactor "a" `shouldBe` Right (Symbol "a")
+                parseReactor "z" `shouldBe` Right (Symbol "z")
+                parseReactor "A" `shouldBe` Right (Symbol "A")
+                parseReactor "Z" `shouldBe` Right (Symbol "Z")
 
             it "parses symbols with dots" $ do
                 parseReactor "math.utils" `shouldBe` Right (Symbol "math.utils")
