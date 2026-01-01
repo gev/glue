@@ -84,3 +84,6 @@ For each document, follow this process:
 13. Bool and Math (specific library components)
 
 This plan ensures systematic, quality-driven specification development with proper dependencies and review cycles.
+
+Do one point in time!
+One point – one task – one commit!
