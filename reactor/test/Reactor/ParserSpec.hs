@@ -10,82 +10,156 @@ spec = do
     describe "Reactor LISP Parser" $ do
         describe "Basic Atoms" $ do
             it "parses integers" $ do
-                parseReactor "123" `shouldBe` Right (Number 123)
+                case parseReactor "123" of
+                    Right (Number n) -> n `shouldBe` 123
+                    _ -> expectationFailure "Should parse as integer"
 
             it "parses negative numbers" $ do
-                parseReactor "-42" `shouldBe` Right (Number (-42))
+                case parseReactor "-42" of
+                    Right (Number n) -> n `shouldBe` (-42)
+                    _ -> expectationFailure "Should parse as negative number"
 
             it "parses floats" $ do
-                parseReactor "3.14" `shouldBe` Right (Number 3.14)
+                case parseReactor "3.14" of
+                    Right (Number n) -> n `shouldBe` 3.14
+                    _ -> expectationFailure "Should parse as float"
 
             it "parses negative floats" $ do
-                parseReactor "-2.71" `shouldBe` Right (Number (-2.71))
+                case parseReactor "-2.71" of
+                    Right (Number n) -> n `shouldSatisfy` (\x -> abs (x - (-2.71)) < 0.001)
+                    _ -> expectationFailure "Should parse as negative float"
 
             it "parses scientific notation" $ do
-                parseReactor "1.23e4" `shouldBe` Right (Number 12300)
-                parseReactor "1.23E4" `shouldBe` Right (Number 12300)
-                parseReactor "1.23e-2" `shouldBe` Right (Number 0.0123)
-                parseReactor "-1.23e4" `shouldBe` Right (Number (-1.23e4))
+                case parseReactor "1.23e4" of
+                    Right (Number n) -> n `shouldBe` 12300
+                    _ -> expectationFailure "Should parse scientific notation"
+                case parseReactor "1.23E4" of
+                    Right (Number n) -> n `shouldBe` 12300
+                    _ -> expectationFailure "Should parse uppercase E"
+                case parseReactor "1.23e-2" of
+                    Right (Number n) -> n `shouldSatisfy` (\x -> abs (x - 0.0123) < 0.0001)
+                    _ -> expectationFailure "Should parse negative exponent"
+                case parseReactor "-1.23e4" of
+                    Right (Number n) -> n `shouldBe` (-12300)
+                    _ -> expectationFailure "Should parse negative scientific"
 
             it "parses strings" $ do
-                parseReactor "\"hello\"" `shouldBe` Right (String "hello")
+                case parseReactor "\"hello\"" of
+                    Right (String s) -> s `shouldBe` "hello"
+                    _ -> expectationFailure "Should parse as string"
 
             it "parses symbols" $ do
-                parseReactor "void" `shouldBe` Right (Symbol "void")
-                parseReactor "my-func" `shouldBe` Right (Symbol "my-func")
+                case parseReactor "void" of
+                    Right (Symbol s) -> s `shouldBe` "void"
+                    _ -> expectationFailure "Should parse as symbol"
+                case parseReactor "my-func" of
+                    Right (Symbol s) -> s `shouldBe` "my-func"
+                    _ -> expectationFailure "Should parse as symbol"
 
             it "parses symbols starting with letter" $ do
-                parseReactor "a" `shouldBe` Right (Symbol "a")
-                parseReactor "z" `shouldBe` Right (Symbol "z")
-                parseReactor "A" `shouldBe` Right (Symbol "A")
-                parseReactor "Z" `shouldBe` Right (Symbol "Z")
+                case parseReactor "a" of
+                    Right (Symbol s) -> s `shouldBe` "a"
+                    _ -> expectationFailure "Should parse as symbol"
+                case parseReactor "z" of
+                    Right (Symbol s) -> s `shouldBe` "z"
+                    _ -> expectationFailure "Should parse as symbol"
+                case parseReactor "A" of
+                    Right (Symbol s) -> s `shouldBe` "A"
+                    _ -> expectationFailure "Should parse as symbol"
+                case parseReactor "Z" of
+                    Right (Symbol s) -> s `shouldBe` "Z"
+                    _ -> expectationFailure "Should parse as symbol"
 
             it "parses symbols with dots" $ do
-                parseReactor "math.utils" `shouldBe` Right (Symbol "math.utils")
-                parseReactor "list.utils" `shouldBe` Right (Symbol "list.utils")
-                parseReactor "my.module.name" `shouldBe` Right (Symbol "my.module.name")
+                case parseReactor "math.utils" of
+                    Right (Symbol s) -> s `shouldBe` "math.utils"
+                    _ -> expectationFailure "Should parse as symbol"
+                case parseReactor "list.utils" of
+                    Right (Symbol s) -> s `shouldBe` "list.utils"
+                    _ -> expectationFailure "Should parse as symbol"
+                case parseReactor "my.module.name" of
+                    Right (Symbol s) -> s `shouldBe` "my.module.name"
+                    _ -> expectationFailure "Should parse as symbol"
 
         describe "Operator Symbols" $ do
             it "parses arithmetic operators" $ do
-                parseReactor "+" `shouldBe` Right (Symbol "+")
-                parseReactor "*" `shouldBe` Right (Symbol "*")
-                parseReactor "/" `shouldBe` Right (Symbol "/")
-                parseReactor "%" `shouldBe` Right (Symbol "%")
+                case parseReactor "+" of
+                    Right (Symbol s) -> s `shouldBe` "+"
+                    _ -> expectationFailure "Should parse as symbol"
+                case parseReactor "*" of
+                    Right (Symbol s) -> s `shouldBe` "*"
+                    _ -> expectationFailure "Should parse as symbol"
+                case parseReactor "/" of
+                    Right (Symbol s) -> s `shouldBe` "/"
+                    _ -> expectationFailure "Should parse as symbol"
+                case parseReactor "%" of
+                    Right (Symbol s) -> s `shouldBe` "%"
+                    _ -> expectationFailure "Should parse as symbol"
 
             it "parses comparison operators" $ do
-                parseReactor "<" `shouldBe` Right (Symbol "<")
-                parseReactor ">" `shouldBe` Right (Symbol ">")
-                parseReactor "<=" `shouldBe` Right (Symbol "<=")
-                parseReactor ">=" `shouldBe` Right (Symbol ">=")
-                parseReactor "==" `shouldBe` Right (Symbol "==")
-                parseReactor "\\=" `shouldBe` Right (Symbol "\\=")
+                case parseReactor "<" of
+                    Right (Symbol s) -> s `shouldBe` "<"
+                    _ -> expectationFailure "Should parse as symbol"
+                case parseReactor ">" of
+                    Right (Symbol s) -> s `shouldBe` ">"
+                    _ -> expectationFailure "Should parse as symbol"
+                case parseReactor "<=" of
+                    Right (Symbol s) -> s `shouldBe` "<="
+                    _ -> expectationFailure "Should parse as symbol"
+                case parseReactor ">=" of
+                    Right (Symbol s) -> s `shouldBe` ">="
+                    _ -> expectationFailure "Should parse as symbol"
+                case parseReactor "==" of
+                    Right (Symbol s) -> s `shouldBe` "=="
+                    _ -> expectationFailure "Should parse as symbol"
+                case parseReactor "\\=" of
+                    Right (Symbol s) -> s `shouldBe` "\\="
+                    _ -> expectationFailure "Should parse as symbol"
 
             it "parses logical operators" $ do
-                parseReactor "!" `shouldBe` Right (Symbol "!")
+                case parseReactor "!" of
+                    Right (Symbol s) -> s `shouldBe` "!"
+                    _ -> expectationFailure "Should parse as symbol"
 
             it "parses complex operator expressions" $ do
-                parseReactor "(+ 2 3)" `shouldBe` Right (AtomList [Symbol "+", Number 2, Number 3])
-                parseReactor "(< x y)" `shouldBe` Right (AtomList [Symbol "<", Symbol "x", Symbol "y"])
-                parseReactor "(== a b)" `shouldBe` Right (AtomList [Symbol "==", Symbol "a", Symbol "b"])
+                case parseReactor "(+ 2 3)" of
+                    Right (AtomList [Symbol "+", Number 2, Number 3]) -> pure ()
+                    _ -> expectationFailure "Should parse as operator expression"
+                case parseReactor "(< x y)" of
+                    Right (AtomList [Symbol "<", Symbol "x", Symbol "y"]) -> pure ()
+                    _ -> expectationFailure "Should parse as comparison expression"
+                case parseReactor "(== a b)" of
+                    Right (AtomList [Symbol "==", Symbol "a", Symbol "b"]) -> pure ()
+                    _ -> expectationFailure "Should parse as equality expression"
 
         describe "Rule: No Mixed Content" $ do
             it "successfully parses pure positional list" $ do
                 let input = "(1 2 \"test\")"
-                parseReactor input `shouldBe` Right (AtomList [Number 1, Number 2, String "test"])
+                case parseReactor input of
+                    Right (AtomList [Number 1, Number 2, String "test"]) -> pure ()
+                    _ -> expectationFailure "Should be AtomList"
 
             it "successfully parses pure property list" $ do
                 let input = "(:id 1 :type \"lamp\")"
-                parseReactor input `shouldBe` Right (PropList [("id", Number 1), ("type", String "lamp")])
+                case parseReactor input of
+                    Right (PropList [("id", Number 1), ("type", String "lamp")]) -> pure ()
+                    _ -> expectationFailure "Should be PropList"
 
             it "FAILS when mixing atoms and properties" $ do
-                parseReactor "(:id 1 \"oops\")" `shouldBe` Left (MixedContent "\"oops\"")
+                case parseReactor "(:id 1 \"oops\")" of
+                    Left (MixedContent "\"oops\"") -> pure ()
+                    _ -> expectationFailure "Should fail with MixedContent"
 
             it "FAILS when mixing properties and atoms" $ do
-                parseReactor "(1 2 :id 3)" `shouldBe` Left (MixedContent ":id")
+                case parseReactor "(1 2 :id 3)" of
+                    Left (MixedContent ":id") -> pure ()
+                    _ -> expectationFailure "Should fail with MixedContent"
 
         describe "Rule: Property Pairs" $ do
             it "FAILS on unpaired property key" $ do
-                parseReactor "(:id 1 :status)" `shouldBe` Left (UnpairedProperty ":status")
+                case parseReactor "(:id 1 :status)" of
+                    Left (UnpairedProperty ":status") -> pure ()
+                    _ -> expectationFailure "Should fail with UnpairedProperty"
 
         describe "Syntax Errors" $ do
             it "wraps Megaparsec errors into SyntaxError" $ do
@@ -95,67 +169,85 @@ spec = do
 
         describe "Quote sugar" $ do
             it "parses quoted symbols as (quote symbol)" $ do
-                parseReactor "'foo" `shouldBe` Right (AtomList [Symbol "quote", Symbol "foo"])
+                case parseReactor "'foo" of
+                    Right (AtomList [Symbol "quote", Symbol "foo"]) -> pure ()
+                    _ -> expectationFailure "Should parse as quoted symbol"
 
             it "parses quoted lists" $ do
-                parseReactor "'(1 2)" `shouldBe` Right (AtomList [Symbol "quote", AtomList [Number 1, Number 2]])
+                case parseReactor "'(1 2)" of
+                    Right (AtomList [Symbol "quote", AtomList [Number 1, Number 2]]) -> pure ()
+                    _ -> expectationFailure "Should parse as quoted list"
 
         describe "Advanced Quote sugar" do
             it "parses nested quotes (quote of quote)" do
                 -- ''foo -> (quote (quote foo))
-                parseReactor "''foo"
-                    `shouldBe` Right
-                        (AtomList [Symbol "quote", AtomList [Symbol "quote", Symbol "foo"]])
+                case parseReactor "''foo" of
+                    Right (AtomList [Symbol "quote", AtomList [Symbol "quote", Symbol "foo"]]) -> pure ()
+                    _ -> expectationFailure "Should parse nested quotes"
 
             it "parses quote inside a list" do
                 -- ('a 1) -> ((quote a) 1)
-                parseReactor "('a 1)"
-                    `shouldBe` Right
-                        (AtomList [AtomList [Symbol "quote", Symbol "a"], Number 1])
+                case parseReactor "('a 1)" of
+                    Right (AtomList [AtomList [Symbol "quote", Symbol "a"], Number 1]) -> pure ()
+                    _ -> expectationFailure "Should parse quote inside list"
 
             it "parses quote of a list with properties" do
                 -- '(:id 1) -> (quote (:id 1))
-                parseReactor "'(:id 1)"
-                    `shouldBe` Right
-                        (AtomList [Symbol "quote", PropList [("id", Number 1)]])
+                case parseReactor "'(:id 1)" of
+                    Right (AtomList [Symbol "quote", PropList [("id", Number 1)]]) -> pure ()
+                    _ -> expectationFailure "Should parse quoted property list"
 
             it "parses quote of an expression" do
                 -- '(set :x 1) -> (quote (set :x 1))
-                parseReactor "'(set :x 1)"
-                    `shouldBe` Right
-                        (AtomList [Symbol "quote", AtomList [Symbol "set", PropList [("x", Number 1)]]])
+                case parseReactor "'(set :x 1)" of
+                    Right (AtomList [Symbol "quote", AtomList [Symbol "set", PropList [("x", Number 1)]]]) -> pure ()
+                    _ -> expectationFailure "Should parse quoted expression"
 
             it "parses multiple quotes in different places" do
                 -- (f 'a 'b)
-                parseReactor "(f 'a 'b)"
-                    `shouldBe` Right
-                        (AtomList [Symbol "f", AtomList [Symbol "quote", Symbol "a"], AtomList [Symbol "quote", Symbol "b"]])
+                case parseReactor "(f 'a 'b)" of
+                    Right (AtomList [Symbol "f", AtomList [Symbol "quote", Symbol "a"], AtomList [Symbol "quote", Symbol "b"]]) -> pure ()
+                    _ -> expectationFailure "Should parse multiple quotes"
 
             it "parses quote of a quote of a list" do
                 -- ''(1 2)
-                parseReactor "''(1 2)"
-                    `shouldBe` Right
-                        (AtomList [Symbol "quote", AtomList [Symbol "quote", AtomList [Number 1, Number 2]]])
+                case parseReactor "''(1 2)" of
+                    Right (AtomList [Symbol "quote", AtomList [Symbol "quote", AtomList [Number 1, Number 2]]]) -> pure ()
+                    _ -> expectationFailure "Should parse quote of quote of list"
 
         describe "Property Access" $ do
             it "parses property access" $ do
-                parseReactor "obj.name" `shouldBe` Right (Symbol "obj.name")
+                case parseReactor "obj.name" of
+                    Right (Symbol "obj.name") -> pure ()
+                    _ -> expectationFailure "Should parse as property access"
 
             it "parses property access with complex object" $ do
-                parseReactor "obj.name" `shouldBe` Right (Symbol "obj.name")
+                case parseReactor "obj.name" of
+                    Right (Symbol "obj.name") -> pure ()
+                    _ -> expectationFailure "Should parse as property access"
 
             it "parses nested property access" $ do
-                parseReactor "a.b.c" `shouldBe` Right (Symbol "a.b.c")
+                case parseReactor "a.b.c" of
+                    Right (Symbol "a.b.c") -> pure ()
+                    _ -> expectationFailure "Should parse as nested property access"
 
             it "parses property access on quoted expression" $ do
-                parseReactor "'foo.bar" `shouldBe` Right (AtomList [Symbol "quote", Symbol "foo.bar"])
+                case parseReactor "'foo.bar" of
+                    Right (AtomList [Symbol "quote", Symbol "foo.bar"]) -> pure ()
+                    _ -> expectationFailure "Should parse quoted property access"
 
             it "parses property access with numbers in name" $ do
-                parseReactor "obj.prop1" `shouldBe` Right (Symbol "obj.prop1")
+                case parseReactor "obj.prop1" of
+                    Right (Symbol "obj.prop1") -> pure ()
+                    _ -> expectationFailure "Should parse property access with numbers"
 
             it "parses property access with special chars in name" $ do
-                parseReactor "obj.prop-name" `shouldBe` Right (Symbol "obj.prop-name")
-                parseReactor "obj.prop_name" `shouldBe` Right (Symbol "obj.prop_name")
+                case parseReactor "obj.prop-name" of
+                    Right (Symbol "obj.prop-name") -> pure ()
+                    _ -> expectationFailure "Should parse property access with special chars"
+                case parseReactor "obj.prop_name" of
+                    Right (Symbol "obj.prop_name") -> pure ()
+                    _ -> expectationFailure "Should parse property access with underscores"
 
         describe "Equivalent Syntaxes" $ do
             it "parses (f :x 1) and (f (:x 1)) identically" $ do
@@ -167,15 +259,21 @@ spec = do
                 let grouped = parseReactor "(f :x 1 :y 2)"
                 let separate = parseReactor "(f (:x 1) (:y 2))"
                 grouped `shouldNotBe` separate
-                grouped `shouldBe` Right (AtomList [Symbol "f", PropList [("x", Number 1), ("y", Number 2)]])
-                separate `shouldBe` Right (AtomList [Symbol "f", PropList [("x", Number 1)], PropList [("y", Number 2)]])
+                case grouped of
+                    Right (AtomList [Symbol "f", PropList [("x", Number 1), ("y", Number 2)]]) -> pure ()
+                    _ -> expectationFailure "Should parse grouped properties"
+                case separate of
+                    Right (AtomList [Symbol "f", PropList [("x", Number 1)], PropList [("y", Number 2)]]) -> pure ()
+                    _ -> expectationFailure "Should parse separate properties"
 
             it "parses lambda with named arg" $ do
                 let input = "((lambda (it) it) (:it 1))"
-                let expected = Right (AtomList [AtomList [Symbol "lambda", AtomList [Symbol "it"], Symbol "it"], PropList [("it", Number 1)]])
-                parseReactor input `shouldBe` expected
+                case parseReactor input of
+                    Right (AtomList [AtomList [Symbol "lambda", AtomList [Symbol "it"], Symbol "it"], PropList [("it", Number 1)]]) -> pure ()
+                    _ -> expectationFailure "Should parse lambda with named arg"
 
             it "parses lambda with multiple named args" $ do
                 let input = "((lambda (it) it) (:it 1) (:yet 2))"
-                let expected = Right (AtomList [AtomList [Symbol "lambda", AtomList [Symbol "it"], Symbol "it"], PropList [("it", Number 1)], PropList [("yet", Number 2)]])
-                parseReactor input `shouldBe` expected
+                case parseReactor input of
+                    Right (AtomList [AtomList [Symbol "lambda", AtomList [Symbol "it"], Symbol "it"], PropList [("it", Number 1)], PropList [("yet", Number 2)]]) -> pure ()
+                    _ -> expectationFailure "Should parse lambda with multiple named args"
