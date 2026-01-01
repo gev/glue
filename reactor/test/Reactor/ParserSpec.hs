@@ -13,23 +13,19 @@ spec = do
                 parseReactor "123" `shouldBe` Right (Number 123)
 
             it "parses negative numbers" $ do
-                case parseReactor "-42" of
-                    Right (Number n) -> n `shouldBe` -42
-                    _ -> expectationFailure "Should parse as negative number"
+                parseReactor "-42" `shouldBe` Right (Number (-42))
 
             it "parses floats" $ do
                 parseReactor "3.14" `shouldBe` Right (Number 3.14)
 
             it "parses negative floats" $ do
-                case parseReactor "-2.71" of
-                    Right (Number n) -> n `shouldSatisfy` (\x -> abs (x - (-2.71)) < 0.001)
-                    _ -> expectationFailure "Should parse as negative float"
+                parseReactor "-2.71" `shouldBe` Right (Number (-2.71))
 
             it "parses scientific notation" $ do
                 parseReactor "1.23e4" `shouldBe` Right (Number 12300)
                 parseReactor "1.23E4" `shouldBe` Right (Number 12300)
                 parseReactor "1.23e-2" `shouldBe` Right (Number 0.0123)
-                parseReactor "-1.23e4" `shouldBe` Right (Number (-12300))
+                parseReactor "-1.23e4" `shouldBe` Right (Number (-1.23e4))
 
             it "parses strings" $ do
                 parseReactor "\"hello\"" `shouldBe` Right (String "hello")
@@ -75,15 +71,11 @@ spec = do
         describe "Rule: No Mixed Content" $ do
             it "successfully parses pure positional list" $ do
                 let input = "(1 2 \"test\")"
-                case parseReactor input of
-                    Right (AtomList [Number 1, Number 2, String "test"]) -> pure ()
-                    _ -> expectationFailure "Should be AtomList"
+                parseReactor input `shouldBe` Right (AtomList [Number 1, Number 2, String "test"])
 
             it "successfully parses pure property list" $ do
                 let input = "(:id 1 :type \"lamp\")"
-                case parseReactor input of
-                    Right (PropList [("id", Number 1), ("type", String "lamp")]) -> pure ()
-                    _ -> expectationFailure "Should be PropList"
+                parseReactor input `shouldBe` Right (PropList [("id", Number 1), ("type", String "lamp")])
 
             it "FAILS when mixing atoms and properties" $ do
                 parseReactor "(:id 1 \"oops\")" `shouldBe` Left (MixedContent "\"oops\"")
