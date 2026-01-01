@@ -42,7 +42,24 @@ Reactor is a modern Lisp-inspired programming language designed for embedded scr
 - Configurable evaluation environments
 - Extensible standard library
 
-### 4. Modern Language Features
+### 4. Server-Driven UI (SDUI) / Backend-Driven UI (BDUI) Support
+
+**Dynamic UI Generation**
+- Runtime UI component creation and manipulation
+- Property-based component configuration
+- Declarative UI structure definition
+
+**Backend Integration**
+- Seamless integration with server-side logic
+- Data-driven UI updates and rendering
+- API response to UI component mapping
+
+**Component Composition**
+- Hierarchical component assembly
+- Reusable UI building blocks
+- Functional composition of UI elements
+
+### 5. Modern Language Features
 
 **Functional Programming**
 - First-class functions and closures
@@ -68,16 +85,11 @@ Reactor is a modern Lisp-inspired programming language designed for embedded scr
 - Lazy evaluation where beneficial
 - Minimal memory footprint for embedded use
 
-**Scalability**
-- Suitable for both small scripts and larger applications
-- Composable abstractions for complex systems
-- Efficient handling of large data structures
-
 ### Implementation Goals
 
 **Host Language Agnostic**
 - Core specification independent of implementation language
-- Multiple implementations possible (Haskell, JavaScript, etc.)
+- Multiple implementations possible (Haskell, Dart, JavaScript, etc.)
 - Consistent behavior across implementations
 
 **Standardization**
@@ -99,17 +111,7 @@ Reactor is a modern Lisp-inspired programming language designed for embedded scr
 - Data processing and transformation pipelines
 - Rule engines and decision systems
 
-**Educational Use**
-- Teaching functional programming concepts
-- Exploring language design principles
-- Prototyping language features
-
 ### Secondary Applications
-
-**General-Purpose Programming**
-- Small to medium-sized applications
-- Scripting and automation tasks
-- Data analysis and processing
 
 **System Integration**
 - Glue code between different systems
