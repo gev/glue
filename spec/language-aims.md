@@ -117,27 +117,6 @@ Reactor is a modern Lisp-inspired programming language designed for embedded scr
 - Test suites for compliance verification
 - Clear guidelines for extensions and variations
 
-## Use Case Priorities
-
-### Primary Applications
-
-**Embedded Scripting**
-- Configuration and automation scripts
-- Business logic in larger applications
-- Plugin and extension systems
-
-**Domain-Specific Languages**
-- Custom languages for specific problem domains
-- Data processing and transformation pipelines
-- Rule engines and decision systems
-
-### Secondary Applications
-
-**System Integration**
-- Glue code between different systems
-- API orchestration and middleware
-- Configuration management
-
 ## Design Constraints
 
 ### Explicit Non-Goals
@@ -184,26 +163,23 @@ Reactor is a modern Lisp-inspired programming language designed for embedded scr
 - Stable and predictable behavior
 
 **Usability Metrics**
-- Easy learning curve for Lisp-experienced developers
+- Easy learning curve 
 - Intuitive concepts for newcomers
-- Effective error messages and debugging support
+- Effective error messages
 
 ### Long-term Vision
 
 **Sustainable Ecosystem**
 - Growing library of modules and extensions
 - Educational resources and tutorials
-- Tooling support (editors, debuggers, profilers)
+- Tooling support
 
 **Industry Integration**
 - Adoption in embedded systems and IoT
 - Use in configuration management
 - Application in data processing pipelines
+- GUI development with SDUI/BDUI frameworks
 
-**Research Platform**
-- Foundation for language design experiments
-- Platform for exploring programming paradigms
-- Educational tool for computer science
 
 ## Implementation Principles
 
