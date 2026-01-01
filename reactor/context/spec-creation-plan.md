@@ -3,7 +3,7 @@
 ### Phase 1: Research and Preparation
 
 1. **Complete Documentation Review**
-   - Read all reactor/*.md files thoroughly
+   - Read all reactor/drafts/*.md files thoroughly
    - Extract key concepts, syntax rules, and implementation details
    - Identify relationships between documents
    - Note Haskell-specific code that needs to be made language-agnostic
