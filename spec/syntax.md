@@ -1,0 +1,266 @@
+# Reactor Language Syntax Specification
+
+## Overview
+
+Reactor employs a Lisp-inspired syntax with extensions for property objects, functional programming constructs, and module systems. This specification defines the complete syntax and grammar for Reactor programs.
+
+## Lexical Elements
+
+### Atoms
+
+Atoms represent primitive values that evaluate to themselves.
+
+#### Numbers
+```
+42          ; integer
+3.14159     ; float
+-273.15     ; negative float
+```
+
+#### Strings
+```
+"hello world"
+"quote: \" and backslash: \\"
+```
+
+#### Symbols
+Symbols serve as identifiers.
+```
+my-variable
+function-name
+x
+y
+math.pi
+```
+
+### Comments
+Comments are ignored during evaluation.
+```
+;; single line comment
+
+;; multi-line comments
+;; are multiple single-line comments
+
+(+ 1 2)  ;; inline comment
+```
+
+## Expressions
+
+### Lists
+
+Lists are ordered sequences enclosed in parentheses. Evaluation depends on the first element:
+
+#### Function Calls
+Lists beginning with a symbol are evaluated as function applications.
+```
+(+ 1 2 3)              ; addition
+(* (+ 1 2) (+ 3 4))    ; nested calls
+(now)                   ; no arguments - symbol evaluated
+(negate -5)             ; single argument
+```
+
+#### Data Lists
+Lists not beginning with a symbol are evaluated as data structures.
+```
+(1 2 3)                 ; literal numbers
+(("a" "b") ("c" "d"))   ; nested lists
+```
+
+Quoted lists always represent literal data.
+```
+'(1 2 3 4)
+'("apple" "banana" "cherry")
+'(+ 1 2)                ; quoted expression as data
+```
+
+### Property Objects
+
+Property objects are key-value collections.
+
+#### Creation
+```
+(:)                     ; empty object
+(:name "Alice" :age 30) ; simple properties
+(:user (:name "Bob" :age 25)
+ :config (:theme "dark" :lang "en")) ; nested
+(:result (* 2 21) :timestamp (now)) ; computed values
+```
+
+#### Access
+```
+(:name "Alice").name           ; direct access
+(:user (:name "Bob")).user.name  ; nested access
+user.name                      ; dotted notation
+user.address.city              ; deep access
+```
+
+#### Update
+```
+(set user.age 31)
+(set user.email "alice@example.com")
+(set config.database.host "localhost")
+```
+
+### Special Forms
+
+Special forms have evaluation rules different from regular function calls.
+
+#### Definition
+```
+(def x 42)
+(def greeting "Hello")
+(def config (:debug true :port 8080))
+(def config.timeout 5000)
+```
+
+#### Mutation
+```
+(set x 100)
+(set user.name "Bob")
+(set config.database.host "localhost")
+```
+
+#### Import
+```
+(import math.x)
+(import math)
+```
+
+#### Lambda
+```
+(lambda (x) (* x x))
+(lambda (a b) (+ a b))
+(lambda () "hello")
+```
+
+#### Conditional
+```
+(if (> x 0) "positive" "non-positive")
+(if (even? x) "even" "odd")
+```
+
+#### Quoting
+```
+'(+ 1 2)                 ; prevents evaluation
+'(:name "Alice")         ; object literal
+''foo                    ; nested quote
+```
+
+## Operators
+
+### Arithmetic
+```
+(+ 1 2 3)    ; addition
+(- 10 3)     ; subtraction
+(* 2 3 4)    ; multiplication
+(/ 24 3)     ; division
+(% 17 5)     ; modulo
+```
+
+### Comparison
+```
+(= 1 1)      ; equality
+(!= 1 2)     ; inequality
+(< 1 2 3)    ; less than
+(<= 1 1 2)   ; less than or equal
+(> 3 2 1)    ; greater than
+(>= 3 3 2)   ; greater than or equal
+```
+
+### Logical
+```
+(& (> x 0) (< x 100))
+(| (= x 0) (= x 1))
+(! (= x 0))
+```
+
+### String
+```
+(str "Hello" " " "World")
+(length "hello")
+(substring "hello" 1 3)
+(concat "foo" "bar")
+```
+
+## Data Structures
+
+### Lists
+```
+(car (1 2 3))           ; first element
+(cdr (1 2 3))           ; rest
+(cons 0 (1 2 3))        ; prepend
+(length (1 2 3))        ; length
+(reverse (1 2 3))       ; reverse
+```
+
+### Objects as Maps
+```
+(def person (:name "Alice" :age 30))
+person.name
+(keys person)
+(values person)
+```
+
+## Modules
+
+### Module Definition
+Modules define namespaces and exports.
+```
+(module math.x.reactor
+    (export pi cos)
+    (def pi 3.14159)
+    (def cos (lambda (x) ...)))
+```
+
+### Module Usage
+```
+(import math.x)
+(math.x.cos math.x.pi)
+(cos pi)
+```
+
+## Grammar
+
+### EBNF Specification
+
+```
+program     ::= expr
+
+expr        ::= atom
+              | list
+              | prop_list
+              | quoted_expr
+              | symbol
+
+atom        ::= number | string | symbol | boolean
+
+list        ::= "(" expr* ")"
+
+prop_list   ::= "(" (":" symbol expr)* ")"
+
+quoted_expr ::= "'" expr
+
+symbol      ::= letter (letter | digit | "-" | "_" | "." | "!" | "?" | "\" | "=" | "<" | ">" | "/" | "*" | "+" | "%")*
+
+number      ::= ["+" | "-"] digit+ ["." digit+] [("e"|"E") ["+"|"-"] digit+]
+
+string      ::= '"' char* '"'
+```
+
+### Evaluation Semantics
+
+Reactor follows Lisp-1 evaluation rules:
+- Symbols resolve in the current lexical environment
+- Lists are evaluated based on their first element: as function applications if starting with a symbol, as data structures otherwise, unless quoted
+- Property objects are evaluated with computed values
+- Special forms have custom evaluation rules
+
+See [evaluation/README.md](evaluation/README.md) for detailed evaluation semantics.
+
+## Cross-References
+
+- [AST Specification](ast.md) - Abstract syntax tree structure
+- [Parsing Specification](parsing-to-ast.md) - Converting syntax to AST
+- [Evaluation Overview](evaluation/README.md) - Runtime evaluation
+- [Module System](module-system.md) - Module organization
+- [Standard Library](standard-library/README.md) - Built-in functions
