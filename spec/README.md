@@ -1,6 +1,6 @@
 # Reactor Language Specification
 
-This directory contains the complete specification for the Reactor programming language, a Lisp-inspired language with modern enhancements for property objects, functional programming, and module systems.
+Complete specification for the Reactor programming language, a Lisp-inspired language with modern enhancements for property objects, functional programming, and module systems.
 
 ## Overview
 
@@ -9,6 +9,10 @@ Reactor is designed to be:
 - **Safe**: Prevents common programming errors through design
 - **Flexible**: Easy to extend and embed in host applications
 - **Modern**: Combines Lisp elegance with contemporary features
+
+### Introduction
+- **[Language Aims](language-aims.md)** - Design goals and philosophy
+- **[Language Overview](language-overview.md)** - High-level introduction
 
 ## Specification Structure
 
@@ -35,10 +39,6 @@ Reactor is designed to be:
 - **[Built-in Functions](standard-library/builtint/)** - Core language features
 - **[Bool Module](standard-library/bool.md)** - Boolean operations and control flow
 - **[Math Module](standard-library/math/)** - Mathematical operations
-
-### Meta Documents
-- **[Language Aims](language-aims.md)** - Design goals and philosophy
-- **[Language Overview](language-overview.md)** - High-level introduction
 
 ## Development Guidelines
 
