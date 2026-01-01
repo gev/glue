@@ -232,7 +232,7 @@ expr        ::= atom
               | quoted_expr
               | symbol
 
-atom        ::= number | string | symbol | boolean
+atom        ::= number | string | symbol 
 
 list        ::= "(" expr* ")"
 
