@@ -89,3 +89,4 @@ Do one point in time!
 Step by step!
 One point – one task – one commit!
 Don't do anything until I ask!
+Get free to use emoji ;)
