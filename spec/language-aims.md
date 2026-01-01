@@ -44,13 +44,17 @@ Reactor is a modern Lisp-inspired programming language designed for embedded scr
 - Plugin and extension systems
 - Runtime code evaluation and modification
 
+**Application Configuration**
+- Declarative configuration files
+- Runtime configuration loading and validation
+- Environment-specific settings
+- Configuration inheritance and overrides
+
 ### 4. Domain-Specific Language (DSL) Creation
 
 **DSL Construction Framework**
 - Easy creation of domain-specific languages
 - Configurable evaluation environments
-- Syntax extension and customization
-- Domain-specific optimizations
 
 **Language Composition**
 - Mix and match language features
