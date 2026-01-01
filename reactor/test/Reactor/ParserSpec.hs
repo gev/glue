@@ -29,6 +29,7 @@ spec = do
                 parseReactor "1.23e4" `shouldBe` Right (Number 12300)
                 parseReactor "1.23E4" `shouldBe` Right (Number 12300)
                 parseReactor "1.23e-2" `shouldBe` Right (Number 0.0123)
+                parseReactor "-1.23e4" `shouldBe` Right (Number (-12300))
 
             it "parses strings" $ do
                 parseReactor "\"hello\"" `shouldBe` Right (String "hello")
