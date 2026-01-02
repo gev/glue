@@ -70,20 +70,22 @@ For each document, follow this process:
 
 ### Implementation Order
 
-**Priority Order for Document Creation:**
-1. Syntax (foundation for all other docs)
-2. AST (needed for parsing and compilation docs)
-3. IR (needed for compilation doc)
-4. Parsing (depends on AST)
-5. Compilation (depends on AST and IR)
-6. Environment (core runtime concept)
-7. Module System (depends on environment)
-8. Evaluation State (foundation for evaluation docs)
-9. Evaluation Preparation (depends on state)
-10. Evaluation Patterns (detailed evaluation rules)
-11. Standard Library Overview (high-level view)
-12. Built-in Functions (core language features)
-13. Bool and Math (specific library components)
+**✅ COMPLETED Documents (Already Exist):**
+1. language-overview.md - High-level introduction and examples
+2. language-aims.md - Design goals and principles
+3. syntax.md - Complete EBNF grammar specification
+4. ast.md - Abstract Syntax Tree structure and types
+5. ir.md - Intermediate Representation specification
+6. parsing-to-ast.md - Parser implementation and AST construction
+7. compilation-ast-ir.md - AST to IR transformation rules
+8. environment.md - Runtime environment and scoping
+9. module-system.md - Module loading and namespace management
+10. evaluation/ - Complete evaluation semantics (multiple docs)
+11. standard-library-overview.md - Library organization and concepts
+
+**🔄 NEW Documents to Create:**
+12. execution-pipeline.md - Source to result transformation pipeline
+13. Standard Library components (bool.md, math.md, etc.)
 
 This plan ensures systematic, quality-driven specification development with proper dependencies and review cycles.
 
