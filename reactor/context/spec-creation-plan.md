@@ -105,8 +105,11 @@ For each document, follow this process:
 
 This plan ensures systematic, quality-driven specification development with proper dependencies and review cycles.
 
-Do one point in time!
-Step by step!
-One point – one task – one commit!
-Don't do anything until I ask!
-Get free to use emoji ;)
+### The Most Important Rules
+
+- Do one point in time!
+- Step by step!
+- One point – one task – one commit!
+- Don't do anything until I ask!
+- Get free to use emoji ;)
+- Never don't touch my fixes!
