@@ -83,29 +83,13 @@ special ::= "-" | "_" | "." | "!" | "?" | "\" | "=" | ">" | "<" | "/" | "*" | "+
 
 ### Expression Grammar
 
-The parser uses a recursive descent approach with the following grammar:
+The parser uses a recursive descent approach following the grammar defined in the [Syntax Specification](syntax.md). The parsing process handles:
 
-```
-program   ::= expression
+- **Atomic expressions**: Numbers, strings, and symbols
+- **Compound expressions**: Lists and property objects
+- **Quoted expressions**: Data literals using the `'` prefix
 
-expression ::= atom
-             | list
-             | quoted_expression
-
-atom      ::= number | string | symbol
-
-list      ::= "(" list_body ")"
-
-list_body ::= /* empty */
-            | expression list_body
-            | property_list
-
-property_list ::= property_pair*
-
-property_pair ::= ":" symbol expression
-
-quoted_expression ::= "'" expression
-```
+For the complete EBNF grammar definition, see [Syntax Specification](syntax.md).
 
 ### Parsing Precedence
 
