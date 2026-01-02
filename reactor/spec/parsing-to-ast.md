@@ -27,7 +27,6 @@ The parser can produce the following error types:
 data ParserError where
     MixedContent Text      -- Property mixed with positional arguments
     UnpairedProperty Text  -- Property key without value
-    ReservedKeyword Text   -- Attempted use of reserved keyword
     SyntaxError Text       -- General syntax errors
 ```
 
@@ -130,16 +129,22 @@ Input: "()"
 AST: List []
 ```
 
-#### Function Call with Properties
+#### Function Call with Named Arguments (Syntax Sugar)
 ```
 Input: "(f :x 1 :y 2)"
 AST: List [Symbol "f", Object [("x", Number 1), ("y", Number 2)]]
 ```
-A function call where the first element is the function name and subsequent elements can include properties.
+A function call where the first element is the function name and subsequent elements can include named argument parsed as object.
 
-### Property Objects
+### Objects
 
-#### Simple Objects
+#### Empty Object
+```
+Input: "(:)"
+AST: Object []
+```
+
+#### Simple Object
 ```
 Input: "(:name \"Alice\" :age 30)"
 AST: Object [
@@ -155,12 +160,6 @@ AST: Object [
     ("user", Object [("name", String "Bob")]),
     ("active", Symbol "true")
 ]
-```
-
-#### Empty Objects
-```
-Input: "(:)"
-AST: Object []
 ```
 
 ### Quoted Expressions

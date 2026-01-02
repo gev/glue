@@ -13,7 +13,6 @@ import Prelude hiding (head)
 data ParserError
     = MixedContent Text
     | UnpairedProperty Text
-    | ReservedKeyword Text
     | SyntaxError Text
     deriving (Eq, Show, Ord)
 
@@ -26,8 +25,6 @@ instance ShowErrorComponent ParserError where
                 <> "In Reactor LISP, a list must be EITHER all properties (:key val) OR all atoms."
         UnpairedProperty k ->
             "Syntax Error: The property '" <> T.unpack k <> "' is missing a value."
-        ReservedKeyword s ->
-            "Syntax Error: '" <> T.unpack s <> "' is a reserved keyword."
         SyntaxError e ->
             "Syntax Error: '" <> T.unpack e
 
