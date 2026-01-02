@@ -44,40 +44,13 @@ The lexer recognizes the following token categories:
 
 ### Lexical Rules
 
-#### Numbers
-```
-number ::= digits ["." digits] [("e"|"E") ["+"|"-"] digits]
-digits ::= digit+
-digit  ::= "0"|"1"|"2"|"3"|"4"|"5"|"6"|"7"|"8"|"9"
-```
+The lexer follows the lexical rules defined in the [Syntax Specification](syntax.md), including:
 
-**Examples:**
-- `42` → integer literal
-- `3.14159` → decimal literal
-- `1.23e-4` → scientific notation
+- **Number formats**: Integer, decimal, and scientific notation
+- **String formats**: Double-quoted with escape sequences
+- **Symbol formats**: Identifiers and operators with allowed characters
 
-#### Strings
-```
-string ::= '"' (char | escape)* '"'
-escape ::= "\" ("\"" | "n" | "t" | "\" | ...)
-```
-
-**Examples:**
-- `"hello"` → simple string
-- `"with \"quotes\""` → escaped quotes
-- `"line1\nline2"` → multiline string
-
-#### Symbols
-```
-symbol ::= letter (letter | digit | special)*
-special ::= "-" | "_" | "." | "!" | "?" | "\" | "=" | ">" | "<" | "/" | "*" | "+" | "%" | "@" | "#" | "$"
-```
-
-**Examples:**
-- `variable` → identifier
-- `my-function` → function name
-- `+` → operator
-- `obj.field` → dotted path
+For complete lexical rule definitions, see [Syntax Specification](syntax.md).
 
 ## Syntactic Analysis
 
