@@ -162,19 +162,15 @@ Minimal footprint and clean host language integration make Reactor ideal for emb
 
 ## Getting Started
 
-1. **Read the Execution Pipeline** to understand how Reactor processes code
-2. **Read the Language Aims** to understand Reactor's design philosophy
-3. **Explore the Syntax Reference** for detailed language constructs
-4. **Study the Examples** to see Reactor in action
-5. **Try the Implementation** to experiment with real code
+Follow this learning path to master Reactor:
 
-## Next Steps
-
-- **[Language Aims](language-aims.md)**: Design goals and principles
-- **[Execution Pipeline](execution-pipeline.md)**: How Reactor processes code
-- **[Syntax Reference](syntax.md)**: Complete language grammar
-- **[AST Specification](ast.md)**: Abstract syntax tree structure
-- **[IR Specification](ir.md)**: Intermediate representation
-- **[Evaluation](evaluation/README.md)**: Runtime execution model
+1. **Understand how Reactor works** → [Execution Pipeline](execution-pipeline.md) - How Reactor processes code from text to results
+2. **Learn the design philosophy** → [Language Aims](language-aims.md) - Goals and principles behind Reactor
+3. **Master the syntax** → [Syntax Reference](syntax.md) - Complete language grammar and constructs
+4. **See examples in action** → Study the code examples in this overview
+5. **Dive into AST** → [AST Specification](ast.md) - How source code becomes a tree structure
+6. **Understand compilation** → [IR Specification](ir.md) - Intermediate representation for execution
+7. **Learn evaluation** → [Evaluation](evaluation/README.md) - Runtime execution model and semantics
+8. **Try it yourself** → Experiment with the Reactor implementation and build something
 
 Reactor represents a modern take on Lisp's philosophy: simple, composable primitives that enable powerful abstractions while maintaining safety and usability in real-world applications.
