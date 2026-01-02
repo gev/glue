@@ -230,10 +230,10 @@ atom            ::= number | string | symbol
 list            ::= "(" expr* ")"
 prop_list       ::= "(" (":" symbol expr)* ")"
 quoted_expr     ::= "'" expr
-symbol          ::= (letter | special_char) (letter | digit | special_char)*
+symbol          ::= (letter | special_char) (letter | digit | special_char | ":")*
 number          ::= ["+" | "-"] digit+ ["." digit+] [("e"|"E") ["+"|"-"] digit+]
 string          ::= '"' char* '"'
-special_char    ::= "-" | "_" | "." | "!" | "?" | "\" | "=" | "<" | ">" | "/" | "*" | "+" | "%"
+special_char    ::= "-" | "_" | "." | "!" | "?" | "\" | "=" | "<" | ">" | "/" | "*" | "+" | "%" | "$" | "@" | "#" | "!" | "&" | "|" | "'" 
 ```
 
 ### Evaluation Semantics
