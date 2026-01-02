@@ -14,10 +14,22 @@ The parser transforms Reactor source text into Abstract Syntax Tree (AST) repres
 ### Parser Interface
 
 ```
-parse(source_text) → AST | Error
+parse(source_text) → AST | ParserError
 ```
 
-The parser produces a single AST node representing the entire parsed expression, or returns an error if parsing fails.
+The parser produces a single AST node representing the entire parsed expression, or returns a `ParserError` if parsing fails.
+
+### Error Types
+
+The parser can produce the following error types:
+
+```haskell
+data ParserError where
+    MixedContent Text      -- Property mixed with positional arguments
+    UnpairedProperty Text  -- Property key without value
+    ReservedKeyword Text   -- Attempted use of reserved keyword
+    SyntaxError Text       -- General syntax errors
+```
 
 ## Lexical Analysis
 
@@ -207,31 +219,31 @@ Multiple quotes create nested quote forms for advanced metaprogramming.
 **Unmatched Parentheses:**
 ```
 Input: "(+ 1 2"
-Error: Unexpected end of input
+Error: SyntaxError "Unexpected end of input"
 ```
 
 **Invalid Number Format:**
 ```
 Input: "1.2.3"
-Error: Multiple decimal points
+Error: SyntaxError "Multiple decimal points"
 ```
 
 **Malformed String:**
 ```
 Input: "\"unclosed"
-Error: Unterminated string literal
+Error: SyntaxError "Unterminated string literal"
 ```
 
 **Mixed Content:**
 ```
 Input: "(:name \"Alice\" value)"
-Error: Cannot mix properties and positional arguments
+Error: MixedContent "value"
 ```
 
 **Unpaired Property:**
 ```
 Input: "(:name \"Alice\" :age)"
-Error: Property ':age' requires a value
+Error: UnpairedProperty ":age"
 ```
 
 #### Error Recovery
