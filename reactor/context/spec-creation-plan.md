@@ -112,4 +112,4 @@ This plan ensures systematic, quality-driven specification development with prop
 - One point – one task – one commit!
 - Don't do anything until I ask!
 - Get free to use emoji ;)
-- Never don't touch my fixes!
+- Never touch my fixes!
