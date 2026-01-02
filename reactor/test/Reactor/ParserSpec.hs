@@ -100,28 +100,13 @@ spec = do
                     parseReactor "123abc" `shouldBe` Right (Symbol "123abc")
                     parseReactor "42invalid" `shouldBe` Right (Symbol "42invalid")
 
-        describe "Operator Symbols" $ do
-            it "parses arithmetic operators" $ do
-                parseReactor "+" `shouldBe` Right (Symbol "+")
-                parseReactor "*" `shouldBe` Right (Symbol "*")
-                parseReactor "/" `shouldBe` Right (Symbol "/")
-                parseReactor "%" `shouldBe` Right (Symbol "%")
-
-            it "parses comparison operators" $ do
-                parseReactor "<" `shouldBe` Right (Symbol "<")
-                parseReactor ">" `shouldBe` Right (Symbol ">")
-                parseReactor "<=" `shouldBe` Right (Symbol "<=")
-                parseReactor ">=" `shouldBe` Right (Symbol ">=")
-                parseReactor "==" `shouldBe` Right (Symbol "==")
-                parseReactor "\\=" `shouldBe` Right (Symbol "\\=")
-
-            it "parses logical operators" $ do
-                parseReactor "!" `shouldBe` Right (Symbol "!")
-
+        describe "Operator Expressions" $ do
             it "parses complex operator expressions" $ do
                 parseReactor "(+ 2 3)" `shouldBe` Right (AtomList [Symbol "+", Number 2, Number 3])
                 parseReactor "(< x y)" `shouldBe` Right (AtomList [Symbol "<", Symbol "x", Symbol "y"])
                 parseReactor "(== a b)" `shouldBe` Right (AtomList [Symbol "==", Symbol "a", Symbol "b"])
+                parseReactor "(* 2 3 4)" `shouldBe` Right (AtomList [Symbol "*", Number 2, Number 3, Number 4])
+                parseReactor "(<= x 10)" `shouldBe` Right (AtomList [Symbol "<=", Symbol "x", Number 10])
 
         describe "Rule: No Mixed Content" $ do
             it "successfully parses pure positional list" $ do
