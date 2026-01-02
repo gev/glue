@@ -91,10 +91,10 @@ For each document, follow this process:
 7. parsing-to-ast.md - Parser implementation and AST construction
 8. ir.md - Intermediate Representation specification (compilation section moved to separate document)
 9. compilation-ast-ir.md - AST to IR transformation rules
+10. environment.md - Runtime environment and scoping
 
 **📝 EXISTING EMPTY Documents (Need Content):**
 
-10. environment.md - Runtime environment and scoping
 11. module-system.md - Module loading and namespace management
 12. evaluation/ - Complete evaluation semantics (multiple docs)
 13. standard-library-overview.md - Library organization and concepts
