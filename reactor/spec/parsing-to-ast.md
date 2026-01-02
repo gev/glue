@@ -102,6 +102,13 @@ Input: "\"hello\""
 AST: String "hello"
 ```
 
+**Escape Sequences:**
+- `\"` → double quote character
+- `\n` → newline character
+- `\t` → tab character
+- `\\` → backslash character
+- `\"with \"quotes\"\"` → `with "quotes"`
+
 #### Symbols
 ```
 Input: "variable"
