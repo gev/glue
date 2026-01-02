@@ -13,7 +13,7 @@ The parser transforms Reactor source text into Abstract Syntax Tree (AST) repres
 
 ### Parser Interface
 
-```
+```text
 parse(source_text) → AST | ParserError
 ```
 
@@ -25,11 +25,9 @@ The parser can produce the following error types:
 
 ```haskell
 data ParserError where
-```closure
     MixedContent Text      -- Property mixed with positional arguments
     UnpairedProperty Text  -- Property key without value
     SyntaxError Text       -- General syntax errors
-```
 ```
 
 ## Lexical Analysis
@@ -83,7 +81,7 @@ Expressions are parsed in this order of priority (highest first):
 ### Atomic Values
 
 #### Numbers
-```
+```text
 Input: "42"
 AST: Number 42
 ```
@@ -95,8 +93,10 @@ AST: Number 42
 - **Positive/Negative**: All number types support positive and negative values
 
 #### Strings
-```
+```text
 Input: "\"hello\""
+```
+```text
 AST: String "hello"
 ```
 
@@ -108,45 +108,55 @@ AST: String "hello"
 - `\"with \"quotes\"\"` → `with "quotes"`
 
 #### Symbols
-```
+```text
 Input: "variable"
+```
+```text
 AST: Symbol "variable"
 ```
 
 ### Lists
 
 #### Empty List
-```
+```text
 Input: "()"
+```
+```text
 AST: List []
 ```
 
 #### Generic List
-```
+```text
 Input: "(1 "a" foo)"
+```
+```text
 AST: List [Number 1, String "a", Symbol "foo"]
 ```
 
 #### Nested Lists
-```
+```text
 Input: "((lambda (x) x) 5)"
+```
+```text
 AST: List [
-```closure
     List [Symbol "lambda", List [Symbol "x"], Symbol "x"],
     Number 5
-```
 ]
 ```
 
 #### Function Calls
-```
+```text
 Input: "(+ 1 2)"
+```
+```text
 AST: List [Symbol "+", Number 1, Number 2]
 ```
 
 #### Function Call with Named Arguments (Syntax Sugar)
-```
+```text
 Input: "(f :x 1 :y 2)"
+```
+```text
 AST: List [Symbol "f", Object [("x", Number 1), ("y", Number 2)]]
 ```
 A function call where the first element is the function name and subsequent elements can include named argument parsed as object.
@@ -154,30 +164,32 @@ A function call where the first element is the function name and subsequent elem
 ### Objects
 
 #### Empty Object
-```
+```text
 Input: "(:)"
+```
+```text
 AST: Object []
 ```
 
 #### Simple Object
-```
+```text
 Input: "(:name \"Alice\" :age 30)"
+```
+```text
 AST: Object [
-```closure
     ("name", String "Alice"),
     ("age", Number 30)
-```
 ]
 ```
 
 #### Nested Objects
-```
+```text
 Input: "(:user (:name \"Bob\") :active true)"
+```
+```text
 AST: Object [
-```closure
     ("user", Object [("name", String "Bob")]),
     ("active", Symbol "true")
-```
 ]
 ```
 
@@ -192,22 +204,28 @@ The `'` prefix is syntactic sugar that transforms any expression into a `(quote 
 - Essential for Lisp's homoiconicity
 
 #### Simple Quoting
-```
+```text
 Input: "'x"
+```
+```text
 AST: List [Symbol "quote", Symbol "x"]
 ```
 The symbol `x` becomes data instead of a variable reference.
 
 #### Complex Quoting
-```
+```text
 Input: "'(+ 1 2)"
+```
+```text
 AST: List [Symbol "quote", List [Symbol "+", Number 1, Number 2]]
 ```
 The entire function call becomes a data structure.
 
 #### Nested Quoting
-```
+```text
 Input: "''foo"
+```
+```text
 AST: List [Symbol "quote", List [Symbol "quote", Symbol "foo"]]
 ```
 
@@ -240,32 +258,42 @@ AST: List [Symbol "quote", List [Symbol "quote", Symbol "foo"]]
 #### Syntax Errors
 
 **Unmatched Parentheses:**
-```
+```text
 Input: "(+ 1 2"
+```
+```text
 Error: SyntaxError "Unexpected end of input"
 ```
 
 **Invalid Number Format:**
-```
+```text
 Input: "1.2.3"
+```
+```text
 Error: SyntaxError "Multiple decimal points"
 ```
 
 **Malformed String:**
-```
+```text
 Input: "\"unclosed"
+```
+```text
 Error: SyntaxError "Unterminated string literal"
 ```
 
 **Mixed Content:**
-```
+```text
 Input: "(:name \"Alice\" value)"
+```
+```text
 Error: MixedContent "value"
 ```
 
 **Unpaired Property:**
-```
+```text
 Input: "(:name \"Alice\" :age)"
+```
+```text
 Error: UnpairedProperty ":age"
 ```
 
