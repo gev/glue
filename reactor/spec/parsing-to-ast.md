@@ -57,19 +57,15 @@ The lexer recognizes the following token categories:
 
 The lexer follows the lexical rules defined in the [Syntax Specification](syntax.md), including number formats, string formats, and symbol formats.
 
-For complete lexical rule definitions, see [Syntax Specification](syntax.md).
-
 ## Syntactic Analysis
 
 ### Expression Grammar
 
-The parser uses a recursive descent approach following the grammar defined in the [Syntax Specification](syntax.md). The parsing process handles:
+The parser uses a recursive descent approach following the EBNF grammar defined in the [Syntax Specification](syntax.md). The parsing process handles:
 
-- **Atomic expressions**: Numbers, strings, and symbols
-- **Compound expressions**: Lists and property objects
+- **Atomic expressions**: Numbers, Strings, and Symbols
+- **Compound expressions**: Lists and Objects
 - **Quoted expressions**: Data literals using the `'` prefix
-
-For the complete EBNF grammar definition, see [Syntax Specification](syntax.md).
 
 ### Parsing Precedence
 
@@ -288,8 +284,6 @@ The parser uses lookahead to distinguish between:
 
 ## Relationship to Other Components
 
-### Source Text
-Parser discards superficial details (whitespace, comments) while preserving syntactic structure.
 
 ### Syntax Specification
 Parser implements the grammar defined in the [Syntax Specification](syntax.md).
@@ -301,14 +295,3 @@ See [AST Specification](ast.md) for detailed AST node structure.
 ### IR
 Parsed AST is compiled to IR for execution.  
 See [IR Specification](ir.md) for the target representation.
-
-### Lexer Integration
-Lexical analysis is integrated with parsing for efficiency.
-
-## Summary
-
-The Reactor parser provides a robust, efficient transformation from human-readable source text to machine-processable AST. Its design emphasizes:
-
-- **Clarity**: Direct correspondence between syntax and AST structure
-- **Robustness**: Comprehensive error reporting and validation
-- **Extensibility**: Clear separation of lexical and syntactic analysis

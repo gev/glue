@@ -81,6 +81,7 @@ For each document, follow this process:
 ### Implementation Order
 
 **✅ COMPLETED Documents (Fully Written):**
+
 1. README.md - Specification overview and navigation
 2. language-aims.md - Design goals and principles
 3. language-overview.md - High-level introduction and examples
@@ -91,6 +92,7 @@ For each document, follow this process:
 8. ir.md - Intermediate Representation specification
 
 **📝 EXISTING EMPTY Documents (Need Content):**
+
 9. compilation-ast-ir.md - AST to IR transformation rules
 10. environment.md - Runtime environment and scoping
 11. module-system.md - Module loading and namespace management

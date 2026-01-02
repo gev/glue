@@ -248,12 +248,7 @@ Reactor follows Lisp-1 evaluation rules:
 - Property objects are evaluated with computed values
 - Special forms have custom evaluation rules
 
-See [evaluation/README.md](evaluation/README.md) for detailed evaluation semantics.
-
-## Cross-References
+## Related documents
 
 - [AST Specification](ast.md) - Abstract syntax tree structure
 - [Parsing Specification](parsing-to-ast.md) - Converting syntax to AST
-- [Evaluation Overview](evaluation/README.md) - Runtime evaluation
-- [Module System](module-system.md) - Module organization
-- [Standard Library](standard-library/README.md) - Built-in functions
