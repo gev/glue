@@ -10,7 +10,7 @@ The Reactor environment manages variable bindings and scoping during program exe
 
 Environments are organized as a stack of frames, searched from top to bottom:
 
-```
+```closure
 type Env = [Frame]        -- Stack of frames, searched top to bottom
 type Frame = Map Text IR  -- Single frame with symbol-to-IR mappings
 ```
@@ -59,7 +59,7 @@ Updates existing bindings by searching through the frame stack:
 
 Variables are resolved in the environment where they are defined, following lexical scope rules:
 
-```reactor
+```closure
 (def x 1)               ;; Global scope
 
 (lambda ()
@@ -71,7 +71,7 @@ Variables are resolved in the environment where they are defined, following lexi
 
 Inner scopes can shadow variables from outer scopes:
 
-```reactor
+```closure
 (def x 1)               ;; Global x = 1
 
 (lambda ()
@@ -128,7 +128,7 @@ Modules are evaluated once and cached:
 
 **Important**: Module imports are **local to the frame** where the import occurs, not global. Imported modules and their symbols are only available within the scope that performed the import.
 
-```reactor
+```closure
 ;; Global scope - no imports
 (def x 1)
 
@@ -152,7 +152,7 @@ When a module is imported, Reactor integrates its exported symbols into the **cu
 
 Imported symbols are merged directly into the current environment frame:
 
-```reactor
+```closure
 (import math)
 (+ pi 1)        ;; 'pi' is now accessible as a direct variable
 ```
@@ -166,7 +166,7 @@ Imported symbols are merged directly into the current environment frame:
 
 The complete module is stored as a **Module object** under its name:
 
-```reactor
+```closure
 (import math.const)
 math.const.pi    ;; Access through module namespace
 ```
@@ -175,7 +175,7 @@ math.const.pi    ;; Access through module namespace
 
 The environment supports **hierarchical symbol resolution** for dotted access:
 
-```reactor
+```closure
 object.property.field      ;; Nested object access
 module.submodule.symbol    ;; Deep module access
 ;; Mixed deep access
@@ -215,7 +215,7 @@ Imported modules create new frames containing both direct symbol access and modu
 
 Direct lookup in frame stack:
 
-```reactor
+```closure
 x        ;; Lookup 'x' from top frame downward
 ```
 
@@ -223,7 +223,7 @@ x        ;; Lookup 'x' from top frame downward
 
 Hierarchical property access through object/module chains:
 
-```reactor
+```closure
 obj.field        ;; Access 'field' property of 'obj'
 module.func      ;; Access 'func' from module namespace
 ```

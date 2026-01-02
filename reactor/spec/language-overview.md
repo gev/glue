@@ -18,7 +18,7 @@ Designed to embed seamlessly in existing applications with minimal runtime footp
 ## Core Features
 
 ### Functional Programming
-```reactor
+```closure
 ;; First-class functions and closures
 (def make-adder (lambda (x) (lambda (y) (+ x y))))
 (def add-five (make-adder 5))
@@ -29,7 +29,7 @@ Designed to embed seamlessly in existing applications with minimal runtime footp
 ```
 
 ### Property-Based Objects
-```reactor
+```closure
 ;; Object creation and manipulation
 (def user (:name "Alice" :age 30 :email "alice@example.com"))
 
@@ -43,7 +43,7 @@ user.age       ;; → 30
 ```
 
 ### Module System
-```reactor
+```closure
 ;; Module definition and imports
 (import math)
 (import ui.components button text-input)
@@ -62,7 +62,7 @@ math.pi   ;; Pi constant
 - **Booleans**: `true`, `false`
 
 ### Lists and Calls
-```reactor
+```closure
 ;; Function calls
 (+ 1 2 3)              ;; → 6
 (* (+ 1 2) (+ 3 4))    ;; → 21
@@ -73,7 +73,7 @@ math.pi   ;; Pi constant
 ```
 
 ### Property Objects
-```reactor
+```closure
 ;; Object literals
 (:name "Alice" :age 30)
 
@@ -83,7 +83,7 @@ math.pi   ;; Pi constant
 ```
 
 ### Control Flow
-```reactor
+```closure
 ;; Conditional execution
 (if (> x 0) "positive" "non-positive")
 
@@ -105,12 +105,12 @@ Minimal footprint and clean host language integration make Reactor ideal for emb
 ## Hello World Examples
 
 ### Simple Script
-```reactor
+```closure
 (print "Hello, Reactor World!")
 ```
 
 ### Functional Programming
-```reactor
+```closure
 (def factorial
   (lambda (n)
     (if (= n 0)
@@ -121,7 +121,7 @@ Minimal footprint and clean host language integration make Reactor ideal for emb
 ```
 
 ### Object Processing
-```reactor
+```closure
 (def users ((:name "Alice" :age 30)
             (:name "Bob" :age 25)
             (:name "Charlie" :age 35)))
@@ -134,7 +134,7 @@ Minimal footprint and clean host language integration make Reactor ideal for emb
 ```
 
 ### Configuration Management
-```reactor
+```closure
 (def config (:debug false
               :server (:host "localhost" :port 8080)
               :database (:type "postgres" :name "myapp")))
