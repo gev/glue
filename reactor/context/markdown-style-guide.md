@@ -69,8 +69,3 @@ stdlib/
 - Use consistent terminology throughout specifications
 - Provide clear examples with comments where helpful
 - Maintain technical precision and implementation focus
-
-## Related Documents
-
-- [Spec Creation Plan](spec-creation-plan.md) - Overall specification development process
-- [Documentation Style Guidelines](spec-development-guidelines.md) - Content and structure guidelines

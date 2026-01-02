@@ -27,12 +27,6 @@ These rules apply to all specification development activities:
 - Quality assurance and review
 - Version control practices
 
-## Related Documents
-
-- **[Spec Creation Plan](spec-creation-plan.md)** - Overall development workflow and process
-- **[Markdown Style Guide](markdown-style-guide.md)** - Formatting and syntax highlighting guidelines
-- **[Documentation Style Guidelines](spec-development-guidelines.md)** - Content and structure guidelines
-
 ## Rationale
 
 These rules ensure:
