@@ -74,17 +74,17 @@ For each document, follow this process:
 1. language-overview.md - High-level introduction and examples
 2. language-aims.md - Design goals and principles
 3. syntax.md - Complete EBNF grammar specification
-4. ast.md - Abstract Syntax Tree structure and types
-5. ir.md - Intermediate Representation specification
-6. parsing-to-ast.md - Parser implementation and AST construction
-7. compilation-ast-ir.md - AST to IR transformation rules
-8. environment.md - Runtime environment and scoping
-9. module-system.md - Module loading and namespace management
-10. evaluation/ - Complete evaluation semantics (multiple docs)
-11. standard-library-overview.md - Library organization and concepts
+4. execution-pipeline.md - Source to result transformation pipeline
+5. ast.md - Abstract Syntax Tree structure and types
+6. ir.md - Intermediate Representation specification
+7. parsing-to-ast.md - Parser implementation and AST construction
+8. compilation-ast-ir.md - AST to IR transformation rules
+9. environment.md - Runtime environment and scoping
+10. module-system.md - Module loading and namespace management
+11. evaluation/ - Complete evaluation semantics (multiple docs)
+12. standard-library-overview.md - Library organization and concepts
 
 **🔄 NEW Documents to Create:**
-12. execution-pipeline.md - Source to result transformation pipeline
 13. Standard Library components (bool.md, math.md, etc.)
 
 This plan ensures systematic, quality-driven specification development with proper dependencies and review cycles.
