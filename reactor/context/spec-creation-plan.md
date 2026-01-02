@@ -76,10 +76,10 @@ For each document, follow this process:
 3. language-overview.md - High-level introduction and examples
 4. execution-pipeline.md - Source to result transformation pipeline
 5. syntax.md - Complete EBNF grammar specification
+6. ast.md - Abstract Syntax Tree structure and types
 
 **📝 EXISTING EMPTY Documents (Need Content):**
 
-6. ast.md - Abstract Syntax Tree structure and types
 7. ir.md - Intermediate Representation specification
 8. parsing-to-ast.md - Parser implementation and AST construction
 9. compilation-ast-ir.md - AST to IR transformation rules
