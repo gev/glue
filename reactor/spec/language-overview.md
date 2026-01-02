@@ -68,8 +68,8 @@ math.pi   ;; Pi constant
 (* (+ 1 2) (+ 3 4))    ;; → 21
 
 ;; Data lists
-'(1 2 3 4)
-'("apple" "banana" "cherry")
+(1 2 3 4)
+("apple" "banana" "cherry")
 ```
 
 ### Property Objects
@@ -138,6 +138,7 @@ Minimal footprint and clean host language integration make Reactor ideal for emb
 (def config (:debug false
               :server (:host "localhost" :port 8080)
               :database (:type "postgres" :name "myapp")))
+```
 
 ## Why Reactor?
 
@@ -170,6 +171,7 @@ Minimal footprint and clean host language integration make Reactor ideal for emb
 ## Next Steps
 
 - **[Language Aims](language-aims.md)**: Design goals and principles
+- **[Execution Pipeline](execution-pipeline.md)**: How Reactor processes code
 - **[Syntax Reference](syntax.md)**: Complete language grammar
 - **[AST Specification](ast.md)**: Abstract syntax tree structure
 - **[IR Specification](ir.md)**: Intermediate representation
