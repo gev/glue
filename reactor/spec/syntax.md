@@ -224,27 +224,16 @@ Modules define namespaces and exports.
 ### EBNF Specification
 
 ```
-program     ::= expr
-
-expr        ::= atom
-              | list
-              | prop_list
-              | quoted_expr
-              | symbol
-
-atom        ::= number | string | symbol 
-
-list        ::= "(" expr* ")"
-
-prop_list   ::= "(" (":" symbol expr)* ")"
-
-quoted_expr ::= "'" expr
-
-symbol      ::= letter (letter | digit | "-" | "_" | "." | "!" | "?" | "\" | "=" | "<" | ">" | "/" | "*" | "+" | "%")*
-
-number      ::= ["+" | "-"] digit+ ["." digit+] [("e"|"E") ["+"|"-"] digit+]
-
-string      ::= '"' char* '"'
+program         ::= expr
+expr            ::= atom | list | prop_list | quoted_expr
+atom            ::= number | string | symbol 
+list            ::= "(" expr* ")"
+prop_list       ::= "(" (":" symbol expr)* ")"
+quoted_expr     ::= "'" expr
+symbol          ::= (letter | special_char) (letter | digit | special_char)*
+number          ::= ["+" | "-"] digit+ ["." digit+] [("e"|"E") ["+"|"-"] digit+]
+string          ::= '"' char* '"'
+special_char    ::= "-" | "_" | "." | "!" | "?" | "\" | "=" | "<" | ">" | "/" | "*" | "+" | "%"
 ```
 
 ### Evaluation Semantics
