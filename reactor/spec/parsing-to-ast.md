@@ -25,9 +25,11 @@ The parser can produce the following error types:
 
 ```haskell
 data ParserError where
+```closure
     MixedContent Text      -- Property mixed with positional arguments
     UnpairedProperty Text  -- Property key without value
     SyntaxError Text       -- General syntax errors
+```
 ```
 
 ## Lexical Analysis
@@ -129,8 +131,10 @@ AST: List [Number 1, String "a", Symbol "foo"]
 ```
 Input: "((lambda (x) x) 5)"
 AST: List [
+```closure
     List [Symbol "lambda", List [Symbol "x"], Symbol "x"],
     Number 5
+```
 ]
 ```
 
@@ -159,8 +163,10 @@ AST: Object []
 ```
 Input: "(:name \"Alice\" :age 30)"
 AST: Object [
+```closure
     ("name", String "Alice"),
     ("age", Number 30)
+```
 ]
 ```
 
@@ -168,8 +174,10 @@ AST: Object [
 ```
 Input: "(:user (:name \"Bob\") :active true)"
 AST: Object [
+```closure
     ("user", Object [("name", String "Bob")]),
     ("active", Symbol "true")
+```
 ]
 ```
 
