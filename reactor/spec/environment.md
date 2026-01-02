@@ -261,53 +261,11 @@ Attempting to assign to undefined variables results in `CanNotSetUnboundVariable
 
 - **Push/Pop**: O(1) frame stack operations
 - **Definition**: O(1) local frame updates
-- **Assignment**: O(depth) for variable location search
+- **Lookup/Assignment**: O(depth) for variable location search
 
 ## Relationship to Other Components
-
-### AST (Abstract Syntax Tree)
-
-- [AST](ast.md) focuses on syntax structure
-- Compilation transforms [AST](ast.md) → [IR](ir.md) (see [AST to IR Compilation](compilation-ast-ir.md))
 
 ### IR (Intermediate Representation)
 
 - Environments enable [IR](ir.md) closure capture and lexical scoping
 - [IR](ir.md) values stored in environment frames
-- Environment threading supports [IR](ir.md) evaluation semantics
-
-### Evaluation
-
-- Evaluation traverses [IR](ir.md) structures using environment context
-- Environment provides symbol resolution during evaluation
-- Frame management coordinated with evaluation state
-
-### Modules
-
-- Module system extends environment with namespace hierarchies
-- See [Module System](module-system.md) for namespace organization
-- Environment isolation ensures clean module boundaries
-
-## Implementation Notes
-
-### Environment Threading
-
-Closures capture complete environment snapshots:
-
-- **Capture**: Environment copied at closure creation time
-- **Persistence**: Captured environment survives original scope exit
-- **Isolation**: Closure environments independent of current execution context
-
-### Root Environment Preservation
-
-The original environment passed to program execution is preserved:
-
-- **Builtin Access**: Consistent access to builtin functions
-- **Module Loading**: Reliable context for module evaluation
-- **Security**: Prevents environment pollution during execution
-
-### Future Extensions
-
-- **Namespace Frames**: Qualified imports creating named environment frames
-- **Hot Reloading**: Environment snapshots for dynamic module updates
-- **Environment Serialization**: Persistence and restoration of execution contexts
