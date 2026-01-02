@@ -112,7 +112,7 @@ Modules are evaluated in isolated environments:
 
 - **Root Environment**: Original environment with builtins preserved
 - **Evaluation Environment**: Isolated stack for module execution
-- **Export Merging**: Exported bindings integrated into importing scope
+- **Export Merging**: Exported bindings integrated into modules registry
 
 ### Lazy Module Loading
 
@@ -167,29 +167,29 @@ Imported symbols are merged directly into the current environment frame:
 The complete module is stored as a **Module object** under its name:
 
 ```reactor
-(import math)
-math.constants.pi    ;; Access through module namespace
-math.trig.sin        ;; Hierarchical dotted access
+(import math.const)
+math.const.pi    ;; Access through module namespace
 ```
-
-**Implementation Details:**
-- Module name becomes a variable containing `Module (Map Text IR)`
-- Enables `module.property` and `module.submodule.property` syntax
-- Preserves full module structure for complex APIs
 
 ### Dotted Symbol Resolution
 
 The environment supports **hierarchical symbol resolution** for dotted access:
 
 ```reactor
-module.submodule.symbol    ;; Deep module access
 object.property.field      ;; Nested object access
+module.submodule.symbol    ;; Deep module access
+;; Mixed deep access
+module.submodule.symbol.object.property.field
 ```
 
 **Resolution Algorithm:**
-1. Try longest prefix as complete symbol name
-2. Fall back to shorter prefixes with property access
-3. Support both module and object hierarchies
+For `DottedSymbol ["base", "prop1", "prop2", ...]`:
+
+1. **Always** search `"base"` in the environment first
+2. If found and it's an object/module, access property `"prop1"`
+3. If that result is also an object/module, access property `"prop2"`
+4. Continue recursively for all remaining properties
+5. Support both module and object hierarchies
 
 ### Import Isolation and Security
 
