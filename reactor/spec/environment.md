@@ -197,13 +197,6 @@ Modules are evaluated in **completely isolated environments**:
 - **No Import Scope Access**: Modules cannot reference variables from importing code
 - **Clean Separation**: Prevents unintended coupling between modules and importers
 
-### Caching and Performance
-
-- **Lazy Evaluation**: Modules evaluated only when first imported
-- **Global Caching**: One evaluation serves all importing contexts
-- **Memory Efficiency**: Shared builtin frames across all module evaluations
-- **Fast Subsequent Access**: Cached results provide O(1) import performance
-
 ### Environment Frame Structure After Import
 
 ```
@@ -239,17 +232,17 @@ module.func      ;; Access 'func' from module namespace
 
 ### Unbound Variables
 
-Attempting to reference undefined symbols:
+Attempting to reference undefined symbols results in `UnboundVariable` error:
 
-- **Lookup Failure**: Symbol not found in any frame
+- **Lookup Failure**: Symbol not found in any environment frame
 - **Scope Violation**: Accessing variables outside their defined scope
 
 ### Assignment Errors
 
-Attempting to assign to undefined variables:
+Attempting to assign to undefined variables results in `CanNotSetUnboundVariable` error:
 
-- **Cannot Set Unbound**: Assignment to non-existent variables
-- **Scope Restrictions**: Assignment cannot create new bindings
+- **Cannot Set Unbound**: Assignment to non-existent variables not allowed
+- **Scope Restrictions**: Assignment cannot create new variable bindings
 
 ## Performance Characteristics
 
