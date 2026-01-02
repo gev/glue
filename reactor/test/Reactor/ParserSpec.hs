@@ -55,6 +55,24 @@ spec = do
                 parseReactor "list.utils" `shouldBe` Right (Symbol "list.utils")
                 parseReactor "my.module.name" `shouldBe` Right (Symbol "my.module.name")
 
+            it "parses symbols with new special characters" $ do
+                parseReactor "$var" `shouldBe` Right (Symbol "$var")
+                parseReactor "@user" `shouldBe` Right (Symbol "@user")
+                parseReactor "#id" `shouldBe` Right (Symbol "#id")
+                parseReactor "&ref" `shouldBe` Right (Symbol "&ref")
+                parseReactor "|pipe" `shouldBe` Right (Symbol "|pipe")
+                parseReactor "'quote" `shouldBe` Right (Symbol "'quote")
+
+            it "parses symbols with colon in continuation" $ do
+                parseReactor "obj:key" `shouldBe` Right (Symbol "obj:key")
+                parseReactor "ns:module:item" `shouldBe` Right (Symbol "ns:module:item")
+
+            it "parses complex symbol combinations" $ do
+                parseReactor "func$helper" `shouldBe` Right (Symbol "func$helper")
+                parseReactor "data@2023" `shouldBe` Right (Symbol "data@2023")
+                parseReactor "item#1" `shouldBe` Right (Symbol "item#1")
+                parseReactor "path/to:item" `shouldBe` Right (Symbol "path/to:item")
+
         describe "Operator Symbols" $ do
             it "parses arithmetic operators" $ do
                 parseReactor "+" `shouldBe` Right (Symbol "+")
