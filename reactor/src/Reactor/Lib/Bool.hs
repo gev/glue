@@ -23,7 +23,7 @@ bool =
         , ("eq", Native (Func eq))
         , ("==", Native (Func eq))
         , ("ne", Native (Func ne))
-        , ("\\=", Native (Func ne))
+        , ("!=", Native (Func ne))
         , ("lt", Native (Func lt))
         , ("<", Native (Func lt))
         , ("le", Native (Func le))

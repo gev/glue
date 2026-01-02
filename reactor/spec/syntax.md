@@ -159,7 +159,7 @@ Special forms have evaluation rules different from regular function calls.
 
 ### Comparison
 ```
-(= 1 1)      ; equality
+(== 1 1)     ; equality
 (!= 1 2)     ; inequality
 (< 1 2 3)    ; less than
 (<= 1 1 2)   ; less than or equal

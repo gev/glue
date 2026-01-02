@@ -96,8 +96,8 @@ spec = describe "Reactor.Eval (System Integration)" do
         runCode "(== 42 43)" `shouldReturn` Right (Just (Symbol "false"))
 
     it "\\= alias works like ne" do
-        runCode "(\\= 42 43)" `shouldReturn` Right (Just (Symbol "true"))
-        runCode "(\\= 42 42)" `shouldReturn` Right (Just (Symbol "false"))
+        runCode "(!= 42 43)" `shouldReturn` Right (Just (Symbol "true"))
+        runCode "(!= 42 42)" `shouldReturn` Right (Just (Symbol "false"))
 
     it "< alias works like lt" do
         runCode "(< 5 10)" `shouldReturn` Right (Just (Symbol "true"))
