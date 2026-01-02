@@ -4,6 +4,19 @@
 
 The Abstract Syntax Tree (AST) is Reactor's intermediate representation of program syntax after parsing. It provides a structured, tree-based representation of source code that captures the syntactic relationships between program elements while discarding superficial details like whitespace and comments.
 
+## AST Data Structure
+
+The AST is defined by the following algebraic data type:
+
+```haskell
+data AST where
+    String :: Text -> AST
+    Number :: Scientific -> AST
+    Symbol :: Text -> AST
+    AtomList :: [AST] -> AST
+    PropList :: [(Text, AST)] -> AST
+```
+
 ## AST Node Types
 
 ### String
@@ -65,11 +78,10 @@ Represents property objects (key-value mappings).
 
 Expressions are parsed in the following order of priority (highest first):
 
-1. Quoted expressions (`'expr`)
-2. Lists and property objects (`(expr...)`, `(:key val...)`)
-3. String literals (`"text"`)
-4. Numeric literals (`42`, `3.14`)
-5. Symbols (`x`, `+`, `obj.field`)
+1. Atom lists and property lists (`(expr...)`, `(:key val...)`)
+2. String literals (`"text"`)
+3. Numeric literals (`42`, `3.14`)
+4. Symbols (`x`, `+`, `obj.field`)
 
 ### Lexical Rules
 
@@ -96,112 +108,27 @@ Spaces, tabs, and newlines are ignored except within string literals.
 
 ### Structural Rules
 
-#### Lists
+#### Atom lists
 - Parenthesized expressions create ordered sequences
 - Empty lists `()` are valid
 - Nested lists are supported
 - Mixed content (properties + positional args) is invalid
 
-#### Property Objects
+#### Property lists
 - Start with `:`-prefixed symbol
 - Keys must be unique within the object
 - Values can be any expression type
-- Cannot be mixed with positional arguments in the same list
-
-#### Quoted Expressions
-- `'` prefix transforms any expression into `(quote expression)`
-- Supports multiple levels: `''expr` → `(quote (quote expr))`
+- Cannot be mixed with atom lists in the same list
 
 ## AST Construction
 
 ### Parser Output
 The parser produces a single AST node representing the entire parsed expression.
 
-### Transformation Examples
-
-#### Simple Function Call
-```reactor
-(+ 1 2)
-```
-**AST Structure:**
-```
-AtomList [
-    Symbol "+",
-    Number 1,
-    Number 2
-]
-```
-
-#### Property Object
-```reactor
-(:name "Alice" :age 30)
-```
-**AST Structure:**
-```
-PropList [
-    ("name", String "Alice"),
-    ("age", Number 30)
-]
-```
-
-#### Nested Expressions
-```reactor
-(if (> x 0) (* x 2) 0)
-```
-**AST Structure:**
-```
-AtomList [
-    Symbol "if",
-    AtomList [Symbol ">", Symbol "x", Number 0],
-    AtomList [Symbol "*", Symbol "x", Number 2],
-    Number 0
-]
-```
-
-## Error Conditions
-
-### Syntax Errors
-
-#### Mixed Content Error
-**Condition:** Attempting to mix property syntax with positional arguments
-**Example:** `(+ :x 1 2)` - invalid
-**Valid Alternatives:**
-- `(+ 1 2)` - positional only
-- `(:x 1 :y 2)` - properties only
-
-#### Unpaired Property Error
-**Condition:** Property key without corresponding value
-**Example:** `(:name "Alice" :age)` - invalid
-**Valid:** `(:name "Alice" :age 30)`
-
-#### General Syntax Errors
-- Unmatched parentheses
-- Invalid number formats
-- Malformed strings
-- Unexpected tokens
-
-### Error Reporting
-Parser provides detailed error messages including:
-- Error location in source text
-- Clear description of the problem
-- Suggestions for valid syntax
-
-## AST Properties
-
-### Well-Formedness
-Valid AST nodes maintain these invariants:
-- Symbol names contain only valid characters
-- Lists have proper nesting and balancing
-- Property keys are valid strings
-- Numeric values are well-formed
-
-### Type Safety
-The AST type system prevents invalid combinations at compile time.
-
 ## AST Operations
 
 ### Serialization
-AST nodes can be converted back to source-like text representation for debugging and inspection.
+AST nodes can be converted back to source-like text representation.
 
 ### Equality
 AST nodes support structural equality comparison.
@@ -217,23 +144,6 @@ AST discards superficial details (whitespace, comments) while preserving syntact
 ### IR (Intermediate Representation)
 AST focuses on syntax; IR focuses on semantics and execution. Compilation transforms AST to IR.
 
-### Evaluation
-AST is static representation; evaluation applies meaning to AST structures.
-
-## Implementation Notes
-
-### Parser Interface
-```
-parse(source_text) → AST | Error
-```
-
-### AST Node Interface
-All AST nodes support:
-- Type identification
-- Structural equality
-- Text serialization
-- Tree traversal
-
 ## Summary
 
-The AST provides Reactor's syntactic foundation, offering a clean tree representation that captures source code structure while enabling efficient compilation and analysis. Its design balances simplicity with expressiveness, supporting both data manipulation and program execution semantics.
+The AST provides Reactor's syntactic foundation, offering a clean tree representation that captures source code structure.
