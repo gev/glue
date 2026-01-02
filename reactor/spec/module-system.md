@@ -217,7 +217,6 @@ Imported symbols are merged into the current environment frame, providing direct
 - **InvalidModuleStructure**: Malformed module declaration
 - **InvalidExportList**: Non-symbol in export list
 - **DuplicateModuleName**: Module name already registered
-- **UndefinedExport**: Exported symbol not defined in module
 
 ## File Organization (Optional)
 
