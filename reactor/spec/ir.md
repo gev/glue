@@ -224,13 +224,7 @@ IR is optimized for runtime evaluation, with efficient representations for commo
 ### [AST (Abstract Syntax Tree)](ast.md)
 
 - [AST](ast.md) focuses on syntax structure
-- Compilation transforms [AST](ast.md) → [IR](ir.md) (see [AST to IR Compilation](compilation-ast-ir.md))
-
-### [Environment](environment.md)
-
-- [IR](ir.md) closures reference [environment](environment.md) frames
-- [Environment](environment.md) provides variable resolution
-- [Environment](environment.md) threading enables lexical scoping
+- Compilation transforms AST → IR (see [AST to IR Compilation](compilation-ast-ir.md))
 
 ### Evaluation
 
