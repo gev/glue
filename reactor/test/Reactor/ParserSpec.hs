@@ -9,73 +9,96 @@ import Test.Hspec
 spec :: Spec
 spec = do
     describe "Reactor LISP Parser" $ do
-        describe "Basic Atoms" $ do
-            it "parses integers" $ do
-                parseReactor "123" `shouldBe` Right (Number 123)
+        describe "Atoms" $ do
+            describe "Numbers" $ do
+                it "parses integers" $ do
+                    parseReactor "123" `shouldBe` Right (Number 123)
 
-            it "parses negative numbers" $ do
-                parseReactor "-42" `shouldBe` Right (Number (-42))
+                it "parses negative numbers" $ do
+                    parseReactor "-42" `shouldBe` Right (Number (-42))
 
-            it "parses floats" $ do
-                parseReactor "3.14" `shouldBe` Right (Number 3.14)
+                it "parses floats" $ do
+                    parseReactor "3.14" `shouldBe` Right (Number 3.14)
 
-            -- it "parses negative floats" $ do
-            --     parseReactor "-2.71" `shouldBe` Right (Number (-2.71))
+                it "parses scientific notation" $ do
+                    parseReactor "1.23e4" `shouldBe` Right (Number 12300)
+                    parseReactor "1.23E4" `shouldBe` Right (Number 12300)
+                    parseReactor "1.23e+4" `shouldBe` Right (Number 12300)
+                    parseReactor "1.23E+4" `shouldBe` Right (Number 12300)
+                    parseReactor "1.23e-4" `shouldBe` Right (Number 0.000123)
+                    parseReactor "1.23E-4" `shouldBe` Right (Number 0.000123)
+                    parseReactor "-1.23e4" `shouldBe` Right (Number (-12300))
+                    parseReactor "-1.23E4" `shouldBe` Right (Number (-12300))
+                    parseReactor "-1.23e+4" `shouldBe` Right (Number (-12300))
+                    parseReactor "-1.23E+4" `shouldBe` Right (Number (-12300))
+                    parseReactor "-1.23e-4" `shouldBe` Right (Number (-0.000123))
+                    parseReactor "-1.23E-4" `shouldBe` Right (Number (-0.000123))
 
-            it "parses scientific notation" $ do
-                parseReactor "1.23e4" `shouldBe` Right (Number 12300)
-                parseReactor "1.23E4" `shouldBe` Right (Number 12300)
-                parseReactor "1.23e+4" `shouldBe` Right (Number 12300)
-                parseReactor "1.23E+4" `shouldBe` Right (Number 12300)
-                parseReactor "1.23e-4" `shouldBe` Right (Number 0.000123)
-                parseReactor "1.23E-4" `shouldBe` Right (Number 0.000123)
+            describe "Strings" $ do
+                it "parses strings" $ do
+                    parseReactor "\"hello\"" `shouldBe` Right (String "hello")
 
-                parseReactor "-1.23e4" `shouldBe` Right (Number (-12300))
-                parseReactor "-1.23E4" `shouldBe` Right (Number (-12300))
-                parseReactor "-1.23e+4" `shouldBe` Right (Number (-12300))
-                parseReactor "-1.23E+4" `shouldBe` Right (Number (-12300))
-                parseReactor "-1.23e-4" `shouldBe` Right (Number (-0.000123))
-                parseReactor "-1.23E-4" `shouldBe` Right (Number (-0.000123))
+            describe "Symbols" $ do
+                it "parses basic symbols" $ do
+                    parseReactor "void" `shouldBe` Right (Symbol "void")
+                    parseReactor "my-func" `shouldBe` Right (Symbol "my-func")
 
-            it "parses strings" $ do
-                parseReactor "\"hello\"" `shouldBe` Right (String "hello")
+                it "parses symbols starting with letters" $ do
+                    parseReactor "a" `shouldBe` Right (Symbol "a")
+                    parseReactor "z" `shouldBe` Right (Symbol "z")
+                    parseReactor "A" `shouldBe` Right (Symbol "A")
+                    parseReactor "Z" `shouldBe` Right (Symbol "Z")
 
-            it "parses symbols" $ do
-                parseReactor "void" `shouldBe` Right (Symbol "void")
-                parseReactor "my-func" `shouldBe` Right (Symbol "my-func")
+                describe "Special Characters" $ do
+                    describe "Arithmetic operators" $ do
+                        it "parses arithmetic symbols" $ do
+                            parseReactor "+" `shouldBe` Right (Symbol "+")
+                            parseReactor "-" `shouldBe` Right (Symbol "-")
+                            parseReactor "*" `shouldBe` Right (Symbol "*")
+                            parseReactor "/" `shouldBe` Right (Symbol "/")
+                            parseReactor "%" `shouldBe` Right (Symbol "%")
 
-            it "parses symbols starting with letter" $ do
-                parseReactor "a" `shouldBe` Right (Symbol "a")
-                parseReactor "z" `shouldBe` Right (Symbol "z")
-                parseReactor "A" `shouldBe` Right (Symbol "A")
-                parseReactor "Z" `shouldBe` Right (Symbol "Z")
+                    describe "Comparison operators" $ do
+                        it "parses comparison symbols" $ do
+                            parseReactor "=" `shouldBe` Right (Symbol "=")
+                            parseReactor "<" `shouldBe` Right (Symbol "<")
+                            parseReactor ">" `shouldBe` Right (Symbol ">")
 
-            it "parses symbols with dots" $ do
-                parseReactor "math.utils" `shouldBe` Right (Symbol "math.utils")
-                parseReactor "list.utils" `shouldBe` Right (Symbol "list.utils")
-                parseReactor "my.module.name" `shouldBe` Right (Symbol "my.module.name")
+                    describe "Logical operators" $ do
+                        it "parses logical symbols" $ do
+                            parseReactor "&" `shouldBe` Right (Symbol "&")
+                            parseReactor "|" `shouldBe` Right (Symbol "|")
+                            parseReactor "!" `shouldBe` Right (Symbol "!")
 
-            it "parses symbols with new special characters" $ do
-                parseReactor "$var" `shouldBe` Right (Symbol "$var")
-                parseReactor "@user" `shouldBe` Right (Symbol "@user")
-                parseReactor "#id" `shouldBe` Right (Symbol "#id")
-                parseReactor "&ref" `shouldBe` Right (Symbol "&ref")
-                parseReactor "|pipe" `shouldBe` Right (Symbol "|pipe")
-                parseReactor "'quote" `shouldBe` Right (Symbol "'quote")
+                    describe "Separators and punctuation" $ do
+                        it "parses separator symbols" $ do
+                            parseReactor "?" `shouldBe` Right (Symbol "?")
+                            parseReactor "\\" `shouldBe` Right (Symbol "\\")
+                            parseReactor "$" `shouldBe` Right (Symbol "$")
+                            parseReactor "@" `shouldBe` Right (Symbol "@")
+                            parseReactor "#" `shouldBe` Right (Symbol "#")
+                            parseReactor "_" `shouldBe` Right (Symbol "_")
+                            parseReactor "." `shouldBe` Right (Symbol ".")
+                            parseReactor "'" `shouldBe` Right (Symbol "'")
 
-            it "parses symbols with colon in continuation" $ do
-                parseReactor "obj:key" `shouldBe` Right (Symbol "obj:key")
-                parseReactor "ns:module:item" `shouldBe` Right (Symbol "ns:module:item")
+                it "parses symbols with dots" $ do
+                    parseReactor "math.utils" `shouldBe` Right (Symbol "math.utils")
+                    parseReactor "list.utils" `shouldBe` Right (Symbol "list.utils")
+                    parseReactor "my.module.name" `shouldBe` Right (Symbol "my.module.name")
 
-            it "parses complex symbol combinations" $ do
-                parseReactor "func$helper" `shouldBe` Right (Symbol "func$helper")
-                parseReactor "data@2023" `shouldBe` Right (Symbol "data@2023")
-                parseReactor "item#1" `shouldBe` Right (Symbol "item#1")
-                parseReactor "path/to:item" `shouldBe` Right (Symbol "path/to:item")
+                it "parses symbols with colon in continuation" $ do
+                    parseReactor "obj:key" `shouldBe` Right (Symbol "obj:key")
+                    parseReactor "ns:module:item" `shouldBe` Right (Symbol "ns:module:item")
 
-            it "parses symbols starting with digits (fallback for invalid numbers)" $ do
-                parseReactor "123abc" `shouldBe` Right (Symbol "123abc")
-                parseReactor "42invalid" `shouldBe` Right (Symbol "42invalid")
+                it "parses complex symbol combinations" $ do
+                    parseReactor "func$helper" `shouldBe` Right (Symbol "func$helper")
+                    parseReactor "data@2023" `shouldBe` Right (Symbol "data@2023")
+                    parseReactor "item#1" `shouldBe` Right (Symbol "item#1")
+                    parseReactor "path/to:item" `shouldBe` Right (Symbol "path/to:item")
+
+                it "parses symbols starting with digits (fallback for invalid numbers)" $ do
+                    parseReactor "123abc" `shouldBe` Right (Symbol "123abc")
+                    parseReactor "42invalid" `shouldBe` Right (Symbol "42invalid")
 
         describe "Operator Symbols" $ do
             it "parses arithmetic operators" $ do
