@@ -108,10 +108,16 @@ AST: Symbol "variable"
 
 ### Lists
 
-#### Function Calls
+#### Empty List
 ```
-Input: "(+ 1 2)"
-AST: List [Symbol "+", Number 1, Number 2]
+Input: "()"
+AST: List []
+```
+
+#### Generic List
+```
+Input: "(1 "a" foo)"
+AST: List [Number 1, String "a", Symbol "foo"]
 ```
 
 #### Nested Lists
@@ -123,10 +129,10 @@ AST: List [
 ]
 ```
 
-#### Empty Lists
+#### Function Calls
 ```
-Input: "()"
-AST: List []
+Input: "(+ 1 2)"
+AST: List [Symbol "+", Number 1, Number 2]
 ```
 
 #### Function Call with Named Arguments (Syntax Sugar)
