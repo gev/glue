@@ -107,15 +107,6 @@ This plan ensures systematic, quality-driven specification development with prop
 
 ## Related Documents
 
+- **[Development Rules](development-rules.md)** - Core development principles and guidelines
 - **[Markdown Style Guide](markdown-style-guide.md)** - Formatting and syntax highlighting guidelines
 - **[Documentation Style Guidelines](spec-development-guidelines.md)** - Content and structure guidelines
-
-### The Most Important Rules
-
-- Do one point in time!
-- Step by step!
-- One point – one task – one commit!
-- Don't do anything until I ask!
-- Get free to use emoji ;)
-- Never touch my fixes!
-- Never push to upstream!
