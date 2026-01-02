@@ -130,12 +130,12 @@ Input: "()"
 AST: List []
 ```
 
-#### Mixed Symbol and Properties
+#### Function Call with Named Arguments
 ```
 Input: "(f :x 1 :y 2)"
 AST: List [Symbol "f", Object [("x", Number 1), ("y", Number 2)]]
 ```
-A list can start with a symbol and contain properties as subsequent arguments.
+A function call where the first element is the function name and subsequent elements can include named arguments (properties).
 
 ### Property Objects
 
