@@ -55,15 +55,7 @@ The lexer recognizes the following token categories:
 
 ### Lexical Rules
 
-The lexer follows the lexical rules defined in the [Syntax Specification](syntax.md), including:
-
-- **Number formats**: Integer, decimal, and scientific notation
-  - **Integers**: Whole numbers like `42`, `-15`, `0`
-  - **Floating-point**: Decimal numbers like `3.14159`, `-273.15`
-  - **Scientific notation**: Exponential format like `1.23e-4`, `6.02e23`
-  - **Positive/Negative**: All number types support positive and negative values
-- **String formats**: Double-quoted with escape sequences
-- **Symbol formats**: Identifiers and operators with allowed characters
+The lexer follows the lexical rules defined in the [Syntax Specification](syntax.md), including number formats, string formats, and symbol formats.
 
 For complete lexical rule definitions, see [Syntax Specification](syntax.md).
 
@@ -97,6 +89,12 @@ Expressions are parsed in this order of priority (highest first):
 Input: "42"
 AST: Number 42
 ```
+
+**Supported Number Formats:**
+- **Integers**: Whole numbers like `42`, `-15`, `0`
+- **Floating-point**: Decimal numbers like `3.14159`, `-273.15`
+- **Scientific notation**: Exponential format like `1.23e-4`, `6.02e23`
+- **Positive/Negative**: All number types support positive and negative values
 
 #### Strings
 ```
