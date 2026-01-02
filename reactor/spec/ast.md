@@ -95,7 +95,7 @@ See [Parsing to AST](parsing-to-ast.md) for construction process and algorithms.
 
 ### IR (Intermediate Representation)
 AST focuses on syntax; IR focuses on semantics and execution. Compilation transforms AST to IR.  
-See [IR Specification](ir.md) for the target execution representation.
+See [AST to IR Compilation](compilation-ast-ir.md) for the transformation process and [IR Specification](ir.md) for the target execution representation.
 
 ## Summary
 
