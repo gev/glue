@@ -30,6 +30,13 @@ spec = do
                 parseReactor "1.23e-4" `shouldBe` Right (Number 0.000123)
                 parseReactor "1.23E-4" `shouldBe` Right (Number 0.000123)
 
+                parseReactor "-1.23e4" `shouldBe` Right (Number (-12300))
+                parseReactor "-1.23E4" `shouldBe` Right (Number (-12300))
+                parseReactor "-1.23e+4" `shouldBe` Right (Number (-12300))
+                parseReactor "-1.23E+4" `shouldBe` Right (Number (-12300))
+                parseReactor "-1.23e-4" `shouldBe` Right (Number (-0.000123))
+                parseReactor "-1.23E-4" `shouldBe` Right (Number (-0.000123))
+
             it "parses strings" $ do
                 parseReactor "\"hello\"" `shouldBe` Right (String "hello")
 
@@ -105,32 +112,27 @@ spec = do
             it "parses nested quotes (quote of quote)" do
                 -- ''foo -> (quote (quote foo))
                 parseReactor "''foo"
-                    `shouldBe` Right
-                        (AtomList [Symbol "quote", AtomList [Symbol "quote", Symbol "foo"]])
+                    `shouldBe` Right (AtomList [Symbol "quote", AtomList [Symbol "quote", Symbol "foo"]])
 
             it "parses quote inside a list" do
                 -- ('a 1) -> ((quote a) 1)
                 parseReactor "('a 1)"
-                    `shouldBe` Right
-                        (AtomList [AtomList [Symbol "quote", Symbol "a"], Number 1])
+                    `shouldBe` Right (AtomList [AtomList [Symbol "quote", Symbol "a"], Number 1])
 
             it "parses quote of a list with properties" do
                 -- '(:id 1) -> (quote (:id 1))
                 parseReactor "'(:id 1)"
-                    `shouldBe` Right
-                        (AtomList [Symbol "quote", PropList [("id", Number 1)]])
+                    `shouldBe` Right (AtomList [Symbol "quote", PropList [("id", Number 1)]])
 
             it "parses quote of an expression" do
                 -- '(set :x 1) -> (quote (set :x 1))
                 parseReactor "'(set :x 1)"
-                    `shouldBe` Right
-                        (AtomList [Symbol "quote", AtomList [Symbol "set", PropList [("x", Number 1)]]])
+                    `shouldBe` Right (AtomList [Symbol "quote", AtomList [Symbol "set", PropList [("x", Number 1)]]])
 
             it "parses multiple quotes in different places" do
                 -- (f 'a 'b)
                 parseReactor "(f 'a 'b)"
-                    `shouldBe` Right
-                        (AtomList [Symbol "f", AtomList [Symbol "quote", Symbol "a"], AtomList [Symbol "quote", Symbol "b"]])
+                    `shouldBe` Right (AtomList [Symbol "f", AtomList [Symbol "quote", Symbol "a"], AtomList [Symbol "quote", Symbol "b"]])
 
             it "parses quote of a quote of a list" do
                 -- ''(1 2)
