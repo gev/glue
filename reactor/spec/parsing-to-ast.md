@@ -58,6 +58,10 @@ The lexer recognizes the following token categories:
 The lexer follows the lexical rules defined in the [Syntax Specification](syntax.md), including:
 
 - **Number formats**: Integer, decimal, and scientific notation
+  - **Integers**: Whole numbers like `42`, `-15`, `0`
+  - **Floating-point**: Decimal numbers like `3.14159`, `-273.15`
+  - **Scientific notation**: Exponential format like `1.23e-4`, `6.02e23`
+  - **Positive/Negative**: All number types support positive and negative values
 - **String formats**: Double-quoted with escape sequences
 - **Symbol formats**: Identifiers and operators with allowed characters
 
