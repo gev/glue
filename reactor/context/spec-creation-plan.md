@@ -71,10 +71,10 @@ For each document, follow this process:
 ### Implementation Order
 
 **✅ COMPLETED Documents (Already Exist):**
-1. language-overview.md - High-level introduction and examples
-2. language-aims.md - Design goals and principles
-3. syntax.md - Complete EBNF grammar specification
-4. execution-pipeline.md - Source to result transformation pipeline
+1. language-aims.md - Design goals and principles
+2. language-overview.md - High-level introduction and examples
+3. execution-pipeline.md - Source to result transformation pipeline
+4. syntax.md - Complete EBNF grammar specification
 5. ast.md - Abstract Syntax Tree structure and types
 6. ir.md - Intermediate Representation specification
 7. parsing-to-ast.md - Parser implementation and AST construction
