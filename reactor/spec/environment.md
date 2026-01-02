@@ -182,20 +182,18 @@ module.submodule.symbol    ;; Deep module access
 module.submodule.symbol.object.property.field
 ```
 
-**Resolution Algorithm:**
+**Environment Lookup:**
 For `DottedSymbol ["base", "prop1", "prop2", ...]`:
 
 1. **Always** search `"base"` in the environment first
-2. If found and it's an object/module, access property `"prop1"`
-3. If that result is also an object/module, access property `"prop2"`
-4. Continue recursively for all remaining properties
-5. Support both module and object hierarchies
+2. If found, delegate property access navigation to evaluation
+3. See [Evaluation](evaluation/) for complete dotted symbol resolution algorithm
 
 ### Import Isolation and Security
 
 Modules are evaluated in **completely isolated environments**:
 
-- **Evaluation Context**: Only builtin functions available during module loading
+- **Evaluation Context**: Only builtin or custom functions available during module loading
 - **No Import Scope Access**: Modules cannot reference variables from importing code
 - **Clean Separation**: Prevents unintended coupling between modules and importers
 
@@ -274,6 +272,11 @@ Attempting to assign to undefined variables:
 - **Assignment**: O(depth) for variable location search
 
 ## Relationship to Other Components
+
+### AST (Abstract Syntax Tree)
+
+- [AST](ast.md) focuses on syntax structure
+- Compilation transforms [AST](ast.md) → [IR](ir.md) (see [AST to IR Compilation](compilation-ast-ir.md))
 
 ### IR (Intermediate Representation)
 
