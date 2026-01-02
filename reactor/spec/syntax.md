@@ -11,21 +11,21 @@ Reactor employs a Lisp-inspired syntax with extensions for property objects, fun
 Atoms represent primitive values that evaluate to themselves.
 
 #### Numbers
-```
+```closure
 42          ; integer
 3.14159     ; float
 -273.15     ; negative float
 ```
 
 #### Strings
-```
+```closure
 "hello world"
 "quote: \" and backslash: \\"
 ```
 
 #### Symbols
 Symbols serve as identifiers.
-```
+```closure
 my-variable
 function-name
 x
@@ -35,7 +35,7 @@ math.pi
 
 ### Comments
 Comments are ignored during evaluation.
-```
+```closure
 ;; single line comment
 
 ;; multi-line comments
@@ -52,7 +52,7 @@ Lists are ordered sequences enclosed in parentheses. Evaluation depends on the f
 
 #### Function Calls
 Lists beginning with a symbol are evaluated as function applications.
-```
+```closure
 (+ 1 2 3)              ; addition
 (* (+ 1 2) (+ 3 4))    ; nested calls
 (now)                   ; no arguments - symbol evaluated
@@ -61,13 +61,13 @@ Lists beginning with a symbol are evaluated as function applications.
 
 #### Data Lists
 Lists not beginning with a symbol are evaluated as data structures.
-```
+```closure
 (1 2 3)                 ; literal numbers
 (("a" "b") ("c" "d"))   ; nested lists
 ```
 
 Quoted lists always represent literal data.
-```
+```closure
 '(1 2 3 4)
 '("apple" "banana" "cherry")
 '(+ 1 2)                ; quoted expression as data
@@ -78,7 +78,7 @@ Quoted lists always represent literal data.
 Property objects are key-value collections.
 
 #### Creation
-```
+```closure
 (:)                     ; empty object
 (:name "Alice" :age 30) ; simple properties
 (:user (:name "Bob" :age 25)
@@ -207,9 +207,11 @@ person.name
 Modules define namespaces and exports.
 ```
 (module math.x.reactor
+```closure
     (export pi cos)
     (def pi 3.14159)
     (def cos (lambda (x) ...)))
+```
 ```
 
 ### Module Usage

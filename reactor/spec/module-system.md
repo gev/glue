@@ -32,7 +32,7 @@ Modules are declared using the `module` special form:
 
 ### Example
 
-```clojure
+```closure
 (module math.utils
     (export add multiply divide)
 
@@ -49,7 +49,7 @@ Modules are declared using the `module` special form:
 
 **Important**: Module imports are **local to the frame** where the import occurs, not global. Imported modules and their symbols are only available within the scope that performed the import.
 
-```clojure
+```closure
 ;; Global scope - no imports
 (def x 1)
 
@@ -73,7 +73,7 @@ When a module is imported, Reactor integrates its exported symbols into the **cu
 
 Imported symbols are merged directly into the current environment frame:
 
-```clojure
+```closure
 (import math)
 (+ pi 1)        ;; 'pi' is now accessible as a direct variable
 ```
@@ -82,7 +82,7 @@ Imported symbols are merged directly into the current environment frame:
 
 The complete module is stored as a **Module object** under its name:
 
-```clojure
+```closure
 (import math.const)
 math.const.pi    ;; Access through module namespace
 ```
@@ -91,7 +91,7 @@ math.const.pi    ;; Access through module namespace
 
 The environment supports **hierarchical symbol resolution** for dotted access:
 
-```clojure
+```closure
 object.property.field      ;; Nested object access
 module.submodule.symbol    ;; Deep module access
 module.submodule.symbol.object.property.field
@@ -157,7 +157,7 @@ Modules are evaluated in isolated environments containing only:
 
 #### Example Security Property
 
-```clojure
+```closure
 ;; Main program
 (def secret-password "admin123")
 
@@ -235,7 +235,7 @@ stdlib/
 
 ### Basic Module Usage
 
-```clojure
+```closure
 ;; Define module
 (module calculator
     (export add subtract)
@@ -252,7 +252,7 @@ stdlib/
 
 ### Module Dependencies
 
-```clojure
+```closure
 ;; Base math module
 (module math.basic
     (export add multiply)
