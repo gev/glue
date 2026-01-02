@@ -100,6 +100,7 @@ For each document, follow this process:
 13. standard-library-overview.md - Library organization and concepts
 
 **🔄 NEW Documents to Create:**
+
 14. Standard Library components (bool.md, math.md, etc.)
 
 This plan ensures systematic, quality-driven specification development with proper dependencies and review cycles.
