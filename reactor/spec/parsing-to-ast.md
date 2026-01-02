@@ -291,8 +291,16 @@ The parser uses lookahead to distinguish between:
 ### Source Text
 Parser discards superficial details (whitespace, comments) while preserving syntactic structure.
 
+### Syntax Specification
+Parser implements the grammar defined in the [Syntax Specification](syntax.md).
+
 ### AST
-Parser produces the AST that serves as input to compilation.
+Parser produces the AST that serves as input to compilation.  
+See [AST Specification](ast.md) for detailed AST node structure.
+
+### IR
+Parsed AST is compiled to IR for execution.  
+See [IR Specification](ir.md) for the target representation.
 
 ### Lexer Integration
 Lexical analysis is integrated with parsing for efficiency.

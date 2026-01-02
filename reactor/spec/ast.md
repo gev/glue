@@ -86,10 +86,16 @@ AST trees can be traversed and transformed during compilation phases.
 ## Relationship to Other Representations
 
 ### Source Text
-AST discards superficial details (whitespace, comments) while preserving syntactic structure.
+AST discards superficial details (whitespace, comments) while preserving syntactic structure.  
+See [Syntax Specification](syntax.md) for source syntax definition.
+
+### Parsing
+AST is constructed by the parser from source text.  
+See [Parsing to AST](parsing-to-ast.md) for construction process and algorithms.
 
 ### IR (Intermediate Representation)
-AST focuses on syntax; IR focuses on semantics and execution. Compilation transforms AST to IR.
+AST focuses on syntax; IR focuses on semantics and execution. Compilation transforms AST to IR.  
+See [IR Specification](ir.md) for the target execution representation.
 
 ## Summary
 
