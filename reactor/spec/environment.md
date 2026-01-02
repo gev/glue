@@ -234,8 +234,7 @@ module.func      ;; Access 'func' from module namespace
 
 Attempting to reference undefined symbols results in `UnboundVariable` error:
 
-- **Lookup Failure**: Symbol not found in any environment frame
-- **Scope Violation**: Accessing variables outside their defined scope
+- **Symbol not found**: Variable not defined in current or outer scopes (lexical scoping violation)
 
 ### Assignment Errors
 
