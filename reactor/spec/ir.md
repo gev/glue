@@ -221,10 +221,8 @@ IR is optimized for runtime evaluation, with efficient representations for commo
 
 ## Relationship to Other Components
 
-### [AST (Abstract Syntax Tree)](ast.md)
-
 - [AST](ast.md) focuses on syntax structure
-- Compilation transforms AST → IR (see [AST to IR Compilation](compilation-ast-ir.md))
+- Compilation transforms [AST](ast.md) → [IR](ir.md) (see [AST to IR Compilation](compilation-ast-ir.md))
 
 ### Evaluation
 
