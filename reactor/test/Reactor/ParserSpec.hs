@@ -73,6 +73,10 @@ spec = do
                 parseReactor "item#1" `shouldBe` Right (Symbol "item#1")
                 parseReactor "path/to:item" `shouldBe` Right (Symbol "path/to:item")
 
+            it "parses symbols starting with digits (fallback for invalid numbers)" $ do
+                parseReactor "123abc" `shouldBe` Right (Symbol "123abc")
+                parseReactor "42invalid" `shouldBe` Right (Symbol "42invalid")
+
         describe "Operator Symbols" $ do
             it "parses arithmetic operators" $ do
                 parseReactor "+" `shouldBe` Right (Symbol "+")
