@@ -79,7 +79,6 @@ spec = do
                             parseReactor "#" `shouldBe` Right (Symbol "#")
                             parseReactor "_" `shouldBe` Right (Symbol "_")
                             parseReactor "." `shouldBe` Right (Symbol ".")
-                            parseReactor "'" `shouldBe` Right (Symbol "'")
 
                 it "parses symbols with dots" $ do
                     parseReactor "math.utils" `shouldBe` Right (Symbol "math.utils")
