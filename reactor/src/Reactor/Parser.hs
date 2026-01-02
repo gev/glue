@@ -45,10 +45,7 @@ pQuoted = do
     pure $ AtomList [Symbol "quote", inner]
 
 pNumber :: Parser AST
-pNumber = try $ do
-    num <- Number <$> lexeme (L.signed (pure ()) L.scientific)
-    notFollowedBy (alphaNumChar <|> oneOf ("-._:!?\\=<>/*+%$@#&|'" :: String))
-    pure num
+pNumber = try $ Number <$> lexeme (L.signed (pure ()) L.scientific)
 
 pString :: Parser AST
 pString = String . T.pack <$> lexeme (char '"' >> manyTill L.charLiteral (char '"'))
