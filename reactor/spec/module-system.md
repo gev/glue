@@ -45,19 +45,69 @@ Modules are declared using the `module` special form:
 
 ## Import System
 
-### Direct Import
+### Local Scope Import Behavior
 
-The `import` special form loads a module and brings its exported symbols into the current scope:
+**Important**: Module imports are **local to the frame** where the import occurs, not global. Imported modules and their symbols are only available within the scope that performed the import.
 
 ```clojure
-(import math.utils)  ; Brings add, multiply, divide into scope
+;; Global scope - no imports
+(def x 1)
 
-(def result (add 10 (multiply 2 3)))  ; 10 + (2*3) = 16
+(lambda ()
+  (import math)      ;; Import only available in this lambda
+  (+ pi x))          ;; 'pi' accessible here
+
+;; Outside lambda - 'pi' not available
+;; (This would cause UnboundVariable error)
+;; (+ pi x)
 ```
+
+### Dual-Access Mechanism
+
+When a module is imported, Reactor integrates its exported symbols into the **current local environment frame** through a **dual-access mechanism**:
+
+1. **Direct Symbol Access**: Exported symbols become direct variables in the importing scope
+2. **Module Object Access**: The module name provides access to the complete module namespace
+
+### Direct Symbol Integration
+
+Imported symbols are merged directly into the current environment frame:
+
+```clojure
+(import math)
+(+ pi 1)        ;; 'pi' is now accessible as a direct variable
+```
+
+### Module Object for Hierarchical Access
+
+The complete module is stored as a **Module object** under its name:
+
+```clojure
+(import math.const)
+math.const.pi    ;; Access through module namespace
+```
+
+### Dotted Symbol Resolution
+
+The environment supports **hierarchical symbol resolution** for dotted access:
+
+```clojure
+object.property.field      ;; Nested object access
+module.submodule.symbol    ;; Deep module access
+module.submodule.symbol.object.property.field
+```
+
+**Environment Lookup:**
+For `DottedSymbol ["base", "prop1", "prop2", ...]`:
+
+1. **Always** search `"base"` in the environment first
+2. If found, delegate property access navigation to evaluation
+3. See [Evaluation](../evaluation/) for complete dotted symbol resolution algorithm
 
 ### Features
 
 - **Direct access**: Imported symbols available without qualification
+- **Dotted access**: Hierarchical access through module namespaces
 - **Lexical scoping**: Imports work at any nesting level
 - **No conflicts**: Multiple modules can be imported safely
 - **Caching**: Subsequent imports of same module use cached results
@@ -143,9 +193,19 @@ When `(import module.name)` is evaluated:
    - Evaluate module body forms
    - Extract exported symbol values
    - Cache results in Imported Cache
-3. **Cached import path**:
-   - Return cached exported values
-4. **Environment merge**: Add exported symbols to current scope
+3. **Environment merge**: Add exported symbols and module object to current scope
+
+### Environment Frame Structure After Import
+
+```
+Before Import:
+[user_vars, builtins]
+
+After Import:
+[imported_symbols, module_objects, user_vars, builtins]
+```
+
+Imported modules create new frames containing both direct symbol access and module object references, maintaining clean separation while providing flexible access patterns.
 
 ### Symbol Resolution
 
@@ -159,17 +219,17 @@ Imported symbols are merged into the current environment frame, providing direct
 - **DuplicateModuleName**: Module name already registered
 - **UndefinedExport**: Exported symbol not defined in module
 
-## File Organization
+## File Organization (Optional)
 
 Modules are typically organized in a directory structure:
 
 ```
 stdlib/
 ├── core/
-│   ├── list.r      # (module core.list ...)
-│   └── math.r      # (module core.math ...)
+│   ├── list.rct      # (module core.list ...)
+│   └── math.rct      # (module core.math ...)
 └── utils/
-    └── string.r    # (module utils.string ...)
+    └── string.rct    # (module utils.string ...)
 ```
 
 ## Usage Patterns
