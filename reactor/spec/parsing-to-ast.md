@@ -130,6 +130,13 @@ Input: "()"
 AST: List []
 ```
 
+#### Mixed Symbol and Properties
+```
+Input: "(f :x 1 :y 2)"
+AST: List [Symbol "f", Object [("x", Number 1), ("y", Number 2)]]
+```
+A list can start with a symbol and contain properties as subsequent arguments.
+
 ### Property Objects
 
 #### Simple Objects
@@ -163,7 +170,6 @@ The `'` prefix is syntactic sugar that transforms any expression into a `(quote 
 
 **Why Quote Sugar Matters:**
 - Enables treating code as data structures
-- Supports macros and code transformation
 - Allows building programs that write programs
 - Essential for Lisp's homoiconicity
 
@@ -186,7 +192,6 @@ The entire function call becomes a data structure.
 Input: "''foo"
 AST: List [Symbol "quote", List [Symbol "quote", Symbol "foo"]]
 ```
-Multiple quotes create nested quote forms for advanced metaprogramming.
 
 ## Parsing Algorithm
 
@@ -201,15 +206,15 @@ Multiple quotes create nested quote forms for advanced metaprogramming.
 
 1. **Consume** opening parenthesis `(`
 2. **Check** for empty list: if immediate `)`, return `List []`
-3. **Check** for property list: if first token is `:`, parse property pairs
+3. **Check** for object: if first token is `:`, parse object
 4. **Otherwise**, parse expressions until closing `)`
 5. **Return** `List` with collected elements
 
-### Property List Parsing
+### Object Parsing
 
 1. **Parse** colon-prefixed symbol as key
 2. **Parse** following expression as value
-3. **Repeat** until no more `:symbol` patterns
+3. **Repeat** until until closing `)`
 4. **Return** `Object` with key-value pairs
 
 ### Error Handling
@@ -264,14 +269,8 @@ The parser maintains minimal state:
 ### Backtracking
 
 The parser uses lookahead to distinguish between:
-- Regular lists vs property lists
+- Regular lists vs objects
 - Different atomic literal types
-
-### Performance Characteristics
-
-- **Linear time**: O(n) in input size
-- **Single pass**: No backtracking for ambiguity resolution
-- **Memory efficient**: AST construction during parsing
 
 ## Relationship to Other Components
 
@@ -290,5 +289,4 @@ The Reactor parser provides a robust, efficient transformation from human-readab
 
 - **Clarity**: Direct correspondence between syntax and AST structure
 - **Robustness**: Comprehensive error reporting and validation
-- **Efficiency**: Linear-time parsing with minimal memory overhead
 - **Extensibility**: Clear separation of lexical and syntactic analysis
