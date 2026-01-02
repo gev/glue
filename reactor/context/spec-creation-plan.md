@@ -1,5 +1,15 @@
 ## Detailed Specification Creation Plan
 
+### Core Development Process
+
+The specification development follows this iterative process:
+
+1. **📋 Build spec FROM current implementation** - Document what actually exists, including real data types, functions, and behavior
+2. **✨ If necessary, modify the spec** - Improve design, terminology, structure, or add missing features
+3. **🔧 Change implementation to match** - Update code to follow the improved specification
+
+This ensures specifications are grounded in reality while allowing for planned improvements.
+
 ### Phase 1: Research and Preparation
 
 1. **Complete Documentation Review**
