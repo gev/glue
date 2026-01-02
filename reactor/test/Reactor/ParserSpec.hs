@@ -108,11 +108,11 @@ spec = do
                 parseReactor "(<= x 10)" `shouldBe` Right (List [Symbol "<=", Symbol "x", Number 10])
 
         describe "Rule: No Mixed Content" $ do
-            it "successfully parses pure positional list" $ do
+            it "successfully parses pure list" $ do
                 let input = "(1 2 \"test\")"
                 parseReactor input `shouldBe` Right (List [Number 1, Number 2, String "test"])
 
-            it "successfully parses pure property list" $ do
+            it "successfully parses pure object" $ do
                 let input = "(:id 1 :type \"lamp\")"
                 parseReactor input `shouldBe` Right (Object [("id", Number 1), ("type", String "lamp")])
 
