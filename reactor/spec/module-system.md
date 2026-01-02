@@ -285,7 +285,6 @@ stdlib/
 
 ## Future Extensions
 
-- **Qualified imports**: `(import math.utils as m)` with namespace access
-- **Selective imports**: `(import (add multiply) from math.utils)`
-- **Module reloading**: Runtime module updates with proper isolation
+- **Aliased imports**: `(import math.utils as m)` with alias access
+- **Selective imports**: `(import math.utils add multiply)`
 - **Documentation extraction**: Embedded documentation in modules
