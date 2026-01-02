@@ -105,13 +105,10 @@ For each document, follow this process:
 
 This plan ensures systematic, quality-driven specification development with proper dependencies and review cycles.
 
-### Markdown recommendations
+## Related Documents
 
-- Use ```closure for a Reactor code
-- Use ```haskell for a Haskell
-- Use ```json for a JSON
-- Use ```ebnf for an EBNF
-- Use ```text for other examples
+- **[Markdown Style Guide](markdown-style-guide.md)** - Formatting and syntax highlighting guidelines
+- **[Documentation Style Guidelines](spec-development-guidelines.md)** - Content and structure guidelines
 
 ### The Most Important Rules
 
