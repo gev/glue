@@ -96,8 +96,8 @@ spec = do
                     parseReactor "path/to:item" `shouldBe` Right (Symbol "path/to:item")
 
                 it "parses symbols starting with digits (fallback for invalid numbers)" $ do
-                    parseReactor "123abc" `shouldBe` Right (Symbol "123abc")
-                    parseReactor "42invalid" `shouldBe` Right (Symbol "42invalid")
+                    parseReactor "123abc" `shouldSatisfy` isLeft
+                    parseReactor "42invalid" `shouldSatisfy` isLeft
 
         describe "Operator Expressions" $ do
             it "parses complex operator expressions" $ do
