@@ -88,10 +88,9 @@ For each document, follow this process:
 5. syntax.md - Complete EBNF grammar specification
 6. ast.md - Abstract Syntax Tree structure and types
 7. parsing-to-ast.md - Parser implementation and AST construction
+8. ir.md - Intermediate Representation specification
 
 **📝 EXISTING EMPTY Documents (Need Content):**
-
-8. ir.md - Intermediate Representation specification
 9. compilation-ast-ir.md - AST to IR transformation rules
 10. environment.md - Runtime environment and scoping
 11. module-system.md - Module loading and namespace management
