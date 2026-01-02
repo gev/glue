@@ -199,7 +199,7 @@ Modules are evaluated in **completely isolated environments**:
 
 ### Environment Frame Structure After Import
 
-```
+```closure
 Before Import:
 [user_vars, builtins]
 

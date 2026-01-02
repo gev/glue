@@ -20,7 +20,7 @@ Reactor's module system provides clean separation of code into reusable units wi
 
 Modules are declared using the `module` special form:
 
-```
+```closure
 (module <name>
     (export <symbol> ...)
     <body> ...)
@@ -197,7 +197,7 @@ When `(import module.name)` is evaluated:
 
 ### Environment Frame Structure After Import
 
-```
+```closure
 Before Import:
 [user_vars, builtins]
 

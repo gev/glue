@@ -87,7 +87,7 @@ Property objects are key-value collections.
 ```
 
 #### Access
-```
+```closure
 (:name "Alice").name           ; direct access
 (:user (:name "Bob")).user.name  ; nested access
 user.name                      ; dotted notation
@@ -95,7 +95,7 @@ user.address.city              ; deep access
 ```
 
 #### Update
-```
+```closure
 (set user.age 31)
 (set user.email "alice@example.com")
 (set config.database.host "localhost")
@@ -106,7 +106,7 @@ user.address.city              ; deep access
 Special forms have evaluation rules different from regular function calls.
 
 #### Definition
-```
+```closure
 (def x 42)
 (def greeting "Hello")
 (def config (:debug true :port 8080))
@@ -114,33 +114,33 @@ Special forms have evaluation rules different from regular function calls.
 ```
 
 #### Mutation
-```
+```closure
 (set x 100)
 (set user.name "Bob")
 (set config.database.host "localhost")
 ```
 
 #### Import
-```
+```closure
 (import math.x)
 (import math)
 ```
 
 #### Lambda
-```
+```closure
 (lambda (x) (* x x))
 (lambda (a b) (+ a b))
 (lambda () "hello")
 ```
 
 #### Conditional
-```
+```closure
 (if (> x 0) "positive" "non-positive")
 (if (even? x) "even" "odd")
 ```
 
 #### Quoting
-```
+```closure
 '(+ 1 2)                 ; prevents evaluation
 '(:name "Alice")         ; object literal
 ''foo                    ; nested quote
@@ -149,7 +149,7 @@ Special forms have evaluation rules different from regular function calls.
 ## Operators
 
 ### Arithmetic
-```
+```closure
 (+ 1 2 3)    ; addition
 (- 10 3)     ; subtraction
 (* 2 3 4)    ; multiplication
@@ -158,7 +158,7 @@ Special forms have evaluation rules different from regular function calls.
 ```
 
 ### Comparison
-```
+```closure
 (== 1 1)     ; equality
 (!= 1 2)     ; inequality
 (< 1 2 3)    ; less than
@@ -168,14 +168,14 @@ Special forms have evaluation rules different from regular function calls.
 ```
 
 ### Logical
-```
+```closure
 (& (> x 0) (< x 100))
 (| (= x 0) (= x 1))
 (! (= x 0))
 ```
 
 ### String
-```
+```closure
 (str "Hello" " " "World")
 (length "hello")
 (substring "hello" 1 3)
@@ -185,7 +185,7 @@ Special forms have evaluation rules different from regular function calls.
 ## Data Structures
 
 ### Lists
-```
+```closure
 (car (1 2 3))           ; first element
 (cdr (1 2 3))           ; rest
 (cons 0 (1 2 3))        ; prepend
@@ -194,7 +194,7 @@ Special forms have evaluation rules different from regular function calls.
 ```
 
 ### Objects as Maps
-```
+```closure
 (def person (:name "Alice" :age 30))
 person.name
 (keys person)
@@ -205,17 +205,15 @@ person.name
 
 ### Module Definition
 Modules define namespaces and exports.
-```
-(module math.x.reactor
 ```closure
+(module math.x.reactor
     (export pi cos)
     (def pi 3.14159)
     (def cos (lambda (x) ...)))
 ```
-```
 
 ### Module Usage
-```
+```closure
 (import math.x)
 (math.x.cos math.x.pi)
 (cos pi)
@@ -225,7 +223,7 @@ Modules define namespaces and exports.
 
 ### EBNF Specification
 
-```
+```ebnf
 program         ::= expr
 expr            ::= atom | list | prop_list | quoted_expr
 atom            ::= number | string | symbol 
