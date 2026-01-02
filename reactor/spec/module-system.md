@@ -1,0 +1,232 @@
+# Module System
+
+## Overview
+
+Reactor's module system provides clean separation of code into reusable units with explicit imports and exports. The system uses a dual-registry architecture with eager registration and lazy evaluation, ensuring modules are evaluated once and cached globally.
+
+**Related Documents:**
+- [Environment](environment.md) - Variable scoping and binding rules
+- [Evaluation Overview](../evaluation/README.md) - Runtime execution semantics
+
+## Key Features
+
+- **Explicit exports**: Only specified symbols are exported from modules
+- **Direct imports**: `(import module.name)` brings symbols directly into scope
+- **Lazy evaluation with caching**: Modules evaluated once, cached globally
+- **Environment isolation**: Modules cannot access external state during loading
+- **Lexical scoping**: Imports respect block structure and nesting levels
+
+## Module Declaration
+
+Modules are declared using the `module` special form:
+
+```
+(module <name>
+    (export <symbol> ...)
+    <body> ...)
+```
+
+- `name`: Module identifier (supports dotted notation: `math.utils`)
+- `export`: List of symbols to export (optional, defaults to empty)
+- `body`: Module implementation forms
+
+### Example
+
+```clojure
+(module math.utils
+    (export add multiply divide)
+
+    (def add (lambda (a b) (+ a b)))
+    (def multiply (lambda (a b) (* a b)))
+    (def divide (lambda (a b) (/ a b)))
+    (def helper 42)  ; Not exported, private to module
+)
+```
+
+## Import System
+
+### Direct Import
+
+The `import` special form loads a module and brings its exported symbols into the current scope:
+
+```clojure
+(import math.utils)  ; Brings add, multiply, divide into scope
+
+(def result (add 10 (multiply 2 3)))  ; 10 + (2*3) = 16
+```
+
+### Features
+
+- **Direct access**: Imported symbols available without qualification
+- **Lexical scoping**: Imports work at any nesting level
+- **No conflicts**: Multiple modules can be imported safely
+- **Caching**: Subsequent imports of same module use cached results
+
+## Architecture
+
+### Dual-Registry Design
+
+The module system uses two separate registries:
+
+#### 1. Module Registry (Registration)
+
+Stores module metadata extracted during the registration phase:
+- Module name
+- Export list
+- Body forms for evaluation
+
+#### 2. Imported Module Cache (Runtime)
+
+Stores evaluated module results for reuse:
+- Module name
+- Exported symbol values
+- Evaluation context
+
+### Two-Phase Process
+
+#### Phase 1: Registration (Eager)
+
+- Parse module declarations from source
+- Extract metadata (name, exports, body)
+- Store in Module Registry
+- No evaluation of module code
+
+#### Phase 2: Import (Lazy with Caching)
+
+- **First import**: Evaluate module body in isolated environment, cache results
+- **Subsequent imports**: Return cached results directly
+
+### Environment Isolation
+
+Modules are evaluated in isolated environments containing only:
+- Built-in functions and special forms
+- Module-specific definitions
+- Explicitly imported dependencies
+
+**Security guarantee**: Modules cannot access variables from the importing scope during loading.
+
+#### Example Security Property
+
+```clojure
+;; Main program
+(def secret-password "admin123")
+
+;; Module cannot access external state
+(module safe.module
+    (export get-password)
+    (def get-password (lambda () secret-password)))  ; Error: secret-password not defined
+
+;; Usage
+(import safe.module)
+(get-password)  ; Runtime error or undefined behavior
+```
+
+## Implementation Details
+
+### Module Registration
+
+Module registration occurs during program initialization:
+
+1. Parse module IR structures
+2. Extract export lists from `(export ...)` forms
+3. Collect body forms for runtime evaluation
+4. Store metadata in global registry
+
+### Import Resolution
+
+When `(import module.name)` is evaluated:
+
+1. **Cache check**: Look up module in Imported Cache
+2. **First import path**:
+   - Retrieve module metadata from Module Registry
+   - Create isolated evaluation environment
+   - Evaluate module body forms
+   - Extract exported symbol values
+   - Cache results in Imported Cache
+3. **Cached import path**:
+   - Return cached exported values
+4. **Environment merge**: Add exported symbols to current scope
+
+### Symbol Resolution
+
+Imported symbols are merged into the current environment frame, providing direct access without qualification. The environment maintains lexical scoping rules.
+
+## Error Conditions
+
+- **ModuleNotFound**: Referenced module not in registry
+- **InvalidModuleStructure**: Malformed module declaration
+- **InvalidExportList**: Non-symbol in export list
+- **DuplicateModuleName**: Module name already registered
+- **UndefinedExport**: Exported symbol not defined in module
+
+## File Organization
+
+Modules are typically organized in a directory structure:
+
+```
+stdlib/
+├── core/
+│   ├── list.r      # (module core.list ...)
+│   └── math.r      # (module core.math ...)
+└── utils/
+    └── string.r    # (module utils.string ...)
+```
+
+## Usage Patterns
+
+### Basic Module Usage
+
+```clojure
+;; Define module
+(module calculator
+    (export add subtract)
+
+    (def add (lambda (a b) (+ a b)))
+    (def subtract (lambda (a b) (- a b)))
+)
+
+;; Use module
+(import calculator)
+
+(def result (add 5 (subtract 10 3)))  ; 5 + (10 - 3) = 12
+```
+
+### Module Dependencies
+
+```clojure
+;; Base math module
+(module math.basic
+    (export add multiply)
+
+    (def add (lambda (a b) (+ a b)))
+    (def multiply (lambda (a b) (* a b)))
+)
+
+;; Dependent module
+(module math.advanced
+    (export power)
+
+    (import math.basic)  ; Import dependency
+
+    (def square (lambda (x) (multiply x x)))
+    (def power (lambda (base exp)
+        (if (= exp 0)
+            1
+            (multiply base (power base (- exp 1))))))
+)
+```
+
+## Benefits
+
+1. **Clean interfaces**: Explicit exports prevent accidental dependencies
+2. **Efficient loading**: Modules loaded once, cached globally
+3. **Scoped imports**: Lexical scoping prevents pollution
+4. **Security**: Isolated evaluation prevents external access
+5. **Simple implementation**: No complex dependency resolution
+
+## Future Extensions
+
+- **Qualified imports**: `(import math.utils as m)` with namespace access
+- **Selective imports**: `(import (add multiply) from math.utils)`
+- **Module reloading**: Runtime module updates with proper isolation
+- **Documentation extraction**: Embedded documentation in modules
