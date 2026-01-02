@@ -78,6 +78,7 @@ For each document, follow this process:
 5. syntax.md - Complete EBNF grammar specification
 
 **📝 EXISTING EMPTY Documents (Need Content):**
+
 6. ast.md - Abstract Syntax Tree structure and types
 7. ir.md - Intermediate Representation specification
 8. parsing-to-ast.md - Parser implementation and AST construction
