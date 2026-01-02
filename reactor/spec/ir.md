@@ -30,39 +30,24 @@ Represents numeric values with arbitrary precision.
 
 **Structure:** `Number Scientific`
 **Purpose:** Store integers, decimals, and scientific notation
-**Examples:**
-- `Number 42.0` (integer)
-- `Number 3.14159` (decimal)
-- `Number 1.23e-4` (scientific notation)
 
 #### String
 Represents text values with escape sequence support.
 
 **Structure:** `String Text`
 **Purpose:** Store string literals and text data
-**Examples:**
-- `String "hello world"`
-- `String "with \"quotes\" and \n newlines"`
 
 #### Symbol
 Represents simple identifiers and atomic names.
 
 **Structure:** `Symbol Text`
 **Purpose:** Store variable names, function names, and operators
-**Examples:**
-- `Symbol "x"` (variable)
-- `Symbol "+"` (operator)
-- `Symbol "my-function"` (function name)
 
 #### DottedSymbol
 Represents hierarchical identifiers with dot notation.
 
 **Structure:** `DottedSymbol [Text]`
 **Purpose:** Store property access paths and qualified names
-**Examples:**
-- `DottedSymbol ["obj", "field"]` (object.field)
-- `DottedSymbol ["math", "pi"]` (math.pi)
-- `DottedSymbol ["user", "address", "city"]` (user.address.city)
 
 ### Composite Values
 
