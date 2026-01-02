@@ -124,9 +124,26 @@ Modules are evaluated once and cached:
 
 ## Module Import into Local Frames
 
+### Local Scope Import Behavior
+
+**Important**: Module imports are **local to the frame** where the import occurs, not global. Imported modules and their symbols are only available within the scope that performed the import.
+
+```reactor
+;; Global scope - no imports
+(def x 1)
+
+(lambda ()
+  (import math)      ;; Import only available in this lambda
+  (+ pi x))          ;; 'pi' accessible here
+
+;; Outside lambda - 'pi' not available
+;; (This would cause UnboundVariable error)
+;; (+ pi x)
+```
+
 ### Import Process Overview
 
-When a module is imported, Reactor integrates its exported symbols into the local environment through a **dual-access mechanism**:
+When a module is imported, Reactor integrates its exported symbols into the **current local environment frame** through a **dual-access mechanism**:
 
 1. **Direct Symbol Access**: Exported symbols become direct variables in the importing scope
 2. **Module Object Access**: The module name provides access to the complete module namespace
