@@ -13,6 +13,7 @@ Reactor is designed to be:
 ### Introduction
 - **[Language Aims](language-aims.md)** - Design goals and philosophy
 - **[Language Overview](language-overview.md)** - High-level introduction
+- **[Execution Pipeline](execution-pipeline.md)** - How Reactor processes code
 
 ## Specification Structure
 
@@ -57,11 +58,12 @@ For first-time readers, follow this sequence:
 
 1. **Start Here** → [Language Overview](language-overview.md)
 2. **Goals** → [Language Aims](language-aims.md)
-3. **Foundation** → [Syntax](syntax.md)
-4. **Implementation** → [AST](ast.md) → [IR](ir.md) → [Compilation](compilation-ast-ir.md)
-5. **Runtime** → [Environment](environment.md) → [Evaluation Overview](evaluation/README.md)
-6. **Organization** → [Module System](module-system.md)
-7. **Library** → [Standard Library Overview](standard-library-overview.md)
+3. **How It Works** → [Execution Pipeline](execution-pipeline.md)
+4. **Foundation** → [Syntax](syntax.md)
+5. **Implementation** → [AST](ast.md) → [IR](ir.md) → [Compilation](compilation-ast-ir.md)
+6. **Runtime** → [Environment](environment.md) → [Evaluation Overview](evaluation/README.md)
+7. **Organization** → [Module System](module-system.md)
+8. **Library** → [Standard Library Overview](standard-library-overview.md)
 
 ## Implementation Status
 

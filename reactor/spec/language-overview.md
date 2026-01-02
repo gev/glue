@@ -161,10 +161,11 @@ Minimal footprint and clean host language integration make Reactor ideal for emb
 
 ## Getting Started
 
-1. **Read the Language Aims** to understand Reactor's design philosophy
-2. **Explore the Syntax Reference** for detailed language constructs
-3. **Study the Examples** to see Reactor in action
-4. **Try the Implementation** to experiment with real code
+1. **Read the Execution Pipeline** to understand how Reactor processes code
+2. **Read the Language Aims** to understand Reactor's design philosophy
+3. **Explore the Syntax Reference** for detailed language constructs
+4. **Study the Examples** to see Reactor in action
+5. **Try the Implementation** to experiment with real code
 
 ## Next Steps
 
