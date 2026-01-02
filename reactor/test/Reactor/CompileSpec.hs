@@ -28,15 +28,15 @@ instance Arbitrary AST where
                 , AST.Number <$> arbitrary
                 , AST.String <$> arbitrary
                 , -- Generate nested structures
-                  AST.AtomList <$> resize (n `div` 2) arbitrary
-                , AST.PropList <$> resize (n `div` 2) arbitrary
+                  AST.List <$> resize (n `div` 2) arbitrary
+                , AST.Object <$> resize (n `div` 2) arbitrary
                 ]
 
 spec :: Spec
 spec = describe "AST -> IR transformation (compile)" do
     -- Positional lists
     prop "atoms: list length is preserved 1 to 1" $ \(xs :: [AST]) -> do
-        let ast = AST.AtomList xs
+        let ast = AST.List xs
         let val = compile ast :: IR Identity
         if isList val
             then listLength val `shouldBe` length xs
@@ -44,7 +44,7 @@ spec = describe "AST -> IR transformation (compile)" do
 
     -- Property lists (key-value)
     prop "properties: Object size <= number of properties (duplicates removed)" $ \(ps :: [(T.Text, AST)]) -> do
-        let ast = AST.PropList ps
+        let ast = AST.Object ps
         let val = compile ast :: IR Identity
         if isObject val
             then objectSize val `shouldSatisfy` (<= length ps)
@@ -57,8 +57,8 @@ spec = describe "AST -> IR transformation (compile)" do
         seq val True `shouldBe` True
 
     prop "empty atoms and props don't create garbage data" do
-        let ast1 = AST.AtomList []
-        let ast2 = AST.PropList []
+        let ast1 = AST.List []
+        let ast2 = AST.Object []
         let val1 = compile ast1 :: IR Identity
         let val2 = compile ast2 :: IR Identity
         (isList val1 && listLength val1 == 0) `shouldBe` True
@@ -72,7 +72,7 @@ spec = describe "AST -> IR transformation (compile)" do
             else expectationFailure "Should be Symbol"
 
     prop "recursive expansion: properties can contain nested calls" $ \k (astInner :: AST) -> do
-        let ast = AST.PropList [(k, astInner)]
+        let ast = AST.Object [(k, astInner)]
         let val = compile ast :: IR Identity
         if isObject val
             then case objectLookup k val of

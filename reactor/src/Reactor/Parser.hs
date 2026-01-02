@@ -42,7 +42,7 @@ pQuoted :: Parser AST
 pQuoted = do
     _ <- char '\''
     inner <- pReactor
-    pure $ AtomList [Symbol "quote", inner]
+    pure $ List [Symbol "quote", inner]
 
 pNumber :: Parser AST
 pNumber = try $ Number <$> lexeme (L.signed (pure ()) L.scientific)
@@ -56,26 +56,26 @@ pSymbol = Symbol . T.pack <$> lexeme (some (alphaNumChar <|> oneOf ("-._:!?\\=<>
 pExprOrList :: Parser AST
 pExprOrList = between (symbol "(") (symbol ")") $ do
     optional pReactor >>= \case
-        Nothing -> pure $ AtomList []
+        Nothing -> pure $ List []
         Just first -> case first of
             Symbol name | not (T.isPrefixOf ":" name) -> do
                 body <- pBodyRest []
                 case body of
-                    AtomList atoms -> pure $ AtomList (Symbol name : atoms)
-                    propList -> pure $ AtomList [Symbol name, propList]
+                    List atoms -> pure $ List (Symbol name : atoms)
+                    propList -> pure $ List [Symbol name, propList]
             _ -> pBodyRest [first]
 
 pBodyRest :: [AST] -> Parser AST
 pBodyRest initial = do
     elems <- (initial <>) <$> many pReactor
     case elems of
-        [] -> pure $ AtomList []
+        [] -> pure $ List []
         (x : _) | isProp x -> do
             props <- validateProps elems
-            pure $ PropList props
+            pure $ Object props
         _ -> do
             validateNoProps elems
-            pure $ AtomList elems
+            pure $ List elems
   where
     isProp (Symbol s) = T.isPrefixOf ":" s
     isProp _ = False

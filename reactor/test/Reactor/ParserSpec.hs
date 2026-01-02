@@ -101,20 +101,20 @@ spec = do
 
         describe "Operator Expressions" $ do
             it "parses complex operator expressions" $ do
-                parseReactor "(+ 2 3)" `shouldBe` Right (AtomList [Symbol "+", Number 2, Number 3])
-                parseReactor "(< x y)" `shouldBe` Right (AtomList [Symbol "<", Symbol "x", Symbol "y"])
-                parseReactor "(== a b)" `shouldBe` Right (AtomList [Symbol "==", Symbol "a", Symbol "b"])
-                parseReactor "(* 2 3 4)" `shouldBe` Right (AtomList [Symbol "*", Number 2, Number 3, Number 4])
-                parseReactor "(<= x 10)" `shouldBe` Right (AtomList [Symbol "<=", Symbol "x", Number 10])
+                parseReactor "(+ 2 3)" `shouldBe` Right (List [Symbol "+", Number 2, Number 3])
+                parseReactor "(< x y)" `shouldBe` Right (List [Symbol "<", Symbol "x", Symbol "y"])
+                parseReactor "(== a b)" `shouldBe` Right (List [Symbol "==", Symbol "a", Symbol "b"])
+                parseReactor "(* 2 3 4)" `shouldBe` Right (List [Symbol "*", Number 2, Number 3, Number 4])
+                parseReactor "(<= x 10)" `shouldBe` Right (List [Symbol "<=", Symbol "x", Number 10])
 
         describe "Rule: No Mixed Content" $ do
             it "successfully parses pure positional list" $ do
                 let input = "(1 2 \"test\")"
-                parseReactor input `shouldBe` Right (AtomList [Number 1, Number 2, String "test"])
+                parseReactor input `shouldBe` Right (List [Number 1, Number 2, String "test"])
 
             it "successfully parses pure property list" $ do
                 let input = "(:id 1 :type \"lamp\")"
-                parseReactor input `shouldBe` Right (PropList [("id", Number 1), ("type", String "lamp")])
+                parseReactor input `shouldBe` Right (Object [("id", Number 1), ("type", String "lamp")])
 
             it "FAILS when mixing atoms and properties" $ do
                 parseReactor "(:id 1 \"oops\")" `shouldBe` Left (MixedContent "\"oops\"")
@@ -132,42 +132,42 @@ spec = do
 
         describe "Quote sugar" $ do
             it "parses quoted symbols as (quote symbol)" $ do
-                parseReactor "'foo" `shouldBe` Right (AtomList [Symbol "quote", Symbol "foo"])
+                parseReactor "'foo" `shouldBe` Right (List [Symbol "quote", Symbol "foo"])
 
             it "parses quoted lists" $ do
-                parseReactor "'(1 2)" `shouldBe` Right (AtomList [Symbol "quote", AtomList [Number 1, Number 2]])
+                parseReactor "'(1 2)" `shouldBe` Right (List [Symbol "quote", List [Number 1, Number 2]])
 
         describe "Advanced Quote sugar" do
             it "parses nested quotes (quote of quote)" do
                 -- ''foo -> (quote (quote foo))
                 parseReactor "''foo"
-                    `shouldBe` Right (AtomList [Symbol "quote", AtomList [Symbol "quote", Symbol "foo"]])
+                    `shouldBe` Right (List [Symbol "quote", List [Symbol "quote", Symbol "foo"]])
 
             it "parses quote inside a list" do
                 -- ('a 1) -> ((quote a) 1)
                 parseReactor "('a 1)"
-                    `shouldBe` Right (AtomList [AtomList [Symbol "quote", Symbol "a"], Number 1])
+                    `shouldBe` Right (List [List [Symbol "quote", Symbol "a"], Number 1])
 
             it "parses quote of a list with properties" do
                 -- '(:id 1) -> (quote (:id 1))
                 parseReactor "'(:id 1)"
-                    `shouldBe` Right (AtomList [Symbol "quote", PropList [("id", Number 1)]])
+                    `shouldBe` Right (List [Symbol "quote", Object [("id", Number 1)]])
 
             it "parses quote of an expression" do
                 -- '(set :x 1) -> (quote (set :x 1))
                 parseReactor "'(set :x 1)"
-                    `shouldBe` Right (AtomList [Symbol "quote", AtomList [Symbol "set", PropList [("x", Number 1)]]])
+                    `shouldBe` Right (List [Symbol "quote", List [Symbol "set", Object [("x", Number 1)]]])
 
             it "parses multiple quotes in different places" do
                 -- (f 'a 'b)
                 parseReactor "(f 'a 'b)"
-                    `shouldBe` Right (AtomList [Symbol "f", AtomList [Symbol "quote", Symbol "a"], AtomList [Symbol "quote", Symbol "b"]])
+                    `shouldBe` Right (List [Symbol "f", List [Symbol "quote", Symbol "a"], List [Symbol "quote", Symbol "b"]])
 
             it "parses quote of a quote of a list" do
                 -- ''(1 2)
                 parseReactor "''(1 2)"
                     `shouldBe` Right
-                        (AtomList [Symbol "quote", AtomList [Symbol "quote", AtomList [Number 1, Number 2]]])
+                        (List [Symbol "quote", List [Symbol "quote", List [Number 1, Number 2]]])
 
         describe "Property Access" $ do
             it "parses property access" $ do
@@ -180,7 +180,7 @@ spec = do
                 parseReactor "a.b.c" `shouldBe` Right (Symbol "a.b.c")
 
             it "parses property access on quoted expression" $ do
-                parseReactor "'foo.bar" `shouldBe` Right (AtomList [Symbol "quote", Symbol "foo.bar"])
+                parseReactor "'foo.bar" `shouldBe` Right (List [Symbol "quote", Symbol "foo.bar"])
 
             it "parses property access with numbers in name" $ do
                 parseReactor "obj.prop1" `shouldBe` Right (Symbol "obj.prop1")
@@ -191,7 +191,7 @@ spec = do
 
         describe "Equivalent Syntaxes" $ do
             it "parses (f :x 1) and (f (:x 1)) identically" $ do
-                let expected = Right (AtomList [Symbol "f", PropList [("x", Number 1)]])
+                let expected = Right (List [Symbol "f", Object [("x", Number 1)]])
                 parseReactor "(f :x 1)" `shouldBe` expected
                 parseReactor "(f (:x 1))" `shouldBe` expected
 
@@ -199,15 +199,15 @@ spec = do
                 let grouped = parseReactor "(f :x 1 :y 2)"
                 let separate = parseReactor "(f (:x 1) (:y 2))"
                 grouped `shouldNotBe` separate
-                grouped `shouldBe` Right (AtomList [Symbol "f", PropList [("x", Number 1), ("y", Number 2)]])
-                separate `shouldBe` Right (AtomList [Symbol "f", PropList [("x", Number 1)], PropList [("y", Number 2)]])
+                grouped `shouldBe` Right (List [Symbol "f", Object [("x", Number 1), ("y", Number 2)]])
+                separate `shouldBe` Right (List [Symbol "f", Object [("x", Number 1)], Object [("y", Number 2)]])
 
             it "parses lambda with named arg" $ do
                 let input = "((lambda (it) it) (:it 1))"
-                let expected = Right (AtomList [AtomList [Symbol "lambda", AtomList [Symbol "it"], Symbol "it"], PropList [("it", Number 1)]])
+                let expected = Right (List [List [Symbol "lambda", List [Symbol "it"], Symbol "it"], Object [("it", Number 1)]])
                 parseReactor input `shouldBe` expected
 
             it "parses lambda with multiple named args" $ do
                 let input = "((lambda (it) it) (:it 1) (:yet 2))"
-                let expected = Right (AtomList [AtomList [Symbol "lambda", AtomList [Symbol "it"], Symbol "it"], PropList [("it", Number 1)], PropList [("yet", Number 2)]])
+                let expected = Right (List [List [Symbol "lambda", List [Symbol "it"], Symbol "it"], Object [("it", Number 1)], Object [("yet", Number 2)]])
                 parseReactor input `shouldBe` expected

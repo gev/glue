@@ -36,8 +36,8 @@ compile = \case
         if T.isInfixOf "." s
             then DottedSymbol (T.splitOn "." s)
             else Symbol s
-    AST.AtomList xs -> List (map compile xs)
-    AST.PropList ps -> Object $ Map.fromList (map (second compile) ps)
+    AST.List xs -> List (map compile xs)
+    AST.Object ps -> Object $ Map.fromList (map (second compile) ps)
 
 instance Show (IR m) where
     show = \case
