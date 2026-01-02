@@ -146,23 +146,35 @@ AST: Object []
 
 ### Quoted Expressions
 
+**Quote Sugar Overview:**
+The `'` prefix is syntactic sugar that transforms any expression into a `(quote ...)` form. This allows treating code as data, which is fundamental to Lisp-style metaprogramming.
+
+**Why Quote Sugar Matters:**
+- Enables treating code as data structures
+- Supports macros and code transformation
+- Allows building programs that write programs
+- Essential for Lisp's homoiconicity
+
 #### Simple Quoting
 ```
 Input: "'x"
 AST: List [Symbol "quote", Symbol "x"]
 ```
+The symbol `x` becomes data instead of a variable reference.
 
 #### Complex Quoting
 ```
 Input: "'(+ 1 2)"
 AST: List [Symbol "quote", List [Symbol "+", Number 1, Number 2]]
 ```
+The entire function call becomes a data structure.
 
 #### Nested Quoting
 ```
 Input: "''foo"
 AST: List [Symbol "quote", List [Symbol "quote", Symbol "foo"]]
 ```
+Multiple quotes create nested quote forms for advanced metaprogramming.
 
 ## Parsing Algorithm
 
