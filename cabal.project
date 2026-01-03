@@ -1,4 +1,4 @@
-packages: */*.cabal
+packages: haskell/*/*.cabal
 
 constraints:
     base >= 4.19 && < 5
