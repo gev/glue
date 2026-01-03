@@ -108,10 +108,10 @@ Reactor is a **universal scripting glue** that connects rich host language syste
 - Dynamic property access and manipulation
 - Prototype-like inheritance patterns
 
-**Module System**
-- Hierarchical namespace management
-- Selective imports and exports
-- Runtime module loading and registration
+**Extensibility**
+- Host language integration for additional functionality
+- FFI bindings for domain services and libraries
+- Plugin architecture for custom extensions
 
 ## Technical Objectives
 
@@ -197,7 +197,7 @@ Reactor is a **universal scripting glue** that connects rich host language syste
 ### Long-term Vision
 
 **Sustainable Ecosystem**
-- Growing library of modules and extensions
+- Growing library of functions and extensions
 - Educational resources and tutorials
 - Tooling support
 

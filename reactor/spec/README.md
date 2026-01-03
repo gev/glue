@@ -1,6 +1,6 @@
 # 🚀 Reactor Language Specification
 
-Complete specification for the Reactor programming language, a Lisp-inspired language with modern enhancements for property objects, functional programming, and module systems.
+Complete specification for the Reactor programming language, a Lisp-inspired language with modern enhancements for property objects and functional programming.
 
 ## 🎯 Overview
 
@@ -26,13 +26,11 @@ Reactor is designed to be:
 
 ### Runtime System
 - **[Environment](environment.md)** - Variable scoping and binding
-- **[Module System](module-system.md)** - Code organization and imports
 
 ### Evaluation
 - **[Evaluation Overview](evaluation/README.md)** - Runtime execution model
 - **[Evaluation State](evaluation/evaluation-state.md)** - Execution context
 - **[Evaluation Preparation](evaluation/envirenment-preparation.md)** - Setup and initialization
-- **[Module Registration](evaluation/module-registration.md)** - Module loading process
 - **[Evaluation Patterns](evaluation/patterns/)** - Detailed evaluation rules
 
 ### Standard Library
@@ -62,12 +60,11 @@ For first-time readers, follow this sequence:
 4. **Foundation** → [Syntax](syntax.md)
 5. **Implementation** → [AST](ast.md) → [IR](ir.md) → [Compilation](compilation-ast-ir.md)
 6. **Runtime** → [Environment](environment.md) → [Evaluation Overview](evaluation/README.md)
-7. **Organization** → [Module System](module-system.md)
-8. **Library** → [Standard Library Overview](standard-library-overview.md)
+7. **Library** → [Standard Library Overview](standard-library-overview.md)
 
 ## Implementation Status
 
-- ✅ **Complete**: Syntax, AST, IR, Compilation, Environment, Module System
+- ✅ **Complete**: Syntax, AST, IR, Compilation, Environment
 - 🚧 **In Progress**: Evaluation system, Standard Library
 - 📋 **Planned**: Advanced features, error handling, optimization
 

@@ -2,7 +2,7 @@
 
 ## Overview
 
-Reactor employs a Lisp-inspired syntax with extensions for property objects, functional programming constructs, and module systems. This specification defines the complete syntax and grammar for Reactor programs.
+Reactor employs a Lisp-inspired syntax with extensions for property objects and functional programming constructs. This specification defines the complete syntax and grammar for Reactor programs.
 
 ## Lexical Elements
 
@@ -115,11 +115,7 @@ Special forms have evaluation rules different from regular function calls.
 (set config.database.host "localhost")
 ```
 
-#### Import
-```closure
-(import math.x)
-(import math)
-```
+
 
 #### Lambda
 ```closure
@@ -191,23 +187,7 @@ person.name
 (values person)
 ```
 
-## Modules
 
-### Module Definition
-Modules define namespaces and exports.
-```closure
-(module math.x.reactor
-    (export pi cos)
-    (def pi 3.14159)
-    (def cos (lambda (x) ...)))
-```
-
-### Module Usage
-```closure
-(import math.x)
-(math.x.cos math.x.pi)
-(cos pi)
-```
 
 ## Grammar
 

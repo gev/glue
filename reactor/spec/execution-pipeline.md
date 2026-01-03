@@ -4,7 +4,7 @@
 Reactor transforms source code through this carefully designed pipeline:
 
 ```
-Source Text → Parse → AST → Compile → IR → Prepare Environment → Register Modules → Create EvalState → Evaluate → Result
+Source Text → Parse → AST → Compile → IR → Prepare Environment → Create EvalState → Evaluate → Result
 ```
 
 ## Pipeline Stages
@@ -25,26 +25,22 @@ Transform AST into Intermediate Representation (IR). Performs semantic analysis,
 *See: [Compilation: AST to IR](compilation-ast-ir.md)*
 
 ### 5. IR (Intermediate Representation)
-Lower-level representation optimized for execution. Contains primitives, closures, objects, native function calls and modules.  
+Lower-level representation optimized for execution. Contains primitives, closures, objects, and native function calls.
 *See: [IR Specification](ir.md)*
 
 ### 6. Prepare Environment
 Set up the execution environment with built-in and custom functions, constants.  
 *See: [Environment](environment.md)*
 
-### 7. Register Modules
-Register external modules, making their exports available in the environment.  
-*See: [Module System](module-system.md)*
-
-### 8. Create EvalState
-Complete execution context with environment, modules registry and cache, evaluation context.  
+### 7. Create EvalState
+Complete execution context with environment and evaluation context.  
 *See: [Evaluation State](evaluation/evaluation-state.md)*
 
-### 9. Evaluate
+### 8. Evaluate
 Execute the IR using the evaluation semantics, applying functions, evaluating conditionals, and performing computations.  
 *See: [Evaluation](evaluation/README.md)*
 
-### 10. Result
+### 9. Result
 Final computed value or side effects produced by the program execution.
 
 ## Key Benefits
