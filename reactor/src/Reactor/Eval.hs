@@ -12,9 +12,6 @@ module Reactor.Eval (
     putRootEnv,
     getState,
     putState,
-    getRegistry,
-    getCache,
-    putCache,
     defineVarEval,
     updateVarEval,
     liftIO,
@@ -31,8 +28,6 @@ import Data.Typeable (Typeable)
 import Reactor.Env qualified as E
 import Reactor.Eval.Error (Context, Error, EvalError (EvalError), GeneralError (..))
 import Reactor.IR qualified as IR
-import Reactor.Module.Cache (ImportedModuleCache)
-import Reactor.Module.Registry (ModuleRegistry, emptyRegistry)
 
 type IR = IR.IR Eval
 type Env = IR.Env Eval
@@ -41,8 +36,6 @@ type Env = IR.Env Eval
 data EvalState = EvalState
     { env :: Env
     , context :: Context
-    , registry :: ModuleRegistry Eval
-    , importCache :: ImportedModuleCache Eval
     , rootEnv :: Env
     }
 
@@ -81,15 +74,6 @@ getState = Eval $ \state -> pure $ Right (state, state)
 
 putState :: EvalState -> Eval ()
 putState newState = Eval $ \_ -> pure $ Right ((), newState)
-
-getRegistry :: Eval (ModuleRegistry Eval)
-getRegistry = Eval $ \state -> pure $ Right (state.registry, state)
-
-getCache :: Eval (ImportedModuleCache Eval)
-getCache = Eval $ \state -> pure $ Right (state.importCache, state)
-
-putCache :: ImportedModuleCache Eval -> Eval ()
-putCache newCache = Eval $ \state -> pure $ Right ((), state{importCache = newCache})
 
 pushContext :: Text -> Eval ()
 pushContext name = Eval $ \state -> pure $ Right ((), state{context = name : state.context})
@@ -157,9 +141,6 @@ evalDottedSymbol parts = do
     evalNestedAccess obj (prop : rest) = do
         case obj of
             IR.Object objMap -> case Map.lookup prop objMap of
-                Just val -> evalNestedAccess val rest
-                Nothing -> throwError $ PropertyNotFound prop
-            IR.Module moduleMap -> case Map.lookup prop moduleMap of
                 Just val -> evalNestedAccess val rest
                 Nothing -> throwError $ PropertyNotFound prop
             _ -> throwError $ NotAnObject (T.pack $ show obj)
@@ -279,8 +260,6 @@ runEvalLegacy evalAction initialEnv = do
             EvalState
                 { env = initialEnv
                 , context = []
-                , registry = emptyRegistry -- Empty registry for legacy compatibility
-                , importCache = Map.empty
                 , rootEnv = initialEnv
                 }
     result <- runEval evalAction initialState
