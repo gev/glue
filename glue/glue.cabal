@@ -1,0 +1,224 @@
+cabal-version: 3.8
+name: glue
+version: 0.1.0.0
+synopsis: Glue language
+description: Glue is a LISP-inspired language.
+license: BSD-3-Clause
+author: ReactHome Team
+maintainer: gazdovsky@gmail.com
+category: language
+build-type: Simple
+
+library
+  hs-source-dirs: src
+  -- cabal-gild: discover src
+  exposed-modules:
+    Glue
+    Glue.AST
+    Glue.Env
+    Glue.Error
+    Glue.Eval
+    Glue.Eval.Error
+    Glue.IR
+    Glue.Lib
+    Glue.Lib.Bool
+    Glue.Lib.Bool.Eq
+    Glue.Lib.Bool.Ge
+    Glue.Lib.Bool.Gt
+    Glue.Lib.Bool.If
+    Glue.Lib.Bool.Le
+    Glue.Lib.Bool.Lt
+    Glue.Lib.Bool.Ne
+    Glue.Lib.Bool.Not
+    Glue.Lib.Bool.Until
+    Glue.Lib.Bool.When
+    Glue.Lib.Bool.While
+    Glue.Lib.Builtin
+    Glue.Lib.Builtin.Def
+    Glue.Lib.Builtin.Lambda
+    Glue.Lib.Builtin.Set
+    Glue.Lib.List
+    Glue.Lib.List.Append
+    Glue.Lib.List.Butlast
+    Glue.Lib.List.Car
+    Glue.Lib.List.Cdr
+    Glue.Lib.List.Cons
+    Glue.Lib.List.Drop
+    Glue.Lib.List.Filter
+    Glue.Lib.List.Find
+    Glue.Lib.List.Flatten
+    Glue.Lib.List.Last
+    Glue.Lib.List.Length
+    Glue.Lib.List.Map
+    Glue.Lib.List.Member
+    Glue.Lib.List.Nth
+    Glue.Lib.List.Partition
+    Glue.Lib.List.Position
+    Glue.Lib.List.Remove
+    Glue.Lib.List.Reverse
+    Glue.Lib.List.Sort
+    Glue.Lib.List.Take
+    Glue.Lib.List.Zip
+    Glue.Lib.Math
+    Glue.Lib.Math.Arithmetic
+    Glue.Lib.Math.Arithmetic.Add
+    Glue.Lib.Math.Arithmetic.Div
+    Glue.Lib.Math.Arithmetic.Mod
+    Glue.Lib.Math.Arithmetic.Mul
+    Glue.Lib.Math.Arithmetic.Sub
+    Glue.Lib.Math.Const
+    Glue.Lib.Math.Logarithmic
+    Glue.Lib.Math.Logarithmic.Lg
+    Glue.Lib.Math.Logarithmic.Ln
+    Glue.Lib.Math.Logarithmic.Log
+    Glue.Lib.Math.Power
+    Glue.Lib.Math.Power.Exp
+    Glue.Lib.Math.Power.Pow
+    Glue.Lib.Math.Power.Sqrt
+    Glue.Lib.Math.Trigonometric
+    Glue.Lib.Math.Trigonometric.Acos
+    Glue.Lib.Math.Trigonometric.Asin
+    Glue.Lib.Math.Trigonometric.Atan
+    Glue.Lib.Math.Trigonometric.Cos
+    Glue.Lib.Math.Trigonometric.Sin
+    Glue.Lib.Math.Trigonometric.Tan
+    Glue.Lib.Math.Utility
+    Glue.Lib.Math.Utility.Abs
+    Glue.Lib.Math.Utility.Ceil
+    Glue.Lib.Math.Utility.Floor
+    Glue.Lib.Math.Utility.Max
+    Glue.Lib.Math.Utility.Min
+    Glue.Lib.Math.Utility.Round
+    Glue.Lib.Math.Utility.Trunc
+    Glue.Parser
+    Glue.Parser.Error
+    Spec.Device
+
+  build-depends:
+    base,
+    bytestring,
+    containers,
+    directory,
+    filepath,
+    megaparsec,
+    scientific,
+    text,
+    transformers,
+
+  default-language: GHC2024
+  default-extensions:
+    BlockArguments
+    DefaultSignatures
+    DuplicateRecordFields
+    OverloadedRecordDot
+    OverloadedStrings
+    RecordWildCards
+
+test-suite glue-test
+  type: exitcode-stdio-1.0
+  hs-source-dirs: test
+  -- cabal-gild: discover test --exclude=*/Spec.hs
+  other-modules:
+    Glue.CompileSpec
+    Glue.EnvSpec
+    Glue.ErrorContextSpec
+    Glue.EvalSpec
+    Glue.Lib.Bool.EqSpec
+    Glue.Lib.Bool.GeSpec
+    Glue.Lib.Bool.GtSpec
+    Glue.Lib.Bool.IfSpec
+    Glue.Lib.Bool.LeSpec
+    Glue.Lib.Bool.LtSpec
+    Glue.Lib.Bool.NeSpec
+    Glue.Lib.Bool.NotSpec
+    Glue.Lib.Bool.UntilSpec
+    Glue.Lib.Bool.WhenSpec
+    Glue.Lib.Bool.WhileSpec
+    Glue.Lib.Builtin.ClosureSpec
+    Glue.Lib.Builtin.DefSpec
+    Glue.Lib.Builtin.LambdaSpec
+    Glue.Lib.Builtin.SetSpec
+    Glue.Lib.List.AppendSpec
+    Glue.Lib.List.ButlastSpec
+    Glue.Lib.List.CarSpec
+    Glue.Lib.List.CdrSpec
+    Glue.Lib.List.ConsSpec
+    Glue.Lib.List.DropSpec
+    Glue.Lib.List.FilterSpec
+    Glue.Lib.List.FindSpec
+    Glue.Lib.List.FlattenSpec
+    Glue.Lib.List.LastSpec
+    Glue.Lib.List.LengthSpec
+    Glue.Lib.List.MapSpec
+    Glue.Lib.List.MemberSpec
+    Glue.Lib.List.NthSpec
+    Glue.Lib.List.PartitionSpec
+    Glue.Lib.List.PositionSpec
+    Glue.Lib.List.RemoveSpec
+    Glue.Lib.List.ReverseSpec
+    Glue.Lib.List.SortSpec
+    Glue.Lib.List.TakeSpec
+    Glue.Lib.List.ZipSpec
+    Glue.Lib.Math.Arithmetic.AddSpec
+    Glue.Lib.Math.Arithmetic.DivSpec
+    Glue.Lib.Math.Arithmetic.ModSpec
+    Glue.Lib.Math.Arithmetic.MulSpec
+    Glue.Lib.Math.Arithmetic.SubSpec
+    Glue.Lib.Math.Logarithmic.LgSpec
+    Glue.Lib.Math.Logarithmic.LnSpec
+    Glue.Lib.Math.Logarithmic.LogSpec
+    Glue.Lib.Math.Power.ExpSpec
+    Glue.Lib.Math.Power.PowSpec
+    Glue.Lib.Math.Power.SqrtSpec
+    Glue.Lib.Math.Trigonometric.AcosSpec
+    Glue.Lib.Math.Trigonometric.AsinSpec
+    Glue.Lib.Math.Trigonometric.AtanSpec
+    Glue.Lib.Math.Trigonometric.CosSpec
+    Glue.Lib.Math.Trigonometric.SinSpec
+    Glue.Lib.Math.Trigonometric.TanSpec
+    Glue.Lib.Math.Utility.AbsSpec
+    Glue.Lib.Math.Utility.CeilSpec
+    Glue.Lib.Math.Utility.FloorSpec
+    Glue.Lib.Math.Utility.MaxSpec
+    Glue.Lib.Math.Utility.MinSpec
+    Glue.Lib.Math.Utility.RoundSpec
+    Glue.Lib.Math.Utility.TruncSpec
+    Glue.ParserSpec
+    Glue.TestUtils
+
+  main-is: Spec.hs
+  build-depends:
+    QuickCheck,
+    base,
+    containers,
+    glue,
+    hspec,
+    quickcheck-instances,
+    scientific,
+    text,
+
+  build-tool-depends: hspec-discover:hspec-discover
+  default-language: GHC2024
+  default-extensions:
+    BlockArguments
+    DefaultSignatures
+    DuplicateRecordFields
+    OverloadedRecordDot
+    OverloadedStrings
+    RecordWildCards
+
+executable glue
+  hs-source-dirs: app
+  main-is: Main.hs
+  build-depends:
+    base,
+    glue,
+    text,
+
+  default-language: GHC2024
+  default-extensions:
+    BlockArguments
+    DuplicateRecordFields
+    OverloadedRecordDot
+    OverloadedStrings
+    RecordWildCards
