@@ -5,14 +5,12 @@ import Reactor.Eval (Eval)
 import Reactor.IR (Frame, IR (..), Native (..))
 import Reactor.Lib.Builtin.Def (def)
 import Reactor.Lib.Builtin.Lambda (lambda)
-import Reactor.Lib.Builtin.Quote (quote)
 import Reactor.Lib.Builtin.Set (set)
 
 builtin :: Frame Eval
 builtin =
     E.frameFromList
-        [ ("quote", Native (Special quote))
-        , ("def", Native (Special def))
+        [ ("def", Native (Special def))
         , ("set", Native (Special set))
         , ("lambda", Native (Special lambda))
         , ("\\", Native (Special lambda))

@@ -31,18 +31,11 @@ symbol = L.symbol sc
 pReactor :: Parser AST
 pReactor =
     choice
-        [ pQuoted
-        , pExprOrList
+        [ pExprOrList
         , pString
         , pNumber
         , pSymbol
         ]
-
-pQuoted :: Parser AST
-pQuoted = do
-    _ <- char '\''
-    inner <- pReactor
-    pure $ List [Symbol "quote", inner]
 
 pNumber :: Parser AST
 pNumber = try $ Number <$> lexeme (L.signed (pure ()) L.scientific)

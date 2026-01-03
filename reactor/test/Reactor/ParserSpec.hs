@@ -130,45 +130,6 @@ spec = do
             it "wraps Megaparsec errors into SyntaxError" $ do
                 parseReactor "(unclosed list" `shouldSatisfy` isLeft
 
-        describe "Quote sugar" $ do
-            it "parses quoted symbols as (quote symbol)" $ do
-                parseReactor "'foo" `shouldBe` Right (List [Symbol "quote", Symbol "foo"])
-
-            it "parses quoted lists" $ do
-                parseReactor "'(1 2)" `shouldBe` Right (List [Symbol "quote", List [Number 1, Number 2]])
-
-        describe "Advanced Quote sugar" do
-            it "parses nested quotes (quote of quote)" do
-                -- ''foo -> (quote (quote foo))
-                parseReactor "''foo"
-                    `shouldBe` Right (List [Symbol "quote", List [Symbol "quote", Symbol "foo"]])
-
-            it "parses quote inside a list" do
-                -- ('a 1) -> ((quote a) 1)
-                parseReactor "('a 1)"
-                    `shouldBe` Right (List [List [Symbol "quote", Symbol "a"], Number 1])
-
-            it "parses quote of a list with properties" do
-                -- '(:id 1) -> (quote (:id 1))
-                parseReactor "'(:id 1)"
-                    `shouldBe` Right (List [Symbol "quote", Object [("id", Number 1)]])
-
-            it "parses quote of an expression" do
-                -- '(set :x 1) -> (quote (set :x 1))
-                parseReactor "'(set :x 1)"
-                    `shouldBe` Right (List [Symbol "quote", List [Symbol "set", Object [("x", Number 1)]]])
-
-            it "parses multiple quotes in different places" do
-                -- (f 'a 'b)
-                parseReactor "(f 'a 'b)"
-                    `shouldBe` Right (List [Symbol "f", List [Symbol "quote", Symbol "a"], List [Symbol "quote", Symbol "b"]])
-
-            it "parses quote of a quote of a list" do
-                -- ''(1 2)
-                parseReactor "''(1 2)"
-                    `shouldBe` Right
-                        (List [Symbol "quote", List [Symbol "quote", List [Number 1, Number 2]]])
-
         describe "Property Access" $ do
             it "parses property access" $ do
                 parseReactor "obj.name" `shouldBe` Right (Symbol "obj.name")
@@ -178,9 +139,6 @@ spec = do
 
             it "parses nested property access" $ do
                 parseReactor "a.b.c" `shouldBe` Right (Symbol "a.b.c")
-
-            it "parses property access on quoted expression" $ do
-                parseReactor "'foo.bar" `shouldBe` Right (List [Symbol "quote", Symbol "foo.bar"])
 
             it "parses property access with numbers in name" $ do
                 parseReactor "obj.prop1" `shouldBe` Right (Symbol "obj.prop1")
