@@ -70,9 +70,9 @@ false
 '(1 2 3 4)
 '("apple" "banana" "cherry")
 
-;; Quoted expressions (data, not code)
-'(+ 1 2)                ;; → (+ 1 2) as data
-(+ 1 2)                 ;; → 3 as code
+;; Data structures
+'(1 2 3 4)               ;; List literal
+'("apple" "banana")      ;; String list
 ```
 
 ## Property Objects
@@ -278,19 +278,6 @@ math.y.sin               ;; → sine function
 
 ## Special Forms
 
-### Quoting (`'`)
-```reactor
-;; Quote prevents evaluation
-'(+ 1 2)                 ;; → (+ 1 2) as data
-(+ 1 2)                  ;; → 3 as code
-
-;; Quote objects
-'(:name "Alice")         ;; → (:name "Alice") as data
-
-;; Nested quoting
-''foo                    ;; → (quote foo)
-```
-
 ### Evaluation (`eval`)
 ```reactor
 ;; Evaluate data as code
@@ -346,7 +333,6 @@ math.y.sin               ;; → sine function
 Reactor provides special forms for control flow and evaluation:
 - `if` - conditional execution
 - `lambda` - function creation
-- `quote` - data literals
 - `def` - variable definition
 - `set` - variable mutation
 - `import` - module loading
@@ -373,7 +359,6 @@ program     ::= expr*
 expr        ::= atom
               | list
               | prop_list
-              | quoted_expr
               | symbol
 
 atom        ::= number | string | symbol | boolean
@@ -381,8 +366,6 @@ atom        ::= number | string | symbol | boolean
 list        ::= "(" expr* ")"
 
 prop_list   ::= "(" (":" symbol expr)* ")"
-
-quoted_expr ::= "'" expr
 
 symbol      ::= letter (letter | digit | "-" | "_" | ".")*
 

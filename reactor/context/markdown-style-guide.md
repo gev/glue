@@ -37,7 +37,7 @@ data AST where
 #### EBNF Grammar
 ```ebnf
 program         ::= expr
-expr            ::= atom | list | prop_list | quoted_expr
+expr            ::= atom | list | prop_list
 atom            ::= number | string | symbol
 ```
 
