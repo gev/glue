@@ -2,7 +2,7 @@
 
 ## Overview
 
-Special forms are built-in operations that don't follow normal evaluation rules. They control evaluation itself, perform side effects, or create new evaluation contexts. Reactor's special forms include `def`, `lambda`, `quote`, and `set`.
+Special forms are built-in operations that don't follow normal evaluation rules. They control evaluation itself, perform side effects, or create new evaluation contexts. Reactor's special forms include `def`, `lambda`, and `set`.
 
 ## Def (Definition)
 
@@ -41,25 +41,6 @@ New definitions can shadow existing bindings in outer scopes.
 ### Lexical Scoping
 Closures capture their definition environment, enabling proper lexical scoping.
 
-## Quote (Data Literal)
-
-**Input:** `(quote expression)`
-**Process:** Return expression as data without evaluation
-**Output:** The unevaluated expression as an IR value
-
-### Evaluation Rules
-1. Do not evaluate the `expression`
-2. Convert AST representation to IR data structure
-3. Return as literal data
-
-### Examples
-- `(quote (+ 1 2))` → returns `List [Symbol "+", Number 1, Number 2]`
-- `(quote (list a b c))` → returns unevaluated list structure
-
-### Shorthand
-The `'` syntax is shorthand for quote:
-- `'(+ 1 2)` ≡ `(quote (+ 1 2))`
-
 ## Set (Mutation)
 
 **Input:** `(set target value)`
@@ -97,7 +78,6 @@ The `'` syntax is shorthand for quote:
 Special forms don't evaluate all arguments:
 - `def`: evaluates value, not symbol
 - `lambda`: evaluates nothing (creates binding context)
-- `quote`: evaluates nothing (returns literal)
 - `set`: evaluates value, target depends on form
 
 ### Side Effects
@@ -105,13 +85,11 @@ Special forms can modify evaluation state:
 - `def`: adds bindings to environment
 - `set`: modifies existing bindings
 - `lambda`: creates closure (no side effect)
-- `quote`: pure data transformation
 
 ### Return Values
 Special forms return meaningful values:
 - `def`: returns the defined value
 - `lambda`: returns the closure
-- `quote`: returns the quoted data
 - `set`: returns the assigned value
 
 ## Error Conditions
@@ -123,9 +101,6 @@ Special forms return meaningful values:
 ### Lambda Errors
 - Parameter names must be valid symbols
 - Duplicate parameter names not allowed
-
-### Quote Errors
-- Any expression can be quoted (no errors)
 
 ### Set Errors
 - Target variable must exist (for variable update)
@@ -139,9 +114,6 @@ Special forms that modify environment (`def`, `set`) affect the current evaluati
 
 ### Closure Creation
 `lambda` creates first-class functions that can be stored, passed as arguments, and called multiple times.
-
-### Data vs Code Distinction
-`quote` enables the crucial distinction between code (to be evaluated) and data (literal values) in Lisp-style languages.
 
 ### Mutation Semantics
 `set` provides controlled mutation while maintaining functional programming principles through explicit operations.

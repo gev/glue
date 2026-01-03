@@ -19,7 +19,7 @@ Reactor is a **embeddable Lisp-inspired scripting language** designed for operat
 - **🔧 Property Objects**: Built-in support for structured data with dot notation access
 - **λ Lambda Functions**: First-class functions with lexical scoping
 - **📦 Immutable Data**: Pure functional programming paradigm
-- **🎨 Quote Sugar**: Convenient `'` syntax for data literals
+
 
 ## 📖 Language Guide
 
@@ -84,7 +84,7 @@ For detailed information about binding semantics, scope rules, and the differenc
 
 For a complete syntax reference including grammar, operators, and advanced features, see [`SYNTAX.md`](SYNTAX.md).
 
-For technical details about the AST and IR representations, see [`AST.md`](AST.md), [`IR.md`](IR.md), [`COMPILATION.md`](COMPILATION.md), [`EVALUATION.md`](EVALUATION.md), and [`EVALSTATE.md`](EVALSTATE.md). For detailed evaluation rules, see [`EVALUATION_PRIMITIVES.md`](EVALUATION_PRIMITIVES.md), [`EVALUATION_SYMBOLS.md`](EVALUATION_SYMBOLS.md), [`EVALUATION_FUNCTIONS.md`](EVALUATION_FUNCTIONS.md), [`EVALUATION_DATA.md`](EVALUATION_DATA.md), [`EVALUATION_MODULES.md`](EVALUATION_MODULES.md), [`EVALUATION_DEF.md`](EVALUATION_DEF.md), [`EVALUATION_LAMBDA.md`](EVALUATION_LAMBDA.md), [`EVALUATION_QUOTE.md`](EVALUATION_QUOTE.md), and [`EVALUATION_SET.md`](EVALUATION_SET.md).
+For technical details about the AST and IR representations, see [`AST.md`](AST.md), [`IR.md`](IR.md), [`COMPILATION.md`](COMPILATION.md), [`EVALUATION.md`](EVALUATION.md), and [`EVALSTATE.md`](EVALSTATE.md). For detailed evaluation rules, see [`EVALUATION_PRIMITIVES.md`](EVALUATION_PRIMITIVES.md), [`EVALUATION_SYMBOLS.md`](EVALUATION_SYMBOLS.md), [`EVALUATION_FUNCTIONS.md`](EVALUATION_FUNCTIONS.md), [`EVALUATION_DATA.md`](EVALUATION_DATA.md), [`EVALUATION_MODULES.md`](EVALUATION_MODULES.md), [`EVALUATION_DEF.md`](EVALUATION_DEF.md), [`EVALUATION_LAMBDA.md`](EVALUATION_LAMBDA.md), and [`EVALUATION_SET.md`](EVALUATION_SET.md).
 
 ### λ Lambda Functions
 
@@ -107,24 +107,6 @@ For technical details about the AST and IR representations, see [`AST.md`](AST.m
 (def make-adder (lambda (x) (lambda (y) (+ x y))))
 (def add-five (make-adder 5))
 (add-five 3)  ; → 8
-```
-
-### 🎯 Data Literals with Quote
-
-Use `'` (quote) to create data literals instead of function calls:
-
-```clojure
-; Without quote - function call
-(+ 1 2)  ; → 3
-
-; With quote - data literal
-'(+ 1 2)  ; → (+ 1 2) as data
-
-; Quoted objects
-'(:name "Alice" :age 30)  ; → {:name "Alice", :age 30}
-
-; Nested quotes
-''foo  ; → (quote foo)
 ```
 
 ## 🔌 Embedding & FFI Integration
@@ -486,7 +468,6 @@ expr        ::= atom
               | list
               | prop_list
               | prop_access
-              | quoted_expr
 
 atom        ::= number | string | symbol
 
@@ -496,7 +477,7 @@ prop_list   ::= "(" (":" symbol expr)* ")"
 
 prop_access ::= expr "." symbol
 
-quoted_expr ::= "'" expr
+
 
 number      ::= digit+ ["." digit+]
 

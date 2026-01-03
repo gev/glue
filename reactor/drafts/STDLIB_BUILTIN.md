@@ -9,7 +9,6 @@ The builtin module includes fundamental operations that form the basis of Reacto
 - **def** - Variable definition
 - **lambda** (\\) - Function creation
 - **set** - Variable mutation
-- **quote** - Data literal creation
 - **import** - Module loading
 
 ## def
@@ -68,24 +67,6 @@ Updates the value of an existing variable.
 ```
 (def x 1)
 (set x 2)  ; x is now 2
-```
-
-## quote
-
-Prevents evaluation of its argument, returning it as literal data.
-
-**Syntax:**
-```
-(quote expression)
-```
-
-**Parameters:**
-- `expression` - The expression to quote (not evaluated)
-
-**Examples:**
-```
-(quote x)        ; returns the symbol x
-(quote (1 2 3))  ; returns the list (1 2 3)
 ```
 
 ## import

@@ -2,11 +2,28 @@
 
 ## 📋 Overview
 
-Reactor is a modern Lisp-inspired programming language designed for embedded scripting, domain-specific languages, and functional programming. This document outlines the core design goals, principles, and objectives that guide Reactor's development.
+Reactor is a **universal scripting glue** that connects rich host language systems. It receives **domain objects, DTOs, and dictionaries** constructed by host languages and evaluates business logic against them using FFI bindings to domain services, repositories, and UI components. Reactor serves as a powerful intermediary layer - a "glue on steroids" - between strongly-typed host systems and dynamic business requirements.
 
 ## 🎯 Core Design Goals
 
-### 1. 🎯 Simplicity and Expressiveness
+### 1. 🎯 Glue on Steroids Architecture
+
+**Universal Scripting Glue**
+- Reactor serves as a powerful intermediary layer between strongly-typed host systems and dynamic business requirements
+- Receives domain objects, DTOs, and dictionaries constructed by host languages
+- Evaluates business logic using FFI bindings to domain services, repositories, and UI components
+
+**Scripting Intermediary**
+- Host languages handle complex type systems and data construction
+- Reactor provides the execution runtime and FFI connectivity
+- Lightweight scripting for business rules and UI logic
+
+**Domain Object Processing**
+- Processes business entities, DTOs, and structured data from host languages
+- Manipulates domain models with functional programming patterns
+- Provides transformation and validation logic for domain data
+
+### 2. 🎯 Simplicity and Expressiveness
 
 **Minimal Syntax, Maximum Power**
 - Reactor uses a clean, consistent syntax inspired by Lisp
@@ -18,7 +35,7 @@ Reactor is a modern Lisp-inspired programming language designed for embedded scr
 - Consistent behavior across all language constructs
 - Clear separation between data and code
 
-### 2. 🛡️ Safety and Reliability
+### 3. 🛡️ Safety and Reliability
 
 **Type Safety Through Design**
 - Runtime type checking prevents common programming errors
@@ -30,7 +47,7 @@ Reactor is a modern Lisp-inspired programming language designed for embedded scr
 - Evaluation model avoids undefined behavior
 - Comprehensive error messages for debugging
 
-### 3. 🔌 Embedding and Scripting
+### 4. 🔌 Embedding and Scripting
 
 **Seamless Host Integration**
 - Designed to embed seamlessly in existing applications
@@ -50,19 +67,19 @@ Reactor is a modern Lisp-inspired programming language designed for embedded scr
 - Environment-specific settings
 - Configuration inheritance and overrides
 
-### 4. 🛠️ Domain-Specific Language (DSL) Creation
+### 5. 🛠️ Structured Data Processing
 
-**DSL Construction Framework**
-- Easy creation of domain-specific languages
-- Configurable evaluation environments
+**DTO Execution Engine**
+- Processes structured data from host languages
+- Evaluates business rules and UI logic as data structures
+- FFI integration for domain service calls
 
-**Language Composition**
-- Mix and match language features
-- Hierarchical DSL embedding
-- Controlled scoping and isolation
-- Safe language boundaries
+**Data Transformation**
+- Functional manipulation of domain objects and dictionaries
+- Validation and business rule application
+- Data flow between host systems and UI components
 
-### 5. 🖥️ Server-Driven UI (SDUI) / Backend-Driven UI (BDUI) Support
+### 6. 🖥️ Server-Driven UI (SDUI) / Backend-Driven UI (BDUI) Support
 
 **Dynamic UI Generation**
 - Runtime UI component creation and manipulation
@@ -79,7 +96,7 @@ Reactor is a modern Lisp-inspired programming language designed for embedded scr
 - Reusable UI building blocks
 - Functional composition of UI elements
 
-### 6. Modern Language Features
+### 7. Modern Language Features
 
 **Functional Programming**
 - First-class functions and closures
@@ -120,6 +137,16 @@ Reactor is a modern Lisp-inspired programming language designed for embedded scr
 ## Design Constraints
 
 ### Explicit Non-Goals
+
+**Complex Metaprogramming**
+- No quote/eval for code manipulation within Reactor
+- No advanced macro system or code generation
+- Host languages handle complex type construction and metaprogramming
+
+**Standalone Application Development**
+- Not designed for building entire systems from scratch
+- Not a replacement for rich host language ecosystems
+- Focus on connecting existing systems, not creating new ones
 
 **Performance-Critical Systems**
 - Not optimized for high-performance computing
