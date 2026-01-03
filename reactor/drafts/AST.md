@@ -74,7 +74,6 @@ Represents function calls, special forms, and data lists.
 ```reactor
 (+ 1 2 3)           ;; Function call
 (if (> x 0) x (- x)) ;; Special form
-'(1 2 3)            ;; Quoted list
 (list a b c)        ;; Function call
 ```
 
@@ -99,11 +98,10 @@ Reactor's parser follows these rules to convert source text into AST:
 
 Expressions are parsed in this order of priority (highest first):
 
-1. **Quoted expressions** (`'expr`)
-2. **Lists and property objects** (`(expr...)`, `(:key val...)`)
-3. **String literals** (`"text"`)
-4. **Numbers** (`42`, `3.14`)
-5. **Symbols** (`x`, `+`, `obj.field`)
+1. **Lists and property objects** (`(expr...)`, `(:key val...)`)
+2. **String literals** (`"text"`)
+3. **Numbers** (`42`, `3.14`)
+4. **Symbols** (`x`, `+`, `obj.field`)
 
 ### Whitespace & Comments
 
@@ -154,14 +152,7 @@ Expressions are parsed in this order of priority (highest first):
 - Containing spaces: `my var`
 - Empty symbols
 
-### Quoted Expressions
 
-**Rule:** `'` followed by any expression becomes `(quote expression)`.
-
-**Examples:**
-- `'x` → `AtomList [Symbol "quote", Symbol "x"]`
-- `'(+ 1 2)` → `AtomList [Symbol "quote", AtomList [Symbol "+", Number 1, Number 2]]`
-- `''foo` → `AtomList [Symbol "quote", AtomList [Symbol "quote", Symbol "foo"]]`
 
 ### Lists
 
