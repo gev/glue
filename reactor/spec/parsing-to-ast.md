@@ -65,16 +65,14 @@ The parser uses a recursive descent approach following the EBNF grammar defined 
 
 - **Atomic expressions**: Numbers, Strings, and Symbols
 - **Compound expressions**: Lists and Objects
-- **Quoted expressions**: Data literals using the `'` prefix
 
 ### Parsing Precedence
 
 Expressions are parsed in this order of priority (highest first):
 
-1. **Quoted expressions** (`'expr`)
-2. **Lists and property objects** (`(expr...)`, `(:key val...)`)
-3. **Atomic literals** (numbers, strings)
-4. **Symbols** (identifiers, operators)
+1. **Lists and property objects** (`(expr...)`, `(:key val...)`)
+2. **Atomic literals** (numbers, strings)
+3. **Symbols** (identifiers, operators)
 
 ## AST Construction
 
@@ -193,41 +191,7 @@ AST: Object [
 ]
 ```
 
-### Quoted Expressions
 
-**Quote Sugar Overview:**
-The `'` prefix is syntactic sugar that transforms any expression into a `(quote ...)` form. This allows treating code as data, which is fundamental to Lisp-style metaprogramming.
-
-**Why Quote Sugar Matters:**
-- Enables treating code as data structures
-- Allows building programs that write programs
-- Essential for Lisp's homoiconicity
-
-#### Simple Quoting
-```text
-Input: "'x"
-```
-```text
-AST: List [Symbol "quote", Symbol "x"]
-```
-The symbol `x` becomes data instead of a variable reference.
-
-#### Complex Quoting
-```text
-Input: "'(+ 1 2)"
-```
-```text
-AST: List [Symbol "quote", List [Symbol "+", Number 1, Number 2]]
-```
-The entire function call becomes a data structure.
-
-#### Nested Quoting
-```text
-Input: "''foo"
-```
-```text
-AST: List [Symbol "quote", List [Symbol "quote", Symbol "foo"]]
-```
 
 ## Parsing Algorithm
 

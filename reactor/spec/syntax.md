@@ -66,12 +66,7 @@ Lists not beginning with a symbol are evaluated as data structures.
 (("a" "b") ("c" "d"))   ; nested lists
 ```
 
-Quoted lists always represent literal data.
-```closure
-'(1 2 3 4)
-'("apple" "banana" "cherry")
-'(+ 1 2)                ; quoted expression as data
-```
+
 
 ### Property Objects
 
@@ -139,12 +134,7 @@ Special forms have evaluation rules different from regular function calls.
 (if (even? x) "even" "odd")
 ```
 
-#### Quoting
-```closure
-'(+ 1 2)                 ; prevents evaluation
-'(:name "Alice")         ; object literal
-''foo                    ; nested quote
-```
+
 
 ## Operators
 
@@ -225,18 +215,17 @@ Modules define namespaces and exports.
 
 ```ebnf
 program         ::= expr
-expr            ::= atom | list | prop_list | quoted_expr
-atom            ::= number | string | symbol 
+expr            ::= atom | list | prop_list
+atom            ::= number | string | symbol
 list            ::= "(" expr* ")"
 prop_list       ::= "(" (":" symbol expr)* ")"
-quoted_expr     ::= "'" expr
 symbol          ::= (letter | special_char) (letter | digit | special_char | ":")*
 number          ::= ["+" | "-"] digit+ ["." digit+] [("e"|"E") ["+"|"-"] digit+]
 string          ::= '"' char* '"'
 special_char    ::= arithmetic | comparison | logical | separators
-arithmetic      := "+" | "-" | "*" | "/" | "%" 
-comparison      := "=" | "<" | ">" 
-logical         := "&" | "|" | "!" 
+arithmetic      := "+" | "-" | "*" | "/" | "%"
+comparison      := "=" | "<" | ">"
+logical         := "&" | "|" | "!"
 separators      := "?" | "\" | "$" | "@" | "#" | "_" | "." | "'"
 ```
 
@@ -244,7 +233,7 @@ separators      := "?" | "\" | "$" | "@" | "#" | "_" | "." | "'"
 
 Reactor follows Lisp-1 evaluation rules:
 - Symbols resolve in the current lexical environment
-- Lists are evaluated based on their first element: as function applications if starting with a symbol, as data structures otherwise, unless quoted
+- Lists are evaluated based on their first element: as function applications if starting with a symbol, as data structures otherwise
 - Property objects are evaluated with computed values
 - Special forms have custom evaluation rules
 
