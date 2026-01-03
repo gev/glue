@@ -1,0 +1,60 @@
+{
+	"scopeName": "source.glue",
+	"name": "Glue",
+	"fileTypes": [
+		"glue"
+	],
+	"patterns": [
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#numbers"
+		},
+		{
+			"include": "#lists"
+		},
+		{
+			"include": "#symbols"
+		}
+	],
+	"repository": {
+		"comments": {
+			"match": ";.*$",
+			"name": "comment.line.semicolon.glue"
+		},
+		"keywords": {
+			"match": ":[a-zA-Z0-9\\-/\\.]+",
+			"name": "keyword.other.glue"
+		},
+		"strings": {
+			"begin": "\"",
+			"end": "\"",
+			"name": "string.quoted.double.glue"
+		},
+		"numbers": {
+			"match": "\\b\\d+\\b",
+			"name": "constant.numeric.glue"
+		},
+		"symbols": {
+			"match": "\\b[a-zA-Z_][a-zA-Z0-9_\\-]*\\b",
+			"name": "variable.other.glue"
+		},
+		"lists": {
+			"begin": "\\(",
+			"end": "\\)",
+			"name": "meta.list.glue",
+			"patterns": [
+				{
+					"include": "$self"
+				}
+			]
+		}
+	}
+}
