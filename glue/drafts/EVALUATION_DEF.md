@@ -19,7 +19,7 @@
 ## Examples
 
 ### Simple Definition
-```reactor
+```closure
 (def x 42)
 ```
 **Process:**
@@ -28,7 +28,7 @@
 3. Return `42`
 
 ### Computed Definition
-```reactor
+```closure
 (def result (+ 1 2 3))
 ```
 **Process:**
@@ -37,7 +37,7 @@
 3. Return `6`
 
 ### Object Definition
-```reactor
+```closure
 (def user (:name "Alice" :age 30))
 ```
 **Process:**
@@ -49,7 +49,7 @@
 
 `def` can shadow existing bindings from outer scopes:
 
-```reactor
+```closure
 (def x 1)        ; global x = 1
 (lambda ()
   (def x 2)      ; local x = 2 (shadows global)
@@ -80,7 +80,7 @@ Definitions are scoped to the current environment frame:
 
 `def` always returns the value being bound, enabling chaining:
 
-```reactor
+```closure
 (def config
   (def defaults (:debug false :port 8080))
   (:inherit defaults :timeout 5000))

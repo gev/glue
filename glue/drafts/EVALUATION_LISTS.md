@@ -60,7 +60,7 @@ Lists serve dual purpose based on evaluation:
 
 ## List Evaluation Examples
 
-```reactor
+```closure
 ;; Function call - single symbol
 (println)  ;; Call println with no args
 

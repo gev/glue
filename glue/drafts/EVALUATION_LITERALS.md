@@ -51,7 +51,7 @@ eval v = pure (Just v)  -- Literals return themselves
 
 ## Examples
 
-```reactor
+```closure
 ;; Numbers
 42        ;; → 42
 3.14159   ;; → 3.14159

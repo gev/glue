@@ -27,7 +27,7 @@ Native function evaluation executes host language functions integrated into the 
 
 ## Native Function Examples
 
-```reactor
+```closure
 ;; Arithmetic function
 (+ 1 2 3)  ;; Native Func: adds numbers → 6
 

@@ -30,7 +30,7 @@ Object evaluation processes key-value mappings by evaluating all property values
 
 ## Object Evaluation Examples
 
-```reactor
+```closure
 ;; Simple object
 (:name "Alice" :age 25)
 ;; → Object [("name", String "Alice"), ("age", Number 25)]
@@ -116,13 +116,13 @@ evalObject objMap = do
 ## Object Operations
 
 ### Property Access
-```reactor
+```closure
 (:x 1 :y 2).x  ;; → 1
 (:x 1 :y 2).z  ;; Error: PropertyNotFound
 ```
 
 ### Object Construction
-```reactor
+```closure
 (def obj (:a 1 :b 2))  ;; Create object
 (set obj.c 3)          ;; Add property
 ```

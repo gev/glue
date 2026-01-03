@@ -21,7 +21,7 @@ Symbol evaluation resolves simple identifiers to their bound values in the curre
 
 ## Symbol Examples
 
-```reactor
+```closure
 ;; Variable lookup
 x           ;; Find 'x' in environment
 
@@ -53,21 +53,21 @@ pi          ;; Find 'pi' constant
 
 ### Local Scope
 Variables defined in current function/block:
-```reactor
+```closure
 (def local 42)  ;; Available in current scope
 local           ;; → 42
 ```
 
 ### Function Parameters
 Parameters bound at function entry:
-```reactor
+```closure
 (lambda (param)
   param)        ;; 'param' available in function body
 ```
 
 ### Global Scope
 Builtins and user-defined globals:
-```reactor
+```closure
 (+ 1 2)         ;; '+' is a builtin
 ```
 

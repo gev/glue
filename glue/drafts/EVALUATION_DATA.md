@@ -39,7 +39,7 @@ Lists serve dual purpose:
 - Structure and keys maintain original form
 
 ### Examples
-```reactor
+```closure
 (:name "Alice" :age (+ 20 5))
 ```
 **Input:** `Object [("name", String "Alice"), ("age", List [Symbol "+", Number 20, Number 5])]`
@@ -54,7 +54,7 @@ Data structures evaluate recursively:
 - Evaluation continues until primitive values reached
 
 ### Complex Nesting
-```reactor
+```closure
 (:data (1 2 (:nested "value")) :func (+ 1 2))
 ```
 Evaluates to fully resolved nested structure with computed values.

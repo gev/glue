@@ -39,7 +39,7 @@ Variable lookup searches from top frame to bottom frame:
 
 Creates new bindings in the current (top) frame:
 
-```reactor
+```closure
 (def x 42)        ;; Creates x = 42 in current frame
 (def y "hello")   ;; Creates y = "hello" in current frame
 ```
@@ -48,7 +48,7 @@ Creates new bindings in the current (top) frame:
 
 Updates existing bindings by searching through the frame stack:
 
-```reactor
+```closure
 (set x 100)       ;; Updates x in whichever frame it exists
 ```
 
@@ -58,7 +58,7 @@ Updates existing bindings by searching through the frame stack:
 
 Variables are resolved in the environment where they are defined:
 
-```reactor
+```closure
 (def x 1)               ;; Bottom frame
 
 (lambda ()
@@ -71,7 +71,7 @@ Variables are resolved in the environment where they are defined:
 
 Inner scopes can shadow outer scope variables:
 
-```reactor
+```closure
 (def x 1)               ;; Global x = 1
 
 (lambda ()
@@ -88,7 +88,7 @@ x                       ;; → 1 (global still exists)
 
 Each function call creates a new frame:
 
-```reactor
+```closure
 (lambda (param)
   (def local-var 42)
   (+ param local-var))
@@ -113,7 +113,7 @@ Execution creates frames:
 
 Direct lookup in frame stack:
 
-```reactor
+```closure
 x  ;; Lookup 'x' from top frame downward
 ```
 
@@ -121,7 +121,7 @@ x  ;; Lookup 'x' from top frame downward
 
 Hierarchical property access:
 
-```reactor
+```closure
 obj.field        ;; Access 'field' property of 'obj'
 obj.nested.value ;; Deep property access
 ```

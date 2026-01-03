@@ -32,7 +32,7 @@ Extended Environment (used for body evaluation)
 
 ## Closure Examples
 
-```reactor
+```closure
 ;; Define closure
 (def add (lambda (x y) (+ x y)))
 
@@ -114,7 +114,7 @@ applyClosure params body capturedEnv args = do
 ## Common Patterns
 
 ### Higher-Order Functions
-```reactor
+```closure
 (def map (lambda (f list)
   (if (empty? list)
       ()
@@ -125,7 +125,7 @@ applyClosure params body capturedEnv args = do
 ```
 
 ### Function Factories
-```reactor
+```closure
 (def make-counter
   (lambda (start)
     (lambda ()

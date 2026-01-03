@@ -11,13 +11,13 @@ Reactor provides sophisticated variable binding semantics with clear distinction
 **Purpose**: Creates new bindings in the current lexical environment.
 
 #### Simple Symbols
-```reactor
+```closure
 (def x 42)        ;; Creates local variable x = 42
 (def y "hello")   ;; Creates local variable y = "hello"
 ```
 
 #### Dotted Symbols (Object Extension)
-```reactor
+```closure
 (def obj.a 1)     ;; Creates local obj = {:a 1}
 (def obj.b 2)     ;; Extends local obj = {:a 1, :b 2}
 ```
@@ -33,12 +33,12 @@ Reactor provides sophisticated variable binding semantics with clear distinction
 **Purpose**: Modifies existing variables in the global environment.
 
 #### Simple Symbols
-```reactor
+```closure
 (set x 100)       ;; Updates global variable x to 100
 ```
 
 #### Dotted Symbols (Property Setting)
-```reactor
+```closure
 (set obj.field value)  ;; Updates global obj.field
 ```
 
@@ -53,12 +53,12 @@ Reactor provides sophisticated variable binding semantics with clear distinction
 **Purpose**: Brings module exports into the current lexical environment.
 
 #### Simple Modules
-```reactor
+```closure
 (import math.x)   ;; Creates local math = (:x module)
 ```
 
 #### Dotted Modules
-```reactor
+```closure
 (import math.x.y) ;; Creates hierarchical local structure math = (:x (:y module))
 ```
 
@@ -72,7 +72,7 @@ Reactor provides sophisticated variable binding semantics with clear distinction
 
 ### Lexical vs Dynamic Scope
 
-```reactor
+```closure
 ;; Global scope
 (def global-obj (:a 1))
 
@@ -90,7 +90,7 @@ global-obj                ;; → {:a 1, :c 3} (global mutation)
 
 ### Shadowing Behavior
 
-```reactor
+```closure
 (def x 1)                 ;; Global x = 1
 
 (lambda ()
@@ -105,7 +105,7 @@ x                          ;; → 1 (global still exists)
 
 ### Pattern 1: Global Object Building with `set`
 
-```reactor
+```closure
 (def config (:debug false))
 (set config.logging.level "info")    ;; Requires config to exist
 (set config.database.host "localhost")
@@ -114,7 +114,7 @@ x                          ;; → 1 (global still exists)
 
 ### Pattern 2: Local Object Extension with `def`
 
-```reactor
+```closure
 (lambda (base-config)
   (def base-config.timeout 30)       ;; Local extension
   (def base-config.retries 3)        ;; More local extensions
@@ -125,7 +125,7 @@ x                          ;; → 1 (global still exists)
 
 ### Pattern 3: Module Composition with `import`
 
-```reactor
+```closure
 (import math.x)        ;; Local binding: x = math.x
 (import math.y)        ;; Local binding: y = math.y
 (x.cos 0.5)           ;; Use local x
@@ -155,21 +155,21 @@ x                          ;; → 1 (global still exists)
 ## Error Conditions
 
 ### `def` Errors
-```reactor
+```closure
 (def x.y 1)      ;; OK - creates local object
 (def nonexistent.field 2)  ;; OK - creates new local object
 ;; No errors - always succeeds by creating local bindings
 ```
 
 ### `set` Errors
-```reactor
+```closure
 (set nonexistent 1)        ;; ERROR: unbound variable
 (set nonexistent.field 1)  ;; ERROR: object doesn't exist
 ;; No other errors - set accepts DottedSymbol directly
 ```
 
 ### `import` Errors
-```reactor
+```closure
 (import nonexistent)       ;; ERROR: module not found
 ;; No other errors - modules are always available once imported
 ```
@@ -178,7 +178,7 @@ x                          ;; → 1 (global still exists)
 
 ### Functional Object Extension
 
-```reactor
+```closure
 (def create-extended-config
   (lambda (base)
     (lambda ()
@@ -193,7 +193,7 @@ x                          ;; → 1 (global still exists)
 
 ### Module Namespace Management
 
-```reactor
+```closure
 ;; Selective importing
 (import math.x (cos sin as trig-functions))
 trig-functions.cos  ;; → cos function
@@ -205,7 +205,7 @@ trig.cos  ;; → cos function
 
 ### Hybrid Data/Code Composition
 
-```reactor
+```closure
 ;; Mix data and imported functions
 (def ui (:theme "dark"
          :components (:button math.x :input math.y)))

@@ -9,21 +9,21 @@ Reactor uses a Lisp-inspired syntax with modern enhancements for property object
 ### Atoms (Primitive Values)
 
 #### Numbers
-```reactor
+```closure
 42          ;; Integer
 3.14159     ;; Float
 -273.15     ;; Negative float
 ```
 
 #### Strings
-```reactor
+```closure
 "hello world"
 "multi\nline\tstring"
 "quote: \" and backslash: \\"
 ```
 
 #### Symbols (Identifiers)
-```reactor
+```closure
 my-variable
 function-name
 x
@@ -32,13 +32,13 @@ math.pi
 ```
 
 #### Booleans
-```reactor
+```closure
 true
 false
 ```
 
 ### Comments
-```reactor
+```closure
 ;; Single line comment
 
 ;; Multi-line comments
@@ -50,7 +50,7 @@ false
 ## Lists (Function Calls & Data Structures)
 
 ### Function Calls
-```reactor
+```closure
 ;; Basic function call
 (+ 1 2 3)              ;; → 6
 
@@ -65,7 +65,7 @@ false
 ```
 
 ### Data Lists
-```reactor
+```closure
 ;; List literals
 '(1 2 3 4)
 '("apple" "banana" "cherry")
@@ -78,7 +78,7 @@ false
 ## Property Objects
 
 ### Basic Object Creation
-```reactor
+```closure
 ;; Empty object
 (:)
 
@@ -94,7 +94,7 @@ false
 ```
 
 ### Property Access
-```reactor
+```closure
 ;; Direct property access
 (:name "Alice").name           ;; → "Alice"
 
@@ -107,7 +107,7 @@ user.address.city              ;; → nested access
 ```
 
 ### Property Update
-```reactor
+```closure
 ;; Create object
 (def user (:name "Alice" :age 30))
 
@@ -121,7 +121,7 @@ user.address.city              ;; → nested access
 ## Variable Management
 
 ### Definition (`def`)
-```reactor
+```closure
 ;; Simple variables
 (def x 42)
 (def greeting "Hello")
@@ -134,7 +134,7 @@ user.address.city              ;; → nested access
 ```
 
 ### Mutation (`set`)
-```reactor
+```closure
 ;; Variable update
 (set x 100)
 
@@ -146,7 +146,7 @@ user.address.city              ;; → nested access
 ```
 
 ### Import (`import`)
-```reactor
+```closure
 ;; Module import
 (import math.x)         ;; Import specific module
 (import math)           ;; Import namespace (if supported)
@@ -158,7 +158,7 @@ user.address.city              ;; → nested access
 ## Functions
 
 ### Lambda Functions
-```reactor
+```closure
 ;; Anonymous function
 (lambda (x) (* x x))
 
@@ -175,7 +175,7 @@ user.address.city              ;; → nested access
 ```
 
 ### Function Application
-```reactor
+```closure
 ;; Direct call
 ((lambda (x) (* x 2)) 5)  ;; → 10
 
@@ -191,7 +191,7 @@ user.address.city              ;; → nested access
 ## Control Flow
 
 ### Conditional (`if`)
-```reactor
+```closure
 ;; Basic conditional
 (if (> x 0) "positive" "non-positive")
 
@@ -207,7 +207,7 @@ user.address.city              ;; → nested access
 ```
 
 ### Logical Operators
-```reactor
+```closure
 ;; And
 (and (> x 0) (< x 100))  ;; → true if 0 < x < 100
 
@@ -221,7 +221,7 @@ user.address.city              ;; → nested access
 ## Data Structures
 
 ### Lists
-```reactor
+```closure
 ;; List creation
 (list 1 2 3 4)
 '(1 2 3 4)               ;; Quoted list
@@ -238,7 +238,7 @@ user.address.city              ;; → nested access
 ```
 
 ### Objects as Maps
-```reactor
+```closure
 ;; Object creation
 (def person (:name "Alice" :age 30))
 
@@ -255,7 +255,7 @@ person.age               ;; → 30
 ## Modules and Namespaces
 
 ### Module Definition
-```reactor
+```closure
 ;; Module files define exports
 ;; math.x.reactor
 (def pi 3.14159)
@@ -264,7 +264,7 @@ person.age               ;; → 30
 ```
 
 ### Module Usage
-```reactor
+```closure
 ;; Import specific functions
 (import math.x)
 math.x.cos               ;; → cosine function
@@ -279,7 +279,7 @@ math.y.sin               ;; → sine function
 ## Special Forms
 
 ### Evaluation (`eval`)
-```reactor
+```closure
 ;; Evaluate data as code
 (eval '(+ 1 2))          ;; → 3
 (eval (list '+ 1 2))     ;; → 3
@@ -292,7 +292,7 @@ math.y.sin               ;; → sine function
 ## Operators
 
 ### Arithmetic
-```reactor
+```closure
 (+ 1 2 3)                ;; → 6
 (- 10 3)                 ;; → 7
 (* 2 3 4)                ;; → 24
@@ -301,7 +301,7 @@ math.y.sin               ;; → sine function
 ```
 
 ### Comparison
-```reactor
+```closure
 (= 1 1)                  ;; → true
 (!= 1 2)                 ;; → true
 (< 1 2 3)                ;; → true (1 < 2 < 3)
@@ -311,7 +311,7 @@ math.y.sin               ;; → sine function
 ```
 
 ### String Operations
-```reactor
+```closure
 (str "Hello" " " "World")  ;; → "Hello World"
 (length "hello")          ;; → 5
 (substring "hello" 1 3)   ;; → "el"
@@ -321,7 +321,7 @@ math.y.sin               ;; → sine function
 ## Advanced Features
 
 ### Pattern Matching (if supported)
-```reactor
+```closure
 ;; Hypothetical pattern matching
 (match value
   (:type "user" :name n)  (str "User: " n)
@@ -338,7 +338,7 @@ Reactor provides special forms for control flow and evaluation:
 - `import` - module loading
 
 ### Error Handling
-```reactor
+```closure
 ;; Try/catch (if supported)
 (try
   (/ 10 0)
@@ -393,12 +393,12 @@ Reactor is a Lisp-1 with no operator precedence:
 ## Examples
 
 ### Hello World
-```reactor
+```closure
 (print "Hello, World!")
 ```
 
 ### Factorial
-```reactor
+```closure
 (def factorial
   (lambda (n)
     (if (= n 0)
@@ -409,7 +409,7 @@ Reactor is a Lisp-1 with no operator precedence:
 ```
 
 ### Object Processing
-```reactor
+```closure
 (def users ((:name "Alice" :age 30)
             (:name "Bob" :age 25)
             (:name "Charlie" :age 35)))
@@ -422,7 +422,7 @@ Reactor is a Lisp-1 with no operator precedence:
 ```
 
 ### Configuration Management
-```reactor
+```closure
 (def config (:debug false :port 8080))
 
 ;; Local configuration extension
