@@ -90,14 +90,6 @@ library
     Reactor.Lib.Math.Utility.Min
     Reactor.Lib.Math.Utility.Round
     Reactor.Lib.Math.Utility.Trunc
-    Reactor.Module
-    Reactor.Module.Cache
-    Reactor.Module.Error
-    Reactor.Module.Import
-    Reactor.Module.Loader
-    Reactor.Module.Registration
-    Reactor.Module.Registry
-    Reactor.Module.System
     Reactor.Parser
     Reactor.Parser.Error
     Spec.Device
@@ -191,10 +183,6 @@ test-suite reactor-test
     Reactor.Lib.Math.Utility.MinSpec
     Reactor.Lib.Math.Utility.RoundSpec
     Reactor.Lib.Math.Utility.TruncSpec
-    Reactor.Module.CacheSpec
-    Reactor.Module.ImportSpec
-    Reactor.Module.RegistrationSpec
-    Reactor.Module.RegistrySpec
     Reactor.ParserSpec
     Reactor.TestUtils
 
