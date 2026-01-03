@@ -304,7 +304,7 @@ Reactor's language capabilities are controlled through the **environment configu
 Special forms are registered in the environment and can be enabled/disabled per context:
 
 #### Core Special Forms (Always Available)
-- **`quote`**: Prevents evaluation of expressions
+
 - **`list`**: Constructs lists from arguments
 - **`object`**: Creates objects from key-value pairs
 
@@ -351,7 +351,7 @@ sandboxEnv = builtin ++ [
 **Minimal Environment:**
 ```haskell
 minimalEnv :: Frame Eval
-minimalEnv = builtin  -- only quote, list, object
+minimalEnv = builtin  -- only list, object
 ```
 
 This design enables Reactor to be used in diverse contexts:

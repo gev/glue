@@ -54,7 +54,7 @@ Native function evaluation executes host language functions integrated into the 
 
 ### Special Forms (`Special`)
 - **Purpose:** Control evaluation flow
-- **Examples:** `if`, `lambda`, `def`, `set`, `quote`
+- **Examples:** `if`, `lambda`, `def`, `set`
 - **Return:** May return value or control structure
 - **Evaluation:** Non-standard argument evaluation
 
@@ -159,7 +159,6 @@ printlnImpl _ = throwError WrongArgumentType
 - `set` - Variable assignment
 
 ### Evaluation Control
-- `quote` - Prevent evaluation
 - `eval` - Force evaluation
 - `macro` - Code transformation
 
