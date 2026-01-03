@@ -10,7 +10,7 @@ import Glue.Lib.Math.Arithmetic.Div qualified as Div
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Arithmetic.Div (Test div function)" do
+spec = describe "Glue.Lib.Arithmetic.Div (Test div function)" do
     describe "Div function" do
         it "returns 0.5 for (/ 2)" do
             let args = [Number 2]

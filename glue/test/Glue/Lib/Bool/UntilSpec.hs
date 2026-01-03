@@ -9,7 +9,7 @@ import Glue.Lib.Bool.Until (until_)
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Bool.Until (Test until special form)" do
+spec = describe "Glue.Lib.Bool.Until (Test until special form)" do
     describe "Loop until condition" do
         it "returns nothing when condition is true and no body" do
             let args = [Symbol "true"] -- No body, should return nothing

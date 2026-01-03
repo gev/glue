@@ -1,6 +1,6 @@
-# Reactor Standard Library
+# Glue Standard Library
 
-The Reactor standard library provides essential functions and data types for Reactor program development.
+The Glue standard library provides essential functions and data types for Glue program development.
 
 ## Available Modules
 

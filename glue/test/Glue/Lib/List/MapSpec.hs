@@ -7,7 +7,7 @@ import Glue.Lib.List.Map qualified as Map
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.List.Map (Test map function)" do
+spec = describe "Glue.Lib.List.Map (Test map function)" do
     it "maps a function over a list of numbers" do
         let initialEnv = E.emptyEnv
         let func = Native (Func (\[Number x] -> pure $ Number (x * 2)))

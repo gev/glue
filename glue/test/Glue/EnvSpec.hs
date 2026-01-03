@@ -22,7 +22,7 @@ instance Arbitrary (IR Identity) where
             ]
 
 spec :: Spec
-spec = describe "Reactor.Env (Test stack memory model)" do
+spec = describe "Glue.Env (Test stack memory model)" do
     describe "Smart constructors and atomic operations" do
         it "emptyEnv: create empty stack environment" do
             let env = emptyEnv :: E

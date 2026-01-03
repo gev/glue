@@ -1,8 +1,8 @@
-# Reactor Language Syntax Specification
+# Glue Language Syntax Specification
 
 ## Overview
 
-Reactor employs a Lisp-inspired syntax with extensions for property objects and functional programming constructs. This specification defines the complete syntax and grammar for Reactor programs.
+Glue employs a Lisp-inspired syntax with extensions for property objects and functional programming constructs. This specification defines the complete syntax and grammar for Glue programs.
 
 ## Lexical Elements
 
@@ -211,7 +211,7 @@ separators      := "?" | "\" | "$" | "@" | "#" | "_" | "." | "'"
 
 ### Evaluation Semantics
 
-Reactor follows Lisp-1 evaluation rules:
+Glue follows Lisp-1 evaluation rules:
 - Symbols resolve in the current lexical environment
 - Lists are evaluated based on their first element: as function applications if starting with a symbol, as data structures otherwise
 - Property objects are evaluated with computed values

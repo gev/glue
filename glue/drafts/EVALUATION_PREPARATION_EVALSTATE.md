@@ -1,6 +1,6 @@
 # EvalState Preparation
 
-EvalState preparation establishes the complete initial state for Reactor's evaluation system. The EvalState contains all the components needed to execute Reactor programs safely and efficiently.
+EvalState preparation establishes the complete initial state for Glue's evaluation system. The EvalState contains all the components needed to execute Glue programs safely and efficiently.
 
 ## EvalState Structure
 
@@ -38,7 +38,7 @@ Set to the same environment as `env`. **The primary purpose of the root environm
 
 ## Root Environment Concept
 
-At the foundation of Reactor's evaluation system is the **root environment** - the original, unmodified environment preserved in EvalState. **The primary purpose of the root environment is to serve as the initial environment for imported modules**, ensuring they are evaluated in a consistent, controlled context.
+At the foundation of Glue's evaluation system is the **root environment** - the original, unmodified environment preserved in EvalState. **The primary purpose of the root environment is to serve as the initial environment for imported modules**, ensuring they are evaluated in a consistent, controlled context.
 
 This root environment:
 - Contains either the pristine builtins and standard library, or a custom environment
@@ -48,7 +48,7 @@ This root environment:
 
 ## Dual-Registry Architecture
 
-Reactor uses **two separate registries** within EvalState to manage modules and their evaluation:
+Glue uses **two separate registries** within EvalState to manage modules and their evaluation:
 
 ### Module Registry (Static Metadata)
 Stores module declarations with name, exports, and unevaluated body forms. This registry is populated during the registration phase and contains static information.

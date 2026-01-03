@@ -7,7 +7,7 @@ import Glue.Lib.List.Position qualified as Position
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.List.Position (Test position function)" do
+spec = describe "Glue.Lib.List.Position (Test position function)" do
     it "finds position of first element that satisfies predicate" do
         let initialEnv = E.emptyEnv
         let pred = Native (Func (\[Number x] -> pure $ if x > 2 then Symbol "true" else Symbol "false"))

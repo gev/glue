@@ -7,7 +7,7 @@ import Glue.Lib.List.Cdr (cdr)
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.List.Cdr (Test cdr function)" do
+spec = describe "Glue.Lib.List.Cdr (Test cdr function)" do
     it "returns the rest of a list" do
         let initialEnv = E.emptyEnv
         let args = [List [Number 1, Number 2, Number 3]]

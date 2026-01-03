@@ -7,7 +7,7 @@ import Glue.Lib.List.Cons (cons)
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.List.Cons (Test cons function)" do
+spec = describe "Glue.Lib.List.Cons (Test cons function)" do
     it "constructs a list by prepending an element" do
         let initialEnv = E.emptyEnv
         let args = [Number 1, List [Number 2, Number 3]]

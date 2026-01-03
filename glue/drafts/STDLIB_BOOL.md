@@ -1,6 +1,6 @@
 # Bool Module
 
-The bool module provides boolean values, comparison operations, and control flow constructs for Reactor programs.
+The bool module provides boolean values, comparison operations, and control flow constructs for Glue programs.
 
 ## Boolean Values
 

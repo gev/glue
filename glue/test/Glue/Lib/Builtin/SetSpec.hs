@@ -9,7 +9,7 @@ import Glue.Lib.Builtin.Set (set)
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Builtin.Set (Test set special form)" do
+spec = describe "Glue.Lib.Builtin.Set (Test set special form)" do
     describe "Updating variables" do
         it "updates an existing variable" do
             let initialEnv = E.fromList [("x", Number 10)]

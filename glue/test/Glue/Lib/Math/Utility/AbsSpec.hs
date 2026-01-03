@@ -9,7 +9,7 @@ import qualified Glue.Lib.Math.Utility.Abs as Abs (abs)
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Math.Utility.Abs (Test abs function)" do
+spec = describe "Glue.Lib.Math.Utility.Abs (Test abs function)" do
     describe "Absolute value function" do
         it "returns 5 for abs(5)" do
             let args = [Number 5]

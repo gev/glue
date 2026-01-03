@@ -10,7 +10,7 @@ import Glue.Lib.Math.Arithmetic.Sub qualified as Sub
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Arithmetic.Sub (Test sub function)" do
+spec = describe "Glue.Lib.Arithmetic.Sub (Test sub function)" do
     describe "Sub function" do
         it "returns -5 for (- 5)" do
             let args = [Number 5]

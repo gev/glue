@@ -7,7 +7,7 @@ import Glue.Lib.List.Find qualified as Find
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.List.Find (Test find function)" do
+spec = describe "Glue.Lib.List.Find (Test find function)" do
     it "finds first element that satisfies predicate" do
         let initialEnv = E.emptyEnv
         let pred = Native (Func (\[Number x] -> pure $ if x > 2 then Symbol "true" else Symbol "false"))

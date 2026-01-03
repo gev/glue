@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Abstract Syntax Tree (AST) is Reactor's intermediate representation of program syntax after parsing. It provides a structured, tree-based representation of source code that captures the syntactic relationships between program elements while discarding superficial details like whitespace and comments.
+The Abstract Syntax Tree (AST) is Glue's intermediate representation of program syntax after parsing. It provides a structured, tree-based representation of source code that captures the syntactic relationships between program elements while discarding superficial details like whitespace and comments.
 
 ## AST Data Structure
 
@@ -99,4 +99,4 @@ See [AST to IR Compilation](compilation-ast-ir.md) for the transformation proces
 
 ## Summary
 
-The AST provides Reactor's syntactic foundation, offering a clean tree representation that captures source code structure.
+The AST provides Glue's syntactic foundation, offering a clean tree representation that captures source code structure.

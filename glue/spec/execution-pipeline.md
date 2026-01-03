@@ -1,7 +1,7 @@
 
-# 🔄 Reactor Execution Pipeline
+# 🔄 Glue Execution Pipeline
 
-Reactor transforms source code through this carefully designed pipeline:
+Glue transforms source code through this carefully designed pipeline:
 
 ```
 Source Text → Parse → AST → Compile → IR → Prepare Environment → Create EvalState → Evaluate → Result
@@ -10,7 +10,7 @@ Source Text → Parse → AST → Compile → IR → Prepare Environment → Cre
 ## Pipeline Stages
 
 ### 1. Source Text
-Human-readable Reactor code input as text.
+Human-readable Glue code input as text.
 
 ### 2. Parse
 Convert text to Abstract Syntax Tree (AST) using the language grammar. Validates syntax and creates structured representation.  

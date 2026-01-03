@@ -1,8 +1,8 @@
-# Reactor Syntax Reference
+# Glue Syntax Reference
 
 ## Overview
 
-Reactor uses a Lisp-inspired syntax with modern enhancements for property objects, functional programming, and module systems. This document provides a complete reference of Reactor's syntax and grammar.
+Glue uses a Lisp-inspired syntax with modern enhancements for property objects, functional programming, and module systems. This document provides a complete reference of Glue's syntax and grammar.
 
 ## Basic Elements
 
@@ -257,7 +257,7 @@ person.age               ;; → 30
 ### Module Definition
 ```closure
 ;; Module files define exports
-;; math.x.reactor
+;; math.x.glue
 (def pi 3.14159)
 (def cos (lambda (x) ...))  ;; Implementation
 ;; (export pi cos) - if explicit exports needed
@@ -330,7 +330,7 @@ math.y.sin               ;; → sine function
 ```
 
 ### Special Forms
-Reactor provides special forms for control flow and evaluation:
+Glue provides special forms for control flow and evaluation:
 - `if` - conditional execution
 - `lambda` - function creation
 - `def` - variable definition
@@ -378,7 +378,7 @@ boolean     ::= "true" | "false"
 
 ### Operator Precedence
 
-Reactor is a Lisp-1 with no operator precedence:
+Glue is a Lisp-1 with no operator precedence:
 - All operations are function calls
 - Grouping is explicit with parentheses
 - Left-to-right evaluation within expressions
@@ -433,4 +433,4 @@ Reactor is a Lisp-1 with no operator precedence:
   (start-server config))
 ```
 
-This syntax reference covers all major Reactor language constructs and provides a foundation for writing Reactor programs.
+This syntax reference covers all major Glue language constructs and provides a foundation for writing Glue programs.

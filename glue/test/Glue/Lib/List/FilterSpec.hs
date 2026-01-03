@@ -7,7 +7,7 @@ import Glue.Lib.List.Filter qualified as Filter
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.List.Filter (Test filter function)" do
+spec = describe "Glue.Lib.List.Filter (Test filter function)" do
     it "filters elements that satisfy predicate" do
         let initialEnv = E.emptyEnv
         let pred = Native (Func (\[Number x] -> pure $ if x > 2 then Symbol "true" else Symbol "false"))

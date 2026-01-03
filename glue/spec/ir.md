@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Intermediate Representation (IR) is Reactor's execution-ready format that results from compiling [Abstract Syntax Trees (AST)](ast.md). While AST focuses on syntactic structure, IR focuses on execution semantics, providing a unified representation for all Reactor values, functions, and data structures during runtime evaluation.
+The Intermediate Representation (IR) is Glue's execution-ready format that results from compiling [Abstract Syntax Trees (AST)](ast.md). While AST focuses on syntactic structure, IR focuses on execution semantics, providing a unified representation for all Glue values, functions, and data structures during runtime evaluation.
 
 ## IR Structure
 
@@ -201,4 +201,4 @@ IR is optimized for runtime evaluation, with efficient representations for commo
 - Evaluation traverses IR structure
 - Evaluation applies meaning to IR nodes
 
-This design enables Reactor's flexible evaluation model while maintaining type safety, performance, and extensibility.
+This design enables Glue's flexible evaluation model while maintaining type safety, performance, and extensibility.

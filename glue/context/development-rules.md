@@ -1,6 +1,6 @@
-# Development Rules for Reactor Specification
+# Development Rules for Glue Specification
 
-This document outlines the most important rules and guidelines for developing and maintaining the Reactor language specification.
+This document outlines the most important rules and guidelines for developing and maintaining the Glue language specification.
 
 ## Core Development Principles
 

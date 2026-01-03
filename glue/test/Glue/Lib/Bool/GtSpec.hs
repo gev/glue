@@ -9,7 +9,7 @@ import Glue.Lib.Bool.Gt (gt)
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Bool.Gt (Test gt function)" do
+spec = describe "Glue.Lib.Bool.Gt (Test gt function)" do
     describe "Greater than comparison" do
         it "returns true for greater number" do
             let args = [Number 10, Number 5]

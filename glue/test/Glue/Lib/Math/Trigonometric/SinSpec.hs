@@ -10,7 +10,7 @@ import Glue.Lib.Math.Trigonometric.Sin qualified as Sin (sin)
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Math.Trigonometric.Sin (Test sin function)" do
+spec = describe "Glue.Lib.Math.Trigonometric.Sin (Test sin function)" do
     describe "Sine function" do
         it "returns 0 for sin(0)" do
             let args = [Number 0]

@@ -7,7 +7,7 @@ import Glue.Lib.List.Drop qualified as Drop
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.List.Drop (Test drop function)" do
+spec = describe "Glue.Lib.List.Drop (Test drop function)" do
     it "drops first N elements from list" do
         let initialEnv = E.emptyEnv
         let args = [Number 2, List [Number 1, Number 2, Number 3, Number 4, Number 5]]

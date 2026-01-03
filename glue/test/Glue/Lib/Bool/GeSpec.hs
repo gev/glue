@@ -9,7 +9,7 @@ import Glue.Lib.Bool.Ge (ge)
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Bool.Ge (Test ge function)" do
+spec = describe "Glue.Lib.Bool.Ge (Test ge function)" do
     describe "Greater than or equal comparison" do
         it "returns true for equal numbers" do
             let args = [Number 5, Number 5]

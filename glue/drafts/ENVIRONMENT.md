@@ -1,8 +1,8 @@
-# Reactor Environment
+# Glue Environment
 
 ## Overview
 
-The Reactor environment manages variable bindings and scoping during program execution. Environments are implemented as a stack of frames, where each frame contains a mapping of symbols to values.
+The Glue environment manages variable bindings and scoping during program execution. Environments are implemented as a stack of frames, where each frame contains a mapping of symbols to values.
 
 ## Environment Structure
 
@@ -17,7 +17,7 @@ type Frame = Map Text IR          -- Single frame with symbol-to-IR mappings
 
 ### Frame Stack
 
-Reactor uses a simple stack of frames:
+Glue uses a simple stack of frames:
 
 - **Top Frame**: Most recently pushed frame (current scope)
 - **Bottom Frame**: First pushed frame (contains initial bindings)

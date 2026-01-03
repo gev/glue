@@ -8,7 +8,7 @@ import Glue.TestUtils ()
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Bool.Eq (Test eq function)" do
+spec = describe "Glue.Lib.Bool.Eq (Test eq function)" do
     describe "Equality comparison" do
         it "returns true for equal numbers" do
             let args = [Number 42, Number 42]

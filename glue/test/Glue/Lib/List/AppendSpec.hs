@@ -7,7 +7,7 @@ import Glue.Lib.List.Append (append)
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.List.Append (Test append function)" do
+spec = describe "Glue.Lib.List.Append (Test append function)" do
     it "appends two lists" do
         let initialEnv = E.emptyEnv
         let args = [List [Number 1, Number 2], List [Number 3, Number 4]]

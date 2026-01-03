@@ -1,8 +1,8 @@
-# Reactor AST to IR Compilation
+# Glue AST to IR Compilation
 
 ## Overview
 
-Reactor's compilation process transforms Abstract Syntax Tree (AST) nodes into Intermediate Representation (IR) nodes. This compilation step bridges the syntactic representation of source code with the runtime-evaluable form used by the interpreter.
+Glue's compilation process transforms Abstract Syntax Tree (AST) nodes into Intermediate Representation (IR) nodes. This compilation step bridges the syntactic representation of source code with the runtime-evaluable form used by the interpreter.
 
 ## Data Types
 
@@ -183,11 +183,11 @@ Result
 
 ## Summary
 
-AST to IR compilation transforms Reactor's syntactic representation into its runtime-evaluable form through systematic rules:
+AST to IR compilation transforms Glue's syntactic representation into its runtime-evaluable form through systematic rules:
 
 - **Primitives** pass through unchanged
 - **Symbols** may split into hierarchical forms
 - **Lists** recursively compile their elements
 - **Objects** convert to efficient map structures
 
-This compilation step enables the separation of parsing (syntax analysis) from evaluation (semantic execution), providing a clean architecture for the Reactor language implementation.
+This compilation step enables the separation of parsing (syntax analysis) from evaluation (semantic execution), providing a clean architecture for the Glue language implementation.

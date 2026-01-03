@@ -2,7 +2,7 @@
 
 ## Overview
 
-The parser transforms Reactor source text into Abstract Syntax Tree (AST) representation. This process involves lexical analysis (tokenization) followed by syntactic analysis (grammar parsing), resulting in a structured tree that captures the syntactic relationships between program elements.
+The parser transforms Glue source text into Abstract Syntax Tree (AST) representation. This process involves lexical analysis (tokenization) followed by syntactic analysis (grammar parsing), resulting in a structured tree that captures the syntactic relationships between program elements.
 
 ## Parser Architecture
 

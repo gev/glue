@@ -10,7 +10,7 @@ import Glue.Lib.Math.Arithmetic.Mul qualified as Mul
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Arithmetic.Mul (Test mul function)" do
+spec = describe "Glue.Lib.Arithmetic.Mul (Test mul function)" do
     describe "Mul function" do
         it "returns 6 for (* 2 3)" do
             let args = [Number 2, Number 3]

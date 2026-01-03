@@ -9,7 +9,7 @@ import qualified Glue.Lib.Math.Utility.Max as Max
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Math.Utility.Max (Test max function)" do
+spec = describe "Glue.Lib.Math.Utility.Max (Test max function)" do
     describe "Maximum function" do
         it "returns 5 for max(2, 5)" do
             let args = [Number 2, Number 5]

@@ -22,7 +22,7 @@ instance ShowErrorComponent ParserError where
             "Syntax Error: Property '"
                 <> T.unpack k
                 <> "' cannot be mixed with positional arguments.\n"
-                <> "In Reactor LISP, a list must be EITHER all properties (:key val) OR all atoms."
+                <> "In Glue LISP, a list must be EITHER all properties (:key val) OR all atoms."
         UnpairedProperty k ->
             "Syntax Error: The property '" <> T.unpack k <> "' is missing a value."
         SyntaxError e ->

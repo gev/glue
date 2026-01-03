@@ -10,7 +10,7 @@ import Glue.TestUtils ()
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Bool.Ne (Test ne function)" do
+spec = describe "Glue.Lib.Bool.Ne (Test ne function)" do
     describe "Not equal comparison" do
         it "returns true for unequal numbers" do
             let args = [Number 42, Number 43]

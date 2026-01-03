@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document describes the compilation process that transforms Reactor's [Abstract Syntax Trees (AST)](ast.md) into the Intermediate Representation [IR](ir.md) used for execution.
+This document describes the compilation process that transforms Glue's [Abstract Syntax Trees (AST)](ast.md) into the Intermediate Representation [IR](ir.md) used for execution.
 
 ## Compilation Process
 

@@ -9,7 +9,7 @@ import Glue.Lib.Math.Power.Pow qualified as Pow
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Math.Power.Pow (Test pow function)" do
+spec = describe "Glue.Lib.Math.Power.Pow (Test pow function)" do
     describe "Power function" do
         it "returns 2^3 = 8" do
             let args = [Number 2, Number 3]

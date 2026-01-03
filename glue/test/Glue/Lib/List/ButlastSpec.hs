@@ -7,7 +7,7 @@ import Glue.Lib.List.Butlast (butlast)
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.List.Butlast (Test butlast function)" do
+spec = describe "Glue.Lib.List.Butlast (Test butlast function)" do
     it "returns all elements except the last one" do
         let initialEnv = E.emptyEnv
         let args = [List [Number 1, Number 2, Number 3]]

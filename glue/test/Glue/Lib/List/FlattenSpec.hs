@@ -7,7 +7,7 @@ import Glue.Lib.List.Flatten qualified as Flatten
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.List.Flatten (Test flatten function)" do
+spec = describe "Glue.Lib.List.Flatten (Test flatten function)" do
     it "flattens a simple nested list" do
         let initialEnv = E.emptyEnv
         let args = [List [List [Number 1, Number 2], List [Number 3, Number 4]]]

@@ -7,7 +7,7 @@ import Glue.Lib.List.Length qualified as Length
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.List.Length (Test length function)" do
+spec = describe "Glue.Lib.List.Length (Test length function)" do
     it "returns 0 for empty list" do
         let initialEnv = E.emptyEnv
         let args = [List []]

@@ -7,7 +7,7 @@ import Glue.Lib.List.Sort qualified as Sort
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.List.Sort (Test sort function)" do
+spec = describe "Glue.Lib.List.Sort (Test sort function)" do
     it "sorts a list of numbers in ascending order" do
         let initialEnv = E.emptyEnv
         let args = [List [Number 3, Number 1, Number 4, Number 1, Number 5]]

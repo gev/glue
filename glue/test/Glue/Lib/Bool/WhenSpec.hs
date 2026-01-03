@@ -9,7 +9,7 @@ import Glue.Lib.Bool.When (when_)
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Bool.When (Test when special form)" do
+spec = describe "Glue.Lib.Bool.When (Test when special form)" do
     describe "Conditional execution" do
         it "executes body when condition is true" do
             let args = [Symbol "true", Number 42]

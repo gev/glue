@@ -10,7 +10,7 @@ import Glue.Lib.Math.Trigonometric.Asin qualified as Asin (asin)
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Math.Trigonometric.Asin (Test asin function)" do
+spec = describe "Glue.Lib.Math.Trigonometric.Asin (Test asin function)" do
     describe "Arcsine function" do
         it "returns 0 for asin(0)" do
             let args = [Number 0]

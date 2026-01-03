@@ -7,7 +7,7 @@ import Glue.Env qualified as E
 import Glue.Eval (Eval, EvalState (..), eval, runEval)
 import Glue.IR (IR (..), compile)
 import Glue.Lib (lib)
-import Glue.Parser (parseReactor)
+import Glue.Parser (parseGlue)
 import System.Environment (getArgs)
 
 main :: IO ()
@@ -43,7 +43,7 @@ evalSequentially :: [String] -> EvalState -> IO ()
 evalSequentially [] _ = pure ()
 evalSequentially (input : rest) currentState = do
     TIO.putStrLn $ "Evaluating: " <> T.pack input
-    case parseReactor (T.pack input) of
+    case parseGlue (T.pack input) of
         Left err -> do
             print err
             evalSequentially rest currentState
@@ -68,7 +68,7 @@ runTests = do
             ]
     forM_ inputs \input -> do
         TIO.putStrLn $ "Testing: " <> T.pack input
-        case parseReactor (T.pack input) of
+        case parseGlue (T.pack input) of
             Left err -> print err -- Print the formatted error
             Right ast -> print ast
         TIO.putStrLn "---"

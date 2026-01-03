@@ -10,7 +10,7 @@ import Glue.Lib.Math.Power.Exp qualified as Exp
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Math.Power.Exp (Test exp function)" do
+spec = describe "Glue.Lib.Math.Power.Exp (Test exp function)" do
     describe "Exponential function" do
         it "returns e^0 = 1" do
             let args = [Number 0]

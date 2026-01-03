@@ -2,7 +2,7 @@
 
 ## Overview
 
-`lambda` creates anonymous functions (closures) that capture their definition environment. It is Reactor's function definition special form.
+`lambda` creates anonymous functions (closures) that capture their definition environment. It is Glue's function definition special form.
 
 ## Syntax
 

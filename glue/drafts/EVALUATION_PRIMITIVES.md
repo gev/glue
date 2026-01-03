@@ -2,7 +2,7 @@
 
 ## Overview
 
-Primitive values in Reactor are self-evaluating - they return themselves unchanged during evaluation.
+Primitive values in Glue are self-evaluating - they return themselves unchanged during evaluation.
 
 ## Number Evaluation
 

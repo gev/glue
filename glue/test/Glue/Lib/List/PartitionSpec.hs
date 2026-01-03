@@ -7,7 +7,7 @@ import Glue.Lib.List.Partition qualified as Partition
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.List.Partition (Test partition function)" do
+spec = describe "Glue.Lib.List.Partition (Test partition function)" do
     it "partitions list into matching and non-matching elements" do
         let initialEnv = E.emptyEnv
         let pred = Native (Func (\[Number x] -> pure $ if x > 3 then Symbol "true" else Symbol "false"))

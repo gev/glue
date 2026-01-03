@@ -15,11 +15,11 @@ reacthome/
 ├── daemon/                 # System daemon
 ├── jose/                   # JOSE (JSON Web Tokens) utilities
 ├── lang/                   # Language processing utilities
-├── reactor/                # Reactor scripting language
-│   ├── src/Reactor/        # Language implementation
+├── glue/                # Glue scripting language
+│   ├── src/Glue/        # Language implementation
 │   ├── test/               # Language tests
 │   └── README.md           # Language documentation
-├── reactor-ext/            # VS Code extension for Reactor
+├── glue-ext/            # VS Code extension for Glue
 ├── relay/                  # Message relay service
 ├── rest/                   # REST API utilities
 ├── server/                 # Main server application
@@ -33,7 +33,7 @@ reacthome/
 
 ## 📦 Packages
 
-- **reactor**: A Lisp-inspired scripting language for IoT automation
+- **glue**: A Lisp-inspired scripting language for IoT automation
 - **reacthome-auth**: OAuth2-compliant authentication server
 - **reacthome-assist**: Voice assistant integration
 - **reacthome-daemon**: Background service for device management

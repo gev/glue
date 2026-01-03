@@ -9,7 +9,7 @@ import Glue.Lib.Bool.Le (le)
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Bool.Le (Test le function)" do
+spec = describe "Glue.Lib.Bool.Le (Test le function)" do
     describe "Less than or equal comparison" do
         it "returns true for equal numbers" do
             let args = [Number 5, Number 5]

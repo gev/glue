@@ -2,7 +2,7 @@
 
 ## Overview
 
-`def` is Reactor's variable definition special form. It binds a symbol to an evaluated value in the current environment frame.
+`def` is Glue's variable definition special form. It binds a symbol to an evaluated value in the current environment frame.
 
 ## Syntax
 

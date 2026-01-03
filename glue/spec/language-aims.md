@@ -2,20 +2,20 @@
 
 ## 📋 Overview
 
-Reactor is a **universal scripting glue** that connects rich host language systems. It receives **domain objects, DTOs, and dictionaries** constructed by host languages and evaluates business logic against them using FFI bindings to domain services, repositories, and UI components. Reactor serves as a powerful intermediary layer - a "glue on steroids" - between strongly-typed host systems and dynamic business requirements.
+Glue is a **universal scripting glue** that connects rich host language systems. It receives **domain objects, DTOs, and dictionaries** constructed by host languages and evaluates business logic against them using FFI bindings to domain services, repositories, and UI components. Glue serves as a powerful intermediary layer - a "glue on steroids" - between strongly-typed host systems and dynamic business requirements.
 
 ## 🎯 Core Design Goals
 
 ### 1. 🎯 Glue on Steroids Architecture
 
 **Universal Scripting Glue**
-- Reactor serves as a powerful intermediary layer between strongly-typed host systems and dynamic business requirements
+- Glue serves as a powerful intermediary layer between strongly-typed host systems and dynamic business requirements
 - Receives domain objects, DTOs, and dictionaries constructed by host languages
 - Evaluates business logic using FFI bindings to domain services, repositories, and UI components
 
 **Scripting Intermediary**
 - Host languages handle complex type systems and data construction
-- Reactor provides the execution runtime and FFI connectivity
+- Glue provides the execution runtime and FFI connectivity
 - Lightweight scripting for business rules and UI logic
 
 **Domain Object Processing**
@@ -26,7 +26,7 @@ Reactor is a **universal scripting glue** that connects rich host language syste
 ### 2. 🎯 Simplicity and Expressiveness
 
 **Minimal Syntax, Maximum Power**
-- Reactor uses a clean, consistent syntax inspired by Lisp
+- Glue uses a clean, consistent syntax inspired by Lisp
 - Every construct follows uniform rules and patterns
 - Complex operations emerge from simple, composable primitives
 
@@ -139,7 +139,7 @@ Reactor is a **universal scripting glue** that connects rich host language syste
 ### Explicit Non-Goals
 
 **Complex Metaprogramming**
-- No quote/eval for code manipulation within Reactor
+- No quote/eval for code manipulation within Glue
 - No advanced macro system or code generation
 - Host languages handle complex type construction and metaprogramming
 
@@ -227,4 +227,4 @@ Reactor is a **universal scripting glue** that connects rich host language syste
 - Collaborative implementation efforts
 - Shared tooling and resources
 
-This document serves as the foundation for all Reactor design decisions and implementation choices. It ensures that the language remains focused on its core objectives while providing a solid platform for future evolution.
+This document serves as the foundation for all Glue design decisions and implementation choices. It ensures that the language remains focused on its core objectives while providing a solid platform for future evolution.

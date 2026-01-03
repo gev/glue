@@ -10,7 +10,7 @@ import Glue.Lib.Math.Trigonometric.Acos qualified as Acos (acos)
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Math.Trigonometric.Acos (Test acos function)" do
+spec = describe "Glue.Lib.Math.Trigonometric.Acos (Test acos function)" do
     describe "Arccosine function" do
         it "returns π for acos(-1)" do
             let args = [Number (fromFloatDigits @Double (-1))]

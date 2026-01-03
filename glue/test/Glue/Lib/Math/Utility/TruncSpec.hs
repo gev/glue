@@ -10,7 +10,7 @@ import Glue.Lib.Math.Utility.Trunc qualified as Trunc
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Math.Utility.Trunc (Test trunc function)" do
+spec = describe "Glue.Lib.Math.Utility.Trunc (Test trunc function)" do
     describe "Trunc function" do
         it "returns 3 for trunc(3.7)" do
             let args = [Number (fromFloatDigits @Double 3.7)]

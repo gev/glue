@@ -1,8 +1,8 @@
-# Reactor Abstract Syntax Tree (AST)
+# Glue Abstract Syntax Tree (AST)
 
 ## Overview
 
-Reactor's Abstract Syntax Tree (AST) represents the syntactic structure of Reactor programs after parsing. The AST is the first intermediate representation in Reactor's compilation pipeline, designed for simplicity and direct correspondence to source code syntax.
+Glue's Abstract Syntax Tree (AST) represents the syntactic structure of Glue programs after parsing. The AST is the first intermediate representation in Glue's compilation pipeline, designed for simplicity and direct correspondence to source code syntax.
 
 ## AST Structure
 
@@ -92,7 +92,7 @@ Represents property objects (dictionaries/maps).
 
 ## Parsing Rules
 
-Reactor's parser follows these rules to convert source text into AST:
+Glue's parser follows these rules to convert source text into AST:
 
 ### Expression Priority
 
@@ -437,11 +437,11 @@ Potential enhancements:
 
 ## Summary
 
-The Reactor AST provides a clean, simple representation of source code syntax that serves as the foundation for compilation to IR. Its design emphasizes:
+The Glue AST provides a clean, simple representation of source code syntax that serves as the foundation for compilation to IR. Its design emphasizes:
 
 - **Direct correspondence** to source syntax
 - **Type safety** through Haskell's type system
 - **Simplicity** for parsing and transformation
 - **Extensibility** for future language features
 
-The AST is the bridge between human-readable source code and machine-evaluable IR, making Reactor's compilation pipeline both elegant and efficient.
+The AST is the bridge between human-readable source code and machine-evaluable IR, making Glue's compilation pipeline both elegant and efficient.

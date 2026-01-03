@@ -8,7 +8,7 @@ import Test.Hspec
 import Test.QuickCheck.Instances ()
 
 spec :: Spec
-spec = describe "Reactor.Lib.Builtin.Closure (Test closures)" do
+spec = describe "Glue.Lib.Builtin.Closure (Test closures)" do
     it "extractSymbols: correctly extracts list of names" do
         let input = [Symbol "a", Symbol "b"]
         extractSymbols input `shouldBe` Right ["a", "b"]

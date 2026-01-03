@@ -13,16 +13,16 @@ import Test.QuickCheck
 import Test.QuickCheck.Instances ()
 
 instance Arbitrary AST where
-    arbitrary = sized genReactor
+    arbitrary = sized genGlue
       where
-        genReactor n
+        genGlue n
             | n <= 0 =
                 oneof
                     [ AST.Symbol <$> arbitrary
                     , AST.Number <$> arbitrary
                     , AST.String <$> arbitrary
                     ]
-        genReactor n =
+        genGlue n =
             oneof
                 [ AST.Symbol <$> arbitrary
                 , AST.Number <$> arbitrary

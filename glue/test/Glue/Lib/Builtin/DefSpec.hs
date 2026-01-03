@@ -8,7 +8,7 @@ import Glue.Lib.Builtin.Def (def)
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Builtin.Def (Test def special form)" do
+spec = describe "Glue.Lib.Builtin.Def (Test def special form)" do
     describe "Defining variables" do
         it "defines a variable in the environment" do
             let initialEnv = E.emptyEnv

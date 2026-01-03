@@ -1,8 +1,8 @@
-# Reactor Binding Semantics
+# Glue Binding Semantics
 
 ## Overview
 
-Reactor provides sophisticated variable binding semantics with clear distinctions between definition, mutation, and scoping. This document explains the semantics of `import`, `def`, and `set` operations with both dotted and non-dotted notation.
+Glue provides sophisticated variable binding semantics with clear distinctions between definition, mutation, and scoping. This document explains the semantics of `import`, `def`, and `set` operations with both dotted and non-dotted notation.
 
 ## Core Operations
 
@@ -234,7 +234,7 @@ ui.components.button.cos  ;; Access imported function through data structure
 
 ## Summary
 
-Reactor's binding system provides:
+Glue's binding system provides:
 
 - **Clear separation** between definition (`def`), mutation (`set`), and import (`import`)
 - **Consistent scoping** with lexical environments

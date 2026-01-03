@@ -2,11 +2,11 @@ module Glue.Error where
 
 import Data.Typeable (Typeable)
 
-data ReactorError
-    = forall e. (Show e, Eq e, Typeable e) => ReactorError e
+data GlueError
+    = forall e. (Show e, Eq e, Typeable e) => GlueError e
 
-instance Show ReactorError where
-    show (ReactorError err) = "ReactorError (" <> show err <> ")"
+instance Show GlueError where
+    show (GlueError err) = "GlueError (" <> show err <> ")"
 
-instance Eq ReactorError where
-    ReactorError a == ReactorError b = show a == show b
+instance Eq GlueError where
+    GlueError a == GlueError b = show a == show b

@@ -1,10 +1,10 @@
-# 🚀 Reactor Language Specification
+# 🚀 Glue Language Specification
 
-Complete specification for the Reactor programming language, a Lisp-inspired language with modern enhancements for property objects and functional programming.
+Complete specification for the Glue programming language, a Lisp-inspired language with modern enhancements for property objects and functional programming.
 
 ## 🎯 Overview
 
-Reactor is designed to be:
+Glue is designed to be:
 - **Simple**: Minimal syntax with maximal expressiveness
 - **Safe**: Prevents common programming errors through design
 - **Flexible**: Easy to extend and embed in host applications
@@ -13,7 +13,7 @@ Reactor is designed to be:
 ### Introduction
 - **[Language Aims](language-aims.md)** - Design goals and philosophy
 - **[Language Overview](language-overview.md)** - High-level introduction
-- **[Execution Pipeline](execution-pipeline.md)** - How Reactor processes code
+- **[Execution Pipeline](execution-pipeline.md)** - How Glue processes code
 
 ## Specification Structure
 
@@ -72,11 +72,11 @@ For first-time readers, follow this sequence:
 
 This specification is automatically generated from implementation documentation. To contribute:
 
-1. Modify the source documentation in `reactor/drafts/`
+1. Modify the source documentation in `glue/drafts/`
 2. Follow the [development guidelines](spec-development-guidelines.md)
 3. Ensure cross-references are updated
-4. Test examples in a Reactor implementation
+4. Test examples in a Glue implementation
 
 ## License
 
-This specification is part of the Reactor project. See project LICENSE for details.
+This specification is part of the Glue project. See project LICENSE for details.

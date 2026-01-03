@@ -1,8 +1,8 @@
-# Reactor Intermediate Representation (IR)
+# Glue Intermediate Representation (IR)
 
 ## Overview
 
-Reactor's Intermediate Representation (IR) is the core data structure used for representing Reactor programs during execution. The IR provides a unified way to handle values, functions, objects, and modules in the Reactor runtime system.
+Glue's Intermediate Representation (IR) is the core data structure used for representing Glue programs during execution. The IR provides a unified way to handle values, functions, objects, and modules in the Glue runtime system.
 
 ## IR Data Types
 
@@ -181,11 +181,11 @@ Represents user-defined functions with captured environment.
 
 ## Summary
 
-The Reactor IR provides a comprehensive and flexible representation for all Reactor language constructs:
+The Glue IR provides a comprehensive and flexible representation for all Glue language constructs:
 
 - **Primitives:** Numbers, strings, symbols
 - **Composites:** Lists, objects, modules
 - **Executables:** Closures, native functions, special forms
 - **Metadata:** Environments, frames, scoping information
 
-This unified representation enables Reactor's flexible evaluation model while maintaining type safety and performance.
+This unified representation enables Glue's flexible evaluation model while maintaining type safety and performance.

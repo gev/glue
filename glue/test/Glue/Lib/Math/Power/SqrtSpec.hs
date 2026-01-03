@@ -9,7 +9,7 @@ import Glue.Lib.Math.Power.Sqrt qualified as Sqrt
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Math.Power.Sqrt (Test sqrt function)" do
+spec = describe "Glue.Lib.Math.Power.Sqrt (Test sqrt function)" do
     describe "Square root function" do
         it "returns 2 for sqrt(4)" do
             let args = [Number 4]

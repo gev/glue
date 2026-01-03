@@ -1,13 +1,13 @@
-# 🌟 Reactor Language Overview
+# 🌟 Glue Language Overview
 
-## 🤔 What is Reactor?
+## 🤔 What is Glue?
 
-Reactor is a modern, Lisp-inspired programming language designed for embedded scripting, domain-specific languages (DSLs), and functional programming. It combines the elegance of Lisp with contemporary features for property-based objects and server-driven UI development.
+Glue is a modern, Lisp-inspired programming language designed for embedded scripting, domain-specific languages (DSLs), and functional programming. It combines the elegance of Lisp with contemporary features for property-based objects and server-driven UI development.
 
 ## ✨ Key Characteristics
 
 ### 🎯 Simple Yet Powerful
-Reactor uses a clean, consistent syntax with minimal ceremony. Every construct follows uniform rules, allowing complex operations to emerge from simple, composable primitives.
+Glue uses a clean, consistent syntax with minimal ceremony. Every construct follows uniform rules, allowing complex operations to emerge from simple, composable primitives.
 
 ### 🛡️ Safe by Design
 Built-in type checking, immutable data structures by default, and controlled mutation prevent common programming errors. The evaluation model avoids undefined behavior with comprehensive error handling.
@@ -85,19 +85,19 @@ user.age       ;; → 30
 ## Advanced Capabilities
 
 ### DSL Creation
-Reactor excels at creating domain-specific languages through its configurable evaluation environment.
+Glue excels at creating domain-specific languages through its configurable evaluation environment.
 
 ### Server-Driven UI
 Built-in support for dynamic UI generation with property-based component configuration and backend integration.
 
 ### Embedded Scripting
-Minimal footprint and clean host language integration make Reactor ideal for embedding business logic in larger applications.
+Minimal footprint and clean host language integration make Glue ideal for embedding business logic in larger applications.
 
 ## Hello World Examples
 
 ### Simple Script
 ```closure
-(print "Hello, Reactor World!")
+(print "Hello, Glue World!")
 ```
 
 ### Functional Programming
@@ -131,7 +131,7 @@ Minimal footprint and clean host language integration make Reactor ideal for emb
               :database (:type "postgres" :name "myapp")))
 ```
 
-## Why Reactor?
+## Why Glue?
 
 ### For Developers
 - **Familiar Lisp Syntax**: Leverages decades of Lisp wisdom
@@ -153,13 +153,13 @@ Minimal footprint and clean host language integration make Reactor ideal for emb
 
 ## Getting Started
 
-Follow this learning path to master Reactor:
+Follow this learning path to master Glue:
 
-1. **Learn the design philosophy** → [Language Aims](language-aims.md) - Goals and principles behind Reactor
-2. **Understand how Reactor works** → [Execution Pipeline](execution-pipeline.md) - How Reactor processes code from text to results
+1. **Learn the design philosophy** → [Language Aims](language-aims.md) - Goals and principles behind Glue
+2. **Understand how Glue works** → [Execution Pipeline](execution-pipeline.md) - How Glue processes code from text to results
 3. **Master the syntax** → [Syntax Reference](syntax.md) - Complete language grammar and constructs
 4. **Dive into AST** → [AST Specification](ast.md) - How source code becomes a tree structure
 5. **Understand compilation** → [IR Specification](ir.md) - Intermediate representation for execution
 6. **Learn evaluation** → [Evaluation](evaluation/README.md) - Runtime execution model and semantics
 
-Reactor represents a modern take on Lisp's philosophy: simple, composable primitives that enable powerful abstractions while maintaining safety and usability in real-world applications.
+Glue represents a modern take on Lisp's philosophy: simple, composable primitives that enable powerful abstractions while maintaining safety and usability in real-world applications.

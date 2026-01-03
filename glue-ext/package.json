@@ -1,0 +1,34 @@
+{
+  "name": "glue-lang",
+  "displayName": "Glue Language Support",
+  "description": "Syntax highlighting for Glue language",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "glue",
+        "aliases": [
+          "Glue",
+          "glue"
+        ],
+        "extensions": [
+          ".glue"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "glue",
+        "scopeName": "source.glue",
+        "path": "./syntaxes/glue.tmLanguage.json"
+      }
+    ]
+  }
+}

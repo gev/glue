@@ -9,7 +9,7 @@ import Glue.Lib.Math.Arithmetic.Mod qualified as Mod
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Arithmetic.Mod (Test mod function)" do
+spec = describe "Glue.Lib.Arithmetic.Mod (Test mod function)" do
     describe "Mod function" do
         it "returns 1 for (% 7 3)" do
             let args = [Number 7, Number 3]

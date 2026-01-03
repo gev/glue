@@ -7,7 +7,7 @@ import Glue.Lib.List.Remove (remove)
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.List.Remove (Test remove function)" do
+spec = describe "Glue.Lib.List.Remove (Test remove function)" do
     it "removes item from list" do
         let initialEnv = E.emptyEnv
         let args = [Number 2, List [Number 1, Number 2, Number 3]]

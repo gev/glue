@@ -13,7 +13,7 @@ This ensures specifications are grounded in reality while allowing for planned i
 ### Phase 1: Research and Preparation
 
 1. **Complete Documentation Review**
-   - Read all reactor/drafts/*.md files thoroughly
+   - Read all glue/drafts/*.md files thoroughly
    - Read haskell source codes in /src as reference implementation
    - Read haskell test codes in /test as examples
    - Extract key concepts, syntax rules, and implementation details
@@ -21,7 +21,7 @@ This ensures specifications are grounded in reality while allowing for planned i
    - Note Haskell-specific code that needs to be made language-agnostic
 
 2. **Content Mapping**
-   - Map existing reactor docs to specification chapters
+   - Map existing glue docs to specification chapters
    - Identify gaps in current documentation
    - Plan cross-references between documents
    - Create content outline for each document
@@ -38,7 +38,7 @@ For each document, follow this process:
 4. **Document Planning**
    - Define document scope and purpose
    - List key sections and subsections
-   - Identify source material from reactor docs
+   - Identify source material from glue docs
    - Plan examples and code snippets
 
 5. **Content Synthesis**
@@ -51,7 +51,7 @@ For each document, follow this process:
    - Write introduction/overview section
    - Organize content logically (simple to complex)
    - Add cross-references to related documents
-   - Include examples with Reactor syntax
+   - Include examples with Glue syntax
 
 7. **Quality Assurance**
    - Check adherence to development guidelines

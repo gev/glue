@@ -10,7 +10,7 @@ import Glue.Lib.Math.Utility.Ceil qualified as Ceil
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Math.Utility.Ceil (Test ceil function)" do
+spec = describe "Glue.Lib.Math.Utility.Ceil (Test ceil function)" do
     describe "Ceil function" do
         it "returns 4 for ceil(3.1)" do
             let args = [Number (fromFloatDigits @Double 3.1)]

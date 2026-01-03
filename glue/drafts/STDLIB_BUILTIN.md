@@ -1,10 +1,10 @@
 # Builtin Module
 
-The builtin module provides essential special forms and core functionality for Reactor programs.
+The builtin module provides essential special forms and core functionality for Glue programs.
 
 ## Overview
 
-The builtin module includes fundamental operations that form the basis of Reactor programming:
+The builtin module includes fundamental operations that form the basis of Glue programming:
 
 - **def** - Variable definition
 - **lambda** (\\) - Function creation

@@ -7,7 +7,7 @@ import Glue.Lib.List.Take qualified as Take
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.List.Take (Test take function)" do
+spec = describe "Glue.Lib.List.Take (Test take function)" do
     it "takes first N elements from list" do
         let initialEnv = E.emptyEnv
         let args = [Number 3, List [Number 1, Number 2, Number 3, Number 4, Number 5]]

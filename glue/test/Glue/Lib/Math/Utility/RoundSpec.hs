@@ -10,7 +10,7 @@ import Glue.Lib.Math.Utility.Round qualified as Round
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Math.Utility.Round (Test round function)" do
+spec = describe "Glue.Lib.Math.Utility.Round (Test round function)" do
     describe "Round function" do
         it "returns 4 for round(3.5)" do
             let args = [Number (fromFloatDigits @Double 3.5)]

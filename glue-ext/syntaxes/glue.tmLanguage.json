@@ -1,9 +1,8 @@
 {
-	"scopeName": "source.reactor",
-	"name": "Reactor",
+	"scopeName": "source.glue",
+	"name": "Glue",
 	"fileTypes": [
-		"rct",
-		"reactor"
+		"glue"
 	],
 	"patterns": [
 		{
@@ -28,29 +27,29 @@
 	"repository": {
 		"comments": {
 			"match": ";.*$",
-			"name": "comment.line.semicolon.reactor"
+			"name": "comment.line.semicolon.glue"
 		},
 		"keywords": {
 			"match": ":[a-zA-Z0-9\\-/\\.]+",
-			"name": "keyword.other.reactor"
+			"name": "keyword.other.glue"
 		},
 		"strings": {
 			"begin": "\"",
 			"end": "\"",
-			"name": "string.quoted.double.reactor"
+			"name": "string.quoted.double.glue"
 		},
 		"numbers": {
 			"match": "\\b\\d+\\b",
-			"name": "constant.numeric.reactor"
+			"name": "constant.numeric.glue"
 		},
 		"symbols": {
 			"match": "\\b[a-zA-Z_][a-zA-Z0-9_\\-]*\\b",
-			"name": "variable.other.reactor"
+			"name": "variable.other.glue"
 		},
 		"lists": {
 			"begin": "\\(",
 			"end": "\\)",
-			"name": "meta.list.reactor",
+			"name": "meta.list.glue",
 			"patterns": [
 				{
 					"include": "$self"

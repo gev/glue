@@ -7,7 +7,7 @@ import Glue.Lib.List.Member (member)
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.List.Member (Test member function)" do
+spec = describe "Glue.Lib.List.Member (Test member function)" do
     it "returns true for item in list" do
         let initialEnv = E.emptyEnv
         let args = [Number 2, List [Number 1, Number 2, Number 3]]

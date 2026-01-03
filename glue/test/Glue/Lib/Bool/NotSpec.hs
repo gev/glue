@@ -9,7 +9,7 @@ import Glue.Lib.Bool.Not (not_)
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Bool.Not (Test not function)" do
+spec = describe "Glue.Lib.Bool.Not (Test not function)" do
     describe "Logical negation" do
         it "returns false for true" do
             let args = [Symbol "true"]

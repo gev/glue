@@ -7,7 +7,7 @@ import Glue.Lib.List.Car (car)
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.List.Car (Test car function)" do
+spec = describe "Glue.Lib.List.Car (Test car function)" do
     it "returns the first element of a list" do
         let initialEnv = E.emptyEnv
         let args = [List [Number 1, Number 2, Number 3]]

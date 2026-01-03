@@ -10,7 +10,7 @@ import qualified Glue.Lib.Math.Trigonometric.Atan as Atan (atan)
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Math.Trigonometric.Atan (Test atan function)" do
+spec = describe "Glue.Lib.Math.Trigonometric.Atan (Test atan function)" do
     describe "Arctangent function" do
         it "returns 0 for atan(0)" do
             let args = [Number 0]

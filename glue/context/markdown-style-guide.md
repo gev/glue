@@ -1,13 +1,13 @@
-# Markdown Style Guide for Reactor Specifications
+# Markdown Style Guide for Glue Specifications
 
-This document provides guidelines for consistent markdown formatting and syntax highlighting in Reactor specification documents.
+This document provides guidelines for consistent markdown formatting and syntax highlighting in Glue specification documents.
 
 ## Code Block Syntax Highlighting
 
 Use the following language identifiers for code blocks:
 
 ### Primary Languages
-- **`closure`** - Reactor language code examples
+- **`closure`** - Glue language code examples
 - **`haskell`** - Haskell implementation code
 - **`ebnf`** - EBNF grammar specifications
 
@@ -17,7 +17,7 @@ Use the following language identifiers for code blocks:
 
 ### Examples
 
-#### Reactor Code
+#### Glue Code
 ```closure
 ;; Define a function
 (def add (lambda (a b) (+ a b)))

@@ -1,6 +1,6 @@
 # Native Function Evaluation
 
-Native function evaluation executes host language functions integrated into the Reactor runtime.
+Native function evaluation executes host language functions integrated into the Glue runtime.
 
 ## Native Structure
 
@@ -115,13 +115,13 @@ printlnImpl _ = throwError WrongArgumentType
 ## Host Language Integration
 
 ### Type Marshalling
-- Convert Reactor `IR` values to host language types
+- Convert Glue `IR` values to host language types
 - Execute host language logic
 - Convert results back to `IR` values
 
 ### Error Propagation
 - Catch host language exceptions
-- Convert to Reactor error types
+- Convert to Glue error types
 - Maintain error context and call stack
 
 ## Common Native Functions

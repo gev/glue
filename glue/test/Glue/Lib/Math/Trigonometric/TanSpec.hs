@@ -10,7 +10,7 @@ import Glue.Lib.Math.Trigonometric.Tan qualified as Tan (tan)
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Math.Trigonometric.Tan (Test tan function)" do
+spec = describe "Glue.Lib.Math.Trigonometric.Tan (Test tan function)" do
     describe "Tangent function" do
         it "returns 0 for tan(0)" do
             let args = [Number 0]

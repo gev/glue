@@ -1,7 +1,7 @@
-# Reactor Language Ecosystem - Implementation TODO
+# Glue Language Ecosystem - Implementation TODO
 
 ## Overview
-This document outlines the step-by-step implementation plan for transforming Reactor from a Haskell-only language into a portable, self-sustaining ecosystem with multiple host language implementations and a Reactor-written standard library.
+This document outlines the step-by-step implementation plan for transforming Glue from a Haskell-only language into a portable, self-sustaining ecosystem with multiple host language implementations and a Glue-written standard library.
 
 ## Current Status
 - ✅ Core parser (Lisp syntax with property extensions)
@@ -10,7 +10,7 @@ This document outlines the step-by-step implementation plan for transforming Rea
 - ✅ Extensive test suite
 - ✅ Module system (Phase 3 complete - caching, isolation, security)
 - ❌ FFI framework
-- ❌ Reactor-written stdlib
+- ❌ Glue-written stdlib
 - ❌ Documentation system
 - ❌ Multi-host implementations
 
@@ -24,7 +24,7 @@ This document outlines the step-by-step implementation plan for transforming Rea
 - [x] Complete module syntax with export/import semantics
 
 ### 1.2 Implement Module Loading System ✅
-- [x] Create `Reactor.Module` modules for complete module management
+- [x] Create `Glue.Module` modules for complete module management
 - [x] Implement dual-registry system: Module Registry + Imported Cache
 - [x] Add global caching with lazy evaluation (JavaScript-style)
 - [x] Implement dependency resolution and circular dependency detection
@@ -48,14 +48,14 @@ This document outlines the step-by-step implementation plan for transforming Rea
 ## Phase 2: FFI Framework (Q1 2025)
 
 ### 2.1 Define Complete FFI Interface
-- [ ] Create `Reactor.FFI` module with interface specification
+- [ ] Create `Glue.FFI` module with interface specification
 - [ ] Define all ~100 required FFI primitives
 - [ ] Categorize FFI functions (core, math, lists, strings, objects, control, io)
 - [ ] Create type definitions for FFI functions
 - [ ] Document FFI interface specification
 
 ### 2.2 Implement Haskell FFI Bindings
-- [ ] Create `Reactor.FFI.Haskell` module
+- [ ] Create `Glue.FFI.Haskell` module
 - [ ] Implement all core type functions (`ffi-type-of`, `ffi-equal`, `ffi-to-string`)
 - [ ] Implement math FFI functions (`ffi-add`, `ffi-sin`, `ffi-sqrt`, etc.)
 - [ ] Implement list FFI functions (`ffi-car`, `ffi-cons`, `ffi-length`, etc.)
@@ -73,14 +73,14 @@ This document outlines the step-by-step implementation plan for transforming Rea
 
 ### 2.4 Test FFI Integration
 - [ ] Create comprehensive FFI unit tests
-- [ ] Add integration tests calling FFI from Reactor code
+- [ ] Add integration tests calling FFI from Glue code
 - [ ] Performance benchmark FFI calls vs direct Haskell
 - [ ] Test error handling at FFI boundaries
 - [ ] Validate type safety guarantees
 
-## Phase 3: Reactor Standard Library (Q2 2025)
+## Phase 3: Glue Standard Library (Q2 2025)
 
-### 3.1 Port Core Modules to Reactor
+### 3.1 Port Core Modules to Glue
 - [ ] Create `stdlib/core/list.r` with FFI-based implementations
 - [ ] Create `stdlib/core/math.r` with FFI math functions
 - [ ] Create `stdlib/core/bool.r` with logic and control flow
@@ -111,22 +111,22 @@ This document outlines the step-by-step implementation plan for transforming Rea
 
 ## Phase 4: Testing & Documentation (Q2 2025)
 
-### 4.1 Build Test Framework in Reactor
+### 4.1 Build Test Framework in Glue
 - [ ] Create `stdlib/test/framework.r` with `deftest`, `assert`, `describe`
 - [ ] Implement test runner using module system
 - [ ] Add property testing capabilities
 - [ ] Create test reporting and output formatting
 - [ ] Test the test framework itself
 
-### 4.2 Port Existing Tests to Reactor Syntax
-- [ ] Convert Haskell Lib tests to Reactor test framework
+### 4.2 Port Existing Tests to Glue Syntax
+- [ ] Convert Haskell Lib tests to Glue test framework
 - [ ] Ensure test coverage matches current implementation
 - [ ] Add integration tests for module loading
-- [ ] Test FFI integration through Reactor code
+- [ ] Test FFI integration through Glue code
 - [ ] Validate behavioral compatibility
 
 ### 4.3 Implement Documentation Generator
-- [ ] Create `Reactor.DocGen` Haskell module
+- [ ] Create `Glue.DocGen` Haskell module
 - [ ] Extract embedded docs from loaded modules
 - [ ] Generate HTML documentation with search
 - [ ] Create API reference with cross-links
@@ -217,9 +217,9 @@ This document outlines the step-by-step implementation plan for transforming Rea
 1. ✅ **Module system complete** - Phase 3 implemented with caching, isolation, security
 2. **Begin FFI framework development** (Phase 2.1: Define Complete FFI Interface)
 3. **Implement Haskell FFI bindings** (Phase 2.2: Core FFI functions)
-4. **Port core stdlib modules to Reactor** (Phase 3.1: List, math, bool, string)
-5. **Build test framework in Reactor** (Phase 4.1: deftest, assert, describe)
+4. **Port core stdlib modules to Glue** (Phase 3.1: List, math, bool, string)
+5. **Build test framework in Glue** (Phase 4.1: deftest, assert, describe)
 
 The module system foundation is now complete. Next focus: FFI framework for host language interop.
 
-This roadmap provides a clear path to a fully self-sustaining Reactor ecosystem.
+This roadmap provides a clear path to a fully self-sustaining Glue ecosystem.

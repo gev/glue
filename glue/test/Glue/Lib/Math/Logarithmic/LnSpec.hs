@@ -10,7 +10,7 @@ import Glue.Lib.Math.Logarithmic.Ln qualified as Ln
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Math.Logarithmic.Ln (Test ln function)" do
+spec = describe "Glue.Lib.Math.Logarithmic.Ln (Test ln function)" do
     describe "Natural logarithm function" do
         it "returns ln(1) = 0" do
             let args = [Number 1]

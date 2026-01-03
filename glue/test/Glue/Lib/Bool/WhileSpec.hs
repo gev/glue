@@ -9,7 +9,7 @@ import Glue.Lib.Bool.While (while_)
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Bool.While (Test while special form)" do
+spec = describe "Glue.Lib.Bool.While (Test while special form)" do
     describe "Loop while condition" do
         it "returns nothing when condition is false and no body" do
             let args = [Symbol "false"] -- No body, should return nothing

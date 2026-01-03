@@ -7,7 +7,7 @@ import Glue.Lib.List.Reverse qualified as Reverse
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.List.Reverse (Test reverse function)" do
+spec = describe "Glue.Lib.List.Reverse (Test reverse function)" do
     it "reverses a list" do
         let initialEnv = E.emptyEnv
         let args = [List [Number 1, Number 2, Number 3]]

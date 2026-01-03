@@ -7,7 +7,7 @@ import Glue.Lib.List.Zip qualified as Zip
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.List.Zip (Test zip function)" do
+spec = describe "Glue.Lib.List.Zip (Test zip function)" do
     it "zips two lists of equal length" do
         let initialEnv = E.emptyEnv
         let args = [List [Number 1, Number 2, Number 3], List [String "a", String "b", String "c"]]

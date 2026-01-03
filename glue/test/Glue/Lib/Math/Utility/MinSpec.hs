@@ -9,7 +9,7 @@ import qualified Glue.Lib.Math.Utility.Min as Min
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Math.Utility.Min (Test min function)" do
+spec = describe "Glue.Lib.Math.Utility.Min (Test min function)" do
     describe "Minimum function" do
         it "returns 2 for min(2, 5)" do
             let args = [Number 2, Number 5]

@@ -10,7 +10,7 @@ import Glue.Lib.Math.Logarithmic.Lg qualified as Lg
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Math.Logarithmic.Lg (Test lg function)" do
+spec = describe "Glue.Lib.Math.Logarithmic.Lg (Test lg function)" do
     describe "Common logarithm function (base 10)" do
         it "returns lg(1) = 0" do
             let args = [Number 1]

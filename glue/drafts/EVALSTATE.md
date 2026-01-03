@@ -1,8 +1,8 @@
-# Reactor EvalState Data Structure
+# Glue EvalState Data Structure
 
 ## Overview
 
-EvalState represents the complete state of Reactor's evaluation system, containing all information needed to execute Reactor programs.
+EvalState represents the complete state of Glue's evaluation system, containing all information needed to execute Glue programs.
 
 ## Core Data Types
 
@@ -47,7 +47,7 @@ data EvalState = EvalState
 
 ## Summary
 
-EvalState encapsulates the complete runtime state of Reactor's evaluation system:
+EvalState encapsulates the complete runtime state of Glue's evaluation system:
 
 - **Environment management** for variable scoping
 - **Call stack tracking** for error reporting

@@ -1,6 +1,6 @@
 # Function Application
 
-Function application evaluates lists where the first element is callable. Reactor supports multiple types of callable values: native functions, closures, and dynamically resolved symbols.
+Function application evaluates lists where the first element is callable. Glue supports multiple types of callable values: native functions, closures, and dynamically resolved symbols.
 
 ## Function Call Detection
 

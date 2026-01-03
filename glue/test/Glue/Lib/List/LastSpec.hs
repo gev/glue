@@ -7,7 +7,7 @@ import Glue.Lib.List.Last qualified as Last
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.List.Last (Test last function)" do
+spec = describe "Glue.Lib.List.Last (Test last function)" do
     it "returns the last element of a list" do
         let initialEnv = E.emptyEnv
         let args = [List [Number 1, Number 2, Number 3]]

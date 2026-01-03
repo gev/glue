@@ -10,7 +10,7 @@ import Glue.Lib.Math.Arithmetic.Add qualified as Add
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Arithmetic.Add (Test add function)" do
+spec = describe "Glue.Lib.Arithmetic.Add (Test add function)" do
     describe "Add function" do
         it "returns 5 for (+ 2 3)" do
             let args = [Number 2, Number 3]

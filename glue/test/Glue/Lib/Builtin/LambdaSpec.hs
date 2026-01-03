@@ -8,7 +8,7 @@ import Glue.Lib.Builtin.Lambda (extractSymbols, lambda)
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Builtin.Lambda (Test lambda special form)" do
+spec = describe "Glue.Lib.Builtin.Lambda (Test lambda special form)" do
     describe "Creating closures" do
         it "creates a closure with parameters and body" do
             let initialEnv = E.fromList [("x", Number 10)]

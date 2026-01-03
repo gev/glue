@@ -1,6 +1,6 @@
 module Glue.Parser (
     Parser,
-    parseReactor,
+    parseGlue,
 ) where
 
 import Data.Text (Text)
@@ -13,9 +13,9 @@ import Text.Megaparsec.Char.Lexer qualified as L
 
 type Parser = Parsec ParserError Text
 
-parseReactor :: Text -> Either ParserError AST
-parseReactor input =
-    case parse (pReactor <* eof) "reactor-input" input of
+parseGlue :: Text -> Either ParserError AST
+parseGlue input =
+    case parse (pGlue <* eof) "glue-input" input of
         Left err -> Left (parserError err)
         Right ast -> Right ast
 
@@ -28,8 +28,8 @@ lexeme = L.lexeme sc
 symbol :: Text -> Parser Text
 symbol = L.symbol sc
 
-pReactor :: Parser AST
-pReactor =
+pGlue :: Parser AST
+pGlue =
     choice
         [ pExprOrList
         , pString
@@ -48,7 +48,7 @@ pSymbol = Symbol . T.pack <$> lexeme (some (alphaNumChar <|> oneOf ("-._:!?\\=<>
 
 pExprOrList :: Parser AST
 pExprOrList = between (symbol "(") (symbol ")") $ do
-    optional pReactor >>= \case
+    optional pGlue >>= \case
         Nothing -> pure $ List []
         Just first -> case first of
             Symbol name | not (T.isPrefixOf ":" name) -> do
@@ -60,7 +60,7 @@ pExprOrList = between (symbol "(") (symbol ")") $ do
 
 pBodyRest :: [AST] -> Parser AST
 pBodyRest initial = do
-    elems <- (initial <>) <$> many pReactor
+    elems <- (initial <>) <$> many pGlue
     case elems of
         [] -> pure $ List []
         (x : _) | isProp x -> do

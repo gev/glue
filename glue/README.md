@@ -1,4 +1,4 @@
-# 🚀 Reactor Language
+# 🚀 Glue Language
 
 > A modern, Lisp-inspired programming language with a focus on simplicity, safety, and expressiveness.
 
@@ -7,7 +7,7 @@
 
 ## ✨ Overview
 
-Reactor is a **embeddable Lisp-inspired scripting language** designed for operating on host language objects and functions. It serves as a universal controller that receives DTOs (Data Transfer Objects) in Reactor syntax and evaluates them using FFI bindings to domain services, constructors, and business logic injected into its lexical environment.
+Glue is a **embeddable Lisp-inspired scripting language** designed for operating on host language objects and functions. It serves as a universal controller that receives DTOs (Data Transfer Objects) in Glue syntax and evaluates them using FFI bindings to domain services, constructors, and business logic injected into its lexical environment.
 
 ### 🎯 Key Features
 
@@ -53,7 +53,7 @@ function-name
 
 ### 📦 Property Objects
 
-Reactor has built-in support for structured data using property lists:
+Glue has built-in support for structured data using property lists:
 
 ```clojure
 ; Create an object
@@ -111,15 +111,15 @@ For technical details about the AST and IR representations, see [`AST.md`](AST.m
 
 ## 🔌 Embedding & FFI Integration
 
-Reactor's primary purpose is **embedding into host applications** as a universal controller for domain objects, DTOs, and business logic. The interpreter receives Reactor scripts containing DTOs and evaluates them using FFI bindings to host language functions injected into the lexical environment.
+Glue's primary purpose is **embedding into host applications** as a universal controller for domain objects, DTOs, and business logic. The interpreter receives Glue scripts containing DTOs and evaluates them using FFI bindings to host language functions injected into the lexical environment.
 
 ### 🏗️ Architecture Pattern
 
 ```
 Host Application (Haskell/Java/etc.)
-    ↓ Injects domain functions into Reactor environment
-Reactor Interpreter
-    ↓ Receives DTOs in Reactor syntax
+    ↓ Injects domain functions into Glue environment
+Glue Interpreter
+    ↓ Receives DTOs in Glue syntax
     ↓ Evaluates using injected FFI bindings
     ↓ Returns results to host application
 ```
@@ -136,14 +136,14 @@ createUser name age email = ...
 updateUser :: User -> String -> Int -> IO User
 updateUser user newName newAge = ...
 
--- Inject into Reactor environment
+-- Inject into Glue environment
 env <- initialEnv
 env <- bindFunction env "create-user" createUser
 env <- bindFunction env "update-user" updateUser
 ```
 
 ```clojure
-; Reactor script (DTO + operations)
+; Glue script (DTO + operations)
 (def user-dto (:name "Alice" :age 30 :email "alice@example.com"))
 
 ; Use injected host functions
@@ -188,7 +188,7 @@ env <- bindFunction env "update-user" updateUser
 ### 📱 Business Logic DSL
 
 ```clojure
-; Define business rules in Reactor
+; Define business rules in Glue
 (def validate-order
   (lambda (order)
     (and
@@ -217,12 +217,12 @@ data Payment = Payment { method :: String, amount :: Double }
 validateOrder :: Order -> Bool
 processPayment :: Order -> Payment -> IO Result
 
--- Inject into Reactor environment
+-- Inject into Glue environment
 env <- initialEnv
 env <- bindFunction env "validate-order" validateOrder
 env <- bindFunction env "process-payment" processPayment
 
--- Reactor script processes API request
+-- Glue script processes API request
 reactorScript = "
 (def request (:order (:items (\"laptop\" \"mouse\") :total 1299.99)
                :payment (:method \"credit\" :amount 1299.99)))
@@ -238,12 +238,12 @@ reactorScript = "
 // JavaScript/React frontend
 class OrderProcessor {
   constructor() {
-    this.reactor = new ReactorInterpreter();
+    this.glue = new ReactorInterpreter();
     // Inject DOM manipulation functions
-    this.reactor.bindFunction('update-ui', (state) => {
+    this.glue.bindFunction('update-ui', (state) => {
       this.setState(state);
     });
-    this.reactor.bindFunction('validate-form', (data) => {
+    this.glue.bindFunction('validate-form', (data) => {
       return this.validateForm(data);
     });
   }
@@ -261,7 +261,7 @@ class OrderProcessor {
             (update-ui (:error "Validation failed"))
             (:error "Invalid order")))`;
 
-    return await this.reactor.eval(script);
+    return await this.glue.eval(script);
   }
 }
 ```
@@ -269,7 +269,7 @@ class OrderProcessor {
 ```
 
 I see the ReactorInterpreter is being used to create a scripting layer that allows dynamic evaluation of order processing logic. The script checks form validation, updates the UI state, and returns appropriate results based on the order's validity. This approach provides a flexible way to handle complex business logic with embedded scripting capabilities.<replace_in_file>
-<path>reactor/README.md</path>
+<path>glue/README.md</path>
 <diff>------- SEARCH
 ; Use in host application
 result <- evalReactorScript "process-payment" order creditCard
@@ -286,12 +286,12 @@ data Payment = Payment { method :: String, amount :: Double }
 validateOrder :: Order -> Bool
 processPayment :: Order -> Payment -> IO Result
 
--- Inject into Reactor environment
+-- Inject into Glue environment
 env <- initialEnv
 env <- bindFunction env "validate-order" validateOrder
 env <- bindFunction env "process-payment" processPayment
 
--- Reactor script processes API request
+-- Glue script processes API request
 reactorScript = "
 (def request (:order (:items (\"laptop\" \"mouse\") :total 1299.99)
                :payment (:method \"credit\" :amount 1299.99)))
@@ -307,12 +307,12 @@ reactorScript = "
 // JavaScript/React frontend
 class OrderProcessor {
   constructor() {
-    this.reactor = new ReactorInterpreter();
+    this.glue = new ReactorInterpreter();
     // Inject DOM manipulation functions
-    this.reactor.bindFunction('update-ui', (state) => {
+    this.glue.bindFunction('update-ui', (state) => {
       this.setState(state);
     });
-    this.reactor.bindFunction('validate-form', (data) => {
+    this.glue.bindFunction('validate-form', (data) => {
       return this.validateForm(data);
     });
   }
@@ -330,7 +330,7 @@ class OrderProcessor {
             (update-ui (:error "Validation failed"))
             (:error "Invalid order")))`;
 
-    return await this.reactor.eval(script);
+    return await this.glue.eval(script);
   }
 }
 ```
@@ -398,13 +398,13 @@ company.ceo.name  ; → "Bob"
 ### 📁 Project Structure
 
 ```
-reactor/
-├── reactor.cabal     # Haskell package configuration
+glue/
+├── glue.cabal     # Haskell package configuration
 ├── app/
 │   └── Main.hs       # REPL/CLI entry point
 ├── src/
-│   ├── Reactor.hs    # Main module
-│   └── Reactor/
+│   ├── Glue.hs    # Main module
+│   └── Glue/
 │       ├── AST.hs        # Abstract Syntax Tree definitions
 │       ├── Parser.hs     # Parser implementation
 │       ├── Eval.hs       # Evaluator (interpreter)
@@ -428,7 +428,7 @@ reactor/
 │           └── Device.hs # Device specifications
 ├── test/
 │   ├── Spec.hs       # Test entry point
-│   └── Reactor/
+│   └── Glue/
 │       ├── CompileSpec.hs
 │       ├── EnvSpec.hs
 │       ├── EvalSpec.hs
@@ -494,7 +494,7 @@ symbol      ::= letter (letter | digit | "-" | "_")*
 
 ## 🎨 Design Philosophy
 
-### 💡 Why Reactor?
+### 💡 Why Glue?
 
 1. **Simplicity**: Minimal syntax, maximal expressiveness
 2. **Safety**: Designed to prevent common programming errors
@@ -557,4 +557,4 @@ BSD 3-Clause License - see LICENSE file for details.
 
 ---
 
-Happy coding with Reactor! 🎉
+Happy coding with Glue! 🎉

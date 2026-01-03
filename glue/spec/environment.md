@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Reactor environment manages variable bindings and scoping during program execution. Environments provide the runtime context for symbol resolution, enabling lexical scoping and proper variable capture in closures.
+The Glue environment manages variable bindings and scoping during program execution. Environments provide the runtime context for symbol resolution, enabling lexical scoping and proper variable capture in closures.
 
 ## Environment Structure
 

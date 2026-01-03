@@ -9,7 +9,7 @@ import Glue.Lib.Bool.If (if_)
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Bool.If (Test if special form)" do
+spec = describe "Glue.Lib.Bool.If (Test if special form)" do
     describe "Conditional execution" do
         it "executes then branch when condition is true" do
             let args = [Symbol "true", Number 42, Number 0]

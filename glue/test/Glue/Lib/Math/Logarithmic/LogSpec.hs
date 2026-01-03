@@ -10,7 +10,7 @@ import Glue.Lib.Math.Logarithmic.Log qualified as Log
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Math.Logarithmic.Log (Test log function)" do
+spec = describe "Glue.Lib.Math.Logarithmic.Log (Test log function)" do
     describe "Logarithm function with base" do
         it "returns log(1, e) = 0" do
             let args = [Number 1, Number (fromFloatDigits @Double (exp 1))]

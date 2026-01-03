@@ -3,26 +3,26 @@ module Glue.EvalSpec (spec) where
 import Data.Map.Strict qualified as Map
 import Data.Text (Text)
 import Glue.Env qualified as E
-import Glue.Error (ReactorError (..))
+import Glue.Error (GlueError (..))
 import Glue.Eval (Eval, eval, runEvalLegacy)
 import Glue.Eval.Error (EvalError (..), GeneralError (..))
 import Glue.IR (IR (..), compile)
 import Glue.Lib (lib)
-import Glue.Parser (parseReactor)
+import Glue.Parser (parseGlue)
 import Test.Hspec
 
-runCode :: Text -> IO (Either ReactorError (Maybe (IR Eval)))
-runCode input = case parseReactor input of
-    Left err -> pure $ Left (ReactorError err)
+runCode :: Text -> IO (Either GlueError (Maybe (IR Eval)))
+runCode input = case parseGlue input of
+    Left err -> pure $ Left (GlueError err)
     Right ast -> do
         let irTree = compile ast
         fullResult <- runEvalLegacy (eval irTree) (E.fromFrame lib)
         case fullResult of
-            Left err -> pure $ Left (ReactorError err)
+            Left err -> pure $ Left (GlueError err)
             Right (res, _finalEnv, _ctx) -> pure $ Right res
 
 spec :: Spec
-spec = describe "Reactor.Eval (System Integration)" do
+spec = describe "Glue.Eval (System Integration)" do
     it "handles basic values" do
         runCode "42" `shouldReturn` Right (Just (Number 42))
         runCode "\"test\"" `shouldReturn` Right (Just (String "test"))
@@ -49,11 +49,11 @@ spec = describe "Reactor.Eval (System Integration)" do
 
     it "fails when calling non-existent function" do
         runCode "(non-existent 1 2)"
-            `shouldReturn` Left (ReactorError $ EvalError [] $ UnboundVariable "non-existent")
+            `shouldReturn` Left (GlueError $ EvalError [] $ UnboundVariable "non-existent")
 
     it "fails when passing wrong number of arguments" do
         runCode "((lambda (a b) a) 1)"
-            `shouldReturn` Left (ReactorError $ EvalError ["<call>"] WrongNumberOfArguments)
+            `shouldReturn` Left (GlueError $ EvalError ["<call>"] WrongNumberOfArguments)
 
     it "user-defined function" do
         runCode "((def id (lambda (x) x)) (id 42))"
@@ -61,11 +61,11 @@ spec = describe "Reactor.Eval (System Integration)" do
 
     it "user-defined function too few args" do
         runCode "((def id (lambda (x) x)) (id))"
-            `shouldReturn` Left (ReactorError $ EvalError ["id"] WrongNumberOfArguments)
+            `shouldReturn` Left (GlueError $ EvalError ["id"] WrongNumberOfArguments)
 
     it "user-defined function too many args" do
         runCode "((def id (lambda (x) x)) (id 1 2))"
-            `shouldReturn` Left (ReactorError $ EvalError ["id"] WrongNumberOfArguments)
+            `shouldReturn` Left (GlueError $ EvalError ["id"] WrongNumberOfArguments)
 
     it "user-defined function multi-param" do
         runCode "((def f (lambda (a b) ((a) (b)))) (f 1 2))"
@@ -81,11 +81,11 @@ spec = describe "Reactor.Eval (System Integration)" do
 
     it "\\ alias works like lambda (too few args)" do
         runCode "((def id (\\ (x) x)) (id))"
-            `shouldReturn` Left (ReactorError $ EvalError ["id"] WrongNumberOfArguments)
+            `shouldReturn` Left (GlueError $ EvalError ["id"] WrongNumberOfArguments)
 
     it "\\ alias works like lambda (too many args)" do
         runCode "((def id (\\ (x) x)) (id 1 2))"
-            `shouldReturn` Left (ReactorError $ EvalError ["id"] WrongNumberOfArguments)
+            `shouldReturn` Left (GlueError $ EvalError ["id"] WrongNumberOfArguments)
 
     it "\\ alias works like lambda (multi-param)" do
         runCode "((def f (\\ (a b) ((a) (b)))) (f 1 2))"

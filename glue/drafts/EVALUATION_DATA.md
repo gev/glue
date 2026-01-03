@@ -75,7 +75,7 @@ If any element evaluation fails:
 ## Performance Considerations
 
 ### Lazy Evaluation
-Data structures could potentially use lazy evaluation, but Reactor currently uses eager evaluation for consistency with function arguments.
+Data structures could potentially use lazy evaluation, but Glue currently uses eager evaluation for consistency with function arguments.
 
 ### Memory Usage
 - New structures created for each evaluation

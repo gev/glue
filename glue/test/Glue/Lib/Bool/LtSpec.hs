@@ -9,7 +9,7 @@ import Glue.Lib.Bool.Lt (lt)
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Bool.Lt (Test lt function)" do
+spec = describe "Glue.Lib.Bool.Lt (Test lt function)" do
     describe "Less than comparison" do
         it "returns true for lesser number" do
             let args = [Number 5, Number 10]

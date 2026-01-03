@@ -10,7 +10,7 @@ import Glue.Lib.Math.Utility.Floor qualified as Floor
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.Math.Utility.Floor (Test floor function)" do
+spec = describe "Glue.Lib.Math.Utility.Floor (Test floor function)" do
     describe "Floor function" do
         it "returns 3 for floor(3.7)" do
             let args = [Number (fromFloatDigits @Double 3.7)]

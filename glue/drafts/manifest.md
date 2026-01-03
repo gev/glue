@@ -1,4 +1,4 @@
-# 🚀 Reactor Language Ecosystem Manifest
+# 🚀 Glue Language Ecosystem Manifest
 
 > A self-contained, portable Lisp-inspired programming language with modular standard library, built-in testing, and cross-implementation compatibility.
 
@@ -16,11 +16,11 @@
 
 ## 🎯 Vision
 
-Reactor aims to be a **truly portable, self-sustaining programming language ecosystem** where:
+Glue aims to be a **truly portable, self-sustaining programming language ecosystem** where:
 
 1. **Language Core**: Minimal interpreter implemented in multiple host languages
-2. **Standard Library**: Pure Reactor modules calling FFI primitives
-3. **Testing**: Comprehensive test suite written in Reactor itself
+2. **Standard Library**: Pure Glue modules calling FFI primitives
+3. **Testing**: Comprehensive test suite written in Glue itself
 4. **Documentation**: Self-documenting code with generated docs
 5. **Modules**: Import/export system for code organization
 
@@ -28,14 +28,14 @@ This creates a language that is **implementation-agnostic** - the same programs 
 
 ## ⚙️ Configuration & Data Formats
 
-Beyond being a programming language, Reactor serves as an excellent **configuration and data description language**, providing a more powerful and expressive alternative to JSON, XML, and YAML.
+Beyond being a programming language, Glue serves as an excellent **configuration and data description language**, providing a more powerful and expressive alternative to JSON, XML, and YAML.
 
 ### Dictyanaris Configuration Language
 
-Reactor uses **only parentheses `()`** for its syntax, following traditional Lisp conventions. This provides a uniform, programmable approach to configuration:
+Glue uses **only parentheses `()`** for its syntax, following traditional Lisp conventions. This provides a uniform, programmable approach to configuration:
 
 ```clojure
-;; Config using Reactor syntax - only parentheses
+;; Config using Glue syntax - only parentheses
 (config
     (version "1.0.0")
     (services
@@ -77,7 +77,7 @@ Reactor uses **only parentheses `()`** for its syntax, following traditional Lis
 
 ### RPC Data Transfer Objects
 
-Reactor's object and list syntax provides a natural way to define DTOs:
+Glue's object and list syntax provides a natural way to define DTOs:
 
 ```clojure
 ;; RPC request/response DTOs
@@ -114,10 +114,10 @@ Reactor's object and list syntax provides a natural way to define DTOs:
 
 ### Device Control Commands
 
-Reactor's syntax is ideal for IoT and home automation commands:
+Glue's syntax is ideal for IoT and home automation commands:
 
 ```clojure
-;; Device control commands using Reactor verbs
+;; Device control commands using Glue verbs
 (define-command turn-on
     (:device-id (string "device-uuid")
      :target "light"
@@ -154,7 +154,7 @@ This approach makes device control feel natural and programmable, enabling compl
 
 ### Configuration as Code
 
-Reactor enables **Configuration as Code** paradigms:
+Glue enables **Configuration as Code** paradigms:
 
 ```clojure
 ;; Environment-specific config composition
@@ -187,15 +187,15 @@ This approach provides the power of programming languages for configuration whil
 ## 🏗️ Architecture
 
 ```
-Reactor Ecosystem
+Glue Ecosystem
 ├── Core Language (per host language)
 │   ├── Parser (Text → AST)
 │   ├── AST Builder API (Programmatic AST Construction)
 │   ├── AST → IR Compiler
 │   ├── Evaluator (IR → Result)
 │   ├── Environment (lexical scoping)
-│   └── FFI Bindings (host ↔ Reactor)
-├── Standard Library (pure Reactor)
+│   └── FFI Bindings (host ↔ Glue)
+├── Standard Library (pure Glue)
 │   ├── Standard modules (List, Math, Bool, String)
 │   ├── Utility modules (IO, Time, Random)
 │   └── User modules (extensible)
@@ -204,7 +204,7 @@ Reactor Ecosystem
 │   ├── AST Transformation APIs
 │   ├── Code Generators
 │   └── IDE Integration
-├── Testing Framework (pure Reactor)
+├── Testing Framework (pure Glue)
 │   ├── Test runner
 │   ├── Assertions
 │   └── Property testing
@@ -216,7 +216,7 @@ Reactor Ecosystem
 
 ### AST Construction: Beyond Parentheses
 
-Reactor breaks free from the traditional Lisp limitation of **only round parentheses `()`** for syntax. While text parsing with `()` remains one input method, Reactor's AST can be constructed through multiple pathways:
+Glue breaks free from the traditional Lisp limitation of **only round parentheses `()`** for syntax. While text parsing with `()` remains one input method, Glue's AST can be constructed through multiple pathways:
 
 #### 1. Text Parsing (Traditional)
 ```haskell
@@ -269,12 +269,12 @@ optimizeAST :: AST -> AST
 
 ### Benefits of Programmatic AST Construction
 
-- **GUI Code Builders**: Visual programming interfaces for Reactor
-- **Code Generation**: Generate Reactor code from schemas, APIs, databases
-- **Macros & DSLs**: Build domain-specific languages on top of Reactor
+- **GUI Code Builders**: Visual programming interfaces for Glue
+- **Code Generation**: Generate Glue code from schemas, APIs, databases
+- **Macros & DSLs**: Build domain-specific languages on top of Glue
 - **Tool Integration**: IDEs, editors, and other tools can construct code
 - **AST Transformations**: Refactoring, optimization, and code analysis tools
-- **Cross-Language Interop**: Convert between Reactor and other language ASTs
+- **Cross-Language Interop**: Convert between Glue and other language ASTs
 
 ### Implementation Strategy
 
@@ -284,11 +284,11 @@ Each host language implementation provides:
 - **Serialization**: Convert AST back to text for storage/debugging
 - **Transformation APIs**: Tools for AST manipulation and analysis
 
-This multi-modal AST construction enables Reactor to be used not just as a textual programming language, but as a programmable foundation for code generation, GUI builders, and sophisticated development tools.
+This multi-modal AST construction enables Glue to be used not just as a textual programming language, but as a programmable foundation for code generation, GUI builders, and sophisticated development tools.
 
 ## 🎛️ Environment-Controlled Language Features
 
-Reactor's language capabilities are controlled through the **environment configuration**, allowing different execution contexts to have different language features. This enables:
+Glue's language capabilities are controlled through the **environment configuration**, allowing different execution contexts to have different language features. This enables:
 
 - **Modular Language Design**: Core language can be extended with optional features
 - **Security**: Restrict available operations in sandboxed environments
@@ -354,7 +354,7 @@ minimalEnv :: Frame Eval
 minimalEnv = builtin  -- only list, object
 ```
 
-This design enables Reactor to be used in diverse contexts:
+This design enables Glue to be used in diverse contexts:
 - **Full development**: All features available
 - **Embedded scripting**: Limited to safe operations
 - **Educational**: Progressive feature unlocking
@@ -399,7 +399,7 @@ This design enables Reactor to be used in diverse contexts:
 Module names directly correspond to file system paths (similar to Haskell):
 
 ```
-reactor/
+glue/
 ├── stdlib/
 │   ├── core/
 │   │   ├── list.r        # (module core.list ...)
@@ -582,15 +582,15 @@ reactor/
 - [ ] Create FFI binding generator
 - [ ] Test FFI integration
 
-### Phase 3: Reactor Standard Library (Q2 2025)
-- [ ] Port all current Lib functions to Reactor
+### Phase 3: Glue Standard Library (Q2 2025)
+- [ ] Port all current Lib functions to Glue
 - [ ] Implement core modules (List, Math, Bool, String)
 - [ ] Add comprehensive documentation
 - [ ] Create module dependency management
 
 ### Phase 4: Testing & Documentation (Q2 2025)
-- [ ] Build test framework in Reactor
-- [ ] Port existing tests to Reactor syntax
+- [ ] Build test framework in Glue
+- [ ] Port existing tests to Glue syntax
 - [ ] Implement documentation generator
 - [ ] Create cross-implementation test runner
 
@@ -630,7 +630,7 @@ reactor/
 ### Test Runner Architecture
 ```
 Cross-Platform Test Suite
-├── test-definitions/     # Reactor test files
+├── test-definitions/     # Glue test files
 ├── implementations/      # Host language runners
 │   ├── haskell/
 │   ├── dart/
@@ -668,7 +668,7 @@ Cross-Platform Test Suite
 
 ## 🤝 Contributing
 
-This manifest serves as the roadmap for Reactor's evolution. Contributions are welcome in:
+This manifest serves as the roadmap for Glue's evolution. Contributions are welcome in:
 
 - Core language implementations
 - Standard library modules
@@ -683,4 +683,4 @@ BSD 3-Clause License - see LICENSE file for details.
 
 ---
 
-*This document represents the current vision for Reactor. As the project evolves, this manifest will be updated to reflect new insights and priorities.*
+*This document represents the current vision for Glue. As the project evolves, this manifest will be updated to reflect new insights and priorities.*

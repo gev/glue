@@ -2,7 +2,7 @@
 
 ## Overview
 
-Special forms are built-in operations that don't follow normal evaluation rules. They control evaluation itself, perform side effects, or create new evaluation contexts. Reactor's special forms include `def`, `lambda`, and `set`.
+Special forms are built-in operations that don't follow normal evaluation rules. They control evaluation itself, perform side effects, or create new evaluation contexts. Glue's special forms include `def`, `lambda`, and `set`.
 
 ## Def (Definition)
 

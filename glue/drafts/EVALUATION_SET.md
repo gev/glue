@@ -2,7 +2,7 @@
 
 ## Overview
 
-`set` updates existing variable bindings or object properties with new values. It is Reactor's mutation special form.
+`set` updates existing variable bindings or object properties with new values. It is Glue's mutation special form.
 
 ## Syntax
 
@@ -134,4 +134,4 @@ Object property updates may create new properties if they don't exist, depending
 Variable updates require environment traversal, property updates require object access.
 
 ### Immutability
-While `set` provides mutation, Reactor maintains functional programming principles through explicit mutation operations.
+While `set` provides mutation, Glue maintains functional programming principles through explicit mutation operations.

@@ -7,7 +7,7 @@ import Glue.Lib.List.Nth (nth)
 import Test.Hspec
 
 spec :: Spec
-spec = describe "Reactor.Lib.List.Nth (Test nth function)" do
+spec = describe "Glue.Lib.List.Nth (Test nth function)" do
     it "returns element at index 0" do
         let initialEnv = E.emptyEnv
         let args = [Number 0, List [Number 1, Number 2, Number 3]]
