@@ -16,21 +16,21 @@ spec = describe "Glue.Lib.Bool.Le (Test le function)" do
             result <- runEvalLegacy (le args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Le failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Symbol "true"
+                Right (res, _, _) -> res `shouldBe` Bool True
 
         it "returns true for lesser number" do
             let args = [Number 5, Number 10]
             result <- runEvalLegacy (le args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Le failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Symbol "true"
+                Right (res, _, _) -> res `shouldBe` Bool True
 
         it "returns false for greater number" do
             let args = [Number 10, Number 5]
             result <- runEvalLegacy (le args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Le failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Symbol "false"
+                Right (res, _, _) -> res `shouldBe` Bool False
 
         it "fails with non-numbers" do
             let args = [String "hello", String "world"]
@@ -50,5 +50,5 @@ spec = describe "Glue.Lib.Bool.Le (Test le function)" do
             result2 <- runEvalLegacy (le args2) (E.fromFrame lib)
             result3 <- runEvalLegacy (le args3) (E.fromFrame lib)
             case (result1, result2, result3) of
-                (Right (Symbol "true", _, _), Right (Symbol "true", _, _), Right (Symbol "false", _, _)) -> pure ()
+                (Right (Bool True, _, _), Right (Bool True, _, _), Right (Bool False, _, _)) -> pure ()
                 _ -> expectationFailure "<= alias should work like le"

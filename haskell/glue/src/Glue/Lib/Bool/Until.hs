@@ -12,12 +12,12 @@ until_ (cond : body) = loop
             [] -> do
                 condVal <- evalRequired cond
                 case condVal of
-                    Symbol "false" -> loop
+                    Bool False -> loop
                     _ -> pure Nothing
             _ -> do
                 _ <- mapM eval body
                 condVal <- evalRequired cond
                 case condVal of
-                    Symbol "false" -> loop
+                    Bool False -> loop
                     _ -> pure Nothing
 until_ _ = throwError $ WrongArgumentType ["condition", "body"]

@@ -32,6 +32,6 @@ applyPredicate pred x = do
     -- Evaluate (pred x) and check if it returns true
     result <- eval (List [pred, x]) >>= maybe (throwError ExpectedValue) pure
     case result of
-        Symbol "true" -> pure True
-        Symbol "false" -> pure False
+        Bool True -> pure True
+        Bool False -> pure False
         _ -> throwError $ WrongArgumentType ["boolean result from predicate"]

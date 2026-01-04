@@ -24,6 +24,6 @@ partitionList pred (x : xs) = do
     result <- eval (List [pred, x]) >>= maybe (throwError ExpectedValue) pure
     (matching, nonMatching) <- partitionList pred xs
     case result of
-        Symbol "true" -> pure (x : matching, nonMatching)
-        Symbol "false" -> pure (matching, x : nonMatching)
+        Bool True -> pure (x : matching, nonMatching)
+        Bool False -> pure (matching, x : nonMatching)
         _ -> throwError $ WrongArgumentType ["boolean result from predicate"]

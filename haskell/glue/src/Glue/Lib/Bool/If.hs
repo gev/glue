@@ -8,6 +8,6 @@ if_ :: [IR Eval] -> Eval (Maybe (IR Eval))
 if_ [cond, thenExpr, elseExpr] = do
     condVal <- evalRequired cond
     case condVal of
-        Symbol "false" -> eval elseExpr
+        Bool False -> eval elseExpr
         _ -> eval thenExpr
 if_ _ = throwError $ WrongArgumentType ["condition", "then", "else"]

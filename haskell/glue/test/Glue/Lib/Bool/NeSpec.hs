@@ -17,28 +17,28 @@ spec = describe "Glue.Lib.Bool.Ne (Test ne function)" do
             result <- runEvalLegacy (ne args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Ne failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Symbol "true"
+                Right (res, _, _) -> res `shouldBe` Bool True
 
         it "returns false for equal numbers" do
             let args = [Number 42, Number 42]
             result <- runEvalLegacy (ne args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Ne failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Symbol "false"
+                Right (res, _, _) -> res `shouldBe` Bool False
 
         it "returns true for unequal strings" do
             let args = [String "hello", String "world"]
             result <- runEvalLegacy (ne args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Ne failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Symbol "true"
+                Right (res, _, _) -> res `shouldBe` Bool True
 
         it "returns false for equal strings" do
             let args = [String "hello", String "hello"]
             result <- runEvalLegacy (ne args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Ne failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Symbol "false"
+                Right (res, _, _) -> res `shouldBe` Bool False
 
         it "fails with wrong number of arguments" do
             let args = [Number 42]
@@ -51,5 +51,5 @@ spec = describe "Glue.Lib.Bool.Ne (Test ne function)" do
             result1 <- runEvalLegacy (ne args1) (E.fromFrame lib)
             result2 <- runEvalLegacy (ne args2) (E.fromFrame lib)
             case (result1, result2) of
-                (Right (Symbol "true", _, _), Right (Symbol "false", _, _)) -> pure ()
+                (Right (Bool True, _, _), Right (Bool False, _, _)) -> pure ()
                 _ -> expectationFailure "\\= alias should work like ne"

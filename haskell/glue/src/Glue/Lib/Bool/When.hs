@@ -8,7 +8,7 @@ when_ :: [IR Eval] -> Eval (Maybe (IR Eval))
 when_ (cond : body) = do
     condVal <- evalRequired cond
     case condVal of
-        Symbol "false" -> pure Nothing
+        Bool False -> pure Nothing
         _ -> case body of
             [] -> pure Nothing
             _ -> do

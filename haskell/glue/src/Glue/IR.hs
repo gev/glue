@@ -15,6 +15,7 @@ type Env m = [Frame m]
 data IR m
     = Number Scientific
     | String Text
+    | Bool Bool
     | Symbol Text
     | DottedSymbol [Text]
     | List [IR m]
@@ -43,6 +44,8 @@ instance Show (IR m) where
     show = \case
         Number n -> show n
         String s -> "\"" <> T.unpack s <> "\""
+        Bool True -> "true"
+        Bool False -> "false"
         Symbol s -> T.unpack s
         DottedSymbol parts -> T.unpack (T.intercalate "." parts)
         List xs -> "(" <> unwords (map show xs) <> ")"

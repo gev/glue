@@ -9,8 +9,6 @@ member [itemIR, listIR] = do
     item <- evalRequired itemIR
     list <- evalRequired listIR
     case list of
-        List xs -> do
-            let isMember = item `elem` xs
-            pure $ if isMember then Symbol "true" else Symbol "false"
+        List xs -> pure . Bool $ item `elem` xs
         _ -> throwError $ WrongArgumentType ["list"]
 member _ = throwError WrongNumberOfArguments

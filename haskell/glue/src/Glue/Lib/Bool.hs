@@ -18,8 +18,8 @@ import Glue.Lib.Bool.While (while_)
 bool :: Frame Eval
 bool =
     E.frameFromList
-        [ ("true", Symbol "true")
-        , ("false", Symbol "false")
+        [ ("true", Bool True)
+        , ("false", Bool False)
         , ("eq", Native (Func eq))
         , ("==", Native (Func eq))
         , ("ne", Native (Func ne))

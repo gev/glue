@@ -10,7 +10,7 @@ while_ (cond : body) = loop
   loop = do
     condVal <- evalRequired cond
     case condVal of
-      Symbol "false" -> pure Nothing
+      Bool False -> pure Nothing
       _ -> case body of
         [] -> loop
         _ -> do

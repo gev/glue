@@ -15,28 +15,28 @@ spec = describe "Glue.Lib.Bool.Eq (Test eq function)" do
             result <- runEvalLegacy (eq args) []
             case result of
                 Left err -> expectationFailure $ "Eq failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Symbol "true"
+                Right (res, _, _) -> res `shouldBe` Bool True
 
         it "returns false for unequal numbers" do
             let args = [Number 42, Number 43]
             result <- runEvalLegacy (eq args) []
             case result of
                 Left err -> expectationFailure $ "Eq failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Symbol "false"
+                Right (res, _, _) -> res `shouldBe` Bool False
 
         it "returns true for equal strings" do
             let args = [String "hello", String "hello"]
             result <- runEvalLegacy (eq args) []
             case result of
                 Left err -> expectationFailure $ "Eq failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Symbol "true"
+                Right (res, _, _) -> res `shouldBe` Bool True
 
         it "returns false for unequal strings" do
             let args = [String "hello", String "world"]
             result <- runEvalLegacy (eq args) []
             case result of
                 Left err -> expectationFailure $ "Eq failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Symbol "false"
+                Right (res, _, _) -> res `shouldBe` Bool False
 
         it "fails with wrong number of arguments" do
             let args = [Number 42]

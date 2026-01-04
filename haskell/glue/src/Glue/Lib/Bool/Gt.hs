@@ -9,6 +9,6 @@ gt [a, b] = do
     va <- evalRequired a
     vb <- evalRequired b
     case (va, vb) of
-        (Number na, Number nb) -> pure $ if na > nb then Symbol "true" else Symbol "false"
+        (Number na, Number nb) -> pure . Bool $ na > nb
         _ -> throwError $ WrongArgumentType ["number", "number"]
 gt _ = throwError $ WrongArgumentType ["number", "number"]

@@ -92,32 +92,32 @@ spec = describe "Glue.Eval (System Integration)" do
             `shouldReturn` Right (Just (List [List [Number 1, Number 2]]))
 
     it "== alias works like eq" do
-        runCode "(== 42 42)" `shouldReturn` Right (Just (Symbol "true"))
-        runCode "(== 42 43)" `shouldReturn` Right (Just (Symbol "false"))
+        runCode "(== 42 42)" `shouldReturn` Right (Just (Bool True))
+        runCode "(== 42 43)" `shouldReturn` Right (Just (Bool False))
 
     it "\\= alias works like ne" do
-        runCode "(!= 42 43)" `shouldReturn` Right (Just (Symbol "true"))
-        runCode "(!= 42 42)" `shouldReturn` Right (Just (Symbol "false"))
+        runCode "(!= 42 43)" `shouldReturn` Right (Just (Bool True))
+        runCode "(!= 42 42)" `shouldReturn` Right (Just (Bool False))
 
     it "< alias works like lt" do
-        runCode "(< 5 10)" `shouldReturn` Right (Just (Symbol "true"))
-        runCode "(< 10 5)" `shouldReturn` Right (Just (Symbol "false"))
+        runCode "(< 5 10)" `shouldReturn` Right (Just (Bool True))
+        runCode "(< 10 5)" `shouldReturn` Right (Just (Bool False))
 
     it "<= alias works like le" do
-        runCode "(<= 5 5)" `shouldReturn` Right (Just (Symbol "true"))
-        runCode "(<= 10 5)" `shouldReturn` Right (Just (Symbol "false"))
+        runCode "(<= 5 5)" `shouldReturn` Right (Just (Bool True))
+        runCode "(<= 10 5)" `shouldReturn` Right (Just (Bool False))
 
     it "> alias works like gt" do
-        runCode "(> 10 5)" `shouldReturn` Right (Just (Symbol "true"))
-        runCode "(> 5 10)" `shouldReturn` Right (Just (Symbol "false"))
+        runCode "(> 10 5)" `shouldReturn` Right (Just (Bool True))
+        runCode "(> 5 10)" `shouldReturn` Right (Just (Bool False))
 
     it ">= alias works like ge" do
-        runCode "(>= 5 5)" `shouldReturn` Right (Just (Symbol "true"))
-        runCode "(>= 5 10)" `shouldReturn` Right (Just (Symbol "false"))
+        runCode "(>= 5 5)" `shouldReturn` Right (Just (Bool True))
+        runCode "(>= 5 10)" `shouldReturn` Right (Just (Bool False))
 
     it "! alias works like not" do
-        runCode "(! false)" `shouldReturn` Right (Just (Symbol "true"))
-        runCode "(! true)" `shouldReturn` Right (Just (Symbol "false"))
+        runCode "(! false)" `shouldReturn` Right (Just (Bool True))
+        runCode "(! true)" `shouldReturn` Right (Just (Bool False))
 
     it "literal lists evaluate expressions" do
         runCode "((+ 1 2) (* 3 4))" `shouldReturn` Right (Just (List [Number 3, Number 12]))

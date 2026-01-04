@@ -8,5 +8,5 @@ ne :: [IR Eval] -> Eval (IR Eval)
 ne [a, b] = do
     va <- evalRequired a
     vb <- evalRequired b
-    pure $ if va /= vb then Symbol "true" else Symbol "false"
+    pure . Bool $ va /= vb
 ne _ = throwError $ WrongArgumentType ["arg", "arg"]

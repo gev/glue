@@ -10,7 +10,7 @@ spec :: Spec
 spec = describe "Glue.Lib.List.Partition (Test partition function)" do
     it "partitions list into matching and non-matching elements" do
         let initialEnv = E.emptyEnv
-        let pred = Native (Func (\[Number x] -> pure $ if x > 3 then Symbol "true" else Symbol "false"))
+        let pred = Native (Func (\[Number x] -> pure . Bool $ x > 3))
         let args = [pred, List [Number 1, Number 2, Number 3, Number 4, Number 5]]
         result <- runEvalLegacy (Partition.partition args) initialEnv
         case result of
@@ -19,7 +19,7 @@ spec = describe "Glue.Lib.List.Partition (Test partition function)" do
 
     it "partitions list with all elements matching" do
         let initialEnv = E.emptyEnv
-        let pred = Native (Func (\[Number x] -> pure $ if x > 0 then Symbol "true" else Symbol "false"))
+        let pred = Native (Func (\[Number x] -> pure . Bool $ x > 0))
         let args = [pred, List [Number 1, Number 2, Number 3]]
         result <- runEvalLegacy (Partition.partition args) initialEnv
         case result of
@@ -28,7 +28,7 @@ spec = describe "Glue.Lib.List.Partition (Test partition function)" do
 
     it "partitions list with no elements matching" do
         let initialEnv = E.emptyEnv
-        let pred = Native (Func (\[Number x] -> pure $ if x > 10 then Symbol "true" else Symbol "false"))
+        let pred = Native (Func (\[Number x] -> pure . Bool $ x > 10))
         let args = [pred, List [Number 1, Number 2, Number 3]]
         result <- runEvalLegacy (Partition.partition args) initialEnv
         case result of
@@ -37,7 +37,7 @@ spec = describe "Glue.Lib.List.Partition (Test partition function)" do
 
     it "partitions empty list" do
         let initialEnv = E.emptyEnv
-        let pred = Native (Func (\[Number x] -> pure $ Symbol "true"))
+        let pred = Native (Func (\[Number x] -> pure $ Bool True))
         let args = [pred, List []]
         result <- runEvalLegacy (Partition.partition args) initialEnv
         case result of
@@ -46,7 +46,7 @@ spec = describe "Glue.Lib.List.Partition (Test partition function)" do
 
     it "partitions list with mixed matching" do
         let initialEnv = E.emptyEnv
-        let pred = Native (Func (\[Number x] -> pure $ if floor x `mod` 2 == 0 then Symbol "true" else Symbol "false"))
+        let pred = Native (Func (\[Number x] -> pure . Bool $ floor x `mod` 2 == 0))
         let args = [pred, List [Number 1, Number 2, Number 3, Number 4, Number 5]]
         result <- runEvalLegacy (Partition.partition args) initialEnv
         case result of
@@ -55,7 +55,7 @@ spec = describe "Glue.Lib.List.Partition (Test partition function)" do
 
     it "fails on non-list second argument" do
         let initialEnv = E.emptyEnv
-        let pred = Native (Func (\[Number x] -> pure $ Symbol "true"))
+        let pred = Native (Func (\[Number x] -> pure $ Bool True))
         let args = [pred, Number 42]
         result <- runEvalLegacy (Partition.partition args) initialEnv
         case result of

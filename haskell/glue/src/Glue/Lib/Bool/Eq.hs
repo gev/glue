@@ -8,5 +8,5 @@ eq :: [IR Eval] -> Eval (IR Eval)
 eq [a, b] = do
     va <- evalRequired a
     vb <- evalRequired b
-    pure $ if va == vb then Symbol "true" else Symbol "false"
+    pure . Bool $ va == vb
 eq _ = throwError $ WrongArgumentType ["arg", "arg"]

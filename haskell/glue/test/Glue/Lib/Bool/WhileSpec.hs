@@ -12,7 +12,7 @@ spec :: Spec
 spec = describe "Glue.Lib.Bool.While (Test while special form)" do
     describe "Loop while condition" do
         it "returns nothing when condition is false and no body" do
-            let args = [Symbol "false"] -- No body, should return nothing
+            let args = [Bool False] -- No body, should return nothing
             result <- runEvalLegacy (while_ args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "While failed: " <> show err
@@ -20,16 +20,16 @@ spec = describe "Glue.Lib.Bool.While (Test while special form)" do
 
         it "executes body and modifies environment flag" do
             -- Set up environment with flag = true
-            let initialEnv = E.defineVar "flag" (Symbol "true") ((E.fromFrame lib))
+            let initialEnv = E.defineVar "flag" (Bool True) ((E.fromFrame lib))
             -- while flag: set flag to false
-            let args = [Symbol "flag", List [Symbol "set", Symbol "flag", Symbol "false"]]
+            let args = [Symbol "flag", List [Symbol "set", Symbol "flag", Bool False]]
             result <- runEvalLegacy (while_ args) initialEnv
             case result of
                 Left err -> expectationFailure $ "While failed: " <> show err
                 Right (res, finalEnv, _) -> do
                     res `shouldBe` Nothing
                     -- Check that flag was changed to false
-                    E.lookupLocal "flag" finalEnv `shouldBe` Just (Symbol "false")
+                    E.lookupLocal "flag" finalEnv `shouldBe` Just (Bool False)
 
         it "fails with wrong number of arguments" do
             let args = [] -- No condition

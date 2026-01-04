@@ -187,7 +187,7 @@ Input: "(:user (:name \"Bob\") :active true)"
 ```text
 AST: Object [
     ("user", Object [("name", String "Bob")]),
-    ("active", Symbol "true")
+    ("active", Bool True)
 ]
 ```
 

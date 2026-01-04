@@ -10,7 +10,7 @@ spec :: Spec
 spec = describe "Glue.Lib.List.Filter (Test filter function)" do
     it "filters elements that satisfy predicate" do
         let initialEnv = E.emptyEnv
-        let pred = Native (Func (\[Number x] -> pure $ if x > 2 then Symbol "true" else Symbol "false"))
+        let pred = Native (Func (\[Number x] -> pure . Bool $ x > 2))
         let args = [pred, List [Number 1, Number 2, Number 3, Number 4]]
         result <- runEvalLegacy (Filter.filter args) initialEnv
         case result of
@@ -19,7 +19,7 @@ spec = describe "Glue.Lib.List.Filter (Test filter function)" do
 
     it "returns empty list when no elements satisfy predicate" do
         let initialEnv = E.emptyEnv
-        let pred = Native (Func (\[Number x] -> pure $ if x > 10 then Symbol "true" else Symbol "false"))
+        let pred = Native (Func (\[Number x] -> pure . Bool $ x > 10))
         let args = [pred, List [Number 1, Number 2, Number 3]]
         result <- runEvalLegacy (Filter.filter args) initialEnv
         case result of
@@ -28,7 +28,7 @@ spec = describe "Glue.Lib.List.Filter (Test filter function)" do
 
     it "returns all elements when all satisfy predicate" do
         let initialEnv = E.emptyEnv
-        let pred = Native (Func (\[Number x] -> pure $ if x > 0 then Symbol "true" else Symbol "false"))
+        let pred = Native (Func (\[Number x] -> pure . Bool $ x > 0))
         let args = [pred, List [Number 1, Number 2, Number 3]]
         result <- runEvalLegacy (Filter.filter args) initialEnv
         case result of
@@ -37,7 +37,7 @@ spec = describe "Glue.Lib.List.Filter (Test filter function)" do
 
     it "filters empty list" do
         let initialEnv = E.emptyEnv
-        let pred = Native (Func (\[Number x] -> pure $ Symbol "true"))
+        let pred = Native (Func (\[Number x] -> pure $ Bool True))
         let args = [pred, List []]
         result <- runEvalLegacy (Filter.filter args) initialEnv
         case result of
@@ -46,7 +46,7 @@ spec = describe "Glue.Lib.List.Filter (Test filter function)" do
 
     it "fails on non-list second argument" do
         let initialEnv = E.emptyEnv
-        let pred = Native (Func (\[Number x] -> pure $ Symbol "true"))
+        let pred = Native (Func (\[Number x] -> pure $ Bool True))
         let args = [pred, Number 42]
         result <- runEvalLegacy (Filter.filter args) initialEnv
         case result of

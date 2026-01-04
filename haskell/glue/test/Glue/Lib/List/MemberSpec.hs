@@ -14,7 +14,7 @@ spec = describe "Glue.Lib.List.Member (Test member function)" do
         result <- runEvalLegacy (member args) initialEnv
         case result of
             Left err -> expectationFailure $ "Member failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` Symbol "true"
+            Right (res, _, _) -> res `shouldBe` Bool True
 
     it "returns false for item not in list" do
         let initialEnv = E.emptyEnv
@@ -22,7 +22,7 @@ spec = describe "Glue.Lib.List.Member (Test member function)" do
         result <- runEvalLegacy (member args) initialEnv
         case result of
             Left err -> expectationFailure $ "Member failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` Symbol "false"
+            Right (res, _, _) -> res `shouldBe` Bool False
 
     it "returns true for string in list" do
         let initialEnv = E.emptyEnv
@@ -30,7 +30,7 @@ spec = describe "Glue.Lib.List.Member (Test member function)" do
         result <- runEvalLegacy (member args) initialEnv
         case result of
             Left err -> expectationFailure $ "Member failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` Symbol "true"
+            Right (res, _, _) -> res `shouldBe` Bool True
 
     it "returns false for empty list" do
         let initialEnv = E.emptyEnv
@@ -38,7 +38,7 @@ spec = describe "Glue.Lib.List.Member (Test member function)" do
         result <- runEvalLegacy (member args) initialEnv
         case result of
             Left err -> expectationFailure $ "Member failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` Symbol "false"
+            Right (res, _, _) -> res `shouldBe` Bool False
 
     it "fails on non-list second argument" do
         let initialEnv = E.emptyEnv

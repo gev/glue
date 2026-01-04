@@ -8,6 +8,6 @@ not_ :: [IR Eval] -> Eval (IR Eval)
 not_ [arg] = do
     val <- evalRequired arg
     case val of
-        Symbol "false" -> pure $ Symbol "true"
-        _ -> pure $ Symbol "false"
+        Bool False -> pure $ Bool True
+        _ -> pure $ Bool False
 not_ _ = throwError $ WrongArgumentType ["arg"]
