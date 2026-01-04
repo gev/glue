@@ -41,10 +41,10 @@ Eliminate frontend boilerplate - backend defines UI structure, frontend renders 
 ;; Backend sends metadata, frontend renders UI automatically
 (def register-form (lambda (props)
       (form
-          :build column ((text-field :label i18n.name :value props.name :on-change validate-name)
-                         (text-field :label i18n.email :value props.e-mail :on-change validate-e-mail)
-                         (button :label i18n.submit :type submit)
-                         (button :label i18n.cancel :type cancel))
+          :build column ((text-field  :label i18n.name   :value props.name   :on-change validate-name)
+                         (text-field  :label i18n.e-mail :value props.e-mail :on-change validate-e-mail)
+                         row ((button :label i18n.submit :type submit)
+                              (button :label i18n.cancel :type cancel)))
           :on-submit props.submit
           :on-cancel props.cancel)))
 ```
