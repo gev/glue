@@ -108,10 +108,10 @@ Glue is a **universal scripting glue** that connects rich host language systems.
 - Dynamic property access and manipulation
 - Prototype-like inheritance patterns
 
-**Extensibility**
-- Host language integration for additional functionality
-- FFI bindings for domain services and libraries
-- Plugin architecture for custom extensions
+**Module System**
+- Hierarchical namespace management
+- Selective imports and exports
+- Runtime module loading and registration
 
 ## Technical Objectives
 
@@ -197,7 +197,7 @@ Glue is a **universal scripting glue** that connects rich host language systems.
 ### Long-term Vision
 
 **Sustainable Ecosystem**
-- Growing library of functions and extensions
+- Growing library of modules and extensions
 - Educational resources and tutorials
 - Tooling support
 

@@ -90,6 +90,14 @@ library
     Glue.Lib.Math.Utility.Min
     Glue.Lib.Math.Utility.Round
     Glue.Lib.Math.Utility.Trunc
+    Glue.Module
+    Glue.Module.Cache
+    Glue.Module.Error
+    Glue.Module.Import
+    Glue.Module.Loader
+    Glue.Module.Registration
+    Glue.Module.Registry
+    Glue.Module.System
     Glue.Parser
     Glue.Parser.Error
     Spec.Device
@@ -183,6 +191,10 @@ test-suite glue-test
     Glue.Lib.Math.Utility.MinSpec
     Glue.Lib.Math.Utility.RoundSpec
     Glue.Lib.Math.Utility.TruncSpec
+    Glue.Module.CacheSpec
+    Glue.Module.ImportSpec
+    Glue.Module.RegistrationSpec
+    Glue.Module.RegistrySpec
     Glue.ParserSpec
     Glue.TestUtils
 

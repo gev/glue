@@ -16,6 +16,7 @@ data IR m
     | DottedSymbol [Text]
     | List [IR m]
     | Object (Map Text (IR m))
+    | Module (Map Text (IR m))
     | Native (Native m)
     | Closure [Text] (IR m) (Env m)
 ```
@@ -92,7 +93,34 @@ Represents key-value mappings (dictionaries).
   
   `Object [("user", Object [("name", String "Alice"), ("profile", Object [("age", Number 30.0), ("city", String "NYC")])])]`
 
+#### Module
 
+Represents hierarchical collections of exported bindings.
+
+**Structure:** `Module (Map Text (IR m))`
+**Purpose:** Store module namespaces and exported values
+
+**Simple Modules:**
+Modules can contain direct bindings to values, functions, and other modules.
+
+**Examples:**
+
+- **Simple module with constants and functions**
+
+    `Module [("pi", Number 3.14159), ("cos", <native function>)]`
+
+**Nested Modules:**
+Modules can contain other modules, creating hierarchical namespaces.
+
+**Examples:**
+
+- **Module containing a submodule**
+
+    `Module [("arithmetic", Module [("add", <closure>), ("multiply", <closure>)])]`
+
+- **Deeply nested module hierarchy**
+
+    `Module [("math", Module [("trig", Module [("sin", <native>), ("cos", <native>)]), ("constants", Module [("pi", Number 3.14159)])])]`
 
 ### Executable Values
 
@@ -163,13 +191,14 @@ IR nodes support structural equality comparison for testing and comparison opera
 ### Code Representation
 
 - **Symbols** for variable and function references
-- **DottedSymbols** for property access
+- **DottedSymbols** for property and module access
 - **Lists** for function applications
 - **Closures** for user-defined functions
 
 ### Runtime Integration
 
 - **Native functions** for host language operations
+- **Modules** for namespace management
 - **Special forms** for control flow and macros
 
 ## IR Properties

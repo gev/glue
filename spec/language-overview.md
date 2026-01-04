@@ -2,7 +2,7 @@
 
 ## 🤔 What is Glue?
 
-Glue is a modern, Lisp-inspired programming language designed for embedded scripting, domain-specific languages (DSLs), and functional programming. It combines the elegance of Lisp with contemporary features for property-based objects and server-driven UI development.
+Glue is a modern, Lisp-inspired programming language designed for embedded scripting, domain-specific languages (DSLs), and functional programming. It combines the elegance of Lisp with contemporary features for property-based objects, modules, and server-driven UI development.
 
 ## ✨ Key Characteristics
 
@@ -42,7 +42,16 @@ user.age       ;; → 30
 (set user.location (:city "New York" :country "USA"))
 ```
 
+### Module System
+```closure
+;; Module definition and imports
+(import math)
+(import ui.components button text-input)
 
+;; Qualified access
+math.sin  ;; Sine function
+math.pi   ;; Pi constant
+```
 
 ## Syntax Essentials
 
@@ -135,7 +144,7 @@ Minimal footprint and clean host language integration make Glue ideal for embedd
 
 ### For Developers
 - **Familiar Lisp Syntax**: Leverages decades of Lisp wisdom
-- **Modern Features**: Functional programming with objects
+- **Modern Features**: Functional programming with objects and modules
 - **Type Safety**: Runtime checking prevents runtime errors
 - **Composability**: Simple primitives combine into complex systems
 
