@@ -35,6 +35,7 @@ library
     Glue.Lib.Bool.While
     Glue.Lib.Builtin
     Glue.Lib.Builtin.Def
+    Glue.Lib.Builtin.Import
     Glue.Lib.Builtin.Lambda
     Glue.Lib.Builtin.Set
     Glue.Lib.List
@@ -93,11 +94,9 @@ library
     Glue.Module
     Glue.Module.Cache
     Glue.Module.Error
-    Glue.Module.Import
     Glue.Module.Loader
     Glue.Module.Registration
     Glue.Module.Registry
-    Glue.Module.System
     Glue.Parser
     Glue.Parser.Error
     Spec.Device

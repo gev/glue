@@ -1,11 +1,11 @@
-module Glue.Module.Import where
+module Glue.Lib.Builtin.Import where
 
 import Data.Map.Strict qualified as Map
 import Data.Text qualified as T
 import Glue.Env qualified as E
 import Glue.Eval (Eval, EvalState (..), eval, getCache, getEnv, getRegistry, getRootEnv, getState, liftIO, putCache, putEnv, runEval, throwError)
 import Glue.Eval.Error (EvalError (..), GeneralError (..))
-import Glue.IR (Frame, IR (..), Native (..))
+import Glue.IR (IR (..))
 import Glue.Module (ImportedModule (..), RegisteredModule (..))
 import Glue.Module.Cache qualified as Cache
 import Glue.Module.Registry qualified as Registry
@@ -86,10 +86,3 @@ importForm [Symbol moduleName] = do
 
                     pure Nothing
 importForm _ = throwError $ WrongArgumentType ["module-name"]
-
--- | Create import function for builtin environment
-importFunc :: Frame Eval
-importFunc =
-    Map.fromList
-        [ ("import", Native (Special importForm))
-        ]
