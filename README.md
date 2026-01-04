@@ -39,10 +39,14 @@ Same Glue syntax works across domains via lexical environment:
 Eliminate frontend boilerplate - backend defines UI structure, frontend renders dynamically:
 ```clojure
 ;; Backend sends metadata, frontend renders UI automatically
-(form
-  :fields (name email)
-  :on-submit submit 
-  :on-cancel )
+(def register-form (lambda (props)
+      (form
+          :build column ((text-field :label i18n.name :value props.name :on-change validate-name)
+                         (text-field :label i18n.email :value props.e-mail :on-change validate-e-mail)
+                         (button :label i18n.submit :type submit)
+                         (button :label i18n.cancel :type cancel))
+          :on-submit props.submit
+          :on-cancel props.cancel)))
 ```
 
 ### 🤖 **IoT Device Orchestration**
