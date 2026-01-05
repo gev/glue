@@ -1,0 +1,12 @@
+(module math.utility
+  (import ffi.math.utility)
+
+  ;; Math utility operations
+  (def abs ffi.math.utility.abs)
+  (def floor ffi.math.utility.floor)
+  (def ceil ffi.math.utility.ceil)
+  (def round ffi.math.utility.round)
+  (def trunc ffi.math.utility.trunc)
+  (def min ffi.math.utility.min)
+  (def max ffi.math.utility.max)
+)

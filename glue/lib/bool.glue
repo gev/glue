@@ -1,0 +1,29 @@
+(module bool
+  (import ffi.bool)
+
+  ;; Constants
+  (def true true)
+  (def false false)
+
+  ;; Comparison functions
+  (def eq ffi.bool.eq)
+  (def == eq)
+  (def ne ffi.bool.ne)
+  (def != ne)
+  (def lt ffi.bool.lt)
+  (def < lt)
+  (def le ffi.bool.le)
+  (def <= le)
+  (def gt ffi.bool.gt)
+  (def > gt)
+  (def ge ffi.bool.ge)
+  (def >= ge)
+  (def not ffi.bool.not)
+  (def ! not)
+
+  ;; Special forms
+  (def if ffi.bool.if)
+  (def when ffi.bool.when)
+  (def while ffi.bool.while)
+  (def until ffi.bool.until)
+)
