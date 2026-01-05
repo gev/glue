@@ -130,6 +130,7 @@ test-suite glue-test
     Glue.EnvSpec
     Glue.ErrorContextSpec
     Glue.EvalSpec
+    Glue.IRSpec
     Glue.Lib.Bool.EqSpec
     Glue.Lib.Bool.GeSpec
     Glue.Lib.Bool.GtSpec
