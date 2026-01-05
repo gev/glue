@@ -23,6 +23,7 @@ data IR m
     | Module (Map Text (IR m))
     | Native (Native m)
     | Closure [Text] (IR m) (Env m)
+    | Error Text (IR m)
 
 data Native m
     = Func ([IR m] -> m (IR m))
@@ -53,16 +54,18 @@ instance Show (IR m) where
         Module _ -> "{module}"
         Native _ -> "<native>"
         Closure{} -> "<closure>"
+        Error e _ -> T.unpack e <> " {object}"
 
 instance Eq (IR m) where
-    (Number a) == (Number b) = a == b
-    (String a) == (String b) = a == b
-    (Bool a) == (Bool b) = a == b
-    (Symbol a) == (Symbol b) = a == b
-    (DottedSymbol a) == (DottedSymbol b) = a == b
-    (List a) == (List b) = a == b
-    (Object a) == (Object b) = a == b
-    (Module a) == (Module b) = a == b
+    Number a == Number b = a == b
+    String a == String b = a == b
+    Bool a == Bool b = a == b
+    Symbol a == Symbol b = a == b
+    DottedSymbol a == DottedSymbol b = a == b
+    List a == List b = a == b
+    Object a == Object b = a == b
+    Module a == Module b = a == b
+    Error ae air == Error be bir = ae == be && air == bir
     _ == _ = False
 
 -- Accessor functions for abstraction

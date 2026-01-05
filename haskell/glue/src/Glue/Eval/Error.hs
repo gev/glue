@@ -42,6 +42,7 @@ data GeneralError
     | NotAnObject Text
     | ModuleNotFound Text
     | CannotModifyModule
+    | Exception Text Text
     deriving (Show, Eq)
 
 instance Error GeneralError where
@@ -58,6 +59,7 @@ instance Error GeneralError where
         NotAnObject obj -> "Not an object: " <> obj
         ModuleNotFound name -> "Module not found: " <> name
         CannotModifyModule -> "Cannot modify module properties - modules are immutable"
+        Exception err msg -> "Exception: " <> err <> ". " <> msg
 
 prettyShow :: EvalError -> Text
 prettyShow (EvalError ctx e) =
