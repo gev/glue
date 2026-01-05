@@ -147,6 +147,7 @@ test-suite glue-test
     Glue.Lib.Builtin.DefSpec
     Glue.Lib.Builtin.LambdaSpec
     Glue.Lib.Builtin.SetSpec
+    Glue.Lib.Builtin.TrySpec
     Glue.Lib.List.AppendSpec
     Glue.Lib.List.ButlastSpec
     Glue.Lib.List.CarSpec
