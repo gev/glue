@@ -39,6 +39,7 @@ library
     Glue.Lib.Builtin.Import
     Glue.Lib.Builtin.Lambda
     Glue.Lib.Builtin.Set
+    Glue.Lib.Builtin.Try
     Glue.Lib.List
     Glue.Lib.List.Append
     Glue.Lib.List.Butlast

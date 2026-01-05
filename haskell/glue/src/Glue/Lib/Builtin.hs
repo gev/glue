@@ -8,6 +8,7 @@ import Glue.Lib.Builtin.Error (errorFunc)
 import Glue.Lib.Builtin.Import (importForm)
 import Glue.Lib.Builtin.Lambda (lambda)
 import Glue.Lib.Builtin.Set (set)
+import Glue.Lib.Builtin.Try (tryFunc)
 
 builtin :: Frame Eval
 builtin =
@@ -18,4 +19,5 @@ builtin =
         , ("\\", Native (Special lambda))
         , ("import", Native (Special importForm))
         , ("error", Native (Special errorFunc))
+        , ("try", Native (Special tryFunc))
         ]
