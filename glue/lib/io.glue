@@ -1,0 +1,10 @@
+(module io
+  (import ffi.io)
+
+  ;; Output functions
+  (def print ffi.io.print)
+  (def println ffi.io.println)
+
+  ;; Input functions
+  (def read-line ffi.io.read-line)
+)
