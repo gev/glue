@@ -19,6 +19,7 @@ module Glue.Eval (
     updateVarEval,
     liftIO,
     apply,
+    isCallable,
 ) where
 
 import Control.Monad (ap, liftM)

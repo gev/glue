@@ -35,6 +35,7 @@ runInteractive = do
             , "(def x 42)"
             , "x"
             , "(if (> x 40) \"big\" \"small\")"
+            , "(try (error test-error (:msg \"hello\")) (catch \"test-error\" (lambda (err) err.msg)))"
             ]
 
     evalSequentially examples initialState

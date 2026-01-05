@@ -2,7 +2,7 @@ module Glue.Lib.Builtin.Try where
 
 import Data.Text (Text)
 import Data.Text qualified as T
-import Glue.Eval (Eval, apply, eval, throwError)
+import Glue.Eval (Eval, apply, eval, isCallable, throwError)
 import Glue.Eval.Error (GeneralError (..))
 import Glue.IR qualified as IR
 
@@ -15,8 +15,11 @@ tryFunc (body : catches) = do
             -- Find matching catch clause
             case findCatch excSymbol catches of
                 Just handler -> do
-                    -- Apply handler with payload
-                    apply handler [payload]
+                    -- Evaluate handler to get callable
+                    callable <- eval handler
+                    case callable of
+                        Just c | isCallable c -> apply c [payload]
+                        _ -> throwError NotCallableObject
                 Nothing -> throwError $ RuntimeError excSymbol (T.pack $ show payload)
         Just val -> pure $ Just val
         Nothing -> throwError ExpectedValue
@@ -24,7 +27,12 @@ tryFunc _ = throwError $ WrongArgumentType ["body", "catch*"]
 
 findCatch :: Text -> [IR.IR Eval] -> Maybe (IR.IR Eval)
 findCatch _ [] = Nothing
-findCatch excSymbol (IR.List [IR.Symbol "catch", IR.Symbol catchSymbol, handler] : rest)
-    | excSymbol == catchSymbol = Just handler
+findCatch excSymbol (IR.List [IR.Symbol "catch", catchType, handler] : rest)
+    | getSymbolText catchType == Just excSymbol = Just handler
     | otherwise = findCatch excSymbol rest
 findCatch excSymbol (_ : rest) = findCatch excSymbol rest
+
+getSymbolText :: IR.IR Eval -> Maybe Text
+getSymbolText (IR.Symbol t) = Just t
+getSymbolText (IR.String t) = Just t
+getSymbolText _ = Nothing
