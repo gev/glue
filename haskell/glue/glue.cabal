@@ -40,6 +40,9 @@ library
     Glue.Lib.Builtin.Lambda
     Glue.Lib.Builtin.Set
     Glue.Lib.Builtin.Try
+    Glue.Lib.IO
+    Glue.Lib.IO.Print
+    Glue.Lib.IO.Read
     Glue.Lib.List
     Glue.Lib.List.Append
     Glue.Lib.List.Butlast
@@ -148,6 +151,7 @@ test-suite glue-test
     Glue.Lib.Builtin.LambdaSpec
     Glue.Lib.Builtin.SetSpec
     Glue.Lib.Builtin.TrySpec
+    Glue.Lib.IO.PrintSpec
     Glue.Lib.List.AppendSpec
     Glue.Lib.List.ButlastSpec
     Glue.Lib.List.CarSpec
