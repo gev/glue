@@ -35,6 +35,7 @@ library
     Glue.Lib.Bool.While
     Glue.Lib.Builtin
     Glue.Lib.Builtin.Def
+    Glue.Lib.Builtin.Error
     Glue.Lib.Builtin.Import
     Glue.Lib.Builtin.Lambda
     Glue.Lib.Builtin.Set
@@ -128,7 +129,6 @@ test-suite glue-test
   other-modules:
     Glue.CompileSpec
     Glue.EnvSpec
-    Glue.ErrorContextSpec
     Glue.EvalSpec
     Glue.IRSpec
     Glue.Lib.Bool.EqSpec
