@@ -2,15 +2,14 @@
     (import builtin)
     (import bool)
     (import io)
-    (import list)
 
     (export assert test assert-equal)
 
     ;; Helper for test failure handling
     (def handle-test-failure
         (lambda (name e)
-            (if (and (list? e) (= (car e) "assert-equal"))
-                (println "Test" name "failed: Expected" (cadr e) "but got" (caddr e))
+            (if (= e.type "assert-equal")
+                (println "Test" name "failed: Expected" e.expected "but got" e.actual)
                 (println "Test" name "failed:" e))
             "failed"))
 
@@ -32,5 +31,5 @@
     (def assert-equal
         (lambda (expected actual)
             (assert (= expected actual)
-                (list "assert-equal" expected actual))))
+                (:type "assert-equal" :expected expected :actual actual))))
 )
