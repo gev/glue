@@ -56,33 +56,33 @@ const mockVscode = {
 function testSemanticProvider() {
     console.log('Testing GlueSemanticTokensProvider...');
 
-    const legend = new MockSemanticTokensLegend(['function', 'variable', 'keyword', 'property'], []);
+    const legend = new MockSemanticTokensLegend(['function', 'variable', 'keyword', 'property', 'string', 'number', 'boolean', 'operator'], []);
     const provider = new GlueSemanticTokensProvider(legend as any);
 
-    // Test 1: Keywords
+    // Test 1: Function calls
     const input1 = '(def x 42)';
     const doc1 = new MockTextDocument(input1);
     const tokens1 = provider.provideDocumentSemanticTokens(doc1 as any) as any;
-    console.log('Test 1 (keywords):', tokens1.tokens.length === 2 && tokens1.tokens[0].tokenType === 'keyword' && tokens1.tokens[1].tokenType === 'variable' ? 'PASS' : 'FAIL');
-    if (tokens1.tokens.length !== 2 || tokens1.tokens[0].tokenType !== 'keyword' || tokens1.tokens[1].tokenType !== 'variable') {
+    console.log('Test 1 (function calls):', tokens1.tokens.length === 3 && tokens1.tokens[0].tokenType === 'function' && tokens1.tokens[1].tokenType === 'variable' && tokens1.tokens[2].tokenType === 'number' ? 'PASS' : 'FAIL');
+    if (tokens1.tokens.length !== 3 || tokens1.tokens[0].tokenType !== 'function' || tokens1.tokens[1].tokenType !== 'variable' || tokens1.tokens[2].tokenType !== 'number') {
         console.log('Tokens:', tokens1.tokens);
     }
 
-    // Test 2: Function call
+    // Test 2: Operator
     const input2 = '(+ 1 2)';
     const doc2 = new MockTextDocument(input2);
     const tokens2 = provider.provideDocumentSemanticTokens(doc2 as any) as any;
-    console.log('Test 2 (function):', tokens2.tokens.length === 3 && tokens2.tokens[0].tokenType === 'function' && tokens2.tokens[1].tokenType === 'variable' && tokens2.tokens[2].tokenType === 'variable' ? 'PASS' : 'FAIL');
-    if (tokens2.tokens.length !== 3 || tokens2.tokens[0].tokenType !== 'function') {
+    console.log('Test 2 (operator):', tokens2.tokens.length === 3 && tokens2.tokens[0].tokenType === 'operator' && tokens2.tokens[1].tokenType === 'number' && tokens2.tokens[2].tokenType === 'number' ? 'PASS' : 'FAIL');
+    if (tokens2.tokens.length !== 3 || tokens2.tokens[0].tokenType !== 'operator' || tokens2.tokens[1].tokenType !== 'number' || tokens2.tokens[2].tokenType !== 'number') {
         console.log('Tokens:', tokens2.tokens);
     }
 
-    // Test 3: Object keys
+    // Test 3: Object keys and strings
     const input3 = '(:name "Alice")';
     const doc3 = new MockTextDocument(input3);
     const tokens3 = provider.provideDocumentSemanticTokens(doc3 as any) as any;
-    console.log('Test 3 (object key):', tokens3.tokens.length === 1 && tokens3.tokens[0].tokenType === 'property' ? 'PASS' : 'FAIL');
-    if (tokens3.tokens.length !== 1 || tokens3.tokens[0].tokenType !== 'property') {
+    console.log('Test 3 (object key and string):', tokens3.tokens.length === 2 && tokens3.tokens[0].tokenType === 'property' && tokens3.tokens[1].tokenType === 'string' ? 'PASS' : 'FAIL');
+    if (tokens3.tokens.length !== 2 || tokens3.tokens[0].tokenType !== 'property' || tokens3.tokens[1].tokenType !== 'string') {
         console.log('Tokens:', tokens3.tokens);
     }
 
@@ -90,8 +90,8 @@ function testSemanticProvider() {
     const input4 = '(def add (lambda (a b) (+ a b)))';
     const doc4 = new MockTextDocument(input4);
     const tokens4 = provider.provideDocumentSemanticTokens(doc4 as any) as any;
-    // def: keyword, add: variable, lambda: keyword, a: variable, b: variable, +: function, a: variable, b: variable
-    const expectedTypes = ['keyword', 'variable', 'keyword', 'variable', 'variable', 'function', 'variable', 'variable'];
+    // def: function, add: variable, lambda: keyword, a: function, b: variable, +: operator, a: variable, b: variable
+    const expectedTypes = ['function', 'variable', 'keyword', 'function', 'variable', 'operator', 'variable', 'variable'];
     const actualTypes = tokens4.tokens.map((t: any) => t.tokenType);
     console.log('Test 4 (mixed):', JSON.stringify(actualTypes) === JSON.stringify(expectedTypes) ? 'PASS' : 'FAIL');
     if (JSON.stringify(actualTypes) !== JSON.stringify(expectedTypes)) {
