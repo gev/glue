@@ -16,7 +16,8 @@
     (def assert
         (lambda (condition message)
             (if (not condition)
-                (error test-failure message))))
+                (error test-failure message)
+                true)))
 
     ;; Run a test thunk, catch errors and print results
     (def test
