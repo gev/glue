@@ -1,27 +1,30 @@
 module Glue.Lib.Builtin.Try where
 
 import Data.Text (Text)
-import Glue.Eval (Eval, apply, eval, isCallable, throwError)
+import Glue.Eval (Eval, EvalState, apply, eval, getState, isCallable, liftIO, putState, runEval, throwError)
+import Glue.Eval.Error (EvalError (..))
 import Glue.Eval.Exception
 import Glue.IR qualified as IR
 
 tryFunc :: [IR.IR Eval] -> Eval (Maybe (IR.IR Eval))
 tryFunc (body : catches) = do
-    -- Evaluate the body expression
-    result <- eval body
+    state <- getState
+    result <- liftIO $ runEval (eval body) state
     case result of
-        Just (IR.Exception excSymbol payload) -> do
-            -- Find matching catch clause
-            case findCatch excSymbol catches of
+        Right (Just val, newState) -> do
+            putState newState
+            pure $ Just val
+        Right (Nothing, newState) -> do
+            putState newState
+            throwError expectedValue
+        Left (EvalError _ (RuntimeException sym payload)) -> do
+            case findCatch sym catches of
                 Just handler -> do
-                    -- Evaluate handler to get callable
                     callable <- eval handler
                     case callable of
-                        Just c | isCallable c -> apply c [payload]
+                        Just c | isCallable c -> apply c (maybe [] (: []) payload)
                         _ -> throwError notCallableObject
-                Nothing -> throwError $ runtimeException excSymbol payload
-        Just val -> pure $ Just val
-        Nothing -> throwError expectedValue
+                Nothing -> throwError $ RuntimeException sym payload
 tryFunc _ = throwError $ wrongArgumentType ["body", "catch*"]
 
 findCatch :: Text -> [IR.IR Eval] -> Maybe (IR.IR Eval)
