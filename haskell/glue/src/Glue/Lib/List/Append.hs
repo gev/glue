@@ -1,7 +1,7 @@
 module Glue.Lib.List.Append where
 
 import Glue.Eval (Eval, evalRequired, throwError)
-import Glue.Eval.Exception (RuntimeException (..))
+import Glue.Eval.Exception (wrongArgumentType, wrongNumberOfArguments)
 import Glue.IR (IR (..))
 
 append :: [IR Eval] -> Eval (IR Eval)
@@ -12,5 +12,5 @@ append args = do
             val2 <- evalRequired list2
             case (val1, val2) of
                 (List xs, List ys) -> pure $ List (xs ++ ys)
-                _ -> throwError $ WrongArgumentType ["list", "list"]
-        _ -> throwError WrongNumberOfArguments
+                _ -> throwError $ wrongArgumentType ["list", "list"]
+        _ -> throwError wrongNumberOfArguments

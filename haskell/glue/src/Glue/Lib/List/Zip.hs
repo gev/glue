@@ -1,7 +1,7 @@
 module Glue.Lib.List.Zip where
 
 import Glue.Eval (Eval, evalRequired, throwError)
-import Glue.Eval.Exception (RuntimeException (..))
+import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
 zip :: [IR Eval] -> Eval (IR Eval)
@@ -12,8 +12,8 @@ zip [list1IR, list2IR] = do
         (List xs, List ys) -> do
             let zipped = zipLists xs ys
             pure $ List zipped
-        _ -> throwError $ WrongArgumentType ["list", "list"]
-zip _ = throwError WrongNumberOfArguments
+        _ -> throwError $ wrongArgumentType ["list", "list"]
+zip _ = throwError wrongNumberOfArguments
 
 -- Helper function to zip two lists
 zipLists :: [IR Eval] -> [IR Eval] -> [IR Eval]

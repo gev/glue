@@ -1,7 +1,7 @@
 module Glue.Lib.Bool.Le where
 
 import Glue.Eval (Eval, evalRequired, throwError)
-import Glue.Eval.Exception (RuntimeException (..))
+import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (IR (..))
 
 le :: [IR Eval] -> Eval (IR Eval)
@@ -10,5 +10,5 @@ le [a, b] = do
     vb <- evalRequired b
     case (va, vb) of
         (Number na, Number nb) -> pure . Bool $ na <= nb
-        _ -> throwError $ WrongArgumentType ["number", "number"]
-le _ = throwError $ WrongArgumentType ["number", "number"]
+        _ -> throwError $ wrongArgumentType ["number", "number"]
+le _ = throwError $ wrongArgumentType ["number", "number"]

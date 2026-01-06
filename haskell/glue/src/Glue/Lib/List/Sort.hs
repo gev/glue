@@ -1,7 +1,7 @@
 module Glue.Lib.List.Sort where
 
 import Glue.Eval (Eval, throwError)
-import Glue.Eval.Exception (RuntimeException (..))
+import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
 sort :: [IR Eval] -> Eval (IR Eval)
@@ -9,8 +9,8 @@ sort [listIR] = case listIR of
     List xs -> do
         sorted <- sortList xs
         pure $ List sorted
-    _ -> throwError $ WrongArgumentType ["list"]
-sort _ = throwError WrongNumberOfArguments
+    _ -> throwError $ wrongArgumentType ["list"]
+sort _ = throwError wrongNumberOfArguments
 
 -- Helper function to sort a list using merge sort
 sortList :: [IR Eval] -> Eval [IR Eval]
@@ -41,4 +41,4 @@ compareIR :: IR Eval -> IR Eval -> Eval Ordering
 compareIR (Number a) (Number b) = pure (compare a b)
 compareIR (String a) (String b) = pure (compare a b)
 compareIR (Symbol a) (Symbol b) = pure (compare a b)
-compareIR _ _ = throwError $ WrongArgumentType ["comparable values (numbers, strings, or symbols)"]
+compareIR _ _ = throwError $ wrongArgumentType ["comparable values (numbers, strings, or symbols)"]

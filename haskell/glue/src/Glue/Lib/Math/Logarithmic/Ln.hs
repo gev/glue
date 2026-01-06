@@ -2,7 +2,7 @@ module Glue.Lib.Math.Logarithmic.Ln where
 
 import Data.Scientific (fromFloatDigits, toRealFloat)
 import Glue.Eval (Eval, evalRequired, throwError)
-import Glue.Eval.Exception (RuntimeException (..))
+import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
 ln :: [IR Eval] -> Eval (IR Eval)
@@ -12,7 +12,7 @@ ln [arg] = do
         Number n -> do
             let realVal = toRealFloat @Double n
             if realVal <= 0
-                then throwError $ WrongArgumentType ["positive number"]
+                then throwError $ wrongArgumentType ["positive number"]
                 else pure $ Number (fromFloatDigits (Prelude.log realVal))
-        _ -> throwError $ WrongArgumentType ["number"]
-ln _ = throwError $ WrongArgumentType ["number"]
+        _ -> throwError $ wrongArgumentType ["number"]
+ln _ = throwError $ wrongArgumentType ["number"]

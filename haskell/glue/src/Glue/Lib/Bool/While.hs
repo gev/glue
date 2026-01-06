@@ -1,7 +1,7 @@
 module Glue.Lib.Bool.While where
 
 import Glue.Eval (Eval, eval, evalRequired, throwError)
-import Glue.Eval.Exception (RuntimeException (..))
+import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (IR (..))
 
 while_ :: [IR Eval] -> Eval (Maybe (IR Eval))
@@ -14,6 +14,6 @@ while_ (cond : body) = loop
       _ -> case body of
         [] -> loop
         _ -> do
-          _ <- mapM eval body
+          mapM_ eval body
           loop
-while_ _ = throwError $ WrongArgumentType ["condition", "body"]
+while_ _ = throwError $ wrongArgumentType ["condition", "body"]

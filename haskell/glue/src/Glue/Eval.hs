@@ -31,7 +31,7 @@ import Data.Text (Text)
 import Data.Text qualified as T
 import Glue.Env qualified as E
 import Glue.Eval.Error (Context, EvalError (EvalError))
-import Glue.Eval.Exception (RuntimeException (..))
+import Glue.Eval.Exception
 import Glue.IR qualified as IR
 import Glue.Module.Cache (ImportedModuleCache)
 import Glue.Module.Registry (ModuleRegistry, emptyRegistry)
@@ -144,12 +144,12 @@ evalSymbol name = do
 evalDottedSymbol :: [Text] -> Eval (Maybe IR)
 evalDottedSymbol parts = do
     case parts of
-        [] -> throwError $ UnboundVariable "" -- shouldn't happen
+        [] -> throwError $ unboundVariable "" -- shouldn't happen
         [base] -> evalSymbol base
         _ -> evalWithPrefixes (init $ inits parts) -- All proper prefixes
   where
     -- Try to find the longest prefix that exists as a symbol
-    evalWithPrefixes [] = throwError $ UnboundVariable (T.intercalate "." parts)
+    evalWithPrefixes [] = throwError $ unboundVariable (T.intercalate "." parts)
     evalWithPrefixes (prefix : restPrefixes) = do
         let prefixName = T.intercalate "." prefix
         env <- getEnv
@@ -162,11 +162,11 @@ evalDottedSymbol parts = do
         case obj of
             IR.Object objMap -> case Map.lookup prop objMap of
                 Just val -> evalNestedAccess val rest
-                Nothing -> throwError $ PropertyNotFound prop
+                Nothing -> throwError $ propertyNotFound prop
             IR.Module moduleMap -> case Map.lookup prop moduleMap of
                 Just val -> evalNestedAccess val rest
-                Nothing -> throwError $ PropertyNotFound prop
-            _ -> throwError $ NotAnObject (T.pack $ show obj)
+                Nothing -> throwError $ propertyNotFound prop
+            _ -> throwError $ notAnObject obj
 
 -- Evaluate a list (function call or literal list)
 evalList :: [IR] -> Eval (Maybe IR)
@@ -216,7 +216,7 @@ evalObject objMap = do
 -- Evaluate an exception
 evalException :: Text -> IR -> Eval (Maybe IR)
 evalException e ir =
-    throwError $ RuntimeException e ir
+    throwError $ runtimeException e ir
 
 -- Evaluate literal values (numbers, strings, etc.)
 evalLiteral :: IR -> Eval (Maybe IR)
@@ -241,7 +241,7 @@ applyClosure :: [Text] -> IR -> Env -> [IR] -> Eval (Maybe IR)
 applyClosure params body savedEnv rawArgs = do
     argValues <- evalArguments rawArgs
     if length params /= length argValues
-        then throwError WrongNumberOfArguments
+        then throwError wrongNumberOfArguments
         else do
             let bindings = zip params argValues
             let newEnv = buildEnvWithBindings savedEnv bindings
@@ -258,14 +258,14 @@ eval v = evalLiteral v
 apply :: IR -> [IR] -> Eval (Maybe IR)
 apply (IR.Native native) rawArgs = applyNative native rawArgs
 apply (IR.Closure params body savedEnv) rawArgs = applyClosure params body savedEnv rawArgs
-apply (IR.Symbol name) _ = throwError $ UnboundVariable name
-apply _ _ = throwError NotCallableObject
+apply (IR.Symbol name) _ = throwError $ unboundVariable name
+apply _ _ = throwError notCallableObject
 
 evalRequired :: IR -> Eval IR
 evalRequired v =
     eval v >>= \case
         Just val -> pure val
-        Nothing -> throwError ExpectedValue
+        Nothing -> throwError expectedValue
 
 defineVarEval :: Text -> IR -> Eval ()
 defineVarEval name val = do

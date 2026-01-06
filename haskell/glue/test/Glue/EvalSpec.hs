@@ -6,7 +6,7 @@ import Glue.Env qualified as E
 import Glue.Error (GlueError (..))
 import Glue.Eval (Eval, eval, runEvalLegacy)
 import Glue.Eval.Error (EvalError (..))
-import Glue.Eval.Exception (RuntimeException (..))
+import Glue.Eval.Exception
 import Glue.IR (IR (..), compile)
 import Glue.Lib (lib)
 import Glue.Parser (parseGlue)
@@ -50,11 +50,11 @@ spec = describe "Glue.Eval (System Integration)" do
 
     it "fails when calling non-existent function" do
         runCode "(non-existent 1 2)"
-            `shouldReturn` Left (GlueError (EvalError @Eval [] $ UnboundVariable "non-existent"))
+            `shouldReturn` Left (GlueError (EvalError @Eval [] $ unboundVariable "non-existent"))
 
     it "fails when passing wrong number of arguments" do
         runCode "((lambda (a b) a) 1)"
-            `shouldReturn` Left (GlueError (EvalError @Eval ["<call>"] WrongNumberOfArguments))
+            `shouldReturn` Left (GlueError (EvalError @Eval ["<call>"] wrongNumberOfArguments))
 
     it "user-defined function" do
         runCode "((def id (lambda (x) x)) (id 42))"
@@ -62,11 +62,11 @@ spec = describe "Glue.Eval (System Integration)" do
 
     it "user-defined function too few args" do
         runCode "((def id (lambda (x) x)) (id))"
-            `shouldReturn` Left (GlueError (EvalError @Eval ["id"] WrongNumberOfArguments))
+            `shouldReturn` Left (GlueError (EvalError @Eval ["id"] wrongNumberOfArguments))
 
     it "user-defined function too many args" do
         runCode "((def id (lambda (x) x)) (id 1 2))"
-            `shouldReturn` Left (GlueError (EvalError @Eval ["id"] WrongNumberOfArguments))
+            `shouldReturn` Left (GlueError (EvalError @Eval ["id"] wrongNumberOfArguments))
 
     it "user-defined function multi-param" do
         runCode "((def f (lambda (a b) ((a) (b)))) (f 1 2))"
@@ -82,11 +82,11 @@ spec = describe "Glue.Eval (System Integration)" do
 
     it "\\ alias works like lambda (too few args)" do
         runCode "((def id (\\ (x) x)) (id))"
-            `shouldReturn` Left (GlueError (EvalError @Eval ["id"] WrongNumberOfArguments))
+            `shouldReturn` Left (GlueError (EvalError @Eval ["id"] wrongNumberOfArguments))
 
     it "\\ alias works like lambda (too many args)" do
         runCode "((def id (\\ (x) x)) (id 1 2))"
-            `shouldReturn` Left (GlueError (EvalError @Eval ["id"] WrongNumberOfArguments))
+            `shouldReturn` Left (GlueError (EvalError @Eval ["id"] wrongNumberOfArguments))
 
     it "\\ alias works like lambda (multi-param)" do
         runCode "((def f (\\ (a b) ((a) (b)))) (f 1 2))"

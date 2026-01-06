@@ -4,7 +4,7 @@ import Data.Map.Strict qualified as Map
 import Data.Text qualified as T
 import Glue.Env (lookupVar)
 import Glue.Eval (Eval, evalRequired, getEnv, throwError, updateVarEval)
-import Glue.Eval.Exception (RuntimeException (..))
+import Glue.Eval.Exception (cannotModifyModule, notAnObject, wrongArgumentType)
 import Glue.IR (IR (..))
 
 set :: [IR Eval] -> Eval (Maybe (IR Eval))
@@ -12,7 +12,7 @@ set [Symbol name, rawVal] = do
     val <- evalRequired rawVal
     let parts = T.splitOn "." name
     case parts of
-        [] -> throwError $ WrongArgumentType ["target", "value"] -- shouldn't happen
+        [] -> throwError $ wrongArgumentType ["target", "value"]
         [varName] -> do
             updateVarEval varName val
             pure Nothing
@@ -25,8 +25,8 @@ set [Symbol name, rawVal] = do
                         let newObj = Object newMap
                         updateVarEval objName newObj
                         pure Nothing
-                    Module _ -> throwError CannotModifyModule
-                    _ -> throwError $ NotAnObject (T.pack $ show currentObj)
+                    Module _ -> throwError cannotModifyModule
+                    _ -> throwError $ notAnObject currentObj
                 Left err -> throwError err
-        _ -> throwError $ WrongArgumentType ["target", "value"]
-set _ = throwError $ WrongArgumentType ["target", "value"]
+        _ -> throwError $ wrongArgumentType ["target", "value"]
+set _ = throwError $ wrongArgumentType ["target", "value"]

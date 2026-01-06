@@ -1,7 +1,7 @@
 module Glue.Lib.List.Remove where
 
 import Glue.Eval (Eval, evalRequired, throwError)
-import Glue.Eval.Exception (RuntimeException (..))
+import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
 remove :: [IR Eval] -> Eval (IR Eval)
@@ -12,5 +12,5 @@ remove [itemIR, listIR] = do
         List xs -> do
             let filtered = filter (/= item) xs
             pure $ List filtered
-        _ -> throwError $ WrongArgumentType ["list"]
-remove _ = throwError WrongNumberOfArguments
+        _ -> throwError $ wrongArgumentType ["list"]
+remove _ = throwError wrongNumberOfArguments

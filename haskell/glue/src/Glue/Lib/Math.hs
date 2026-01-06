@@ -12,8 +12,11 @@ import Glue.Lib.Math.Utility qualified as Utility
 
 math :: Frame Eval
 math =
-    E.unionFrames Arithmetic.arithmetic $
-        E.unionFrames Const.const $
-            E.unionFrames Logarithmic.logarithmic $
-                E.unionFrames Power.power $
-                    E.unionFrames Trigonometric.trigonometric Utility.utility
+    E.unionFramesList
+        [ Arithmetic.arithmetic
+        , Const.const
+        , Logarithmic.logarithmic
+        , Trigonometric.trigonometric
+        , Utility.utility
+        , Power.power
+        ]

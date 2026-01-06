@@ -2,7 +2,7 @@ module Glue.Env where
 
 import Data.Map.Strict qualified as Map
 import Data.Text (Text)
-import Glue.Eval.Exception (RuntimeException (..))
+import Glue.Eval.Exception
 import Glue.IR (Env, Frame, IR (..))
 
 emptyEnv :: Env m
@@ -29,7 +29,7 @@ lookupLocal name (f : _) = Map.lookup name f
 lookupLocal _ [] = Nothing
 
 lookupVar :: Text -> Env m -> Either (RuntimeException m) (IR m)
-lookupVar name [] = Left $ UnboundVariable name
+lookupVar name [] = Left $ unboundVariable name
 lookupVar name (f : fs) = case Map.lookup name f of
     Just val -> Right val
     Nothing -> lookupVar name fs
@@ -39,7 +39,7 @@ defineVar name val [] = [Map.singleton name val]
 defineVar name val (f : fs) = Map.insert name val f : fs
 
 updateVar :: Text -> IR m -> Env m -> Either (RuntimeException m) (Env m)
-updateVar name _ [] = Left $ CanNotSetUnboundVariable name
+updateVar name _ [] = Left $ canNotSetUnboundVariable name
 updateVar name val (f : fs)
     | Map.member name f = Right (Map.insert name val f : fs)
     | otherwise = (f :) <$> updateVar name val fs

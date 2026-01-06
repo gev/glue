@@ -52,7 +52,7 @@ Extended Environment (used for body evaluation)
 
 ### Argument Count Validation
 - Parameter count must match argument count
-- Error: `WrongNumberOfArguments` if mismatch
+- Error: `wrongNumberOfArguments` if mismatch
 
 ### Argument Evaluation
 - Arguments received unevaluated
@@ -73,7 +73,7 @@ Extended Environment (used for body evaluation)
 
 ## Error Conditions
 
-### WrongNumberOfArguments
+### wrongNumberOfArguments
 **Cause:** Parameter/argument count mismatch
 **Context:** Expected parameters vs received arguments
 

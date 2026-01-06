@@ -1,9 +1,8 @@
 module Glue.Lib.Builtin.Try where
 
 import Data.Text (Text)
-import Data.Text qualified as T
 import Glue.Eval (Eval, apply, eval, isCallable, throwError)
-import Glue.Eval.Exception (RuntimeException (..))
+import Glue.Eval.Exception
 import Glue.IR qualified as IR
 
 tryFunc :: [IR.IR Eval] -> Eval (Maybe (IR.IR Eval))
@@ -19,11 +18,11 @@ tryFunc (body : catches) = do
                     callable <- eval handler
                     case callable of
                         Just c | isCallable c -> apply c [payload]
-                        _ -> throwError NotCallableObject
-                Nothing -> throwError $ RuntimeException excSymbol payload
+                        _ -> throwError notCallableObject
+                Nothing -> throwError $ runtimeException excSymbol payload
         Just val -> pure $ Just val
-        Nothing -> throwError ExpectedValue
-tryFunc _ = throwError $ WrongArgumentType ["body", "catch*"]
+        Nothing -> throwError expectedValue
+tryFunc _ = throwError $ wrongArgumentType ["body", "catch*"]
 
 findCatch :: Text -> [IR.IR Eval] -> Maybe (IR.IR Eval)
 findCatch _ [] = Nothing

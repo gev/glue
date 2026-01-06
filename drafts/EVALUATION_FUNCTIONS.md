@@ -86,7 +86,7 @@ Arguments evaluated left-to-right, but order not guaranteed to be strict.
 
 ## Error Conditions
 
-### WrongNumberOfArguments
+### wrongNumberOfArguments
 **Cause:** Argument count doesn't match function parameter count
 **Context:** Expected vs actual argument counts
 

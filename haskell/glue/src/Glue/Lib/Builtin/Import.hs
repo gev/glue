@@ -5,7 +5,7 @@ import Data.Text qualified as T
 import Glue.Env qualified as E
 import Glue.Eval (Eval, EvalState (..), eval, getCache, getEnv, getRegistry, getRootEnv, getState, liftIO, putCache, putEnv, runEval, throwError)
 import Glue.Eval.Error (EvalError (..))
-import Glue.Eval.Exception (RuntimeException (..))
+import Glue.Eval.Exception (moduleNotFound, wrongArgumentType)
 import Glue.IR (IR (..))
 import Glue.Module (ImportedModule (..), RegisteredModule (..))
 import Glue.Module.Cache qualified as Cache
@@ -17,7 +17,7 @@ importForm :: [IR Eval] -> Eval (Maybe (IR Eval))
 importForm [Symbol moduleName] = do
     registry <- getRegistry
     case Registry.lookupModule moduleName registry of
-        Nothing -> throwError $ ModuleNotFound moduleName
+        Nothing -> throwError $ moduleNotFound moduleName
         Just mod -> do
             cache <- getCache
             -- Check if already imported (cached)
@@ -86,4 +86,4 @@ importForm [Symbol moduleName] = do
                     putEnv finalEnv
 
                     pure Nothing
-importForm _ = throwError $ WrongArgumentType ["module-name"]
+importForm _ = throwError $ wrongArgumentType ["module-name"]

@@ -1,7 +1,7 @@
 module Glue.Lib.Math.Arithmetic.Mod where
 
 import Glue.Eval (Eval, evalRequired, throwError)
-import Glue.Eval.Exception (RuntimeException (..))
+import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
 mod :: [IR Eval] -> Eval (IR Eval)
@@ -11,7 +11,7 @@ mod [arg1, arg2] = do
     case (va1, va2) of
         (Number n1, Number n2) -> do
             if n2 == 0
-                then throwError DivByZero
+                then throwError divByZero
                 else pure $ Number (fromIntegral @Int (truncate n1 `Prelude.mod` truncate n2))
-        _ -> throwError $ WrongArgumentType ["number", "number"]
-mod _ = throwError WrongNumberOfArguments
+        _ -> throwError $ wrongArgumentType ["number", "number"]
+mod _ = throwError wrongNumberOfArguments

@@ -60,11 +60,11 @@ Native function evaluation executes host language functions integrated into the 
 
 ## Error Conditions
 
-### WrongNumberOfArguments
+### wrongNumberOfArguments
 **Cause:** Native function called with wrong argument count
 **Context:** Function name, expected vs actual count
 
-### WrongArgumentType
+### wrongArgumentType
 **Cause:** Arguments have incorrect types for native function
 **Context:** Function name, expected types, actual types
 
@@ -109,7 +109,7 @@ addImpl args = do
 -- Example native command
 printlnImpl :: [IR] -> Eval ()
 printlnImpl [IR.String text] = liftIO $ putStrLn text
-printlnImpl _ = throwError WrongArgumentType
+printlnImpl _ = throwError wrongArgumentType
 ```
 
 ## Host Language Integration

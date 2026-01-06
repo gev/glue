@@ -6,7 +6,7 @@ module Glue.Eval.Error (
 
 import Data.Text (Text)
 import Data.Text qualified as T
-import Glue.Eval.Exception (Exception (pretty), RuntimeException)
+import Glue.Eval.Exception (RuntimeException, pretty)
 
 type Context = [Text]
 

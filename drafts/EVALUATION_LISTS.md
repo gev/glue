@@ -84,7 +84,7 @@ Lists serve dual purpose based on evaluation:
 **Cause:** First evaluated item is not callable in general lists
 **Context:** Value type, evaluation result
 
-### WrongNumberOfArguments
+### wrongNumberOfArguments
 **Cause:** Function called with wrong argument count
 **Context:** Expected vs actual count
 

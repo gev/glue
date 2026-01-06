@@ -1,7 +1,7 @@
 module Glue.Lib.List.Filter where
 
 import Glue.Eval (Eval, eval, evalRequired, throwError)
-import Glue.Eval.Exception (RuntimeException (..))
+import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
 filter :: [IR Eval] -> Eval (IR Eval)
@@ -13,8 +13,8 @@ filter [predIR, listIR] = do
             -- Filter elements that satisfy the predicate
             filtered <- filterElements pred xs
             pure $ List filtered
-        _ -> throwError $ WrongArgumentType ["function", "list"]
-filter _ = throwError WrongNumberOfArguments
+        _ -> throwError $ wrongArgumentType ["function", "list"]
+filter _ = throwError wrongNumberOfArguments
 
 -- Helper function to filter elements
 filterElements :: IR Eval -> [IR Eval] -> Eval [IR Eval]
@@ -30,8 +30,8 @@ filterElements pred (x : xs) = do
 applyPredicate :: IR Eval -> IR Eval -> Eval Bool
 applyPredicate pred x = do
     -- Evaluate (pred x) and check if it returns true
-    result <- eval (List [pred, x]) >>= maybe (throwError ExpectedValue) pure
+    result <- eval (List [pred, x]) >>= maybe (throwError expectedValue) pure
     case result of
         Bool True -> pure True
         Bool False -> pure False
-        _ -> throwError $ WrongArgumentType ["boolean result from predicate"]
+        _ -> throwError $ wrongArgumentType ["boolean result from predicate"]

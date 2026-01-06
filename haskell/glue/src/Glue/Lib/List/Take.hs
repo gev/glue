@@ -1,7 +1,7 @@
 module Glue.Lib.List.Take where
 
 import Glue.Eval (Eval, evalRequired, throwError)
-import Glue.Eval.Exception (RuntimeException (..))
+import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
 take :: [IR Eval] -> Eval (IR Eval)
@@ -11,7 +11,7 @@ take [countIR, listIR] = do
     case (count, list) of
         (Number n, List xs) -> do
             if n < 0
-                then throwError $ WrongArgumentType ["non-negative integer"]
+                then throwError $ wrongArgumentType ["non-negative integer"]
                 else pure $ List (Prelude.take (floor n) xs)
-        _ -> throwError $ WrongArgumentType ["number", "list"]
-take _ = throwError WrongNumberOfArguments
+        _ -> throwError $ wrongArgumentType ["number", "list"]
+take _ = throwError wrongNumberOfArguments

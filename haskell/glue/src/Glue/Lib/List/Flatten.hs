@@ -1,7 +1,7 @@
 module Glue.Lib.List.Flatten where
 
 import Glue.Eval (Eval, evalRequired, throwError)
-import Glue.Eval.Exception (RuntimeException (..))
+import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
 flatten :: [IR Eval] -> Eval (IR Eval)
@@ -11,8 +11,8 @@ flatten [listIR] = do
         List xs -> do
             flattened <- flattenList xs
             pure $ List flattened
-        _ -> throwError $ WrongArgumentType ["list"]
-flatten _ = throwError WrongNumberOfArguments
+        _ -> throwError $ wrongArgumentType ["list"]
+flatten _ = throwError wrongNumberOfArguments
 
 -- Helper function to flatten a list recursively
 flattenList :: [IR Eval] -> Eval [IR Eval]

@@ -1,7 +1,7 @@
 module Glue.Lib.List.Map where
 
 import Glue.Eval (Eval, eval, evalRequired, throwError)
-import Glue.Eval.Exception (RuntimeException (..))
+import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
 map :: [IR Eval] -> Eval (IR Eval)
@@ -11,7 +11,7 @@ map [funcIR, listIR] = do
     case list of
         List xs -> do
             -- Apply the function to each element by evaluating a list [func, x]
-            results <- mapM (\x -> eval (List [func, x]) >>= maybe (throwError ExpectedValue) pure) xs
+            results <- mapM (\x -> eval (List [func, x]) >>= maybe (throwError expectedValue) pure) xs
             pure $ List results
-        _ -> throwError $ WrongArgumentType ["function", "list"]
-map _ = throwError WrongNumberOfArguments
+        _ -> throwError $ wrongArgumentType ["function", "list"]
+map _ = throwError wrongNumberOfArguments

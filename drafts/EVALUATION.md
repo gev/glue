@@ -52,7 +52,7 @@ All function application logic is handled within the list evaluation cases. For 
 
 - **UnboundVariable**: Symbol not found in environment
 - **NotCallableObject**: Attempted to call non-callable value
-- **WrongNumberOfArguments**: Parameter/argument count mismatch
+- **wrongNumberOfArguments**: Parameter/argument count mismatch
 - **PropertyNotFound**: Object/module property access failed
 - **NotAnObject**: Dotted access on non-object value
 

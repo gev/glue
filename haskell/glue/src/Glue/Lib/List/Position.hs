@@ -1,7 +1,7 @@
 module Glue.Lib.List.Position where
 
 import Glue.Eval (Eval, eval, evalRequired, throwError)
-import Glue.Eval.Exception (RuntimeException (..))
+import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
 position :: [IR Eval] -> Eval (IR Eval)
@@ -12,16 +12,16 @@ position [predIR, listIR] = do
         List xs -> do
             -- Find index of first element that satisfies predicate
             findPosition pred xs 0
-        _ -> throwError $ WrongArgumentType ["function", "list"]
-position _ = throwError WrongNumberOfArguments
+        _ -> throwError $ wrongArgumentType ["function", "list"]
+position _ = throwError wrongNumberOfArguments
 
 -- Helper function to find position of first element satisfying predicate
 findPosition :: IR Eval -> [IR Eval] -> Int -> Eval (IR Eval)
-findPosition _ [] _ = throwError $ WrongArgumentType ["element satisfying predicate"]
+findPosition _ [] _ = throwError $ wrongArgumentType ["element satisfying predicate"]
 findPosition pred (x : xs) idx = do
     -- Evaluate (pred x) and check if it returns true
-    result <- eval (List [pred, x]) >>= maybe (throwError ExpectedValue) pure
+    result <- eval (List [pred, x]) >>= maybe (throwError expectedValue) pure
     case result of
         Bool True -> pure $ Number (fromIntegral idx)
         Bool False -> findPosition pred xs (idx + 1)
-        _ -> throwError $ WrongArgumentType ["boolean result from predicate"]
+        _ -> throwError $ wrongArgumentType ["boolean result from predicate"]
