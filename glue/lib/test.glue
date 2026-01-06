@@ -9,7 +9,7 @@
     (def handle-test-failure
         (lambda (name e)
             (println "Test" name "failed:" e)
-            'failed))
+            failed))
 
     ;; Assert that a condition is true, otherwise throw error with message
     (def assert
@@ -21,7 +21,7 @@
     (def test
         (lambda (name thunk)
             ((lambda (result)
-                    (if (!= result 'failed)
+                    (if (!= result failed)
                         (println "Test" name "passed")))
                 (try thunk (catch test-failure (handle-test-failure name))))))
 
