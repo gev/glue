@@ -38,6 +38,8 @@ import Glue.Module.Registry (ModuleRegistry, emptyRegistry)
 
 type IR = IR.IR Eval
 type Env = IR.Env Eval
+type Error = EvalError Eval
+type Exception = RuntimeException Eval
 
 -- | Complete evaluation state
 data EvalState = EvalState
@@ -49,7 +51,7 @@ data EvalState = EvalState
     }
 
 newtype Eval a = Eval
-    { runEvalInternal :: EvalState -> IO (Either EvalError (a, EvalState))
+    { runEvalInternal :: EvalState -> IO (Either Error (a, EvalState))
     }
 
 instance Functor Eval where
@@ -101,7 +103,7 @@ popContext = Eval $ \state -> case state.context of
     (_ : rest) -> pure $ Right ((), state{context = rest})
     [] -> pure $ Right ((), state) -- shouldn't happen, but safe
 
-throwError :: RuntimeException -> Eval a
+throwError :: Exception -> Eval a
 throwError err = Eval $ \state -> pure $ Left (EvalError state.context err)
 
 liftIO :: IO a -> Eval a
@@ -213,9 +215,8 @@ evalObject objMap = do
 
 -- Evaluate an exception
 evalException :: Text -> IR -> Eval (Maybe IR)
-evalException e ir = do
-    msg <- T.pack . show <$> eval ir
-    throwError $ RuntimeException e msg
+evalException e ir =
+    throwError $ RuntimeException e ir
 
 -- Evaluate literal values (numbers, strings, etc.)
 evalLiteral :: IR -> Eval (Maybe IR)
@@ -278,11 +279,11 @@ updateVarEval name val = do
         Right nextEnv -> putEnv nextEnv
         Left err -> throwError err
 
-runEval :: Eval a -> EvalState -> IO (Either EvalError (a, EvalState))
+runEval :: Eval a -> EvalState -> IO (Either Error (a, EvalState))
 runEval (Eval f) = f
 
 -- | Legacy runEval for backward compatibility (deprecated)
-runEvalLegacy :: Eval a -> Env -> IO (Either EvalError (a, Env, Context))
+runEvalLegacy :: Eval a -> Env -> IO (Either Error (a, Env, Context))
 runEvalLegacy evalAction initialEnv = do
     let initialState =
             EvalState

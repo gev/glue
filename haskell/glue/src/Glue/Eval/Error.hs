@@ -10,13 +10,13 @@ import Glue.Eval.Exception (Exception (pretty), RuntimeException)
 
 type Context = [Text]
 
-data EvalError = EvalError Context RuntimeException
+data EvalError t = EvalError Context (RuntimeException t)
     deriving (Eq)
 
-instance Show EvalError where
+instance Show (EvalError m) where
     show (EvalError ctx e) = show ctx ++ ": " ++ show e
 
-prettyShow :: EvalError -> Text
+prettyShow :: EvalError m -> Text
 prettyShow (EvalError ctx e) =
     if null ctx
         then pretty e

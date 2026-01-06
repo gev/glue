@@ -1,12 +1,12 @@
 module Glue.Eval.Exception (
     Exception (..),
-    EvalError (..),
     RuntimeException (..),
     Context,
 ) where
 
 import Data.Text (Text)
 import Data.Text qualified as T
+import Glue.IR (IR)
 
 type Context = [Text]
 
@@ -14,13 +14,7 @@ class Exception e where
     pretty :: e -> Text
     symbol :: e -> Text
 
-data EvalError = EvalError Context RuntimeException
-    deriving (Eq)
-
-instance Show EvalError where
-    show (EvalError ctx e) = show ctx ++ ": " ++ show e
-
-data RuntimeException
+data RuntimeException m
     = UnboundVariable Text
     | CanNotSetUnboundVariable Text
     | NotCallableObject
@@ -33,10 +27,10 @@ data RuntimeException
     | NotAnObject Text
     | ModuleNotFound Text
     | CannotModifyModule
-    | RuntimeException Text Text
+    | RuntimeException Text (IR m)
     deriving (Show, Eq)
 
-instance Exception RuntimeException where
+instance Exception (RuntimeException m) where
     pretty = \case
         UnboundVariable name -> "Unbound variable: " <> name
         CanNotSetUnboundVariable name -> "Cannot set unbound variable: " <> name

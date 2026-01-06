@@ -20,7 +20,7 @@ lambda _ = throwError $ WrongArgumentType ["arguments", "body"]
 makeClosure :: [Text] -> IR m -> Env m -> IR m
 makeClosure = Closure
 
-extractSymbols :: [IR m] -> Either RuntimeException [Text]
+extractSymbols :: [IR m] -> Either (RuntimeException m) [Text]
 extractSymbols = mapM \case
     Symbol s -> Right s
     _ -> Left ExpectedListOfSymbols

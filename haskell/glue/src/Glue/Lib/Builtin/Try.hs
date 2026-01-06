@@ -20,7 +20,7 @@ tryFunc (body : catches) = do
                     case callable of
                         Just c | isCallable c -> apply c [payload]
                         _ -> throwError NotCallableObject
-                Nothing -> throwError $ RuntimeException excSymbol (T.pack $ show payload)
+                Nothing -> throwError $ RuntimeException excSymbol payload
         Just val -> pure $ Just val
         Nothing -> throwError ExpectedValue
 tryFunc _ = throwError $ WrongArgumentType ["body", "catch*"]
