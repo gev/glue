@@ -10,13 +10,13 @@
         (lambda (name e)
             (if (= e.type "assert-equal")
                 (println "Test" name "failed: Expected" e.expected "but got" e.actual)
-                (println "Test" name "failed:" e))))
+                (println "Test" name "failed:" e.message))))
 
     ;; Assert that a condition is true, otherwise throw error with message
     (def assert
         (lambda (condition message)
             (if (not condition)
-                (error test-failure message)
+                (error test-failure (:type "assert" :message message))
                 true)))
 
     ;; Run a test thunk, catch errors and print results
