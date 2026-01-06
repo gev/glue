@@ -1,0 +1,29 @@
+(module test
+    (import builtin)
+    (import bool)
+    (import io)
+    (import list)
+
+    (export assert test assert-equal)
+
+    ;; Assert that a condition is true, otherwise throw error with message
+    (def assert
+        (lambda (condition message)
+            (if (not condition)
+                (error 'test-failure message))))
+
+    ;; Run a test thunk, catch errors and print results
+    (def test
+        (lambda (name thunk)
+            ((lambda (result)
+                    (if (and (list? result) (= (car result) 'failed))
+                        (println "Test" name "failed:" (cadr result))
+                        (println "Test" name "passed")))
+                (try thunk (catch 'test-failure (lambda (e) (list 'failed e)))))))
+
+    ;; Assert two values are equal
+    (def assert-equal
+        (lambda (expected actual)
+            (assert (= expected actual)
+                "Values not equal")))
+)
