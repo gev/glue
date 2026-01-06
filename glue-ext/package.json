@@ -1,10 +1,30 @@
 {
   "name": "glue-lang",
   "displayName": "Glue Language Support",
-  "description": "Syntax highlighting for Glue language",
+  "description": "Syntax highlighting and autoformatting for Glue language",
   "version": "0.0.1",
+  "publisher": "gev",
+  "author": "Evgeny Gazdovsky",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gev/glue.git"
+  },
   "engines": {
     "vscode": "^1.85.0"
+  },
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onLanguage:glue"
+  ],
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.0.0"
   },
   "categories": [
     "Programming Languages"
@@ -29,6 +49,14 @@
         "scopeName": "source.glue",
         "path": "./syntaxes/glue.tmLanguage.json"
       }
-    ]
+    ],
+    "configurationDefaults": {
+      "[glue]": {
+        "editor.tabSize": 4,
+        "editor.insertSpaces": true,
+        "editor.detectIndentation": false,
+        "editor.defaultFormatter": "gev.glue-lang"
+      }
+    }
   }
 }

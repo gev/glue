@@ -1,12 +1,12 @@
 (module builtin
-  (import ffi.builtin)
-
-  ;; Special forms
-  (def def ffi.builtin.def)
-  (def set ffi.builtin.set)
-  (def lambda ffi.builtin.lambda)
-  (def \ lambda)  ;; alias
-  (def import ffi.builtin.import)
-  (def error ffi.builtin.error)
-  (def try ffi.builtin.try)
+    (import ffi.builtin)
+    
+    ;; Special forms
+    (def def ffi.builtin.def)
+    (def set ffi.builtin.set)
+    (def lambda ffi.builtin.lambda)
+    (def \ lambda)  ;; alias
+    (def import ffi.builtin.import)
+    (def error ffi.builtin.error)
+    (def try ffi.builtin.try)
 )

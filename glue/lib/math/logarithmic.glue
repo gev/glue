@@ -1,8 +1,8 @@
 (module math.logarithmic
-  (import ffi.math.logarithmic)
-
-  ;; Logarithmic operations
-  (def log ffi.math.logarithmic.log)
-  (def ln ffi.math.logarithmic.ln)
-  (def lg ffi.math.logarithmic.lg)
+    (import ffi.math.logarithmic)
+    
+    ;; Logarithmic operations
+    (def log ffi.math.logarithmic.log)
+    (def ln ffi.math.logarithmic.ln)
+    (def lg ffi.math.logarithmic.lg)
 )

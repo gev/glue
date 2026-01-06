@@ -1,9 +1,9 @@
 (module math.power
-  (import ffi.math.power)
-
-  ;; Power operations
-  (def exp ffi.math.power.exp)
-  (def pow ffi.math.power.pow)
-  (def ** pow)
-  (def sqrt ffi.math.power.sqrt)
+    (import ffi.math.power)
+    
+    ;; Power operations
+    (def exp ffi.math.power.exp)
+    (def pow ffi.math.power.pow)
+    (def ** pow)
+    (def sqrt ffi.math.power.sqrt)
 )
