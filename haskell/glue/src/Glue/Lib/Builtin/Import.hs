@@ -4,7 +4,8 @@ import Data.Map.Strict qualified as Map
 import Data.Text qualified as T
 import Glue.Env qualified as E
 import Glue.Eval (Eval, EvalState (..), eval, getCache, getEnv, getRegistry, getRootEnv, getState, liftIO, putCache, putEnv, runEval, throwError)
-import Glue.Eval.Error (EvalError (..), GeneralError (..))
+import Glue.Eval.Error (EvalError (..))
+import Glue.Eval.Exception (RuntimeException (..))
 import Glue.IR (IR (..))
 import Glue.Module (ImportedModule (..), RegisteredModule (..))
 import Glue.Module.Cache qualified as Cache

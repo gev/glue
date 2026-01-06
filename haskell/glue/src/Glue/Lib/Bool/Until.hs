@@ -1,7 +1,7 @@
 module Glue.Lib.Bool.Until where
 
 import Glue.Eval (Eval, eval, evalRequired, throwError)
-import Glue.Eval.Error (GeneralError (..))
+import Glue.Eval.Exception (RuntimeException (..))
 import Glue.IR (IR (..))
 
 until_ :: [IR Eval] -> Eval (Maybe (IR Eval))

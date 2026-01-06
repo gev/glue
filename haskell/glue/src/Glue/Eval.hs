@@ -29,9 +29,9 @@ import Data.Map.Strict qualified as Map
 import Data.Maybe (catMaybes)
 import Data.Text (Text)
 import Data.Text qualified as T
-import Data.Typeable (Typeable)
 import Glue.Env qualified as E
-import Glue.Eval.Error (Context, Error, EvalError (EvalError), GeneralError (..))
+import Glue.Eval.Error (Context, EvalError (EvalError))
+import Glue.Eval.Exception (RuntimeException (..))
 import Glue.IR qualified as IR
 import Glue.Module.Cache (ImportedModuleCache)
 import Glue.Module.Registry (ModuleRegistry, emptyRegistry)
@@ -101,7 +101,7 @@ popContext = Eval $ \state -> case state.context of
     (_ : rest) -> pure $ Right ((), state{context = rest})
     [] -> pure $ Right ((), state) -- shouldn't happen, but safe
 
-throwError :: (Error e, Show e, Eq e, Typeable e) => e -> Eval a
+throwError :: RuntimeException -> Eval a
 throwError err = Eval $ \state -> pure $ Left (EvalError state.context err)
 
 liftIO :: IO a -> Eval a
@@ -215,7 +215,7 @@ evalObject objMap = do
 evalException :: Text -> IR -> Eval (Maybe IR)
 evalException e ir = do
     msg <- T.pack . show <$> eval ir
-    throwError $ RuntimeError e msg
+    throwError $ RuntimeException e msg
 
 -- Evaluate literal values (numbers, strings, etc.)
 evalLiteral :: IR -> Eval (Maybe IR)

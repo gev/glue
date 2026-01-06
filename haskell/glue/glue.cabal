@@ -19,6 +19,7 @@ library
     Glue.Error
     Glue.Eval
     Glue.Eval.Error
+    Glue.Eval.Exception
     Glue.IR
     Glue.Lib
     Glue.Lib.Bool

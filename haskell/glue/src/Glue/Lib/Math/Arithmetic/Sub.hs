@@ -1,6 +1,6 @@
 module Glue.Lib.Math.Arithmetic.Sub where
 
-import Glue.Eval.Error (GeneralError (..))
+import Glue.Eval.Exception (RuntimeException (..))
 
 import Glue.Eval (Eval, evalRequired, throwError)
 import Glue.IR (IR (..))

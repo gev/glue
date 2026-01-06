@@ -1,7 +1,7 @@
 module Glue.Lib.List.Sort where
 
 import Glue.Eval (Eval, throwError)
-import Glue.Eval.Error (GeneralError (..))
+import Glue.Eval.Exception (RuntimeException (..))
 import Glue.IR (IR (..))
 
 sort :: [IR Eval] -> Eval (IR Eval)

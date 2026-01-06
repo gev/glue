@@ -2,7 +2,7 @@ module Glue.Lib.Math.Utility.Trunc where
 
 import Data.Scientific (toRealFloat)
 import Glue.Eval (Eval, evalRequired, throwError)
-import Glue.Eval.Error (GeneralError (..))
+import Glue.Eval.Exception (RuntimeException (..))
 import Glue.IR (IR (..))
 
 trunc :: [IR Eval] -> Eval (IR Eval)

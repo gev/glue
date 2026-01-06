@@ -4,7 +4,6 @@ import Data.Text (Text)
 import Glue.Env qualified as E
 import Glue.Error (GlueError (..))
 import Glue.Eval (Eval, eval, runEvalLegacy)
-import Glue.Eval.Error (EvalError (..), GeneralError (..))
 import Glue.IR (IR (..), compile)
 import Glue.Lib (lib)
 import Glue.Parser (parseGlue)

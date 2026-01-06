@@ -1,7 +1,7 @@
 module Glue.Lib.List.Partition where
 
 import Glue.Eval (Eval, eval, evalRequired, throwError)
-import Glue.Eval.Error (GeneralError (..))
+import Glue.Eval.Exception (RuntimeException (..))
 import Glue.IR (IR (..))
 
 partition :: [IR Eval] -> Eval (IR Eval)

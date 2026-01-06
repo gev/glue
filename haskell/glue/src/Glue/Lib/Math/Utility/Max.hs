@@ -1,7 +1,7 @@
 module Glue.Lib.Math.Utility.Max where
 
 import Glue.Eval (Eval, evalRequired, throwError)
-import Glue.Eval.Error (GeneralError (..))
+import Glue.Eval.Exception (RuntimeException (..))
 import Glue.IR (IR (..))
 
 max :: [IR Eval] -> Eval (IR Eval)

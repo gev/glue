@@ -1,7 +1,7 @@
 module Glue.Lib.Builtin.Def where
 
 import Glue.Eval (Eval, defineVarEval, evalRequired, throwError)
-import Glue.Eval.Error (GeneralError (..))
+import Glue.Eval.Exception (RuntimeException (..))
 import Glue.IR (IR (..))
 
 def :: [IR Eval] -> Eval (Maybe (IR Eval))

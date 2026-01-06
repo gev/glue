@@ -4,7 +4,7 @@ import Data.Map.Strict qualified as Map
 import Data.Text qualified as T
 import Glue.Env (lookupVar)
 import Glue.Eval (Eval, evalRequired, getEnv, throwError, updateVarEval)
-import Glue.Eval.Error (GeneralError (..))
+import Glue.Eval.Exception (RuntimeException (..))
 import Glue.IR (IR (..))
 
 set :: [IR Eval] -> Eval (Maybe (IR Eval))

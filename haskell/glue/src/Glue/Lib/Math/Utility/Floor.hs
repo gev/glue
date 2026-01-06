@@ -2,7 +2,7 @@ module Glue.Lib.Math.Utility.Floor where
 
 import Data.Scientific (toRealFloat)
 import Glue.Eval (Eval, evalRequired, throwError)
-import Glue.Eval.Error (GeneralError (..))
+import Glue.Eval.Exception (RuntimeException (..))
 import Glue.IR (IR (..))
 
 floor :: [IR Eval] -> Eval (IR Eval)

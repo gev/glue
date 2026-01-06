@@ -1,7 +1,7 @@
 module Glue.Lib.Bool.When where
 
 import Glue.Eval (Eval, eval, evalRequired, throwError)
-import Glue.Eval.Error (GeneralError (..))
+import Glue.Eval.Exception (RuntimeException (..))
 import Glue.IR (IR (..))
 
 when_ :: [IR Eval] -> Eval (Maybe (IR Eval))

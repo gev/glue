@@ -1,7 +1,7 @@
 module Glue.Lib.List.Remove where
 
 import Glue.Eval (Eval, evalRequired, throwError)
-import Glue.Eval.Error (GeneralError (..))
+import Glue.Eval.Exception (RuntimeException (..))
 import Glue.IR (IR (..))
 
 remove :: [IR Eval] -> Eval (IR Eval)
