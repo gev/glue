@@ -56,15 +56,15 @@ const mockVscode = {
 function testSemanticProvider() {
     console.log('Testing GlueSemanticTokensProvider...');
 
-    const legend = new MockSemanticTokensLegend(['function', 'variable', 'keyword', 'property', 'string', 'number', 'boolean', 'operator'], []);
+    const legend = new MockSemanticTokensLegend(['function', 'parameter', 'keyword', 'property', 'string', 'number', 'boolean', 'operator'], []);
     const provider = new GlueSemanticTokensProvider(legend as any);
 
     // Test 1: Function calls
     const input1 = '(def x 42)';
     const doc1 = new MockTextDocument(input1);
     const tokens1 = provider.provideDocumentSemanticTokens(doc1 as any) as any;
-    console.log('Test 1 (function calls):', tokens1.tokens.length === 3 && tokens1.tokens[0].tokenType === 'function' && tokens1.tokens[1].tokenType === 'variable' && tokens1.tokens[2].tokenType === 'number' ? 'PASS' : 'FAIL');
-    if (tokens1.tokens.length !== 3 || tokens1.tokens[0].tokenType !== 'function' || tokens1.tokens[1].tokenType !== 'variable' || tokens1.tokens[2].tokenType !== 'number') {
+    console.log('Test 1 (function calls):', tokens1.tokens.length === 3 && tokens1.tokens[0].tokenType === 'function' && tokens1.tokens[1].tokenType === 'parameter' && tokens1.tokens[2].tokenType === 'number' ? 'PASS' : 'FAIL');
+    if (tokens1.tokens.length !== 3 || tokens1.tokens[0].tokenType !== 'function' || tokens1.tokens[1].tokenType !== 'parameter' || tokens1.tokens[2].tokenType !== 'number') {
         console.log('Tokens:', tokens1.tokens);
     }
 
@@ -90,8 +90,8 @@ function testSemanticProvider() {
     const input4 = '(def add (lambda (a b) (+ a b)))';
     const doc4 = new MockTextDocument(input4);
     const tokens4 = provider.provideDocumentSemanticTokens(doc4 as any) as any;
-    // def: function, add: variable, lambda: keyword, a: function, b: variable, +: operator, a: variable, b: variable
-    const expectedTypes = ['function', 'variable', 'keyword', 'function', 'variable', 'operator', 'variable', 'variable'];
+    // def: function, add: parameter, lambda: keyword, a: function, b: parameter, +: operator, a: parameter, b: parameter
+    const expectedTypes = ['function', 'parameter', 'keyword', 'function', 'parameter', 'operator', 'parameter', 'parameter'];
     const actualTypes = tokens4.tokens.map((t: any) => t.tokenType);
     console.log('Test 4 (mixed):', JSON.stringify(actualTypes) === JSON.stringify(expectedTypes) ? 'PASS' : 'FAIL');
     if (JSON.stringify(actualTypes) !== JSON.stringify(expectedTypes)) {

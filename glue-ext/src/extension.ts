@@ -25,7 +25,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(provider);
 
     // Register semantic tokens provider
-    const legend = new vscode.SemanticTokensLegend(['function', 'variable', 'keyword', 'property', 'string', 'number', 'boolean', 'operator'], []);
+    const legend = new vscode.SemanticTokensLegend(['function', 'parameter', 'keyword', 'property', 'string', 'number', 'boolean', 'operator'], []);
     const semanticProvider = vscode.languages.registerDocumentSemanticTokensProvider('glue', new GlueSemanticTokensProvider(legend), legend);
 
     context.subscriptions.push(semanticProvider);

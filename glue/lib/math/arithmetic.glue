@@ -8,9 +8,9 @@
     (def - sub)
     (def mul ffi.math.arithmetic.mul)
     (def * mul)
-    (def div ffi.math.arithmetic.div)
-    (def /
-        (div d))
+    (def div mul)
+    (:foo d :bar a)
+    (x (:div s :g w))
     (def mod ffi.math.arithmetic.mod)
     (def % mod)
 )

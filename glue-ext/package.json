@@ -56,8 +56,40 @@
         "editor.tabSize": 4,
         "editor.insertSpaces": true,
         "editor.detectIndentation": false,
-        "editor.defaultFormatter": "gev.glue-lang"
+        "editor.defaultFormatter": "gev.glue-lang",
+        "editor.semanticHighlighting.enabled": true
       }
-    }
+    },
+    "semanticTokenScopes": [
+      {
+        "language": "glue",
+        "scopes": {
+          "function": [
+            "entity.name.function"
+          ],
+          "parameter": [
+            "variable.parameter"
+          ],
+          "keyword": [
+            "keyword.operator"
+          ],
+          "property": [
+            "keyword.control"
+          ],
+          "string": [
+            "string.quoted.double"
+          ],
+          "number": [
+            "constant.numeric"
+          ],
+          "boolean": [
+            "constant.language.boolean"
+          ],
+          "operator": [
+            "keyword.operator"
+          ]
+        }
+      }
+    ]
   }
 }
