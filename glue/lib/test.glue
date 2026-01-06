@@ -22,10 +22,7 @@
     ;; Run a test thunk, catch errors and print results
     (def test
         (lambda (name thunk)
-            ((lambda (result)
-                    (if (!= result "failed")
-                        (println "Test" name "passed")))
-                (try thunk (catch test-failure (lambda (e) (handle-test-failure name e) "failed"))))))
+            (try thunk (catch test-failure (handle-test-failure name)))))
 
     ;; Assert two values are equal
     (def assert-equal
