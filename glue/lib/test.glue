@@ -1,5 +1,5 @@
+
 (module test
-    (import builtin)
     (import bool)
     (import io)
 
@@ -13,6 +13,13 @@
                 (println "Test" name "failed:" e))
             "failed"))
 
+    ;; Helper for test success handling
+    (def make-success-handler
+        (lambda (name)
+            (lambda (result)
+                (if (!= result "failed")
+                    (println "Test" name "passed")))))
+
     ;; Assert that a condition is true, otherwise throw error with message
     (def assert
         (lambda (condition message)
@@ -22,9 +29,7 @@
     ;; Run a test thunk, catch errors and print results
     (def test
         (lambda (name thunk)
-            ((lambda (result)
-                    (if (!= result "failed")
-                        (println "Test" name "passed")))
+            ((make-success-handler name)
                 (try thunk (catch test-failure (handle-test-failure name))))))
 
     ;; Assert two values are equal
@@ -32,4 +37,3 @@
         (lambda (expected actual)
             (assert (= expected actual)
                 (:type "assert-equal" :expected expected :actual actual))))
-)
