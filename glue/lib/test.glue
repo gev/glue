@@ -9,12 +9,12 @@
     (def assert
         (lambda (condition message)
             (if (not condition)
-                (error 'test-failure message))))
+                (error "test-failure" message))))
 
     ;; Run a test thunk, catch errors and print results
     (def test
         (lambda (name thunk)
-            (let ((result (try thunk (catch 'test-failure (lambda (e) (println "Test" name "failed:" e) 'failed)))))
+            (let ((result (try thunk (catch "test-failure" (lambda (e) (println "Test" name "failed:" e) 'failed)))))
                 (if (!= result 'failed)
                     (println "Test" name "passed")))))
 
