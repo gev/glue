@@ -1,7 +1,7 @@
 module Glue.Lib.Builtin.Try where
 
 import Data.Text (Text)
-import Glue.Eval (Eval, EvalState, apply, eval, getState, isCallable, liftIO, putState, runEval, throwError)
+import Glue.Eval (Eval, apply, eval, getState, isCallable, liftIO, putState, runEval, throwError)
 import Glue.Eval.Error (EvalError (..))
 import Glue.Eval.Exception
 import Glue.IR qualified as IR
@@ -16,7 +16,7 @@ tryFunc (body : catches) = do
             pure $ Just val
         Right (Nothing, newState) -> do
             putState newState
-            throwError expectedValue
+            pure Nothing
         Left (EvalError _ (RuntimeException sym payload)) -> do
             case findCatch sym catches of
                 Just handler -> do
