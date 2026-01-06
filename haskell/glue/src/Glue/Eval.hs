@@ -213,11 +213,6 @@ evalObject objMap = do
     let cleanMap = Map.mapMaybe id evaluatedMap
     pure $ Just $ IR.Object cleanMap
 
--- Evaluate an exception
-evalException :: Text -> IR -> Eval (Maybe IR)
-evalException e ir =
-    throwError $ runtimeException e ir
-
 -- Evaluate literal values (numbers, strings, etc.)
 evalLiteral :: IR -> Eval (Maybe IR)
 evalLiteral v = pure $ Just v
@@ -252,7 +247,6 @@ eval (IR.Symbol name) = evalSymbol name
 eval (IR.DottedSymbol parts) = evalDottedSymbol parts
 eval (IR.List xs) = evalList xs
 eval (IR.Object objMap) = evalObject objMap
-eval (IR.Exception e ir) = evalException e ir
 eval v = evalLiteral v
 
 apply :: IR -> [IR] -> Eval (Maybe IR)
