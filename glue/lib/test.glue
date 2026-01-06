@@ -10,15 +10,7 @@
         (lambda (name e)
             (if (= e.type "assert-equal")
                 (println "Test" name "failed: Expected" e.expected "but got" e.actual)
-                (println "Test" name "failed:" e))
-            "failed"))
-
-    ;; Helper for test success handling
-    (def make-success-handler
-        (lambda (name)
-            (lambda (result)
-                (if (!= result "failed")
-                    (println "Test" name "passed")))))
+                (println "Test" name "failed:" e))))
 
     ;; Assert that a condition is true, otherwise throw error with message
     (def assert
@@ -29,8 +21,10 @@
     ;; Run a test thunk, catch errors and print results
     (def test
         (lambda (name thunk)
-            ((make-success-handler name)
-                (try thunk (catch test-failure (handle-test-failure name))))))
+            ((lambda (result)
+                    (if (!= result "failed")
+                        (println "Test" name "passed")))
+                (try thunk (catch test-failure (lambda (e) (handle-test-failure name e) "failed"))))))
 
     ;; Assert two values are equal
     (def assert-equal
