@@ -2,13 +2,16 @@
     (import builtin)
     (import bool)
     (import io)
+    (import list)
 
     (export assert test assert-equal)
 
     ;; Helper for test failure handling
     (def handle-test-failure
         (lambda (name e)
-            (println "Test" name "failed:" e)
+            (if (and (list? e) (= (car e) "assert-equal"))
+                (println "Test" name "failed: Expected" (cadr e) "but got" (caddr e))
+                (println "Test" name "failed:" e))
             "failed"))
 
     ;; Assert that a condition is true, otherwise throw error with message
@@ -29,5 +32,5 @@
     (def assert-equal
         (lambda (expected actual)
             (assert (= expected actual)
-                "Values not equal")))
+                (list "assert-equal" expected actual))))
 )
