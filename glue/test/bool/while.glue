@@ -1,0 +1,7 @@
+(module while-test
+    (import test)
+    (import bool)
+
+    ;; Test while special form
+    (test "while false returns nothing" (lambda () (assert-equal () (while false))))
+)

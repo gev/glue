@@ -1,0 +1,10 @@
+(module eq-test
+    (import test)
+    (import bool)
+
+    ;; Test equality comparison
+    (test "eq equal numbers" (lambda () (assert-equal true (== 42 42))))
+    (test "eq unequal numbers" (lambda () (assert-equal false (== 42 43))))
+    (test "eq equal strings" (lambda () (assert-equal true (== "hello" "hello"))))
+    (test "eq unequal strings" (lambda () (assert-equal false (== "hello" "world"))))
+)

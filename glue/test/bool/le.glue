@@ -1,0 +1,9 @@
+(module le-test
+    (import test)
+    (import bool)
+
+    ;; Test less than or equal comparison
+    (test "le equal numbers" (lambda () (assert-equal true (<= 5 5))))
+    (test "le lesser number" (lambda () (assert-equal true (<= 5 10))))
+    (test "le greater number" (lambda () (assert-equal false (<= 10 5))))
+)

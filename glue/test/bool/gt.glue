@@ -1,0 +1,9 @@
+(module gt-test
+    (import test)
+    (import bool)
+
+    ;; Test greater than comparison
+    (test "gt greater number" (lambda () (assert-equal true (> 10 5))))
+    (test "gt equal numbers" (lambda () (assert-equal false (> 5 5))))
+    (test "gt lesser number" (lambda () (assert-equal false (> 5 10))))
+)

@@ -1,0 +1,9 @@
+(module ge-test
+    (import test)
+    (import bool)
+
+    ;; Test greater than or equal comparison
+    (test "ge equal numbers" (lambda () (assert-equal true (>= 5 5))))
+    (test "ge greater number" (lambda () (assert-equal true (>= 10 5))))
+    (test "ge lesser number" (lambda () (assert-equal false (>= 5 10))))
+)

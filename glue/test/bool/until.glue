@@ -1,0 +1,7 @@
+(module until-test
+    (import test)
+    (import bool)
+
+    ;; Test until special form
+    (test "until true returns nothing" (lambda () (assert-equal () (until true))))
+)

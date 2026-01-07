@@ -1,0 +1,8 @@
+(module if-test
+    (import test)
+    (import bool)
+
+    ;; Test if special form
+    (test "if true then branch" (lambda () (assert-equal 42 (if true 42 0))))
+    (test "if false else branch" (lambda () (assert-equal 0 (if false 42 0))))
+)
