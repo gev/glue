@@ -1,0 +1,7 @@
+(module closure-test
+    (import test)
+    (import builtin)
+
+    ;; Test closure creation
+    (test "closure captures environment" (lambda () (assert-equal 43 ((\ (x) (+ x 1)) 42))))
+)
