@@ -1,0 +1,8 @@
+(module print-test
+    (import test)
+    (import io)
+
+    ;; Test print functions
+    (test "print returns nothing" (lambda () (assert-equal () (print "hello"))))
+    (test "println returns nothing" (lambda () (assert-equal () (println "hello"))))
+)
