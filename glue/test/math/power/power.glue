@@ -1,0 +1,8 @@
+(module power-test
+    (import test)
+    (import math.power)
+
+    ;; Test power operations
+    (test "pow" (lambda () (assert-equal 8 (pow 2 3))))
+    (test "sqrt" (lambda () (assert-equal 3 (sqrt 9))))
+)
