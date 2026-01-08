@@ -3,6 +3,6 @@
     (import list)
 
     ;; Test length function
-    (test "length of list" (lambda () (assert-equal 3 (length [1 2 3]))))
-    (test "length of empty list" (lambda () (assert-equal 0 (length []))))
+    (test "length of list" (lambda () (assert-equal 3 (length (1 2 3)))))
+    (test "length of empty list" (lambda () (assert-equal 0 (length ()))))
 )

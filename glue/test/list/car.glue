@@ -3,5 +3,5 @@
     (import list)
 
     ;; Test car function
-    (test "car first element" (lambda () (assert-equal 1 (car [1 2 3]))))
+    (test "car first element" (lambda () (assert-equal 1 (car (1 2 3)))))
 )

@@ -3,5 +3,5 @@
     (import list)
 
     ;; Test cdr function
-    (test "cdr rest of list" (lambda () (assert-equal [2 3] (cdr [1 2 3]))))
+    (test "cdr rest of list" (lambda () (assert-equal (2 3) (cdr (1 2 3)))))
 )

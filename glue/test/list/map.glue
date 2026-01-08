@@ -3,5 +3,5 @@
     (import list)
 
     ;; Test map function
-    (test "map increment" (lambda () (assert-equal [2 3 4] (map (\ (x) (+ x 1)) [1 2 3]))))
+    (test "map increment" (lambda () (assert-equal (2 3 4) (map (\ (x) (+ x 1)) (1 2 3)))))
 )

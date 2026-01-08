@@ -3,5 +3,5 @@
     (import list)
 
     ;; Test append function
-    (test "append lists" (lambda () (assert-equal [1 2 3 4] (append [1 2] [3 4]))))
+    (test "append lists" (lambda () (assert-equal (1 2 3 4) (append (1 2) (3 4)))))
 )
