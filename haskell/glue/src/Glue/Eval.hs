@@ -269,9 +269,7 @@ evalRaw ir = case ir of
     _ -> evalLiteral ir
 
 eval :: IR -> Eval (Maybe IR)
-eval ir = do
-    result <- evalRaw ir
-    pure $ normalizeResult result
+eval = evalRaw
 
 apply :: IR -> [IR] -> Eval (Maybe IR)
 apply ir rawArgs = case ir of

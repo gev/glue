@@ -20,7 +20,10 @@ runCode input = case parseGlue input of
         fullResult <- runEvalLegacy (eval irTree) (E.fromFrame lib)
         case fullResult of
             Left err -> pure $ Left (GlueError err)
-            Right (res, _finalEnv, _ctx) -> pure $ Right res
+            Right (res, _finalEnv, _ctx) -> pure $ Right (normalizeResult res)
+  where
+    normalizeResult (Just (List [single])) = Just single
+    normalizeResult result = result
 
 spec :: Spec
 spec = describe "Glue.Eval (System Integration)" do
@@ -33,8 +36,12 @@ spec = describe "Glue.Eval (System Integration)" do
         runCode code `shouldReturn` Right (Just (Integer 1))
 
     it "executes (def)" do
+        let code = "((def x (1)) x)"
+        runCode code `shouldReturn` Right (Just (List [Integer 1]))
+
+    it "executes (def)" do
         let code = "(1 ((def x 1) x))"
-        runCode code `shouldReturn` Right (Just (List [Integer 1, Integer 1]))
+        runCode code `shouldReturn` Right (Just (List [Integer 1, List [Integer 1]]))
 
     it "executes (def) and (set) chain" do
         let code = "((def x 1) (set x 2) x)"

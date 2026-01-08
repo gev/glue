@@ -32,6 +32,14 @@ spec = describe "Glue.Lib.List.Reverse (Test reverse function)" do
             Left err -> expectationFailure $ "Reverse failed: " <> show err
             Right (res, _, _) -> res `shouldBe` List [String "hello"]
 
+    it "reverses a single element is a list" do
+        let initialEnv = E.emptyEnv
+        let args = [List [List [String "hello"]]]
+        result <- runEvalLegacy (Reverse.reverse args) initialEnv
+        case result of
+            Left err -> expectationFailure $ "Reverse failed: " <> show err
+            Right (res, _, _) -> res `shouldBe` List [List [String "hello"]]
+
     it "fails on non-list" do
         let initialEnv = E.emptyEnv
         let args = [Integer 42]
