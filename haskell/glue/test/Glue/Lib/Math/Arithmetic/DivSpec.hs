@@ -40,10 +40,14 @@ spec = describe "Glue.Lib.Arithmetic.Div (Test div function)" do
             result <- runEvalLegacy (Div.div args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft
 
-        it "fails with division by zero" do
+        it "returns Infinity for division by zero" do
             let args = [Integer 10, Integer 0]
             result <- runEvalLegacy (Div.div args) (E.fromFrame lib)
-            result `shouldSatisfy` isLeft
+            case result of
+                Left err -> expectationFailure $ "Div failed: " <> show err
+                Right (res, _, _) -> case res of
+                    Float f | f == (1 / 0) -> f `shouldBe` (1 / 0)
+                    _ -> expectationFailure "Expected Infinity"
 
         it "fails with non-numbers" do
             let args = [Integer 10, String "hello"]
@@ -78,3 +82,12 @@ spec = describe "Glue.Lib.Arithmetic.Div (Test div function)" do
             case result of
                 Left err -> expectationFailure $ "Div failed: " <> show err
                 Right (res, _, _) -> res `shouldBe` Float 4.2
+
+        it "returns -Infinity for negative division by zero" do
+            let args = [Integer (-1), Integer 0]
+            result <- runEvalLegacy (Div.div args) (E.fromFrame lib)
+            case result of
+                Left err -> expectationFailure $ "Div failed: " <> show err
+                Right (res, _, _) -> case res of
+                    Float f | f == (-1 / 0) -> f `shouldBe` (-1 / 0)
+                    _ -> expectationFailure "Expected -Infinity"
