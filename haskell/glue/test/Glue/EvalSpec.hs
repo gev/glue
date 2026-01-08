@@ -1,8 +1,6 @@
 module Glue.EvalSpec (spec) where
 
-import Data.Either (isLeft)
 import Data.Map.Strict qualified as Map
-import Data.Scientific (Scientific, scientific, toRealFloat)
 import Data.Text (Text)
 import Glue.Env qualified as E
 import Glue.Error (GlueError (..))

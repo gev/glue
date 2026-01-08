@@ -1,7 +1,6 @@
 module Glue.Lib.Math.Logarithmic.LogSpec (spec) where
 
 import Data.Either (isLeft)
-import Data.Scientific (fromFloatDigits, toRealFloat)
 import Glue.Env qualified as E
 import Glue.Eval (runEvalLegacy)
 import Glue.IR (IR (..))
@@ -17,7 +16,7 @@ spec = describe "Glue.Lib.Math.Logarithmic.Log (Test log function)" do
             result <- runEvalLegacy (Log.log args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Log failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 0
+                Right (res, _, _) -> res `shouldBe` Float 0
 
         it "returns log(e, e) = 1" do
             let e = exp (1.0 :: Double)
@@ -45,14 +44,14 @@ spec = describe "Glue.Lib.Math.Logarithmic.Log (Test log function)" do
             result <- runEvalLegacy (Log.log args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Log failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 2
+                Right (res, _, _) -> res `shouldBe` Float 2
 
         it "returns log(8, 2) = 3" do
             let args = [Integer 8, Integer 2]
             result <- runEvalLegacy (Log.log args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Log failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 3
+                Right (res, _, _) -> res `shouldBe` Float 3
 
         it "fails with zero value" do
             let args = [Integer 0, Integer 10]

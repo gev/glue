@@ -1,7 +1,6 @@
 module Glue.Lib.Math.Trigonometric.SinSpec (spec) where
 
 import Data.Either (isLeft)
-import Data.Scientific (fromFloatDigits, toRealFloat)
 import Glue.Env qualified as E
 import Glue.Eval (runEvalLegacy)
 import Glue.IR (IR (..))
@@ -17,7 +16,7 @@ spec = describe "Glue.Lib.Math.Trigonometric.Sin (Test sin function)" do
             result <- runEvalLegacy (Sin.sin args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Sin failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 0
+                Right (res, _, _) -> res `shouldBe` Float 0
 
         it "returns 1 for sin(π/2)" do
             let args = [Float (pi / 2)]

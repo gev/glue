@@ -1,6 +1,5 @@
 module Glue.AST where
 
-import Data.Scientific (Scientific)
 import Data.Text (Text)
 import Data.Text qualified as T
 

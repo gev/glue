@@ -114,7 +114,6 @@ library
     directory,
     filepath,
     megaparsec,
-    scientific,
     text,
     transformers,
 
@@ -212,7 +211,6 @@ test-suite glue-test
     glue,
     hspec,
     quickcheck-instances,
-    scientific,
     text,
 
   build-tool-depends: hspec-discover:hspec-discover

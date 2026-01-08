@@ -1,6 +1,5 @@
 module Glue.Lib.Math.Trigonometric.Atan where
 
-import Data.Scientific (fromFloatDigits, toRealFloat)
 import Glue.Eval (Eval, evalRequired, throwError)
 import Glue.Eval.Exception
 import Glue.IR (IR (..))

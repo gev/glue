@@ -1,7 +1,6 @@
 module Glue.Lib.Math.Logarithmic.LnSpec (spec) where
 
 import Data.Either (isLeft)
-import Data.Scientific (fromFloatDigits, toRealFloat)
 import Glue.Env qualified as E
 import Glue.Eval (runEvalLegacy)
 import Glue.IR (IR (..))
@@ -17,7 +16,7 @@ spec = describe "Glue.Lib.Math.Logarithmic.Ln (Test ln function)" do
             result <- runEvalLegacy (Ln.ln args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Ln failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 0
+                Right (res, _, _) -> res `shouldBe` Float 0
 
         it "returns ln(e) = 1" do
             let args = [Float (exp 1)]

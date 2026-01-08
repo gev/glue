@@ -1,7 +1,6 @@
 module Glue.Lib.Math.Trigonometric.AsinSpec (spec) where
 
 import Data.Either (isLeft)
-import Data.Scientific (toRealFloat)
 import Glue.Env qualified as E
 import Glue.Eval (runEvalLegacy)
 import Glue.IR (IR (..))

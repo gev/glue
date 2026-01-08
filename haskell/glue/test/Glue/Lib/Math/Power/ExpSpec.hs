@@ -1,7 +1,6 @@
 module Glue.Lib.Math.Power.ExpSpec (spec) where
 
 import Data.Either (isLeft)
-import Data.Scientific (toRealFloat)
 import Glue.Env qualified as E
 import Glue.Eval (runEvalLegacy)
 import Glue.IR (IR (..))
@@ -17,7 +16,7 @@ spec = describe "Glue.Lib.Math.Power.Exp (Test exp function)" do
             result <- runEvalLegacy (Exp.exp args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Exp failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 1
+                Right (res, _, _) -> res `shouldBe` Float 1
 
         it "returns e^1 = e" do
             let args = [Integer 1]

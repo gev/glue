@@ -1,7 +1,6 @@
 module Glue.Lib.Math.Utility.FloorSpec (spec) where
 
 import Data.Either (isLeft)
-import Data.Scientific (fromFloatDigits)
 import Glue.Env qualified as E
 import Glue.Eval (runEvalLegacy)
 import Glue.IR (IR (..))

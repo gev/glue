@@ -3,7 +3,6 @@ module Glue.IR where
 import Data.Bifunctor (second)
 import Data.Map.Strict (Map)
 import Data.Map.Strict qualified as Map
-import Data.Scientific (Scientific)
 import Data.Text (Text)
 import Data.Text qualified as T
 import Glue.AST (AST)

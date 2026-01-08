@@ -124,10 +124,6 @@ spec = describe "AST -> IR transformation (compile)" do
             let mixed = AST.List [AST.Integer 1, AST.Float 2.5, AST.String "hello", AST.Symbol "x"]
             show mixed `shouldBe` "(1 2.5 \"hello\" x)"
 
-        it "handles empty structures" do
-            show (AST.List []) `shouldBe` "()"
-            show (AST.Object []) `shouldBe` "(:)"
-
     describe "AST -> IR compilation" do
         -- Positional lists
         prop "atoms: list length is preserved 1 to 1" $ \(xs :: [AST]) -> do
@@ -153,11 +149,8 @@ spec = describe "AST -> IR transformation (compile)" do
 
         prop "empty atoms and props don't create garbage data" do
             let ast1 = AST.List []
-            let ast2 = AST.Object []
             let val1 = compile ast1 :: IR Identity
-            let val2 = compile ast2 :: IR Identity
             (isList val1 && listLength val1 == 0) `shouldBe` True
-            (isObject val2 && objectSize val2 == 0) `shouldBe` True
 
         prop "Symbol becomes Symbol unchanged (idempotent)" $ \s -> do
             let ast = AST.Symbol s

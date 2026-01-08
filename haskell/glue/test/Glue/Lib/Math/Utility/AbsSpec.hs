@@ -5,7 +5,7 @@ import Glue.Env qualified as E
 import Glue.Eval (runEvalLegacy)
 import Glue.IR (IR (..))
 import Glue.Lib (lib)
-import qualified Glue.Lib.Math.Utility.Abs as Abs (abs)
+import Glue.Lib.Math.Utility.Abs qualified as Abs (abs)
 import Test.Hspec
 
 spec :: Spec
@@ -23,7 +23,7 @@ spec = describe "Glue.Lib.Math.Utility.Abs (Test abs function)" do
             result <- runEvalLegacy (Abs.abs args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Abs failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 5
+                Right (res, _, _) -> res `shouldBe` Float 5
 
         it "returns 0 for abs(0)" do
             let args = [Integer 0]

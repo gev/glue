@@ -1,6 +1,5 @@
 module Glue.Lib.Math.Logarithmic.Ln where
 
-import Data.Scientific (fromFloatDigits, toRealFloat)
 import Glue.Eval (Eval, evalRequired, throwError)
 import Glue.Eval.Exception
 import Glue.IR (IR (..))

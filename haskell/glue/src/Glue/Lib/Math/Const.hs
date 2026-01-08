@@ -1,6 +1,5 @@
 module Glue.Lib.Math.Const where
 
-import Data.Scientific (fromFloatDigits)
 import Glue.Env qualified as E
 import Glue.Eval (Eval)
 import Glue.IR (Frame, IR (..))

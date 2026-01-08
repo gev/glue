@@ -1,6 +1,5 @@
 module Glue.Lib.Math.Utility.Ceil where
 
-import Data.Scientific (toRealFloat)
 import Glue.Eval (Eval, evalRequired, throwError)
 import Glue.Eval.Exception
 import Glue.IR (IR (..))

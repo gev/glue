@@ -1,7 +1,6 @@
 module Glue.Lib.Math.Trigonometric.TanSpec (spec) where
 
 import Data.Either (isLeft)
-import Data.Scientific (fromFloatDigits, toRealFloat)
 import Glue.Env qualified as E
 import Glue.Eval (runEvalLegacy)
 import Glue.IR (IR (..))
@@ -17,7 +16,7 @@ spec = describe "Glue.Lib.Math.Trigonometric.Tan (Test tan function)" do
             result <- runEvalLegacy (Tan.tan args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Tan failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 0
+                Right (res, _, _) -> res `shouldBe` Float 0
 
         it "returns 1 for tan(π/4)" do
             let args = [Float (pi / 4)]

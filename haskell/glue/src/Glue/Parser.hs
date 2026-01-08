@@ -4,7 +4,6 @@ module Glue.Parser (
 ) where
 
 import Control.Monad (guard)
-import Data.Scientific (Scientific)
 import Data.Text (Text)
 import Data.Text qualified as T
 import Glue.AST (AST (..))
