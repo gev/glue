@@ -9,10 +9,9 @@ nth [indexIR, listIR] = do
     indexVal <- evalRequired indexIR
     listVal <- evalRequired listIR
     case (indexVal, listVal) of
-        (Number idx, List xs) -> do
-            let intIdx = floor idx
-            if intIdx < 0 || intIdx >= length xs
+        (Integer idx, List xs) -> do
+            if idx < 0 || idx >= fromIntegral (length xs)
                 then throwError $ wrongArgumentType ["valid index"]
-                else pure $ xs !! intIdx
+                else pure $ xs !! fromIntegral idx
         _ -> throwError $ wrongArgumentType ["number", "list"]
 nth _ = throwError wrongNumberOfArguments

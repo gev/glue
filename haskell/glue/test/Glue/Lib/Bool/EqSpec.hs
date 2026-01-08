@@ -11,14 +11,14 @@ spec :: Spec
 spec = describe "Glue.Lib.Bool.Eq (Test eq function)" do
     describe "Equality comparison" do
         it "returns true for equal numbers" do
-            let args = [Number 42, Number 42]
+            let args = [Integer 42, Integer 42]
             result <- runEvalLegacy (eq args) []
             case result of
                 Left err -> expectationFailure $ "Eq failed: " <> show err
                 Right (res, _, _) -> res `shouldBe` Bool True
 
         it "returns false for unequal numbers" do
-            let args = [Number 42, Number 43]
+            let args = [Integer 42, Integer 43]
             result <- runEvalLegacy (eq args) []
             case result of
                 Left err -> expectationFailure $ "Eq failed: " <> show err
@@ -39,6 +39,6 @@ spec = describe "Glue.Lib.Bool.Eq (Test eq function)" do
                 Right (res, _, _) -> res `shouldBe` Bool False
 
         it "fails with wrong number of arguments" do
-            let args = [Number 42]
+            let args = [Integer 42]
             result <- runEvalLegacy (eq args) []
             result `shouldSatisfy` isLeft

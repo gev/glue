@@ -11,7 +11,7 @@ spec :: Spec
 spec = describe "Glue.Lib.Builtin.Lambda (Test lambda special form)" do
     describe "Creating closures" do
         it "creates a closure with parameters and body" do
-            let initialEnv = E.fromList [("x", Number 10)]
+            let initialEnv = E.fromList [("x", Integer 10)]
             let args = [List [Symbol "a", Symbol "b"], Symbol "body"]
             result <- runEvalLegacy (lambda args) initialEnv
             case result of
@@ -21,19 +21,19 @@ spec = describe "Glue.Lib.Builtin.Lambda (Test lambda special form)" do
                         params `shouldBe` ["a", "b"]
                         body `shouldBe` Symbol "body"
                         -- capturedEnv should be the initialEnv
-                        E.lookupVar "x" capturedEnv `shouldBe` Right (Number 10)
+                        E.lookupVar "x" capturedEnv `shouldBe` Right (Integer 10)
                     _ -> expectationFailure "Expected Just Closure"
 
         it "creates a closure with no parameters" do
             let initialEnv = E.emptyEnv
-            let args = [List [], Number 42]
+            let args = [List [], Integer 42]
             result <- runEvalLegacy (lambda args) initialEnv
             case result of
                 Left err -> expectationFailure $ "Lambda failed: " <> show err
                 Right (res, _, _) -> case res of
                     Just (Closure params body _) -> do
                         params `shouldBe` []
-                        body `shouldBe` Number 42
+                        body `shouldBe` Integer 42
                     _ -> expectationFailure "Expected Just Closure"
 
     describe "extractSymbols" do
@@ -42,7 +42,7 @@ spec = describe "Glue.Lib.Builtin.Lambda (Test lambda special form)" do
             extractSymbols irs `shouldBe` Right ["a", "b"]
 
         it "fails on non-symbols" do
-            let irs = [Symbol "a", Number 1]
+            let irs = [Symbol "a", Integer 1]
             extractSymbols irs `shouldSatisfy` isLeft
 
     describe "Error cases" do
@@ -54,12 +54,12 @@ spec = describe "Glue.Lib.Builtin.Lambda (Test lambda special form)" do
 
         it "fails with non-list as parameters" do
             let initialEnv = E.emptyEnv
-            let args = [Number 1, Symbol "body"]
+            let args = [Integer 1, Symbol "body"]
             result <- runEvalLegacy (lambda args) initialEnv
             result `shouldSatisfy` isLeft
 
         it "fails with non-symbols in parameters" do
             let initialEnv = E.emptyEnv
-            let args = [List [Number 1], Symbol "body"]
+            let args = [List [Integer 1], Symbol "body"]
             result <- runEvalLegacy (lambda args) initialEnv
             result `shouldSatisfy` isLeft

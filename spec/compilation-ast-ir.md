@@ -12,7 +12,8 @@ The compilation transforms AST nodes into equivalent IR nodes, converting syntac
 
 ### Atomic AST Nodes
 - `AST.String s` → `String s`
-- `AST.Number n` → `Number n`
+- `AST.Integer n` → `Integer n`
+- `AST.Float n` → `Float n`
 - `AST.Symbol s` → `Symbol s` (or `DottedSymbol parts` if contains dots)
 
 ### Composite AST Nodes

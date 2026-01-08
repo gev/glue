@@ -10,26 +10,26 @@ spec :: Spec
 spec = describe "Glue.Lib.List.Find (Test find function)" do
     it "finds first element that satisfies predicate" do
         let initialEnv = E.emptyEnv
-        let pred = Native (Func (\[Number x] -> pure . Bool $ x > 2))
-        let args = [pred, List [Number 1, Number 2, Number 3, Number 4]]
+        let pred = Native (Func (\[Integer x] -> pure . Bool $ x > 2))
+        let args = [pred, List [Integer 1, Integer 2, Integer 3, Integer 4]]
         result <- runEvalLegacy (Find.find args) initialEnv
         case result of
             Left err -> expectationFailure $ "Find failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` Number 3
+            Right (res, _, _) -> res `shouldBe` Integer 3
 
     it "finds first element in list" do
         let initialEnv = E.emptyEnv
-        let pred = Native (Func (\[Number x] -> pure . Bool $ x > 0))
-        let args = [pred, List [Number 1, Number 2, Number 3]]
+        let pred = Native (Func (\[Integer x] -> pure . Bool $ x > 0))
+        let args = [pred, List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalLegacy (Find.find args) initialEnv
         case result of
             Left err -> expectationFailure $ "Find failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` Number 1
+            Right (res, _, _) -> res `shouldBe` Integer 1
 
     it "fails when no element satisfies predicate" do
         let initialEnv = E.emptyEnv
-        let pred = Native (Func (\[Number x] -> pure . Bool $ x > 10))
-        let args = [pred, List [Number 1, Number 2, Number 3]]
+        let pred = Native (Func (\[Integer x] -> pure . Bool $ x > 10))
+        let args = [pred, List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalLegacy (Find.find args) initialEnv
         case result of
             Left _ -> pure () -- Expected error
@@ -37,7 +37,7 @@ spec = describe "Glue.Lib.List.Find (Test find function)" do
 
     it "fails on empty list" do
         let initialEnv = E.emptyEnv
-        let pred = Native (Func (\[Number x] -> pure $ Bool True))
+        let pred = Native (Func (\[Integer x] -> pure $ Bool True))
         let args = [pred, List []]
         result <- runEvalLegacy (Find.find args) initialEnv
         case result of
@@ -46,8 +46,8 @@ spec = describe "Glue.Lib.List.Find (Test find function)" do
 
     it "fails on non-list second argument" do
         let initialEnv = E.emptyEnv
-        let pred = Native (Func (\[Number x] -> pure $ Bool True))
-        let args = [pred, Number 42]
+        let pred = Native (Func (\[Integer x] -> pure $ Bool True))
+        let args = [pred, Integer 42]
         result <- runEvalLegacy (Find.find args) initialEnv
         case result of
             Left _ -> pure () -- Expected error

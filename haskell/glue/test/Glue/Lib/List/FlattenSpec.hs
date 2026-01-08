@@ -10,27 +10,27 @@ spec :: Spec
 spec = describe "Glue.Lib.List.Flatten (Test flatten function)" do
     it "flattens a simple nested list" do
         let initialEnv = E.emptyEnv
-        let args = [List [List [Number 1, Number 2], List [Number 3, Number 4]]]
+        let args = [List [List [Integer 1, Integer 2], List [Integer 3, Integer 4]]]
         result <- runEvalLegacy (Flatten.flatten args) initialEnv
         case result of
             Left err -> expectationFailure $ "Flatten failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Number 1, Number 2, Number 3, Number 4]
+            Right (res, _, _) -> res `shouldBe` List [Integer 1, Integer 2, Integer 3, Integer 4]
 
     it "flattens deeply nested lists" do
         let initialEnv = E.emptyEnv
-        let args = [List [List [List [Number 1], Number 2], Number 3]]
+        let args = [List [List [List [Integer 1], Integer 2], Integer 3]]
         result <- runEvalLegacy (Flatten.flatten args) initialEnv
         case result of
             Left err -> expectationFailure $ "Flatten failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Number 1, Number 2, Number 3]
+            Right (res, _, _) -> res `shouldBe` List [Integer 1, Integer 2, Integer 3]
 
     it "flattens list with mixed elements" do
         let initialEnv = E.emptyEnv
-        let args = [List [Number 1, List [Number 2, Number 3], Number 4]]
+        let args = [List [Integer 1, List [Integer 2, Integer 3], Integer 4]]
         result <- runEvalLegacy (Flatten.flatten args) initialEnv
         case result of
             Left err -> expectationFailure $ "Flatten failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Number 1, Number 2, Number 3, Number 4]
+            Right (res, _, _) -> res `shouldBe` List [Integer 1, Integer 2, Integer 3, Integer 4]
 
     it "flattens empty list" do
         let initialEnv = E.emptyEnv
@@ -42,23 +42,23 @@ spec = describe "Glue.Lib.List.Flatten (Test flatten function)" do
 
     it "flattens list with empty sublists" do
         let initialEnv = E.emptyEnv
-        let args = [List [List [], Number 1, List []]]
+        let args = [List [List [], Integer 1, List []]]
         result <- runEvalLegacy (Flatten.flatten args) initialEnv
         case result of
             Left err -> expectationFailure $ "Flatten failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Number 1]
+            Right (res, _, _) -> res `shouldBe` List [Integer 1]
 
     it "flattens single element list" do
         let initialEnv = E.emptyEnv
-        let args = [List [Number 42]]
+        let args = [List [Integer 42]]
         result <- runEvalLegacy (Flatten.flatten args) initialEnv
         case result of
             Left err -> expectationFailure $ "Flatten failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Number 42]
+            Right (res, _, _) -> res `shouldBe` List [Integer 42]
 
     it "fails on non-list argument" do
         let initialEnv = E.emptyEnv
-        let args = [Number 42]
+        let args = [Integer 42]
         result <- runEvalLegacy (Flatten.flatten args) initialEnv
         case result of
             Left _ -> pure () -- Expected error

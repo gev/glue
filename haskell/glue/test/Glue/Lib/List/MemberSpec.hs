@@ -10,7 +10,7 @@ spec :: Spec
 spec = describe "Glue.Lib.List.Member (Test member function)" do
     it "returns true for item in list" do
         let initialEnv = E.emptyEnv
-        let args = [Number 2, List [Number 1, Number 2, Number 3]]
+        let args = [Integer 2, List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalLegacy (member args) initialEnv
         case result of
             Left err -> expectationFailure $ "Member failed: " <> show err
@@ -18,7 +18,7 @@ spec = describe "Glue.Lib.List.Member (Test member function)" do
 
     it "returns false for item not in list" do
         let initialEnv = E.emptyEnv
-        let args = [Number 4, List [Number 1, Number 2, Number 3]]
+        let args = [Integer 4, List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalLegacy (member args) initialEnv
         case result of
             Left err -> expectationFailure $ "Member failed: " <> show err
@@ -34,7 +34,7 @@ spec = describe "Glue.Lib.List.Member (Test member function)" do
 
     it "returns false for empty list" do
         let initialEnv = E.emptyEnv
-        let args = [Number 1, List []]
+        let args = [Integer 1, List []]
         result <- runEvalLegacy (member args) initialEnv
         case result of
             Left err -> expectationFailure $ "Member failed: " <> show err
@@ -42,7 +42,7 @@ spec = describe "Glue.Lib.List.Member (Test member function)" do
 
     it "fails on non-list second argument" do
         let initialEnv = E.emptyEnv
-        let args = [Number 1, Number 42]
+        let args = [Integer 1, Integer 42]
         result <- runEvalLegacy (member args) initialEnv
         case result of
             Left _ -> pure () -- Expected error

@@ -38,7 +38,10 @@ merge (x : xs) (y : ys) = do
 
 -- Helper function to compare two IR values
 compareIR :: IR Eval -> IR Eval -> Eval Ordering
-compareIR (Number a) (Number b) = pure (compare a b)
+compareIR (Integer a) (Integer b) = pure (compare a b)
+compareIR (Float a) (Float b) = pure (compare a b)
+compareIR (Integer a) (Float b) = pure (compare (fromIntegral a) b)
+compareIR (Float a) (Integer b) = pure (compare a (fromIntegral b))
 compareIR (String a) (String b) = pure (compare a b)
 compareIR (Symbol a) (Symbol b) = pure (compare a b)
 compareIR _ _ = throwError $ wrongArgumentType ["comparable values (numbers, strings, or symbols)"]

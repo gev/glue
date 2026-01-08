@@ -10,11 +10,11 @@ spec :: Spec
 spec = describe "Glue.Lib.List.Reverse (Test reverse function)" do
     it "reverses a list" do
         let initialEnv = E.emptyEnv
-        let args = [List [Number 1, Number 2, Number 3]]
+        let args = [List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalLegacy (Reverse.reverse args) initialEnv
         case result of
             Left err -> expectationFailure $ "Reverse failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Number 3, Number 2, Number 1]
+            Right (res, _, _) -> res `shouldBe` List [Integer 3, Integer 2, Integer 1]
 
     it "reverses an empty list" do
         let initialEnv = E.emptyEnv
@@ -34,7 +34,7 @@ spec = describe "Glue.Lib.List.Reverse (Test reverse function)" do
 
     it "fails on non-list" do
         let initialEnv = E.emptyEnv
-        let args = [Number 42]
+        let args = [Integer 42]
         result <- runEvalLegacy (Reverse.reverse args) initialEnv
         case result of
             Left _ -> pure () -- Expected error

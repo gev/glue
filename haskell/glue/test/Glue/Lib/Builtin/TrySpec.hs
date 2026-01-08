@@ -27,7 +27,7 @@ spec = describe "Glue.Lib.Builtin.Try (Test try special form)" do
 
     it "returns normal value when no exception" do
         let code = "(try 42 (catch \"any-error\" (lambda (err) \"caught\")))"
-        runCode code `shouldReturn` Right (Just (Number 42))
+        runCode code `shouldReturn` Right (Just (Integer 42))
 
     it "re-throws unmatched exception" do
         let code = "(try (error test-error (:msg \"hello\")) (catch \"other-error\" (lambda (err) err.msg)))"
@@ -42,7 +42,7 @@ spec = describe "Glue.Lib.Builtin.Try (Test try special form)" do
 
     it "handler can be any callable" do
         let code = "(try (error test-error (:val 123)) (catch \"test-error\" (lambda (err) (+ err.val 1))))"
-        runCode code `shouldReturn` Right (Just (Number 124))
+        runCode code `shouldReturn` Right (Just (Integer 124))
 
     it "multiple catch clauses work" do
         let code = "(try (error second-error (:msg \"second\")) (catch \"first-error\" (lambda (err) \"first\")) (catch \"second-error\" (lambda (err) err.msg)))"
@@ -52,10 +52,10 @@ spec = describe "Glue.Lib.Builtin.Try (Test try special form)" do
         let code = "(try (error test-error (:msg \"caught\")) (catch \"test-error\" (lambda (err) err.msg)) (catch \"test-error\" (lambda (err) \"second\")))"
         runCode code `shouldReturn` Right (Just (String "caught"))
 
-    -- Library function errors
-    it "catches division by zero" do
-        let code = "(try (/ 1 0) (catch \"div-by-zero\" (lambda () \"caught-div-zero\")))"
-        runCode code `shouldReturn` Right (Just (String "caught-div-zero"))
+    -- Library function results (no longer errors)
+    it "division by zero returns Infinity (not an error)" do
+        let code = "(/ 1 0)"
+        runCode code `shouldReturn` Right (Just (Float (1 / 0)))
 
     it "catches wrong argument type" do
         let code = "(try (+ \"string\" 1) (catch \"wrong-argument-type\" (lambda (err) \"caught-type-error\")))"
@@ -65,27 +65,23 @@ spec = describe "Glue.Lib.Builtin.Try (Test try special form)" do
         let code = "(try nonexistent-var (catch \"unbound-variable\" (lambda (err) \"caught-unbound\")))"
         runCode code `shouldReturn` Right (Just (String "caught-unbound"))
 
-    -- Deep/nested errors
-    it "catches errors in nested expressions" do
-        let code = "(try (+ (/ 1 0) 42) (catch \"div-by-zero\" (lambda () \"nested-error\")))"
-        runCode code `shouldReturn` Right (Just (String "nested-error"))
+    -- Deep/nested expressions (division by zero now returns Infinity)
+    it "handles Infinity in nested expressions" do
+        let code = "(+ (/ 1 0) 42)"
+        runCode code `shouldReturn` Right (Just (Float (1 / 0)))
 
-    it "catches errors in function calls" do
-        let code = "(try ((lambda () (/ 1 0))) (catch \"div-by-zero\" (lambda () \"function-error\")))"
-        runCode code `shouldReturn` Right (Just (String "function-error"))
+    it "handles Infinity in function calls" do
+        let code = "((lambda () (/ 1 0)))"
+        runCode code `shouldReturn` Right (Just (Float (1 / 0)))
 
-    it "handles nested try blocks" do
-        let code = "(try (try (/ 1 0) (catch \"div-by-zero\" (lambda () (error nested-error (:msg \"inner\"))))) (catch \"nested-error\" (lambda (err) err.msg)))"
-        runCode code `shouldReturn` Right (Just (String "inner"))
+    it "handles nested expressions with Infinity" do
+        let code = "(+ (* 2 (/ 10 0)) 5)"
+        runCode code `shouldReturn` Right (Just (Float (1 / 0)))
 
-    it "catches errors in complex expressions" do
-        let code = "(try (+ (* 2 (/ 10 0)) 5) (catch \"div-by-zero\" (lambda () \"complex-error\")))"
-        runCode code `shouldReturn` Right (Just (String "complex-error"))
+    it "handles conditional with Infinity" do
+        let code = "(if true (/ 1 0) (+ \"a\" 1))"
+        runCode code `shouldReturn` Right (Just (Float (1 / 0)))
 
-    it "multiple error types in same try" do
-        let code = "(try (if true (/ 1 0) (+ \"a\" 1)) (catch \"div-by-zero\" (lambda () \"div-error\")) (catch \"wrong-argument-type\" (lambda (err) \"type-error\")))"
-        runCode code `shouldReturn` Right (Just (String "div-error"))
-
-    it "error propagation through multiple function calls" do
-        let code = "(try ((lambda (x) ((lambda (y) (/ y 0)) x)) 5) (catch \"div-by-zero\" (lambda () \"propagated-error\")))"
-        runCode code `shouldReturn` Right (Just (String "propagated-error"))
+    it "handles Infinity in lambda expressions" do
+        let code = "((lambda (x) ((lambda (y) (/ y 0)) x)) 5)"
+        runCode code `shouldReturn` Right (Just (Float (1 / 0)))

@@ -9,9 +9,9 @@ take [countIR, listIR] = do
     count <- evalRequired countIR
     list <- evalRequired listIR
     case (count, list) of
-        (Number n, List xs) -> do
+        (Integer n, List xs) -> do
             if n < 0
                 then throwError $ wrongArgumentType ["non-negative integer"]
-                else pure $ List (Prelude.take (floor n) xs)
+                else pure $ List (Prelude.take (fromIntegral n) xs)
         _ -> throwError $ wrongArgumentType ["number", "list"]
 take _ = throwError wrongNumberOfArguments

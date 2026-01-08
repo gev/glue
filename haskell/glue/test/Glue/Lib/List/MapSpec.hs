@@ -10,16 +10,16 @@ spec :: Spec
 spec = describe "Glue.Lib.List.Map (Test map function)" do
     it "maps a function over a list of numbers" do
         let initialEnv = E.emptyEnv
-        let func = Native (Func (\[Number x] -> pure $ Number (x * 2)))
-        let args = [func, List [Number 1, Number 2, Number 3]]
+        let func = Native (Func (\[Integer x] -> pure $ Float (fromIntegral x * 2)))
+        let args = [func, List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalLegacy (Map.map args) initialEnv
         case result of
             Left err -> expectationFailure $ "Map failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Number 2, Number 4, Number 6]
+            Right (res, _, _) -> res `shouldBe` List [Float 2.0, Float 4.0, Float 6.0]
 
     it "maps over empty list" do
         let initialEnv = E.emptyEnv
-        let func = Native (Func (\[Number x] -> pure $ Number (x + 1)))
+        let func = Native (Func (\[Integer x] -> pure $ Float (fromIntegral x + 1)))
         let args = [func, List []]
         result <- runEvalLegacy (Map.map args) initialEnv
         case result of
@@ -28,8 +28,8 @@ spec = describe "Glue.Lib.List.Map (Test map function)" do
 
     it "fails on non-list second argument" do
         let initialEnv = E.emptyEnv
-        let func = Native (Func (\[Number x] -> pure $ Number (x + 1)))
-        let args = [func, Number 42]
+        let func = Native (Func (\[Integer x] -> pure $ Float (fromIntegral x + 1)))
+        let args = [func, Integer 42]
         result <- runEvalLegacy (Map.map args) initialEnv
         case result of
             Left _ -> pure () -- Expected error

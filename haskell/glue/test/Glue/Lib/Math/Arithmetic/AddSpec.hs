@@ -1,7 +1,6 @@
 module Glue.Lib.Math.Arithmetic.AddSpec (spec) where
 
 import Data.Either (isLeft)
-import Data.Scientific (fromFloatDigits)
 import Glue.Env qualified as E
 import Glue.Eval (runEvalLegacy)
 import Glue.IR (IR (..))
@@ -13,32 +12,64 @@ spec :: Spec
 spec = describe "Glue.Lib.Arithmetic.Add (Test add function)" do
     describe "Add function" do
         it "returns 5 for (+ 2 3)" do
-            let args = [Number 2, Number 3]
+            let args = [Integer 2, Integer 3]
             result <- runEvalLegacy (Add.add args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Add failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number 5
-
-        it "returns 10 for (+ 1 2 3 4)" do
-            let args = [Number 1, Number 2, Number 3, Number 4]
-            result <- runEvalLegacy (Add.add args) (E.fromFrame lib)
-            case result of
-                Left err -> expectationFailure $ "Add failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number 10
+                Right (res, _, _) -> res `shouldBe` Integer 5
 
         it "returns 3.5 for (+ 1.5 2)" do
-            let args = [Number (fromFloatDigits @Double 1.5), Number 2]
+            let args = [Float 1.5, Integer 2]
             result <- runEvalLegacy (Add.add args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Add failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number (fromFloatDigits @Double 3.5)
+                Right (res, _, _) -> res `shouldBe` Float 3.5
 
-        it "returns 0 for (+) with no arguments" do
+        it "fails with no arguments" do
             let args = []
             result <- runEvalLegacy (Add.add args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft
 
-        it "fails with non-numbers" do
-            let args = [Number 1, String "hello"]
+        it "fails with one argument" do
+            let args = [Integer 2]
             result <- runEvalLegacy (Add.add args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft
+
+        it "fails with three arguments" do
+            let args = [Integer 1, Integer 2, Integer 3]
+            result <- runEvalLegacy (Add.add args) (E.fromFrame lib)
+            result `shouldSatisfy` isLeft
+
+        it "fails with non-numbers" do
+            let args = [Integer 1, String "hello"]
+            result <- runEvalLegacy (Add.add args) (E.fromFrame lib)
+            result `shouldSatisfy` isLeft
+
+    describe "Type promotion in addition" do
+        it "Integer + Integer = Integer" do
+            let args = [Integer 5, Integer 3]
+            result <- runEvalLegacy (Add.add args) (E.fromFrame lib)
+            case result of
+                Left err -> expectationFailure $ "Add failed: " <> show err
+                Right (res, _, _) -> res `shouldBe` Integer 8
+
+        it "Integer + Float = Float" do
+            let args = [Integer 5, Float 3.5]
+            result <- runEvalLegacy (Add.add args) (E.fromFrame lib)
+            case result of
+                Left err -> expectationFailure $ "Add failed: " <> show err
+                Right (res, _, _) -> res `shouldBe` Float 8.5
+
+        it "Float + Integer = Float" do
+            let args = [Float 5.5, Integer 3]
+            result <- runEvalLegacy (Add.add args) (E.fromFrame lib)
+            case result of
+                Left err -> expectationFailure $ "Add failed: " <> show err
+                Right (res, _, _) -> res `shouldBe` Float 8.5
+
+        it "Float + Float = Float" do
+            let args = [Float 5.5, Float 3.5]
+            result <- runEvalLegacy (Add.add args) (E.fromFrame lib)
+            case result of
+                Left err -> expectationFailure $ "Add failed: " <> show err
+                Right (res, _, _) -> res `shouldBe` Float 9.0

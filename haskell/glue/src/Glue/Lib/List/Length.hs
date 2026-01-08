@@ -8,6 +8,6 @@ length :: [IR Eval] -> Eval (IR Eval)
 length [arg] = do
     val <- evalRequired arg
     case val of
-        List xs -> pure $ Number (fromIntegral $ Prelude.length xs)
+        List xs -> pure $ Integer (fromIntegral $ Prelude.length xs)
         _ -> throwError $ wrongArgumentType ["list"]
 length _ = throwError wrongNumberOfArguments

@@ -1,7 +1,6 @@
 module Glue.Lib.Math.Trigonometric.AcosSpec (spec) where
 
 import Data.Either (isLeft)
-import Data.Scientific (fromFloatDigits, toRealFloat)
 import Glue.Env qualified as E
 import Glue.Eval (runEvalLegacy)
 import Glue.IR (IR (..))
@@ -13,29 +12,29 @@ spec :: Spec
 spec = describe "Glue.Lib.Math.Trigonometric.Acos (Test acos function)" do
     describe "Arccosine function" do
         it "returns π for acos(-1)" do
-            let args = [Number (fromFloatDigits @Double (-1))]
+            let args = [Float (-1)]
             result <- runEvalLegacy (Acos.acos args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Acos failed: " <> show err
                 Right (res, _, _) -> case res of
-                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x - pi) < 1e-10)
+                    Float n -> n `shouldSatisfy` (\x -> abs (x - pi) < 1e-10)
                     _ -> expectationFailure "Expected Number"
 
         it "returns π/2 for acos(0)" do
-            let args = [Number 0]
+            let args = [Integer 0]
             result <- runEvalLegacy (Acos.acos args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Acos failed: " <> show err
                 Right (res, _, _) -> case res of
-                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x - pi / 2) < 1e-10)
+                    Float n -> n `shouldSatisfy` (\x -> abs (x - pi / 2) < 1e-10)
                     _ -> expectationFailure "Expected Number"
 
         it "returns 0 for acos(1)" do
-            let args = [Number 1]
+            let args = [Integer 1]
             result <- runEvalLegacy (Acos.acos args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Acos failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number 0
+                Right (res, _, _) -> res `shouldBe` Float 0
 
         it "fails with non-numbers" do
             let args = [String "hello"]
@@ -43,7 +42,7 @@ spec = describe "Glue.Lib.Math.Trigonometric.Acos (Test acos function)" do
             result `shouldSatisfy` isLeft
 
         it "fails with wrong number of arguments" do
-            let args = [Number 1, Number 2]
+            let args = [Integer 1, Integer 2]
             result <- runEvalLegacy (Acos.acos args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft
 

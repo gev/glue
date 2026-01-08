@@ -1,7 +1,6 @@
 module Glue.Lib.Math.Utility.CeilSpec (spec) where
 
 import Data.Either (isLeft)
-import Data.Scientific (fromFloatDigits)
 import Glue.Env qualified as E
 import Glue.Eval (runEvalLegacy)
 import Glue.IR (IR (..))
@@ -13,32 +12,32 @@ spec :: Spec
 spec = describe "Glue.Lib.Math.Utility.Ceil (Test ceil function)" do
     describe "Ceil function" do
         it "returns 4 for ceil(3.1)" do
-            let args = [Number (fromFloatDigits @Double 3.1)]
+            let args = [Float 3.1]
             result <- runEvalLegacy (Ceil.ceil args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Ceil failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number 4
+                Right (res, _, _) -> res `shouldBe` Integer 4
 
         it "returns 3 for ceil(2.9)" do
-            let args = [Number (fromFloatDigits @Double 2.9)]
+            let args = [Float 2.9]
             result <- runEvalLegacy (Ceil.ceil args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Ceil failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number 3
+                Right (res, _, _) -> res `shouldBe` Integer 3
 
         it "returns -3 for ceil(-3.1)" do
-            let args = [Number (fromFloatDigits @Double (-3.1))]
+            let args = [Float (-3.1)]
             result <- runEvalLegacy (Ceil.ceil args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Ceil failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number (-3)
+                Right (res, _, _) -> res `shouldBe` Integer (-3)
 
         it "returns 5 for ceil(5.0)" do
-            let args = [Number 5]
+            let args = [Integer 5]
             result <- runEvalLegacy (Ceil.ceil args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Ceil failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number 5
+                Right (res, _, _) -> res `shouldBe` Integer 5
 
         it "fails with non-numbers" do
             let args = [String "hello"]
@@ -46,7 +45,7 @@ spec = describe "Glue.Lib.Math.Utility.Ceil (Test ceil function)" do
             result `shouldSatisfy` isLeft
 
         it "fails with wrong number of arguments" do
-            let args = [Number 1, Number 2]
+            let args = [Integer 1, Integer 2]
             result <- runEvalLegacy (Ceil.ceil args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft
 

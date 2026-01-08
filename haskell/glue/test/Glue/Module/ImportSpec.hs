@@ -19,7 +19,7 @@ spec = do
                         [ Symbol "module"
                         , Symbol "test.import"
                         , List [Symbol "export", Symbol "value"]
-                        , List [Symbol "def", Symbol "value", Number 123]
+                        , List [Symbol "def", Symbol "value", Integer 123]
                         ]
 
             -- Build registry
@@ -47,7 +47,7 @@ spec = do
                         Right (Nothing, finalState) -> do
                             -- Check that the exported symbol is now available
                             case E.lookupVar "value" finalState.env of
-                                Right (Number 123) -> pure ()
+                                Right (Integer 123) -> pure ()
                                 Right val -> expectationFailure $ "Wrong value imported: " ++ show val
                                 Left err -> expectationFailure $ "Symbol not found after import: " ++ show err
                         Right (val, _) -> expectationFailure $ "Import should return Nothing, got: " ++ show val
@@ -60,8 +60,8 @@ spec = do
                         [ Symbol "module"
                         , Symbol "test.pollution"
                         , List [Symbol "export", Symbol "public"]
-                        , List [Symbol "def", Symbol "internal", Number 999] -- Internal variable
-                        , List [Symbol "def", Symbol "public", Number 456] -- Exported variable
+                        , List [Symbol "def", Symbol "internal", Integer 999] -- Internal variable
+                        , List [Symbol "def", Symbol "public", Integer 456] -- Exported variable
                         ]
 
             -- Build registry
@@ -70,7 +70,7 @@ spec = do
                 Right registry -> do
                     -- Create initial environment with some pre-existing variables
                     let baseEnv = E.fromFrame lib
-                    let initialEnv = E.defineVar "preexisting" (Number 123) baseEnv
+                    let initialEnv = E.defineVar "preexisting" (Integer 123) baseEnv
 
                     -- Create initial eval state with registry
                     let initialState =
@@ -90,13 +90,13 @@ spec = do
                         Right (Nothing, finalState) -> do
                             -- Check that pre-existing variable is still there
                             case E.lookupVar "preexisting" finalState.env of
-                                Right (Number 123) -> pure ()
+                                Right (Integer 123) -> pure ()
                                 Right val -> expectationFailure $ "Pre-existing variable changed: " ++ show val
                                 Left err -> expectationFailure $ "Pre-existing variable lost: " ++ show err
 
                             -- Check that exported symbol is available
                             case E.lookupVar "public" finalState.env of
-                                Right (Number 456) -> pure ()
+                                Right (Integer 456) -> pure ()
                                 Right val -> expectationFailure $ "Wrong exported value: " ++ show val
                                 Left err -> expectationFailure $ "Exported symbol not found: " ++ show err
 
@@ -114,8 +114,8 @@ spec = do
                         [ Symbol "module"
                         , Symbol "test.dual"
                         , List [Symbol "export", Symbol "add", Symbol "multiply"]
-                        , List [Symbol "def", Symbol "add", List [Symbol "+", Number 1, Number 2]]
-                        , List [Symbol "def", Symbol "multiply", List [Symbol "*", Number 3, Number 4]]
+                        , List [Symbol "def", Symbol "add", List [Symbol "+", Integer 1, Integer 2]]
+                        , List [Symbol "def", Symbol "multiply", List [Symbol "*", Integer 3, Integer 4]]
                         ]
 
             -- Build registry
@@ -167,7 +167,7 @@ spec = do
                         [ Symbol "module"
                         , Symbol "test.immutable"
                         , List [Symbol "export", Symbol "value"]
-                        , List [Symbol "def", Symbol "value", Number 42]
+                        , List [Symbol "def", Symbol "value", Integer 42]
                         ]
 
             -- Build registry
@@ -194,7 +194,7 @@ spec = do
                     case result of
                         Right (Nothing, finalState) -> do
                             -- Try to set module property - should fail
-                            let setIR = List [Symbol "set", Symbol "test.immutable.value", Number 999]
+                            let setIR = List [Symbol "set", Symbol "test.immutable.value", Integer 999]
                             setResult <- runEval (eval setIR) finalState
 
                             case setResult of
@@ -210,7 +210,7 @@ spec = do
                         [ Symbol "module"
                         , Symbol "test.shadow"
                         , List [Symbol "export", Symbol "x"]
-                        , List [Symbol "def", Symbol "x", Number 100]
+                        , List [Symbol "def", Symbol "x", Integer 100]
                         ]
 
             -- Build registry
@@ -238,19 +238,19 @@ spec = do
                         Right (Nothing, importState) -> do
                             -- Check imported value
                             case E.lookupVar "x" importState.env of
-                                Right (Number 100) -> pure ()
+                                Right (Integer 100) -> pure ()
                                 Right val -> expectationFailure $ "Wrong imported value: " ++ show val
                                 Left err -> expectationFailure $ "Imported value not found: " ++ show err
 
                             -- Define local x that shadows the imported one
-                            let defIR = List [Symbol "def", Symbol "x", Number 200]
+                            let defIR = List [Symbol "def", Symbol "x", Integer 200]
                             defResult <- runEval (eval defIR) importState
 
                             case defResult of
                                 Right (Nothing, finalState) -> do
                                     -- Check that local definition shadows imported one
                                     case E.lookupVar "x" finalState.env of
-                                        Right (Number 200) -> pure ()
+                                        Right (Integer 200) -> pure ()
                                         Right val -> expectationFailure $ "Wrong shadowed value: " ++ show val
                                         Left err -> expectationFailure $ "Local value not found: " ++ show err
 
@@ -258,7 +258,7 @@ spec = do
                                     case E.lookupVar "test.shadow" finalState.env of
                                         Right (Module moduleMap) -> do
                                             case Map.lookup "x" moduleMap of
-                                                Just (Number 100) -> pure ()
+                                                Just (Integer 100) -> pure ()
                                                 Just val -> expectationFailure $ "Module value changed: " ++ show val
                                                 Nothing -> expectationFailure "Module missing 'x' property"
                                         Right val -> expectationFailure $ "Expected Module, got: " ++ show val
@@ -275,7 +275,7 @@ spec = do
                         [ Symbol "module"
                         , Symbol "test.dotted"
                         , List [Symbol "export", Symbol "value"]
-                        , List [Symbol "def", Symbol "value", Number 42]
+                        , List [Symbol "def", Symbol "value", Integer 42]
                         ]
 
             -- Build registry
@@ -306,7 +306,7 @@ spec = do
                             accessResult <- runEval (eval accessIR) finalState
 
                             case accessResult of
-                                Right (Just (Number 42), _) -> pure ()
+                                Right (Just (Integer 42), _) -> pure ()
                                 Right (Just val, _) -> expectationFailure $ "Wrong value: " ++ show val
                                 Right (Nothing, _) -> expectationFailure "Dotted access should return a value"
                                 Left err -> expectationFailure $ "Dotted access failed: " ++ show err

@@ -15,7 +15,7 @@ spec = do
 
         it "caches and retrieves imported module" $ do
             let emptyEnv = E.emptyEnv
-            let exportedValues = E.frameFromList [("value", Number 42)]
+            let exportedValues = E.frameFromList [("value", Integer 42)]
             let importedModule =
                     ImportedModule
                         { moduleName = "test.module"
@@ -34,7 +34,7 @@ spec = do
 
         it "handles missing modules in cache" $ do
             let emptyEnv = E.emptyEnv
-            let exportedValues = E.frameFromList [("func", Number 123)]
+            let exportedValues = E.frameFromList [("func", Integer 123)]
             let importedModule =
                     ImportedModule
                         { moduleName = "existing.module"
@@ -55,7 +55,7 @@ spec = do
             let module1 =
                     ImportedModule
                         { moduleName = "test.module"
-                        , exportedValues = E.frameFromList [("value", Number 1)]
+                        , exportedValues = E.frameFromList [("value", Integer 1)]
                         , evaluationRootEnv = emptyEnv
                         }
 
@@ -63,7 +63,7 @@ spec = do
             let module2 =
                     ImportedModule
                         { moduleName = "test.module"
-                        , exportedValues = E.frameFromList [("value", Number 2)]
+                        , exportedValues = E.frameFromList [("value", Integer 2)]
                         , evaluationRootEnv = emptyEnv
                         }
 
@@ -82,14 +82,14 @@ spec = do
             let module1 =
                     ImportedModule
                         { moduleName = "math.add"
-                        , exportedValues = E.frameFromList [("add", Number 1)]
+                        , exportedValues = E.frameFromList [("add", Integer 1)]
                         , evaluationRootEnv = emptyEnv
                         }
 
             let module2 =
                     ImportedModule
                         { moduleName = "math.mul"
-                        , exportedValues = E.frameFromList [("mul", Number 2)]
+                        , exportedValues = E.frameFromList [("mul", Integer 2)]
                         , evaluationRootEnv = emptyEnv
                         }
 

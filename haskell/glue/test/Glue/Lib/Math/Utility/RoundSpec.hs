@@ -1,7 +1,6 @@
 module Glue.Lib.Math.Utility.RoundSpec (spec) where
 
 import Data.Either (isLeft)
-import Data.Scientific (fromFloatDigits)
 import Glue.Env qualified as E
 import Glue.Eval (runEvalLegacy)
 import Glue.IR (IR (..))
@@ -13,32 +12,32 @@ spec :: Spec
 spec = describe "Glue.Lib.Math.Utility.Round (Test round function)" do
     describe "Round function" do
         it "returns 4 for round(3.5)" do
-            let args = [Number (fromFloatDigits @Double 3.5)]
+            let args = [Float 3.5]
             result <- runEvalLegacy (Round.round args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Round failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number 4
+                Right (res, _, _) -> res `shouldBe` Integer 4
 
         it "returns 2 for round(2.4)" do
-            let args = [Number (fromFloatDigits @Double 2.4)]
+            let args = [Float 2.4]
             result <- runEvalLegacy (Round.round args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Round failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number 2
+                Right (res, _, _) -> res `shouldBe` Integer 2
 
         it "returns -3 for round(-3.5)" do
-            let args = [Number (fromFloatDigits @Double (-3.5))]
+            let args = [Float (-3.5)]
             result <- runEvalLegacy (Round.round args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Round failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number (-4)
+                Right (res, _, _) -> res `shouldBe` Integer (-4)
 
         it "returns 5 for round(5.0)" do
-            let args = [Number 5]
+            let args = [Integer 5]
             result <- runEvalLegacy (Round.round args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Round failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number 5
+                Right (res, _, _) -> res `shouldBe` Integer 5
 
         it "fails with non-numbers" do
             let args = [String "hello"]
@@ -46,7 +45,7 @@ spec = describe "Glue.Lib.Math.Utility.Round (Test round function)" do
             result `shouldSatisfy` isLeft
 
         it "fails with wrong number of arguments" do
-            let args = [Number 1, Number 2]
+            let args = [Integer 1, Integer 2]
             result <- runEvalLegacy (Round.round args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft
 

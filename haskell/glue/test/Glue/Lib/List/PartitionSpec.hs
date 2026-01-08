@@ -10,34 +10,34 @@ spec :: Spec
 spec = describe "Glue.Lib.List.Partition (Test partition function)" do
     it "partitions list into matching and non-matching elements" do
         let initialEnv = E.emptyEnv
-        let pred = Native (Func (\[Number x] -> pure . Bool $ x > 3))
-        let args = [pred, List [Number 1, Number 2, Number 3, Number 4, Number 5]]
+        let pred = Native (Func (\[Integer x] -> pure . Bool $ x > 3))
+        let args = [pred, List [Integer 1, Integer 2, Integer 3, Integer 4, Integer 5]]
         result <- runEvalLegacy (Partition.partition args) initialEnv
         case result of
             Left err -> expectationFailure $ "Partition failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [List [Number 4, Number 5], List [Number 1, Number 2, Number 3]]
+            Right (res, _, _) -> res `shouldBe` List [List [Integer 4, Integer 5], List [Integer 1, Integer 2, Integer 3]]
 
     it "partitions list with all elements matching" do
         let initialEnv = E.emptyEnv
-        let pred = Native (Func (\[Number x] -> pure . Bool $ x > 0))
-        let args = [pred, List [Number 1, Number 2, Number 3]]
+        let pred = Native (Func (\[Integer x] -> pure . Bool $ x > 0))
+        let args = [pred, List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalLegacy (Partition.partition args) initialEnv
         case result of
             Left err -> expectationFailure $ "Partition failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [List [Number 1, Number 2, Number 3], List []]
+            Right (res, _, _) -> res `shouldBe` List [List [Integer 1, Integer 2, Integer 3], List []]
 
     it "partitions list with no elements matching" do
         let initialEnv = E.emptyEnv
-        let pred = Native (Func (\[Number x] -> pure . Bool $ x > 10))
-        let args = [pred, List [Number 1, Number 2, Number 3]]
+        let pred = Native (Func (\[Integer x] -> pure . Bool $ x > 10))
+        let args = [pred, List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalLegacy (Partition.partition args) initialEnv
         case result of
             Left err -> expectationFailure $ "Partition failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [List [], List [Number 1, Number 2, Number 3]]
+            Right (res, _, _) -> res `shouldBe` List [List [], List [Integer 1, Integer 2, Integer 3]]
 
     it "partitions empty list" do
         let initialEnv = E.emptyEnv
-        let pred = Native (Func (\[Number x] -> pure $ Bool True))
+        let pred = Native (Func (\[Integer x] -> pure $ Bool True))
         let args = [pred, List []]
         result <- runEvalLegacy (Partition.partition args) initialEnv
         case result of
@@ -46,17 +46,17 @@ spec = describe "Glue.Lib.List.Partition (Test partition function)" do
 
     it "partitions list with mixed matching" do
         let initialEnv = E.emptyEnv
-        let pred = Native (Func (\[Number x] -> pure . Bool $ floor x `mod` 2 == 0))
-        let args = [pred, List [Number 1, Number 2, Number 3, Number 4, Number 5]]
+        let pred = Native (Func (\[Integer x] -> pure . Bool $ x `mod` 2 == 0))
+        let args = [pred, List [Integer 1, Integer 2, Integer 3, Integer 4, Integer 5]]
         result <- runEvalLegacy (Partition.partition args) initialEnv
         case result of
             Left err -> expectationFailure $ "Partition failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [List [Number 2, Number 4], List [Number 1, Number 3, Number 5]]
+            Right (res, _, _) -> res `shouldBe` List [List [Integer 2, Integer 4], List [Integer 1, Integer 3, Integer 5]]
 
     it "fails on non-list second argument" do
         let initialEnv = E.emptyEnv
-        let pred = Native (Func (\[Number x] -> pure $ Bool True))
-        let args = [pred, Number 42]
+        let pred = Native (Func (\[Integer x] -> pure $ Bool True))
+        let args = [pred, Integer 42]
         result <- runEvalLegacy (Partition.partition args) initialEnv
         case result of
             Left _ -> pure () -- Expected error
