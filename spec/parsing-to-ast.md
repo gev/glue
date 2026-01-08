@@ -78,10 +78,16 @@ Expressions are parsed in this order of priority (highest first):
 
 ### Atomic Values
 
-#### Numbers
+#### Integers
 ```text
 Input: "42"
-AST: Number 42
+AST: Integer 42
+```
+
+#### Floats
+```text
+Input: "3.14159"
+AST: Float 3.14159
 ```
 
 **Supported Number Formats:**
@@ -128,7 +134,7 @@ AST: List []
 Input: "(1 "a" foo)"
 ```
 ```text
-AST: List [Number 1, String "a", Symbol "foo"]
+AST: List [Integer 1, String "a", Symbol "foo"]
 ```
 
 #### Nested Lists
@@ -138,7 +144,7 @@ Input: "((lambda (x) x) 5)"
 ```text
 AST: List [
     List [Symbol "lambda", List [Symbol "x"], Symbol "x"],
-    Number 5
+    Integer 5
 ]
 ```
 
@@ -147,7 +153,7 @@ AST: List [
 Input: "(+ 1 2)"
 ```
 ```text
-AST: List [Symbol "+", Number 1, Number 2]
+AST: List [Symbol "+", Integer 1, Integer 2]
 ```
 
 #### Function Call with Named Arguments (Syntax Sugar)
@@ -155,7 +161,7 @@ AST: List [Symbol "+", Number 1, Number 2]
 Input: "(f :x 1 :y 2)"
 ```
 ```text
-AST: List [Symbol "f", Object [("x", Number 1), ("y", Number 2)]]
+AST: List [Symbol "f", Object [("x", Integer 1), ("y", Integer 2)]]
 ```
 A function call where the first element is the function name and subsequent elements can include named argument parsed as object.
 
@@ -176,7 +182,7 @@ Input: "(:name \"Alice\" :age 30)"
 ```text
 AST: Object [
     ("name", String "Alice"),
-    ("age", Number 30)
+    ("age", Integer 30)
 ]
 ```
 
