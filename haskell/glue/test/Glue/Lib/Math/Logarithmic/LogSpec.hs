@@ -1,6 +1,7 @@
 module Glue.Lib.Math.Logarithmic.LogSpec (spec) where
 
 import Data.Either (isLeft)
+import GHC.Float (isNaN)
 import Glue.Env qualified as E
 import Glue.Eval (runEvalLegacy)
 import Glue.IR (IR (..))
@@ -53,30 +54,50 @@ spec = describe "Glue.Lib.Math.Logarithmic.Log (Test log function)" do
                 Left err -> expectationFailure $ "Log failed: " <> show err
                 Right (res, _, _) -> res `shouldBe` Float 3
 
-        it "fails with zero value" do
+        it "returns -Infinity for zero value" do
             let args = [Integer 0, Integer 10]
             result <- runEvalLegacy (Log.log args) (E.fromFrame lib)
-            result `shouldSatisfy` isLeft
+            case result of
+                Left err -> expectationFailure $ "Log failed: " <> show err
+                Right (res, _, _) -> case res of
+                    Float f | f == (-1 / 0) -> f `shouldBe` (-1 / 0)
+                    _ -> expectationFailure "Expected -Infinity"
 
-        it "fails with negative value" do
+        it "returns NaN for negative value" do
             let args = [Float (-1), Integer 10]
             result <- runEvalLegacy (Log.log args) (E.fromFrame lib)
-            result `shouldSatisfy` isLeft
+            case result of
+                Left err -> expectationFailure $ "Log failed: " <> show err
+                Right (res, _, _) -> case res of
+                    Float f | isNaN f -> f `shouldSatisfy` isNaN
+                    _ -> expectationFailure "Expected NaN"
 
-        it "fails with zero base" do
+        it "returns -0.0 for zero base" do
             let args = [Integer 10, Integer 0]
             result <- runEvalLegacy (Log.log args) (E.fromFrame lib)
-            result `shouldSatisfy` isLeft
+            case result of
+                Left err -> expectationFailure $ "Log failed: " <> show err
+                Right (res, _, _) -> case res of
+                    Float f | f == 0 && (1 / f) < 0 -> f `shouldBe` (-0.0)
+                    _ -> expectationFailure "Expected -0.0"
 
-        it "fails with negative base" do
+        it "returns NaN for negative base" do
             let args = [Integer 10, Float (-1)]
             result <- runEvalLegacy (Log.log args) (E.fromFrame lib)
-            result `shouldSatisfy` isLeft
+            case result of
+                Left err -> expectationFailure $ "Log failed: " <> show err
+                Right (res, _, _) -> case res of
+                    Float f | isNaN f -> f `shouldSatisfy` isNaN
+                    _ -> expectationFailure "Expected NaN"
 
-        it "fails with base 1" do
+        it "returns Infinity for base 1" do
             let args = [Integer 10, Integer 1]
             result <- runEvalLegacy (Log.log args) (E.fromFrame lib)
-            result `shouldSatisfy` isLeft
+            case result of
+                Left err -> expectationFailure $ "Log failed: " <> show err
+                Right (res, _, _) -> case res of
+                    Float f | f == (1 / 0) -> f `shouldBe` (1 / 0)
+                    _ -> expectationFailure "Expected Infinity"
 
         it "fails with non-numbers (value)" do
             let args = [String "hello", Integer 10]

@@ -1,6 +1,7 @@
 module Glue.Lib.Math.Logarithmic.LgSpec (spec) where
 
 import Data.Either (isLeft)
+import GHC.Float (isNaN)
 import Glue.Env qualified as E
 import Glue.Eval (runEvalLegacy)
 import Glue.IR (IR (..))
@@ -38,15 +39,23 @@ spec = describe "Glue.Lib.Math.Logarithmic.Lg (Test lg function)" do
                     Float n -> n `shouldSatisfy` (\x -> abs (x - 2) < 1e-10)
                     _ -> expectationFailure "Expected a number"
 
-        it "fails with zero" do
+        it "returns -Infinity for zero" do
             let args = [Integer 0]
             result <- runEvalLegacy (Lg.lg args) (E.fromFrame lib)
-            result `shouldSatisfy` isLeft
+            case result of
+                Left err -> expectationFailure $ "Lg failed: " <> show err
+                Right (res, _, _) -> case res of
+                    Float f | f == (-1 / 0) -> f `shouldBe` (-1 / 0)
+                    _ -> expectationFailure "Expected -Infinity"
 
-        it "fails with negative numbers" do
+        it "returns NaN for negative numbers" do
             let args = [Float (-1)]
             result <- runEvalLegacy (Lg.lg args) (E.fromFrame lib)
-            result `shouldSatisfy` isLeft
+            case result of
+                Left err -> expectationFailure $ "Lg failed: " <> show err
+                Right (res, _, _) -> case res of
+                    Float f | isNaN f -> f `shouldSatisfy` isNaN
+                    _ -> expectationFailure "Expected NaN"
 
         it "fails with non-numbers" do
             let args = [String "hello"]

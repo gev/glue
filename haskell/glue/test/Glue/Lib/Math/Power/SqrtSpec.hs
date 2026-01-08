@@ -32,10 +32,14 @@ spec = describe "Glue.Lib.Math.Power.Sqrt (Test sqrt function)" do
                 Left err -> expectationFailure $ "Sqrt failed: " <> show err
                 Right (res, _, _) -> res `shouldBe` Float 0
 
-        it "fails with negative numbers" do
+        it "returns NaN for negative numbers" do
             let args = [Float (-4)]
             result <- runEvalLegacy (Sqrt.sqrt args) (E.fromFrame lib)
-            result `shouldSatisfy` isLeft
+            case result of
+                Left err -> expectationFailure $ "Sqrt failed: " <> show err
+                Right (res, _, _) -> case res of
+                    Float f | isNaN f -> f `shouldSatisfy` isNaN
+                    _ -> expectationFailure "Expected NaN"
 
         it "fails with non-numbers" do
             let args = [String "hello"]
