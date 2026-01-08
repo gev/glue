@@ -204,8 +204,7 @@ evalList xs = do
             result <- apply f args
             popContext
             pure result
-        [single] -> pure $ Just single
-        _ -> pure . Just . IR.List $ clean
+        res -> pure . Just . IR.List $ res
 
 -- Evaluate an object
 evalObject :: Map Text IR -> Eval (Maybe IR)

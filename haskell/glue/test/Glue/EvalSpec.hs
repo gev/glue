@@ -28,6 +28,14 @@ spec = describe "Glue.Eval (System Integration)" do
         runCode "42" `shouldReturn` Right (Just (Integer 42))
         runCode "\"test\"" `shouldReturn` Right (Just (String "test"))
 
+    it "executes (def)" do
+        let code = "((def x 1) x)"
+        runCode code `shouldReturn` Right (Just (Integer 1))
+
+    it "executes (def)" do
+        let code = "(1 ((def x 1) x))"
+        runCode code `shouldReturn` Right (Just (List [Integer 1, Integer 1]))
+
     it "executes (def) and (set) chain" do
         let code = "((def x 1) (set x 2) x)"
         runCode code `shouldReturn` Right (Just (Integer 2))
@@ -106,6 +114,10 @@ spec = describe "Glue.Eval (System Integration)" do
 
     it "\\ alias works like lambda (multi-param)" do
         runCode "((def f (\\ (a b) ((a) (b)))) (f 1 2))"
+            `shouldReturn` Right (Just (List [Integer 1, Integer 2]))
+
+    it "\\ alias works like lambda (multi-param)" do
+        runCode "((\\ (a b) ((a) (b))) 1 2)"
             `shouldReturn` Right (Just (List [Integer 1, Integer 2]))
 
     it "== alias works like eq" do
