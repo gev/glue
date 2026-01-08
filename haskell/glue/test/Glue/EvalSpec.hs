@@ -164,3 +164,23 @@ spec = describe "Glue.Eval (System Integration)" do
     it "dotted symbols work in function calls" do
         runCode "((def obj (:x (:y (:z (lambda (n) (+ n 10)))))) (obj.x.y.z 5))"
             `shouldReturn` Right (Just (Integer 15))
+
+    it "deep arithmetic composition" do
+        runCode "(* (+ 1 2) (- 10 2))"
+            `shouldReturn` Right (Just (Integer 24))
+
+    it "complex arithmetic with mixed operations" do
+        runCode "(/ (+ (* 3 4) 2) (- 10 3))"
+            `shouldReturn` Right (Just (Float 2.0))
+
+    it "deep arithmetic with floats" do
+        runCode "(+ (* 2.5 4.0) (/ 10.0 2.0))"
+            `shouldReturn` Right (Just (Float 15.0))
+
+    it "arithmetic with defined functions" do
+        runCode "((def add (lambda (x y) (+ x y))) (def mul (lambda (x y) (* x y))) (mul (add 3 2) (add 1 2)))"
+            `shouldReturn` Right (Just (Integer 15))
+
+    it "nested function calls with arithmetic" do
+        runCode "((def calc (lambda (a b) (* (+ a b) (- a b)))) (calc 5 3))"
+            `shouldReturn` Right (Just (Integer 16))
