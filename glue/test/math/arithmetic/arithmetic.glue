@@ -1,0 +1,11 @@
+(module arithmetic-test
+    (import test)
+    (import math.arithmetic)
+
+    ;; Test arithmetic operations
+    (test "addition" (lambda () (assert-equal 5 (+ 2 3))))
+    (test "subtraction" (lambda () (assert-equal 1 (- 3 2))))
+    (test "multiplication" (lambda () (assert-equal 6 (* 2 3))))
+    (test "division" (lambda () (assert-equal 2 (/ 6 3))))
+    (test "modulo" (lambda () (assert-equal 1 (% 7 3))))
+)

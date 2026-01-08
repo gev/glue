@@ -1,0 +1,8 @@
+(module try-test
+    (import test)
+    (import builtin)
+
+    ;; Test try special form
+    (test "try catches error" (lambda () (assert-equal "hello" (try (error test-error (:msg "hello")) (catch test-error (lambda (e) e.msg))))))
+    (test "try returns normal value" (lambda () (assert-equal 42 (try 42 (catch test-error (lambda (e) "caught"))))))
+)

@@ -1,0 +1,9 @@
+(module not-test
+    (import test)
+    (import bool)
+
+    ;; Test logical negation
+    (test "not true" (lambda () (assert-equal false (! true))))
+    (test "not false" (lambda () (assert-equal true (! false))))
+    (test "not number" (lambda () (assert-equal false (! 42))))
+)

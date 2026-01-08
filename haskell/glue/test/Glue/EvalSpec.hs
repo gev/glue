@@ -1,6 +1,7 @@
 module Glue.EvalSpec (spec) where
 
 import Data.Map.Strict qualified as Map
+import Data.Scientific (Scientific, scientific, toRealFloat)
 import Data.Text (Text)
 import Glue.Env qualified as E
 import Glue.Error (GlueError (..))
@@ -52,19 +53,35 @@ spec = describe "Glue.Eval (System Integration)" do
         runCode "(non-existent 1 2)"
             `shouldReturn` Left (GlueError (EvalError @Eval [] $ unboundVariable "non-existent"))
 
-    it "fails when passing wrong number of arguments" do
-        runCode "((lambda (a b) a) 1)"
-            `shouldReturn` Left (GlueError (EvalError @Eval ["<call>"] wrongNumberOfArguments))
+    it "partial application returns closure" do
+        result <- runCode "((lambda (a b) a) 1)"
+        result
+            `shouldSatisfy` ( \case
+                                Right (Just (Closure ["b"] _ _)) -> True
+                                _ -> False
+                            )
 
     it "user-defined function" do
         runCode "((def id (lambda (x) x)) (id 42))"
             `shouldReturn` Right (Just (List [Number 42]))
 
-    it "user-defined function too few args" do
-        runCode "((def id (lambda (x) x)) (id))"
-            `shouldReturn` Left (GlueError (EvalError @Eval ["id"] wrongNumberOfArguments))
+    it "user-defined function partial application (currying)" do
+        result <- runCode "((def add (lambda (x y) (+ x y))) ((add 5) 3))"
+        result `shouldBe` Right (Just (Number 8.0))
 
-    it "user-defined function too many args" do
+    it "user-defined function returns closure on partial application" do
+        result <- runCode "((def add (lambda (x y) (+ x y))) (add 5))"
+        result
+            `shouldSatisfy` ( \case
+                                Right (Just (Closure ["y"] _ _)) -> True
+                                _ -> False
+                            )
+
+    it "currying works with multiple levels" do
+        result <- runCode "((def add (lambda (x y z) (+ x (+ y z)))) (((add 1) 2) 3))"
+        result `shouldBe` Right (Just (Number 6.0))
+
+    it "user-defined function too many args still fails" do
         runCode "((def id (lambda (x) x)) (id 1 2))"
             `shouldReturn` Left (GlueError (EvalError @Eval ["id"] wrongNumberOfArguments))
 
@@ -80,9 +97,9 @@ spec = describe "Glue.Eval (System Integration)" do
         runCode "((def id (\\ (x) x)) (id 42))"
             `shouldReturn` Right (Just (List [Number 42]))
 
-    it "\\ alias works like lambda (too few args)" do
-        runCode "((def id (\\ (x) x)) (id))"
-            `shouldReturn` Left (GlueError (EvalError @Eval ["id"] wrongNumberOfArguments))
+    it "\\ alias works like lambda (partial application)" do
+        result <- runCode "((def add (\\ (x y) (+ x y))) (def add5 (add 5)) (add5) 3)"
+        result `shouldBe` Right (Just (Number 8.0))
 
     it "\\ alias works like lambda (too many args)" do
         runCode "((def id (\\ (x) x)) (id 1 2))"

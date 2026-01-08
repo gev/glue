@@ -1,11 +1,11 @@
 (module math.trigonometric
-  (import ffi.math.trigonometric)
-
-  ;; Trigonometric operations
-  (def sin ffi.math.trigonometric.sin)
-  (def cos ffi.math.trigonometric.cos)
-  (def tan ffi.math.trigonometric.tan)
-  (def asin ffi.math.trigonometric.asin)
-  (def acos ffi.math.trigonometric.acos)
-  (def atan ffi.math.trigonometric.atan)
+    (import ffi.math.trigonometric)
+    
+    ;; Trigonometric operations
+    (def sin ffi.math.trigonometric.sin)
+    (def cos ffi.math.trigonometric.cos)
+    (def tan ffi.math.trigonometric.tan)
+    (def asin ffi.math.trigonometric.asin)
+    (def acos ffi.math.trigonometric.acos)
+    (def atan ffi.math.trigonometric.atan)
 )

@@ -1,7 +1,7 @@
 (module math.const
-  (import ffi.math.const)
-
-  ;; Mathematical constants
-  (def pi ffi.math.const.pi)
-  (def e ffi.math.const.e)
+    (import ffi.math.const)
+    
+    ;; Mathematical constants
+    (def pi ffi.math.const.pi)
+    (def e ffi.math.const.e)
 )

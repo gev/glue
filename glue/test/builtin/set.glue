@@ -1,0 +1,7 @@
+(module set-test
+    (import test)
+    (import builtin)
+
+    ;; Test set special form - returns nothing
+    (test "set returns nothing" (lambda () (assert-equal () (set x 42))))
+)

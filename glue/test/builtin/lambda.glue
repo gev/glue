@@ -1,0 +1,8 @@
+(module lambda-test
+    (import test)
+    (import builtin)
+
+    ;; Test lambda special form
+    (test "lambda identity" (lambda () (assert-equal 42 ((\ (x) x) 42))))
+    (test "lambda addition" (lambda () (assert-equal 7 ((\ (x y) (+ x y)) 3 4))))
+)

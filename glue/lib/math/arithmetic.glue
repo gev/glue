@@ -1,15 +1,15 @@
 (module math.arithmetic
-  (import ffi.math.arithmetic)
-
-  ;; Arithmetic operations
-  (def add ffi.math.arithmetic.add)
-  (def + add)
-  (def sub ffi.math.arithmetic.sub)
-  (def - sub)
-  (def mul ffi.math.arithmetic.mul)
-  (def * mul)
-  (def div ffi.math.arithmetic.div)
-  (def / div)
-  (def mod ffi.math.arithmetic.mod)
-  (def % mod)
+    (import ffi.math.arithmetic)
+    
+    ;; Arithmetic operations
+    (def add ffi.math.arithmetic.add)
+    (def + add)
+    (def sub ffi.math.arithmetic.sub)
+    (def - sub)
+    (def mul ffi.math.arithmetic.mul)
+    (def * mul)
+    (def div mul)
+    (def / div)
+    (def mod ffi.math.arithmetic.mod)
+    (def % mod)
 )

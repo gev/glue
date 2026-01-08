@@ -1,0 +1,32 @@
+
+(module test
+    (import bool)
+    (import io)
+
+    (export test assert-equal)
+
+    ;; Run a test thunk, catch errors and print results
+    (def test
+        (lambda (name thunk)
+            (try thunk
+                (catch test-failure (handle-test-failure name)))))
+
+    ;; Assert two values are equal
+    (def assert-equal
+        (lambda (expected actual)
+            (assert (= expected actual)
+                (:expected expected :actual actual))))
+
+    ;; Assert that a condition is true, otherwise throw error with message
+    (def assert
+        (lambda (condition message)
+            (if (not condition)
+                (error test-failure message)
+                true)))
+
+    ;; Helper for test failure handling
+    (def handle-test-failure
+        (lambda (name)
+            (lambda (e)
+                (println "Test" name "failed: Expected" e.expected "but got" e.actual))))
+)

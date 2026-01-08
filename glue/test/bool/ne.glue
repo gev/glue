@@ -1,0 +1,10 @@
+(module ne-test
+    (import test)
+    (import bool)
+
+    ;; Test not equal comparison
+    (test "ne unequal numbers" (lambda () (assert-equal true (!= 42 43))))
+    (test "ne equal numbers" (lambda () (assert-equal false (!= 42 42))))
+    (test "ne unequal strings" (lambda () (assert-equal true (!= "hello" "world"))))
+    (test "ne equal strings" (lambda () (assert-equal false (!= "hello" "hello"))))
+)

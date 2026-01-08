@@ -1,0 +1,7 @@
+(module def-test
+    (import test)
+    (import builtin)
+
+    ;; Test def special form - returns nothing
+    (test "def returns nothing" (lambda () (assert-equal () (def x 42))))
+)

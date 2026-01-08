@@ -1,0 +1,9 @@
+(module lt-test
+    (import test)
+    (import bool)
+
+    ;; Test less than comparison
+    (test "lt lesser number" (lambda () (assert-equal true (< 5 10))))
+    (test "lt equal numbers" (lambda () (assert-equal false (< 5 5))))
+    (test "lt greater number" (lambda () (assert-equal false (< 10 5))))
+)

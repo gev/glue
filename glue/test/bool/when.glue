@@ -1,0 +1,9 @@
+(module when-test
+    (import test)
+    (import bool)
+
+    ;; Test when special form
+    (test "when true executes body" (lambda () (assert-equal 42 (when true 42))))
+    (test "when false does not execute" (lambda () (assert-equal () (when false 42))))
+    (test "when multiple expressions returns last" (lambda () (assert-equal 3 (when true 1 2 3))))
+)

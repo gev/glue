@@ -235,12 +235,23 @@ applyNative (IR.Special s) rawArgs = s rawArgs
 applyClosure :: [Text] -> IR -> Env -> [IR] -> Eval (Maybe IR)
 applyClosure params body savedEnv rawArgs = do
     argValues <- evalArguments rawArgs
-    if length params /= length argValues
-        then throwError wrongNumberOfArguments
-        else do
+    let numArgs = length argValues
+        numParams = length params
+
+    if numArgs == numParams
+        then do
+            -- Full application: execute the function
             let bindings = zip params argValues
             let newEnv = buildEnvWithBindings savedEnv bindings
             withSavedEnv newEnv (eval body)
+        else if numArgs < numParams
+            then do
+                -- Partial application: create new closure with remaining params
+                let (usedParams, remainingParams) = splitAt numArgs params
+                let bindings = zip usedParams argValues
+                let partiallyAppliedEnv = buildEnvWithBindings savedEnv bindings
+                pure $ Just $ IR.Closure remainingParams body partiallyAppliedEnv
+            else throwError wrongNumberOfArguments
 
 eval :: IR -> Eval (Maybe IR)
 eval (IR.Symbol name) = evalSymbol name

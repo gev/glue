@@ -1,8 +1,0 @@
-(module math
-  (import math.arithmetic)
-  (import math.const)
-  (import math.logarithmic)
-  (import math.power)
-  (import math.trigonometric)
-  (import math.utility)
-)
