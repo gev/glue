@@ -13,37 +13,39 @@ spec :: Spec
 spec = describe "Glue.Lib.Math.Logarithmic.Lg (Test lg function)" do
     describe "Common logarithm function (base 10)" do
         it "returns lg(1) = 0" do
-            let args = [Number 1]
-            result <- runEvalLegacy (Lg.lg args) (E.fromFrame lib)
-            case result of
-                Left err -> expectationFailure $ "Lg failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number 0
-
-        it "returns lg(10) = 1" do
-            let args = [Number 10]
+            let args = [Integer 1]
             result <- runEvalLegacy (Lg.lg args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Lg failed: " <> show err
                 Right (res, _, _) -> case res of
-                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x - 1) < 1e-10)
+                    Float n -> n `shouldSatisfy` (\x -> abs x < 1e-10)
+                    _ -> expectationFailure "Expected a Float"
+
+        it "returns lg(10) = 1" do
+            let args = [Integer 10]
+            result <- runEvalLegacy (Lg.lg args) (E.fromFrame lib)
+            case result of
+                Left err -> expectationFailure $ "Lg failed: " <> show err
+                Right (res, _, _) -> case res of
+                    Float n -> n `shouldSatisfy` (\x -> abs (x - 1) < 1e-10)
                     _ -> expectationFailure "Expected a number"
 
         it "returns lg(100) = 2" do
-            let args = [Number 100]
+            let args = [Integer 100]
             result <- runEvalLegacy (Lg.lg args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Lg failed: " <> show err
                 Right (res, _, _) -> case res of
-                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x - 2) < 1e-10)
+                    Float n -> n `shouldSatisfy` (\x -> abs (x - 2) < 1e-10)
                     _ -> expectationFailure "Expected a number"
 
         it "fails with zero" do
-            let args = [Number 0]
+            let args = [Integer 0]
             result <- runEvalLegacy (Lg.lg args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft
 
         it "fails with negative numbers" do
-            let args = [Number (-1)]
+            let args = [Float (-1)]
             result <- runEvalLegacy (Lg.lg args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft
 
@@ -53,7 +55,7 @@ spec = describe "Glue.Lib.Math.Logarithmic.Lg (Test lg function)" do
             result `shouldSatisfy` isLeft
 
         it "fails with wrong number of arguments" do
-            let args = [Number 1, Number 2]
+            let args = [Integer 1, Integer 2]
             result <- runEvalLegacy (Lg.lg args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft
 

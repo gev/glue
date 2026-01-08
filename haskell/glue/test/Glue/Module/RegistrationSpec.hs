@@ -39,7 +39,7 @@ spec = do
                     List
                         [ Symbol "module"
                         , Symbol "test.empty"
-                        , List [Symbol "def", Symbol "x", Number 42]
+                        , List [Symbol "def", Symbol "x", Integer 42]
                         ]
 
             case registerModule registry moduleIR of
@@ -54,8 +54,8 @@ spec = do
 
         it "builds registry from multiple modules" $ do
             let modules =
-                    [ List [Symbol "module", Symbol "math.add", List [Symbol "export", Symbol "add"], List [Symbol "def", Symbol "add", Number 1]]
-                    , List [Symbol "module", Symbol "math.mul", List [Symbol "export", Symbol "mul"], List [Symbol "def", Symbol "mul", Number 2]]
+                    [ List [Symbol "module", Symbol "math.add", List [Symbol "export", Symbol "add"], List [Symbol "def", Symbol "add", Integer 1]]
+                    , List [Symbol "module", Symbol "math.mul", List [Symbol "export", Symbol "mul"], List [Symbol "def", Symbol "mul", Integer 2]]
                     ]
 
             case buildRegistry modules of
@@ -67,8 +67,8 @@ spec = do
 
         it "rejects duplicate module names" $ do
             let registry = emptyRegistry
-            let moduleIR1 = List [Symbol "module", Symbol "test.dup", List [Symbol "export", Symbol "x"], List [Symbol "def", Symbol "x", Number 1]]
-            let moduleIR2 = List [Symbol "module", Symbol "test.dup", List [Symbol "export", Symbol "y"], List [Symbol "def", Symbol "y", Number 2]]
+            let moduleIR1 = List [Symbol "module", Symbol "test.dup", List [Symbol "export", Symbol "x"], List [Symbol "def", Symbol "x", Integer 1]]
+            let moduleIR2 = List [Symbol "module", Symbol "test.dup", List [Symbol "export", Symbol "y"], List [Symbol "def", Symbol "y", Integer 2]]
 
             case registerModules registry [moduleIR1, moduleIR2] of
                 Right _ -> expectationFailure "Should have rejected duplicate module"

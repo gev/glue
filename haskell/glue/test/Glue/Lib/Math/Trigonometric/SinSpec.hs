@@ -13,28 +13,28 @@ spec :: Spec
 spec = describe "Glue.Lib.Math.Trigonometric.Sin (Test sin function)" do
     describe "Sine function" do
         it "returns 0 for sin(0)" do
-            let args = [Number 0]
+            let args = [Integer 0]
             result <- runEvalLegacy (Sin.sin args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Sin failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number 0
+                Right (res, _, _) -> res `shouldBe` Integer 0
 
         it "returns 1 for sin(π/2)" do
-            let args = [Number (fromFloatDigits @Double (pi / 2))]
+            let args = [Float (pi / 2)]
             result <- runEvalLegacy (Sin.sin args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Sin failed: " <> show err
                 Right (res, _, _) -> case res of
-                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x - 1) < 1e-10)
+                    Float n -> n `shouldSatisfy` (\x -> abs (x - 1) < 1e-10)
                     _ -> expectationFailure "Expected Number"
 
         it "returns 0 for sin(π)" do
-            let args = [Number (fromFloatDigits @Double pi)]
+            let args = [Float pi]
             result <- runEvalLegacy (Sin.sin args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Sin failed: " <> show err
                 Right (res, _, _) -> case res of
-                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x) < 1e-10)
+                    Float n -> n `shouldSatisfy` (\x -> abs (x) < 1e-10)
                     _ -> expectationFailure "Expected Number"
 
         it "fails with non-numbers" do
@@ -43,7 +43,7 @@ spec = describe "Glue.Lib.Math.Trigonometric.Sin (Test sin function)" do
             result `shouldSatisfy` isLeft
 
         it "fails with wrong number of arguments" do
-            let args = [Number 1, Number 2]
+            let args = [Integer 1, Integer 2]
             result <- runEvalLegacy (Sin.sin args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft
 

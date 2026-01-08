@@ -12,40 +12,65 @@ import Test.Hspec
 spec :: Spec
 spec = describe "Glue.Lib.Arithmetic.Sub (Test sub function)" do
     describe "Sub function" do
-        it "returns -5 for (- 5)" do
-            let args = [Number 5]
-            result <- runEvalLegacy (Sub.sub args) (E.fromFrame lib)
-            case result of
-                Left err -> expectationFailure $ "Sub failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number (-5)
-
         it "returns -3 for (- 1 4)" do
-            let args = [Number 1, Number 4]
+            let args = [Integer 1, Integer 4]
             result <- runEvalLegacy (Sub.sub args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Sub failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number (-3)
-
-        it "returns 2 for (- 10 4 4)" do
-            let args = [Number 10, Number 4, Number 4]
-            result <- runEvalLegacy (Sub.sub args) (E.fromFrame lib)
-            case result of
-                Left err -> expectationFailure $ "Sub failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number 2
+                Right (res, _, _) -> res `shouldBe` Integer (-3)
 
         it "returns 2.5 for (- 5.5 3)" do
-            let args = [Number (fromFloatDigits @Double 5.5), Number 3]
+            let args = [Float 5.5, Integer 3]
             result <- runEvalLegacy (Sub.sub args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Sub failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number (fromFloatDigits @Double 2.5)
+                Right (res, _, _) -> res `shouldBe` Float 2.5
 
         it "fails with no arguments" do
             let args = []
             result <- runEvalLegacy (Sub.sub args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft
 
-        it "fails with non-numbers" do
-            let args = [Number 5, String "hello"]
+        it "fails with one argument" do
+            let args = [Integer 5]
             result <- runEvalLegacy (Sub.sub args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft
+
+        it "fails with three arguments" do
+            let args = [Integer 10, Integer 4, Integer 4]
+            result <- runEvalLegacy (Sub.sub args) (E.fromFrame lib)
+            result `shouldSatisfy` isLeft
+
+        it "fails with non-numbers" do
+            let args = [Integer 5, String "hello"]
+            result <- runEvalLegacy (Sub.sub args) (E.fromFrame lib)
+            result `shouldSatisfy` isLeft
+
+    describe "Type promotion in subtraction" do
+        it "Integer - Integer = Integer" do
+            let args = [Integer 10, Integer 3]
+            result <- runEvalLegacy (Sub.sub args) (E.fromFrame lib)
+            case result of
+                Left err -> expectationFailure $ "Sub failed: " <> show err
+                Right (res, _, _) -> res `shouldBe` Integer 7
+
+        it "Integer - Float = Float" do
+            let args = [Integer 10, Float 3.5]
+            result <- runEvalLegacy (Sub.sub args) (E.fromFrame lib)
+            case result of
+                Left err -> expectationFailure $ "Sub failed: " <> show err
+                Right (res, _, _) -> res `shouldBe` Float 6.5
+
+        it "Float - Integer = Float" do
+            let args = [Float 10.5, Integer 3]
+            result <- runEvalLegacy (Sub.sub args) (E.fromFrame lib)
+            case result of
+                Left err -> expectationFailure $ "Sub failed: " <> show err
+                Right (res, _, _) -> res `shouldBe` Float 7.5
+
+        it "Float - Float = Float" do
+            let args = [Float 10.5, Float 3.5]
+            result <- runEvalLegacy (Sub.sub args) (E.fromFrame lib)
+            case result of
+                Left err -> expectationFailure $ "Sub failed: " <> show err
+                Right (res, _, _) -> res `shouldBe` Float 7.0

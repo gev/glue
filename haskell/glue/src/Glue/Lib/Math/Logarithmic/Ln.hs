@@ -9,10 +9,7 @@ ln :: [IR Eval] -> Eval (IR Eval)
 ln [arg] = do
     va <- evalRequired arg
     case va of
-        Number n -> do
-            let realVal = toRealFloat @Double n
-            if realVal <= 0
-                then throwError $ wrongArgumentType ["positive number"]
-                else pure $ Number (fromFloatDigits (Prelude.log realVal))
+        Integer n -> pure $ Float (log (fromIntegral n))
+        Float n -> pure $ Float (log n)
         _ -> throwError $ wrongArgumentType ["number"]
-ln _ = throwError $ wrongArgumentType ["number"]
+ln _ = throwError wrongNumberOfArguments

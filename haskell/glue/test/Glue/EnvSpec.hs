@@ -16,7 +16,7 @@ type E = Env Identity
 instance Arbitrary (IR Identity) where
     arbitrary =
         oneof
-            [ Number <$> arbitrary
+            [ Integer <$> arbitrary
             , Symbol <$> arbitrary
             , String <$> arbitrary
             ]
@@ -32,15 +32,15 @@ spec = describe "Glue.Env (Test stack memory model)" do
                 _ -> False
 
         it "fromList: initialize environment stack" do
-            let env = fromList [("a", Number 1), ("b", Number 2)] :: E
-            lookupLocal "a" env `shouldBe` Just (Number 1)
-            lookupVar "b" env `shouldBe` Right (Number 2)
+            let env = fromList [("a", Integer 1), ("b", Integer 2)] :: E
+            lookupLocal "a" env `shouldBe` Just (Integer 1)
+            lookupVar "b" env `shouldBe` Right (Integer 2)
 
         it "pushFrame / popFrame: manage stack (LIFO)" do
-            let base = fromList [("x", Number 1)]
+            let base = fromList [("x", Integer 1)]
             let pushed = pushFrame base
             lookupLocal "x" pushed `shouldBe` Nothing
-            lookupVar "x" pushed `shouldBe` Right (Number 1)
+            lookupVar "x" pushed `shouldBe` Right (Integer 1)
             popFrame pushed `shouldBe` base
 
         it "popFrame don't crash on empty stack" do
@@ -48,7 +48,7 @@ spec = describe "Glue.Env (Test stack memory model)" do
 
     describe "Define and search (shadowing)" do
         prop "defineVar: always define at the top frame" $ \name (val :: V) -> do
-            let env = pushFrame (fromList [("other", Number 0)])
+            let env = pushFrame (fromList [("other", Integer 0)])
             let newEnv = defineVar name val env
             lookupLocal name newEnv `shouldBe` Just val
 
@@ -62,8 +62,8 @@ spec = describe "Glue.Env (Test stack memory model)" do
 
     describe "Variable updating" do
         it "updateVar: update values in the place, don't create a new one" do
-            let vOld = Number 10
-            let vNew = Number 20
+            let vOld = Integer 10
+            let vNew = Integer 20
             let env = pushFrame (fromList [("x", vOld)])
 
             case updateVar "x" vNew env of

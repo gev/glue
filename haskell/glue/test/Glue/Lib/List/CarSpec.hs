@@ -10,11 +10,11 @@ spec :: Spec
 spec = describe "Glue.Lib.List.Car (Test car function)" do
     it "returns the first element of a list" do
         let initialEnv = E.emptyEnv
-        let args = [List [Number 1, Number 2, Number 3]]
+        let args = [List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalLegacy (car args) initialEnv
         case result of
             Left err -> expectationFailure $ "Car failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` Number 1
+            Right (res, _, _) -> res `shouldBe` Integer 1
 
     it "fails on empty list" do
         let initialEnv = E.emptyEnv
@@ -26,7 +26,7 @@ spec = describe "Glue.Lib.List.Car (Test car function)" do
 
     it "fails on non-list" do
         let initialEnv = E.emptyEnv
-        let args = [Number 42]
+        let args = [Integer 42]
         result <- runEvalLegacy (car args) initialEnv
         case result of
             Left _ -> pure () -- Expected error

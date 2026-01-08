@@ -10,31 +10,31 @@ spec :: Spec
 spec = describe "Glue.Lib.List.Nth (Test nth function)" do
     it "returns element at index 0" do
         let initialEnv = E.emptyEnv
-        let args = [Number 0, List [Number 1, Number 2, Number 3]]
+        let args = [Integer 0, List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalLegacy (nth args) initialEnv
         case result of
             Left err -> expectationFailure $ "Nth failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` Number 1
+            Right (res, _, _) -> res `shouldBe` Integer 1
 
     it "returns element at index 1" do
         let initialEnv = E.emptyEnv
-        let args = [Number 1, List [Number 1, Number 2, Number 3]]
+        let args = [Integer 1, List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalLegacy (nth args) initialEnv
         case result of
             Left err -> expectationFailure $ "Nth failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` Number 2
+            Right (res, _, _) -> res `shouldBe` Integer 2
 
     it "returns element at last index" do
         let initialEnv = E.emptyEnv
-        let args = [Number 2, List [Number 1, Number 2, Number 3]]
+        let args = [Integer 2, List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalLegacy (nth args) initialEnv
         case result of
             Left err -> expectationFailure $ "Nth failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` Number 3
+            Right (res, _, _) -> res `shouldBe` Integer 3
 
     it "fails on negative index" do
         let initialEnv = E.emptyEnv
-        let args = [Number (-1), List [Number 1, Number 2, Number 3]]
+        let args = [Float (-1), List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalLegacy (nth args) initialEnv
         case result of
             Left _ -> pure () -- Expected error
@@ -42,7 +42,7 @@ spec = describe "Glue.Lib.List.Nth (Test nth function)" do
 
     it "fails on index out of bounds" do
         let initialEnv = E.emptyEnv
-        let args = [Number 3, List [Number 1, Number 2, Number 3]]
+        let args = [Integer 3, List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalLegacy (nth args) initialEnv
         case result of
             Left _ -> pure () -- Expected error
@@ -50,7 +50,7 @@ spec = describe "Glue.Lib.List.Nth (Test nth function)" do
 
     it "fails on non-number index" do
         let initialEnv = E.emptyEnv
-        let args = [String "0", List [Number 1, Number 2, Number 3]]
+        let args = [String "0", List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalLegacy (nth args) initialEnv
         case result of
             Left _ -> pure () -- Expected error
@@ -58,7 +58,7 @@ spec = describe "Glue.Lib.List.Nth (Test nth function)" do
 
     it "fails on non-list" do
         let initialEnv = E.emptyEnv
-        let args = [Number 0, Number 42]
+        let args = [Integer 0, Integer 42]
         result <- runEvalLegacy (nth args) initialEnv
         case result of
             Left _ -> pure () -- Expected error

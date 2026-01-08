@@ -13,28 +13,28 @@ spec :: Spec
 spec = describe "Glue.Lib.Math.Trigonometric.Cos (Test cos function)" do
     describe "Cosine function" do
         it "returns 1 for cos(0)" do
-            let args = [Number 0]
+            let args = [Integer 0]
             result <- runEvalLegacy (Cos.cos args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Cos failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number 1
+                Right (res, _, _) -> res `shouldBe` Integer 1
 
         it "returns 0 for cos(π/2)" do
-            let args = [Number (fromFloatDigits @Double (pi / 2))]
+            let args = [Float (pi / 2)]
             result <- runEvalLegacy (Cos.cos args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Cos failed: " <> show err
                 Right (res, _, _) -> case res of
-                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x) < 1e-10)
+                    Float n -> n `shouldSatisfy` (\x -> abs (x) < 1e-10)
                     _ -> expectationFailure "Expected Number"
 
         it "returns -1 for cos(π)" do
-            let args = [Number (fromFloatDigits @Double pi)]
+            let args = [Float pi]
             result <- runEvalLegacy (Cos.cos args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Cos failed: " <> show err
                 Right (res, _, _) -> case res of
-                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x - (-1)) < 1e-10)
+                    Float n -> n `shouldSatisfy` (\x -> abs (x - (-1)) < 1e-10)
                     _ -> expectationFailure "Expected Number"
 
         it "fails with non-numbers" do
@@ -43,7 +43,7 @@ spec = describe "Glue.Lib.Math.Trigonometric.Cos (Test cos function)" do
             result `shouldSatisfy` isLeft
 
         it "fails with wrong number of arguments" do
-            let args = [Number 1, Number 2]
+            let args = [Integer 1, Integer 2]
             result <- runEvalLegacy (Cos.cos args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft
 

@@ -13,28 +13,28 @@ spec :: Spec
 spec = describe "Glue.Lib.Math.Power.Exp (Test exp function)" do
     describe "Exponential function" do
         it "returns e^0 = 1" do
-            let args = [Number 0]
+            let args = [Integer 0]
             result <- runEvalLegacy (Exp.exp args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Exp failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number 1
+                Right (res, _, _) -> res `shouldBe` Integer 1
 
         it "returns e^1 = e" do
-            let args = [Number 1]
+            let args = [Integer 1]
             result <- runEvalLegacy (Exp.exp args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Exp failed: " <> show err
                 Right (res, _, _) -> case res of
-                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x - exp 1) < 1e-10)
+                    Float n -> n `shouldSatisfy` (\x -> abs (x - exp 1) < 1e-10)
                     _ -> expectationFailure "Expected a number"
 
         it "returns e^2" do
-            let args = [Number 2]
+            let args = [Integer 2]
             result <- runEvalLegacy (Exp.exp args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Exp failed: " <> show err
                 Right (res, _, _) -> case res of
-                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x - exp 2) < 1e-10)
+                    Float n -> n `shouldSatisfy` (\x -> abs (x - exp 2) < 1e-10)
                     _ -> expectationFailure "Expected a number"
 
         it "fails with non-numbers" do
@@ -43,7 +43,7 @@ spec = describe "Glue.Lib.Math.Power.Exp (Test exp function)" do
             result `shouldSatisfy` isLeft
 
         it "fails with wrong number of arguments" do
-            let args = [Number 1, Number 2]
+            let args = [Integer 1, Integer 2]
             result <- runEvalLegacy (Exp.exp args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft
 

@@ -10,19 +10,19 @@ spec :: Spec
 spec = describe "Glue.Lib.List.Last (Test last function)" do
     it "returns the last element of a list" do
         let initialEnv = E.emptyEnv
-        let args = [List [Number 1, Number 2, Number 3]]
+        let args = [List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalLegacy (Last.last args) initialEnv
         case result of
             Left err -> expectationFailure $ "Last failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` Number 3
+            Right (res, _, _) -> res `shouldBe` Integer 3
 
     it "returns the only element of a single-element list" do
         let initialEnv = E.emptyEnv
-        let args = [List [Number 42]]
+        let args = [List [Integer 42]]
         result <- runEvalLegacy (Last.last args) initialEnv
         case result of
             Left err -> expectationFailure $ "Last failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` Number 42
+            Right (res, _, _) -> res `shouldBe` Integer 42
 
     it "returns string element" do
         let initialEnv = E.emptyEnv
@@ -42,7 +42,7 @@ spec = describe "Glue.Lib.List.Last (Test last function)" do
 
     it "fails on non-list argument" do
         let initialEnv = E.emptyEnv
-        let args = [Number 42]
+        let args = [Integer 42]
         result <- runEvalLegacy (Last.last args) initialEnv
         case result of
             Left _ -> pure () -- Expected error

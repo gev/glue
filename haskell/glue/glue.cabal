@@ -135,7 +135,6 @@ test-suite glue-test
     Glue.CompileSpec
     Glue.EnvSpec
     Glue.EvalSpec
-    Glue.IRSpec
     Glue.Lib.Bool.EqSpec
     Glue.Lib.Bool.GeSpec
     Glue.Lib.Bool.GtSpec

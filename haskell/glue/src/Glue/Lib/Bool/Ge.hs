@@ -9,6 +9,9 @@ ge [a, b] = do
     va <- evalRequired a
     vb <- evalRequired b
     case (va, vb) of
-        (Number na, Number nb) -> pure . Bool $ na >= nb
+        (Integer na, Integer nb) -> pure . Bool $ na >= nb
+        (Float na, Float nb) -> pure . Bool $ na >= nb
+        (Integer na, Float nb) -> pure . Bool $ fromIntegral na >= nb
+        (Float na, Integer nb) -> pure . Bool $ na >= fromIntegral nb
         _ -> throwError $ wrongArgumentType ["number", "number"]
 ge _ = throwError $ wrongArgumentType ["number", "number"]

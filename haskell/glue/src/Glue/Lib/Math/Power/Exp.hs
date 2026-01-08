@@ -9,6 +9,7 @@ exp :: [IR Eval] -> Eval (IR Eval)
 exp [arg] = do
     va <- evalRequired arg
     case va of
-        Number n -> pure $ Number (fromFloatDigits @Double (Prelude.exp (toRealFloat n)))
+        Integer n -> pure $ Float (Prelude.exp (fromIntegral n))
+        Float n -> pure $ Float (Prelude.exp n)
         _ -> throwError $ wrongArgumentType ["number"]
 exp _ = throwError wrongNumberOfArguments

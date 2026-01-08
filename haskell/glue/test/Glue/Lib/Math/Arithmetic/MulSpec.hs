@@ -13,32 +13,64 @@ spec :: Spec
 spec = describe "Glue.Lib.Arithmetic.Mul (Test mul function)" do
     describe "Mul function" do
         it "returns 6 for (* 2 3)" do
-            let args = [Number 2, Number 3]
+            let args = [Integer 2, Integer 3]
             result <- runEvalLegacy (Mul.mul args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Mul failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number 6
-
-        it "returns 24 for (* 2 3 4)" do
-            let args = [Number 2, Number 3, Number 4]
-            result <- runEvalLegacy (Mul.mul args) (E.fromFrame lib)
-            case result of
-                Left err -> expectationFailure $ "Mul failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number 24
+                Right (res, _, _) -> res `shouldBe` Integer 6
 
         it "returns 7.5 for (* 2.5 3)" do
-            let args = [Number (fromFloatDigits @Double 2.5), Number 3]
+            let args = [Float 2.5, Integer 3]
             result <- runEvalLegacy (Mul.mul args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Mul failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number (fromFloatDigits @Double 7.5)
+                Right (res, _, _) -> res `shouldBe` Float 7.5
 
         it "fails with no arguments" do
             let args = []
             result <- runEvalLegacy (Mul.mul args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft
 
-        it "fails with non-numbers" do
-            let args = [Number 2, String "hello"]
+        it "fails with one argument" do
+            let args = [Integer 2]
             result <- runEvalLegacy (Mul.mul args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft
+
+        it "fails with three arguments" do
+            let args = [Integer 2, Integer 3, Integer 4]
+            result <- runEvalLegacy (Mul.mul args) (E.fromFrame lib)
+            result `shouldSatisfy` isLeft
+
+        it "fails with non-numbers" do
+            let args = [Integer 2, String "hello"]
+            result <- runEvalLegacy (Mul.mul args) (E.fromFrame lib)
+            result `shouldSatisfy` isLeft
+
+    describe "Type promotion in multiplication" do
+        it "Integer * Integer = Integer" do
+            let args = [Integer 5, Integer 3]
+            result <- runEvalLegacy (Mul.mul args) (E.fromFrame lib)
+            case result of
+                Left err -> expectationFailure $ "Mul failed: " <> show err
+                Right (res, _, _) -> res `shouldBe` Integer 15
+
+        it "Integer * Float = Float" do
+            let args = [Integer 5, Float 3.5]
+            result <- runEvalLegacy (Mul.mul args) (E.fromFrame lib)
+            case result of
+                Left err -> expectationFailure $ "Mul failed: " <> show err
+                Right (res, _, _) -> res `shouldBe` Float 17.5
+
+        it "Float * Integer = Float" do
+            let args = [Float 5.5, Integer 3]
+            result <- runEvalLegacy (Mul.mul args) (E.fromFrame lib)
+            case result of
+                Left err -> expectationFailure $ "Mul failed: " <> show err
+                Right (res, _, _) -> res `shouldBe` Float 16.5
+
+        it "Float * Float = Float" do
+            let args = [Float 5.5, Float 3.5]
+            result <- runEvalLegacy (Mul.mul args) (E.fromFrame lib)
+            case result of
+                Left err -> expectationFailure $ "Mul failed: " <> show err
+                Right (res, _, _) -> res `shouldBe` Float 19.25

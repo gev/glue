@@ -10,11 +10,11 @@ spec :: Spec
 spec = describe "Glue.Lib.List.Cdr (Test cdr function)" do
     it "returns the rest of a list" do
         let initialEnv = E.emptyEnv
-        let args = [List [Number 1, Number 2, Number 3]]
+        let args = [List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalLegacy (cdr args) initialEnv
         case result of
             Left err -> expectationFailure $ "Cdr failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Number 2, Number 3]
+            Right (res, _, _) -> res `shouldBe` List [Integer 2, Integer 3]
 
     it "fails on empty list" do
         let initialEnv = E.emptyEnv
@@ -26,7 +26,7 @@ spec = describe "Glue.Lib.List.Cdr (Test cdr function)" do
 
     it "fails on non-list" do
         let initialEnv = E.emptyEnv
-        let args = [Number 42]
+        let args = [Integer 42]
         result <- runEvalLegacy (cdr args) initialEnv
         case result of
             Left _ -> pure () -- Expected error

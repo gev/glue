@@ -12,26 +12,26 @@ spec :: Spec
 spec = describe "Glue.Lib.Builtin.Set (Test set special form)" do
     describe "Updating variables" do
         it "updates an existing variable" do
-            let initialEnv = E.fromList [("x", Number 10)]
-            let args = [Symbol "x", Number 20]
+            let initialEnv = E.fromList [("x", Integer 10)]
+            let args = [Symbol "x", Integer 20]
             result <- runEvalLegacy (set args) initialEnv
             case result of
                 Left err -> expectationFailure $ "Set failed: " <> show err
                 Right (res, finalEnv, _) -> do
                     res `shouldBe` Nothing
-                    E.lookupVar "x" finalEnv `shouldBe` Right (Number 20)
+                    E.lookupVar "x" finalEnv `shouldBe` Right (Integer 20)
 
         it "fails to set unbound variable" do
             let initialEnv = E.emptyEnv
-            let args = [Symbol "x", Number 42]
+            let args = [Symbol "x", Integer 42]
             result <- runEvalLegacy (set args) initialEnv
             result `shouldSatisfy` isLeft
 
     describe "Setting object properties" do
         it "sets a property on an object" do
-            let obj = Object (Map.fromList [("a", Number 1)])
+            let obj = Object (Map.fromList [("a", Integer 1)])
             let initialEnv = E.fromList [("obj", obj)]
-            let args = [Symbol "obj.b", Number 2]
+            let args = [Symbol "obj.b", Integer 2]
             result <- runEvalLegacy (set args) initialEnv
             case result of
                 Left err -> expectationFailure $ "Set failed: " <> show err
@@ -39,13 +39,13 @@ spec = describe "Glue.Lib.Builtin.Set (Test set special form)" do
                     res `shouldBe` Nothing
                     case E.lookupVar "obj" finalEnv of
                         Right (Object newMap) -> do
-                            Map.lookup "a" newMap `shouldBe` Just (Number 1)
-                            Map.lookup "b" newMap `shouldBe` Just (Number 2)
+                            Map.lookup "a" newMap `shouldBe` Just (Integer 1)
+                            Map.lookup "b" newMap `shouldBe` Just (Integer 2)
                         _ -> expectationFailure "Object not found or not an object"
 
         it "fails to set property on non-object" do
-            let initialEnv = E.fromList [("x", Number 10)]
-            let args = [Symbol "x.prop", Number 42]
+            let initialEnv = E.fromList [("x", Integer 10)]
+            let args = [Symbol "x.prop", Integer 42]
             result <- runEvalLegacy (set args) initialEnv
             result `shouldSatisfy` isLeft
 

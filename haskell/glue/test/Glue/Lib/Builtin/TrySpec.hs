@@ -27,7 +27,7 @@ spec = describe "Glue.Lib.Builtin.Try (Test try special form)" do
 
     it "returns normal value when no exception" do
         let code = "(try 42 (catch \"any-error\" (lambda (err) \"caught\")))"
-        runCode code `shouldReturn` Right (Just (Number 42))
+        runCode code `shouldReturn` Right (Just (Integer 42))
 
     it "re-throws unmatched exception" do
         let code = "(try (error test-error (:msg \"hello\")) (catch \"other-error\" (lambda (err) err.msg)))"
@@ -42,7 +42,7 @@ spec = describe "Glue.Lib.Builtin.Try (Test try special form)" do
 
     it "handler can be any callable" do
         let code = "(try (error test-error (:val 123)) (catch \"test-error\" (lambda (err) (+ err.val 1))))"
-        runCode code `shouldReturn` Right (Just (Number 124))
+        runCode code `shouldReturn` Right (Just (Integer 124))
 
     it "multiple catch clauses work" do
         let code = "(try (error second-error (:msg \"second\")) (catch \"first-error\" (lambda (err) \"first\")) (catch \"second-error\" (lambda (err) err.msg)))"

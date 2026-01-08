@@ -12,27 +12,27 @@ spec = do
         describe "Atoms" $ do
             describe "Numbers" $ do
                 it "parses integers" $ do
-                    parseGlue "123" `shouldBe` Right (Number 123)
+                    parseGlue "123" `shouldBe` Right (Integer 123)
 
                 it "parses negative numbers" $ do
-                    parseGlue "-42" `shouldBe` Right (Number (-42))
+                    parseGlue "-42" `shouldBe` Right (Integer (-42))
 
                 it "parses floats" $ do
-                    parseGlue "3.14" `shouldBe` Right (Number 3.14)
+                    parseGlue "3.14" `shouldBe` Right (Float 3.14)
 
                 it "parses scientific notation" $ do
-                    parseGlue "1.23e4" `shouldBe` Right (Number 12300)
-                    parseGlue "1.23E4" `shouldBe` Right (Number 12300)
-                    parseGlue "1.23e+4" `shouldBe` Right (Number 12300)
-                    parseGlue "1.23E+4" `shouldBe` Right (Number 12300)
-                    parseGlue "1.23e-4" `shouldBe` Right (Number 0.000123)
-                    parseGlue "1.23E-4" `shouldBe` Right (Number 0.000123)
-                    parseGlue "-1.23e4" `shouldBe` Right (Number (-12300))
-                    parseGlue "-1.23E4" `shouldBe` Right (Number (-12300))
-                    parseGlue "-1.23e+4" `shouldBe` Right (Number (-12300))
-                    parseGlue "-1.23E+4" `shouldBe` Right (Number (-12300))
-                    parseGlue "-1.23e-4" `shouldBe` Right (Number (-0.000123))
-                    parseGlue "-1.23E-4" `shouldBe` Right (Number (-0.000123))
+                    parseGlue "1.23e4" `shouldBe` Right (Float 12300)
+                    parseGlue "1.23E4" `shouldBe` Right (Float 12300)
+                    parseGlue "1.23e+4" `shouldBe` Right (Float 12300)
+                    parseGlue "1.23E+4" `shouldBe` Right (Float 12300)
+                    parseGlue "1.23e-4" `shouldBe` Right (Float 0.000123)
+                    parseGlue "1.23E-4" `shouldBe` Right (Float 0.000123)
+                    parseGlue "-1.23e4" `shouldBe` Right (Float (-12300))
+                    parseGlue "-1.23E4" `shouldBe` Right (Float (-12300))
+                    parseGlue "-1.23e+4" `shouldBe` Right (Float (-12300))
+                    parseGlue "-1.23E+4" `shouldBe` Right (Float (-12300))
+                    parseGlue "-1.23e-4" `shouldBe` Right (Float (-0.000123))
+                    parseGlue "-1.23E-4" `shouldBe` Right (Float (-0.000123))
 
             describe "Strings" $ do
                 it "parses strings" $ do
@@ -101,20 +101,20 @@ spec = do
 
         describe "Operator Expressions" $ do
             it "parses complex operator expressions" $ do
-                parseGlue "(+ 2 3)" `shouldBe` Right (List [Symbol "+", Number 2, Number 3])
+                parseGlue "(+ 2 3)" `shouldBe` Right (List [Symbol "+", Integer 2, Integer 3])
                 parseGlue "(< x y)" `shouldBe` Right (List [Symbol "<", Symbol "x", Symbol "y"])
                 parseGlue "(== a b)" `shouldBe` Right (List [Symbol "==", Symbol "a", Symbol "b"])
-                parseGlue "(* 2 3 4)" `shouldBe` Right (List [Symbol "*", Number 2, Number 3, Number 4])
-                parseGlue "(<= x 10)" `shouldBe` Right (List [Symbol "<=", Symbol "x", Number 10])
+                parseGlue "(* 2 3 4)" `shouldBe` Right (List [Symbol "*", Integer 2, Integer 3, Integer 4])
+                parseGlue "(<= x 10)" `shouldBe` Right (List [Symbol "<=", Symbol "x", Integer 10])
 
         describe "Rule: No Mixed Content" $ do
             it "successfully parses pure list" $ do
                 let input = "(1 2 \"test\")"
-                parseGlue input `shouldBe` Right (List [Number 1, Number 2, String "test"])
+                parseGlue input `shouldBe` Right (List [Integer 1, Integer 2, String "test"])
 
             it "successfully parses pure object" $ do
                 let input = "(:id 1 :type \"lamp\")"
-                parseGlue input `shouldBe` Right (Object [("id", Number 1), ("type", String "lamp")])
+                parseGlue input `shouldBe` Right (Object [("id", Integer 1), ("type", String "lamp")])
 
             it "FAILS when mixing atoms and properties" $ do
                 parseGlue "(:id 1 \"oops\")" `shouldBe` Left (MixedContent "\"oops\"")
@@ -149,7 +149,7 @@ spec = do
 
         describe "Equivalent Syntaxes" $ do
             it "parses (f :x 1) and (f (:x 1)) identically" $ do
-                let expected = Right (List [Symbol "f", Object [("x", Number 1)]])
+                let expected = Right (List [Symbol "f", Object [("x", Integer 1)]])
                 parseGlue "(f :x 1)" `shouldBe` expected
                 parseGlue "(f (:x 1))" `shouldBe` expected
 
@@ -157,15 +157,51 @@ spec = do
                 let grouped = parseGlue "(f :x 1 :y 2)"
                 let separate = parseGlue "(f (:x 1) (:y 2))"
                 grouped `shouldNotBe` separate
-                grouped `shouldBe` Right (List [Symbol "f", Object [("x", Number 1), ("y", Number 2)]])
-                separate `shouldBe` Right (List [Symbol "f", Object [("x", Number 1)], Object [("y", Number 2)]])
+                grouped `shouldBe` Right (List [Symbol "f", Object [("x", Integer 1), ("y", Integer 2)]])
+                separate `shouldBe` Right (List [Symbol "f", Object [("x", Integer 1)], Object [("y", Integer 2)]])
 
             it "parses lambda with named arg" $ do
                 let input = "((lambda (it) it) (:it 1))"
-                let expected = Right (List [List [Symbol "lambda", List [Symbol "it"], Symbol "it"], Object [("it", Number 1)]])
+                let expected = Right (List [List [Symbol "lambda", List [Symbol "it"], Symbol "it"], Object [("it", Integer 1)]])
                 parseGlue input `shouldBe` expected
 
             it "parses lambda with multiple named args" $ do
                 let input = "((lambda (it) it) (:it 1) (:yet 2))"
-                let expected = Right (List [List [Symbol "lambda", List [Symbol "it"], Symbol "it"], Object [("it", Number 1)], Object [("yet", Number 2)]])
+                let expected = Right (List [List [Symbol "lambda", List [Symbol "it"], Symbol "it"], Object [("it", Integer 1)], Object [("yet", Integer 2)]])
                 parseGlue input `shouldBe` expected
+
+        describe "Edge Cases" $ do
+            it "parses empty input" $ do
+                parseGlue "" `shouldSatisfy` isLeft
+
+            it "parses whitespace only" $ do
+                parseGlue "   \n\t  " `shouldSatisfy` isLeft
+
+            it "parses deeply nested structures" $ do
+                let input = "((((a))))"
+                parseGlue input `shouldBe` Right (List [List [List [List [Symbol "a"]]]])
+
+            it "parses mixed nested objects and lists" $ do
+                let input = "(:a (:b (1 2)) :c 3)"
+                let expected = Right (Object [("a", Object [("b", List [Integer 1, Integer 2])]), ("c", Integer 3)])
+                parseGlue input `shouldBe` expected
+
+        describe "Error Recovery" $ do
+            it "provides meaningful error messages" $ do
+                let result = parseGlue "(+ 1"
+                result `shouldSatisfy` isLeft
+            -- The error should contain information about the parsing failure
+
+            it "handles malformed numbers" $ do
+                parseGlue "123.456.789" `shouldSatisfy` isLeft
+                parseGlue "12.34e56e78" `shouldSatisfy` isLeft
+
+        describe "Unicode and Special Characters" $ do
+            it "handles unicode in strings" $ do
+                parseGlue "\"hello 世界\"" `shouldBe` Right (String "hello 世界")
+
+            it "handles escape sequences in strings" $ do
+                parseGlue "\"hello\\nworld\"" `shouldBe` Right (String "hello\\nworld")
+
+            it "handles symbols with unicode" $ do
+                parseGlue "变量" `shouldBe` Right (Symbol "变量")

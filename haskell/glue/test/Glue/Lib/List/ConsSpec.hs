@@ -10,11 +10,11 @@ spec :: Spec
 spec = describe "Glue.Lib.List.Cons (Test cons function)" do
     it "constructs a list by prepending an element" do
         let initialEnv = E.emptyEnv
-        let args = [Number 1, List [Number 2, Number 3]]
+        let args = [Integer 1, List [Integer 2, Integer 3]]
         result <- runEvalLegacy (cons args) initialEnv
         case result of
             Left err -> expectationFailure $ "Cons failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Number 1, Number 2, Number 3]
+            Right (res, _, _) -> res `shouldBe` List [Integer 1, Integer 2, Integer 3]
 
     it "constructs a list with empty tail" do
         let initialEnv = E.emptyEnv
@@ -26,7 +26,7 @@ spec = describe "Glue.Lib.List.Cons (Test cons function)" do
 
     it "fails on non-list tail" do
         let initialEnv = E.emptyEnv
-        let args = [Number 1, Number 2]
+        let args = [Integer 1, Integer 2]
         result <- runEvalLegacy (cons args) initialEnv
         case result of
             Left _ -> pure () -- Expected error

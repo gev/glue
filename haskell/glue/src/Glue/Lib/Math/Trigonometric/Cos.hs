@@ -9,6 +9,7 @@ cos :: [IR Eval] -> Eval (IR Eval)
 cos [arg] = do
     va <- evalRequired arg
     case va of
-        Number n -> pure $ Number (fromFloatDigits @Double (Prelude.cos (toRealFloat n)))
+        Integer n -> pure $ Float (Prelude.cos (fromIntegral n))
+        Float n -> pure $ Float (Prelude.cos n)
         _ -> throwError $ wrongArgumentType ["number"]
 cos _ = throwError wrongNumberOfArguments

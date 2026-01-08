@@ -9,9 +9,21 @@ mod [arg1, arg2] = do
     va1 <- evalRequired arg1
     va2 <- evalRequired arg2
     case (va1, va2) of
-        (Number n1, Number n2) -> do
+        (Integer n1, Integer n2) -> do
             if n2 == 0
                 then throwError divByZero
-                else pure $ Number (fromIntegral @Int (truncate n1 `Prelude.mod` truncate n2))
+                else pure $ Integer (n1 `Prelude.mod` n2)
+        (Float n1, Float n2) -> do
+            if n2 == 0
+                then throwError divByZero
+                else pure $ Float (fromIntegral @Int (truncate n1 `Prelude.mod` truncate n2))
+        (Integer n1, Float n2) -> do
+            if n2 == 0
+                then throwError divByZero
+                else pure $ Float (fromIntegral @Int (n1 `Prelude.mod` truncate n2))
+        (Float n1, Integer n2) -> do
+            if n2 == 0
+                then throwError divByZero
+                else pure $ Float (fromIntegral @Int (truncate n1 `Prelude.mod` n2))
         _ -> throwError $ wrongArgumentType ["number", "number"]
 mod _ = throwError wrongNumberOfArguments

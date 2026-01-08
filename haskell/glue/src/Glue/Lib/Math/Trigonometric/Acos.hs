@@ -9,6 +9,7 @@ acos :: [IR Eval] -> Eval (IR Eval)
 acos [arg] = do
     va <- evalRequired arg
     case va of
-        Number n -> pure $ Number (fromFloatDigits @Double (Prelude.acos (toRealFloat n)))
+        Integer n -> pure $ Float (Prelude.acos (fromIntegral n))
+        Float n -> pure $ Float (Prelude.acos n)
         _ -> throwError $ wrongArgumentType ["number"]
 acos _ = throwError wrongNumberOfArguments

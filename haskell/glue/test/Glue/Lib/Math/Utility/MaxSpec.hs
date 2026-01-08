@@ -12,50 +12,50 @@ spec :: Spec
 spec = describe "Glue.Lib.Math.Utility.Max (Test max function)" do
     describe "Maximum function" do
         it "returns 5 for max(2, 5)" do
-            let args = [Number 2, Number 5]
+            let args = [Integer 2, Integer 5]
             result <- runEvalLegacy (Max.max args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Max failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number 5
+                Right (res, _, _) -> res `shouldBe` Integer 5
 
         it "returns 3 for max(3, 3)" do
-            let args = [Number 3, Number 3]
+            let args = [Integer 3, Integer 3]
             result <- runEvalLegacy (Max.max args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Max failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number 3
+                Right (res, _, _) -> res `shouldBe` Integer 3
 
         it "returns -2 for max(-5, -2)" do
-            let args = [Number (-5), Number (-2)]
+            let args = [Float (-5), Float (-2)]
             result <- runEvalLegacy (Max.max args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Max failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number (-2)
+                Right (res, _, _) -> res `shouldBe` Float (-2)
 
         it "returns 10 for max(1, 10)" do
-            let args = [Number 1, Number 10]
+            let args = [Integer 1, Integer 10]
             result <- runEvalLegacy (Max.max args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Max failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number 10
+                Right (res, _, _) -> res `shouldBe` Integer 10
 
         it "fails with non-numbers (first arg)" do
-            let args = [String "hello", Number 2]
+            let args = [String "hello", Integer 2]
             result <- runEvalLegacy (Max.max args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft
 
         it "fails with non-numbers (second arg)" do
-            let args = [Number 2, String "hello"]
+            let args = [Integer 2, String "hello"]
             result <- runEvalLegacy (Max.max args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft
 
         it "fails with wrong number of arguments (one)" do
-            let args = [Number 2]
+            let args = [Integer 2]
             result <- runEvalLegacy (Max.max args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft
 
         it "fails with wrong number of arguments (three)" do
-            let args = [Number 2, Number 3, Number 4]
+            let args = [Integer 2, Integer 3, Integer 4]
             result <- runEvalLegacy (Max.max args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft
 

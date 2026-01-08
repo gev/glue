@@ -14,13 +14,13 @@ spec = describe "Glue.Lib.Builtin.Closure (Test closures)" do
         extractSymbols input `shouldBe` Right ["a", "b"]
 
     it "extractSymbols: fails if list contains non-symbols" do
-        let input = [Symbol "a", Number 1]
+        let input = [Symbol "a", Integer 1]
         extractSymbols input `shouldSatisfy` isLeft
 
     it "makeClosure: packs parameters and body, preserving Env" do
-        let env = fromList [("x", Number 10)]
+        let env = fromList [("x", Integer 10)]
         let closure = makeClosure ["a"] (Symbol "x") env
         case closure of
             Closure ["a"] (Symbol "x") savedEnv ->
-                lookupVar "x" savedEnv `shouldBe` Right (Number 10)
+                lookupVar "x" savedEnv `shouldBe` Right (Integer 10)
             _ -> expectationFailure "Invalid closure structure"

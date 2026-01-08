@@ -3,6 +3,8 @@ module Glue.Parser (
     parseGlue,
 ) where
 
+import Control.Monad (guard)
+import Data.Scientific (Scientific)
 import Data.Text (Text)
 import Data.Text qualified as T
 import Glue.AST (AST (..))
@@ -33,12 +35,23 @@ pGlue =
     choice
         [ pExprOrList
         , pString
-        , pNumber
+        , pInteger
+        , pFloat
         , pSymbol
         ]
 
-pNumber :: Parser AST
-pNumber = try $ Number <$> lexeme (L.signed (pure ()) L.scientific)
+pInteger :: Parser AST
+pInteger = try $ do
+    n <- lexeme (L.signed (pure ()) L.decimal)
+    notFollowedBy (char '.')
+    pure $ Integer n
+
+pFloat :: Parser AST
+pFloat = try $ do
+    n <- lexeme (L.signed (pure ()) L.scientific)
+    let str = show n
+    guard ('.' `elem` str || 'e' `elem` str || 'E' `elem` str)
+    pure $ Float (fromRational $ toRational n)
 
 pString :: Parser AST
 pString = String . T.pack <$> lexeme (char '"' >> manyTill L.charLiteral (char '"'))

@@ -8,6 +8,6 @@ import Glue.IR (Frame, IR (..))
 const :: Frame Eval
 const =
     E.frameFromList
-        [ ("pi", Number (fromFloatDigits @Double pi))
-        , ("e", Number (fromFloatDigits @Double (exp 1)))
+        [ ("pi", Float pi)
+        , ("e", Float (exp 1))
         ]

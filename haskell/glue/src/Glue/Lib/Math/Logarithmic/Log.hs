@@ -10,11 +10,9 @@ log [arg, base] = do
     va <- evalRequired arg
     vb <- evalRequired base
     case (va, vb) of
-        (Number n, Number b) -> do
-            let realVal = toRealFloat @Double n
-            let realBase = toRealFloat @Double b
-            if realVal <= 0 || realBase <= 0 || realBase == 1
-                then throwError $ wrongArgumentType ["positive number", "positive number != 1"]
-                else pure $ Number (fromFloatDigits (Prelude.logBase realBase realVal))
+        (Integer n, Integer b) -> pure $ Float (logBase (fromIntegral b) (fromIntegral n))
+        (Integer n, Float b) -> pure $ Float (logBase b (fromIntegral n))
+        (Float n, Integer b) -> pure $ Float (logBase (fromIntegral b) n)
+        (Float n, Float b) -> pure $ Float (logBase b n)
         _ -> throwError $ wrongArgumentType ["number", "number"]
 log _ = throwError wrongNumberOfArguments

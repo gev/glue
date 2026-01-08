@@ -12,13 +12,13 @@ spec = describe "Glue.Lib.Builtin.Def (Test def special form)" do
     describe "Defining variables" do
         it "defines a variable in the environment" do
             let initialEnv = E.emptyEnv
-            let args = [Symbol "x", Number 42]
+            let args = [Symbol "x", Integer 42]
             result <- runEvalLegacy (def args) initialEnv
             case result of
                 Left err -> expectationFailure $ "Def failed: " <> show err
                 Right (res, finalEnv, _) -> do
                     res `shouldBe` Nothing
-                    E.lookupLocal "x" finalEnv `shouldBe` Just (Number 42)
+                    E.lookupLocal "x" finalEnv `shouldBe` Just (Integer 42)
 
         it "fails with wrong number of arguments" do
             let initialEnv = E.emptyEnv
@@ -28,6 +28,6 @@ spec = describe "Glue.Lib.Builtin.Def (Test def special form)" do
 
         it "fails with non-symbol as name" do
             let initialEnv = E.emptyEnv
-            let args = [Number 1, Number 42]
+            let args = [Integer 1, Integer 42]
             result <- runEvalLegacy (def args) initialEnv
             result `shouldSatisfy` isLeft

@@ -9,6 +9,7 @@ ceil :: [IR Eval] -> Eval (IR Eval)
 ceil [arg] = do
     va <- evalRequired arg
     case va of
-        Number n -> pure $ Number (fromIntegral @Int (Prelude.ceiling @Double (toRealFloat n)))
+        Integer n -> pure $ Integer n
+        Float n -> pure $ Integer (Prelude.ceiling n)
         _ -> throwError $ wrongArgumentType ["number"]
 ceil _ = throwError wrongNumberOfArguments

@@ -13,19 +13,19 @@ spec :: Spec
 spec = describe "Glue.Lib.Math.Trigonometric.Asin (Test asin function)" do
     describe "Arcsine function" do
         it "returns 0 for asin(0)" do
-            let args = [Number 0]
+            let args = [Integer 0]
             result <- runEvalLegacy (Asin.asin args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Asin failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number 0
+                Right (res, _, _) -> res `shouldBe` Float 0
 
         it "returns π/2 for asin(1)" do
-            let args = [Number 1]
+            let args = [Integer 1]
             result <- runEvalLegacy (Asin.asin args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Asin failed: " <> show err
                 Right (res, _, _) -> case res of
-                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x - pi / 2) < 1e-10)
+                    Float n -> n `shouldSatisfy` (\x -> abs (x - pi / 2) < 1e-10)
                     _ -> expectationFailure "Expected Number"
 
         it "fails with non-numbers" do
@@ -34,7 +34,7 @@ spec = describe "Glue.Lib.Math.Trigonometric.Asin (Test asin function)" do
             result `shouldSatisfy` isLeft
 
         it "fails with wrong number of arguments" do
-            let args = [Number 1, Number 2]
+            let args = [Integer 1, Integer 2]
             result <- runEvalLegacy (Asin.asin args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft
 

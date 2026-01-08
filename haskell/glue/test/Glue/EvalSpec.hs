@@ -1,5 +1,6 @@
 module Glue.EvalSpec (spec) where
 
+import Data.Either (isLeft)
 import Data.Map.Strict qualified as Map
 import Data.Scientific (Scientific, scientific, toRealFloat)
 import Data.Text (Text)
@@ -26,28 +27,28 @@ runCode input = case parseGlue input of
 spec :: Spec
 spec = describe "Glue.Eval (System Integration)" do
     it "handles basic values" do
-        runCode "42" `shouldReturn` Right (Just (Number 42))
+        runCode "42" `shouldReturn` Right (Just (Integer 42))
         runCode "\"test\"" `shouldReturn` Right (Just (String "test"))
 
     it "executes (def) and (set) chain" do
         let code = "((def x 1) (set x 2) x)"
-        runCode code `shouldReturn` Right (Just (List [Number 2]))
+        runCode code `shouldReturn` Right (Just (List [Integer 2]))
 
     it "implements full closures (Lexical Shadowing)" do
         let code = "(((lambda (x) (lambda (y) x)) 100) 1)"
-        runCode code `shouldReturn` Right (Just (Number 100))
+        runCode code `shouldReturn` Right (Just (Integer 100))
 
     it "checks that (def) inside (lambda) doesn't corrupt global scope" do
         let code = "((def x 1) ((lambda () (def x 2))) x)"
-        runCode code `shouldReturn` Right (Just (List [Number 1]))
+        runCode code `shouldReturn` Right (Just (List [Integer 1]))
 
     it "handles property access on property lists" do
         let code = "((lambda (obj) obj.foo) (:foo 42))"
-        runCode code `shouldReturn` Right (Just (Number 42))
+        runCode code `shouldReturn` Right (Just (Integer 42))
 
     it "handles nested property access" do
         let code = "((def foo (:x (:y (:z 1)))) foo.x foo.x.y foo.x.y.z)"
-        runCode code `shouldReturn` Right (Just (List [Object (Map.fromList [("y", Object (Map.fromList [("z", Number 1)]))]), Object (Map.fromList [("z", Number 1)]), Number 1]))
+        runCode code `shouldReturn` Right (Just (List [Object (Map.fromList [("y", Object (Map.fromList [("z", Integer 1)]))]), Object (Map.fromList [("z", Integer 1)]), Integer 1]))
 
     it "fails when calling non-existent function" do
         runCode "(non-existent 1 2)"
@@ -63,11 +64,11 @@ spec = describe "Glue.Eval (System Integration)" do
 
     it "user-defined function" do
         runCode "((def id (lambda (x) x)) (id 42))"
-            `shouldReturn` Right (Just (List [Number 42]))
+            `shouldReturn` Right (Just (List [Integer 42]))
 
     it "user-defined function partial application (currying)" do
         result <- runCode "((def add (lambda (x y) (+ x y))) ((add 5) 3))"
-        result `shouldBe` Right (Just (List [Number 8.0]))
+        result `shouldBe` Right (Just (List [Integer 8]))
 
     it "user-defined function returns closure on partial application" do
         result <- runCode "((def add (lambda (x y) (+ x y))) (add 5))"
@@ -79,7 +80,7 @@ spec = describe "Glue.Eval (System Integration)" do
 
     it "currying works with multiple levels" do
         result <- runCode "((def add (lambda (x y z) (+ x (+ y z)))) (((add 1) 2) 3))"
-        result `shouldBe` Right (Just (List [Number 6.0]))
+        result `shouldBe` Right (Just (List [Integer 6]))
 
     it "user-defined function too many args still fails" do
         runCode "((def id (lambda (x) x)) (id 1 2))"
@@ -87,19 +88,19 @@ spec = describe "Glue.Eval (System Integration)" do
 
     it "user-defined function multi-param" do
         runCode "((def f (lambda (a b) ((a) (b)))) (f 1 2))"
-            `shouldReturn` Right (Just (List [List [Number 1, Number 2]]))
+            `shouldReturn` Right (Just (List [List [Integer 1, Integer 2]]))
 
     it "\\ alias works like lambda (lexical shadowing)" do
         let code = "((( \\ (x) ( \\ (y) x)) 100) 1)"
-        runCode code `shouldReturn` Right (Just (Number 100))
+        runCode code `shouldReturn` Right (Just (Integer 100))
 
     it "\\ alias works like lambda (user-defined function)" do
         runCode "((def id (\\ (x) x)) (id 42))"
-            `shouldReturn` Right (Just (List [Number 42]))
+            `shouldReturn` Right (Just (List [Integer 42]))
 
     it "\\ alias works like lambda (partial application)" do
         result <- runCode "((def add (\\ (x y) (+ x y))) (def add5 (add 5)) (add5) 3)"
-        result `shouldBe` Right (Just (Number 8.0))
+        result `shouldBe` Right (Just (Integer 8))
 
     it "\\ alias works like lambda (too many args)" do
         runCode "((def id (\\ (x) x)) (id 1 2))"
@@ -107,7 +108,7 @@ spec = describe "Glue.Eval (System Integration)" do
 
     it "\\ alias works like lambda (multi-param)" do
         runCode "((def f (\\ (a b) ((a) (b)))) (f 1 2))"
-            `shouldReturn` Right (Just (List [List [Number 1, Number 2]]))
+            `shouldReturn` Right (Just (List [List [Integer 1, Integer 2]]))
 
     it "== alias works like eq" do
         runCode "(== 42 42)" `shouldReturn` Right (Just (Bool True))
@@ -138,11 +139,11 @@ spec = describe "Glue.Eval (System Integration)" do
         runCode "(! true)" `shouldReturn` Right (Just (Bool False))
 
     it "literal lists evaluate expressions" do
-        runCode "((+ 1 2) (* 3 4))" `shouldReturn` Right (Just (List [Number 3, Number 12]))
+        runCode "((+ 1 2) (* 3 4))" `shouldReturn` Right (Just (List [Integer 3, Integer 12]))
 
     it "literal objects evaluate values" do
-        runCode "(:x (+ 1 2) :y (* 3 4))" `shouldReturn` Right (Just (Object (Map.fromList [("x", Number 3), ("y", Number 12)])))
+        runCode "(:x (+ 1 2) :y (* 3 4))" `shouldReturn` Right (Just (Object (Map.fromList [("x", Integer 3), ("y", Integer 12)])))
 
     it "dotted symbols work in function calls" do
         runCode "((def obj (:x (:y (:z (lambda (n) (+ n 10)))))) (obj.x.y.z 5))"
-            `shouldReturn` Right (Just (List [Number 15]))
+            `shouldReturn` Right (Just (List [Integer 15]))

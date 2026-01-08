@@ -13,7 +13,8 @@ type Frame m = Map.Map Text (IR m)
 type Env m = [Frame m]
 
 data IR m
-    = Number Scientific
+    = Integer Int
+    | Float Double
     | String Text
     | Bool Bool
     | Symbol Text
@@ -31,7 +32,8 @@ data Native m
 
 compile :: AST -> IR m
 compile = \case
-    AST.Number n -> Number n
+    AST.Integer n -> Integer n
+    AST.Float n -> Float n
     AST.String s -> String s
     AST.Symbol s ->
         if T.isInfixOf "." s
@@ -42,7 +44,8 @@ compile = \case
 
 instance Show (IR m) where
     show = \case
-        Number n -> show n
+        Integer n -> show n
+        Float n -> show n
         String s -> "\"" <> T.unpack s <> "\""
         Bool True -> "true"
         Bool False -> "false"
@@ -55,7 +58,8 @@ instance Show (IR m) where
         Closure{} -> "<closure>"
 
 instance Eq (IR m) where
-    Number a == Number b = a == b
+    Integer a == Integer b = a == b
+    Float a == Float b = a == b
     String a == String b = a == b
     Bool a == Bool b = a == b
     Symbol a == Symbol b = a == b

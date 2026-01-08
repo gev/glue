@@ -10,11 +10,11 @@ spec :: Spec
 spec = describe "Glue.Lib.List.Sort (Test sort function)" do
     it "sorts a list of numbers in ascending order" do
         let initialEnv = E.emptyEnv
-        let args = [List [Number 3, Number 1, Number 4, Number 1, Number 5]]
+        let args = [List [Integer 3, Integer 1, Integer 4, Integer 1, Integer 5]]
         result <- runEvalLegacy (Sort.sort args) initialEnv
         case result of
             Left err -> expectationFailure $ "Sort failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Number 1, Number 1, Number 3, Number 4, Number 5]
+            Right (res, _, _) -> res `shouldBe` List [Integer 1, Integer 1, Integer 3, Integer 4, Integer 5]
 
     it "sorts a list of strings in alphabetical order" do
         let initialEnv = E.emptyEnv
@@ -42,23 +42,23 @@ spec = describe "Glue.Lib.List.Sort (Test sort function)" do
 
     it "sorts a single element list" do
         let initialEnv = E.emptyEnv
-        let args = [List [Number 42]]
+        let args = [List [Integer 42]]
         result <- runEvalLegacy (Sort.sort args) initialEnv
         case result of
             Left err -> expectationFailure $ "Sort failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Number 42]
+            Right (res, _, _) -> res `shouldBe` List [Integer 42]
 
     it "sorts a list with duplicate elements" do
         let initialEnv = E.emptyEnv
-        let args = [List [Number 3, Number 1, Number 3, Number 1, Number 2]]
+        let args = [List [Integer 3, Integer 1, Integer 3, Integer 1, Integer 2]]
         result <- runEvalLegacy (Sort.sort args) initialEnv
         case result of
             Left err -> expectationFailure $ "Sort failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Number 1, Number 1, Number 2, Number 3, Number 3]
+            Right (res, _, _) -> res `shouldBe` List [Integer 1, Integer 1, Integer 2, Integer 3, Integer 3]
 
     it "fails on non-list argument" do
         let initialEnv = E.emptyEnv
-        let args = [Number 42]
+        let args = [Integer 42]
         result <- runEvalLegacy (Sort.sort args) initialEnv
         case result of
             Left _ -> pure () -- Expected error
@@ -66,7 +66,7 @@ spec = describe "Glue.Lib.List.Sort (Test sort function)" do
 
     it "fails on list with incomparable elements" do
         let initialEnv = E.emptyEnv
-        let args = [List [Number 1, List [Number 2]]]
+        let args = [List [Integer 1, List [Integer 2]]]
         result <- runEvalLegacy (Sort.sort args) initialEnv
         case result of
             Left _ -> pure () -- Expected error

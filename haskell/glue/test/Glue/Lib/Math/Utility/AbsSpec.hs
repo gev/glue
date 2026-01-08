@@ -12,25 +12,25 @@ spec :: Spec
 spec = describe "Glue.Lib.Math.Utility.Abs (Test abs function)" do
     describe "Absolute value function" do
         it "returns 5 for abs(5)" do
-            let args = [Number 5]
+            let args = [Integer 5]
             result <- runEvalLegacy (Abs.abs args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Abs failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number 5
+                Right (res, _, _) -> res `shouldBe` Integer 5
 
         it "returns 5 for abs(-5)" do
-            let args = [Number (-5)]
+            let args = [Float (-5)]
             result <- runEvalLegacy (Abs.abs args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Abs failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number 5
+                Right (res, _, _) -> res `shouldBe` Integer 5
 
         it "returns 0 for abs(0)" do
-            let args = [Number 0]
+            let args = [Integer 0]
             result <- runEvalLegacy (Abs.abs args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Abs failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number 0
+                Right (res, _, _) -> res `shouldBe` Integer 0
 
         it "fails with non-numbers" do
             let args = [String "hello"]
@@ -38,7 +38,7 @@ spec = describe "Glue.Lib.Math.Utility.Abs (Test abs function)" do
             result `shouldSatisfy` isLeft
 
         it "fails with wrong number of arguments" do
-            let args = [Number 1, Number 2]
+            let args = [Integer 1, Integer 2]
             result <- runEvalLegacy (Abs.abs args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft
 

@@ -10,15 +10,15 @@ spec :: Spec
 spec = describe "Glue.Lib.List.Butlast (Test butlast function)" do
     it "returns all elements except the last one" do
         let initialEnv = E.emptyEnv
-        let args = [List [Number 1, Number 2, Number 3]]
+        let args = [List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalLegacy (butlast args) initialEnv
         case result of
             Left err -> expectationFailure $ "Butlast failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Number 1, Number 2]
+            Right (res, _, _) -> res `shouldBe` List [Integer 1, Integer 2]
 
     it "returns empty list for single-element list" do
         let initialEnv = E.emptyEnv
-        let args = [List [Number 42]]
+        let args = [List [Integer 42]]
         result <- runEvalLegacy (butlast args) initialEnv
         case result of
             Left err -> expectationFailure $ "Butlast failed: " <> show err
@@ -42,7 +42,7 @@ spec = describe "Glue.Lib.List.Butlast (Test butlast function)" do
 
     it "fails on non-list argument" do
         let initialEnv = E.emptyEnv
-        let args = [Number 42]
+        let args = [Integer 42]
         result <- runEvalLegacy (butlast args) initialEnv
         case result of
             Left _ -> pure () -- Expected error

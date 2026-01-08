@@ -13,19 +13,19 @@ spec :: Spec
 spec = describe "Glue.Lib.Math.Trigonometric.Tan (Test tan function)" do
     describe "Tangent function" do
         it "returns 0 for tan(0)" do
-            let args = [Number 0]
+            let args = [Integer 0]
             result <- runEvalLegacy (Tan.tan args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Tan failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number 0
+                Right (res, _, _) -> res `shouldBe` Integer 0
 
         it "returns 1 for tan(π/4)" do
-            let args = [Number (fromFloatDigits @Double (pi / 4))]
+            let args = [Float (pi / 4)]
             result <- runEvalLegacy (Tan.tan args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Tan failed: " <> show err
                 Right (res, _, _) -> case res of
-                    Number n -> n `shouldSatisfy` (\x -> abs (toRealFloat @Double x - 1) < 1e-10)
+                    Float n -> n `shouldSatisfy` (\x -> abs (x - 1) < 1e-10)
                     _ -> expectationFailure "Expected Number"
 
         it "fails with non-numbers" do
@@ -34,7 +34,7 @@ spec = describe "Glue.Lib.Math.Trigonometric.Tan (Test tan function)" do
             result `shouldSatisfy` isLeft
 
         it "fails with wrong number of arguments" do
-            let args = [Number 1, Number 2]
+            let args = [Integer 1, Integer 2]
             result <- runEvalLegacy (Tan.tan args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft
 

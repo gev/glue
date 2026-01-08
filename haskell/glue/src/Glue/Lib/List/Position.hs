@@ -22,6 +22,6 @@ findPosition pred (x : xs) idx = do
     -- Evaluate (pred x) and check if it returns true
     result <- eval (List [pred, x]) >>= maybe (throwError expectedValue) pure
     case result of
-        Bool True -> pure $ Number (fromIntegral idx)
+        Bool True -> pure $ Integer (fromIntegral idx)
         Bool False -> findPosition pred xs (idx + 1)
         _ -> throwError $ wrongArgumentType ["boolean result from predicate"]

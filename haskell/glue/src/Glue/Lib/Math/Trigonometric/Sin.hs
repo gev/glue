@@ -9,6 +9,7 @@ sin :: [IR Eval] -> Eval (IR Eval)
 sin [arg] = do
     va <- evalRequired arg
     case va of
-        Number n -> pure $ Number (fromFloatDigits @Double (Prelude.sin (toRealFloat n)))
+        Integer n -> pure $ Float (Prelude.sin (fromIntegral n))
+        Float n -> pure $ Float (Prelude.sin n)
         _ -> throwError $ wrongArgumentType ["number"]
 sin _ = throwError $ wrongArgumentType ["number"]

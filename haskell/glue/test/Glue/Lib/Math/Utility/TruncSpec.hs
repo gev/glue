@@ -13,32 +13,32 @@ spec :: Spec
 spec = describe "Glue.Lib.Math.Utility.Trunc (Test trunc function)" do
     describe "Trunc function" do
         it "returns 3 for trunc(3.7)" do
-            let args = [Number (fromFloatDigits @Double 3.7)]
+            let args = [Float 3.7]
             result <- runEvalLegacy (Trunc.trunc args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Trunc failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number 3
+                Right (res, _, _) -> res `shouldBe` Integer 3
 
         it "returns 2 for trunc(2.1)" do
-            let args = [Number (fromFloatDigits @Double 2.1)]
+            let args = [Float 2.1]
             result <- runEvalLegacy (Trunc.trunc args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Trunc failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number 2
+                Right (res, _, _) -> res `shouldBe` Integer 2
 
         it "returns -3 for trunc(-3.7)" do
-            let args = [Number (fromFloatDigits @Double (-3.7))]
+            let args = [Float (-3.7)]
             result <- runEvalLegacy (Trunc.trunc args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Trunc failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number (-3)
+                Right (res, _, _) -> res `shouldBe` Integer (-3)
 
         it "returns 5 for trunc(5.0)" do
-            let args = [Number 5]
+            let args = [Integer 5]
             result <- runEvalLegacy (Trunc.trunc args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Trunc failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Number 5
+                Right (res, _, _) -> res `shouldBe` Integer 5
 
         it "fails with non-numbers" do
             let args = [String "hello"]
@@ -46,7 +46,7 @@ spec = describe "Glue.Lib.Math.Utility.Trunc (Test trunc function)" do
             result `shouldSatisfy` isLeft
 
         it "fails with wrong number of arguments" do
-            let args = [Number 1, Number 2]
+            let args = [Integer 1, Integer 2]
             result <- runEvalLegacy (Trunc.trunc args) (E.fromFrame lib)
             result `shouldSatisfy` isLeft
 

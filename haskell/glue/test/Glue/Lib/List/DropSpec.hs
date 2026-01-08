@@ -10,15 +10,15 @@ spec :: Spec
 spec = describe "Glue.Lib.List.Drop (Test drop function)" do
     it "drops first N elements from list" do
         let initialEnv = E.emptyEnv
-        let args = [Number 2, List [Number 1, Number 2, Number 3, Number 4, Number 5]]
+        let args = [Integer 2, List [Integer 1, Integer 2, Integer 3, Integer 4, Integer 5]]
         result <- runEvalLegacy (Drop.drop args) initialEnv
         case result of
             Left err -> expectationFailure $ "Drop failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Number 3, Number 4, Number 5]
+            Right (res, _, _) -> res `shouldBe` List [Integer 3, Integer 4, Integer 5]
 
     it "drops fewer elements when N > list length" do
         let initialEnv = E.emptyEnv
-        let args = [Number 10, List [Number 1, Number 2, Number 3]]
+        let args = [Integer 10, List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalLegacy (Drop.drop args) initialEnv
         case result of
             Left err -> expectationFailure $ "Drop failed: " <> show err
@@ -26,15 +26,15 @@ spec = describe "Glue.Lib.List.Drop (Test drop function)" do
 
     it "drops zero elements" do
         let initialEnv = E.emptyEnv
-        let args = [Number 0, List [Number 1, Number 2, Number 3]]
+        let args = [Integer 0, List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalLegacy (Drop.drop args) initialEnv
         case result of
             Left err -> expectationFailure $ "Drop failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Number 1, Number 2, Number 3]
+            Right (res, _, _) -> res `shouldBe` List [Integer 1, Integer 2, Integer 3]
 
     it "drops all elements when N equals list length" do
         let initialEnv = E.emptyEnv
-        let args = [Number 3, List [Number 1, Number 2, Number 3]]
+        let args = [Integer 3, List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalLegacy (Drop.drop args) initialEnv
         case result of
             Left err -> expectationFailure $ "Drop failed: " <> show err
@@ -42,7 +42,7 @@ spec = describe "Glue.Lib.List.Drop (Test drop function)" do
 
     it "fails on negative count" do
         let initialEnv = E.emptyEnv
-        let args = [Number (-1), List [Number 1, Number 2, Number 3]]
+        let args = [Float (-1), List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalLegacy (Drop.drop args) initialEnv
         case result of
             Left _ -> pure () -- Expected error
@@ -50,7 +50,7 @@ spec = describe "Glue.Lib.List.Drop (Test drop function)" do
 
     it "fails on non-number first argument" do
         let initialEnv = E.emptyEnv
-        let args = [String "2", List [Number 1, Number 2, Number 3]]
+        let args = [String "2", List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalLegacy (Drop.drop args) initialEnv
         case result of
             Left _ -> pure () -- Expected error
@@ -58,7 +58,7 @@ spec = describe "Glue.Lib.List.Drop (Test drop function)" do
 
     it "fails on non-list second argument" do
         let initialEnv = E.emptyEnv
-        let args = [Number 2, Number 42]
+        let args = [Integer 2, Integer 42]
         result <- runEvalLegacy (Drop.drop args) initialEnv
         case result of
             Left _ -> pure () -- Expected error

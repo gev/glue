@@ -26,7 +26,7 @@ spec = describe "Glue.Lib.Bool.Not (Test not function)" do
                 Right (res, _, _) -> res `shouldBe` Bool True
 
         it "returns false for other values" do
-            let args = [Number 42]
+            let args = [Integer 42]
             result <- runEvalLegacy (not_ args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Not failed: " <> show err
@@ -40,7 +40,7 @@ spec = describe "Glue.Lib.Bool.Not (Test not function)" do
         it "! alias works identically to not" do
             let args1 = [Bool False] -- not false = true
             let args2 = [Bool True] -- not true = false
-            let args3 = [Number 42] -- not 42 = false (truthy)
+            let args3 = [Integer 42] -- not 42 = false (truthy)
             result1 <- runEvalLegacy (not_ args1) (E.fromFrame lib)
             result2 <- runEvalLegacy (not_ args2) (E.fromFrame lib)
             result3 <- runEvalLegacy (not_ args3) (E.fromFrame lib)
