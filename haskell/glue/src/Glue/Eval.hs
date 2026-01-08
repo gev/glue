@@ -244,14 +244,15 @@ applyClosure params body savedEnv rawArgs = do
             let bindings = zip params argValues
             let newEnv = buildEnvWithBindings savedEnv bindings
             withSavedEnv newEnv (eval body)
-        else if numArgs < numParams
-            then do
-                -- Partial application: create new closure with remaining params
-                let (usedParams, remainingParams) = splitAt numArgs params
-                let bindings = zip usedParams argValues
-                let partiallyAppliedEnv = buildEnvWithBindings savedEnv bindings
-                pure $ Just $ IR.Closure remainingParams body partiallyAppliedEnv
-            else throwError wrongNumberOfArguments
+        else
+            if numArgs < numParams
+                then do
+                    -- Partial application: create new closure with remaining params
+                    let (usedParams, remainingParams) = splitAt numArgs params
+                    let bindings = zip usedParams argValues
+                    let partiallyAppliedEnv = buildEnvWithBindings savedEnv bindings
+                    pure $ Just $ IR.Closure remainingParams body partiallyAppliedEnv
+                else throwError wrongNumberOfArguments
 
 eval :: IR -> Eval (Maybe IR)
 eval (IR.Symbol name) = evalSymbol name
