@@ -67,7 +67,7 @@ spec = describe "Glue.Eval (System Integration)" do
 
     it "user-defined function partial application (currying)" do
         result <- runCode "((def add (lambda (x y) (+ x y))) ((add 5) 3))"
-        result `shouldBe` Right (Just (Number 8.0))
+        result `shouldBe` Right (Just (List [Number 8.0]))
 
     it "user-defined function returns closure on partial application" do
         result <- runCode "((def add (lambda (x y) (+ x y))) (add 5))"
@@ -79,7 +79,7 @@ spec = describe "Glue.Eval (System Integration)" do
 
     it "currying works with multiple levels" do
         result <- runCode "((def add (lambda (x y z) (+ x (+ y z)))) (((add 1) 2) 3))"
-        result `shouldBe` Right (Just (Number 6.0))
+        result `shouldBe` Right (Just (List [Number 6.0]))
 
     it "user-defined function too many args still fails" do
         runCode "((def id (lambda (x) x)) (id 1 2))"
