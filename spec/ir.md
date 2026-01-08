@@ -10,8 +10,10 @@ The `IR` is defined by the following algebraic data type:
 
 ```haskell
 data IR m
-    = Number Scientific
+    = Integer Int
+    | Float Double
     | String Text
+    | Bool Bool
     | Symbol Text
     | DottedSymbol [Text]
     | List [IR m]
@@ -25,11 +27,23 @@ data IR m
 
 ### Primitive Values
 
-#### Number
-Represents numeric values with arbitrary precision.
+#### Integer
+Represents integer values.
 
-**Structure:** `Number Scientific`
-**Purpose:** Store integers, decimals, and scientific notation
+**Structure:** `Integer Int`
+**Purpose:** Store whole number values
+
+#### Float
+Represents floating-point values.
+
+**Structure:** `Float Double`
+**Purpose:** Store decimal and scientific notation values
+
+#### Bool
+Represents boolean values.
+
+**Structure:** `Bool Bool`
+**Purpose:** Store true/false values
 
 #### String
 Represents text values with escape sequence support.
@@ -65,11 +79,11 @@ Represents ordered sequences of IR values.
 
 - **Data sequence**
 
-    `List [Number 1.0, Number 2.0, Number 3.0]`
+    `List [Integer 1, Integer 2, Integer 3]`
 
 - **Function call**
 
-    `List [Symbol "+", Number 1.0, Number 2.0]`
+    `List [Symbol "+", Integer 1, Integer 2]`
 
 #### Object
 
@@ -83,15 +97,15 @@ Represents key-value mappings (dictionaries).
 
 - **Simple object with primitive values**
 
-    `Object [("name", String "Alice"), ("age", Number 30.0)]`
+    `Object [("name", String "Alice"), ("age", Integer 30)]`
 
 - **Coordinate object**
-  
-  `Object [("x", Number 1.0), ("y", Number 2.0)]`
+
+  `Object [("x", Float 1.0), ("y", Float 2.0)]`
 
 - **Nested object structure**
-  
-  `Object [("user", Object [("name", String "Alice"), ("profile", Object [("age", Number 30.0), ("city", String "NYC")])])]`
+
+  `Object [("user", Object [("name", String "Alice"), ("profile", Object [("age", Integer 30), ("city", String "NYC")])])]`
 
 #### Module
 
@@ -107,7 +121,7 @@ Modules can contain direct bindings to values, functions, and other modules.
 
 - **Simple module with constants and functions**
 
-    `Module [("pi", Number 3.14159), ("cos", <native function>)]`
+    `Module [("pi", Float 3.14159), ("cos", <native function>)]`
 
 **Nested Modules:**
 Modules can contain other modules, creating hierarchical namespaces.
@@ -120,7 +134,7 @@ Modules can contain other modules, creating hierarchical namespaces.
 
 - **Deeply nested module hierarchy**
 
-    `Module [("math", Module [("trig", Module [("sin", <native>), ("cos", <native>)]), ("constants", Module [("pi", Number 3.14159)])])]`
+    `Module [("math", Module [("trig", Module [("sin", <native>), ("cos", <native>)]), ("constants", Module [("pi", Float 3.14159)])])]`
 
 ### Executable Values
 
@@ -149,7 +163,7 @@ Represents user-defined functions with captured environment.
 
 - **Lambda function**
 
-    `Closure ["x"] (List [Symbol "+", Symbol "x", Number 1.0]) <env>`
+    `Closure ["x"] (List [Symbol "+", Symbol "x", Float 1.0]) <env>`
 
 ## IR Operations
 

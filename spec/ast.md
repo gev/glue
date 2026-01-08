@@ -11,7 +11,8 @@ The AST is defined by the following algebraic data type:
 ```haskell
 data AST where
     String :: Text -> AST
-    Number :: Scientific -> AST
+    Integer :: Int -> AST
+    Float :: Double -> AST
     Symbol :: Text -> AST
     List :: [AST] -> AST
     Object :: [(Text, AST)] -> AST
@@ -28,15 +29,25 @@ Represents string literal values in source code.
 - `"hello world"`
 - `"with \"quotes\" and \n newlines"`
 
-### Number
-Represents numeric literal values (integers and floating-point numbers).
+### Integer
+Represents integer literal values.
 
-**Purpose:** Store numeric values using scientific notation
+**Purpose:** Store whole number values
 
 **Examples:**
-- `42` (integer)
-- `3.14159` (decimal)
-- `1.23e-4` (scientific notation)
+- `42`
+- `-17`
+- `0`
+
+### Float
+Represents floating-point literal values.
+
+**Purpose:** Store decimal and scientific notation values
+
+**Examples:**
+- `3.14159`
+- `1.23e-4`
+- `-2.5`
 
 ### Symbol
 Represents identifiers, keywords, and operators.
