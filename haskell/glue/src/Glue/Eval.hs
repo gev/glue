@@ -219,7 +219,7 @@ evalLiteral v = pure $ Just v
 
 -- Evaluate arguments for function calls
 evalArguments :: [IR] -> Eval [IR]
-evalArguments rawArgs = catMaybes <$> mapM eval rawArgs
+evalArguments rawArgs = catMaybes <$> mapM evalRaw rawArgs
 
 -- Apply a native function/command/special
 applyNative :: IR.Native Eval -> [IR] -> Eval (Maybe IR)
@@ -254,12 +254,24 @@ applyClosure params body savedEnv rawArgs = do
                     pure $ Just $ IR.Closure remainingParams body partiallyAppliedEnv
                 else throwError wrongNumberOfArguments
 
+-- Normalize final results by unwrapping single-element lists
+normalizeResult :: Maybe IR -> Maybe IR
+normalizeResult (Just (IR.List [single])) = Just single
+normalizeResult result = result
+
+-- Evaluate without normalization (for arguments)
+evalRaw :: IR -> Eval (Maybe IR)
+evalRaw ir = case ir of
+    IR.Symbol name -> evalSymbol name
+    IR.DottedSymbol parts -> evalDottedSymbol parts
+    IR.List xs -> evalList xs
+    IR.Object objMap -> evalObject objMap
+    _ -> evalLiteral ir
+
 eval :: IR -> Eval (Maybe IR)
-eval (IR.Symbol name) = evalSymbol name
-eval (IR.DottedSymbol parts) = evalDottedSymbol parts
-eval (IR.List xs) = evalList xs
-eval (IR.Object objMap) = evalObject objMap
-eval v = evalLiteral v
+eval ir = do
+    result <- evalRaw ir
+    pure $ normalizeResult result
 
 apply :: IR -> [IR] -> Eval (Maybe IR)
 apply ir rawArgs = case ir of
@@ -270,7 +282,8 @@ apply ir rawArgs = case ir of
 
 evalRequired :: IR -> Eval IR
 evalRequired v =
-    eval v >>= \case
+    evalRaw v >>= \case
+        -- Use evalRaw to avoid normalization for arguments
         Just val -> pure val
         Nothing -> throwError expectedValue
 
