@@ -204,6 +204,7 @@ evalList xs = do
             result <- apply f args
             popContext
             pure result
+        [single] -> pure $ Just single
         _ -> pure . Just . IR.List $ clean
 
 -- Evaluate an object
@@ -262,10 +263,11 @@ eval (IR.Object objMap) = evalObject objMap
 eval v = evalLiteral v
 
 apply :: IR -> [IR] -> Eval (Maybe IR)
-apply (IR.Native native) rawArgs = applyNative native rawArgs
-apply (IR.Closure params body savedEnv) rawArgs = applyClosure params body savedEnv rawArgs
-apply (IR.Symbol name) _ = throwError $ unboundVariable name
-apply _ _ = throwError notCallableObject
+apply ir rawArgs = case ir of
+    IR.Native native -> applyNative native rawArgs
+    IR.Closure params body savedEnv -> applyClosure params body savedEnv rawArgs
+    IR.Symbol name -> throwError $ unboundVariable name
+    _ -> throwError notCallableObject
 
 evalRequired :: IR -> Eval IR
 evalRequired v =

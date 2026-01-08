@@ -30,7 +30,7 @@ spec = describe "Glue.Eval (System Integration)" do
 
     it "executes (def) and (set) chain" do
         let code = "((def x 1) (set x 2) x)"
-        runCode code `shouldReturn` Right (Just (List [Integer 2]))
+        runCode code `shouldReturn` Right (Just (Integer 2))
 
     it "implements full closures (Lexical Shadowing)" do
         let code = "(((lambda (x) (lambda (y) x)) 100) 1)"
@@ -38,7 +38,7 @@ spec = describe "Glue.Eval (System Integration)" do
 
     it "checks that (def) inside (lambda) doesn't corrupt global scope" do
         let code = "((def x 1) ((lambda () (def x 2))) x)"
-        runCode code `shouldReturn` Right (Just (List [Integer 1]))
+        runCode code `shouldReturn` Right (Just (Integer 1))
 
     it "handles property access on property lists" do
         let code = "((lambda (obj) obj.foo) (:foo 42))"
@@ -62,11 +62,11 @@ spec = describe "Glue.Eval (System Integration)" do
 
     it "user-defined function" do
         runCode "((def id (lambda (x) x)) (id 42))"
-            `shouldReturn` Right (Just (List [Integer 42]))
+            `shouldReturn` Right (Just (Integer 42))
 
     it "user-defined function partial application (currying)" do
         result <- runCode "((def add (lambda (x y) (+ x y))) ((add 5) 3))"
-        result `shouldBe` Right (Just (List [Integer 8]))
+        result `shouldBe` Right (Just (Integer 8))
 
     it "user-defined function returns closure on partial application" do
         result <- runCode "((def add (lambda (x y) (+ x y))) (add 5))"
@@ -78,7 +78,7 @@ spec = describe "Glue.Eval (System Integration)" do
 
     it "currying works with multiple levels" do
         result <- runCode "((def add (lambda (x y z) (+ x (+ y z)))) (((add 1) 2) 3))"
-        result `shouldBe` Right (Just (List [Integer 6]))
+        result `shouldBe` Right (Just (Integer 6))
 
     it "user-defined function too many args still fails" do
         runCode "((def id (lambda (x) x)) (id 1 2))"
@@ -86,7 +86,7 @@ spec = describe "Glue.Eval (System Integration)" do
 
     it "user-defined function multi-param" do
         runCode "((def f (lambda (a b) ((a) (b)))) (f 1 2))"
-            `shouldReturn` Right (Just (List [List [Integer 1, Integer 2]]))
+            `shouldReturn` Right (Just (List [Integer 1, Integer 2]))
 
     it "\\ alias works like lambda (lexical shadowing)" do
         let code = "((( \\ (x) ( \\ (y) x)) 100) 1)"
@@ -94,7 +94,7 @@ spec = describe "Glue.Eval (System Integration)" do
 
     it "\\ alias works like lambda (user-defined function)" do
         runCode "((def id (\\ (x) x)) (id 42))"
-            `shouldReturn` Right (Just (List [Integer 42]))
+            `shouldReturn` Right (Just (Integer 42))
 
     it "\\ alias works like lambda (partial application)" do
         result <- runCode "((def add (\\ (x y) (+ x y))) (def add5 (add 5)) (add5) 3)"
@@ -106,7 +106,7 @@ spec = describe "Glue.Eval (System Integration)" do
 
     it "\\ alias works like lambda (multi-param)" do
         runCode "((def f (\\ (a b) ((a) (b)))) (f 1 2))"
-            `shouldReturn` Right (Just (List [List [Integer 1, Integer 2]]))
+            `shouldReturn` Right (Just (List [Integer 1, Integer 2]))
 
     it "== alias works like eq" do
         runCode "(== 42 42)" `shouldReturn` Right (Just (Bool True))
@@ -144,4 +144,4 @@ spec = describe "Glue.Eval (System Integration)" do
 
     it "dotted symbols work in function calls" do
         runCode "((def obj (:x (:y (:z (lambda (n) (+ n 10)))))) (obj.x.y.z 5))"
-            `shouldReturn` Right (Just (List [Integer 15]))
+            `shouldReturn` Right (Just (Integer 15))
