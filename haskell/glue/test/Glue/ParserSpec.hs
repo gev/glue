@@ -201,7 +201,7 @@ spec = do
                 parseGlue "\"hello 世界\"" `shouldBe` Right (String "hello 世界")
 
             it "handles escape sequences in strings" $ do
-                parseGlue "\"hello\\nworld\"" `shouldBe` Right (String "hello\\nworld")
+                parseGlue "\"hello\\nworld\"" `shouldBe` Right (String "hello\nworld")
 
             it "handles symbols with unicode" $ do
                 parseGlue "变量" `shouldBe` Right (Symbol "变量")
