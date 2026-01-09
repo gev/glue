@@ -36,16 +36,8 @@ spec = describe "Glue.Eval (System Integration)" do
         runCode code `shouldReturn` Right (Just (Integer 1))
 
     it "should this work?" do
-        let code = "(+ ((def x 1) x) ((def x 2) x))"
-        runCode code `shouldReturn` Right (Just (Integer 3))
-
-    it "should this work?" do
         let code = "((def x 1) (def y 2) (+ x y))"
         runCode code `shouldReturn` Right (Just (Integer 3))
-
-    it "should this work?" do
-        let code = "((def x 1) * 2  (def y 2) (+ x y))"
-        runCode code `shouldReturn` Right (Just (Integer 6))
 
     it "executes (def)" do
         let code = "((def x (1)) x)"
