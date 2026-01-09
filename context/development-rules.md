@@ -15,6 +15,7 @@ This document outlines the most important rules and guidelines for developing an
 
 ### Quality Assurance
 - **Never touch my fixes!** - Respect and preserve existing corrections
+- **Read user fixes before making commits!** - Always review manual changes before committing
 - **Never push to upstream!** - Local commits only, explicit push control required
 
 ## Application
