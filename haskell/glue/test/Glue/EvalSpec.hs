@@ -181,6 +181,26 @@ spec = describe "Glue.Eval (System Integration)" do
         runCode "(+ (* 2.5 4.0) (/ 10.0 2.0))"
             `shouldReturn` Right (Just (Float 15.0))
 
+    it "let creates local bindings" do
+        runCode "(let (:x 42) x)"
+            `shouldReturn` Right (Just (Integer 42))
+
+    it "let bindings can access outer scope" do
+        runCode "((def outer 100) (let (:x outer) (+ x 1)))"
+            `shouldReturn` Right (Just (Integer 101))
+
+    it "let bindings shadow outer scope" do
+        runCode "((def x 100) (let (:x 200) x))"
+            `shouldReturn` Right (Just (Integer 200))
+
+    it "let with multiple bindings" do
+        runCode "(let (:x 10 :y 20) (+ x y))"
+            `shouldReturn` Right (Just (Integer 30))
+
+    it "let bindings are local" do
+        runCode "((let (:x 42) x) x)"
+            `shouldReturn` Left (GlueError (EvalError @Eval [] $ unboundVariable "x"))
+
     it "arithmetic with defined functions" do
         runCode "((def add (lambda (x y) (+ x y))) (def mul (lambda (x y) (* x y))) (mul (add 3 2) (add 1 2)))"
             `shouldReturn` Right (Just (Integer 15))

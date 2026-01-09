@@ -39,6 +39,7 @@ library
     Glue.Lib.Builtin.Error
     Glue.Lib.Builtin.Import
     Glue.Lib.Builtin.Lambda
+    Glue.Lib.Builtin.Let
     Glue.Lib.Builtin.Set
     Glue.Lib.Builtin.Try
     Glue.Lib.IO
