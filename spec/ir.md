@@ -19,6 +19,7 @@ data IR m
     | List [IR m]
     | Object (Map Text (IR m))
     | Module (Map Text (IR m))
+    | Void
     | Native (Native m)
     | Closure [Text] (IR m) (Env m)
 ```
@@ -62,6 +63,25 @@ Represents hierarchical identifiers with dot notation.
 
 **Structure:** `DottedSymbol [Text]`
 **Purpose:** Store property access paths and qualified names
+
+#### Void
+Represents unspecified values returned by operations that don't produce meaningful results.
+
+**Structure:** `Void`
+**Purpose:** Store void values from operations like variable definitions, assignments, and print statements
+**Examples:**
+
+- **Variable definition result**
+
+    `Void` (result of `(def x 42)`)
+
+- **Assignment result**
+
+    `Void` (result of `(set x 100)`)
+
+- **Print statement result**
+
+    `Void` (result of `(print "hello")`)
 
 ### Composite Values
 
@@ -146,8 +166,7 @@ Represents host language functions and special operations.
 **Purpose:** Interface with host language implementations
 **Variants:**
 - `Func ([IR m] -> m (IR m))` - Functions returning IR values
-- `Cmd ([IR m] -> m ())` - Commands with side effects
-- `Special ([IR m] -> m (Maybe (IR m)))` - Special forms and control flow
+- `Special ([IR m] -> m (IR m))` - Special forms and control flow
 
 #### Closure
 Represents user-defined functions with captured environment.
@@ -201,6 +220,7 @@ IR nodes support structural equality comparison for testing and comparison opera
 - **Strings** for text content
 - **Lists** for sequences and collections
 - **Objects** for structured records
+- **Void** for unspecified operation results
 
 ### Code Representation
 
