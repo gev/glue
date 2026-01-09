@@ -20,7 +20,7 @@ findElement :: IR Eval -> [IR Eval] -> Eval (IR Eval)
 findElement _ [] = throwError $ wrongArgumentType ["element satisfying predicate"]
 findElement pred (x : xs) = do
     -- Evaluate (pred x) and check if it returns true
-    result <- eval (List [pred, x]) >>= maybe (throwError expectedValue) pure
+    result <- eval (List [pred, x])
     case result of
         Bool True -> pure x
         Bool False -> findElement pred xs

@@ -17,14 +17,14 @@ runCode input = case parseGlue input of
         fullResult <- runEvalLegacy (eval irTree) (E.fromFrame lib)
         case fullResult of
             Left err -> pure $ Left (GlueError err)
-            Right (res, _finalEnv, _ctx) -> pure $ Right res
+            Right (res, _finalEnv, _ctx) -> pure $ Right (Just res)
 
 spec :: Spec
 spec = describe "Glue.Lib.IO.Print" do
-    it "print returns nothing" do
+    it "print returns void" do
         let code = "(print \"hello\")"
-        runCode code `shouldReturn` Right Nothing
+        runCode code `shouldReturn` Right (Just Void)
 
-    it "println returns nothing" do
+    it "println returns void" do
         let code = "(println \"hello\")"
-        runCode code `shouldReturn` Right Nothing
+        runCode code `shouldReturn` Right (Just Void)

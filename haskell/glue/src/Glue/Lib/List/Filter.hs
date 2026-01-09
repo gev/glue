@@ -30,7 +30,7 @@ filterElements pred (x : xs) = do
 applyPredicate :: IR Eval -> IR Eval -> Eval Bool
 applyPredicate pred x = do
     -- Evaluate (pred x) and check if it returns true
-    result <- eval (List [pred, x]) >>= maybe (throwError expectedValue) pure
+    result <- eval (List [pred, x])
     case result of
         Bool True -> pure True
         Bool False -> pure False

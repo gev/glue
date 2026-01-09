@@ -16,7 +16,7 @@ spec = describe "Glue.Lib.Bool.Until (Test until special form)" do
             result <- runEvalLegacy (until_ args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "Until failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Nothing
+                Right (res, _, _) -> res `shouldBe` Void
 
         it "executes body and modifies environment flag" do
             -- Set up environment with flag = false
@@ -27,7 +27,7 @@ spec = describe "Glue.Lib.Bool.Until (Test until special form)" do
             case result of
                 Left err -> expectationFailure $ "Until failed: " <> show err
                 Right (res, finalEnv, _) -> do
-                    res `shouldBe` Nothing
+                    res `shouldBe` Void
                     -- Check that flag was changed to true
                     E.lookupLocal "flag" finalEnv `shouldBe` Just (Bool True)
 

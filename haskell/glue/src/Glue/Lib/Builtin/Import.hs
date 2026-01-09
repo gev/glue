@@ -13,7 +13,7 @@ import Glue.Module.Registry qualified as Registry
 import Prelude hiding (mod)
 
 -- | Import special form - loads and evaluates a module
-importForm :: [IR Eval] -> Eval (Maybe (IR Eval))
+importForm :: [IR Eval] -> Eval (IR Eval)
 importForm [Symbol moduleName] = do
     registry <- getRegistry
     case Registry.lookupModule moduleName registry of
@@ -31,7 +31,7 @@ importForm [Symbol moduleName] = do
                     let moduleValue = Module (exportedValues imported)
                     let finalEnv = E.defineVar moduleName moduleValue updatedEnv
                     putEnv finalEnv
-                    pure Nothing
+                    pure Void
                 Nothing -> do
                     -- First import: evaluate module
                     -- Get root environment for consistent evaluation
@@ -85,5 +85,5 @@ importForm [Symbol moduleName] = do
                     let finalEnv = E.defineVar moduleName moduleValue updatedEnv
                     putEnv finalEnv
 
-                    pure Nothing
+                    pure Void
 importForm _ = throwError $ wrongArgumentType ["module-name"]

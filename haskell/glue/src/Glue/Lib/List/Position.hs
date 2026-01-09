@@ -20,7 +20,7 @@ findPosition :: IR Eval -> [IR Eval] -> Int -> Eval (IR Eval)
 findPosition _ [] _ = throwError $ wrongArgumentType ["element satisfying predicate"]
 findPosition pred (x : xs) idx = do
     -- Evaluate (pred x) and check if it returns true
-    result <- eval (List [pred, x]) >>= maybe (throwError expectedValue) pure
+    result <- eval (List [pred, x])
     case result of
         Bool True -> pure $ Integer (fromIntegral idx)
         Bool False -> findPosition pred xs (idx + 1)

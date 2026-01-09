@@ -11,7 +11,7 @@ map [funcIR, listIR] = do
     case list of
         List xs -> do
             -- Apply the function to each element by evaluating a list [func, x]
-            results <- mapM (\x -> eval (List [func, x]) >>= maybe (throwError expectedValue) pure) xs
+            results <- mapM (\x -> eval (List [func, x])) xs
             pure $ List results
         _ -> throwError $ wrongArgumentType ["function", "list"]
 map _ = throwError wrongNumberOfArguments

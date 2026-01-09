@@ -169,7 +169,7 @@ evalDottedSymbol parts = do
             _ -> throwError $ notAnObject obj
 
 -- Evaluate a list (function call or literal list)
-evalList :: [IR] -> Eval (Maybe IR)
+evalList :: [IR] -> Eval IR
 evalList [IR.Symbol name] = do
     pushContext name
     env <- getEnv
@@ -180,7 +180,7 @@ evalList [IR.Symbol name] = do
             pure result
         Right val -> do
             popContext
-            pure $ Just val
+            pure val
         Left err -> do
             popContext
             throwError err
@@ -196,43 +196,38 @@ evalList (IR.Symbol name : rawArgs) = do
             popContext
             throwError err
 evalList xs = do
-    results <- mapM eval xs
-    let clean = catMaybes results
-    case clean of
+    results <- mapM evalRequired xs
+    case results of
         (f : args) | isCallable f -> do
             pushContext "<call>"
             result <- apply f args
             popContext
             pure result
-        res -> pure . Just . IR.List $ res
+        res -> pure $ IR.List res
 
 -- Evaluate an object
-evalObject :: Map Text IR -> Eval (Maybe IR)
+evalObject :: Map Text IR -> Eval IR
 evalObject objMap = do
-    evaluatedMap <- mapM eval objMap
-    let cleanMap = Map.mapMaybe id evaluatedMap
-    pure $ Just $ IR.Object cleanMap
+    evaluatedMap <- mapM evalRequired objMap
+    pure $ IR.Object evaluatedMap
 
 -- Evaluate literal values (numbers, strings, etc.)
-evalLiteral :: IR -> Eval (Maybe IR)
-evalLiteral v = pure $ Just v
+evalLiteral :: IR -> Eval IR
+evalLiteral v = pure v
 
 -- Evaluate arguments for function calls
 evalArguments :: [IR] -> Eval [IR]
-evalArguments rawArgs = catMaybes <$> mapM evalRaw rawArgs
+evalArguments rawArgs = mapM evalRaw rawArgs
 
 -- Apply a native function/command/special
-applyNative :: IR.Native Eval -> [IR] -> Eval (Maybe IR)
+applyNative :: IR.Native Eval -> [IR] -> Eval IR
 applyNative (IR.Func f) rawArgs = do
     args <- evalArguments rawArgs
-    Just <$> f args
-applyNative (IR.Cmd c) rawArgs = do
-    args <- evalArguments rawArgs
-    c args >> pure Nothing
+    f args
 applyNative (IR.Special s) rawArgs = s rawArgs
 
 -- Apply a closure with the given arguments
-applyClosure :: [Text] -> IR -> Env -> [IR] -> Eval (Maybe IR)
+applyClosure :: [Text] -> IR -> Env -> [IR] -> Eval IR
 applyClosure params body savedEnv rawArgs = do
     argValues <- evalArguments rawArgs
     let numArgs = length argValues
@@ -251,7 +246,7 @@ applyClosure params body savedEnv rawArgs = do
                     let (usedParams, remainingParams) = splitAt numArgs params
                     let bindings = zip usedParams argValues
                     let partiallyAppliedEnv = buildEnvWithBindings savedEnv bindings
-                    pure $ Just $ IR.Closure remainingParams body partiallyAppliedEnv
+                    pure $ IR.Closure remainingParams body partiallyAppliedEnv
                 else throwError wrongNumberOfArguments
 
 -- Normalize final results by unwrapping single-element lists
@@ -260,18 +255,26 @@ normalizeResult (Just (IR.List [single])) = Just single
 normalizeResult result = result
 
 -- Evaluate without normalization (for arguments)
-evalRaw :: IR -> Eval (Maybe IR)
+evalRaw :: IR -> Eval IR
 evalRaw ir = case ir of
-    IR.Symbol name -> evalSymbol name
-    IR.DottedSymbol parts -> evalDottedSymbol parts
+    IR.Symbol name -> do
+        result <- evalSymbol name
+        case result of
+            Just val -> pure val
+            Nothing -> throwError expectedValue
+    IR.DottedSymbol parts -> do
+        result <- evalDottedSymbol parts
+        case result of
+            Just val -> pure val
+            Nothing -> throwError expectedValue
     IR.List xs -> evalList xs
     IR.Object objMap -> evalObject objMap
     _ -> evalLiteral ir
 
-eval :: IR -> Eval (Maybe IR)
+eval :: IR -> Eval IR
 eval = evalRaw
 
-apply :: IR -> [IR] -> Eval (Maybe IR)
+apply :: IR -> [IR] -> Eval IR
 apply ir rawArgs = case ir of
     IR.Native native -> applyNative native rawArgs
     IR.Closure params body savedEnv -> applyClosure params body savedEnv rawArgs
@@ -279,11 +282,7 @@ apply ir rawArgs = case ir of
     _ -> throwError notCallableObject
 
 evalRequired :: IR -> Eval IR
-evalRequired v =
-    evalRaw v >>= \case
-        -- Use evalRaw to avoid normalization for arguments
-        Just val -> pure val
-        Nothing -> throwError expectedValue
+evalRequired = evalRaw
 
 defineVarEval :: Text -> IR -> Eval ()
 defineVarEval name val = do

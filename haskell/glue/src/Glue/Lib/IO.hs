@@ -9,7 +9,7 @@ import Glue.Lib.IO.Read (readLine)
 io :: Frame Eval
 io =
     E.frameFromList
-        [ ("print", Native (Cmd printFunc))
-        , ("println", Native (Cmd println))
+        [ ("print", Native (Func printFunc))
+        , ("println", Native (Func println))
         , ("read-line", Native (Func readLine))
         ]

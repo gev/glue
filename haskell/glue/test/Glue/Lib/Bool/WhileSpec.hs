@@ -16,7 +16,7 @@ spec = describe "Glue.Lib.Bool.While (Test while special form)" do
             result <- runEvalLegacy (while_ args) (E.fromFrame lib)
             case result of
                 Left err -> expectationFailure $ "While failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Nothing
+                Right (res, _, _) -> res `shouldBe` Void
 
         it "executes body and modifies environment flag" do
             -- Set up environment with flag = true
@@ -27,7 +27,7 @@ spec = describe "Glue.Lib.Bool.While (Test while special form)" do
             case result of
                 Left err -> expectationFailure $ "While failed: " <> show err
                 Right (res, finalEnv, _) -> do
-                    res `shouldBe` Nothing
+                    res `shouldBe` Void
                     -- Check that flag was changed to false
                     E.lookupLocal "flag" finalEnv `shouldBe` Just (Bool False)
 

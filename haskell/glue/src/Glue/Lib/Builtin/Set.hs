@@ -7,7 +7,7 @@ import Glue.Eval (Eval, evalRequired, getEnv, throwError, updateVarEval)
 import Glue.Eval.Exception (cannotModifyModule, notAnObject, wrongArgumentType)
 import Glue.IR (IR (..))
 
-set :: [IR Eval] -> Eval (Maybe (IR Eval))
+set :: [IR Eval] -> Eval (IR Eval)
 set [Symbol name, rawVal] = do
     val <- evalRequired rawVal
     let parts = T.splitOn "." name
@@ -15,7 +15,7 @@ set [Symbol name, rawVal] = do
         [] -> throwError $ wrongArgumentType ["target", "value"]
         [varName] -> do
             updateVarEval varName val
-            pure Nothing
+            pure Void
         [objName, prop] -> do
             env <- getEnv
             case lookupVar objName env of
@@ -24,7 +24,7 @@ set [Symbol name, rawVal] = do
                         let newMap = Map.insert prop val objMap
                         let newObj = Object newMap
                         updateVarEval objName newObj
-                        pure Nothing
+                        pure Void
                     Module _ -> throwError cannotModifyModule
                     _ -> throwError $ notAnObject currentObj
                 Left err -> throwError err

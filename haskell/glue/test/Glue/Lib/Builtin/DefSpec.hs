@@ -17,7 +17,7 @@ spec = describe "Glue.Lib.Builtin.Def (Test def special form)" do
             case result of
                 Left err -> expectationFailure $ "Def failed: " <> show err
                 Right (res, finalEnv, _) -> do
-                    res `shouldBe` Nothing
+                    res `shouldBe` Void
                     E.lookupLocal "x" finalEnv `shouldBe` Just (Integer 42)
 
         it "fails with wrong number of arguments" do
