@@ -18,7 +18,7 @@ spec = describe "Glue.Lib.Builtin.Set (Test set special form)" do
             case result of
                 Left err -> expectationFailure $ "Set failed: " <> show err
                 Right (res, finalEnv, _) -> do
-                    res `shouldBe` Nothing
+                    res `shouldBe` Void
                     E.lookupVar "x" finalEnv `shouldBe` Right (Integer 20)
 
         it "fails to set unbound variable" do
@@ -36,7 +36,7 @@ spec = describe "Glue.Lib.Builtin.Set (Test set special form)" do
             case result of
                 Left err -> expectationFailure $ "Set failed: " <> show err
                 Right (res, finalEnv, _) -> do
-                    res `shouldBe` Nothing
+                    res `shouldBe` Void
                     case E.lookupVar "obj" finalEnv of
                         Right (Object newMap) -> do
                             Map.lookup "a" newMap `shouldBe` Just (Integer 1)

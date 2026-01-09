@@ -21,13 +21,13 @@ data IR m
     | List [IR m]
     | Object (Map Text (IR m))
     | Module (Map Text (IR m))
+    | Void
     | Native (Native m)
     | Closure [Text] (IR m) (Env m)
 
 data Native m
     = Func ([IR m] -> m (IR m))
-    | Cmd ([IR m] -> m ())
-    | Special ([IR m] -> m (Maybe (IR m)))
+    | Special ([IR m] -> m (IR m))
 
 compile :: AST -> IR m
 compile = \case
@@ -53,6 +53,7 @@ instance Show (IR m) where
         List xs -> "(" <> unwords (map show xs) <> ")"
         Object _ -> "{object}"
         Module _ -> "{module}"
+        Void -> "#<void>"
         Native _ -> "<native>"
         Closure{} -> "<closure>"
 
@@ -66,6 +67,7 @@ instance Eq (IR m) where
     List a == List b = a == b
     Object a == Object b = a == b
     Module a == Module b = a == b
+    Void == Void = True
     _ == _ = False
 
 -- Accessor functions for abstraction

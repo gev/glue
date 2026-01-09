@@ -21,7 +21,7 @@ partitionList :: IR Eval -> [IR Eval] -> Eval ([IR Eval], [IR Eval])
 partitionList _ [] = pure ([], [])
 partitionList pred (x : xs) = do
     -- Evaluate (pred x) and check if it returns true
-    result <- eval (List [pred, x]) >>= maybe (throwError expectedValue) pure
+    result <- eval (List [pred, x])
     (matching, nonMatching) <- partitionList pred xs
     case result of
         Bool True -> pure (x : matching, nonMatching)

@@ -44,7 +44,7 @@ spec = do
                     result <- runEval (eval importIR) initialState
 
                     case result of
-                        Right (Nothing, finalState) -> do
+                        Right (Void, finalState) -> do
                             -- Check that the exported symbol is now available
                             case E.lookupVar "value" finalState.env of
                                 Right (Integer 123) -> pure ()
@@ -87,7 +87,7 @@ spec = do
                     result <- runEval (eval importIR) initialState
 
                     case result of
-                        Right (Nothing, finalState) -> do
+                        Right (Void, finalState) -> do
                             -- Check that pre-existing variable is still there
                             case E.lookupVar "preexisting" finalState.env of
                                 Right (Integer 123) -> pure ()
@@ -140,7 +140,7 @@ spec = do
                     result <- runEval (eval importIR) initialState
 
                     case result of
-                        Right (Nothing, finalState) -> do
+                        Right (Void, finalState) -> do
                             -- Check direct access works
                             case E.lookupVar "add" finalState.env of
                                 Right _ -> pure ()
@@ -192,7 +192,7 @@ spec = do
                     result <- runEval (eval importIR) initialState
 
                     case result of
-                        Right (Nothing, finalState) -> do
+                        Right (Void, finalState) -> do
                             -- Try to set module property - should fail
                             let setIR = List [Symbol "set", Symbol "test.immutable.value", Integer 999]
                             setResult <- runEval (eval setIR) finalState
@@ -235,7 +235,7 @@ spec = do
                     result <- runEval (eval importIR) initialState
 
                     case result of
-                        Right (Nothing, importState) -> do
+                        Right (Void, importState) -> do
                             -- Check imported value
                             case E.lookupVar "x" importState.env of
                                 Right (Integer 100) -> pure ()
@@ -247,7 +247,7 @@ spec = do
                             defResult <- runEval (eval defIR) importState
 
                             case defResult of
-                                Right (Nothing, finalState) -> do
+                                Right (Void, finalState) -> do
                                     -- Check that local definition shadows imported one
                                     case E.lookupVar "x" finalState.env of
                                         Right (Integer 200) -> pure ()
@@ -300,15 +300,14 @@ spec = do
                     result <- runEval (eval importIR) initialState
 
                     case result of
-                        Right (Nothing, finalState) -> do
+                        Right (Void, finalState) -> do
                             -- Test dotted access to module property
                             let accessIR = DottedSymbol ["test", "dotted", "value"]
                             accessResult <- runEval (eval accessIR) finalState
 
                             case accessResult of
-                                Right (Just (Integer 42), _) -> pure ()
-                                Right (Just val, _) -> expectationFailure $ "Wrong value: " ++ show val
-                                Right (Nothing, _) -> expectationFailure "Dotted access should return a value"
+                                Right (Integer 42, _) -> pure ()
+                                Right (val, _) -> expectationFailure $ "Wrong value: " ++ show val
                                 Left err -> expectationFailure $ "Dotted access failed: " ++ show err
                         Right (val, _) -> expectationFailure $ "Import should return Nothing, got: " ++ show val
                         Left err -> expectationFailure $ "Import failed: " ++ show err

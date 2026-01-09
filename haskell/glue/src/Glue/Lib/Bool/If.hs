@@ -4,7 +4,7 @@ import Glue.Eval (Eval, eval, evalRequired, throwError)
 import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (IR (..))
 
-if_ :: [IR Eval] -> Eval (Maybe (IR Eval))
+if_ :: [IR Eval] -> Eval (IR Eval)
 if_ [cond, thenExpr, elseExpr] = do
     condVal <- evalRequired cond
     case condVal of

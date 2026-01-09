@@ -4,7 +4,7 @@ import Glue.Eval (Eval, eval, evalRequired, throwError)
 import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (IR (..))
 
-until_ :: [IR Eval] -> Eval (Maybe (IR Eval))
+until_ :: [IR Eval] -> Eval (IR Eval)
 until_ (cond : body) = loop
   where
     loop = do
@@ -13,11 +13,11 @@ until_ (cond : body) = loop
                 condVal <- evalRequired cond
                 case condVal of
                     Bool False -> loop
-                    _ -> pure Nothing
+                    _ -> pure Void
             _ -> do
                 mapM_ eval body
                 condVal <- evalRequired cond
                 case condVal of
                     Bool False -> loop
-                    _ -> pure Nothing
+                    _ -> pure Void
 until_ _ = throwError $ wrongArgumentType ["condition", "body"]

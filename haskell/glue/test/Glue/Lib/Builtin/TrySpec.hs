@@ -17,7 +17,7 @@ runCode input = case parseGlue input of
         fullResult <- runEvalLegacy (eval irTree) (E.fromFrame lib)
         case fullResult of
             Left err -> pure $ Left (GlueError err)
-            Right (res, _finalEnv, _ctx) -> pure $ Right res
+            Right (res, _finalEnv, _ctx) -> pure $ Right (Just res)
 
 spec :: Spec
 spec = describe "Glue.Lib.Builtin.Try (Test try special form)" do

@@ -17,7 +17,7 @@ spec = describe "Glue.Lib.Builtin.Lambda (Test lambda special form)" do
             case result of
                 Left err -> expectationFailure $ "Lambda failed: " <> show err
                 Right (res, _, _) -> case res of
-                    Just (Closure params body capturedEnv) -> do
+                    Closure params body capturedEnv -> do
                         params `shouldBe` ["a", "b"]
                         body `shouldBe` Symbol "body"
                         -- capturedEnv should be the initialEnv
@@ -31,7 +31,7 @@ spec = describe "Glue.Lib.Builtin.Lambda (Test lambda special form)" do
             case result of
                 Left err -> expectationFailure $ "Lambda failed: " <> show err
                 Right (res, _, _) -> case res of
-                    Just (Closure params body _) -> do
+                    Closure params body _ -> do
                         params `shouldBe` []
                         body `shouldBe` Integer 42
                     _ -> expectationFailure "Expected Just Closure"
