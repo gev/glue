@@ -223,3 +223,17 @@ spec = describe "Glue.Eval (System Integration)" do
     it "nested function calls with arithmetic" do
         runCode "((def calc (lambda (a b) (* (+ a b) (- a b)))) (calc 5 3))"
             `shouldReturn` Right (List [Void, Integer 16])
+
+    it "function bodies with lists return last value (implicit sequences)" do
+        -- Test that function bodies with lists act as sequences returning last value
+        runCode "((def foo (\\ (x y) ((println x) (+ x y)))) (foo 1 2))"
+            `shouldReturn` Right (Integer 3)
+        runCode "((def bar (\\ (x y) (+ x y))) (bar 1 2))"
+            `shouldReturn` Right (Integer 3)
+        runCode "((def baz (\\ (x y) ((+ x y)))) (baz 1 2))"
+            `shouldReturn` Right (Integer 3)
+        -- Verify they all return the same value
+        runCode "(== ((def foo (\\ (x y) ((println x) (+ x y)))) (foo 1 2)) ((def bar (\\ (x y) (+ x y))) (bar 1 2)))"
+            `shouldReturn` Right (Bool True)
+        runCode "(== ((def bar (\\ (x y) (+ x y))) (bar 1 2)) ((def baz (\\ (x y) ((+ x y)))) (baz 1 2)))"
+            `shouldReturn` Right (Bool True)
