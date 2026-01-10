@@ -251,13 +251,11 @@ applyClosure params body savedEnv rawArgs = do
 
 -- Evaluate function body with implicit sequence semantics
 evalBody :: IR -> Eval IR
-evalBody (IR.List elements) = do
-    -- Function bodies with lists are implicit sequences - evaluate all and return last
-    results <- mapM eval elements
-    case results of
-        [] -> pure IR.Void -- Empty sequence returns void
-        xs -> pure $ last xs
-evalBody other = eval other
+evalBody body =
+    eval body >>= \case
+        IR.List [] -> pure IR.Void -- Empty sequence returns void
+        IR.List xs -> pure $ last xs
+        other -> pure other
 
 -- Normalize final results by unwrapping single-element lists
 normalizeResult :: Maybe IR -> Maybe IR

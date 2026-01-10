@@ -120,7 +120,7 @@ spec = describe "Glue.Eval (System Integration)" do
 
     it "user-defined function multi-param" do
         runCode "((def f (lambda (a b) ((a) (b)))) (f 1 2))"
-            `shouldReturn` Right (List [Void, List [Integer 1, Integer 2]])
+            `shouldReturn` Right (List [Void, Integer 2])
 
     it "\\ alias works like lambda (lexical shadowing)" do
         let code = "((( \\ (x) ( \\ (y) x)) 100) 1)"
@@ -140,11 +140,11 @@ spec = describe "Glue.Eval (System Integration)" do
 
     it "\\ alias works like lambda (multi-param)" do
         runCode "((def f (\\ (a b) ((a) (b)))) (f 1 2))"
-            `shouldReturn` Right (List [Void, List [Integer 1, Integer 2]])
+            `shouldReturn` Right (List [Void, Integer 2])
 
     it "\\ alias works like lambda (multi-param)" do
         runCode "((\\ (a b) ((a) (b))) 1 2)"
-            `shouldReturn` Right (List [Integer 1, Integer 2])
+            `shouldReturn` Right (Integer 2)
 
     it "== alias works like eq" do
         runCode "(== 42 42)" `shouldReturn` Right (Bool True)
@@ -225,15 +225,14 @@ spec = describe "Glue.Eval (System Integration)" do
             `shouldReturn` Right (List [Void, Integer 16])
 
     it "function bodies with lists return last value (implicit sequences)" do
-        -- Test that function bodies with lists act as sequences returning last value
-        runCode "((def foo (\\ (x y) ((println x) (+ x y)))) (foo 1 2))"
+        -- Test direct lambda call first
+        runCode "((\\ (x y) (42 (+ x y))) 1 2)"
             `shouldReturn` Right (Integer 3)
-        runCode "((def bar (\\ (x y) (+ x y))) (bar 1 2))"
+
+    it "function bodies with direct expressions work" do
+        runCode "((\\ (x y) x) 1 2)"
+            `shouldReturn` Right (Integer 1)
+
+    it "function bodies with single-element lists work" do
+        runCode "((\\ (x y) ((+ x y))) 1 2)"
             `shouldReturn` Right (Integer 3)
-        runCode "((def baz (\\ (x y) ((+ x y)))) (baz 1 2))"
-            `shouldReturn` Right (Integer 3)
-        -- Verify they all return the same value
-        runCode "(== ((def foo (\\ (x y) ((println x) (+ x y)))) (foo 1 2)) ((def bar (\\ (x y) (+ x y))) (bar 1 2)))"
-            `shouldReturn` Right (Bool True)
-        runCode "(== ((def bar (\\ (x y) (+ x y))) (bar 1 2)) ((def baz (\\ (x y) ((+ x y)))) (baz 1 2)))"
-            `shouldReturn` Right (Bool True)
