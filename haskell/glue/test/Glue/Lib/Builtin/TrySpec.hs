@@ -41,7 +41,7 @@ spec = describe "Glue.Lib.Builtin.Try (Test try special form)" do
         runCode code `shouldReturn` Right (Just (String "hello"))
 
     it "handler can be any callable" do
-        let code = "(try (error test-error (:val 123)) (catch \"test-error\" (lambda (err) (+ err.val 1))))"
+        let code = "(try (error test-error (:val 123)) (catch test-error (lambda (err) (+ err.val 1))))"
         runCode code `shouldReturn` Right (Just (Integer 124))
 
     it "multiple catch clauses work" do

@@ -20,16 +20,31 @@ runCode input = case parseGlue input of
         fullResult <- runEvalLegacy (eval irTree) (E.fromFrame lib)
         case fullResult of
             Left err -> pure $ Left (GlueError err)
-            Right (res, _finalEnv, _ctx) -> pure $ Right (normalizeResult (res))
-  where
-    normalizeResult ((List [single])) = single
-    normalizeResult result = result
+            Right (res, _finalEnv, _ctx) -> pure $ Right res
 
 spec :: Spec
 spec = describe "Glue.Eval (System Integration)" do
     it "handles basic values" do
         runCode "42" `shouldReturn` Right (Integer 42)
         runCode "\"test\"" `shouldReturn` Right (String "test")
+
+    it "handles basic values" do
+        runCode "(42)" `shouldReturn` Right (List [Integer 42])
+
+    it "handles basic values" do
+        runCode "((42))" `shouldReturn` Right (List [List [Integer 42]])
+
+    it "handles basic values" do
+        runCode "(+ 0 42)" `shouldReturn` Right (Integer 42)
+
+    it "handles basic values" do
+        runCode "((+ 0 42))" `shouldReturn` Right (List [Integer 42])
+
+    it "handles basic values" do
+        runCode "(== (+ 1 1) (+ 1 1))" `shouldReturn` Right (Bool True)
+
+    it "handles basic values" do
+        runCode "(== (+ 1 1) ((+ 1 1)))" `shouldReturn` Right (Bool False)
 
     it "executes (def)" do
         let code = "((def x 1) x)"
@@ -105,7 +120,7 @@ spec = describe "Glue.Eval (System Integration)" do
 
     it "user-defined function multi-param" do
         runCode "((def f (lambda (a b) ((a) (b)))) (f 1 2))"
-            `shouldReturn` Right (List [Void, List [Integer 1, Integer 2]])
+            `shouldReturn` Right (List [Void, Integer 2])
 
     it "\\ alias works like lambda (lexical shadowing)" do
         let code = "((( \\ (x) ( \\ (y) x)) 100) 1)"
@@ -125,11 +140,11 @@ spec = describe "Glue.Eval (System Integration)" do
 
     it "\\ alias works like lambda (multi-param)" do
         runCode "((def f (\\ (a b) ((a) (b)))) (f 1 2))"
-            `shouldReturn` Right (List [Void, List [Integer 1, Integer 2]])
+            `shouldReturn` Right (List [Void, Integer 2])
 
     it "\\ alias works like lambda (multi-param)" do
         runCode "((\\ (a b) ((a) (b))) 1 2)"
-            `shouldReturn` Right (List [Integer 1, Integer 2])
+            `shouldReturn` Right (Integer 2)
 
     it "== alias works like eq" do
         runCode "(== 42 42)" `shouldReturn` Right (Bool True)
@@ -208,3 +223,16 @@ spec = describe "Glue.Eval (System Integration)" do
     it "nested function calls with arithmetic" do
         runCode "((def calc (lambda (a b) (* (+ a b) (- a b)))) (calc 5 3))"
             `shouldReturn` Right (List [Void, Integer 16])
+
+    it "function bodies with lists return last value (implicit sequences)" do
+        -- Test direct lambda call first
+        runCode "((\\ (x y) (42 (+ x y))) 1 2)"
+            `shouldReturn` Right (Integer 3)
+
+    it "function bodies with direct expressions work" do
+        runCode "((\\ (x y) x) 1 2)"
+            `shouldReturn` Right (Integer 1)
+
+    it "function bodies with single-element lists work" do
+        runCode "((\\ (x y) ((+ x y))) 1 2)"
+            `shouldReturn` Right (Integer 3)

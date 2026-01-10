@@ -238,7 +238,7 @@ applyClosure params body savedEnv rawArgs = do
             -- Full application: execute the function
             let bindings = zip params argValues
             let newEnv = buildEnvWithBindings savedEnv bindings
-            withSavedEnv newEnv (eval body)
+            withSavedEnv newEnv (evalBody body)
         else
             if numArgs < numParams
                 then do
@@ -248,6 +248,14 @@ applyClosure params body savedEnv rawArgs = do
                     let partiallyAppliedEnv = buildEnvWithBindings savedEnv bindings
                     pure $ IR.Closure remainingParams body partiallyAppliedEnv
                 else throwError wrongNumberOfArguments
+
+-- Evaluate function body with implicit sequence semantics
+evalBody :: IR -> Eval IR
+evalBody body =
+    eval body >>= \case
+        IR.List [] -> pure IR.Void -- Empty sequence returns void
+        IR.List xs -> pure $ last xs
+        other -> pure other
 
 -- Normalize final results by unwrapping single-element lists
 normalizeResult :: Maybe IR -> Maybe IR
