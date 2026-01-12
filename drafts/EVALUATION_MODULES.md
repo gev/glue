@@ -7,7 +7,7 @@ Module evaluation handles special forms for module registration and import. Unli
 ## Module Registration
 
 **Input IR:** `Module exports`
-**Process:** Register module metadata in evaluation state
+**Process:** Register module metadata in evaluation runtime
 **Output:** No runtime value (registration effect only)
 
 ### Registration Process
