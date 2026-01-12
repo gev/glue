@@ -22,9 +22,8 @@ spec = describe "Glue.Lib.Builtin.Set (Test set special form)" do
                     E.lookupVar "x" finalEnv `shouldBe` Right (Integer 20)
 
         it "fails to set unbound variable" do
-            let initialEnv = E.emptyEnv
             let args = [Symbol "x", Integer 42]
-            result <- runEvalSimple (set args) initialEnv
+            result <- runEvalSimple (set args) []
             result `shouldSatisfy` isLeft
 
     describe "Setting object properties" do
@@ -51,7 +50,6 @@ spec = describe "Glue.Lib.Builtin.Set (Test set special form)" do
 
     describe "Error cases" do
         it "fails with wrong number of arguments" do
-            let initialEnv = E.emptyEnv
             let args = [Symbol "x"]
-            result <- runEvalSimple (set args) initialEnv
+            result <- runEvalSimple (set args) []
             result `shouldSatisfy` isLeft

@@ -1,8 +1,6 @@
 module Glue.Lib.Math.Logarithmic.LogSpec (spec) where
 
 import Data.Either (isLeft)
-import GHC.Float (isNaN)
-import Glue.Env qualified as E
 import Glue.Eval (runEvalSimple)
 import Glue.IR (IR (..))
 import Glue.Lib.Math.Logarithmic.Log qualified as Log

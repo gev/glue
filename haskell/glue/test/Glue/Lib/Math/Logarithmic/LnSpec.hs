@@ -2,7 +2,6 @@ module Glue.Lib.Math.Logarithmic.LnSpec (spec) where
 
 import Data.Either (isLeft)
 import GHC.Float (isNaN)
-import Glue.Env qualified as E
 import Glue.Eval (runEvalSimple)
 import Glue.IR (IR (..))
 import Glue.Lib.Math.Logarithmic.Ln qualified as Ln

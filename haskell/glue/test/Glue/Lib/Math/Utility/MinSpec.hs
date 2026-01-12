@@ -1,7 +1,6 @@
 module Glue.Lib.Math.Utility.MinSpec (spec) where
 
 import Data.Either (isLeft)
-import Glue.Env qualified as E
 import Glue.Eval (runEvalSimple)
 import Glue.IR (IR (..))
 import Glue.Lib.Math.Utility.Min qualified as Min

@@ -20,14 +20,13 @@ spec = describe "Glue.Lib.Builtin.Lambda (Test lambda special form)" do
                     Closure params body capturedEnv -> do
                         params `shouldBe` ["a", "b"]
                         body `shouldBe` Symbol "body"
-                        -- capturedEnv should be the initialEnv
+                        -- capturedEnv should be the []
                         E.lookupVar "x" capturedEnv `shouldBe` Right (Integer 10)
                     _ -> expectationFailure "Expected Just Closure"
 
         it "creates a closure with no parameters" do
-            let initialEnv = E.emptyEnv
             let args = [List [], Integer 42]
-            result <- runEvalSimple (lambda args) initialEnv
+            result <- runEvalSimple (lambda args) []
             case result of
                 Left err -> expectationFailure $ "Lambda failed: " <> show err
                 Right (res, _, _) -> case res of
@@ -47,19 +46,16 @@ spec = describe "Glue.Lib.Builtin.Lambda (Test lambda special form)" do
 
     describe "Error cases" do
         it "fails with wrong number of arguments" do
-            let initialEnv = E.emptyEnv
             let args = [List [Symbol "x"]]
-            result <- runEvalSimple (lambda args) initialEnv
+            result <- runEvalSimple (lambda args) []
             result `shouldSatisfy` isLeft
 
         it "fails with non-list as parameters" do
-            let initialEnv = E.emptyEnv
             let args = [Integer 1, Symbol "body"]
-            result <- runEvalSimple (lambda args) initialEnv
+            result <- runEvalSimple (lambda args) []
             result `shouldSatisfy` isLeft
 
         it "fails with non-symbols in parameters" do
-            let initialEnv = E.emptyEnv
             let args = [List [Integer 1], Symbol "body"]
-            result <- runEvalSimple (lambda args) initialEnv
+            result <- runEvalSimple (lambda args) []
             result `shouldSatisfy` isLeft
