@@ -244,12 +244,89 @@ class IntegerIr extends Ir { final int value; }
 
 ### MVVM Architecture in Glue
 
-The interpreter enables building complete MVVM applications where each layer is a different environment:
+**Key Architectural Insight**: Model, View, and ViewModel are not separate interpreters but different environments within the same Glue interpreter instance. The interpreter dynamically switches contexts to provide layer-specific functionality.
+
+#### Single Interpreter, Multiple Environments
 
 ```
-Model Environment:     Data/API functions
-ViewModel Environment: Transformation logic  
-View Environment:      UI widget constructors
+┌─────────────────────────────────────────────────────────────┐
+│                    Glue Interpreter                         │
+├─────────────────────────────────────────────────────────────┤
+│  Runtime Context Switcher                                   │
+│  ┌─────────────────────────────────────────────────────┐    │
+│  │ Model Environment:   Data/API functions             │    │
+│  │ - Database queries, API calls, business logic       │    │
+│  └─────────────────────────────────────────────────────┘    │
+│  ┌─────────────────────────────────────────────────────┐    │
+│  │ ViewModel Environment: Transformation logic         │    │
+│  │ - Data formatting, validation, state management     │    │
+│  └─────────────────────────────────────────────────────┘    │
+│  ┌─────────────────────────────────────────────────────┐    │
+│  │ View Environment:     UI widget constructors        │    │
+│  │ - Flutter widget DSL, layout composition            │    │
+│  └─────────────────────────────────────────────────────┘    │
+├─────────────────────────────────────────────────────────────┤
+│  Shared Runtime: Environment Stack, Module Registry         │
+└─────────────────────────────────────────────────────────────┘
+```
+
+#### Environment Switching Mechanism
+
+```dart
+class GlueInterpreter {
+  // Single interpreter instance
+  final Runtime runtime;
+
+  // Context switching methods
+  Future<Ir> evalInModel(String code) async {
+    return await _evalWithEnvironment(code, modelEnvironment);
+  }
+
+  Future<Ir> evalInViewModel(String code) async {
+    return await _evalWithEnvironment(code, viewModelEnvironment);
+  }
+
+  Future<Widget> evalInView(String code) async {
+    return await _evalWithEnvironment(code, viewEnvironment);
+  }
+
+  Future<Ir> _evalWithEnvironment(String code, Environment env) async {
+    final previousEnv = runtime.environment;
+    runtime.environment = env;
+    try {
+      return await evalString(code);
+    } finally {
+      runtime.environment = previousEnv; // Restore context
+    }
+  }
+}
+```
+
+#### Runtime Module System
+
+Each environment loads different runtime modules:
+
+```dart
+// Model Environment Modules
+final modelModules = {
+  'database': DatabaseModule(),
+  'api': ApiModule(),
+  'validation': BusinessLogicModule(),
+};
+
+// ViewModel Environment Modules
+final viewModelModules = {
+  'transform': DataTransformModule(),
+  'format': UiFormatModule(),
+  'state': StateManagementModule(),
+};
+
+// View Environment Modules
+final viewModules = {
+  'widgets': FlutterWidgetModule(),
+  'layout': LayoutDslModule(),
+  'animation': AnimationModule(),
+};
 ```
 
 ### Server-Driven UI
