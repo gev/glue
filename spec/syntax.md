@@ -106,6 +106,14 @@ Special forms have evaluation rules different from regular function calls.
 (def greeting "Hello")
 (def config (:debug true :port 8080))
 (def config.timeout 5000)
+
+;; Function definition sugar (Scheme-style)
+(def (square x) (* x x))
+(def (add x y) (+ x y))
+(def (factorial n)
+  (if (= n 0)
+      1
+      (* n (factorial (- n 1)))))
 ```
 
 #### Mutation

@@ -4,4 +4,15 @@
 
     ;; Test def special form - returns nothing
     (test "def returns nothing" (lambda () (assert-equal () (def x 42))))
+
+    ;; Test function definition sugar - returns the closure
+    (test "function sugar simple" (lambda ()
+            (def (square x) (* x x))
+            (assert-equal 9 (square 3))))
+    (test "function sugar multiple params" (lambda ()
+            (def (add x y) (+ x y))
+            (assert-equal 7 (add 3 4))))
+    (test "function sugar multiple body" (lambda ()
+            (def (test x) (println "testing") (* x 2))
+            (assert-equal 8 (test 4))))
 )

@@ -1,9 +1,9 @@
-module Glue.Lib.Builtin.Lambda where
+module Glue.Lib.Builtin.Lambda (lambda, makeClosure, extractSymbols) where
 
 import Data.Text (Text)
 import Glue.Eval (Eval, getEnv, throwError)
 import Glue.Eval.Exception (RuntimeException, expectedListOfSymbols, wrongArgumentType)
-import Glue.IR (Env, IR (..))
+import Glue.IR (IR (..))
 
 lambda :: [IR Eval] -> Eval (IR Eval)
 lambda [argsNode, body] = do
@@ -13,12 +13,12 @@ lambda [argsNode, body] = do
     params <- case extractSymbols rawArgs of
         Right ps -> pure ps
         Left _ -> throwError $ wrongArgumentType ["symbols in arguments", "body"]
-    capturedEnv <- getEnv
-    pure $ makeClosure params body capturedEnv
+    makeClosure params body
 lambda _ = throwError $ wrongArgumentType ["arguments", "body"]
 
-makeClosure :: [Text] -> IR m -> Env m -> IR m
-makeClosure = Closure
+makeClosure :: [Text] -> IR Eval -> Eval (IR Eval)
+makeClosure params body =
+    Closure params body <$> getEnv
 
 extractSymbols :: [IR m] -> Either (RuntimeException m) [Text]
 extractSymbols = mapM \case

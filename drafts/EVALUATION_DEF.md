@@ -76,15 +76,65 @@ Definitions are scoped to the current environment frame:
 **Example:** `(def x (/ 1 0))`
 **Error:** Division by zero
 
-## Return Value
+## Function Definition Sugar
 
-`def` always returns the value being bound, enabling chaining:
+Glue supports Scheme-style function definition syntax:
 
 ```closure
-(def config
-  (def defaults (:debug false :port 8080))
-  (:inherit defaults :timeout 5000))
+(def (function-name param1 param2 ...) body...)
 ```
+
+This expands to:
+
+```closure
+(def function-name (lambda (param1 param2 ...) body...))
+```
+
+### Examples
+
+```closure
+;; Simple function
+(def (square x) (* x x))
+;; Expands to: (def square (lambda (x) (* x x)))
+
+;; Multiple parameters
+(def (add x y) (+ x y))
+;; Expands to: (def add (lambda (x y) (+ x y)))
+
+;; Multiple body expressions (implicit sequence)
+(def (factorial n)
+  (println "Computing factorial of" n)
+  (if (= n 0)
+      1
+      (* n (factorial (- n 1)))))
+;; Expands to: (def factorial (lambda (n) (println ...) (if ...)))
+```
+
+### Evaluation
+
+The sugar is transformed at evaluation time:
+1. Parse function signature: `(fname param...)`
+2. Construct lambda: `(lambda (param...) body...)`
+3. Evaluate lambda to create closure
+4. Bind closure to `fname`
+
+## Return Value
+
+- **Variable definitions**: Return `Void`
+- **Function definitions**: Return the created closure
+
+```closure
+;; Variable definition returns Void
+(def x 42)  ; returns ()
+
+;; Function definition returns the closure
+(def (f x) (* x x))  ; returns <closure>
+
+;; Can use the returned closure immediately
+((def (square x) (* x x)) 5)  ; returns 25
+```
+
+This allows for more flexible usage patterns while maintaining backward compatibility for variable definitions.
 
 ## Implementation Notes
 

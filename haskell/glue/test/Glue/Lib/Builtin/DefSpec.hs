@@ -4,7 +4,9 @@ import Data.Either (isLeft)
 import Glue.Env qualified as E
 import Glue.Eval (runEvalSimple)
 import Glue.IR (IR (..))
+import Glue.Lib.Builtin (builtin)
 import Glue.Lib.Builtin.Def (def)
+import Glue.Module (envFromModules)
 import Test.Hspec
 
 spec :: Spec
@@ -12,7 +14,8 @@ spec = describe "Glue.Lib.Builtin.Def (Test def special form)" do
     describe "Defining variables" do
         it "defines a variable in the environment" do
             let args = [Symbol "x", Integer 42]
-            result <- runEvalSimple (def args) []
+            let env = envFromModules [builtin]
+            result <- runEvalSimple (def args) env
             case result of
                 Left err -> expectationFailure $ "Def failed: " <> show err
                 Right (res, finalEnv, _) -> do
@@ -21,10 +24,81 @@ spec = describe "Glue.Lib.Builtin.Def (Test def special form)" do
 
         it "fails with wrong number of arguments" do
             let args = [Symbol "x"]
-            result <- runEvalSimple (def args) []
+            let env = envFromModules [builtin]
+            result <- runEvalSimple (def args) env
             result `shouldSatisfy` isLeft
 
         it "fails with non-symbol as name" do
             let args = [Integer 1, Integer 42]
-            result <- runEvalSimple (def args) []
+            let env = envFromModules [builtin]
+            result <- runEvalSimple (def args) env
+            result `shouldSatisfy` isLeft
+
+    describe "Function definition sugar" do
+        it "defines simple function" do
+            let args = [List [Symbol "square", Symbol "x"], List [Symbol "*", Symbol "x", Symbol "x"]]
+            let env = envFromModules [builtin]
+            result <- runEvalSimple (def args) env
+            case result of
+                Left err -> expectationFailure $ "Def failed: " <> show err
+                Right (res, finalEnv, _) -> do
+                    -- Should return the closure
+                    res
+                        `shouldSatisfy` ( \case
+                                            Closure ["x"] _ _ -> True
+                                            _ -> False
+                                        )
+                    -- Check that square function was also defined
+                    E.lookupLocal "square" finalEnv
+                        `shouldSatisfy` ( \case
+                                            Just (Closure ["x"] _ _) -> True
+                                            _ -> False
+                                        )
+
+        it "defines function with multiple parameters" do
+            let args = [List [Symbol "add", Symbol "x", Symbol "y"], List [Symbol "+", Symbol "x", Symbol "y"]]
+            let env = envFromModules [builtin]
+            result <- runEvalSimple (def args) env
+            case result of
+                Left err -> expectationFailure $ "Def failed: " <> show err
+                Right (res, finalEnv, _) -> do
+                    -- Should return the closure
+                    res
+                        `shouldSatisfy` ( \case
+                                            Closure ["x", "y"] _ _ -> True
+                                            _ -> False
+                                        )
+                    E.lookupLocal "add" finalEnv
+                        `shouldSatisfy` ( \case
+                                            Just (Closure ["x", "y"] _ _) -> True
+                                            _ -> False
+                                        )
+
+        it "defines function with multiple body expressions" do
+            let args =
+                    [ List [Symbol "test", Symbol "x"]
+                    , List [Symbol "println", String "hello"]
+                    , List [Symbol "*", Symbol "x", Integer 2]
+                    ]
+            let env = envFromModules [builtin]
+            result <- runEvalSimple (def args) env
+            case result of
+                Left err -> expectationFailure $ "Def failed: " <> show err
+                Right (res, finalEnv, _) -> do
+                    -- Should return the closure
+                    res
+                        `shouldSatisfy` ( \case
+                                            Closure ["x"] _ _ -> True
+                                            _ -> False
+                                        )
+                    E.lookupLocal "test" finalEnv
+                        `shouldSatisfy` ( \case
+                                            Just (Closure ["x"] _ _) -> True
+                                            _ -> False
+                                        )
+
+        it "fails with invalid function signature" do
+            let args = [List [Integer 42, Symbol "x"], List [Symbol "*", Symbol "x", Symbol "x"]]
+            let env = envFromModules [builtin]
+            result <- runEvalSimple (def args) env
             result `shouldSatisfy` isLeft

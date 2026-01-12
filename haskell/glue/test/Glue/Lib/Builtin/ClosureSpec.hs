@@ -3,7 +3,7 @@ module Glue.Lib.Builtin.ClosureSpec (spec) where
 import Data.Either (isLeft)
 import Glue.Env
 import Glue.IR
-import Glue.Lib.Builtin.Lambda (extractSymbols, makeClosure)
+import Glue.Lib.Builtin.Lambda (extractSymbols)
 import Test.Hspec
 import Test.QuickCheck.Instances ()
 
@@ -19,7 +19,7 @@ spec = describe "Glue.Lib.Builtin.Closure (Test closures)" do
 
     it "makeClosure: packs parameters and body, preserving Env" do
         let env = fromList [("x", Integer 10)]
-        let closure = makeClosure ["a"] (Symbol "x") env
+        let closure = Closure ["a"] (Symbol "x") env
         case closure of
             Closure ["a"] (Symbol "x") savedEnv ->
                 lookupVar "x" savedEnv `shouldBe` Right (Integer 10)
