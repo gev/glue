@@ -3,7 +3,7 @@ module Glue.Lib.Builtin.TrySpec (spec) where
 import Data.Text (Text)
 import Glue.Env qualified as E
 import Glue.Error (GlueError (..))
-import Glue.Eval (Eval, eval, runEvalLegacy)
+import Glue.Eval (Eval, eval, runEvalSimple)
 import Glue.IR (IR (..), compile)
 import Glue.Lib (lib)
 import Glue.Parser (parseGlue)
@@ -14,7 +14,7 @@ runCode input = case parseGlue input of
     Left err -> pure $ Left (GlueError err)
     Right ast -> do
         let irTree = compile ast
-        fullResult <- runEvalLegacy (eval irTree) (E.fromFrame lib)
+        fullResult <- runEvalSimple (eval irTree) (E.fromFrame lib)
         case fullResult of
             Left err -> pure $ Left (GlueError err)
             Right (res, _finalEnv, _ctx) -> pure $ Right (Just res)

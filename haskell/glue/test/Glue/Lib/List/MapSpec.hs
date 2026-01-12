@@ -1,7 +1,7 @@
 module Glue.Lib.List.MapSpec (spec) where
 
 import Glue.Env qualified as E
-import Glue.Eval (runEvalLegacy)
+import Glue.Eval (runEvalSimple)
 import Glue.IR (IR (..), Native (..))
 import Glue.Lib.List.Map qualified as Map
 import Test.Hspec
@@ -12,7 +12,7 @@ spec = describe "Glue.Lib.List.Map (Test map function)" do
         let initialEnv = E.emptyEnv
         let func = Native (Func (\[Integer x] -> pure $ Float (fromIntegral x * 2)))
         let args = [func, List [Integer 1, Integer 2, Integer 3]]
-        result <- runEvalLegacy (Map.map args) initialEnv
+        result <- runEvalSimple (Map.map args) initialEnv
         case result of
             Left err -> expectationFailure $ "Map failed: " <> show err
             Right (res, _, _) -> res `shouldBe` List [Float 2.0, Float 4.0, Float 6.0]
@@ -21,7 +21,7 @@ spec = describe "Glue.Lib.List.Map (Test map function)" do
         let initialEnv = E.emptyEnv
         let func = Native (Func (\[Integer x] -> pure $ Float (fromIntegral x + 1)))
         let args = [func, List []]
-        result <- runEvalLegacy (Map.map args) initialEnv
+        result <- runEvalSimple (Map.map args) initialEnv
         case result of
             Left err -> expectationFailure $ "Map failed: " <> show err
             Right (res, _, _) -> res `shouldBe` List []
@@ -30,7 +30,7 @@ spec = describe "Glue.Lib.List.Map (Test map function)" do
         let initialEnv = E.emptyEnv
         let func = Native (Func (\[Integer x] -> pure $ Float (fromIntegral x + 1)))
         let args = [func, Integer 42]
-        result <- runEvalLegacy (Map.map args) initialEnv
+        result <- runEvalSimple (Map.map args) initialEnv
         case result of
             Left _ -> pure () -- Expected error
             Right _ -> expectationFailure "Map should fail on non-list"

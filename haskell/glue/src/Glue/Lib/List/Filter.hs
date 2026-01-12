@@ -1,13 +1,13 @@
 module Glue.Lib.List.Filter where
 
-import Glue.Eval (Eval, eval, evalRequired, throwError)
+import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
 filter :: [IR Eval] -> Eval (IR Eval)
 filter [predIR, listIR] = do
-    pred <- evalRequired predIR
-    list <- evalRequired listIR
+    pred <- eval predIR
+    list <- eval listIR
     case list of
         List xs -> do
             -- Filter elements that satisfy the predicate

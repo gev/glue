@@ -1,6 +1,6 @@
 module Glue.Lib.Bool.Until where
 
-import Glue.Eval (Eval, eval, evalRequired, throwError)
+import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (IR (..))
 
@@ -10,13 +10,13 @@ until_ (cond : body) = loop
     loop = do
         case body of
             [] -> do
-                condVal <- evalRequired cond
+                condVal <- eval cond
                 case condVal of
                     Bool False -> loop
                     _ -> pure Void
             _ -> do
                 mapM_ eval body
-                condVal <- evalRequired cond
+                condVal <- eval cond
                 case condVal of
                     Bool False -> loop
                     _ -> pure Void

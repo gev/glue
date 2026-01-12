@@ -1,12 +1,12 @@
 module Glue.Lib.Bool.Not where
 
-import Glue.Eval (Eval, evalRequired, throwError)
+import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (IR (..))
 
 not_ :: [IR Eval] -> Eval (IR Eval)
 not_ [arg] = do
-    val <- evalRequired arg
+    val <- eval arg
     case val of
         Bool False -> pure $ Bool True
         _ -> pure $ Bool False

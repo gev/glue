@@ -1,13 +1,13 @@
 module Glue.Lib.Math.Arithmetic.Mod where
 
-import Glue.Eval (Eval, evalRequired, throwError)
+import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
 mod :: [IR Eval] -> Eval (IR Eval)
 mod [arg1, arg2] = do
-    va1 <- evalRequired arg1
-    va2 <- evalRequired arg2
+    va1 <- eval arg1
+    va2 <- eval arg2
     case (va1, va2) of
         (Integer n1, Integer n2) -> do
             if n2 == 0

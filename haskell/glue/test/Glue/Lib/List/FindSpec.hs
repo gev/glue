@@ -1,7 +1,7 @@
 module Glue.Lib.List.FindSpec (spec) where
 
 import Glue.Env qualified as E
-import Glue.Eval (runEvalLegacy)
+import Glue.Eval (runEvalSimple)
 import Glue.IR (IR (..), Native (..))
 import Glue.Lib.List.Find qualified as Find
 import Test.Hspec
@@ -12,7 +12,7 @@ spec = describe "Glue.Lib.List.Find (Test find function)" do
         let initialEnv = E.emptyEnv
         let pred = Native (Func (\[Integer x] -> pure . Bool $ x > 2))
         let args = [pred, List [Integer 1, Integer 2, Integer 3, Integer 4]]
-        result <- runEvalLegacy (Find.find args) initialEnv
+        result <- runEvalSimple (Find.find args) initialEnv
         case result of
             Left err -> expectationFailure $ "Find failed: " <> show err
             Right (res, _, _) -> res `shouldBe` Integer 3
@@ -21,7 +21,7 @@ spec = describe "Glue.Lib.List.Find (Test find function)" do
         let initialEnv = E.emptyEnv
         let pred = Native (Func (\[Integer x] -> pure . Bool $ x > 0))
         let args = [pred, List [Integer 1, Integer 2, Integer 3]]
-        result <- runEvalLegacy (Find.find args) initialEnv
+        result <- runEvalSimple (Find.find args) initialEnv
         case result of
             Left err -> expectationFailure $ "Find failed: " <> show err
             Right (res, _, _) -> res `shouldBe` Integer 1
@@ -30,7 +30,7 @@ spec = describe "Glue.Lib.List.Find (Test find function)" do
         let initialEnv = E.emptyEnv
         let pred = Native (Func (\[Integer x] -> pure . Bool $ x > 10))
         let args = [pred, List [Integer 1, Integer 2, Integer 3]]
-        result <- runEvalLegacy (Find.find args) initialEnv
+        result <- runEvalSimple (Find.find args) initialEnv
         case result of
             Left _ -> pure () -- Expected error
             Right _ -> expectationFailure "Find should fail when no element found"
@@ -39,7 +39,7 @@ spec = describe "Glue.Lib.List.Find (Test find function)" do
         let initialEnv = E.emptyEnv
         let pred = Native (Func (\[Integer x] -> pure $ Bool True))
         let args = [pred, List []]
-        result <- runEvalLegacy (Find.find args) initialEnv
+        result <- runEvalSimple (Find.find args) initialEnv
         case result of
             Left _ -> pure () -- Expected error
             Right _ -> expectationFailure "Find should fail on empty list"
@@ -48,7 +48,7 @@ spec = describe "Glue.Lib.List.Find (Test find function)" do
         let initialEnv = E.emptyEnv
         let pred = Native (Func (\[Integer x] -> pure $ Bool True))
         let args = [pred, Integer 42]
-        result <- runEvalLegacy (Find.find args) initialEnv
+        result <- runEvalSimple (Find.find args) initialEnv
         case result of
             Left _ -> pure () -- Expected error
             Right _ -> expectationFailure "Find should fail on non-list"

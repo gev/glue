@@ -1,7 +1,7 @@
 module Glue.Lib.List.PartitionSpec (spec) where
 
 import Glue.Env qualified as E
-import Glue.Eval (runEvalLegacy)
+import Glue.Eval (runEvalSimple)
 import Glue.IR (IR (..), Native (..))
 import Glue.Lib.List.Partition qualified as Partition
 import Test.Hspec
@@ -12,7 +12,7 @@ spec = describe "Glue.Lib.List.Partition (Test partition function)" do
         let initialEnv = E.emptyEnv
         let pred = Native (Func (\[Integer x] -> pure . Bool $ x > 3))
         let args = [pred, List [Integer 1, Integer 2, Integer 3, Integer 4, Integer 5]]
-        result <- runEvalLegacy (Partition.partition args) initialEnv
+        result <- runEvalSimple (Partition.partition args) initialEnv
         case result of
             Left err -> expectationFailure $ "Partition failed: " <> show err
             Right (res, _, _) -> res `shouldBe` List [List [Integer 4, Integer 5], List [Integer 1, Integer 2, Integer 3]]
@@ -21,7 +21,7 @@ spec = describe "Glue.Lib.List.Partition (Test partition function)" do
         let initialEnv = E.emptyEnv
         let pred = Native (Func (\[Integer x] -> pure . Bool $ x > 0))
         let args = [pred, List [Integer 1, Integer 2, Integer 3]]
-        result <- runEvalLegacy (Partition.partition args) initialEnv
+        result <- runEvalSimple (Partition.partition args) initialEnv
         case result of
             Left err -> expectationFailure $ "Partition failed: " <> show err
             Right (res, _, _) -> res `shouldBe` List [List [Integer 1, Integer 2, Integer 3], List []]
@@ -30,7 +30,7 @@ spec = describe "Glue.Lib.List.Partition (Test partition function)" do
         let initialEnv = E.emptyEnv
         let pred = Native (Func (\[Integer x] -> pure . Bool $ x > 10))
         let args = [pred, List [Integer 1, Integer 2, Integer 3]]
-        result <- runEvalLegacy (Partition.partition args) initialEnv
+        result <- runEvalSimple (Partition.partition args) initialEnv
         case result of
             Left err -> expectationFailure $ "Partition failed: " <> show err
             Right (res, _, _) -> res `shouldBe` List [List [], List [Integer 1, Integer 2, Integer 3]]
@@ -39,7 +39,7 @@ spec = describe "Glue.Lib.List.Partition (Test partition function)" do
         let initialEnv = E.emptyEnv
         let pred = Native (Func (\[Integer x] -> pure $ Bool True))
         let args = [pred, List []]
-        result <- runEvalLegacy (Partition.partition args) initialEnv
+        result <- runEvalSimple (Partition.partition args) initialEnv
         case result of
             Left err -> expectationFailure $ "Partition failed: " <> show err
             Right (res, _, _) -> res `shouldBe` List [List [], List []]
@@ -48,7 +48,7 @@ spec = describe "Glue.Lib.List.Partition (Test partition function)" do
         let initialEnv = E.emptyEnv
         let pred = Native (Func (\[Integer x] -> pure . Bool $ x `mod` 2 == 0))
         let args = [pred, List [Integer 1, Integer 2, Integer 3, Integer 4, Integer 5]]
-        result <- runEvalLegacy (Partition.partition args) initialEnv
+        result <- runEvalSimple (Partition.partition args) initialEnv
         case result of
             Left err -> expectationFailure $ "Partition failed: " <> show err
             Right (res, _, _) -> res `shouldBe` List [List [Integer 2, Integer 4], List [Integer 1, Integer 3, Integer 5]]
@@ -57,7 +57,7 @@ spec = describe "Glue.Lib.List.Partition (Test partition function)" do
         let initialEnv = E.emptyEnv
         let pred = Native (Func (\[Integer x] -> pure $ Bool True))
         let args = [pred, Integer 42]
-        result <- runEvalLegacy (Partition.partition args) initialEnv
+        result <- runEvalSimple (Partition.partition args) initialEnv
         case result of
             Left _ -> pure () -- Expected error
             Right _ -> expectationFailure "Partition should fail on non-list"

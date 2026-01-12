@@ -1,13 +1,13 @@
 module Glue.Lib.List.Position where
 
-import Glue.Eval (Eval, eval, evalRequired, throwError)
+import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
 position :: [IR Eval] -> Eval (IR Eval)
 position [predIR, listIR] = do
-    pred <- evalRequired predIR
-    list <- evalRequired listIR
+    pred <- eval predIR
+    list <- eval listIR
     case list of
         List xs -> do
             -- Find index of first element that satisfies predicate

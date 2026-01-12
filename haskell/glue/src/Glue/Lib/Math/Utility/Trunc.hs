@@ -1,12 +1,12 @@
 module Glue.Lib.Math.Utility.Trunc where
 
-import Glue.Eval (Eval, evalRequired, throwError)
+import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
 trunc :: [IR Eval] -> Eval (IR Eval)
 trunc [arg] = do
-    va <- evalRequired arg
+    va <- eval arg
     case va of
         Integer n -> pure $ Integer n
         Float n -> pure $ Integer (Prelude.truncate n)

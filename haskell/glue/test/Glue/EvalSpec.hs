@@ -4,7 +4,7 @@ import Data.Map.Strict qualified as Map
 import Data.Text (Text)
 import Glue.Env qualified as E
 import Glue.Error (GlueError (..))
-import Glue.Eval (Eval, eval, runEvalLegacy)
+import Glue.Eval (Eval, eval, runEvalSimple)
 import Glue.Eval.Error (EvalError (..))
 import Glue.Eval.Exception
 import Glue.IR (IR (..), compile)
@@ -17,7 +17,7 @@ runCode input = case parseGlue input of
     Left err -> pure $ Left (GlueError err)
     Right ast -> do
         let irTree = compile ast
-        fullResult <- runEvalLegacy (eval irTree) (E.fromFrame lib)
+        fullResult <- runEvalSimple (eval irTree) (E.fromFrame lib)
         case fullResult of
             Left err -> pure $ Left (GlueError err)
             Right (res, _finalEnv, _ctx) -> pure $ Right res

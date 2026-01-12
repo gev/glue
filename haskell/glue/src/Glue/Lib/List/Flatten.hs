@@ -1,12 +1,12 @@
 module Glue.Lib.List.Flatten where
 
-import Glue.Eval (Eval, evalRequired, throwError)
+import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
 flatten :: [IR Eval] -> Eval (IR Eval)
 flatten [listIR] = do
-    list <- evalRequired listIR
+    list <- eval listIR
     case list of
         List xs -> do
             flattened <- flattenList xs

@@ -2,7 +2,7 @@ module Glue.Lib.Builtin.LambdaSpec (spec) where
 
 import Data.Either (isLeft)
 import Glue.Env qualified as E
-import Glue.Eval (runEvalLegacy)
+import Glue.Eval (runEvalSimple)
 import Glue.IR (IR (..))
 import Glue.Lib.Builtin.Lambda (extractSymbols, lambda)
 import Test.Hspec
@@ -13,7 +13,7 @@ spec = describe "Glue.Lib.Builtin.Lambda (Test lambda special form)" do
         it "creates a closure with parameters and body" do
             let initialEnv = E.fromList [("x", Integer 10)]
             let args = [List [Symbol "a", Symbol "b"], Symbol "body"]
-            result <- runEvalLegacy (lambda args) initialEnv
+            result <- runEvalSimple (lambda args) initialEnv
             case result of
                 Left err -> expectationFailure $ "Lambda failed: " <> show err
                 Right (res, _, _) -> case res of
@@ -27,7 +27,7 @@ spec = describe "Glue.Lib.Builtin.Lambda (Test lambda special form)" do
         it "creates a closure with no parameters" do
             let initialEnv = E.emptyEnv
             let args = [List [], Integer 42]
-            result <- runEvalLegacy (lambda args) initialEnv
+            result <- runEvalSimple (lambda args) initialEnv
             case result of
                 Left err -> expectationFailure $ "Lambda failed: " <> show err
                 Right (res, _, _) -> case res of
@@ -49,17 +49,17 @@ spec = describe "Glue.Lib.Builtin.Lambda (Test lambda special form)" do
         it "fails with wrong number of arguments" do
             let initialEnv = E.emptyEnv
             let args = [List [Symbol "x"]]
-            result <- runEvalLegacy (lambda args) initialEnv
+            result <- runEvalSimple (lambda args) initialEnv
             result `shouldSatisfy` isLeft
 
         it "fails with non-list as parameters" do
             let initialEnv = E.emptyEnv
             let args = [Integer 1, Symbol "body"]
-            result <- runEvalLegacy (lambda args) initialEnv
+            result <- runEvalSimple (lambda args) initialEnv
             result `shouldSatisfy` isLeft
 
         it "fails with non-symbols in parameters" do
             let initialEnv = E.emptyEnv
             let args = [List [Integer 1], Symbol "body"]
-            result <- runEvalLegacy (lambda args) initialEnv
+            result <- runEvalSimple (lambda args) initialEnv
             result `shouldSatisfy` isLeft

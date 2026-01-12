@@ -1,13 +1,13 @@
 module Glue.Lib.List.Find where
 
-import Glue.Eval (Eval, eval, evalRequired, throwError)
+import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
 find :: [IR Eval] -> Eval (IR Eval)
 find [predIR, listIR] = do
-    pred <- evalRequired predIR
-    list <- evalRequired listIR
+    pred <- eval predIR
+    list <- eval listIR
     case list of
         List xs -> do
             -- Find first element that satisfies predicate

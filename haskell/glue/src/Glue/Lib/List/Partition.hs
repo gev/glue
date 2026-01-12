@@ -1,13 +1,13 @@
 module Glue.Lib.List.Partition where
 
-import Glue.Eval (Eval, eval, evalRequired, throwError)
+import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
 partition :: [IR Eval] -> Eval (IR Eval)
 partition [predIR, listIR] = do
-    pred <- evalRequired predIR
-    list <- evalRequired listIR
+    pred <- eval predIR
+    list <- eval listIR
     case list of
         List xs -> do
             -- Partition list into two lists based on predicate
