@@ -44,8 +44,5 @@ updateVar name val (f : fs)
     | Map.member name f = Right (Map.insert name val f : fs)
     | otherwise = (f :) <$> updateVar name val fs
 
-unionFrames :: Frame m -> Frame m -> Frame m
-unionFrames = Map.union
-
-unionFramesList :: [Frame m] -> Frame m
-unionFramesList = foldl unionFrames Map.empty
+unionFrames :: [Frame m] -> Frame m
+unionFrames = foldl Map.union Map.empty

@@ -1,7 +1,7 @@
 module Glue.Lib.Builtin.Let where
 
 import Data.Map.Strict qualified as Map
-import Glue.Eval (Eval, eval, evalRequired, getEnv, putEnv, throwError)
+import Glue.Eval (Eval, eval, getEnv, putEnv, throwError)
 import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (IR (..))
 
@@ -24,6 +24,6 @@ let' [Object bindingsMap, body] = do
   pure result
  where
   evalBinding (name, rawVal) = do
-    val <- evalRequired rawVal
+    val <- eval rawVal
     pure (name, val)
 let' _ = throwError $ wrongArgumentType ["object", "body"]

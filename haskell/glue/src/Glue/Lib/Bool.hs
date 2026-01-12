@@ -1,8 +1,7 @@
 module Glue.Lib.Bool where
 
-import Glue.Env qualified as E
 import Glue.Eval (Eval)
-import Glue.IR (Frame, IR (..), Native (..))
+import Glue.IR (IR (..), Native (..))
 import Glue.Lib.Bool.Eq (eq)
 import Glue.Lib.Bool.Ge (ge)
 import Glue.Lib.Bool.Gt (gt)
@@ -14,10 +13,12 @@ import Glue.Lib.Bool.Not (not_)
 import Glue.Lib.Bool.Until (until_)
 import Glue.Lib.Bool.When (when_)
 import Glue.Lib.Bool.While (while_)
+import Glue.Module (ModuleInfo, nativeModule)
 
-bool :: Frame Eval
+bool :: ModuleInfo Eval
 bool =
-    E.frameFromList
+    nativeModule
+        "ffi.bool"
         [ ("true", Bool True)
         , ("false", Bool False)
         , ("eq", Native (Func eq))

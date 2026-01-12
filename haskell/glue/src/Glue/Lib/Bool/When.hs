@@ -1,12 +1,12 @@
 module Glue.Lib.Bool.When where
 
-import Glue.Eval (Eval, eval, evalRequired, throwError)
+import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (IR (..))
 
 when_ :: [IR Eval] -> Eval (IR Eval)
 when_ (cond : body) = do
-    condVal <- evalRequired cond
+    condVal <- eval cond
     case condVal of
         Bool False -> pure Void
         _ -> case body of

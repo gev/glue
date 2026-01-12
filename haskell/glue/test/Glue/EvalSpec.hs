@@ -2,13 +2,15 @@ module Glue.EvalSpec (spec) where
 
 import Data.Map.Strict qualified as Map
 import Data.Text (Text)
-import Glue.Env qualified as E
 import Glue.Error (GlueError (..))
-import Glue.Eval (Eval, eval, runEvalLegacy)
+import Glue.Eval (Eval, eval, runEvalSimple)
 import Glue.Eval.Error (EvalError (..))
 import Glue.Eval.Exception
 import Glue.IR (IR (..), compile)
-import Glue.Lib (lib)
+import Glue.Lib.Bool (bool)
+import Glue.Lib.Builtin (builtin)
+import Glue.Lib.Math.Arithmetic (arithmetic)
+import Glue.Module (envFromModules)
 import Glue.Parser (parseGlue)
 import Test.Hspec
 
@@ -17,7 +19,7 @@ runCode input = case parseGlue input of
     Left err -> pure $ Left (GlueError err)
     Right ast -> do
         let irTree = compile ast
-        fullResult <- runEvalLegacy (eval irTree) (E.fromFrame lib)
+        fullResult <- runEvalSimple (eval irTree) $ envFromModules [builtin, arithmetic, bool]
         case fullResult of
             Left err -> pure $ Left (GlueError err)
             Right (res, _finalEnv, _ctx) -> pure $ Right res

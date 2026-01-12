@@ -3,8 +3,10 @@ module Glue.Eval (
     EvalState (..),
     eval,
     runEval,
-    runEvalLegacy,
-    evalRequired,
+    runEvalSimple,
+    apply,
+    isCallable,
+    liftIO,
     throwError,
     getEnv,
     putEnv,
@@ -17,16 +19,12 @@ module Glue.Eval (
     putCache,
     defineVarEval,
     updateVarEval,
-    liftIO,
-    apply,
-    isCallable,
 ) where
 
 import Control.Monad (ap, liftM)
 import Data.List (inits)
 import Data.Map (Map)
 import Data.Map.Strict qualified as Map
-import Data.Maybe (catMaybes)
 import Data.Text (Text)
 import Data.Text qualified as T
 import Glue.Env qualified as E
@@ -68,40 +66,24 @@ instance Monad Eval where
             Left err -> pure $ Left err
             Right (a, state') -> runEvalInternal (f a) state'
 
-getEnv :: Eval Env
-getEnv = Eval $ \state -> pure $ Right (state.env, state)
+-- | Simple runEval with empty module registry
+runEvalSimple :: Eval a -> Env -> IO (Either Error (a, Env, Context))
+runEvalSimple evalAction initialEnv = do
+    let initialState =
+            EvalState
+                { env = initialEnv
+                , context = []
+                , registry = emptyRegistry
+                , importCache = Map.empty
+                , rootEnv = initialEnv
+                }
+    result <- runEval evalAction initialState
+    case result of
+        Left err -> pure $ Left err
+        Right (a, finalState) -> pure $ Right (a, finalState.env, finalState.context)
 
-putEnv :: Env -> Eval ()
-putEnv newEnv = Eval $ \state -> pure $ Right ((), state{env = newEnv})
-
-getRootEnv :: Eval Env
-getRootEnv = Eval $ \state -> pure $ Right (state.rootEnv, state)
-
-putRootEnv :: Env -> Eval ()
-putRootEnv newRootEnv = Eval $ \state -> pure $ Right ((), state{rootEnv = newRootEnv})
-
-getState :: Eval EvalState
-getState = Eval $ \state -> pure $ Right (state, state)
-
-putState :: EvalState -> Eval ()
-putState newState = Eval $ \_ -> pure $ Right ((), newState)
-
-getRegistry :: Eval (ModuleRegistry Eval)
-getRegistry = Eval $ \state -> pure $ Right (state.registry, state)
-
-getCache :: Eval (ImportedModuleCache Eval)
-getCache = Eval $ \state -> pure $ Right (state.importCache, state)
-
-putCache :: ImportedModuleCache Eval -> Eval ()
-putCache newCache = Eval $ \state -> pure $ Right ((), state{importCache = newCache})
-
-pushContext :: Text -> Eval ()
-pushContext name = Eval $ \state -> pure $ Right ((), state{context = name : state.context})
-
-popContext :: Eval ()
-popContext = Eval $ \state -> case state.context of
-    (_ : rest) -> pure $ Right ((), state{context = rest})
-    [] -> pure $ Right ((), state) -- shouldn't happen, but safe
+runEval :: Eval a -> EvalState -> IO (Either Error (a, EvalState))
+runEval (Eval f) = f
 
 throwError :: Exception -> Eval a
 throwError err = Eval $ \state -> pure $ Left (EvalError state.context err)
@@ -111,26 +93,22 @@ liftIO action = Eval $ \state -> do
     a <- action
     pure $ Right (a, state)
 
--- Helper to determine if an IR value can be called
-isCallable :: IR -> Bool
-isCallable (IR.Native _) = True
-isCallable (IR.Closure{}) = True
-isCallable _ = False
-
--- Helper for managing environment frames during function calls
-withSavedEnv :: Env -> Eval a -> Eval a
-withSavedEnv savedEnv action = do
-    currentEnv <- getEnv
-    putEnv savedEnv
-    result <- action
-    putEnv currentEnv
-    pure result
-
--- Safely build environment with parameter bindings
-buildEnvWithBindings :: Env -> [(Text, IR)] -> Env
-buildEnvWithBindings savedEnv = foldl defineBinding (E.pushFrame savedEnv)
-  where
-    defineBinding env (param, value) = E.defineVar param value env
+-- Evaluate
+eval :: IR -> Eval IR
+eval ir = case ir of
+    IR.Symbol name -> do
+        result <- evalSymbol name
+        case result of
+            Just val -> pure val
+            Nothing -> throwError expectedValue
+    IR.DottedSymbol parts -> do
+        result <- evalDottedSymbol parts
+        case result of
+            Just val -> pure val
+            Nothing -> throwError expectedValue
+    IR.List xs -> evalList xs
+    IR.Object objMap -> evalObject objMap
+    _ -> pure ir
 
 -- Evaluate a symbol by looking it up in the environment
 evalSymbol :: Text -> Eval (Maybe IR)
@@ -196,7 +174,7 @@ evalList (IR.Symbol name : rawArgs) = do
             popContext
             throwError err
 evalList xs = do
-    results <- mapM evalRequired xs
+    results <- mapM eval xs
     case results of
         (f : args) | isCallable f -> do
             pushContext "<call>"
@@ -208,79 +186,14 @@ evalList xs = do
 -- Evaluate an object
 evalObject :: Map Text IR -> Eval IR
 evalObject objMap = do
-    evaluatedMap <- mapM evalRequired objMap
+    evaluatedMap <- mapM eval objMap
     pure $ IR.Object evaluatedMap
 
--- Evaluate literal values (numbers, strings, etc.)
-evalLiteral :: IR -> Eval IR
-evalLiteral v = pure v
-
--- Evaluate arguments for function calls
-evalArguments :: [IR] -> Eval [IR]
-evalArguments rawArgs = mapM evalRaw rawArgs
-
--- Apply a native function/command/special
-applyNative :: IR.Native Eval -> [IR] -> Eval IR
-applyNative (IR.Func f) rawArgs = do
-    args <- evalArguments rawArgs
-    f args
-applyNative (IR.Special s) rawArgs = s rawArgs
-
--- Apply a closure with the given arguments
-applyClosure :: [Text] -> IR -> Env -> [IR] -> Eval IR
-applyClosure params body savedEnv rawArgs = do
-    argValues <- evalArguments rawArgs
-    let numArgs = length argValues
-        numParams = length params
-
-    if numArgs == numParams
-        then do
-            -- Full application: execute the function
-            let bindings = zip params argValues
-            let newEnv = buildEnvWithBindings savedEnv bindings
-            withSavedEnv newEnv (evalBody body)
-        else
-            if numArgs < numParams
-                then do
-                    -- Partial application: create new closure with remaining params
-                    let (usedParams, remainingParams) = splitAt numArgs params
-                    let bindings = zip usedParams argValues
-                    let partiallyAppliedEnv = buildEnvWithBindings savedEnv bindings
-                    pure $ IR.Closure remainingParams body partiallyAppliedEnv
-                else throwError wrongNumberOfArguments
-
--- Evaluate function body with implicit sequence semantics
-evalBody :: IR -> Eval IR
-evalBody body =
-    eval body >>= \case
-        IR.List [] -> pure IR.Void -- Empty sequence returns void
-        IR.List xs -> pure $ last xs
-        other -> pure other
-
--- Normalize final results by unwrapping single-element lists
-normalizeResult :: Maybe IR -> Maybe IR
-normalizeResult (Just (IR.List [single])) = Just single
-normalizeResult result = result
-
--- Evaluate without normalization (for arguments)
-evalRaw :: IR -> Eval IR
-evalRaw ir = case ir of
-    IR.Symbol name -> do
-        result <- evalSymbol name
-        case result of
-            Just val -> pure val
-            Nothing -> throwError expectedValue
-    IR.DottedSymbol parts -> do
-        result <- evalDottedSymbol parts
-        case result of
-            Just val -> pure val
-            Nothing -> throwError expectedValue
-    IR.List xs -> evalList xs
-    IR.Object objMap -> evalObject objMap
-    _ -> evalLiteral ir
-
-eval :: IR -> Eval IR
-eval = evalRaw
+-- Helper to determine if an IR value can be called
+isCallable :: IR -> Bool
+isCallable (IR.Native _) = True
+isCallable (IR.Closure{}) = True
+isCallable _ = False
 
 apply :: IR -> [IR] -> Eval IR
 apply ir rawArgs = case ir of
@@ -289,8 +202,49 @@ apply ir rawArgs = case ir of
     IR.Symbol name -> throwError $ unboundVariable name
     _ -> throwError notCallableObject
 
-evalRequired :: IR -> Eval IR
-evalRequired = evalRaw
+-- Apply a native function/command/special
+applyNative :: IR.Native Eval -> [IR] -> Eval IR
+applyNative (IR.Func f) rawArgs = do
+    args <- mapM eval rawArgs
+    f args
+applyNative (IR.Special s) rawArgs = s rawArgs
+
+-- Apply a closure with the given arguments
+applyClosure :: [Text] -> IR -> Env -> [IR] -> Eval IR
+applyClosure params body env rawArgs = do
+    argValues <- mapM eval rawArgs
+    let numArgs = length argValues
+        numParams = length params
+
+    if numArgs == numParams
+        then do
+            -- Full application: execute the function
+            let bindings = zip params argValues
+            let newEnv = buildEnvWithBindings env bindings
+            withEnv newEnv (evalBody body)
+        else
+            if numArgs < numParams
+                then do
+                    -- Partial application: create new closure with remaining params
+                    let (usedParams, remainingParams) = splitAt numArgs params
+                    let bindings = zip usedParams argValues
+                    let partiallyAppliedEnv = buildEnvWithBindings env bindings
+                    pure $ IR.Closure remainingParams body partiallyAppliedEnv
+                else throwError wrongNumberOfArguments
+
+-- Evaluate function body with implicit sequence semantics
+evalBody :: IR -> Eval IR
+evalBody body =
+    eval body >>= \case
+        IR.List [] -> pure IR.Void
+        IR.List xs -> pure $ last xs
+        other -> pure other
+
+-- Safely build environment with parameter bindings
+buildEnvWithBindings :: Env -> [(Text, IR)] -> Env
+buildEnvWithBindings env = foldl defineBinding (E.pushFrame env)
+  where
+    defineBinding env' (param, value) = E.defineVar param value env'
 
 defineVarEval :: Text -> IR -> Eval ()
 defineVarEval name val = do
@@ -304,21 +258,46 @@ updateVarEval name val = do
         Right nextEnv -> putEnv nextEnv
         Left err -> throwError err
 
-runEval :: Eval a -> EvalState -> IO (Either Error (a, EvalState))
-runEval (Eval f) = f
+getEnv :: Eval Env
+getEnv = Eval $ \state -> pure $ Right (state.env, state)
 
--- | Legacy runEval for backward compatibility (deprecated)
-runEvalLegacy :: Eval a -> Env -> IO (Either Error (a, Env, Context))
-runEvalLegacy evalAction initialEnv = do
-    let initialState =
-            EvalState
-                { env = initialEnv
-                , context = []
-                , registry = emptyRegistry -- Empty registry for legacy compatibility
-                , importCache = Map.empty
-                , rootEnv = initialEnv
-                }
-    result <- runEval evalAction initialState
-    case result of
-        Left err -> pure $ Left err
-        Right (a, finalState) -> pure $ Right (a, finalState.env, finalState.context)
+putEnv :: Env -> Eval ()
+putEnv newEnv = Eval $ \state -> pure $ Right ((), state{env = newEnv})
+
+getRootEnv :: Eval Env
+getRootEnv = Eval $ \state -> pure $ Right (state.rootEnv, state)
+
+putRootEnv :: Env -> Eval ()
+putRootEnv newRootEnv = Eval $ \state -> pure $ Right ((), state{rootEnv = newRootEnv})
+
+getState :: Eval EvalState
+getState = Eval $ \state -> pure $ Right (state, state)
+
+putState :: EvalState -> Eval ()
+putState newState = Eval $ \_ -> pure $ Right ((), newState)
+
+getRegistry :: Eval (ModuleRegistry Eval)
+getRegistry = Eval $ \state -> pure $ Right (state.registry, state)
+
+getCache :: Eval (ImportedModuleCache Eval)
+getCache = Eval $ \state -> pure $ Right (state.importCache, state)
+
+putCache :: ImportedModuleCache Eval -> Eval ()
+putCache newCache = Eval $ \state -> pure $ Right ((), state{importCache = newCache})
+
+pushContext :: Text -> Eval ()
+pushContext name = Eval $ \state -> pure $ Right ((), state{context = name : state.context})
+
+popContext :: Eval ()
+popContext = Eval $ \state -> case state.context of
+    (_ : rest) -> pure $ Right ((), state{context = rest})
+    [] -> pure $ Right ((), state) -- shouldn't happen, but safe
+
+-- Helper for managing environment frames during function calls
+withEnv :: Env -> Eval a -> Eval a
+withEnv env action = do
+    currentEnv <- getEnv
+    putEnv env
+    result <- action
+    putEnv currentEnv
+    pure result

@@ -1,13 +1,13 @@
 module Glue.Lib.Math.Logarithmic.Log where
 
-import Glue.Eval (Eval, evalRequired, throwError)
+import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
 log :: [IR Eval] -> Eval (IR Eval)
 log [arg, base] = do
-    va <- evalRequired arg
-    vb <- evalRequired base
+    va <- eval arg
+    vb <- eval base
     case (va, vb) of
         (Integer n, Integer b) -> pure $ Float (logBase (fromIntegral b) (fromIntegral n))
         (Integer n, Float b) -> pure $ Float (logBase b (fromIntegral n))

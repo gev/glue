@@ -1,8 +1,7 @@
 module Glue.Lib.Math.Utility where
 
-import Glue.Env qualified as E
 import Glue.Eval (Eval)
-import Glue.IR (Frame, IR (..), Native (..))
+import Glue.IR (IR (..), Native (..))
 import Glue.Lib.Math.Utility.Abs qualified as Abs
 import Glue.Lib.Math.Utility.Ceil qualified as Ceil
 import Glue.Lib.Math.Utility.Floor qualified as Floor
@@ -11,10 +10,12 @@ import Glue.Lib.Math.Utility.Max qualified as Max
 import Glue.Lib.Math.Utility.Min qualified as Min
 import Glue.Lib.Math.Utility.Round qualified as Round
 import Glue.Lib.Math.Utility.Trunc qualified as Trunc
+import Glue.Module (ModuleInfo, nativeModule)
 
-utility :: Frame Eval
+utility :: ModuleInfo Eval
 utility =
-    E.frameFromList
+    nativeModule
+        "ffi.math.utility"
         [ ("abs", Native (Func Abs.abs))
         , ("floor", Native (Func Floor.floor))
         , ("ceil", Native (Func Ceil.ceil))

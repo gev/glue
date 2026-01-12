@@ -2,7 +2,7 @@ module Glue.Module.RegistrationSpec where
 
 import Glue.IR (IR (..))
 import Glue.Module (RegisteredModule (..))
-import Glue.Module.Registration (buildRegistry, registerModule, registerModules)
+import Glue.Module.Registration (buildRegistry, parseModule, registerModule, registerModules)
 import Glue.Module.Registry (emptyRegistry, lookupModule, registrySize)
 import Test.Hspec
 import Prelude hiding (mod)
@@ -22,7 +22,7 @@ spec = do
                         ]
 
             -- Register the module
-            case registerModule registry moduleIR of
+            case registerModule registry =<< parseModule moduleIR of
                 Right newRegistry -> do
                     -- Check that module was registered
                     case lookupModule "test.math" newRegistry of
@@ -42,7 +42,7 @@ spec = do
                         , List [Symbol "def", Symbol "x", Integer 42]
                         ]
 
-            case registerModule registry moduleIR of
+            case registerModule registry =<< parseModule moduleIR of
                 Right newRegistry -> do
                     case lookupModule "test.empty" newRegistry of
                         Just mod -> do
@@ -70,6 +70,6 @@ spec = do
             let moduleIR1 = List [Symbol "module", Symbol "test.dup", List [Symbol "export", Symbol "x"], List [Symbol "def", Symbol "x", Integer 1]]
             let moduleIR2 = List [Symbol "module", Symbol "test.dup", List [Symbol "export", Symbol "y"], List [Symbol "def", Symbol "y", Integer 2]]
 
-            case registerModules registry [moduleIR1, moduleIR2] of
+            case registerModules registry =<< mapM parseModule [moduleIR1, moduleIR2] of
                 Right _ -> expectationFailure "Should have rejected duplicate module"
                 Left _ -> pure () -- Expected error

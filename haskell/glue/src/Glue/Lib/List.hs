@@ -1,8 +1,7 @@
 module Glue.Lib.List where
 
-import Glue.Env qualified as E
 import Glue.Eval (Eval)
-import Glue.IR (Frame, IR (..), Native (..))
+import Glue.IR (IR (..), Native (..))
 import Glue.Lib.List.Append (append)
 import Glue.Lib.List.Butlast (butlast)
 import Glue.Lib.List.Car (car)
@@ -24,10 +23,12 @@ import Glue.Lib.List.Reverse qualified as Reverse
 import Glue.Lib.List.Sort qualified as Sort
 import Glue.Lib.List.Take qualified as Take
 import Glue.Lib.List.Zip qualified as Zip
+import Glue.Module (ModuleInfo, nativeModule)
 
-list :: Frame Eval
+list :: ModuleInfo Eval
 list =
-    E.frameFromList
+    nativeModule
+        "ffi.list"
         [ ("append", Native (Func append))
         , ("butlast", Native (Func butlast))
         , ("car", Native (Func car))

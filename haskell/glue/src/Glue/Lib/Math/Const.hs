@@ -1,12 +1,13 @@
 module Glue.Lib.Math.Const where
 
-import Glue.Env qualified as E
 import Glue.Eval (Eval)
-import Glue.IR (Frame, IR (..))
+import Glue.IR (IR (..))
+import Glue.Module (ModuleInfo, nativeModule)
 
-const :: Frame Eval
+const :: ModuleInfo Eval
 const =
-    E.frameFromList
+    nativeModule
+        "ffi.math.const"
         [ ("pi", Float pi)
         , ("e", Float (exp 1))
         ]

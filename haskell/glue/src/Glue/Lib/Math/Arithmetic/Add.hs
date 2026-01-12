@@ -1,13 +1,13 @@
 module Glue.Lib.Math.Arithmetic.Add where
 
-import Glue.Eval (Eval, evalRequired, throwError)
+import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
 add :: [IR Eval] -> Eval (IR Eval)
 add [left, right] = do
-    l <- evalRequired left
-    r <- evalRequired right
+    l <- eval left
+    r <- eval right
     case (l, r) of
         (Integer a, Integer b) -> pure $ Integer (a + b)
         (Integer a, Float b) -> pure $ Float (fromIntegral a + b)

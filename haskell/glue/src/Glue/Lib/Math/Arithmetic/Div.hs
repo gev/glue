@@ -2,13 +2,13 @@ module Glue.Lib.Math.Arithmetic.Div where
 
 import Glue.Eval.Exception
 
-import Glue.Eval (Eval, evalRequired, throwError)
+import Glue.Eval (Eval, eval, throwError)
 import Glue.IR (IR (..))
 
 div :: [IR Eval] -> Eval (IR Eval)
 div [left, right] = do
-    l <- evalRequired left
-    r <- evalRequired right
+    l <- eval left
+    r <- eval right
     case (l, r) of
         (Integer a, Integer b) -> pure $ Float (fromIntegral a / fromIntegral b)
         (Integer a, Float b) -> pure $ Float (fromIntegral a / b)

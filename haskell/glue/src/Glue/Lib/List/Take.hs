@@ -1,13 +1,13 @@
 module Glue.Lib.List.Take where
 
-import Glue.Eval (Eval, evalRequired, throwError)
+import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
 take :: [IR Eval] -> Eval (IR Eval)
 take [countIR, listIR] = do
-    count <- evalRequired countIR
-    list <- evalRequired listIR
+    count <- eval countIR
+    list <- eval listIR
     case (count, list) of
         (Integer n, List xs) -> do
             if n < 0

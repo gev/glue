@@ -1,6 +1,6 @@
 module Glue.Lib.Bool.While where
 
-import Glue.Eval (Eval, eval, evalRequired, throwError)
+import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (IR (..))
 
@@ -8,7 +8,7 @@ while_ :: [IR Eval] -> Eval (IR Eval)
 while_ (cond : body) = loop
  where
   loop = do
-    condVal <- evalRequired cond
+    condVal <- eval cond
     case condVal of
       Bool False -> pure Void
       _ -> case body of

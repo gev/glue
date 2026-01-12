@@ -1,13 +1,13 @@
 module Glue.Lib.List.Remove where
 
-import Glue.Eval (Eval, evalRequired, throwError)
+import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
 remove :: [IR Eval] -> Eval (IR Eval)
 remove [itemIR, listIR] = do
-    item <- evalRequired itemIR
-    list <- evalRequired listIR
+    item <- eval itemIR
+    list <- eval listIR
     case list of
         List xs -> do
             let filtered = filter (/= item) xs

@@ -1,13 +1,13 @@
 module Glue.Lib.Bool.Lt where
 
-import Glue.Eval (Eval, evalRequired, throwError)
+import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (IR (..))
 
 lt :: [IR Eval] -> Eval (IR Eval)
 lt [a, b] = do
-    va <- evalRequired a
-    vb <- evalRequired b
+    va <- eval a
+    vb <- eval b
     case (va, vb) of
         (Integer na, Integer nb) -> pure . Bool $ na < nb
         (Float na, Float nb) -> pure . Bool $ na < nb

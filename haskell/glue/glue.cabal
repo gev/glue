@@ -21,7 +21,6 @@ library
     Glue.Eval.Error
     Glue.Eval.Exception
     Glue.IR
-    Glue.Lib
     Glue.Lib.Bool
     Glue.Lib.Bool.Eq
     Glue.Lib.Bool.Ge
@@ -67,7 +66,6 @@ library
     Glue.Lib.List.Sort
     Glue.Lib.List.Take
     Glue.Lib.List.Zip
-    Glue.Lib.Math
     Glue.Lib.Math.Arithmetic
     Glue.Lib.Math.Arithmetic.Add
     Glue.Lib.Math.Arithmetic.Div
