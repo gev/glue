@@ -12,8 +12,8 @@ module Glue.Eval (
     putEnv,
     getRootEnv,
     putRootEnv,
-    getState,
-    putState,
+    getRuntime,
+    putRuntime,
     getRegistry,
     getCache,
     putCache,
@@ -49,7 +49,7 @@ data Runtime = Runtime
     }
 
 newtype Eval a = Eval
-    { runEvalInternal :: Runtime -> IO (Either Error (a, Runtime))
+    { runEval :: Runtime -> IO (Either Error (a, Runtime))
     }
 
 instance Functor Eval where
@@ -64,7 +64,7 @@ instance Monad Eval where
         res <- m state
         case res of
             Left err -> pure $ Left err
-            Right (a, state') -> runEvalInternal (f a) state'
+            Right (a, state') -> runEval (f a) state'
 
 -- | Simple runEval with empty module registry
 runEvalSimple :: Eval a -> Env -> IO (Either Error (a, Env, Context))
@@ -81,9 +81,6 @@ runEvalSimple evalAction initialEnv = do
     case result of
         Left err -> pure $ Left err
         Right (a, finalState) -> pure $ Right (a, finalState.env, finalState.context)
-
-runEval :: Eval a -> Runtime -> IO (Either Error (a, Runtime))
-runEval (Eval f) = f
 
 throwError :: Exception -> Eval a
 throwError err = Eval $ \state -> pure $ Left (EvalError state.context err)
@@ -270,11 +267,11 @@ getRootEnv = Eval $ \state -> pure $ Right (state.rootEnv, state)
 putRootEnv :: Env -> Eval ()
 putRootEnv newRootEnv = Eval $ \state -> pure $ Right ((), state{rootEnv = newRootEnv})
 
-getState :: Eval Runtime
-getState = Eval $ \state -> pure $ Right (state, state)
+getRuntime :: Eval Runtime
+getRuntime = Eval $ \state -> pure $ Right (state, state)
 
-putState :: Runtime -> Eval ()
-putState newState = Eval $ \_ -> pure $ Right ((), newState)
+putRuntime :: Runtime -> Eval ()
+putRuntime newState = Eval $ \_ -> pure $ Right ((), newState)
 
 getRegistry :: Eval (ModuleRegistry Eval)
 getRegistry = Eval $ \state -> pure $ Right (state.registry, state)

@@ -1,18 +1,18 @@
 module Glue.Lib.Builtin.Try where
 
 import Data.Text (Text)
-import Glue.Eval (Eval, apply, eval, getState, isCallable, liftIO, putState, runEval, throwError)
+import Glue.Eval (Eval, apply, eval, getRuntime, isCallable, liftIO, putRuntime, runEval, throwError)
 import Glue.Eval.Error (EvalError (..))
 import Glue.Eval.Exception
 import Glue.IR qualified as IR
 
 tryFunc :: [IR.IR Eval] -> Eval (IR.IR Eval)
 tryFunc (body : catches) = do
-    state <- getState
+    state <- getRuntime
     result <- liftIO $ runEval (eval body) state
     case result of
         Right (val, newState) -> do
-            putState newState
+            putRuntime newState
             pure val
         Left (EvalError _ (RuntimeException sym payload)) -> do
             case findCatch sym catches of

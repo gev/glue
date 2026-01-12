@@ -3,7 +3,7 @@ module Glue.Lib.Builtin.Import where
 import Data.Map.Strict qualified as Map
 import Data.Text qualified as T
 import Glue.Env qualified as E
-import Glue.Eval (Eval, Runtime (..), eval, getCache, getEnv, getRegistry, getRootEnv, getState, liftIO, putCache, putEnv, runEval, throwError)
+import Glue.Eval (Eval, Runtime (..), eval, getCache, getEnv, getRegistry, getRootEnv, getRuntime, liftIO, putCache, putEnv, runEval, throwError)
 import Glue.Eval.Error (EvalError (..))
 import Glue.Eval.Exception (moduleNotFound, wrongArgumentType)
 import Glue.IR (IR (..))
@@ -42,7 +42,7 @@ importForm [Symbol moduleName] = do
                     let isolatedEnv = E.pushFrame [builtinsFrame] -- [temp_frame, builtins]
 
                     -- Get current evaluation state for isolated evaluation
-                    currentState <- Glue.Eval.getState
+                    currentState <- Glue.Eval.getRuntime
 
                     -- Create isolated state for module evaluation
                     let isolatedState = currentState{Glue.Eval.env = isolatedEnv}
