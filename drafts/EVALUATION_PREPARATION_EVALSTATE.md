@@ -1,13 +1,13 @@
-# EvalState Preparation
+# Runtime Preparation
 
-EvalState preparation establishes the complete initial state for Glue's evaluation system. The EvalState contains all the components needed to execute Glue programs safely and efficiently.
+Runtime preparation establishes the complete initial state for Glue's evaluation system. The Runtime contains all the components needed to execute Glue programs safely and efficiently.
 
-## EvalState Structure
+## Runtime Structure
 
-The initial EvalState is constructed with these components:
+The initial Runtime is constructed with these components:
 
 ```haskell
-data EvalState = EvalState
+data Runtime = Runtime
     { env :: Env           -- Current environment (initial bindings)
     , context :: Context   -- Call stack (initially empty)
     , registry :: ModuleRegistry Eval    -- Module metadata (initially empty)
@@ -16,7 +16,7 @@ data EvalState = EvalState
     }
 ```
 
-## Initial EvalState Construction
+## Initial Runtime Construction
 
 ### Environment (env)
 The starting environment containing initial variable bindings. This can be:
@@ -38,7 +38,7 @@ Set to the same environment as `env`. **The primary purpose of the root environm
 
 ## Root Environment Concept
 
-At the foundation of Glue's evaluation system is the **root environment** - the original, unmodified environment preserved in EvalState. **The primary purpose of the root environment is to serve as the initial environment for imported modules**, ensuring they are evaluated in a consistent, controlled context.
+At the foundation of Glue's evaluation system is the **root environment** - the original, unmodified environment preserved in Runtime. **The primary purpose of the root environment is to serve as the initial environment for imported modules**, ensuring they are evaluated in a consistent, controlled context.
 
 This root environment:
 - Contains either the pristine builtins and standard library, or a custom environment
@@ -48,7 +48,7 @@ This root environment:
 
 ## Dual-Registry Architecture
 
-Glue uses **two separate registries** within EvalState to manage modules and their evaluation:
+Glue uses **two separate registries** within Runtime to manage modules and their evaluation:
 
 ### Module Registry (Static Metadata)
 Stores module declarations with name, exports, and unevaluated body forms. This registry is populated during the registration phase and contains static information.
@@ -90,7 +90,7 @@ This ensures modules are evaluated **once globally** while maintaining evaluatio
 
 ## Environment Structure
 
-Environments within EvalState are organized as stacks of frames:
+Environments within Runtime are organized as stacks of frames:
 
 - **Root Frame**: Contains builtin functions and constants (shared)
 - **Module Frames**: Contain imported module bindings
@@ -113,7 +113,7 @@ The root environment approach provides security benefits:
 
 ## See Also
 
-- [EvalState Data Structure](EVALSTATE.md) - Detailed EvalState component descriptions
+- [Runtime Data Structure](EVALSTATE.md) - Detailed Runtime component descriptions
 - [Module Environment Architecture](MODULE_ENVIRONMENTS.md) - Detailed implementation and architecture
 - [Module System Specification](MODULE_SYSTEM.md) - Complete feature overview and examples
 - [Module Registration](EVALUATION_PREPARATION_MODULE_REGISTRATION.md) - Module registration process

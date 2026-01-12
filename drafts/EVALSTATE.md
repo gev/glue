@@ -1,15 +1,15 @@
-# Glue EvalState Data Structure
+# Glue Runtime Data Structure
 
 ## Overview
 
-EvalState represents the complete state of Glue's evaluation system, containing all information needed to execute Glue programs.
+Runtime represents the complete state of Glue's evaluation system, containing all information needed to execute Glue programs.
 
 ## Core Data Types
 
-### EvalState
+### Runtime
 
 ```haskell
-data EvalState = EvalState
+data Runtime = Runtime
     { env :: Env
     , context :: Context
     , registry :: ModuleRegistry Eval
@@ -18,7 +18,7 @@ data EvalState = EvalState
     }
 ```
 
-## EvalState Components
+## Runtime Components
 
 ### Environment (env)
 - **Type:** `Env`
@@ -47,7 +47,7 @@ data EvalState = EvalState
 
 ## Summary
 
-EvalState encapsulates the complete runtime state of Glue's evaluation system:
+Runtime encapsulates the complete runtime state of Glue's evaluation system:
 
 - **Environment management** for variable scoping
 - **Call stack tracking** for error reporting

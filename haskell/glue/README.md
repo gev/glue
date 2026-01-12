@@ -164,11 +164,11 @@ cabal test glue --test-options="--match=Eval"
 The implementation is designed for easy embedding:
 
 ```haskell
-import Glue.Eval (EvalState(..), runEval)
+import Glue.Eval (Runtime(..), runEval)
 
 -- Create evaluation environment
 let env = E.fromFrame lib
-let state = EvalState { env = env, context = [] }
+let state = Runtime { env = env, context = [] }
 
 -- Evaluate Glue code
 result <- runEval (eval compiledIR) state

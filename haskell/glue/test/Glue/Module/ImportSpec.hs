@@ -2,7 +2,7 @@ module Glue.Module.ImportSpec where
 
 import Data.Map.Strict qualified as Map
 import Glue.Env qualified as E
-import Glue.Eval (EvalState (..), eval, runEval)
+import Glue.Eval (Runtime (..), eval, runEval)
 import Glue.IR (IR (..))
 import Glue.Lib.Builtin (builtin)
 import Glue.Lib.Math.Arithmetic (arithmetic)
@@ -33,7 +33,7 @@ spec = do
 
                     -- Create initial eval state with registry
                     let initialState =
-                            EvalState
+                            Runtime
                                 { env = initialEnv
                                 , context = []
                                 , registry = registry
@@ -76,7 +76,7 @@ spec = do
 
                     -- Create initial eval state with registry
                     let initialState =
-                            EvalState
+                            Runtime
                                 { env = initialEnv
                                 , context = []
                                 , registry = registry
@@ -129,7 +129,7 @@ spec = do
 
                     -- Create initial eval state with registry
                     let initialState =
-                            EvalState
+                            Runtime
                                 { env = initialEnv
                                 , context = []
                                 , registry = registry
@@ -181,7 +181,7 @@ spec = do
 
                     -- Create initial eval state with registry
                     let initialState =
-                            EvalState
+                            Runtime
                                 { env = initialEnv
                                 , context = []
                                 , registry = registry
@@ -224,7 +224,7 @@ spec = do
 
                     -- Create initial eval state with registry
                     let initialState =
-                            EvalState
+                            Runtime
                                 { env = initialEnv
                                 , context = []
                                 , registry = registry
@@ -289,7 +289,7 @@ spec = do
 
                     -- Create initial eval state with registry
                     let initialState =
-                            EvalState
+                            Runtime
                                 { env = initialEnv
                                 , context = []
                                 , registry = registry

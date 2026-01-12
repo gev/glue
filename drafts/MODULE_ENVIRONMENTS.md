@@ -196,7 +196,7 @@ Each evaluation context maintains its own stack while sharing the common builtin
 #### Root Environment Access
 ```haskell
 -- Eval monad needs to track root environment separately
-data EvalState = EvalState
+data Runtime = Runtime
     { currentEnv :: Env Eval
     , rootEnv :: Env Eval  -- Original environment passed to runEval
     }

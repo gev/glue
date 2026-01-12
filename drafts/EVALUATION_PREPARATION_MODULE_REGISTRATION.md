@@ -16,5 +16,5 @@ Module registration is the process of making Glue modules available to the evalu
 
 ## See Also
 
-- [EvalState Preparation](EVALUATION_PREPARATION_EVALSTATE.md)
+- [Runtime Preparation](EVALUATION_PREPARATION_EVALSTATE.md)
 - [Standard Library Documentation](../STDLIB_INTRO.md)

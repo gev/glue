@@ -4,7 +4,7 @@
 Glue transforms source code through this carefully designed pipeline:
 
 ```
-Source Text → Parse → AST → Compile → IR → Prepare Environment → Register Modules → Create EvalState → Evaluate → Result
+Source Text → Parse → AST → Compile → IR → Prepare Environment → Register Modules → Create Runtime → Evaluate → Result
 ```
 
 ## Pipeline Stages
@@ -36,7 +36,7 @@ Set up the execution environment with built-in and custom functions, constants.
 Register external modules, making their exports available in the environment.  
 *See: [Module System](module-system.md)*
 
-### 8. Create EvalState
+### 8. Create Runtime
 Complete execution context with environment, modules registry and cache, evaluation context.  
 *See: [Evaluation State](evaluation/evaluation-state.md)*
 
