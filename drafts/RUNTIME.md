@@ -10,17 +10,17 @@ Runtime represents the complete state of Glue's evaluation system, containing al
 
 ```haskell
 data Runtime = Runtime
-    { env :: Env
+    { environment :: Env
     , context :: Context
     , registry :: ModuleRegistry Eval
     , importCache :: ImportedModuleCache Eval
-    , rootEnv :: Env
+    , rootEnvironment :: Env
     }
 ```
 
 ## Runtime Components
 
-### Environment (env)
+### Environment (environment)
 - **Type:** `Env`
 - **Purpose:** Current variable bindings during evaluation
 - **Structure:** Stack of frames containing symbol-to-value mappings
@@ -40,7 +40,7 @@ data Runtime = Runtime
 - **Purpose:** Caches evaluated module results
 - **Structure:** Map from module names to imported module data
 
-### Root Environment (rootEnv)
+### Root Environment (rootEnvironment)
 - **Type:** `Env`
 - **Purpose:** Original environment passed to evaluation
 - **Structure:** Preserved initial environment state

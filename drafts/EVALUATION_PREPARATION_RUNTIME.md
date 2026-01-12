@@ -8,17 +8,17 @@ The initial Runtime is constructed with these components:
 
 ```haskell
 data Runtime = Runtime
-    { env :: Env           -- Current environment (initial bindings)
+    { environment :: Env           -- Current environment (initial bindings)
     , context :: Context   -- Call stack (initially empty)
     , registry :: ModuleRegistry Eval    -- Module metadata (initially empty)
     , importCache :: ImportedModuleCache Eval  -- Cached imports (initially empty)
-    , rootEnv :: Env       -- Preserved root environment
+    , rootEnvironment :: Env       -- Preserved root environment
     }
 ```
 
 ## Initial Runtime Construction
 
-### Environment (env)
+### Environment (environment)
 The starting environment containing initial variable bindings. This can be:
 - **Standard environment**: Includes complete builtins and standard library
 - **Custom environment**: Specific bindings for specialized execution contexts
@@ -33,8 +33,8 @@ Initialized as `emptyRegistry` - no modules registered initially.
 ### Import Cache (importCache)
 Initialized as `Map.empty` - no modules cached initially.
 
-### Root Environment (rootEnv)
-Set to the same environment as `env`. **The primary purpose of the root environment is to serve as the initial environment for imported modules**, ensuring they are evaluated in a consistent, controlled context.
+### Root Environment (rootEnvironment)
+Set to the same environment as `environment`. **The primary purpose of the root environment is to serve as the initial environment for imported modules**, ensuring they are evaluated in a consistent, controlled context.
 
 ## Root Environment Concept
 
@@ -113,7 +113,7 @@ The root environment approach provides security benefits:
 
 ## See Also
 
-- [Runtime Data Structure](EVALSTATE.md) - Detailed Runtime component descriptions
+- [Runtime Data Structure](RUNTIME.md) - Detailed Runtime component descriptions
 - [Module Environment Architecture](MODULE_ENVIRONMENTS.md) - Detailed implementation and architecture
 - [Module System Specification](MODULE_SYSTEM.md) - Complete feature overview and examples
 - [Module Registration](EVALUATION_PREPARATION_MODULE_REGISTRATION.md) - Module registration process
