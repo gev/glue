@@ -5,23 +5,23 @@ import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
 position :: [IR Eval] -> Eval (IR Eval)
-position [predIR, listIR] = do
-    pred <- eval predIR
+position [predicateIR, listIR] = do
+    predicate <- eval predicateIR
     list <- eval listIR
     case list of
         List xs -> do
             -- Find index of first element that satisfies predicate
-            findPosition pred xs 0
+            findPosition predicate xs 0
         _ -> throwError $ wrongArgumentType ["function", "list"]
 position _ = throwError wrongNumberOfArguments
 
 -- Helper function to find position of first element satisfying predicate
 findPosition :: IR Eval -> [IR Eval] -> Int -> Eval (IR Eval)
 findPosition _ [] _ = throwError $ wrongArgumentType ["element satisfying predicate"]
-findPosition pred (x : xs) idx = do
-    -- Evaluate (pred x) and check if it returns true
-    result <- eval (List [pred, x])
+findPosition predicate (x : xs) idx = do
+    -- Evaluate (predicate x) and check if it returns true
+    result <- eval (List [predicate, x])
     case result of
         Bool True -> pure $ Integer (fromIntegral idx)
-        Bool False -> findPosition pred xs (idx + 1)
+        Bool False -> findPosition predicate xs (idx + 1)
         _ -> throwError $ wrongArgumentType ["boolean result from predicate"]
