@@ -39,7 +39,7 @@ type Env = IR.Env Eval
 type Error = EvalError Eval
 type Exception = RuntimeException Eval
 
--- | Complete evaluation state
+-- | Complete evaluation runtime
 data Runtime = Runtime
     { env :: Env
     , context :: Context
@@ -56,15 +56,15 @@ instance Functor Eval where
     fmap = liftM
 
 instance Applicative Eval where
-    pure a = Eval $ \state -> pure $ Right (a, state)
+    pure a = Eval $ \runtime -> pure $ Right (a, runtime)
     (<*>) = ap
 
 instance Monad Eval where
-    (Eval m) >>= f = Eval $ \state -> do
-        res <- m state
+    (Eval m) >>= f = Eval $ \runtime -> do
+        res <- m runtime
         case res of
             Left err -> pure $ Left err
-            Right (a, state') -> runEval (f a) state'
+            Right (a, runtime') -> runEval (f a) runtime'
 
 -- | Simple runEval with empty module registry
 runEvalSimple :: Eval a -> Env -> IO (Either Error (a, Env, Context))
@@ -83,12 +83,12 @@ runEvalSimple evalAction initialEnv = do
         Right (a, finalState) -> pure $ Right (a, finalState.env, finalState.context)
 
 throwError :: Exception -> Eval a
-throwError err = Eval $ \state -> pure $ Left (EvalError state.context err)
+throwError err = Eval $ \runtime -> pure $ Left (EvalError runtime.context err)
 
 liftIO :: IO a -> Eval a
-liftIO action = Eval $ \state -> do
+liftIO action = Eval $ \runtime -> do
     a <- action
-    pure $ Right (a, state)
+    pure $ Right (a, runtime)
 
 -- Evaluate
 eval :: IR -> Eval IR
@@ -256,39 +256,39 @@ updateVarEval name val = do
         Left err -> throwError err
 
 getEnv :: Eval Env
-getEnv = Eval $ \state -> pure $ Right (state.env, state)
+getEnv = Eval $ \runtime -> pure $ Right (runtime.env, runtime)
 
 putEnv :: Env -> Eval ()
-putEnv newEnv = Eval $ \state -> pure $ Right ((), state{env = newEnv})
+putEnv newEnv = Eval $ \runtime -> pure $ Right ((), runtime{env = newEnv})
 
 getRootEnv :: Eval Env
-getRootEnv = Eval $ \state -> pure $ Right (state.rootEnv, state)
+getRootEnv = Eval $ \runtime -> pure $ Right (runtime.rootEnv, runtime)
 
 putRootEnv :: Env -> Eval ()
-putRootEnv newRootEnv = Eval $ \state -> pure $ Right ((), state{rootEnv = newRootEnv})
+putRootEnv newRootEnv = Eval $ \runtime -> pure $ Right ((), runtime{rootEnv = newRootEnv})
 
 getRuntime :: Eval Runtime
-getRuntime = Eval $ \state -> pure $ Right (state, state)
+getRuntime = Eval $ \runtime -> pure $ Right (runtime, runtime)
 
 putRuntime :: Runtime -> Eval ()
-putRuntime newState = Eval $ \_ -> pure $ Right ((), newState)
+putRuntime runtime = Eval $ \_ -> pure $ Right ((), runtime)
 
 getRegistry :: Eval (ModuleRegistry Eval)
-getRegistry = Eval $ \state -> pure $ Right (state.registry, state)
+getRegistry = Eval $ \runtime -> pure $ Right (runtime.registry, runtime)
 
 getCache :: Eval (ImportedModuleCache Eval)
-getCache = Eval $ \state -> pure $ Right (state.importCache, state)
+getCache = Eval $ \runtime -> pure $ Right (runtime.importCache, runtime)
 
 putCache :: ImportedModuleCache Eval -> Eval ()
-putCache newCache = Eval $ \state -> pure $ Right ((), state{importCache = newCache})
+putCache newCache = Eval $ \runtime -> pure $ Right ((), runtime{importCache = newCache})
 
 pushContext :: Text -> Eval ()
-pushContext name = Eval $ \state -> pure $ Right ((), state{context = name : state.context})
+pushContext name = Eval $ \runtime -> pure $ Right ((), runtime{context = name : runtime.context})
 
 popContext :: Eval ()
-popContext = Eval $ \state -> case state.context of
-    (_ : rest) -> pure $ Right ((), state{context = rest})
-    [] -> pure $ Right ((), state) -- shouldn't happen, but safe
+popContext = Eval $ \runtime -> case runtime.context of
+    (_ : rest) -> pure $ Right ((), runtime{context = rest})
+    [] -> pure $ Right ((), runtime) -- shouldn't happen, but safe
 
 -- Helper for managing environment frames during function calls
 withEnv :: Env -> Eval a -> Eval a

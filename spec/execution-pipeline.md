@@ -38,7 +38,7 @@ Register external modules, making their exports available in the environment.
 
 ### 8. Create Runtime
 Complete execution context with environment, modules registry and cache, evaluation context.  
-*See: [Evaluation State](evaluation/evaluation-state.md)*
+*See: [Evaluation State](evaluation/evaluation-runtime.md)*
 
 ### 9. Evaluate
 Execute the IR using the evaluation semantics, applying functions, evaluating conditionals, and performing computations.  

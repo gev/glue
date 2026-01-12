@@ -8,11 +8,11 @@ import Glue.IR qualified as IR
 
 tryFunc :: [IR.IR Eval] -> Eval (IR.IR Eval)
 tryFunc (body : catches) = do
-    state <- getRuntime
-    result <- liftIO $ runEval (eval body) state
+    runtime <- getRuntime
+    result <- liftIO $ runEval (eval body) runtime
     case result of
-        Right (val, newState) -> do
-            putRuntime newState
+        Right (val, newRuntime) -> do
+            putRuntime newRuntime
             pure val
         Left (EvalError _ (RuntimeException sym payload)) -> do
             case findCatch sym catches of

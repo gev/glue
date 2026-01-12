@@ -31,7 +31,7 @@ spec = do
                     -- Create initial environment with import function
                     let initialEnv = envFromModule builtin
 
-                    -- Create initial eval state with registry
+                    -- Create initial eval runtime with registry
                     let initialState =
                             Runtime
                                 { env = initialEnv
@@ -74,7 +74,7 @@ spec = do
                     let baseEnv = envFromModule builtin
                     let initialEnv = E.defineVar "preexisting" (Integer 123) baseEnv
 
-                    -- Create initial eval state with registry
+                    -- Create initial eval runtime with registry
                     let initialState =
                             Runtime
                                 { env = initialEnv
@@ -127,7 +127,7 @@ spec = do
                     -- Create initial environment with import function
                     let initialEnv = envFromModules [builtin, arithmetic]
 
-                    -- Create initial eval state with registry
+                    -- Create initial eval runtime with registry
                     let initialState =
                             Runtime
                                 { env = initialEnv
@@ -179,7 +179,7 @@ spec = do
                     -- Create initial environment with import function
                     let initialEnv = envFromModule builtin
 
-                    -- Create initial eval state with registry
+                    -- Create initial eval runtime with registry
                     let initialState =
                             Runtime
                                 { env = initialEnv
@@ -222,7 +222,7 @@ spec = do
                     -- Create initial environment with import function
                     let initialEnv = envFromModule builtin
 
-                    -- Create initial eval state with registry
+                    -- Create initial eval runtime with registry
                     let initialState =
                             Runtime
                                 { env = initialEnv
@@ -287,7 +287,7 @@ spec = do
                     -- Create initial environment with import function
                     let initialEnv = envFromModule builtin
 
-                    -- Create initial eval state with registry
+                    -- Create initial eval runtime with registry
                     let initialState =
                             Runtime
                                 { env = initialEnv

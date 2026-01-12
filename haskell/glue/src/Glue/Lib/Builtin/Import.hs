@@ -41,13 +41,13 @@ importForm [Symbol moduleName] = do
                     let builtinsFrame = last rootEnv -- Builtins are the bottom frame
                     let isolatedEnv = E.pushFrame [builtinsFrame] -- [temp_frame, builtins]
 
-                    -- Get current evaluation state for isolated evaluation
+                    -- Get current evaluation runtime for isolated evaluation
                     currentState <- Glue.Eval.getRuntime
 
-                    -- Create isolated state for module evaluation
+                    -- Create isolated runtime for module evaluation
                     let isolatedState = currentState{Glue.Eval.env = isolatedEnv}
 
-                    -- Evaluate module in complete isolation (doesn't affect current state)
+                    -- Evaluate module in complete isolation (doesn't affect current runtime)
                     moduleEvalResult <- liftIO $ runEval (mapM eval mod.body) isolatedState
 
                     -- Extract exported symbols from isolated evaluation

@@ -168,10 +168,10 @@ import Glue.Eval (Runtime(..), runEval)
 
 -- Create evaluation environment
 let env = E.fromFrame lib
-let state = Runtime { env = env, context = [] }
+let runtime = Runtime { env = env, context = [] }
 
 -- Evaluate Glue code
-result <- runEval (eval compiledIR) state
+result <- runEval (eval compiledIR) runtime
 ```
 
 ### FFI Support
