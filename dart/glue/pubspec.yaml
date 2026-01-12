@@ -1,0 +1,16 @@
+name: glue
+description: A complete Glue programming language interpreter for Dart - Lisp-inspired with modern features.
+version: 0.1.0
+homepage: https://github.com/gev/glue
+repository: https://github.com/gev/glue
+issue_tracker: https://github.com/gev/glue/issues
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  petitparser: any
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: any
