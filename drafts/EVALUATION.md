@@ -24,7 +24,7 @@ The environment serves as the foundation for symbol resolution during evaluation
 
 ### Evaluation State Preparation
 
-Once modules are registered and the environment is prepared, the initial Runtime must be constructed. The Runtime provides the complete runtime context for evaluation, including environment, call stack, module registries, and caching infrastructure. Glue supports different Runtime configurations for various execution scenarios. For comprehensive details about Runtime construction and component initialization, see [Runtime Preparation](EVALUATION_PREPARATION_EVALSTATE.md).
+Once modules are registered and the environment is prepared, the initial Runtime must be constructed. The Runtime provides the complete runtime context for evaluation, including environment, call stack, module registries, and caching infrastructure. Glue supports different Runtime configurations for various execution scenarios. For comprehensive details about Runtime construction and component initialization, see [Runtime Preparation](EVALUATION_PREPARATION_RUNTIME.md).
 
 ## Evaluation Rules
 
