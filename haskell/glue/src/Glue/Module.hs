@@ -2,18 +2,22 @@ module Glue.Module (
     RegisteredModule (..),
     ImportedModule (..),
     ModuleInfo (..),
+    nativeModule,
+    envFromModule,
+    envFromModules,
 ) where
 
 import Data.Map.Strict (Map, keys)
 import Data.Text (Text)
-import Glue.IR (Env, IR)
+import Glue.Env (frameFromList, fromFrame, unionFrames)
+import Glue.IR (Env, Frame, IR)
 import Prelude hiding (mod)
 
 -- | A registered module containing metadata and body for evaluation
 data RegisteredModule m = RegisteredModule
     { name :: Text
     , exports :: [Text]
-    , body :: [IR m] -- Generic IR type
+    , body :: [IR m]
     }
 
 instance Show (RegisteredModule ir) where
@@ -42,3 +46,20 @@ data ModuleInfo m = ModuleInfo
     , definitions :: [(Text, IR m)]
     }
     deriving (Show, Eq)
+
+nativeModule :: Text -> [(Text, IR m)] -> ModuleInfo m
+nativeModule moduleName definitions =
+    ModuleInfo
+        { moduleName
+        , exports = fst <$> definitions
+        , definitions
+        }
+
+envFromModule :: ModuleInfo m -> Env m
+envFromModule = fromFrame . frameFromModule
+
+envFromModules :: [ModuleInfo m] -> Env m
+envFromModules = fromFrame . unionFrames . fmap frameFromModule
+
+frameFromModule :: ModuleInfo m -> Frame m
+frameFromModule = frameFromList . definitions

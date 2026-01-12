@@ -11,10 +11,10 @@ import Prelude hiding (mod)
 
 -- | Parse a single module from IR
 parseModule :: IR m -> Either (ModuleRegistryError m) (ModuleInfo m)
-parseModule (List (Symbol "module" : Symbol name : body)) = do
+parseModule (List (Symbol "module" : Symbol moduleName : body)) = do
     exports <- extractExports body
     definitions <- extractDefinitions body
-    pure $ ModuleInfo name exports definitions
+    pure $ ModuleInfo{..}
 parseModule _ = Left $ InvalidModuleStructure "Expected (module name body...)"
 
 -- | Extract exports from module body
@@ -23,7 +23,7 @@ extractExports [] = pure []
 extractExports (List (Symbol "export" : symbols) : rest) = do
     symTexts <- extractSymbolList symbols
     remaining <- extractExports rest
-    pure $ symTexts ++ remaining
+    pure $ symTexts <> remaining
 extractExports (_ : rest) = extractExports rest
 
 -- | Extract definitions from module body
@@ -62,14 +62,13 @@ moduleInfoToModule info =
         }
 
 -- | Register a single module into an existing registry (pure)
-registerModule :: ModuleRegistry m -> IR m -> Either (ModuleRegistryError m) (ModuleRegistry m)
-registerModule registry moduleIR = do
-    moduleInfo <- parseModule moduleIR
+registerModule :: ModuleRegistry m -> ModuleInfo m -> Either (ModuleRegistryError m) (ModuleRegistry m)
+registerModule registry moduleInfo = do
     let mod = moduleInfoToModule moduleInfo
     if Map.member moduleInfo.moduleName registry
         then Left $ DuplicateModuleName moduleInfo.moduleName
         else Right $ Map.insert moduleInfo.moduleName mod registry
 
 -- | Register multiple modules into a registry (pure)
-registerModules :: ModuleRegistry m -> [IR m] -> Either (ModuleRegistryError m) (ModuleRegistry m)
+registerModules :: ModuleRegistry m -> [ModuleInfo m] -> Either (ModuleRegistryError m) (ModuleRegistry m)
 registerModules = foldM registerModule

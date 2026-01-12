@@ -91,7 +91,6 @@ import Glue.Parser (parseGlue)
 import Glue.IR (compile)
 import Glue.Eval (eval, runEval)
 import Glue.Env qualified as E
-import Glue.Lib (lib)
 
 -- Parse and evaluate Glue code
 main :: IO ()
@@ -168,7 +167,6 @@ The implementation is designed for easy embedding:
 ```haskell
 import Glue.Eval (EvalState(..), runEval)
 import Glue.Env qualified as E
-import Glue.Lib (lib)
 
 -- Create evaluation environment
 let env = E.fromFrame lib

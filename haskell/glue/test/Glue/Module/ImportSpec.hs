@@ -4,7 +4,9 @@ import Data.Map.Strict qualified as Map
 import Glue.Env qualified as E
 import Glue.Eval (EvalState (..), eval, runEval)
 import Glue.IR (IR (..))
-import Glue.Lib (lib)
+import Glue.Lib.Builtin (builtin)
+import Glue.Lib.Math.Arithmetic (arithmetic)
+import Glue.Module (envFromModule, envFromModules)
 import Glue.Module.Cache qualified as Cache
 import Glue.Module.Registration (buildRegistry)
 import Test.Hspec
@@ -27,7 +29,7 @@ spec = do
                 Left err -> expectationFailure $ "Registry build failed: " ++ show err
                 Right registry -> do
                     -- Create initial environment with import function
-                    let initialEnv = E.fromFrame lib
+                    let initialEnv = envFromModule builtin
 
                     -- Create initial eval state with registry
                     let initialState =
@@ -69,7 +71,7 @@ spec = do
                 Left err -> expectationFailure $ "Registry build failed: " ++ show err
                 Right registry -> do
                     -- Create initial environment with some pre-existing variables
-                    let baseEnv = E.fromFrame lib
+                    let baseEnv = envFromModule builtin
                     let initialEnv = E.defineVar "preexisting" (Integer 123) baseEnv
 
                     -- Create initial eval state with registry
@@ -123,7 +125,7 @@ spec = do
                 Left err -> expectationFailure $ "Registry build failed: " ++ show err
                 Right registry -> do
                     -- Create initial environment with import function
-                    let initialEnv = E.fromFrame lib
+                    let initialEnv = envFromModules [builtin, arithmetic]
 
                     -- Create initial eval state with registry
                     let initialState =
@@ -175,7 +177,7 @@ spec = do
                 Left err -> expectationFailure $ "Registry build failed: " ++ show err
                 Right registry -> do
                     -- Create initial environment with import function
-                    let initialEnv = E.fromFrame lib
+                    let initialEnv = envFromModule builtin
 
                     -- Create initial eval state with registry
                     let initialState =
@@ -218,7 +220,7 @@ spec = do
                 Left err -> expectationFailure $ "Registry build failed: " ++ show err
                 Right registry -> do
                     -- Create initial environment with import function
-                    let initialEnv = E.fromFrame lib
+                    let initialEnv = envFromModule builtin
 
                     -- Create initial eval state with registry
                     let initialState =
@@ -283,7 +285,7 @@ spec = do
                 Left err -> expectationFailure $ "Registry build failed: " ++ show err
                 Right registry -> do
                     -- Create initial environment with import function
-                    let initialEnv = E.fromFrame lib
+                    let initialEnv = envFromModule builtin
 
                     -- Create initial eval state with registry
                     let initialState =
