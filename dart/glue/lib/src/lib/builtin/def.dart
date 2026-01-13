@@ -1,8 +1,8 @@
-import 'package:glue/either.dart';
-import 'package:glue/eval.dart' hide Either, Left, Right;
-import 'package:glue/eval_error.dart';
-import 'package:glue/ir.dart';
-import 'package:glue/runtime_exceptions.dart';
+import '../../either.dart';
+import '../../eval.dart' hide Either, Left, Right;
+import '../../eval_error.dart';
+import '../../ir.dart';
+import '../../runtime_exceptions.dart';
 import 'lambda.dart' show extractSymbols, makeClosure;
 
 /// Def special form implementation

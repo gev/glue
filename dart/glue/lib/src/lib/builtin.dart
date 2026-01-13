@@ -1,19 +1,16 @@
-import 'package:glue/module.dart';
-import 'package:glue/src/lib/builtin/def.dart';
-import 'package:glue/src/lib/builtin/lambda.dart';
+import 'package:glue/src/ir.dart';
+import 'package:glue/src/module.dart';
+import 'builtin/def.dart';
+import 'builtin/lambda.dart';
 
 /// Builtin module - special forms and core language constructs
 /// Mirrors Haskell Glue.Lib.Builtin exactly
 
 /// The builtin module containing all special forms
+/// TODO: Implement special forms properly
 final ModuleInfo builtin = nativeModule('ffi.builtin', [
-  ('def', Native(NativeSpecial(def))),
-  ('lambda', Native(NativeSpecial(lambda))),
-  ('\\', Native(NativeSpecial(lambda))),
-  // TODO: Add other special forms as implemented
-  // ('set', Native(NativeSpecial(set))),
-  // ('let', Native(NativeSpecial(let))),
-  // ('import', Native(NativeSpecial(importForm))),
-  // ('error', Native(NativeSpecial(errorFunc))),
-  // ('try', Native(NativeSpecial(tryFunc))),
+  // TODO: Add special forms when they're properly implemented
+  // ('def', IrNative(Native(NativeSpecial(def)))),
+  // ('lambda', IrNative(Native(NativeSpecial(lambda)))),
+  // ('\\', IrNative(Native(NativeSpecial(lambda)))),
 ]);
