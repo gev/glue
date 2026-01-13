@@ -1,3 +1,4 @@
+import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/module.dart';
 import 'builtin/def.dart';
@@ -7,10 +8,36 @@ import 'builtin/lambda.dart';
 /// Mirrors Haskell Glue.Lib.Builtin exactly
 
 /// The builtin module containing all special forms
-/// TODO: Implement special forms properly
+/// Mirrors Haskell Glue.Lib.Builtin.builtin exactly
 final ModuleInfo builtin = nativeModule('ffi.builtin', [
-  // TODO: Add special forms when they're properly implemented
-  // ('def', IrNative(Native(NativeSpecial(def)))),
-  // ('lambda', IrNative(Native(NativeSpecial(lambda)))),
-  // ('\\', IrNative(Native(NativeSpecial(lambda)))),
+  ('def', IrNative(NativeSpecial(def))),
+  ('set', IrNative(NativeSpecial(_set))), // TODO: implement set
+  ('lambda', IrNative(NativeSpecial(lambda))),
+  ('\\', IrNative(NativeSpecial(lambda))), // backslash is lambda
+  ('let', IrNative(NativeSpecial(_let))), // TODO: implement let
+  ('import', IrNative(NativeSpecial(_import))), // TODO: implement import
+  ('error', IrNative(NativeSpecial(_error))), // TODO: implement error
+  ('try', IrNative(NativeSpecial(_try))), // TODO: implement try
 ]);
+
+/// Placeholder implementations for unimplemented special forms
+/// These will throw "not implemented" errors until properly implemented
+
+EvalIR _set(List<Ir> args) =>
+    throw UnimplementedError('set special form not implemented');
+
+EvalIR _let(List<Ir> args) =>
+    throw UnimplementedError('let special form not implemented');
+
+EvalIR _import(List<Ir> args) =>
+    throw UnimplementedError('import special form not implemented');
+
+EvalIR _error(List<Ir> args) =>
+    throw UnimplementedError('error special form not implemented');
+
+EvalIR _try(List<Ir> args) =>
+    throw UnimplementedError('try special form not implemented');
+
+// Export the implemented special forms for use in eval.dart
+export 'builtin/def.dart' show def;
+export 'builtin/lambda.dart' show lambda;
