@@ -236,5 +236,139 @@ void main() {
         ),
       );
     });
+
+    // Rule: No Mixed Content (from Haskell spec)
+    test('successfully parses pure list', () {
+      final input = '(1 2 "test")';
+      final result = parseGlue(input);
+      expect(result, isA<ListAst>());
+      final listAst = result as ListAst;
+      expect(listAst.elements.length, equals(3));
+      expect(listAst.elements[0], equals(IntegerAst(1)));
+      expect(listAst.elements[1], equals(IntegerAst(2)));
+      expect(listAst.elements[2], equals(StringAst('test')));
+    });
+
+    test('successfully parses pure object', () {
+      final input = '(:id 1 :type "lamp")';
+      final result = parseGlue(input);
+      expect(result, isA<ObjectAst>());
+      final objAst = result as ObjectAst;
+      expect(objAst.properties.length, equals(2));
+      expect(objAst.properties['id'], equals(IntegerAst(1)));
+      expect(objAst.properties['type'], equals(StringAst('lamp')));
+    });
+
+    test('FAILS when mixing atoms and properties', () {
+      expectParseError('(:id 1 "oops")', MixedContentError);
+    });
+
+    test('FAILS when mixing properties and atoms', () {
+      expectParseError('(1 2 :id 3)', MixedContentError);
+    });
+
+    // Rule: Property Pairs (from Haskell spec)
+    test('FAILS on unpaired property key', () {
+      expectParseError('(:id 1 :status)', UnpairedPropertyError);
+    });
+
+    // Equivalent Syntaxes (from Haskell spec)
+    test('parses (f :x 1) and (f (:x 1)) identically', () {
+      final expected = ListAst(
+        IList([
+          SymbolAst('f'),
+          ObjectAst(IMap({'x': IntegerAst(1)})),
+        ]),
+      );
+
+      final result1 = parseGlue('(f :x 1)');
+      final result2 = parseGlue('(f (:x 1))');
+
+      expect(result1, equals(expected));
+      expect(result2, equals(expected));
+    });
+
+    test('parses (f :x 1 :y 2) and (f (:x 1) (:y 2)) differently', () {
+      final grouped = parseGlue('(f :x 1 :y 2)');
+      final separate = parseGlue('(f (:x 1) (:y 2))');
+
+      expect(grouped, isNot(equals(separate)));
+
+      // grouped should be: (f (:x 1 :y 2))
+      expect(grouped, isA<ListAst>());
+      final groupedList = grouped as ListAst;
+      expect(groupedList.elements.length, equals(2));
+      expect(groupedList.elements[0], equals(SymbolAst('f')));
+      expect(groupedList.elements[1], isA<ObjectAst>());
+      final groupedObj = groupedList.elements[1] as ObjectAst;
+      expect(groupedObj.properties.length, equals(2));
+      expect(groupedObj.properties['x'], equals(IntegerAst(1)));
+      expect(groupedObj.properties['y'], equals(IntegerAst(2)));
+
+      // separate should be: (f (:x 1) (:y 2))
+      expect(separate, isA<ListAst>());
+      final separateList = separate as ListAst;
+      expect(separateList.elements.length, equals(3));
+      expect(separateList.elements[0], equals(SymbolAst('f')));
+      expect(separateList.elements[1], isA<ObjectAst>());
+      expect(separateList.elements[2], isA<ObjectAst>());
+    });
+
+    // Deeply nested structures (from Haskell spec)
+    test('parses deeply nested structures', () {
+      final input = '((((a))))';
+      final result = parseGlue(input);
+      expect(result, isA<ListAst>());
+
+      // Should be: ((((a))))
+      ListAst current = result as ListAst;
+      expect(current.elements.length, equals(1));
+
+      current = current.elements[0] as ListAst;
+      expect(current.elements.length, equals(1));
+
+      current = current.elements[0] as ListAst;
+      expect(current.elements.length, equals(1));
+
+      current = current.elements[0] as ListAst;
+      expect(current.elements.length, equals(1));
+
+      expect(current.elements[0], equals(SymbolAst('a')));
+    });
+
+    // Mixed nested objects and lists (from Haskell spec)
+    test('parses mixed nested objects and lists', () {
+      final input = '(:a (:b (1 2)) :c 3)';
+      final result = parseGlue(input);
+      expect(result, isA<ObjectAst>());
+
+      final objAst = result as ObjectAst;
+      expect(objAst.properties.length, equals(2));
+
+      // :a should contain nested object (:b (1 2))
+      expect(objAst.properties['a'], isA<ObjectAst>());
+      final nestedObj = objAst.properties['a'] as ObjectAst;
+      expect(nestedObj.properties.length, equals(1));
+
+      // :b should contain list (1 2)
+      expect(nestedObj.properties['b'], isA<ListAst>());
+      final nestedList = nestedObj.properties['b'] as ListAst;
+      expect(nestedList.elements.length, equals(2));
+      expect(nestedList.elements[0], equals(IntegerAst(1)));
+      expect(nestedList.elements[1], equals(IntegerAst(2)));
+
+      // :c should be 3
+      expect(objAst.properties['c'], equals(IntegerAst(3)));
+    });
+
+    // Error Recovery (from Haskell spec)
+    test('provides meaningful error messages', () {
+      expectParseError('(+ 1', SyntaxError); // Unclosed parenthesis
+    });
+
+    test('handles malformed numbers', () {
+      expectParseError('123.456.789', SyntaxError); // Multiple dots
+      expectParseError('12.34e56e78', SyntaxError); // Multiple e's
+    });
   });
 }
