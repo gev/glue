@@ -1,4 +1,6 @@
-import 'package:glue/glue.dart';
+import 'package:glue/src/eval_error.dart';
+import 'package:glue/src/ir.dart';
+import 'package:glue/src/runtime_exceptions.dart';
 import 'package:test/test.dart';
 
 void main() {

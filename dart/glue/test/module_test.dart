@@ -1,4 +1,9 @@
-import 'package:glue/glue.dart';
+import 'package:glue/src/env.dart';
+import 'package:glue/src/ir.dart';
+import 'package:glue/src/module.dart';
+import 'package:glue/src/module_cache.dart';
+import 'package:glue/src/module_registration.dart';
+import 'package:glue/src/module_registry.dart';
 import 'package:test/test.dart';
 
 void main() {

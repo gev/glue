@@ -1,12 +1,13 @@
-import 'package:glue/glue.dart' as glue;
-import 'package:test/test.dart';
+import 'package:glue/src/ast.dart';
+import 'package:glue/src/ir.dart';
+import 'package:test/test.dart' hide isList;
 
 void main() {
   group('IR', () {
     test('IrInteger equality and toString', () {
-      final ir1 = glue.IrInteger(42);
-      final ir2 = glue.IrInteger(42);
-      final ir3 = glue.IrInteger(24);
+      final ir1 = IrInteger(42);
+      final ir2 = IrInteger(42);
+      final ir3 = IrInteger(24);
 
       expect(ir1, equals(ir2));
       expect(ir1, isNot(equals(ir3)));
@@ -14,9 +15,9 @@ void main() {
     });
 
     test('IrFloat equality and toString', () {
-      final ir1 = glue.IrFloat(3.14);
-      final ir2 = glue.IrFloat(3.14);
-      final ir3 = glue.IrFloat(2.71);
+      final ir1 = IrFloat(3.14);
+      final ir2 = IrFloat(3.14);
+      final ir3 = IrFloat(2.71);
 
       expect(ir1, equals(ir2));
       expect(ir1, isNot(equals(ir3)));
@@ -24,9 +25,9 @@ void main() {
     });
 
     test('IrString equality and toString', () {
-      final ir1 = glue.IrString('hello');
-      final ir2 = glue.IrString('hello');
-      final ir3 = glue.IrString('world');
+      final ir1 = IrString('hello');
+      final ir2 = IrString('hello');
+      final ir3 = IrString('world');
 
       expect(ir1, equals(ir2));
       expect(ir1, isNot(equals(ir3)));
@@ -34,9 +35,9 @@ void main() {
     });
 
     test('IrBool equality and toString', () {
-      final ir1 = glue.IrBool(true);
-      final ir2 = glue.IrBool(true);
-      final ir3 = glue.IrBool(false);
+      final ir1 = IrBool(true);
+      final ir2 = IrBool(true);
+      final ir3 = IrBool(false);
 
       expect(ir1, equals(ir2));
       expect(ir1, isNot(equals(ir3)));
@@ -45,9 +46,9 @@ void main() {
     });
 
     test('IrSymbol equality and toString', () {
-      final ir1 = glue.IrSymbol('x');
-      final ir2 = glue.IrSymbol('x');
-      final ir3 = glue.IrSymbol('y');
+      final ir1 = IrSymbol('x');
+      final ir2 = IrSymbol('x');
+      final ir3 = IrSymbol('y');
 
       expect(ir1, equals(ir2));
       expect(ir1, isNot(equals(ir3)));
@@ -55,9 +56,9 @@ void main() {
     });
 
     test('IrDottedSymbol equality and toString', () {
-      final ir1 = glue.IrDottedSymbol(['a', 'b', 'c']);
-      final ir2 = glue.IrDottedSymbol(['a', 'b', 'c']);
-      final ir3 = glue.IrDottedSymbol(['x', 'y']);
+      final ir1 = IrDottedSymbol(['a', 'b', 'c']);
+      final ir2 = IrDottedSymbol(['a', 'b', 'c']);
+      final ir3 = IrDottedSymbol(['x', 'y']);
 
       expect(ir1 == ir2, isTrue);
       expect(ir1 == ir3, isFalse);
@@ -65,9 +66,9 @@ void main() {
     });
 
     test('IrList equality and toString', () {
-      final ir1 = glue.IrList([glue.IrInteger(1), glue.IrString('hello')]);
-      final ir2 = glue.IrList([glue.IrInteger(1), glue.IrString('hello')]);
-      final ir3 = glue.IrList([glue.IrInteger(1), glue.IrString('world')]);
+      final ir1 = IrList([IrInteger(1), IrString('hello')]);
+      final ir2 = IrList([IrInteger(1), IrString('hello')]);
+      final ir3 = IrList([IrInteger(1), IrString('world')]);
 
       expect(ir1, equals(ir2));
       expect(ir1, isNot(equals(ir3)));
@@ -75,18 +76,9 @@ void main() {
     });
 
     test('IrObject equality and toString', () {
-      final ir1 = glue.IrObject({
-        'name': glue.IrString('Alice'),
-        'age': glue.IrInteger(30),
-      });
-      final ir2 = glue.IrObject({
-        'name': glue.IrString('Alice'),
-        'age': glue.IrInteger(30),
-      });
-      final ir3 = glue.IrObject({
-        'name': glue.IrString('Bob'),
-        'age': glue.IrInteger(25),
-      });
+      final ir1 = IrObject({'name': IrString('Alice'), 'age': IrInteger(30)});
+      final ir2 = IrObject({'name': IrString('Alice'), 'age': IrInteger(30)});
+      final ir3 = IrObject({'name': IrString('Bob'), 'age': IrInteger(25)});
 
       expect(ir1, equals(ir2));
       expect(ir1, isNot(equals(ir3)));
@@ -94,8 +86,8 @@ void main() {
     });
 
     test('IrVoid equality and toString', () {
-      final ir1 = glue.IrVoid();
-      final ir2 = glue.IrVoid();
+      final ir1 = IrVoid();
+      final ir2 = IrVoid();
 
       expect(ir1, equals(ir2));
       expect(ir1.toString(), equals('#<void>'));
@@ -104,214 +96,201 @@ void main() {
 
   group('AST -> IR compilation', () {
     test('compiles StringAst to IrString', () {
-      final ast = glue.StringAst('hello');
-      final ir = glue.compile(ast);
-      expect(ir, isA<glue.IrString>());
-      expect((ir as glue.IrString).value, equals('hello'));
+      final ast = StringAst('hello');
+      final ir = compile(ast);
+      expect(ir, isA<IrString>());
+      expect((ir as IrString).value, equals('hello'));
     });
 
     test('compiles IntegerAst to IrInteger', () {
-      final ast = glue.IntegerAst(42);
-      final ir = glue.compile(ast);
-      expect(ir, isA<glue.IrInteger>());
-      expect((ir as glue.IrInteger).value, equals(42));
+      final ast = IntegerAst(42);
+      final ir = compile(ast);
+      expect(ir, isA<IrInteger>());
+      expect((ir as IrInteger).value, equals(42));
     });
 
     test('compiles FloatAst to IrFloat', () {
-      final ast = glue.FloatAst(3.14);
-      final ir = glue.compile(ast);
-      expect(ir, isA<glue.IrFloat>());
-      expect((ir as glue.IrFloat).value, closeTo(3.14, 0.001));
+      final ast = FloatAst(3.14);
+      final ir = compile(ast);
+      expect(ir, isA<IrFloat>());
+      expect((ir as IrFloat).value, closeTo(3.14, 0.001));
     });
 
     test('compiles SymbolAst without dots to IrSymbol', () {
-      final ast = glue.SymbolAst('x');
-      final ir = glue.compile(ast);
-      expect(ir, isA<glue.IrSymbol>());
-      expect((ir as glue.IrSymbol).value, equals('x'));
+      final ast = SymbolAst('x');
+      final ir = compile(ast);
+      expect(ir, isA<IrSymbol>());
+      expect((ir as IrSymbol).value, equals('x'));
     });
 
     test('compiles SymbolAst with dots to IrDottedSymbol', () {
-      final ast = glue.SymbolAst('a.b.c');
-      final ir = glue.compile(ast);
-      expect(ir, isA<glue.IrDottedSymbol>());
-      expect((ir as glue.IrDottedSymbol).parts, equals(['a', 'b', 'c']));
+      final ast = SymbolAst('a.b.c');
+      final ir = compile(ast);
+      expect(ir, isA<IrDottedSymbol>());
+      expect((ir as IrDottedSymbol).parts, equals(['a', 'b', 'c']));
     });
 
     test('compiles ListAst to IrList preserving length', () {
-      final ast = glue.ListAst([
-        glue.IntegerAst(1),
-        glue.StringAst('hello'),
-        glue.SymbolAst('x'),
-      ]);
-      final ir = glue.compile(ast);
-      expect(ir, isA<glue.IrList>());
-      final irList = ir as glue.IrList;
+      final ast = ListAst([IntegerAst(1), StringAst('hello'), SymbolAst('x')]);
+      final ir = compile(ast);
+      expect(ir, isA<IrList>());
+      final irList = ir as IrList;
       expect(irList.elements.length, equals(3));
-      expect(irList.elements[0], isA<glue.IrInteger>());
-      expect(irList.elements[1], isA<glue.IrString>());
-      expect(irList.elements[2], isA<glue.IrSymbol>());
+      expect(irList.elements[0], isA<IrInteger>());
+      expect(irList.elements[1], isA<IrString>());
+      expect(irList.elements[2], isA<IrSymbol>());
     });
 
     test('compiles ObjectAst to IrObject', () {
-      final ast = glue.ObjectAst({
-        'name': glue.StringAst('Alice'),
-        'age': glue.IntegerAst(30),
-        'nested': glue.ObjectAst({'key': glue.SymbolAst('value')}),
+      final ast = ObjectAst({
+        'name': StringAst('Alice'),
+        'age': IntegerAst(30),
+        'nested': ObjectAst({'key': SymbolAst('value')}),
       });
-      final ir = glue.compile(ast);
-      expect(ir, isA<glue.IrObject>());
-      final irObj = ir as glue.IrObject;
+      final ir = compile(ast);
+      expect(ir, isA<IrObject>());
+      final irObj = ir as IrObject;
       expect(irObj.properties.length, equals(3));
-      expect(irObj.properties['name'], isA<glue.IrString>());
-      expect(irObj.properties['age'], isA<glue.IrInteger>());
-      expect(irObj.properties['nested'], isA<glue.IrObject>());
+      expect(irObj.properties['name'], isA<IrString>());
+      expect(irObj.properties['age'], isA<IrInteger>());
+      expect(irObj.properties['nested'], isA<IrObject>());
     });
 
     test('compiles empty ListAst', () {
-      final ast = glue.ListAst([]);
-      final ir = glue.compile(ast);
-      expect(ir, isA<glue.IrList>());
-      expect((ir as glue.IrList).elements.length, equals(0));
+      final ast = ListAst([]);
+      final ir = compile(ast);
+      expect(ir, isA<IrList>());
+      expect((ir as IrList).elements.length, equals(0));
     });
 
     test('compiles empty ObjectAst', () {
-      final ast = glue.ObjectAst({});
-      final ir = glue.compile(ast);
-      expect(ir, isA<glue.IrObject>());
-      expect((ir as glue.IrObject).properties.length, equals(0));
+      final ast = ObjectAst({});
+      final ir = compile(ast);
+      expect(ir, isA<IrObject>());
+      expect((ir as IrObject).properties.length, equals(0));
     });
 
     test('recursive compilation in nested structures', () {
-      final ast = glue.ListAst([
-        glue.ObjectAst({'a': glue.IntegerAst(1)}),
-        glue.ListAst([glue.SymbolAst('x.y'), glue.FloatAst(2.5)]),
+      final ast = ListAst([
+        ObjectAst({'a': IntegerAst(1)}),
+        ListAst([SymbolAst('x.y'), FloatAst(2.5)]),
       ]);
-      final ir = glue.compile(ast);
-      expect(ir, isA<glue.IrList>());
-      final irList = ir as glue.IrList;
-      expect(irList.elements[0], isA<glue.IrObject>());
-      expect(irList.elements[1], isA<glue.IrList>());
+      final ir = compile(ast);
+      expect(ir, isA<IrList>());
+      final irList = ir as IrList;
+      expect(irList.elements[0], isA<IrObject>());
+      expect(irList.elements[1], isA<IrList>());
 
-      final nestedObj = irList.elements[0] as glue.IrObject;
-      expect(nestedObj.properties['a'], isA<glue.IrInteger>());
+      final nestedObj = irList.elements[0] as IrObject;
+      expect(nestedObj.properties['a'], isA<IrInteger>());
 
-      final nestedList = irList.elements[1] as glue.IrList;
-      expect(nestedList.elements[0], isA<glue.IrDottedSymbol>());
-      expect(nestedList.elements[1], isA<glue.IrFloat>());
+      final nestedList = irList.elements[1] as IrList;
+      expect(nestedList.elements[0], isA<IrDottedSymbol>());
+      expect(nestedList.elements[1], isA<IrFloat>());
     });
   });
 
   group('IR helper functions', () {
     test('isList and listLength', () {
-      final listIr = glue.IrList([glue.IrInteger(1), glue.IrInteger(2)]);
-      final nonListIr = glue.IrInteger(42);
+      final listIr = IrList([IrInteger(1), IrInteger(2)]);
+      final nonListIr = IrInteger(42);
 
-      expect(glue.isList(listIr), isTrue);
-      expect(glue.isList(nonListIr), isFalse);
-      expect(glue.listLength(listIr), equals(2));
-      expect(glue.listLength(nonListIr), equals(0));
+      expect(isList(listIr), isTrue);
+      expect(isList(nonListIr), isFalse);
+      expect(listLength(listIr), equals(2));
+      expect(listLength(nonListIr), equals(0));
     });
 
     test('isObject and objectSize', () {
-      final objIr = glue.IrObject({
-        'a': glue.IrInteger(1),
-        'b': glue.IrString('hello'),
-      });
-      final nonObjIr = glue.IrSymbol('x');
+      final objIr = IrObject({'a': IrInteger(1), 'b': IrString('hello')});
+      final nonObjIr = IrSymbol('x');
 
-      expect(glue.isObject(objIr), isTrue);
-      expect(glue.isObject(nonObjIr), isFalse);
-      expect(glue.objectSize(objIr), equals(2));
-      expect(glue.objectSize(nonObjIr), equals(0));
+      expect(isObject(objIr), isTrue);
+      expect(isObject(nonObjIr), isFalse);
+      expect(objectSize(objIr), equals(2));
+      expect(objectSize(nonObjIr), equals(0));
     });
 
     test('objectLookup', () {
-      final objIr = glue.IrObject({
-        'key': glue.IrString('value'),
-        'num': glue.IrInteger(42),
-      });
-      final nonObjIr = glue.IrList([]);
+      final objIr = IrObject({'key': IrString('value'), 'num': IrInteger(42)});
+      final nonObjIr = IrList([]);
 
-      expect(glue.objectLookup('key', objIr), isA<glue.IrString>());
-      expect(
-        (glue.objectLookup('key', objIr) as glue.IrString).value,
-        equals('value'),
-      );
-      expect(glue.objectLookup('missing', objIr), isNull);
-      expect(glue.objectLookup('key', nonObjIr), isNull);
+      expect(objectLookup('key', objIr), isA<IrString>());
+      expect((objectLookup('key', objIr) as IrString).value, equals('value'));
+      expect(objectLookup('missing', objIr), isNull);
+      expect(objectLookup('key', nonObjIr), isNull);
     });
 
     test('isSymbol and getSymbol', () {
-      final symbolIr = glue.IrSymbol('x');
-      final dottedIr = glue.IrDottedSymbol(['a', 'b']);
-      final nonSymbolIr = glue.IrInteger(42);
+      final symbolIr = IrSymbol('x');
+      final dottedIr = IrDottedSymbol(['a', 'b']);
+      final nonSymbolIr = IrInteger(42);
 
-      expect(glue.isSymbol(symbolIr), isTrue);
-      expect(glue.isSymbol(dottedIr), isTrue);
-      expect(glue.isSymbol(nonSymbolIr), isFalse);
+      expect(isSymbol(symbolIr), isTrue);
+      expect(isSymbol(dottedIr), isTrue);
+      expect(isSymbol(nonSymbolIr), isFalse);
 
-      expect(glue.getSymbol(symbolIr), equals('x'));
-      expect(glue.getSymbol(dottedIr), equals('a.b'));
-      expect(glue.getSymbol(nonSymbolIr), equals(''));
+      expect(getSymbol(symbolIr), equals('x'));
+      expect(getSymbol(dottedIr), equals('a.b'));
+      expect(getSymbol(nonSymbolIr), equals(''));
     });
   });
 
   group('Compilation properties', () {
     test('list length preservation', () {
       final asts = [
-        glue.IntegerAst(1),
-        glue.StringAst('hello'),
-        glue.SymbolAst('x'),
-        glue.FloatAst(3.14),
+        IntegerAst(1),
+        StringAst('hello'),
+        SymbolAst('x'),
+        FloatAst(3.14),
       ];
-      final ast = glue.ListAst(asts);
-      final ir = glue.compile(ast);
+      final ast = ListAst(asts);
+      final ir = compile(ast);
 
-      expect(glue.isList(ir), isTrue);
-      expect(glue.listLength(ir), equals(asts.length));
+      expect(isList(ir), isTrue);
+      expect(listLength(ir), equals(asts.length));
     });
 
     test('object size properties', () {
       final props = {
-        'a': glue.IntegerAst(1),
-        'b': glue.StringAst('hello'),
-        'c': glue.SymbolAst('x'),
+        'a': IntegerAst(1),
+        'b': StringAst('hello'),
+        'c': SymbolAst('x'),
       };
-      final ast = glue.ObjectAst(props);
-      final ir = glue.compile(ast);
+      final ast = ObjectAst(props);
+      final ir = compile(ast);
 
-      expect(glue.isObject(ir), isTrue);
-      expect(glue.objectSize(ir), equals(props.length));
+      expect(isObject(ir), isTrue);
+      expect(objectSize(ir), equals(props.length));
     });
 
     test('symbol compilation idempotent', () {
       final symbols = ['x', 'hello', 'a.b.c', 'module.function'];
       for (final sym in symbols) {
-        final ast = glue.SymbolAst(sym);
-        final ir = glue.compile(ast);
+        final ast = SymbolAst(sym);
+        final ir = compile(ast);
 
-        expect(glue.isSymbol(ir), isTrue);
-        expect(glue.getSymbol(ir), equals(sym));
+        expect(isSymbol(ir), isTrue);
+        expect(getSymbol(ir), equals(sym));
       }
     });
 
     test('recursive object lookup', () {
-      final innerAst = glue.IntegerAst(42);
-      final ast = glue.ObjectAst({
-        'outer': glue.ObjectAst({'inner': innerAst}),
+      final innerAst = IntegerAst(42);
+      final ast = ObjectAst({
+        'outer': ObjectAst({'inner': innerAst}),
       });
-      final ir = glue.compile(ast);
+      final ir = compile(ast);
 
-      expect(glue.isObject(ir), isTrue);
-      final outerObj = ir as glue.IrObject;
+      expect(isObject(ir), isTrue);
+      final outerObj = ir as IrObject;
       final innerIr = outerObj.properties['outer'];
-      expect(innerIr, isA<glue.IrObject>());
+      expect(innerIr, isA<IrObject>());
 
-      final innerObj = innerIr as glue.IrObject;
+      final innerObj = innerIr as IrObject;
       final valueIr = innerObj.properties['inner'];
-      expect(valueIr, isA<glue.IrInteger>());
-      expect((valueIr as glue.IrInteger).value, equals(42));
+      expect(valueIr, isA<IrInteger>());
+      expect((valueIr as IrInteger).value, equals(42));
     });
   });
 }

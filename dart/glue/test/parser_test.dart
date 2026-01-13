@@ -1,4 +1,7 @@
-import 'package:glue/glue.dart';
+import 'package:glue/src/ast.dart';
+import 'package:glue/src/either.dart';
+import 'package:glue/src/parser.dart';
+import 'package:glue/src/parser_errors.dart';
 import 'package:test/test.dart';
 
 /// Helper function to assert parsing succeeds

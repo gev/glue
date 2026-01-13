@@ -1,4 +1,7 @@
-import 'package:glue/glue.dart';
+import 'package:glue/src/env.dart';
+import 'package:glue/src/eval.dart';
+import 'package:glue/src/ir.dart' hide Env;
+import 'package:glue/src/lib/builtin/lambda.dart';
 import 'package:test/test.dart';
 
 void main() {
