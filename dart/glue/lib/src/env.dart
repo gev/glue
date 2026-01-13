@@ -1,5 +1,6 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 
+import 'package:glue/src/either.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval/exception.dart';
 
@@ -38,16 +39,16 @@ Ir? lookupLocal(String name, Env env) => env.isNotEmpty ? env.last[name] : null;
 
 /// Lookup variable in entire environment stack
 /// Returns `Either<RuntimeException, Ir>` to match Haskell
-(RuntimeException?, Ir?) lookupVar(String name, Env env) {
+Either<RuntimeException, Ir> lookupVar(String name, Env env) {
   // Search from top frame (most recent) to bottom (oldest)
   for (var i = env.length - 1; i >= 0; i--) {
     final frame = env[i];
     final value = frame[name];
     if (value != null) {
-      return (null, value);
+      return Right(value);
     }
   }
-  return (unboundVariable(name), null);
+  return Left(unboundVariable(name));
 }
 
 /// Define variable in current (top) frame
@@ -66,17 +67,17 @@ Env defineVar(String name, Ir value, Env env) {
 /// Update existing variable in environment
 /// Searches through frames and updates first occurrence (top to bottom)
 /// Returns `Either<RuntimeException, Env>` to match Haskell
-(RuntimeException?, Env?) updateVar(String name, Ir value, Env env) {
+Either<RuntimeException, Env> updateVar(String name, Ir value, Env env) {
   // Search from top frame (most recent) to bottom (oldest)
   for (var i = env.length - 1; i >= 0; i--) {
     final frame = env[i];
     if (frame.containsKey(name)) {
       final newFrame = frame.add(name, value);
       final newEnv = env.removeAt(i).insert(i, newFrame);
-      return (null, newEnv);
+      return Right(newEnv);
     }
   }
-  return (canNotSetUnboundVariable(name), null);
+  return Left(canNotSetUnboundVariable(name));
 }
 
 /// Union multiple frames into single frame

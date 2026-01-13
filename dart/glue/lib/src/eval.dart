@@ -16,8 +16,8 @@ class Eval<T> {
 
   const Eval(this._run);
 
-  /// Run the evaluation with initial runtime
-  FutureOr<Either<EvalError, (T, Runtime)>> run(Runtime runtime) =>
+  /// Run the evaluation with initial runtime (matches Haskell runEval)
+  FutureOr<Either<EvalError, (T, Runtime)>> runEval(Runtime runtime) =>
       _run(runtime);
 
   /// Create a successful evaluation
@@ -41,16 +41,16 @@ class Eval<T> {
 
   /// Map over the result
   Eval<U> map<U>(U Function(T) f) => Eval((runtime) async {
-    final result = await run(runtime);
+    final result = await runEval(runtime);
     return result.map((tuple) => (f(tuple.$1), tuple.$2));
   });
 
   /// FlatMap (bind) operation
   Eval<U> flatMap<U>(Eval<U> Function(T) f) => Eval((runtime) async {
-    final result = await run(runtime);
+    final result = await runEval(runtime);
     return switch (result) {
       Left() => result as Either<EvalError, (U, Runtime)>,
-      Right(:final value) => await f(value.$1).run(value.$2),
+      Right(:final value) => await f(value.$1).runEval(value.$2),
     };
   });
 
@@ -58,7 +58,7 @@ class Eval<T> {
   Eval<U> transform<U>(
     Either<EvalError, (U, Runtime)> Function(T, Runtime) f,
   ) => Eval((runtime) async {
-    final result = await run(runtime);
+    final result = await runEval(runtime);
     return switch (result) {
       Left() => result as Either<EvalError, (U, Runtime)>,
       Right(:final value) => f(value.$1, value.$2),
@@ -175,16 +175,17 @@ Eval<void> defineVarEval(String name, Ir value) => Eval(
 /// Update a variable in current environment
 Eval<void> updateVarEval(String name, Ir value) => Eval((runtime) {
   final result = updateVar(name, value, runtime.env);
-  return result.$2 != null
-      ? Right(((), runtime.copyWith(env: result.$2!)))
-      : Left(EvalError(runtime.context, result.$1!));
+  return result.fold(
+    (error) => Left(EvalError(runtime.context, error)),
+    (env) => Right(((), runtime.copyWith(env: env))),
+  );
 });
 
 /// Run evaluation with temporary environment
 Eval<T> withEnv<T>(Env tempEnv, Eval<T> action) => Eval((runtime) async {
   final originalEnv = runtime.env;
   final tempRuntime = runtime.copyWith(env: tempEnv);
-  final result = await action.run(tempRuntime);
+  final result = await action.runEval(tempRuntime);
   return result.map((tuple) => (tuple.$1, tuple.$2.copyWith(env: originalEnv)));
 });
 
@@ -225,7 +226,7 @@ FutureOr<Either<EvalError, (T, Env, Context)>> runEvalSimple<T>(
   Env initialEnv,
 ) async {
   final initialRuntime = Runtime.initial(initialEnv);
-  final result = await action.run(initialRuntime);
+  final result = await action.runEval(initialRuntime);
   return result.map((tuple) => (tuple.$1, tuple.$2.env, tuple.$2.context));
 }
 
@@ -250,7 +251,10 @@ EvalIR eval(Ir ir) {
 EvalIR evalSymbol(String name) {
   return getEnv().flatMap((env) {
     final result = lookupVar(name, env);
-    return result.$2 != null ? EvalIR.pure(result.$2!) : throwError(result.$1!);
+    return result.fold(
+      (error) => throwError(error),
+      (value) => EvalIR.pure(value),
+    );
   });
 }
 
@@ -278,9 +282,15 @@ EvalIR _evalWithPrefixes(List<String> parts) {
       final prefixName = prefix.join('.');
       final result = lookupVar(prefixName, env);
 
-      if (result.$2 != null) {
+      if (result.isRight) {
         // Found the prefix, now navigate the remaining parts
-        return _evalNestedAccess(result.$2!, parts.sublist(prefix.length));
+        return result.fold(
+          (error) => throwError(error), // Should not happen
+          (value) => _evalNestedAccess(value, parts.sublist(prefix.length)),
+        );
+      } else {
+        // Continue to next prefix
+        continue;
       }
     }
 
@@ -352,21 +362,15 @@ EvalIR _evalSymbolCall(String name, List<Ir> args) {
     getEnv().flatMap((env) {
       final result = lookupVar(name, env);
 
-      if (result.$2 == null) {
-        return throwError(result.$1!);
-      }
-
-      final value = result.$2!;
-
-      // Check if it's a special form (not evaluated normally)
-      if (_isSpecialForm(name)) {
-        return _evalSpecialForm(name, args);
-      }
-
-      // Regular function call - evaluate arguments first
-      return sequenceAll(
-        args.map(eval).toList(),
-      ).flatMap((evaluatedArgs) => apply(value, evaluatedArgs));
+      return result.fold(
+        (error) => throwError(error),
+        (value) => switch (_isSpecialForm(name)) {
+          true => _evalSpecialForm(name, args),
+          false => sequenceAll(
+            args.map(eval).toList(),
+          ).flatMap((evaluatedArgs) => apply(value, evaluatedArgs)),
+        },
+      );
     }),
   );
 }

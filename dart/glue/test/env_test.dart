@@ -9,27 +9,35 @@ void main() {
       test('emptyEnv: create empty stack environment', () {
         final env = emptyEnv();
         expect(lookupLocal('any', env), isNull);
-        final (error, value) = lookupVar('any', env);
-        expect(error, isA<RuntimeException>());
-        expect(error?.symbol, equals('unbound-variable'));
-        expect(value, isNull);
+        final result = lookupVar('any', env);
+        expect(result.isLeft, isTrue);
+        result.fold((error) {
+          expect(error, isA<RuntimeException>());
+          expect(error.symbol, equals('unbound-variable'));
+        }, (value) => fail('Should be left'));
       });
 
       test('fromList: initialize environment stack', () {
         final env = fromList([('a', IrInteger(1)), ('b', IrInteger(2))]);
         expect(lookupLocal('a', env), equals(IrInteger(1)));
-        final (error, value) = lookupVar('b', env);
-        expect(error, isNull);
-        expect(value, equals(IrInteger(2)));
+        final result = lookupVar('b', env);
+        expect(result.isRight, isTrue);
+        result.fold(
+          (error) => fail('Should be right'),
+          (value) => expect(value, equals(IrInteger(2))),
+        );
       });
 
       test('pushFrame / popFrame: manage stack (LIFO)', () {
         final base = fromList([('x', IrInteger(1))]);
         final pushed = pushFrame(base);
         expect(lookupLocal('x', pushed), isNull);
-        final (error, value) = lookupVar('x', pushed);
-        expect(error, isNull);
-        expect(value, equals(IrInteger(1)));
+        final result = lookupVar('x', pushed);
+        expect(result.isRight, isTrue);
+        result.fold(
+          (error) => fail('Should be right'),
+          (value) => expect(value, equals(IrInteger(1))),
+        );
         expect(popFrame(pushed), equals(base));
       });
 
@@ -48,12 +56,18 @@ void main() {
       test('Shadowing: local definition shadow global', () {
         final env = fromList([('name', IrInteger(1))]);
         final finalEnv = defineVar('name', IrInteger(2), pushFrame(env));
-        final (error, value) = lookupVar('name', finalEnv);
-        expect(error, isNull);
-        expect(value, equals(IrInteger(2)));
-        final (error2, value2) = lookupVar('name', popFrame(finalEnv));
-        expect(error2, isNull);
-        expect(value2, equals(IrInteger(1)));
+        final result = lookupVar('name', finalEnv);
+        expect(result.isRight, isTrue);
+        result.fold(
+          (error) => fail('Should be right'),
+          (value) => expect(value, equals(IrInteger(2))),
+        );
+        final result2 = lookupVar('name', popFrame(finalEnv));
+        expect(result2.isRight, isTrue);
+        result2.fold(
+          (error) => fail('Should be right'),
+          (value) => expect(value, equals(IrInteger(1))),
+        );
       });
     });
 
@@ -62,23 +76,32 @@ void main() {
         'updateVar: update values in the place, don\'t create a new one',
         () {
           final env = pushFrame(fromList([('x', IrInteger(10))]));
-          final (error, updatedEnv) = updateVar('x', IrInteger(20), env);
-          expect(error, isNull);
-          expect(updatedEnv, isNotNull);
+          final result = updateVar('x', IrInteger(20), env);
+          expect(result.isRight, isTrue);
+          late Env updatedEnv;
+          result.fold(
+            (error) => fail('Should be right'),
+            (env) => updatedEnv = env,
+          );
 
-          expect(lookupLocal('x', updatedEnv!), isNull);
-          final (error2, value) = lookupVar('x', updatedEnv);
-          expect(error2, isNull);
-          expect(value, equals(IrInteger(20)));
+          expect(lookupLocal('x', updatedEnv), isNull);
+          final lookupResult = lookupVar('x', updatedEnv);
+          expect(lookupResult.isRight, isTrue);
+          lookupResult.fold(
+            (error) => fail('Should be right'),
+            (value) => expect(value, equals(IrInteger(20))),
+          );
         },
       );
 
       test('updateVar: return error for unbound variable', () {
         final env = emptyEnv();
-        final (error, updatedEnv) = updateVar('name', IrInteger(42), env);
-        expect(error, isA<RuntimeException>());
-        expect(error?.symbol, equals('cannot-set-unbound-variable'));
-        expect(updatedEnv, isNull);
+        final result = updateVar('name', IrInteger(42), env);
+        expect(result.isLeft, isTrue);
+        result.fold((error) {
+          expect(error, isA<RuntimeException>());
+          expect(error.symbol, equals('cannot-set-unbound-variable'));
+        }, (env) => fail('Should be left'));
       });
     });
 
@@ -88,10 +111,12 @@ void main() {
       });
 
       test('lookupVar: returns error on empty stack', () {
-        final (error, value) = lookupVar('name', emptyEnv());
-        expect(error, isA<RuntimeException>());
-        expect(error?.symbol, equals('unbound-variable'));
-        expect(value, isNull);
+        final result = lookupVar('name', emptyEnv());
+        expect(result.isLeft, isTrue);
+        result.fold((error) {
+          expect(error, isA<RuntimeException>());
+          expect(error.symbol, equals('unbound-variable'));
+        }, (value) => fail('Should be left'));
       });
     });
   });

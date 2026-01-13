@@ -12,7 +12,7 @@ void main() {
       final eval = Eval.pure(42);
       final runtime = Runtime.initial(fromList([]));
 
-      final result = await eval.run(runtime);
+      final result = await eval.runEval(runtime);
 
       expect(result.isRight, isTrue);
       result.fold((error) => fail('Should not be left'), (tuple) {
@@ -27,7 +27,7 @@ void main() {
       final eval = Eval.error<int>(error);
       final runtime = Runtime.initial(fromList([]));
 
-      final result = await eval.run(runtime);
+      final result = await eval.runEval(runtime);
 
       expect(result.isLeft, isTrue);
       result.fold(
@@ -40,7 +40,7 @@ void main() {
       final eval = Eval.pure(21).map((x) => x * 2);
       final runtime = Runtime.initial(fromList([]));
 
-      final result = await eval.run(runtime);
+      final result = await eval.runEval(runtime);
 
       expect(result.isRight, isTrue);
       result.fold((error) => fail('Should not be left'), (tuple) {
@@ -53,7 +53,7 @@ void main() {
       final eval = Eval.pure(21).flatMap((x) => Eval.pure(x * 2));
       final runtime = Runtime.initial(fromList([]));
 
-      final result = await eval.run(runtime);
+      final result = await eval.runEval(runtime);
 
       expect(result.isRight, isTrue);
       result.fold((error) => fail('Should not be left'), (tuple) {
@@ -67,7 +67,7 @@ void main() {
       final runtime = Runtime.initial(initialEnv);
 
       // Test getEnv
-      final getEnvResult = await getEnv().run(runtime);
+      final getEnvResult = await getEnv().runEval(runtime);
       expect(getEnvResult.isRight, isTrue);
       getEnvResult.fold(
         (error) => fail('Should not be left'),
@@ -75,7 +75,7 @@ void main() {
       );
 
       // Test push/pop context
-      final pushResult = await pushContext('test').run(runtime);
+      final pushResult = await pushContext('test').runEval(runtime);
       expect(pushResult.isRight, isTrue);
       late Runtime pushedRuntime;
       pushResult.fold((error) => fail('Should not be left'), (tuple) {
@@ -83,7 +83,7 @@ void main() {
         pushedRuntime = tuple.$2;
       });
 
-      final popResult = await popContext().run(pushedRuntime);
+      final popResult = await popContext().runEval(pushedRuntime);
       expect(popResult.isRight, isTrue);
       popResult.fold(
         (error) => fail('Should not be left'),
@@ -94,7 +94,7 @@ void main() {
     test('defineVarEval modifies environment', () async {
       final runtime = Runtime.initial(fromList([]));
 
-      final result = await defineVarEval('x', IrInteger(42)).run(runtime);
+      final result = await defineVarEval('x', IrInteger(42)).runEval(runtime);
 
       expect(result.isRight, isTrue);
       result.fold((error) => fail('Should not be left'), (tuple) {
@@ -110,7 +110,7 @@ void main() {
       final runtime = Runtime.initial(originalEnv);
 
       final eval = withEnv(tempEnv, getEnv());
-      final result = await eval.run(runtime);
+      final result = await eval.runEval(runtime);
 
       expect(result.isRight, isTrue);
       result.fold((error) => fail('Should not be left'), (tuple) {

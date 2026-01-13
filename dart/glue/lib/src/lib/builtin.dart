@@ -39,5 +39,3 @@ EvalIR _try(List<Ir> args) =>
     throw UnimplementedError('try special form not implemented');
 
 // Export the implemented special forms for use in eval.dart
-export 'builtin/def.dart' show def;
-export 'builtin/lambda.dart' show lambda;
