@@ -83,7 +83,7 @@ void main() {
           expect(updatedEnv, isNotNull);
 
           expect(glue.lookupLocal('x', updatedEnv!), isNull);
-          final (error2, value) = glue.lookupVar('x', updatedEnv!);
+          final (error2, value) = glue.lookupVar('x', updatedEnv);
           expect(error2, isNull);
           expect(value, equals(glue.IrInteger(20)));
         },

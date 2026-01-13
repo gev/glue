@@ -95,9 +95,8 @@ ModuleInfo nativeModule(String moduleName, List<(String, Ir)> definitions) =>
 Env envFromModule(ModuleInfo module) => fromFrame(frameFromModule(module));
 
 /// Create environment from multiple modules
-Env envFromModules(List<ModuleInfo> modules) => fromFrame(
-  unionFrames(modules.map(frameFromModule).toList() as List<Frame>),
-);
+Env envFromModules(List<ModuleInfo> modules) =>
+    fromFrame(unionFrames(modules.map(frameFromModule).toList()));
 
 /// Create frame from module definitions
 Frame frameFromModule(ModuleInfo module) => frameFromList(module.definitions);

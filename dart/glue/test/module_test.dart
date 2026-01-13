@@ -1,3 +1,4 @@
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:glue/glue.dart';
 import 'package:test/test.dart';
 
@@ -110,7 +111,7 @@ void main() {
       expect(error, isNull);
       expect(newRegistry, isNotNull);
       expect(registrySize(newRegistry!), equals(1));
-      expect(lookupModule('test.math', newRegistry!), equals(module));
+      expect(lookupModule('test.math', newRegistry), equals(module));
     });
 
     test('registerModule rejects duplicate names', () {
@@ -210,6 +211,148 @@ void main() {
 
       final emptyCacheAgain = clearCache();
       expect(cacheSize(emptyCacheAgain), equals(0));
+    });
+  });
+
+  group('Module Registration', () {
+    test('parseModule: parses valid module IR', () {
+      final ir = IrList([
+        IrSymbol('module'),
+        IrSymbol('test.math'),
+        IrList([IrSymbol('export'), IrSymbol('add'), IrSymbol('multiply')]),
+        IrList([IrSymbol('def'), IrSymbol('add'), IrInteger(1)]),
+        IrList([IrSymbol('def'), IrSymbol('multiply'), IrInteger(2)]),
+      ]);
+
+      final (error, module) = parseModule(ir);
+      expect(error, isNull);
+      expect(module, isNotNull);
+      expect(module!.name, equals('test.math'));
+      expect(module.exports, equals(['add', 'multiply']));
+      expect(module.body.length, equals(2));
+    });
+
+    test('parseModule: rejects non-list IR', () {
+      final ir = IrSymbol('not-a-list');
+      final (error, module) = parseModule(ir);
+      expect(error, isNotNull);
+      expect(error, contains('must be a non-empty list'));
+      expect(module, isNull);
+    });
+
+    test('parseModule: rejects empty list', () {
+      final ir = IrList([]);
+      final (error, module) = parseModule(ir);
+      expect(error, isNotNull);
+      expect(error, contains('must be a non-empty list'));
+      expect(module, isNull);
+    });
+
+    test('parseModule: rejects non-module list', () {
+      final ir = IrList([IrSymbol('def'), IrSymbol('x'), IrInteger(1)]);
+      final (error, module) = parseModule(ir);
+      expect(error, isNotNull);
+      expect(error, contains('must start with "module"'));
+      expect(module, isNull);
+    });
+
+    test('parseModule: rejects invalid module name', () {
+      final ir = IrList([
+        IrSymbol('module'),
+        IrInteger(42), // Invalid name
+        IrList([IrSymbol('export'), IrSymbol('add')]),
+        IrList([IrSymbol('def'), IrSymbol('add'), IrInteger(1)]),
+      ]);
+
+      final (error, module) = parseModule(ir);
+      expect(error, isNotNull);
+      expect(error, contains('Module name must be a symbol'));
+      expect(module, isNull);
+    });
+
+    test('parseModule: handles module without body', () {
+      final ir = IrList([
+        IrSymbol('module'),
+        IrSymbol('empty.module'),
+        IrList([IrSymbol('export')]),
+      ]);
+
+      final (error, module) = parseModule(ir);
+      expect(error, isNull);
+      expect(module, isNotNull);
+      expect(module!.name, equals('empty.module'));
+      expect(module.exports, isEmpty);
+      expect(module.body, isEmpty);
+    });
+
+    test('buildRegistry: builds registry from multiple modules', () {
+      final modules = [
+        IrList([
+          IrSymbol('module'),
+          IrSymbol('math.add'),
+          IrList([IrSymbol('export'), IrSymbol('add')]),
+          IrList([IrSymbol('def'), IrSymbol('add'), IrInteger(1)]),
+        ]),
+        IrList([
+          IrSymbol('module'),
+          IrSymbol('math.mul'),
+          IrList([IrSymbol('export'), IrSymbol('multiply')]),
+          IrList([IrSymbol('def'), IrSymbol('multiply'), IrInteger(2)]),
+        ]),
+      ];
+
+      final (error, registry) = buildRegistry(modules);
+      expect(error, isNull);
+      expect(registry, isNotNull);
+      expect(registrySize(registry!), equals(2));
+      expect(lookupModule('math.add', registry!), isNotNull);
+      expect(lookupModule('math.mul', registry!), isNotNull);
+    });
+
+    test('buildRegistry: handles parsing errors', () {
+      final modules = [
+        IrList([
+          IrSymbol('module'),
+          IrSymbol('valid.module'),
+          IrList([IrSymbol('export'), IrSymbol('x')]),
+          IrList([IrSymbol('def'), IrSymbol('x'), IrInteger(1)]),
+        ]),
+        IrSymbol('invalid-module'), // This will cause parsing error
+      ];
+
+      final (error, registry) = buildRegistry(modules);
+      expect(error, isNotNull);
+      expect(error, contains('must be a non-empty list'));
+      expect(registry, isNull);
+    });
+
+    test('registerModulesFromIR: registers into existing registry', () {
+      final initialRegistry = emptyRegistry();
+      final (initError, registry1) = registerModule(
+        initialRegistry,
+        RegisteredModule(
+          name: 'existing',
+          exports: ['x'],
+          body: [IrInteger(1)],
+        ),
+      );
+      expect(initError, isNull);
+
+      final modules = [
+        IrList([
+          IrSymbol('module'),
+          IrSymbol('new.module'),
+          IrList([IrSymbol('export'), IrSymbol('y')]),
+          IrList([IrSymbol('def'), IrSymbol('y'), IrInteger(2)]),
+        ]),
+      ];
+
+      final (error, finalRegistry) = registerModulesFromIR(registry1!, modules);
+      expect(error, isNull);
+      expect(finalRegistry, isNotNull);
+      expect(registrySize(finalRegistry!), equals(2));
+      expect(lookupModule('existing', finalRegistry!), isNotNull);
+      expect(lookupModule('new.module', finalRegistry!), isNotNull);
     });
   });
 }

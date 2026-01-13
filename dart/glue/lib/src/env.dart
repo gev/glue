@@ -37,7 +37,7 @@ Env popFrame(Env env) => env.isNotEmpty ? env.removeLast() : IList<Frame>();
 Ir? lookupLocal(String name, Env env) => env.isNotEmpty ? env.last[name] : null;
 
 /// Lookup variable in entire environment stack
-/// Returns Either<RuntimeException, Ir> to match Haskell
+/// Returns `Either<RuntimeException, Ir>` to match Haskell
 (RuntimeException?, Ir?) lookupVar(String name, Env env) {
   // Search from top frame (most recent) to bottom (oldest)
   for (var i = env.length - 1; i >= 0; i--) {
@@ -65,7 +65,7 @@ Env defineVar(String name, Ir value, Env env) {
 
 /// Update existing variable in environment
 /// Searches through frames and updates first occurrence (top to bottom)
-/// Returns Either<RuntimeException, Env> to match Haskell
+/// Returns `Either<RuntimeException, Env>` to match Haskell
 (RuntimeException?, Env?) updateVar(String name, Ir value, Env env) {
   // Search from top frame (most recent) to bottom (oldest)
   for (var i = env.length - 1; i >= 0; i--) {

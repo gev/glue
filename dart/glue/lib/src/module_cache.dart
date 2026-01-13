@@ -1,5 +1,4 @@
 import 'module.dart';
-import 'env.dart';
 
 /// Module cache for storing evaluated imported modules
 /// Mirrors Haskell ImportedModuleCache functionality
