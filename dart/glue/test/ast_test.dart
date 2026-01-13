@@ -59,12 +59,18 @@ void main() {
     });
 
     test('ObjectAst with immutable collections', () {
-      final props1 = IMap<String, Ast>(
-          {'name': StringAst('Alice'), 'age': IntegerAst(30)});
-      final props2 = IMap<String, Ast>(
-          {'name': StringAst('Alice'), 'age': IntegerAst(30)});
-      final props3 =
-          IMap<String, Ast>({'name': StringAst('Bob'), 'age': IntegerAst(25)});
+      final props1 = IMap<String, Ast>({
+        'name': StringAst('Alice'),
+        'age': IntegerAst(30),
+      });
+      final props2 = IMap<String, Ast>({
+        'name': StringAst('Alice'),
+        'age': IntegerAst(30),
+      });
+      final props3 = IMap<String, Ast>({
+        'name': StringAst('Bob'),
+        'age': IntegerAst(25),
+      });
 
       final ast1 = ObjectAst(props1);
       final ast2 = ObjectAst(props2);
@@ -80,12 +86,6 @@ void main() {
 
       final result = switch (ast) {
         StringAst(:final value) => 'string: $value',
-        IntegerAst(:final value) => 'int: $value',
-        FloatAst(:final value) => 'float: $value',
-        SymbolAst(:final value) => 'symbol: $value',
-        ListAst(:final elements) => 'list: ${elements.length} elements',
-        ObjectAst(:final properties) =>
-          'object: ${properties.length} properties',
       };
 
       expect(result, equals('string: test'));

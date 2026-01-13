@@ -105,11 +105,8 @@ void main() {
       expect(listAst.elements[2], equals(StringAst('hello')));
     });
 
-    test('parse empty object', () {
-      final result = parseGlue('{}');
-      expect(result, isA<ObjectAst>());
-      final objAst = result as ObjectAst;
-      expect(objAst.properties.isEmpty, isTrue);
+    test('parse empty object fails', () {
+      expectParseError('(:)', UnpairedPropertyError);
     });
 
     test('parse with comments', () {
