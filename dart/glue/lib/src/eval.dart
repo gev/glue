@@ -296,7 +296,7 @@ EvalIR _evalNestedAccess(Ir obj, List<String> remainingParts) {
       props[prop] != null
           ? _evalNestedAccess(props[prop]!, rest)
           : throwError(propertyNotFound(prop)),
-    IrModule(bindings: final bindings) =>
+    IrModule() =>
       // Module access - for now, treat as not found
       // This will be implemented when we add module import
       throwError(

@@ -9,8 +9,9 @@
 library;
 
 export 'src/ast.dart';
-export 'src/either.dart';
+export 'src/either.dart' hide Either, Left, Right;
 export 'src/env.dart' hide Frame;
+export 'src/eval.dart';
 export 'src/eval_error.dart';
 export 'src/ir.dart' hide Env;
 export 'src/module.dart';
