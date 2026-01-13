@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'either.dart';
 import 'env.dart';
 import 'eval_error.dart';
 import 'ir.dart' hide Env;
@@ -212,4 +211,287 @@ Eval<T> sequence_<T>(List<Eval<dynamic>> evals, Eval<T> last) {
   if (evals.isEmpty) return last;
 
   return evals[0].flatMap((_) => sequence_(evals.sublist(1), last));
+}
+
+/// ============================================================================
+/// CORE EXPRESSION EVALUATION
+/// ============================================================================
+
+/// Main evaluation function - evaluates IR expressions
+/// Mirrors Haskell Glue.Eval.eval exactly
+EvalIR eval(Ir ir) {
+  return switch (ir) {
+    IrSymbol(:final value) => evalSymbol(value),
+    IrDottedSymbol(:final parts) => evalDottedSymbol(parts),
+    IrList(:final elements) => evalList(elements.unlock),
+    IrObject(:final properties) => evalObject(properties.unlock),
+    // Literals evaluate to themselves
+    _ => EvalIR.pure(ir),
+  };
+}
+
+/// Evaluate a symbol by looking it up in the environment
+EvalIR evalSymbol(String name) {
+  return getEnv().flatMap((env) {
+    final result = lookupVar(name, env);
+    return result.$2 != null ? EvalIR.pure(result.$2!) : throwError(result.$1!);
+  });
+}
+
+/// Evaluate dotted symbol access (module.property.field)
+EvalIR evalDottedSymbol(List<String> parts) {
+  if (parts.isEmpty) {
+    return throwError(
+      RuntimeException('invalid-symbol', IrString('Empty dotted symbol')),
+    );
+  }
+
+  if (parts.length == 1) {
+    return evalSymbol(parts[0]);
+  }
+
+  // Find the longest prefix that exists as a symbol
+  return _evalWithPrefixes(parts);
+}
+
+/// Helper to find the longest prefix that exists
+EvalIR _evalWithPrefixes(List<String> parts) {
+  return getEnv().flatMap((env) {
+    // Try prefixes from longest to shortest
+    for (final prefix in _generatePrefixes(parts)) {
+      final prefixName = prefix.join('.');
+      final result = lookupVar(prefixName, env);
+
+      if (result.$2 != null) {
+        // Found the prefix, now navigate the remaining parts
+        return _evalNestedAccess(result.$2!, parts.sublist(prefix.length));
+      }
+    }
+
+    // No prefix found
+    return throwError(unboundVariable(parts.join('.')));
+  });
+}
+
+/// Generate all proper prefixes of a symbol path
+List<List<String>> _generatePrefixes(List<String> parts) {
+  final prefixes = <List<String>>[];
+  for (var i = parts.length; i > 0; i--) {
+    prefixes.add(parts.sublist(0, i));
+  }
+  return prefixes;
+}
+
+/// Navigate nested object/module access
+EvalIR _evalNestedAccess(Ir obj, List<String> remainingParts) {
+  if (remainingParts.isEmpty) {
+    return EvalIR.pure(obj);
+  }
+
+  final prop = remainingParts[0];
+  final rest = remainingParts.sublist(1);
+
+  return switch (obj) {
+    IrObject(properties: final props) =>
+      props[prop] != null
+          ? _evalNestedAccess(props[prop]!, rest)
+          : throwError(propertyNotFound(prop)),
+    IrModule(bindings: final bindings) =>
+      // Module access - for now, treat as not found
+      // This will be implemented when we add module import
+      throwError(
+        RuntimeException(
+          'module-access',
+          IrString('Module access not yet implemented'),
+        ),
+      ),
+    _ => throwError(notAnObject(obj)),
+  };
+}
+
+/// Evaluate a list (function call or literal list)
+EvalIR evalList(List<Ir> elements) {
+  if (elements.isEmpty) {
+    return EvalIR.pure(IrList([]));
+  }
+
+  final first = elements[0];
+  final args = elements.sublist(1);
+
+  // If first element is a symbol, it might be a special form or function call
+  if (first is IrSymbol) {
+    return _evalSymbolCall(first.value, args);
+  }
+
+  // Otherwise, evaluate all elements and create a list
+  return sequenceAll(
+    elements.map(eval).toList(),
+  ).map((evaluated) => IrList(evaluated));
+}
+
+/// Evaluate a call starting with a symbol
+EvalIR _evalSymbolCall(String name, List<Ir> args) {
+  return withContext(
+    name,
+    getEnv().flatMap((env) {
+      final result = lookupVar(name, env);
+
+      if (result.$2 == null) {
+        return throwError(result.$1!);
+      }
+
+      final value = result.$2!;
+
+      // Check if it's a special form (not evaluated normally)
+      if (_isSpecialForm(name)) {
+        return _evalSpecialForm(name, args);
+      }
+
+      // Regular function call - evaluate arguments first
+      return sequenceAll(
+        args.map(eval).toList(),
+      ).flatMap((evaluatedArgs) => apply(value, evaluatedArgs));
+    }),
+  );
+}
+
+/// Check if a symbol is a special form
+bool _isSpecialForm(String name) {
+  return const {
+    'def',
+    'lambda',
+    'λ',
+    'let',
+    'set',
+    'import',
+    'quote',
+    'if',
+    'cond',
+  }.contains(name);
+}
+
+/// Evaluate special forms (not yet implemented)
+EvalIR _evalSpecialForm(String name, List<Ir> args) {
+  return throwError(
+    RuntimeException(
+      'special-form',
+      IrString('Special form "$name" not yet implemented'),
+    ),
+  );
+}
+
+/// Evaluate an object
+EvalIR evalObject(Map<String, Ir> properties) {
+  return sequenceAll(properties.values.map(eval).toList()).map((
+    evaluatedValues,
+  ) {
+    final evaluatedProps = <String, Ir>{};
+    var i = 0;
+    for (final key in properties.keys) {
+      evaluatedProps[key] = evaluatedValues[i++];
+    }
+    return IrObject(evaluatedProps);
+  });
+}
+
+/// ============================================================================
+/// FUNCTION APPLICATION
+/// ============================================================================
+
+/// Apply a function to arguments
+EvalIR apply(Ir func, List<Ir> args) {
+  return switch (func) {
+    IrNative(value: final f) => applyNative(f, args),
+    IrClosure(params: final params, body: final body, env: final closureEnv) =>
+      applyClosure(params, body, closureEnv, args),
+    IrSymbol(value: final name) => throwError(unboundVariable(name)),
+    _ => throwError(notCallableObject()),
+  };
+}
+
+/// Apply a native function/special form
+EvalIR applyNative(Native native, List<Ir> args) {
+  return switch (native) {
+    NativeFunc(function: final f) => _applyNativeFunc(f, args),
+    NativeSpecial(function: final s) => s(
+      args,
+    ), // Special forms handle their own evaluation
+  };
+}
+
+/// Apply a native function (evaluate arguments first)
+EvalIR _applyNativeFunc(dynamic func, List<Ir> rawArgs) {
+  return sequenceAll(rawArgs.map(eval).toList()).flatMap((args) => func(args));
+}
+
+/// Apply a closure with the given arguments
+EvalIR applyClosure(
+  List<String> params,
+  Ir body,
+  Env closureEnv,
+  List<Ir> rawArgs,
+) {
+  final numArgs = rawArgs.length;
+  final numParams = params.length;
+
+  if (numArgs == numParams) {
+    // Full application: execute the function
+    return _applyFullClosure(params, body, closureEnv, rawArgs);
+  } else if (numArgs < numParams) {
+    // Partial application: create new closure
+    return _applyPartialClosure(params, body, closureEnv, rawArgs);
+  } else {
+    // Too many arguments
+    return throwError(wrongNumberOfArguments());
+  }
+}
+
+/// Full application of a closure
+EvalIR _applyFullClosure(
+  List<String> params,
+  Ir body,
+  Env closureEnv,
+  List<Ir> rawArgs,
+) {
+  return sequenceAll(rawArgs.map(eval).toList()).flatMap((args) {
+    final bindings = <(String, Ir)>[];
+    for (var i = 0; i < params.length; i++) {
+      bindings.add((params[i], args[i]));
+    }
+    return withEnv(_buildEnvWithBindings(closureEnv, bindings), eval(body));
+  });
+}
+
+/// Partial application of a closure
+EvalIR _applyPartialClosure(
+  List<String> params,
+  Ir body,
+  Env closureEnv,
+  List<Ir> rawArgs,
+) {
+  return sequenceAll(rawArgs.map(eval).toList()).map((args) {
+    final (usedParams, remainingParams) = _splitParams(params, args.length);
+    final bindings = <(String, Ir)>[];
+    for (var i = 0; i < usedParams.length; i++) {
+      bindings.add((usedParams[i], args[i]));
+    }
+    final partiallyAppliedEnv = _buildEnvWithBindings(closureEnv, bindings);
+    return IrClosure(remainingParams, body, partiallyAppliedEnv);
+  });
+}
+
+/// Split parameters for partial application
+(List<String>, List<String>) _splitParams(List<String> params, int numUsed) {
+  final used = params.sublist(0, numUsed);
+  final remaining = params.sublist(numUsed);
+  return (used, remaining);
+}
+
+/// Build environment with parameter bindings
+Env _buildEnvWithBindings(Env env, List<(String, Ir)> bindings) {
+  var currentEnv = env;
+  for (final (param, value) in bindings) {
+    currentEnv = defineVar(param, value, currentEnv);
+  }
+  return currentEnv;
 }
