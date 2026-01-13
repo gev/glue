@@ -32,10 +32,13 @@ Parser<String> pStringToken() {
 
 /// Symbol parser - matches Haskell pSymbol
 /// SRP: Only handles symbol parsing logic, no whitespace
+/// Supports Unicode characters like Haskell's alphaNumChar
 Parser<String> pSymbolToken() {
-  return (pattern('a-zA-Z!#\$%&*/:<=>?@\\^_|~+-.') &
-          pattern('a-zA-Z0-9!#\$%&*/:<=>?@\\^_|~+-.').star())
-      .flatten(message: 'Symbol expected');
+  // Allow any character except whitespace and structural delimiters
+  // This matches Haskell's approach of allowing Unicode in symbols
+  return (noneOf('()[]{} \t\n\r') & noneOf('()[]{} \t\n\r').star()).flatten(
+    message: 'Symbol expected',
+  );
 }
 
 /// Expression or List parser - matches Haskell pExprOrList
