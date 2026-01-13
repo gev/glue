@@ -44,6 +44,8 @@ export 'src/eval.dart'
         sequence,
         sequenceAll,
         sequence_;
+export 'src/lib/builtin.dart' show builtin;
+export 'src/lib/builtin/lambda.dart' show lambda, extractSymbols;
 export 'src/eval_error.dart';
 export 'src/ir.dart' hide Env;
 export 'src/module.dart';
@@ -54,6 +56,12 @@ export 'src/parser.dart';
 export 'src/parser_errors.dart';
 export 'src/runtime.dart';
 export 'src/runtime_exceptions.dart';
+
+// Standard Library Modules
+export 'bool.dart';
+export 'io.dart';
+export 'list.dart';
+export 'math.dart';
 
 // TODO: Export additional modules as they are implemented
 // export 'src/eval.dart';
