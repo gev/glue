@@ -1,7 +1,7 @@
 import 'package:petitparser/petitparser.dart';
-import 'ast.dart';
-import 'either.dart';
-import 'parser_errors.dart';
+import 'package:glue/src/ast.dart';
+import 'package:glue/src/either.dart';
+import 'package:glue/src/parser_errors.dart';
 
 /// Integer parser - matches Haskell pInteger
 /// SRP: Only handles integer parsing logic, no whitespace

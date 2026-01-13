@@ -1,7 +1,7 @@
-import 'env.dart';
-import 'eval_error.dart';
-import 'module_cache.dart';
-import 'module_registry.dart';
+import 'package:glue/src/env.dart';
+import 'package:glue/src/eval_error.dart';
+import 'package:glue/src/module_cache.dart';
+import 'package:glue/src/module_registry.dart';
 
 /// Runtime state for Glue evaluation
 /// Mirrors Haskell Glue.Eval.Runtime exactly

@@ -1,7 +1,7 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 
-import 'ir.dart';
-import 'runtime_exceptions.dart';
+import 'package:glue/src/ir.dart';
+import 'package:glue/src/runtime_exceptions.dart';
 
 /// Environment types for Glue evaluation
 /// Mirrors Haskell Glue.Env exactly

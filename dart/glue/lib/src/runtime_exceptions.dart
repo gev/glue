@@ -1,4 +1,4 @@
-import 'ir.dart';
+import 'package:glue/src/ir.dart';
 
 /// Runtime exceptions for Glue evaluation
 /// Mirrors Haskell Glue.Eval.Exception exactly

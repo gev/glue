@@ -1,4 +1,4 @@
-import 'module.dart';
+import 'package:glue/src/module.dart';
 
 /// Module registry for storing registered modules
 /// Mirrors Haskell module registry functionality

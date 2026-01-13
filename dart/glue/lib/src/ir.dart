@@ -1,6 +1,6 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 
-import 'ast.dart';
+import 'package:glue/src/ast.dart';
 
 /// Intermediate Representation for Glue language execution
 /// Mirrors Haskell IR but simplified for Dart (no type parameter m)
