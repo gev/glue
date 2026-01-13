@@ -214,6 +214,29 @@ Eval<T> sequence_<T>(List<Eval<dynamic>> evals, Eval<T> last) {
 }
 
 /// ============================================================================
+/// SIMPLE EVALUATION INTERFACE
+/// ============================================================================
+
+/// Simple evaluation with just environment
+/// Mirrors Haskell runEvalSimple exactly
+/// Returns (result, finalEnv, context) tuple
+FutureOr<Either<EvalError, (T, Env, Context)>> runEvalSimple<T>(
+  Eval<T> action,
+  Env initialEnv,
+) async {
+  final initialRuntime = Runtime.initial(initialEnv);
+  final result = await action.run(initialRuntime);
+  return result.map((tuple) => (tuple.$1, tuple.$2.env, tuple.$2.context));
+}
+
+/// Simple evaluation of IR expressions
+/// Convenience function for evaluating single expressions
+FutureOr<Either<EvalError, (Ir, Env, Context)>> evalSimple(
+  Ir expression,
+  Env initialEnv,
+) => runEvalSimple(eval(expression), initialEnv);
+
+/// ============================================================================
 /// CORE EXPRESSION EVALUATION
 /// ============================================================================
 

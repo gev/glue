@@ -9,9 +9,42 @@
 library;
 
 export 'src/ast.dart';
-export 'src/either.dart' hide Either, Left, Right;
+export 'src/either.dart' hide Either;
 export 'src/env.dart' hide Frame;
-export 'src/eval.dart';
+export 'src/eval.dart'
+    show
+        runEvalSimple,
+        evalSimple,
+        Eval,
+        EvalIR,
+        eval,
+        evalSymbol,
+        evalDottedSymbol,
+        evalList,
+        evalObject,
+        apply,
+        applyNative,
+        applyClosure,
+        getEnv,
+        putEnv,
+        getRootEnv,
+        putRootEnv,
+        getContext,
+        pushContext,
+        popContext,
+        getRegistry,
+        getCache,
+        putCache,
+        getRuntime,
+        putRuntime,
+        throwError,
+        defineVarEval,
+        updateVarEval,
+        withEnv,
+        withContext,
+        sequence,
+        sequenceAll,
+        sequence_;
 export 'src/eval_error.dart';
 export 'src/ir.dart' hide Env;
 export 'src/module.dart';
