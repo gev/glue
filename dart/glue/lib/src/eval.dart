@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:glue/src/env.dart';
-import 'package:glue/src/eval_error.dart';
+import 'package:glue/src/eval/error.dart';
 import 'package:glue/src/ir.dart' hide Env;
-import 'package:glue/src/module_cache.dart';
-import 'package:glue/src/module_registry.dart';
+import 'package:glue/src/module/cache.dart';
+import 'package:glue/src/module/registry.dart';
 import 'package:glue/src/runtime.dart';
-import 'package:glue/src/runtime_exceptions.dart';
+import 'package:glue/src/eval/exception.dart';
 
 /// Evaluation monad for Glue expressions
 /// Mirrors Haskell Glue.Eval.Eval exactly

@@ -2,6 +2,6 @@
 /// Provides module registration, caching, and loading functionality
 
 export 'src/module.dart';
-export 'src/module_cache.dart';
-export 'src/module_registration.dart';
-export 'src/module_registry.dart';
+export 'src/module/cache.dart';
+export 'src/module/registration.dart';
+export 'src/module/registry.dart';

@@ -1,8 +1,8 @@
 import '../../either.dart';
 import '../../eval.dart' hide Either, Left, Right;
-import '../../eval_error.dart';
+import '../../eval/error.dart';
 import '../../ir.dart';
-import '../../runtime_exceptions.dart';
+import '../../eval/exception.dart';
 
 /// Lambda special form implementation
 /// Mirrors Haskell Glue.Lib.Builtin.Lambda exactly

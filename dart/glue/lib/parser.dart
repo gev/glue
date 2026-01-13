@@ -3,4 +3,4 @@
 
 export 'src/ast.dart';
 export 'src/parser.dart';
-export 'src/parser_errors.dart';
+export 'src/parser/error.dart';

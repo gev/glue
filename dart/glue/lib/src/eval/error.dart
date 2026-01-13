@@ -1,4 +1,4 @@
-import 'package:glue/src/runtime_exceptions.dart';
+import 'package:glue/eval/exception.dart';
 
 /// Evaluation error handling system
 /// Mirrors Haskell Glue.Eval.Error exactly

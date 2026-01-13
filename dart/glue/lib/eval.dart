@@ -3,5 +3,5 @@
 
 export 'src/env.dart';
 export 'src/eval.dart';
-export 'src/eval_error.dart';
+export 'src/eval/error.dart';
 export 'src/runtime.dart';

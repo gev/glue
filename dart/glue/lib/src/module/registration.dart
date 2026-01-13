@@ -1,6 +1,6 @@
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/module.dart';
-import 'package:glue/src/module_registry.dart';
+import 'package:glue/src/module/registry.dart';
 
 /// Module registration system
 /// Parses (module name (export ...) body...) IR structures into RegisteredModule instances
