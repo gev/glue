@@ -1,21 +1,25 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'ast.dart';
+import 'parser_error.dart';
 
 /// Simple parser for Glue language (basic implementation)
 class GlueParser {
-  /// Parse a Glue source string into an AST
-  static Ast? parse(String input) {
+  /// Parse a Glue source string into an AST or error
+  static Object parse(String input) {
     // Remove comments first
     final cleaned = _removeComments(input.trim());
-    if (cleaned.isEmpty) return null;
+    if (cleaned.isEmpty) return SyntaxError("Empty input");
 
     // Try parsing as different AST types
-    return _parseInteger(cleaned) ??
+    final result =
+        _parseInteger(cleaned) ??
         _parseFloat(cleaned) ??
         _parseString(cleaned) ??
         _parseSymbol(cleaned) ??
         _parseList(cleaned) ??
         _parseObject(cleaned);
+
+    return result ?? SyntaxError("Invalid syntax: '$cleaned'");
   }
 }
 
@@ -125,6 +129,7 @@ bool _isNumber(String input) {
 }
 
 /// Convenience function to parse Glue code
-Ast? parseGlue(String input) {
+/// Returns either Ast on success or ParserError on failure
+Object parseGlue(String input) {
   return GlueParser.parse(input);
 }

@@ -2,6 +2,19 @@ import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:glue/glue.dart';
 import 'package:test/test.dart';
 
+/// Helper function to assert parsing succeeds
+void expectParsesTo(String input, Ast expected) {
+  final result = parseGlue(input);
+  expect(result, isA<Ast>());
+  expect(result, equals(expected));
+}
+
+/// Helper function to assert parsing fails with specific error type
+void expectParseError(String input, Type errorType) {
+  final result = parseGlue(input);
+  expect(result.runtimeType, equals(errorType));
+}
+
 void main() {
   group('Glue Parser', () {
     test('parse integers', () {
@@ -104,10 +117,10 @@ void main() {
       expect(parseGlue('; comment only\n42'), equals(IntegerAst(42)));
     });
 
-    test('parse null for invalid input', () {
-      expect(parseGlue(''), isNull);
-      expect(parseGlue('   '), isNull);
-      expect(parseGlue('; just comment'), isNull);
+    test('parse errors for invalid input', () {
+      expectParseError('', SyntaxError);
+      expectParseError('   ', SyntaxError);
+      expectParseError('; just comment', SyntaxError);
     });
 
     test('parse simple nested expression', () {
@@ -172,11 +185,11 @@ void main() {
 
     // Edge Cases
     test('parse empty input', () {
-      expect(parseGlue(''), isNull);
+      expectParseError('', SyntaxError);
     });
 
     test('parse whitespace only', () {
-      expect(parseGlue('   \n\t  '), isNull);
+      expectParseError('   \n\t  ', SyntaxError);
     });
 
     // Unicode and Special Characters
@@ -192,11 +205,14 @@ void main() {
       expect(parseGlue('变量'), equals(SymbolAst('变量')));
     });
 
-    // Syntax Errors - current parser returns null for invalid input
+    // Syntax Errors - now returns proper error types
     test('handle malformed input', () {
-      expect(parseGlue('123.456.789'), isNull); // Invalid number
-      expect(parseGlue('12.34e56e78'), isNull); // Invalid scientific notation
-      expect(parseGlue('(unclosed list'), isNull); // Unclosed parenthesis
+      expectParseError('123.456.789', SyntaxError); // Invalid number
+      expectParseError(
+        '12.34e56e78',
+        SyntaxError,
+      ); // Invalid scientific notation
+      expectParseError('(unclosed list', SyntaxError); // Unclosed parenthesis
     });
 
     // Complex operator expressions
