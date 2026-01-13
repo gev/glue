@@ -1,0 +1,56 @@
+# Glue Language Project Workspace Configuration
+#
+# This file defines the workspace structure for the Glue language project,
+# similar to cabal.project for Haskell projects.
+#
+# It allows running commands from the project root across all packages.
+
+name: glue-language-project
+
+# Define the packages in this workspace
+packages:
+  - dart/glue
+
+# Default commands that can be run from root
+commands:
+  test: "Run all tests across packages"
+  analyze: "Run static analysis across packages"
+  format: "Format code across packages"
+
+# Package-specific overrides
+package_overrides:
+  glue:
+    test_command: "cd dart/glue && dart test"
+    analyze_command: "cd dart/glue && dart analyze"
+    format_command: "cd dart/glue && dart format ."
+
+# Environment settings
+environment:
+  dart_sdk: ">=3.0.0 <4.0.0"
+
+# Scripts for common operations
+scripts:
+  test-all: |
+    echo "Running tests for all packages..."
+    cd dart/glue && dart test
+
+  analyze-all: |
+    echo "Running analysis for all packages..."
+    cd dart/glue && dart analyze
+
+  format-all: |
+    echo "Formatting code for all packages..."
+    cd dart/glue && dart format .
+
+  clean-all: |
+    echo "Cleaning all packages..."
+    cd dart/glue && rm -rf .dart_tool coverage
+
+  pub-get-all: |
+    echo "Running pub get for all packages..."
+    cd dart/glue && dart pub get
+
+# CI/CD configuration
+ci:
+  test_command: "dart run workspace.yaml test-all"
+  analyze_command: "dart run workspace.yaml analyze-all"
