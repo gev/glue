@@ -13,14 +13,33 @@ Parser<String> pIntegerToken() {
 
 /// Float parser - matches Haskell pFloat
 /// SRP: Only handles float parsing logic, no whitespace
+/// Must contain exactly one decimal point or scientific notation
 Parser<String> pFloatToken() {
+  // Use a more restrictive pattern that prevents multiple dots
+  // This matches Haskell's L.scientific behavior
+  final integerPart = digit().plus();
+  final fractionalPart = char('.').seq(digit().plus());
+  final exponentPart = anyOf(
+    'eE',
+  ).seq(anyOf('-+').optional()).seq(digit().plus());
+
   return (char('-').optional() &
-          digit().plus() &
-          char('.').seq(digit().plus()).optional() &
-          anyOf(
-            'eE',
-          ).seq(anyOf('-+').optional()).seq(digit().plus()).optional())
-      .flatten(message: 'Float expected');
+          integerPart &
+          fractionalPart.optional() &
+          exponentPart.optional())
+      .flatten(message: 'Float expected')
+      .map((str) {
+        // Additional validation to match Haskell behavior
+        final dotCount = '.'.allMatches(str).length;
+        final hasScientific = str.contains('e') || str.contains('E');
+
+        // Must have exactly 0 or 1 dot, and if no dot then must have scientific notation
+        if (dotCount > 1 || (dotCount == 0 && !hasScientific)) {
+          throw FormatException('Invalid float format: $str');
+        }
+
+        return str;
+      });
 }
 
 /// String parser - matches Haskell pString
@@ -166,7 +185,8 @@ class GlueParser {
     expression.set(_buildExpressionParser(expression));
 
     // Main parser - parse one expression with global whitespace handling
-    return (ws & expression & ws).map((result) => result[1] as Ast);
+    // .end() ensures entire input is consumed
+    return ((ws & expression & ws).end()).map((result) => result[1] as Ast);
   }
 
   Parser<Ast> _buildExpressionParser(Parser<Ast> expression) {
