@@ -19,6 +19,7 @@ export 'src/module_registration.dart';
 export 'src/module_registry.dart';
 export 'src/parser.dart';
 export 'src/parser_errors.dart';
+export 'src/runtime.dart';
 export 'src/runtime_exceptions.dart';
 
 // TODO: Export additional modules as they are implemented
