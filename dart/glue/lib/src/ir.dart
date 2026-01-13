@@ -1,5 +1,7 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 
+import 'ast.dart';
+
 /// Intermediate Representation for Glue language execution
 /// Mirrors Haskell IR but simplified for Dart (no type parameter m)
 sealed class Ir {
@@ -79,17 +81,25 @@ class IrSymbol extends Ir {
 
 class IrDottedSymbol extends Ir {
   final List<String> parts;
-  const IrDottedSymbol(this.parts);
+  IrDottedSymbol(this.parts);
 
   @override
   String toString() => parts.join('.');
 
   @override
   bool operator ==(Object other) =>
-      other is IrDottedSymbol && other.parts == parts;
+      other is IrDottedSymbol && _listsEqual(other.parts, parts);
 
   @override
   int get hashCode => parts.hashCode;
+}
+
+bool _listsEqual(List<String> a, List<String> b) {
+  if (a.length != b.length) return false;
+  for (int i = 0; i < a.length; i++) {
+    if (a[i] != b[i]) return false;
+  }
+  return true;
 }
 
 /// Composite IR values
@@ -222,3 +232,41 @@ class NativeSpecial extends Native {
 /// Mirrors Haskell Frame and Env types
 typedef Frame = IMap<String, Ir>;
 typedef Env = IList<Frame>;
+
+/// Compile AST to IR
+/// Mirrors Haskell compile function exactly
+Ir compile(Ast ast) {
+  return switch (ast) {
+    StringAst(:final value) => IrString(value),
+    IntegerAst(:final value) => IrInteger(value),
+    FloatAst(:final value) => IrFloat(value),
+    SymbolAst(:final value) =>
+      value.contains('.') ? IrDottedSymbol(value.split('.')) : IrSymbol(value),
+    ListAst(:final elements) => IrList(elements.map(compile).toList()),
+    ObjectAst(:final properties) => IrObject(
+      properties.map((key, value) => MapEntry(key, compile(value))).unlock,
+    ),
+  };
+}
+
+/// Helper functions for IR introspection
+/// Mirrors Haskell accessor functions
+
+bool isList(Ir ir) => ir is IrList;
+
+int listLength(Ir ir) => ir is IrList ? ir.elements.length : 0;
+
+bool isObject(Ir ir) => ir is IrObject;
+
+int objectSize(Ir ir) => ir is IrObject ? ir.properties.length : 0;
+
+Ir? objectLookup(String key, Ir ir) =>
+    ir is IrObject ? ir.properties[key] : null;
+
+bool isSymbol(Ir ir) => ir is IrSymbol || ir is IrDottedSymbol;
+
+String getSymbol(Ir ir) => switch (ir) {
+  IrSymbol(:final value) => value,
+  IrDottedSymbol(:final parts) => parts.join('.'),
+  _ => '',
+};
