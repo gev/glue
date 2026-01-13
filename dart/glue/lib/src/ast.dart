@@ -83,7 +83,11 @@ class SymbolAst extends Ast {
 class ListAst extends Ast {
   final IList<Ast> elements;
 
-  const ListAst(this.elements);
+  const ListAst._(this.elements);
+
+  /// Create a ListAst from a regular Dart List
+  /// Hides the IList implementation detail
+  factory ListAst(List<Ast> elements) => ListAst._(IList(elements));
 
   @override
   String toString() => '(${elements.map((e) => e.toString()).join(' ')})';
@@ -100,7 +104,12 @@ class ListAst extends Ast {
 class ObjectAst extends Ast {
   final IMap<String, Ast> properties;
 
-  const ObjectAst(this.properties);
+  const ObjectAst._(this.properties);
+
+  /// Create an ObjectAst from a regular Dart Map
+  /// Hides the IMap implementation detail
+  factory ObjectAst(Map<String, Ast> properties) =>
+      ObjectAst._(IMap(properties));
 
   @override
   String toString() {
