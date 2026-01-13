@@ -1,4 +1,3 @@
-import 'package:petitparser/petitparser.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'ast.dart';
 
@@ -61,15 +60,31 @@ Ast? _parseString(String input) {
 
 Ast? _parseSymbol(String input) {
   final trimmed = input.trim();
-  // Basic symbol validation - starts with letter/digit/special char
+  // Symbol validation: must not be empty, not start with (, {, ", not be a valid number,
+  // and not look like a malformed number
   if (trimmed.isNotEmpty &&
       !trimmed.startsWith('(') &&
       !trimmed.startsWith('{') &&
       !trimmed.startsWith('"') &&
-      !_isNumber(trimmed)) {
+      !_isValidNumber(trimmed) &&
+      !_looksLikeMalformedNumber(trimmed)) {
     return SymbolAst(trimmed);
   }
   return null;
+}
+
+bool _looksLikeMalformedNumber(String input) {
+  // Reject strings that start with a digit and have multiple dots or e/E
+  if (!input.startsWith(RegExp(r'[0-9]'))) return false;
+
+  final dotCount = '.'.allMatches(input).length;
+  final eCount = 'e'.allMatches(input.toLowerCase()).length;
+  return dotCount > 1 || eCount > 1;
+}
+
+bool _isValidNumber(String input) {
+  // Check if it's a valid integer or float
+  return int.tryParse(input) != null || double.tryParse(input) != null;
 }
 
 Ast? _parseList(String input) {

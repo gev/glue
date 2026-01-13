@@ -9,11 +9,11 @@
 library;
 
 export 'src/ast.dart';
+export 'src/parser.dart';
 export 'src/glue_base.dart';
 
 // TODO: Export additional modules as they are implemented
 // export 'src/ir.dart';
-// export 'src/parser.dart';
 // export 'src/env.dart';
 // export 'src/eval.dart';
 // export 'src/module.dart';

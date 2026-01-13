@@ -1,3 +1,4 @@
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:glue/glue.dart';
 import 'package:test/test.dart';
 
@@ -12,7 +13,18 @@ void main() {
     test('parse floats', () {
       expect(parseGlue('3.14'), equals(FloatAst(3.14)));
       expect(parseGlue('-2.5'), equals(FloatAst(-2.5)));
-      expect(parseGlue('1.23e4'), equals(FloatAst(12300)));
+      expect(parseGlue('1.23e4'), equals(FloatAst(12300.0)));
+      expect(parseGlue('1.23E4'), equals(FloatAst(12300.0)));
+      expect(parseGlue('1.23e+4'), equals(FloatAst(12300.0)));
+      expect(parseGlue('1.23E+4'), equals(FloatAst(12300.0)));
+      expect(parseGlue('1.23e-4'), equals(FloatAst(0.000123)));
+      expect(parseGlue('1.23E-4'), equals(FloatAst(0.000123)));
+      expect(parseGlue('-1.23e4'), equals(FloatAst(-12300.0)));
+      expect(parseGlue('-1.23E4'), equals(FloatAst(-12300.0)));
+      expect(parseGlue('-1.23e+4'), equals(FloatAst(-12300.0)));
+      expect(parseGlue('-1.23E+4'), equals(FloatAst(-12300.0)));
+      expect(parseGlue('-1.23e-4'), equals(FloatAst(-0.000123)));
+      expect(parseGlue('-1.23E-4'), equals(FloatAst(-0.000123)));
     });
 
     test('parse strings', () {
@@ -26,6 +38,31 @@ void main() {
       expect(parseGlue('my-func'), equals(SymbolAst('my-func')));
       expect(parseGlue('+'), equals(SymbolAst('+')));
       expect(parseGlue('math.pi'), equals(SymbolAst('math.pi')));
+
+      // Special characters
+      expect(parseGlue('-'), equals(SymbolAst('-')));
+      expect(parseGlue('*'), equals(SymbolAst('*')));
+      expect(parseGlue('/'), equals(SymbolAst('/')));
+      expect(parseGlue('%'), equals(SymbolAst('%')));
+      expect(parseGlue('='), equals(SymbolAst('=')));
+      expect(parseGlue('<'), equals(SymbolAst('<')));
+      expect(parseGlue('>'), equals(SymbolAst('>')));
+      expect(parseGlue('&'), equals(SymbolAst('&')));
+      expect(parseGlue('|'), equals(SymbolAst('|')));
+      expect(parseGlue('!'), equals(SymbolAst('!')));
+      expect(parseGlue('?'), equals(SymbolAst('?')));
+      expect(parseGlue('\\'), equals(SymbolAst('\\')));
+      expect(parseGlue('\$'), equals(SymbolAst('\$')));
+      expect(parseGlue('@'), equals(SymbolAst('@')));
+      expect(parseGlue('#'), equals(SymbolAst('#')));
+      expect(parseGlue('_'), equals(SymbolAst('_')));
+      expect(parseGlue('.'), equals(SymbolAst('.')));
+
+      // Complex symbol combinations
+      expect(parseGlue('func\$helper'), equals(SymbolAst('func\$helper')));
+      expect(parseGlue('data@2023'), equals(SymbolAst('data@2023')));
+      expect(parseGlue('item#1'), equals(SymbolAst('item#1')));
+      expect(parseGlue('path/to:item'), equals(SymbolAst('path/to:item')));
     });
 
     test('parse empty list', () {
@@ -83,6 +120,105 @@ void main() {
       expect(listAst.elements[0], equals(SymbolAst('+')));
       expect(listAst.elements[1], equals(IntegerAst(1)));
       expect(listAst.elements[2], equals(IntegerAst(2)));
+    });
+
+    // Property Access tests
+    test('parse property access', () {
+      expect(parseGlue('obj.name'), equals(SymbolAst('obj.name')));
+      expect(parseGlue('a.b.c'), equals(SymbolAst('a.b.c')));
+      expect(parseGlue('obj.prop1'), equals(SymbolAst('obj.prop1')));
+      expect(parseGlue('obj.prop-name'), equals(SymbolAst('obj.prop-name')));
+      expect(parseGlue('obj.prop_name'), equals(SymbolAst('obj.prop_name')));
+    });
+
+    // Operator Expressions tests
+    test('parse operator expressions', () {
+      expect(
+        parseGlue('(+ 2 3)'),
+        equals(ListAst(IList([SymbolAst('+'), IntegerAst(2), IntegerAst(3)]))),
+      );
+      expect(
+        parseGlue('(< x y)'),
+        equals(
+          ListAst(IList([SymbolAst('<'), SymbolAst('x'), SymbolAst('y')])),
+        ),
+      );
+      expect(
+        parseGlue('(== a b)'),
+        equals(
+          ListAst(IList([SymbolAst('=='), SymbolAst('a'), SymbolAst('b')])),
+        ),
+      );
+      expect(
+        parseGlue('(* 2 3 4)'),
+        equals(
+          ListAst(
+            IList([
+              SymbolAst('*'),
+              IntegerAst(2),
+              IntegerAst(3),
+              IntegerAst(4),
+            ]),
+          ),
+        ),
+      );
+      expect(
+        parseGlue('(<= x 10)'),
+        equals(
+          ListAst(IList([SymbolAst('<='), SymbolAst('x'), IntegerAst(10)])),
+        ),
+      );
+    });
+
+    // Edge Cases
+    test('parse empty input', () {
+      expect(parseGlue(''), isNull);
+    });
+
+    test('parse whitespace only', () {
+      expect(parseGlue('   \n\t  '), isNull);
+    });
+
+    // Unicode and Special Characters
+    test('handle unicode in strings', () {
+      expect(parseGlue('"hello 世界"'), equals(StringAst('hello 世界')));
+    });
+
+    test('handle escape sequences in strings', () {
+      expect(parseGlue('"hello\\nworld"'), equals(StringAst('hello\\nworld')));
+    });
+
+    test('handle symbols with unicode', () {
+      expect(parseGlue('变量'), equals(SymbolAst('变量')));
+    });
+
+    // Syntax Errors - current parser returns null for invalid input
+    test('handle malformed input', () {
+      expect(parseGlue('123.456.789'), isNull); // Invalid number
+      expect(parseGlue('12.34e56e78'), isNull); // Invalid scientific notation
+      expect(parseGlue('(unclosed list'), isNull); // Unclosed parenthesis
+    });
+
+    // Complex operator expressions
+    test('parse complex operator expressions', () {
+      expect(
+        parseGlue('(= x y)'),
+        equals(
+          ListAst(IList([SymbolAst('='), SymbolAst('x'), SymbolAst('y')])),
+        ),
+      );
+      expect(
+        parseGlue('(!= a b)'),
+        equals(
+          ListAst(IList([SymbolAst('!='), SymbolAst('a'), SymbolAst('b')])),
+        ),
+      );
+      expect(
+        parseGlue('(>= val 0)'),
+        equals(
+          ListAst(IList([SymbolAst('>='), SymbolAst('val'), IntegerAst(0)])),
+        ),
+      );
     });
   });
 }
