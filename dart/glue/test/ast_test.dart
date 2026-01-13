@@ -1,4 +1,3 @@
-import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:glue/glue.dart';
 import 'package:test/test.dart';
 
@@ -45,13 +44,9 @@ void main() {
     });
 
     test('ListAst with immutable collections', () {
-      final elements1 = IList<Ast>([IntegerAst(1), StringAst('hello')]);
-      final elements2 = IList<Ast>([IntegerAst(1), StringAst('hello')]);
-      final elements3 = IList<Ast>([IntegerAst(1), StringAst('world')]);
-
-      final ast1 = ListAst(elements1);
-      final ast2 = ListAst(elements2);
-      final ast3 = ListAst(elements3);
+      final ast1 = ListAst([IntegerAst(1), StringAst('hello')]);
+      final ast2 = ListAst([IntegerAst(1), StringAst('hello')]);
+      final ast3 = ListAst([IntegerAst(1), StringAst('world')]);
 
       expect(ast1, equals(ast2));
       expect(ast1, isNot(equals(ast3)));
@@ -59,22 +54,15 @@ void main() {
     });
 
     test('ObjectAst with immutable collections', () {
-      final props1 = IMap<String, Ast>({
+      final ast1 = ObjectAst({
         'name': StringAst('Alice'),
         'age': IntegerAst(30),
       });
-      final props2 = IMap<String, Ast>({
+      final ast2 = ObjectAst({
         'name': StringAst('Alice'),
         'age': IntegerAst(30),
       });
-      final props3 = IMap<String, Ast>({
-        'name': StringAst('Bob'),
-        'age': IntegerAst(25),
-      });
-
-      final ast1 = ObjectAst(props1);
-      final ast2 = ObjectAst(props2);
-      final ast3 = ObjectAst(props3);
+      final ast3 = ObjectAst({'name': StringAst('Bob'), 'age': IntegerAst(25)});
 
       expect(ast1, equals(ast2));
       expect(ast1, isNot(equals(ast3)));
@@ -92,9 +80,9 @@ void main() {
     });
 
     test('Hash codes for collections', () {
-      final list1 = ListAst(IList([IntegerAst(1), IntegerAst(2)]));
-      final list2 = ListAst(IList([IntegerAst(1), IntegerAst(2)]));
-      final list3 = ListAst(IList([IntegerAst(2), IntegerAst(1)]));
+      final list1 = ListAst([IntegerAst(1), IntegerAst(2)]);
+      final list2 = ListAst([IntegerAst(1), IntegerAst(2)]);
+      final list3 = ListAst([IntegerAst(2), IntegerAst(1)]);
 
       expect(list1.hashCode, equals(list2.hashCode));
       expect(list1.hashCode, isNot(equals(list3.hashCode)));
