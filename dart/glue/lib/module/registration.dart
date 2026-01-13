@@ -1,2 +1,4 @@
 /// Module registration and parsing for Glue language
-export '../../src/module/registration.dart';
+library;
+
+export 'package:glue/src/module/registration.dart';

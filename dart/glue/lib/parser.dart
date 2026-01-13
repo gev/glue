@@ -1,6 +1,5 @@
 /// Parser functionality for Glue language
 /// Provides AST parsing and parsing utilities
+library;
 
-export 'src/ast.dart';
-export 'src/parser.dart';
-export 'src/parser/error.dart';
+export 'package:glue/src/parser.dart';

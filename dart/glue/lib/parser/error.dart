@@ -1,2 +1,4 @@
 /// Parser error types for Glue language
-export '../../src/parser/error.dart';
+library;
+
+export 'package:glue/src/parser/error.dart';

@@ -1,2 +1,4 @@
 /// Module registry management for Glue language
-export '../../src/module/registry.dart';
+library;
+
+export 'package:glue/src/module/registry.dart';

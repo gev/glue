@@ -1,2 +1,4 @@
 /// Lambda special form implementation for Glue language
-export '../../../src/lib/builtin/lambda.dart';
+library;
+
+export 'package:glue/src/lib/builtin/lambda.dart';

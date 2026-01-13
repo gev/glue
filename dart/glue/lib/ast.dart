@@ -1,2 +1,4 @@
 /// Abstract Syntax Tree types for Glue language parsing
-export 'src/ast.dart';
+library;
+
+export 'package:glue/src/ast.dart';

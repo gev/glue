@@ -2,4 +2,4 @@
 /// Provides exception types and factory functions
 library;
 
-export '../src/eval/exception.dart';
+export 'package:glue/src/eval/exception.dart';

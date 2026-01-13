@@ -1,2 +1,4 @@
 /// Evaluation error handling for Glue language
-export '../../src/eval/error.dart';
+library;
+
+export 'package:glue/src/eval/error.dart';

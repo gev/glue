@@ -1,2 +1,4 @@
 /// Def special form implementation for Glue language
-export '../../../src/lib/builtin/def.dart';
+library;
+
+export 'package:glue/src/lib/builtin/def.dart';

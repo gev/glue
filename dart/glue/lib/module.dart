@@ -1,2 +1,4 @@
 /// Module data structures and utilities for Glue language
-export 'src/module.dart';
+library;
+
+export 'package:glue/src/module.dart';
