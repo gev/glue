@@ -10,6 +10,7 @@ environment:
 
 dependencies:
   petitparser: any
+  fast_immutable_collections: any
 
 dev_dependencies:
   lints: ^6.0.0
