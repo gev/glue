@@ -10,11 +10,11 @@ library;
 
 export 'src/ast.dart';
 export 'src/either.dart';
+export 'src/ir.dart';
 export 'src/parser.dart';
 export 'src/parser_errors.dart';
 
 // TODO: Export additional modules as they are implemented
-// export 'src/ir.dart';
 // export 'src/env.dart';
 // export 'src/eval.dart';
 // export 'src/module.dart';
