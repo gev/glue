@@ -13,6 +13,12 @@ This document outlines the most important rules and guidelines for developing an
 - **Don't do anything until I ask!** - Wait for explicit direction before proceeding
 - **Get free to use emoji ;)** - Emojis are encouraged for clarity and personality
 
+### Implementation Fidelity
+- **Implementations should be equal and follow uniform spec!** - All language implementations must match the Haskell reference exactly
+- **Haskell implementation is the reference!** - Haskell code defines the canonical behavior for all features
+- **Match Haskell AST, parser, evaluator, etc. precisely!** - No deviations allowed without explicit spec updates
+- **Test against Haskell behavior!** - Ensure identical input/output for all test cases
+
 ### Quality Assurance
 - **Never touch my fixes!** - Respect and preserve existing corrections
 - **Read user fixes before making commits!** - Always review manual changes before committing
