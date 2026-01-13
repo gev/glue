@@ -11,6 +11,7 @@ library;
 export 'src/ast.dart';
 export 'src/either.dart';
 export 'src/env.dart' hide Frame;
+export 'src/eval_error.dart';
 export 'src/ir.dart' hide Env;
 export 'src/module.dart';
 export 'src/module_cache.dart';
