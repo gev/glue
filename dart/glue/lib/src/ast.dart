@@ -104,8 +104,9 @@ class ObjectAst extends Ast {
 
   @override
   String toString() {
-    final props =
-        properties.entries.map((e) => ':${e.key} ${e.value}').join(' ');
+    final props = properties.entries
+        .map((e) => ':${e.key} ${e.value}')
+        .join(' ');
     return '($props)';
   }
 
