@@ -1,4 +1,3 @@
-import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:glue/glue.dart';
 import 'package:test/test.dart';
 
@@ -305,8 +304,8 @@ void main() {
       expect(error, isNull);
       expect(registry, isNotNull);
       expect(registrySize(registry!), equals(2));
-      expect(lookupModule('math.add', registry!), isNotNull);
-      expect(lookupModule('math.mul', registry!), isNotNull);
+      expect(lookupModule('math.add', registry), isNotNull);
+      expect(lookupModule('math.mul', registry), isNotNull);
     });
 
     test('buildRegistry: handles parsing errors', () {
@@ -351,8 +350,8 @@ void main() {
       expect(error, isNull);
       expect(finalRegistry, isNotNull);
       expect(registrySize(finalRegistry!), equals(2));
-      expect(lookupModule('existing', finalRegistry!), isNotNull);
-      expect(lookupModule('new.module', finalRegistry!), isNotNull);
+      expect(lookupModule('existing', finalRegistry), isNotNull);
+      expect(lookupModule('new.module', finalRegistry), isNotNull);
     });
   });
 }

@@ -27,7 +27,7 @@ import 'module_registry.dart';
   if (nameIr is! IrSymbol) {
     return ('Module name must be a symbol', null);
   }
-  final moduleName = (nameIr as IrSymbol).value;
+  final moduleName = (nameIr).value;
 
   // Extract exports
   final exportsIr = elements[2];
@@ -66,7 +66,7 @@ import 'module_registry.dart';
     if (element is! IrSymbol) {
       return ('Export list can only contain symbols', null);
     }
-    exports.add((element as IrSymbol).value);
+    exports.add(element.value);
   }
 
   return (null, exports);
