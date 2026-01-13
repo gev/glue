@@ -229,13 +229,6 @@ FutureOr<Either<EvalError, (T, Env, Context)>> runEvalSimple<T>(
   return result.map((tuple) => (tuple.$1, tuple.$2.env, tuple.$2.context));
 }
 
-/// Simple evaluation of IR expressions
-/// Convenience function for evaluating single expressions
-FutureOr<Either<EvalError, (Ir, Env, Context)>> evalSimple(
-  Ir expression,
-  Env initialEnv,
-) => runEvalSimple(eval(expression), initialEnv);
-
 /// ============================================================================
 /// CORE EXPRESSION EVALUATION
 /// ============================================================================

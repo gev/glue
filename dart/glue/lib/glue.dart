@@ -14,7 +14,6 @@ export 'src/env.dart' hide Frame;
 export 'src/eval.dart'
     show
         runEvalSimple,
-        evalSimple,
         Eval,
         EvalIR,
         eval,

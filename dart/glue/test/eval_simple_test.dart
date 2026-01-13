@@ -33,8 +33,8 @@ void main() {
       ]);
     });
 
-    test('evalSimple evaluates literals', () async {
-      final result = await evalSimple(IrInteger(123), env);
+    test('runEvalSimple evaluates literals', () async {
+      final result = await runEvalSimple(eval(IrInteger(123)), env);
 
       expect(result.isRight, isTrue);
       result.fold((error) => fail('Should not be left'), (tuple) {
@@ -45,8 +45,8 @@ void main() {
       });
     });
 
-    test('evalSimple evaluates symbols', () async {
-      final result = await evalSimple(IrSymbol('x'), env);
+    test('runEvalSimple evaluates symbols', () async {
+      final result = await runEvalSimple(eval(IrSymbol('x')), env);
 
       expect(result.isRight, isTrue);
       result.fold((error) => fail('Should not be left'), (tuple) {
@@ -57,9 +57,9 @@ void main() {
       });
     });
 
-    test('evalSimple evaluates function calls', () async {
+    test('runEvalSimple evaluates function calls', () async {
       final call = IrList([IrSymbol('add'), IrSymbol('x'), IrInteger(8)]);
-      final result = await evalSimple(call, env);
+      final result = await runEvalSimple(eval(call), env);
 
       expect(result.isRight, isTrue);
       result.fold((error) => fail('Should not be left'), (tuple) {
@@ -70,8 +70,8 @@ void main() {
       });
     });
 
-    test('evalSimple handles errors', () async {
-      final result = await evalSimple(IrSymbol('nonexistent'), env);
+    test('runEvalSimple handles errors', () async {
+      final result = await runEvalSimple(eval(IrSymbol('nonexistent')), env);
 
       expect(result.isLeft, isTrue);
       result.fold(
@@ -93,13 +93,13 @@ void main() {
       });
     });
 
-    test('evalSimple preserves environment state', () async {
+    test('runEvalSimple preserves environment state', () async {
       // First evaluation
-      final result1 = await evalSimple(IrSymbol('x'), env);
+      final result1 = await runEvalSimple(eval(IrSymbol('x')), env);
       expect(result1.isRight, isTrue);
 
       // Second evaluation should work with same environment
-      final result2 = await evalSimple(IrSymbol('y'), env);
+      final result2 = await runEvalSimple(eval(IrSymbol('y')), env);
       expect(result2.isRight, isTrue);
 
       result2.fold((error) => fail('Should not be left'), (tuple) {
