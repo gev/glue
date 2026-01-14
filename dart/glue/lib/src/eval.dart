@@ -251,20 +251,21 @@ Eval<Ir> evalSymbol(String name) {
   });
 }
 
-/// Evaluate dotted symbol access (module.property.field)
+/// Evaluate dotted symbol access (base.property.field)
 Eval<Ir> evalDottedSymbol(List<String> parts) {
-  if (parts.isEmpty) {
-    return throwError(
+  return switch (parts) {
+    [] => throwError(
       RuntimeException('invalid-symbol', IrString('Empty dotted symbol')),
-    );
-  }
-
-  if (parts.length == 1) {
-    return evalSymbol(parts[0]);
-  }
-
-  // Find the longest prefix that exists as a symbol
-  return _evalWithPrefixes(parts);
+    ),
+    [final base] => evalSymbol(base),
+    [final base, ...final rest] => getEnv().flatMap((env) {
+      final result = lookupVar(base, env);
+      return result.match(
+        (error) => throwError(error),
+        (value) => _evalNestedAccess(value, rest),
+      );
+    }),
+  };
 }
 
 /// Evaluate a list (function call or literal list)
@@ -390,38 +391,6 @@ Eval<Ir> applyClosure(
 /// ============================================================================
 /// HELPER FUNCTIONS
 /// ============================================================================
-
-/// Helper to find the longest prefix that exists
-Eval<Ir> _evalWithPrefixes(List<String> parts) {
-  return getEnv().flatMap((env) {
-    // Try prefixes from longest to shortest
-    for (final prefix in _generatePrefixes(parts)) {
-      final prefixName = prefix.join('.');
-      final result = lookupVar(prefixName, env);
-
-      if (result.isRight) {
-        // Found the prefix, navigate the remaining parts
-        return result.match(
-          (_) => throwError(unboundVariable(parts.join('.'))),
-          (value) => _evalNestedAccess(value, parts.sublist(prefix.length)),
-        );
-      }
-      // Continue to next prefix if not found
-    }
-
-    // No prefix found
-    return throwError(unboundVariable(parts.join('.')));
-  });
-}
-
-/// Generate all proper prefixes of a symbol path
-List<List<String>> _generatePrefixes(List<String> parts) {
-  final prefixes = <List<String>>[];
-  for (var i = parts.length; i > 0; i--) {
-    prefixes.add(parts.sublist(0, i));
-  }
-  return prefixes;
-}
 
 /// Navigate nested object/module access
 Eval<Ir> _evalNestedAccess(Ir obj, List<String> remainingParts) {
