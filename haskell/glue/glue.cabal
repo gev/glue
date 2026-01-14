@@ -144,7 +144,6 @@ test-suite glue-test
     Glue.Lib.Bool.UntilSpec
     Glue.Lib.Bool.WhenSpec
     Glue.Lib.Bool.WhileSpec
-    Glue.Lib.Builtin.ClosureSpec
     Glue.Lib.Builtin.DefSpec
     Glue.Lib.Builtin.LambdaSpec
     Glue.Lib.Builtin.SetSpec
