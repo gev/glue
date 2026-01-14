@@ -1,6 +1,5 @@
 module Glue.Lib.Builtin.ImportSpec where
 
-import Data.Map.Strict qualified as Map
 import Glue.Env qualified as E
 import Glue.Eval (Runtime (..), eval, runEval)
 import Glue.IR (IR (..))
@@ -14,14 +13,14 @@ import Test.Hspec
 spec :: Spec
 spec = do
     describe "Module import functionality" $ do
-        it "imports module and makes exported symbols available" $ do
+        it "imports simple module and makes exported symbols available directly" $ do
             -- Create module IR
             let moduleIR =
                     List
                         [ Symbol "module"
-                        , Symbol "test.import"
-                        , List [Symbol "export", Symbol "value"]
-                        , List [Symbol "def", Symbol "value", Integer 123]
+                        , Symbol "math"
+                        , List [Symbol "export", Symbol "pi"]
+                        , List [Symbol "def", Symbol "pi", Integer 314]
                         ]
 
             -- Build registry
@@ -42,17 +41,17 @@ spec = do
                                 }
 
                     -- Evaluate import
-                    let importIR = List [Symbol "import", Symbol "test.import"]
+                    let importIR = List [Symbol "import", Symbol "math"]
                     result <- runEval (eval importIR) initialState
 
                     case result of
                         Right (Void, finalState) -> do
-                            -- Check that the exported symbol is now available
-                            case E.lookupVar "value" finalState.env of
-                                Right (Integer 123) -> pure ()
+                            -- Check that the exported symbol is available directly in environment
+                            case E.lookupVar "pi" finalState.env of
+                                Right (Integer 314) -> pure ()
                                 Right val -> expectationFailure $ "Wrong value imported: " ++ show val
-                                Left err -> expectationFailure $ "Symbol not found after import: " ++ show err
-                        Right (val, _) -> expectationFailure $ "Import should return Nothing, got: " ++ show val
+                                Left err -> expectationFailure $ "Direct access failed: " ++ show err
+                        Right (val, _) -> expectationFailure $ "Import should return Void, got: " ++ show val
                         Left err -> expectationFailure $ "Import failed: " ++ show err
 
         it "does not pollute the current environment during import" $ do
@@ -60,7 +59,7 @@ spec = do
             let moduleIR =
                     List
                         [ Symbol "module"
-                        , Symbol "test.pollution"
+                        , Symbol "utils"
                         , List [Symbol "export", Symbol "public"]
                         , List [Symbol "def", Symbol "internal", Integer 999] -- Internal variable
                         , List [Symbol "def", Symbol "public", Integer 456] -- Exported variable
@@ -85,7 +84,7 @@ spec = do
                                 }
 
                     -- Evaluate import
-                    let importIR = List [Symbol "import", Symbol "test.pollution"]
+                    let importIR = List [Symbol "import", Symbol "utils"]
                     result <- runEval (eval importIR) initialState
 
                     case result of
@@ -96,7 +95,7 @@ spec = do
                                 Right val -> expectationFailure $ "Pre-existing variable changed: " ++ show val
                                 Left err -> expectationFailure $ "Pre-existing variable lost: " ++ show err
 
-                            -- Check that exported symbol is available
+                            -- Check that exported symbol is available directly
                             case E.lookupVar "public" finalState.env of
                                 Right (Integer 456) -> pure ()
                                 Right val -> expectationFailure $ "Wrong exported value: " ++ show val
@@ -106,15 +105,15 @@ spec = do
                             case E.lookupVar "internal" finalState.env of
                                 Right _ -> expectationFailure "Internal module variable leaked into environment"
                                 Left _ -> pure () -- This is expected - internal vars should not be visible
-                        Right (val, _) -> expectationFailure $ "Import should return Nothing, got: " ++ show val
+                        Right (val, _) -> expectationFailure $ "Import should return Void, got: " ++ show val
                         Left err -> expectationFailure $ "Import failed: " ++ show err
 
-        it "provides both direct and dotted access to imported symbols" $ do
-            -- Create module IR
+        it "imports dotted module and makes exported symbols available directly" $ do
+            -- Create module IR with dotted name
             let moduleIR =
                     List
                         [ Symbol "module"
-                        , Symbol "test.dual"
+                        , DottedSymbol ["test", "dual"]
                         , List [Symbol "export", Symbol "add", Symbol "multiply"]
                         , List [Symbol "def", Symbol "add", List [Symbol "+", Integer 1, Integer 2]]
                         , List [Symbol "def", Symbol "multiply", List [Symbol "*", Integer 3, Integer 4]]
@@ -138,71 +137,19 @@ spec = do
                                 }
 
                     -- Evaluate import
-                    let importIR = List [Symbol "import", Symbol "test.dual"]
+                    let importIR = List [Symbol "import", DottedSymbol ["test", "dual"]]
                     result <- runEval (eval importIR) initialState
 
                     case result of
                         Right (Void, finalState) -> do
-                            -- Check direct access works
+                            -- Check direct access to exported symbols
                             case E.lookupVar "add" finalState.env of
                                 Right _ -> pure ()
-                                Left err -> expectationFailure $ "Direct access failed: " ++ show err
-
-                            -- Check module value is stored
-                            case E.lookupVar "test.dual" finalState.env of
-                                Right (Module moduleMap) -> do
-                                    case Map.lookup "add" moduleMap of
-                                        Just _ -> pure ()
-                                        Nothing -> expectationFailure "Module missing 'add' property"
-                                    case Map.lookup "multiply" moduleMap of
-                                        Just _ -> pure ()
-                                        Nothing -> expectationFailure "Module missing 'multiply' property"
-                                Right val -> expectationFailure $ "Expected Module, got: " ++ show val
-                                Left err -> expectationFailure $ "Module not found: " ++ show err
-                        Right (val, _) -> expectationFailure $ "Import should return Nothing, got: " ++ show val
-                        Left err -> expectationFailure $ "Import failed: " ++ show err
-
-        it "prevents modification of module properties" $ do
-            -- Create module IR
-            let moduleIR =
-                    List
-                        [ Symbol "module"
-                        , Symbol "test.immutable"
-                        , List [Symbol "export", Symbol "value"]
-                        , List [Symbol "def", Symbol "value", Integer 42]
-                        ]
-
-            -- Build registry
-            case buildRegistry [moduleIR] of
-                Left err -> expectationFailure $ "Registry build failed: " ++ show err
-                Right registry -> do
-                    -- Create initial environment with import function
-                    let initialEnv = envFromModule builtin
-
-                    -- Create initial eval runtime with registry
-                    let initialState =
-                            Runtime
-                                { env = initialEnv
-                                , context = []
-                                , registry = registry
-                                , importCache = Cache.emptyCache
-                                , rootEnv = initialEnv
-                                }
-
-                    -- Evaluate import
-                    let importIR = List [Symbol "import", Symbol "test.immutable"]
-                    result <- runEval (eval importIR) initialState
-
-                    case result of
-                        Right (Void, finalState) -> do
-                            -- Try to set module property - should fail
-                            let setIR = List [Symbol "set", Symbol "test.immutable.value", Integer 999]
-                            setResult <- runEval (eval setIR) finalState
-
-                            case setResult of
-                                Left _ -> pure () -- Expected to fail
-                                Right _ -> expectationFailure "Setting module property should fail"
-                        Right (val, _) -> expectationFailure $ "Import should return Nothing, got: " ++ show val
+                                Left err -> expectationFailure $ "Direct access to add failed: " ++ show err
+                            case E.lookupVar "multiply" finalState.env of
+                                Right _ -> pure ()
+                                Left err -> expectationFailure $ "Direct access to multiply failed: " ++ show err
+                        Right (val, _) -> expectationFailure $ "Import should return Void, got: " ++ show val
                         Left err -> expectationFailure $ "Import failed: " ++ show err
 
         it "allows local definitions to shadow imported symbols" $ do
@@ -255,61 +202,44 @@ spec = do
                                         Right (Integer 200) -> pure ()
                                         Right val -> expectationFailure $ "Wrong shadowed value: " ++ show val
                                         Left err -> expectationFailure $ "Local value not found: " ++ show err
-
-                                    -- Check that module still has original value
-                                    case E.lookupVar "test.shadow" finalState.env of
-                                        Right (Module moduleMap) -> do
-                                            case Map.lookup "x" moduleMap of
-                                                Just (Integer 100) -> pure ()
-                                                Just val -> expectationFailure $ "Module value changed: " ++ show val
-                                                Nothing -> expectationFailure "Module missing 'x' property"
-                                        Right val -> expectationFailure $ "Expected Module, got: " ++ show val
-                                        Left err -> expectationFailure $ "Module not found: " ++ show err
-                                Right (val, _) -> expectationFailure $ "Def should return Nothing, got: " ++ show val
+                                Right (val, _) -> expectationFailure $ "Def should return Void, got: " ++ show val
                                 Left err -> expectationFailure $ "Def failed: " ++ show err
-                        Right (val, _) -> expectationFailure $ "Import should return Nothing, got: " ++ show val
+                        Right (val, _) -> expectationFailure $ "Import should return Void, got: " ++ show val
                         Left err -> expectationFailure $ "Import failed: " ++ show err
 
-        it "supports dotted property access on modules" $ do
-            -- Create module IR
-            let moduleIR =
-                    List
-                        [ Symbol "module"
-                        , Symbol "test.dotted"
-                        , List [Symbol "export", Symbol "value"]
-                        , List [Symbol "def", Symbol "value", Integer 42]
-                        ]
+        it "imports multiple modules and makes all exports available directly" $ do
+            -- Create multiple module IRs
+            let modulesIR =
+                    [ List [Symbol "module", Symbol "math", List [Symbol "export", Symbol "pi"], List [Symbol "def", Symbol "pi", Integer 314]]
+                    , List [Symbol "module", Symbol "utils", List [Symbol "export", Symbol "len"], List [Symbol "def", Symbol "len", Integer 42]]
+                    ]
 
             -- Build registry
-            case buildRegistry [moduleIR] of
+            case buildRegistry modulesIR of
                 Left err -> expectationFailure $ "Registry build failed: " ++ show err
                 Right registry -> do
-                    -- Create initial environment with import function
+                    -- Create initial environment
                     let initialEnv = envFromModule builtin
+                    let initialState = Runtime initialEnv [] registry Cache.emptyCache initialEnv
 
-                    -- Create initial eval runtime with registry
-                    let initialState =
-                            Runtime
-                                { env = initialEnv
-                                , context = []
-                                , registry = registry
-                                , importCache = Cache.emptyCache
-                                , rootEnv = initialEnv
-                                }
+                    -- Import math
+                    let importMath = List [Symbol "import", Symbol "math"]
+                    result1 <- runEval (eval importMath) initialState
+                    state1 <- case result1 of
+                        Right (Void, s) -> pure s
+                        _ -> expectationFailure "Import math failed" >> undefined
 
-                    -- Evaluate import
-                    let importIR = List [Symbol "import", Symbol "test.dotted"]
-                    result <- runEval (eval importIR) initialState
+                    -- Import utils
+                    let importUtils = List [Symbol "import", Symbol "utils"]
+                    result2 <- runEval (eval importUtils) state1
+                    finalState <- case result2 of
+                        Right (Void, s) -> pure s
+                        _ -> expectationFailure "Import utils failed" >> undefined
 
-                    case result of
-                        Right (Void, finalState) -> do
-                            -- Test dotted access to module property
-                            let accessIR = DottedSymbol ["test", "dotted", "value"]
-                            accessResult <- runEval (eval accessIR) finalState
-
-                            case accessResult of
-                                Right (Integer 42, _) -> pure ()
-                                Right (val, _) -> expectationFailure $ "Wrong value: " ++ show val
-                                Left err -> expectationFailure $ "Dotted access failed: " ++ show err
-                        Right (val, _) -> expectationFailure $ "Import should return Nothing, got: " ++ show val
-                        Left err -> expectationFailure $ "Import failed: " ++ show err
+                    -- Check direct access to all exports
+                    case E.lookupVar "pi" finalState.env of
+                        Right (Integer 314) -> pure ()
+                        _ -> expectationFailure "Direct access to pi failed"
+                    case E.lookupVar "len" finalState.env of
+                        Right (Integer 42) -> pure ()
+                        _ -> expectationFailure "Direct access to len failed"

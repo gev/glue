@@ -9,12 +9,20 @@ import Glue.Eval.Exception (moduleNotFound, wrongArgumentType)
 import Glue.IR (IR (..))
 import Glue.Module (ImportedModule (..), RegisteredModule (..))
 import Glue.Module.Cache qualified as Cache
+
 import Glue.Module.Registry qualified as Registry
 import Prelude hiding (mod)
 
 -- | Import special form - loads and evaluates a module
 importForm :: [IR Eval] -> Eval (IR Eval)
-importForm [Symbol moduleName] = do
+importForm [Symbol moduleName] = importModule [moduleName]
+importForm [DottedSymbol modulePath] = importModule modulePath
+importForm _ = throwError $ wrongArgumentType ["module-name"]
+
+importModule :: [T.Text] -> Eval (IR Eval)
+importModule [] = throwError $ wrongArgumentType ["module-name"]
+importModule modulePath = do
+    let moduleName = T.intercalate "." modulePath
     registry <- getRegistry
     case Registry.lookupModule moduleName registry of
         Nothing -> throwError $ moduleNotFound moduleName
@@ -23,14 +31,10 @@ importForm [Symbol moduleName] = do
             -- Check if already imported (cached)
             case Cache.lookupCachedModule moduleName cache of
                 Just imported -> do
-                    -- Use cached results - merge into current environment (direct access)
+                    -- Use cached results - add exports directly to current environment
                     env <- getEnv
                     let updatedEnv = foldl (\e (name, val) -> E.defineVar name val e) env (Map.toList (exportedValues imported))
-
-                    -- Also store Module under module name (dotted access)
-                    let moduleValue = Module (exportedValues imported)
-                    let finalEnv = E.defineVar moduleName moduleValue updatedEnv
-                    putEnv finalEnv
+                    putEnv updatedEnv
                     pure Void
                 Nothing -> do
                     -- First import: evaluate module
@@ -77,13 +81,9 @@ importForm [Symbol moduleName] = do
                     let newCache = Cache.cacheModule importedModule cache
                     putCache newCache
 
-                    -- Merge exported symbols into current environment (direct access)
-                    let updatedEnv = foldl (\env (name, val) -> E.defineVar name val env) rootEnv (Map.toList exportedValues)
-
-                    -- Also store Module under module name (dotted access)
-                    let moduleValue = Module exportedValues
-                    let finalEnv = E.defineVar moduleName moduleValue updatedEnv
-                    putEnv finalEnv
+                    -- Add exported symbols directly to current environment
+                    env <- getEnv
+                    let updatedEnv = foldl (\e (name, val) -> E.defineVar name val e) env (Map.toList exportedValues)
+                    putEnv updatedEnv
 
                     pure Void
-importForm _ = throwError $ wrongArgumentType ["module-name"]

@@ -20,7 +20,6 @@ data IR m
     | DottedSymbol [Text]
     | List [IR m]
     | Object (Map Text (IR m))
-    | Module (Map Text (IR m))
     | Void
     | Native (Native m)
     | Closure [Text] (IR m) (Env m)
@@ -52,7 +51,6 @@ instance Show (IR m) where
         DottedSymbol parts -> T.unpack (T.intercalate "." parts)
         List xs -> "(" <> unwords (map show xs) <> ")"
         Object _ -> "{object}"
-        Module _ -> "{module}"
         Void -> "#<void>"
         Native _ -> "<native>"
         Closure{} -> "<closure>"
@@ -66,7 +64,6 @@ instance Eq (IR m) where
     DottedSymbol a == DottedSymbol b = a == b
     List a == List b = a == b
     Object a == Object b = a == b
-    Module a == Module b = a == b
     Void == Void = True
     _ == _ = False
 

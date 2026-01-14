@@ -22,11 +22,9 @@ module Glue.Eval (
 ) where
 
 import Control.Monad (ap, liftM)
-import Data.List (inits)
 import Data.Map (Map)
 import Data.Map.Strict qualified as Map
 import Data.Text (Text)
-import Data.Text qualified as T
 import Glue.Env qualified as E
 import Glue.Eval.Error (Context, EvalError (EvalError))
 import Glue.Eval.Exception
@@ -119,24 +117,16 @@ evalDottedSymbol parts = do
     case parts of
         [] -> throwError $ unboundVariable "" -- shouldn't happen
         [base] -> evalSymbol base
-        _ -> evalWithPrefixes (init $ inits parts) -- All proper prefixes
+        base : rest -> do
+            env <- getEnv
+            case E.lookupVar base env of
+                Left err -> throwError err
+                Right obj -> evalNestedAccess obj rest
   where
-    -- Try to find the longest prefix that exists as a symbol
-    evalWithPrefixes [] = throwError $ unboundVariable (T.intercalate "." parts)
-    evalWithPrefixes (prefix : restPrefixes) = do
-        let prefixName = T.intercalate "." prefix
-        env <- getEnv
-        case E.lookupVar prefixName env of
-            Right val -> evalNestedAccess val (drop (length prefix) parts)
-            Left _ -> evalWithPrefixes restPrefixes
-
     evalNestedAccess obj [] = pure $ Just obj
     evalNestedAccess obj (prop : rest) = do
         case obj of
             IR.Object objMap -> case Map.lookup prop objMap of
-                Just val -> evalNestedAccess val rest
-                Nothing -> throwError $ propertyNotFound prop
-            IR.Module moduleMap -> case Map.lookup prop moduleMap of
                 Just val -> evalNestedAccess val rest
                 Nothing -> throwError $ propertyNotFound prop
             _ -> throwError $ notAnObject obj
