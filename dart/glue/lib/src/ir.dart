@@ -134,21 +134,6 @@ class IrObject extends Ir {
   int get hashCode => properties.hashCode;
 }
 
-class IrModule extends Ir {
-  final IMap<String, Ir> bindings;
-  IrModule(Map<String, Ir> bindings) : bindings = IMap(bindings);
-
-  @override
-  String toString() => '{module}';
-
-  @override
-  bool operator ==(Object other) =>
-      other is IrModule && other.bindings == bindings;
-
-  @override
-  int get hashCode => bindings.hashCode;
-}
-
 /// Special IR values
 class IrVoid extends Ir {
   const IrVoid();

@@ -39,8 +39,6 @@ Eval<Ir> set(List<Ir> args) {
                 currentObj.properties.add(prop, val).unlock,
               );
               return updateVarEval(objName, newObj).map((_) => IrVoid());
-            } else if (currentObj is IrModule) {
-              return throwError(cannotModifyModule());
             } else {
               return throwError(notAnObject(currentObj));
             }

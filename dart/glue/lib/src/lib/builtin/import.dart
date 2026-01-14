@@ -15,11 +15,15 @@ Eval<Ir> importForm(List<Ir> args) {
   }
 
   final moduleNameIr = args[0];
-  if (moduleNameIr is! IrSymbol) {
+  final moduleName = switch (moduleNameIr) {
+    IrSymbol(:final value) => value,
+    IrDottedSymbol(:final parts) => parts.join('.'),
+    _ => null,
+  };
+
+  if (moduleName == null) {
     return throwError(wrongArgumentType(['module-name']));
   }
-
-  final moduleName = moduleNameIr.value;
 
   return getRegistry().flatMap((registry) {
     final registeredModule = lookupModule(moduleName, registry);
@@ -49,10 +53,6 @@ Eval<Ir> _mergeImportedModule(ImportedModule imported, String moduleName) {
     for (final entry in imported.exportedValues.entries) {
       updatedEnv = defineVar(entry.key, entry.value, updatedEnv);
     }
-
-    // Store module reference under module name for dotted access
-    final moduleIr = IrModule(imported.exportedValues);
-    updatedEnv = defineVar(moduleName, moduleIr, updatedEnv);
 
     return putEnv(updatedEnv).map((_) => IrVoid());
   });

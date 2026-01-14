@@ -437,15 +437,7 @@ Eval<Ir> _evalNestedAccess(Ir obj, List<String> remainingParts) {
       props[prop] != null
           ? _evalNestedAccess(props[prop]!, rest)
           : throwError(propertyNotFound(prop)),
-    IrModule() =>
-      // Module access - for now, treat as not found
-      // This will be implemented when we add module import
-      throwError(
-        RuntimeException(
-          'module-access',
-          IrString('Module access not yet implemented'),
-        ),
-      ),
+
     _ => throwError(notAnObject(obj)),
   };
 }
@@ -507,17 +499,4 @@ Env _buildEnvWithBindings(Env env, List<(String, Ir)> bindings) {
     currentEnv = defineVar(param, value, currentEnv);
   }
   return currentEnv;
-}
-
-/// Evaluate function body with implicit sequence semantics
-/// Mirrors Haskell evalBody exactly
-Eval<Ir> _evalBody(Ir body) {
-  return eval(body).flatMap((result) {
-    return switch (result) {
-      IrList(elements: final xs) => xs.isEmpty
-          ? Eval.pure(IrVoid())
-          : Eval.pure(xs.last),
-      _ => Eval.pure(result),
-    };
-  });
 }

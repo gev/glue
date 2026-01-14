@@ -58,8 +58,5 @@ RuntimeException notAnObject(Ir ir) => RuntimeException('not-an-object', ir);
 RuntimeException moduleNotFound(String module) =>
     RuntimeException('module-not-found', IrString(module));
 
-RuntimeException cannotModifyModule() =>
-    RuntimeException('cannot-modify-module', null);
-
 RuntimeException runtimeException(String symbol, Ir value) =>
     RuntimeException(symbol, value);
