@@ -21,7 +21,7 @@ Eval<Ir> lambda(List<Ir> args) {
 
   final paramSymbols = extractSymbols(paramsIr.elements.unlock);
   switch (paramSymbols) {
-    case Left(:final value):
+    case Left():
       return throwError(wrongArgumentType(['arguments', 'body']));
     case Right(:final value):
       return makeClosure(value, body);

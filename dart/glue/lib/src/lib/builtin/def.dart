@@ -1,3 +1,4 @@
+import 'package:glue/src/either.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval/exception.dart';
@@ -39,10 +40,12 @@ Eval<Ir> def(List<Ir> args) {
 
     // Extract parameter symbols
     final paramSymbols = extractSymbols(params.unlock);
-    return paramSymbols.fold(
-      (error) =>
-          throwError(wrongArgumentType(['symbols in function parameters'])),
-      (paramNames) {
+    switch (paramSymbols) {
+      case Left():
+        return throwError(
+          wrongArgumentType(['symbols in function parameters']),
+        );
+      case Right(:final value):
         // Create body expression
         final body = rest.isEmpty
             ? IrVoid()
@@ -51,11 +54,10 @@ Eval<Ir> def(List<Ir> args) {
             : IrList(rest);
 
         // Create closure and define it
-        return makeClosure(paramNames, body).flatMap((closure) {
+        return makeClosure(value, body).flatMap((closure) {
           return defineVarEval(funcName.value, closure).map((_) => closure);
         });
-      },
-    );
+    }
   } else {
     return throwError(
       wrongArgumentType(['symbol or function signature', 'value']),

@@ -142,25 +142,18 @@ void main() {
       }
     });
 
-    test(
-      'special forms throw unbound variable error (not implemented)',
-      () async {
-        final defCall = IrList([
-          IrSymbol('def'),
-          IrSymbol('z'),
-          IrInteger(100),
-        ]);
+    test('special forms throw special-form error (not implemented)', () async {
+      final defCall = IrList([IrSymbol('def'), IrSymbol('z'), IrInteger(100)]);
 
-        final result = await runEval(eval(defCall), runtime);
-        expect(result.isLeft, isTrue);
-        switch (result) {
-          case Left(:final value):
-            expect(value.exception.symbol, equals('unbound-variable'));
-          case Right(:final value):
-            fail('Should not be right: $value');
-        }
-      },
-    );
+      final result = await runEval(eval(defCall), runtime);
+      expect(result.isLeft, isTrue);
+      switch (result) {
+        case Left(:final value):
+          expect(value.exception.symbol, equals('special-form'));
+        case Right(:final value):
+          fail('Should not be right: $value');
+      }
+    });
 
     test('dotted symbols work for simple access', () async {
       // Create an object and bind it

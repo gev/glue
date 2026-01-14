@@ -3,6 +3,7 @@ import 'package:glue/src/either.dart';
 import 'package:glue/src/env.dart';
 import 'package:glue/src/eval/error.dart';
 import 'package:glue/src/ir.dart' hide Env;
+import 'package:glue/src/lib/builtin/lambda.dart';
 import 'package:glue/src/module/cache.dart';
 import 'package:glue/src/module/registry.dart';
 import 'package:glue/src/runtime.dart';
@@ -341,25 +342,22 @@ Eval<Ir> evalList(List<Ir> elements) {
 
 /// Evaluate a call starting with a symbol
 Eval<Ir> _evalSymbolCall(String name, List<Ir> args) {
-  return withContext(
-    name,
-    getEnv().flatMap((env) {
+  return withContext(name, switch (_isSpecialForm(name)) {
+    true => _evalSpecialForm(name, args),
+    false => getEnv().flatMap((env) {
       final result = lookupVar(name, env);
 
       if (result is Left<RuntimeException, Ir>) {
         return throwError(result.value);
       } else if (result is Right<RuntimeException, Ir>) {
-        return switch (_isSpecialForm(name)) {
-          true => _evalSpecialForm(name, args),
-          false => sequenceAll(
-            args.map(eval).toList(),
-          ).flatMap((evaluatedArgs) => apply(result.value, evaluatedArgs)),
-        };
+        return sequenceAll(
+          args.map(eval).toList(),
+        ).flatMap((evaluatedArgs) => apply(result.value, evaluatedArgs));
       } else {
         throw StateError('Either should be Left or Right');
       }
     }),
-  );
+  });
 }
 
 /// Check if a symbol is a special form
@@ -377,14 +375,17 @@ bool _isSpecialForm(String name) {
   }.contains(name);
 }
 
-/// Evaluate special forms (not yet implemented)
+/// Evaluate special forms
 Eval<Ir> _evalSpecialForm(String name, List<Ir> args) {
-  return throwError(
-    RuntimeException(
-      'special-form',
-      IrString('Special form "$name" not yet implemented'),
+  return switch (name) {
+    'lambda' || 'λ' => lambda(args),
+    _ => throwError(
+      RuntimeException(
+        'special-form',
+        IrString('Special form "$name" not yet implemented'),
+      ),
     ),
-  );
+  };
 }
 
 /// Evaluate an object

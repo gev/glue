@@ -186,7 +186,7 @@ void main() {
 
       switch (result) {
         case Left(:final value):
-          expect(value.exception.symbol, equals('unbound-variable'));
+          expect(value.exception.symbol, equals('wrong-argument-type'));
         case Right(:final value):
           fail('Should not be right: $value');
       }
