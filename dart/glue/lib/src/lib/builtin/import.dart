@@ -66,10 +66,9 @@ Eval<Ir> _evaluateAndCacheModule(
   // Get root environment for consistent evaluation
   return getRootEnv().flatMap((rootEnv) {
     // Create isolated environment with just builtins
-    final builtinsFrame = rootEnv.isNotEmpty
-        ? rootEnv.last
-        : IMap<String, Ir>();
-    final isolatedEnv = IList<Frame>([builtinsFrame]);
+    final isolatedEnv = rootEnv.isNotEmpty
+        ? IList<Frame>([rootEnv.last])
+        : IList<Frame>([IMap<String, Ir>()]);
 
     return getRuntime().flatMap((currentRuntime) {
       // Create isolated runtime
