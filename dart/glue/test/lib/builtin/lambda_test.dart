@@ -1,7 +1,6 @@
-import 'package:glue/src/either.dart';
 import 'package:glue/src/env.dart';
 import 'package:glue/src/eval.dart';
-import 'package:glue/src/ir.dart' hide Env;
+import 'package:glue/src/ir.dart';
 import 'package:glue/src/runtime.dart';
 import 'package:glue/src/eval/exception.dart';
 import 'package:glue/src/lib/builtin/lambda.dart';
@@ -49,15 +48,12 @@ void main() {
       final result = await runEval(eval(lambdaIr), runtime);
       expect(result.isRight, isTrue);
 
-      switch (result) {
-        case Left(:final value):
-          fail('Should not be left: $value');
-        case Right(:final value):
-          expect(value.$1, isA<IrClosure>());
-          final closure = value.$1 as IrClosure;
-          expect(closure.params, equals(['a', 'b']));
-          expect(closure.body, isA<IrList>());
-      }
+      result.match((error) => fail('Should not be left: $error'), (value) {
+        expect(value.$1, isA<IrClosure>());
+        final closure = value.$1 as IrClosure;
+        expect(closure.params, equals(['a', 'b']));
+        expect(closure.body, isA<IrList>());
+      });
     });
 
     test('lambda closure captures environment', () async {
@@ -70,25 +66,22 @@ void main() {
       final result = await runEval(eval(lambdaIr), runtime);
       expect(result.isRight, isTrue);
 
-      switch (result) {
-        case Left(:final value):
-          fail('Should not be left: $value');
-        case Right(:final value):
-          final closure = value.$1 as IrClosure;
-          // Apply the closure: (closure 8) should equal 42 + 8 = 50
-          final applyResult = await runEval(
-            apply(closure, [IrInteger(8)]),
-            runtime,
-          );
+      result.match((error) => fail('Should not be left: $error'), (
+        value,
+      ) async {
+        final closure = value.$1 as IrClosure;
+        // Apply the closure: (closure 8) should equal 42 + 8 = 50
+        final applyResult = await runEval(
+          apply(closure, [IrInteger(8)]),
+          runtime,
+        );
 
-          expect(applyResult.isRight, isTrue);
-          switch (applyResult) {
-            case Left(:final value):
-              fail('Should not be left: $value');
-            case Right(:final value):
-              expect(value.$1, equals(IrInteger(50))); // 42 + 8
-          }
-      }
+        expect(applyResult.isRight, isTrue);
+        applyResult.match(
+          (error) => fail('Should not be left: $error'),
+          (value) => expect(value.$1, equals(IrInteger(50))), // 42 + 8
+        );
+      });
     });
 
     test('lambda with empty parameter list', () async {
@@ -97,23 +90,20 @@ void main() {
       final result = await runEval(eval(lambdaIr), runtime);
       expect(result.isRight, isTrue);
 
-      switch (result) {
-        case Left(:final value):
-          fail('Should not be left: $value');
-        case Right(:final value):
-          final closure = value.$1 as IrClosure;
-          expect(closure.params, isEmpty);
+      result.match((error) => fail('Should not be left: $error'), (
+        value,
+      ) async {
+        final closure = value.$1 as IrClosure;
+        expect(closure.params, isEmpty);
 
-          // Apply the closure: (closure) should equal 123
-          final applyResult = await runEval(apply(closure, []), runtime);
-          expect(applyResult.isRight, isTrue);
-          switch (applyResult) {
-            case Left(:final value):
-              fail('Should not be left: $value');
-            case Right(:final value):
-              expect(value.$1, equals(IrInteger(123)));
-          }
-      }
+        // Apply the closure: (closure) should equal 123
+        final applyResult = await runEval(apply(closure, []), runtime);
+        expect(applyResult.isRight, isTrue);
+        applyResult.match(
+          (error) => fail('Should not be left: $error'),
+          (value) => expect(value.$1, equals(IrInteger(123))),
+        );
+      });
     });
 
     test('lambda with single parameter', () async {
@@ -126,51 +116,44 @@ void main() {
       final result = await runEval(eval(lambdaIr), runtime);
       expect(result.isRight, isTrue);
 
-      switch (result) {
-        case Left(:final value):
-          fail('Should not be left: $value');
-        case Right(:final value):
-          final closure = value.$1 as IrClosure;
-          expect(closure.params, equals(['x']));
+      result.match((error) => fail('Should not be left: $error'), (
+        value,
+      ) async {
+        final closure = value.$1 as IrClosure;
+        expect(closure.params, equals(['x']));
 
-          // Apply the closure: (closure 5) should equal 5 + 10 = 15
-          final applyResult = await runEval(
-            apply(closure, [IrInteger(5)]),
-            runtime,
-          );
+        // Apply the closure: (closure 5) should equal 5 + 10 = 15
+        final applyResult = await runEval(
+          apply(closure, [IrInteger(5)]),
+          runtime,
+        );
 
-          expect(applyResult.isRight, isTrue);
-          switch (applyResult) {
-            case Left(:final value):
-              fail('Should not be left: $value');
-            case Right(:final value):
-              expect(value.$1, equals(IrInteger(15))); // 5 + 10
-          }
-      }
+        expect(applyResult.isRight, isTrue);
+        applyResult.match(
+          (error) => fail('Should not be left: $error'),
+          (value) => expect(value.$1, equals(IrInteger(15))), // 5 + 10
+        );
+      });
     });
 
     test('lambda parameter validation', () {
       final paramSymbols = [IrSymbol('a'), IrSymbol('b'), IrInteger(123)];
 
       final result = extractSymbols(paramSymbols);
-      switch (result) {
-        case Left(:final value):
-          expect(value.symbol, equals('expected-list-of-symbols'));
-        case Right(:final value):
-          fail('Should not be right: $value');
-      }
+      result.match(
+        (error) => expect(error.symbol, equals('expected-list-of-symbols')),
+        (value) => fail('Should not be right: $value'),
+      );
     });
 
     test('lambda parameter validation success', () {
       final paramSymbols = [IrSymbol('a'), IrSymbol('b'), IrSymbol('c')];
 
       final result = extractSymbols(paramSymbols);
-      switch (result) {
-        case Left(:final value):
-          fail('Should not be left: $value');
-        case Right(:final value):
-          expect(value, equals(['a', 'b', 'c']));
-      }
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(['a', 'b', 'c'])),
+      );
     });
 
     test('lambda evaluation with invalid syntax', () async {
@@ -184,12 +167,11 @@ void main() {
       final result = await runEval(eval(invalidLambda), runtime);
       expect(result.isLeft, isTrue);
 
-      switch (result) {
-        case Left(:final value):
-          expect(value.exception.symbol, equals('wrong-argument-type'));
-        case Right(:final value):
-          fail('Should not be right: $value');
-      }
+      result.match(
+        (error) =>
+            expect(error.exception.symbol, equals('wrong-argument-type')),
+        (value) => fail('Should not be right: $value'),
+      );
     });
   });
 }

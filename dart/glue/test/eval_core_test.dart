@@ -1,7 +1,6 @@
-import 'package:glue/src/either.dart';
 import 'package:glue/src/env.dart';
 import 'package:glue/src/eval.dart';
-import 'package:glue/src/ir.dart' hide Env;
+import 'package:glue/src/ir.dart';
 import 'package:glue/src/runtime.dart';
 import 'package:glue/src/eval/exception.dart';
 import 'package:test/test.dart';
@@ -42,69 +41,56 @@ void main() {
     test('eval literals returns themselves', () async {
       final intResult = await runEval(eval(IrInteger(123)), runtime);
       expect(intResult.isRight, isTrue);
-      switch (intResult) {
-        case Left(:final value):
-          fail('Should not be left: $value');
-        case Right(:final value):
-          expect(value.$1, equals(IrInteger(123)));
-      }
+      intResult.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value.$1, equals(IrInteger(123))),
+      );
 
       final stringResult = await runEval(eval(IrString('world')), runtime);
       expect(stringResult.isRight, isTrue);
-      switch (stringResult) {
-        case Left(:final value):
-          fail('Should not be left: $value');
-        case Right(:final value):
-          expect(value.$1, equals(IrString('world')));
-      }
+      stringResult.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value.$1, equals(IrString('world'))),
+      );
     });
 
     test('evalSymbol looks up variables', () async {
       final result = await runEval(evalSymbol('x'), runtime);
       expect(result.isRight, isTrue);
-      switch (result) {
-        case Left(:final value):
-          fail('Should not be left: $value');
-        case Right(:final value):
-          expect(value.$1, equals(IrInteger(42)));
-      }
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value.$1, equals(IrInteger(42))),
+      );
 
       final stringResult = await runEval(evalSymbol('y'), runtime);
       expect(stringResult.isRight, isTrue);
-      switch (stringResult) {
-        case Left(:final value):
-          fail('Should not be left: $value');
-        case Right(:final value):
-          expect(value.$1, equals(IrString('hello')));
-      }
+      stringResult.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value.$1, equals(IrString('hello'))),
+      );
     });
 
     test('evalSymbol throws error for unbound variables', () async {
       final result = await runEval(evalSymbol('nonexistent'), runtime);
       expect(result.isLeft, isTrue);
-      switch (result) {
-        case Left(:final value):
-          expect(value.exception.symbol, equals('unbound-variable'));
-        case Right(:final value):
-          fail('Should not be right: $value');
-      }
+      result.match(
+        (error) => expect(error.exception.symbol, equals('unbound-variable')),
+        (value) => fail('Should not be right: $value'),
+      );
     });
 
     test('evalList creates literal lists', () async {
       final listIr = IrList([IrInteger(1), IrInteger(2), IrInteger(3)]);
       final result = await runEval(eval(listIr), runtime);
       expect(result.isRight, isTrue);
-      switch (result) {
-        case Left(:final value):
-          fail('Should not be left: $value');
-        case Right(:final value):
-          expect(value.$1, isA<IrList>());
-          final list = value.$1 as IrList;
-          expect(list.elements.length, equals(3));
-          expect(list.elements[0], equals(IrInteger(1)));
-          expect(list.elements[1], equals(IrInteger(2)));
-          expect(list.elements[2], equals(IrInteger(3)));
-      }
+      result.match((error) => fail('Should not be left: $error'), (value) {
+        expect(value.$1, isA<IrList>());
+        final list = value.$1 as IrList;
+        expect(list.elements.length, equals(3));
+        expect(list.elements[0], equals(IrInteger(1)));
+        expect(list.elements[1], equals(IrInteger(2)));
+        expect(list.elements[2], equals(IrInteger(3)));
+      });
     });
 
     test('evalList evaluates function calls', () async {
@@ -113,12 +99,10 @@ void main() {
 
       final result = await runEval(eval(callIr), runtime);
       expect(result.isRight, isTrue);
-      switch (result) {
-        case Left(:final value):
-          fail('Should not be left: $value');
-        case Right(:final value):
-          expect(value.$1, equals(IrInteger(50))); // 42 + 8 = 50
-      }
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value.$1, equals(IrInteger(50))), // 42 + 8 = 50
+      );
     });
 
     test('evalObject evaluates properties', () async {
@@ -130,16 +114,13 @@ void main() {
 
       final result = await runEval(eval(objIr), runtime);
       expect(result.isRight, isTrue);
-      switch (result) {
-        case Left(:final value):
-          fail('Should not be left: $value');
-        case Right(:final value):
-          expect(value.$1, isA<IrObject>());
-          final obj = value.$1 as IrObject;
-          expect(obj.properties['a'], equals(IrInteger(1)));
-          expect(obj.properties['b'], equals(IrInteger(42))); // x evaluated
-          expect(obj.properties['c'], equals(IrString('literal')));
-      }
+      result.match((error) => fail('Should not be left: $error'), (value) {
+        expect(value.$1, isA<IrObject>());
+        final obj = value.$1 as IrObject;
+        expect(obj.properties['a'], equals(IrInteger(1)));
+        expect(obj.properties['b'], equals(IrInteger(42))); // x evaluated
+        expect(obj.properties['c'], equals(IrString('literal')));
+      });
     });
 
     test('special forms throw special-form error (not implemented)', () async {
@@ -147,12 +128,10 @@ void main() {
 
       final result = await runEval(eval(defCall), runtime);
       expect(result.isLeft, isTrue);
-      switch (result) {
-        case Left(:final value):
-          expect(value.exception.symbol, equals('special-form'));
-        case Right(:final value):
-          fail('Should not be right: $value');
-      }
+      result.match(
+        (error) => expect(error.exception.symbol, equals('special-form')),
+        (value) => fail('Should not be right: $value'),
+      );
     });
 
     test('dotted symbols work for simple access', () async {
@@ -166,12 +145,10 @@ void main() {
       final result = await runEval(eval(dottedIr), runtimeWithObj);
 
       expect(result.isRight, isTrue);
-      switch (result) {
-        case Left(:final value):
-          fail('Should not be left: $value');
-        case Right(:final value):
-          expect(value.$1, equals(IrInteger(99)));
-      }
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value.$1, equals(IrInteger(99))),
+      );
     });
 
     test('dotted symbols throw error for missing properties', () async {
@@ -184,12 +161,10 @@ void main() {
       final result = await runEval(eval(dottedIr), runtimeWithObj);
 
       expect(result.isLeft, isTrue);
-      switch (result) {
-        case Left(:final value):
-          expect(value.exception.symbol, equals('property-not-found'));
-        case Right(:final value):
-          fail('Should not be right: $value');
-      }
+      result.match(
+        (error) => expect(error.exception.symbol, equals('property-not-found')),
+        (value) => fail('Should not be right: $value'),
+      );
     });
 
     test('function application works with closures', () async {
@@ -204,12 +179,10 @@ void main() {
       final result = await runEval(apply(closure, [IrInteger(10)]), runtime);
 
       expect(result.isRight, isTrue);
-      switch (result) {
-        case Left(:final value):
-          fail('Should not be left: $value');
-        case Right(:final value):
-          expect(value.$1, equals(IrInteger(11))); // 10 + 1 = 11
-      }
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value.$1, equals(IrInteger(11))), // 10 + 1 = 11
+      );
     });
 
     test('partial application works', () async {
@@ -227,14 +200,13 @@ void main() {
       );
 
       expect(partialResult.isRight, isTrue);
-      switch (partialResult) {
-        case Left(:final value):
-          fail('Should not be left: $value');
-        case Right(:final value):
-          expect(value.$1, isA<IrClosure>());
-          final partialClosure = value.$1 as IrClosure;
-          expect(partialClosure.params, equals(['b'])); // One param left
-      }
+      partialResult.match((error) => fail('Should not be left: $error'), (
+        value,
+      ) {
+        expect(value.$1, isA<IrClosure>());
+        final partialClosure = value.$1 as IrClosure;
+        expect(partialClosure.params, equals(['b'])); // One param left
+      });
     });
   });
 }

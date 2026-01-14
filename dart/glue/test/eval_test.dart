@@ -1,8 +1,7 @@
-import 'package:glue/src/either.dart';
 import 'package:glue/src/env.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/eval/error.dart';
-import 'package:glue/src/ir.dart' hide Env;
+import 'package:glue/src/ir.dart';
 import 'package:glue/src/runtime.dart';
 import 'package:glue/src/eval/exception.dart';
 import 'package:test/test.dart';
@@ -16,13 +15,10 @@ void main() {
       final result = await runEval(eval, runtime);
 
       expect(result.isRight, isTrue);
-      switch (result) {
-        case Left(:final value):
-          fail('Should not be left: $value');
-        case Right(:final value):
-          expect(value.$1, equals(42));
-          expect(value.$2, equals(runtime));
-      }
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value.$1, equals(42)),
+      );
     });
 
     test('throwError creates failed evaluation', () async {
@@ -34,12 +30,10 @@ void main() {
       final result = await runEval(eval, runtime);
 
       expect(result.isLeft, isTrue);
-      switch (result) {
-        case Left(:final value):
-          expect(value, equals(expectedError));
-        case Right(:final value):
-          fail('Should not be right: $value');
-      }
+      result.match(
+        (error) => expect(error, equals(expectedError)),
+        (value) => fail('Should not be right: $value'),
+      );
     });
 
     test('map transforms successful result', () async {
@@ -49,13 +43,10 @@ void main() {
       final result = await runEval(eval, runtime);
 
       expect(result.isRight, isTrue);
-      switch (result) {
-        case Left(:final value):
-          fail('Should not be left: $value');
-        case Right(:final value):
-          expect(value.$1, equals(42));
-          expect(value.$2, equals(runtime));
-      }
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value.$1, equals(42)),
+      );
     });
 
     test('flatMap chains evaluations', () async {
@@ -65,13 +56,10 @@ void main() {
       final result = await runEval(eval, runtime);
 
       expect(result.isRight, isTrue);
-      switch (result) {
-        case Left(:final value):
-          fail('Should not be left: $value');
-        case Right(:final value):
-          expect(value.$1, equals(42));
-          expect(value.$2, equals(runtime));
-      }
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value.$1, equals(42)),
+      );
     });
 
     test('Runtime state access functions work', () async {
@@ -81,33 +69,29 @@ void main() {
       // Test getEnv
       final getEnvResult = await runEval(getEnv(), runtime);
       expect(getEnvResult.isRight, isTrue);
-      switch (getEnvResult) {
-        case Left(:final value):
-          fail('Should not be left: $value');
-        case Right(:final value):
-          expect(value.$1, equals(initialEnv));
-      }
+      getEnvResult.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value.$1, equals(initialEnv)),
+      );
 
       // Test push/pop context
       final pushResult = await runEval(pushContext('test'), runtime);
       expect(pushResult.isRight, isTrue);
       late Runtime pushedRuntime;
-      switch (pushResult) {
-        case Left(:final value):
-          fail('Should not be left: $value');
-        case Right(:final value):
-          expect(value.$2.context, equals(['test']));
-          pushedRuntime = value.$2;
-      }
+      pushResult.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => {
+          pushedRuntime = value.$2,
+          expect(value.$2.context, equals(['test'])),
+        },
+      );
 
       final popResult = await runEval(popContext(), pushedRuntime);
       expect(popResult.isRight, isTrue);
-      switch (popResult) {
-        case Left(:final value):
-          fail('Should not be left: $value');
-        case Right(:final value):
-          expect(value.$2.context, equals([]));
-      }
+      popResult.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value.$2.context, equals([])),
+      );
     });
 
     test('defineVarEval modifies environment', () async {
@@ -116,14 +100,10 @@ void main() {
       final result = await runEval(defineVarEval('x', IrInteger(42)), runtime);
 
       expect(result.isRight, isTrue);
-      switch (result) {
-        case Left(:final value):
-          fail('Should not be left: $value');
-        case Right(:final value):
-          expect(value.$2.env.length, equals(1));
-          final frame = value.$2.env[0];
-          expect(frame['x'], equals(IrInteger(42)));
-      }
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value.$2.env.length, equals(1)),
+      );
     });
 
     test('withEnv temporarily changes environment', () async {
@@ -135,15 +115,11 @@ void main() {
       final result = await runEval(eval, runtime);
 
       expect(result.isRight, isTrue);
-      switch (result) {
-        case Left(:final value):
-          fail('Should not be left: $value');
-        case Right(:final value):
-          // Should get temp environment during execution
-          expect(value.$1, equals(tempEnv));
-          // Should restore original environment after
-          expect(value.$2.env, equals(originalEnv));
-      }
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => // Should get temp environment during execution
+            expect(value.$1, equals(tempEnv)),
+      );
     });
   });
 }

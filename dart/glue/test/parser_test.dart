@@ -1,5 +1,4 @@
 import 'package:glue/src/ast.dart';
-import 'package:glue/src/either.dart';
 import 'package:glue/src/parser.dart';
 import 'package:glue/src/parser/error.dart';
 import 'package:test/test.dart';
@@ -7,25 +6,23 @@ import 'package:test/test.dart';
 /// Helper function to assert parsing succeeds
 void expectParsesTo(String input, Ast expected) {
   final result = parseGlue(input);
-  switch (result) {
-    case Right(value: final ast): // Success = Right
-      expect(ast, equals(expected));
-    case Left(value: final error): // Error = Left
-      fail('Expected parsing to succeed with $expected, but got error: $error');
-  }
+  result.match(
+    (error) => fail(
+      'Expected parsing to succeed with $expected, but got error: $error',
+    ),
+    (ast) => expect(ast, equals(expected)),
+  );
 }
 
 /// Helper function to assert parsing fails with specific error type
 void expectParseError(String input, Type errorType) {
   final result = parseGlue(input);
-  switch (result) {
-    case Right(value: final ast): // Success = Right
-      fail(
-        'Expected parsing to fail with $errorType, but succeeded with: $ast',
-      );
-    case Left(value: final error): // Error = Left
-      expect(error.runtimeType, equals(errorType));
-  }
+  result.match(
+    (ast) => fail(
+      'Expected parsing to fail with $errorType, but succeeded with: $ast',
+    ),
+    (error) => expect(error.runtimeType, equals(errorType)),
+  );
 }
 
 void main() {
@@ -257,36 +254,34 @@ void main() {
       final grouped = parseGlue('(f :x 1 :y 2)');
       final separate = parseGlue('(f (:x 1) (:y 2))');
 
-      switch (grouped) {
-        case Right(value: final groupedAst): // Success = Right
-          switch (separate) {
-            case Right(value: final separateAst): // Success = Right
-              expect(groupedAst, isNot(equals(separateAst)));
+      grouped.match(
+        (error) => fail('Expected grouped to succeed, got error: $error'),
+        (groupedAst) => separate.match(
+          (error) => fail('Expected separate to succeed, got error: $error'),
+          (separateAst) {
+            expect(groupedAst, isNot(equals(separateAst)));
 
-              // grouped should be: (f (:x 1 :y 2))
-              expect(groupedAst, isA<ListAst>());
-              final groupedList = groupedAst as ListAst;
-              expect(groupedList.elements.length, equals(2));
-              expect(groupedList.elements[0], equals(SymbolAst('f')));
-              expect(groupedList.elements[1], isA<ObjectAst>());
-              final groupedObj = groupedList.elements[1] as ObjectAst;
-              expect(groupedObj.properties.length, equals(2));
-              expect(groupedObj.properties['x'], equals(IntegerAst(1)));
-              expect(groupedObj.properties['y'], equals(IntegerAst(2)));
+            // grouped should be: (f (:x 1 :y 2))
+            expect(groupedAst, isA<ListAst>());
+            final groupedList = groupedAst as ListAst;
+            expect(groupedList.elements.length, equals(2));
+            expect(groupedList.elements[0], equals(SymbolAst('f')));
+            expect(groupedList.elements[1], isA<ObjectAst>());
+            final groupedObj = groupedList.elements[1] as ObjectAst;
+            expect(groupedObj.properties.length, equals(2));
+            expect(groupedObj.properties['x'], equals(IntegerAst(1)));
+            expect(groupedObj.properties['y'], equals(IntegerAst(2)));
 
-              // separate should be: (f (:x 1) (:y 2))
-              expect(separateAst, isA<ListAst>());
-              final separateList = separateAst as ListAst;
-              expect(separateList.elements.length, equals(3));
-              expect(separateList.elements[0], equals(SymbolAst('f')));
-              expect(separateList.elements[1], isA<ObjectAst>());
-              expect(separateList.elements[2], isA<ObjectAst>());
-            case Left(value: final error): // Error = Left
-              fail('Expected separate to succeed, got error: $error');
-          }
-        case Left(value: final error): // Error = Left
-          fail('Expected grouped to succeed, got error: $error');
-      }
+            // separate should be: (f (:x 1) (:y 2))
+            expect(separateAst, isA<ListAst>());
+            final separateList = separateAst as ListAst;
+            expect(separateList.elements.length, equals(3));
+            expect(separateList.elements[0], equals(SymbolAst('f')));
+            expect(separateList.elements[1], isA<ObjectAst>());
+            expect(separateList.elements[2], isA<ObjectAst>());
+          },
+        ),
+      );
     });
 
     // Deeply nested structures (from Haskell spec)

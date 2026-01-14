@@ -221,7 +221,7 @@ class GlueParser {
   }
 
   /// Parse Glue source code
-  /// Returns Either<ParserError, Ast> following functional convention: Left=Error, Right=Success
+  /// Returns `Either<ParserError, Ast>` following functional convention: Left=Error, Right=Success
   Either<ParserError, Ast> parse(String input) {
     try {
       final result = parser.parse(input);
@@ -240,7 +240,7 @@ class GlueParser {
 }
 
 /// Convenience function to parse Glue code
-/// Returns Either<ParserError, Ast> for type-safe error handling
+/// Returns `Either<ParserError, Ast>` for type-safe error handling
 /// Follows functional programming convention: Left=Error, Right=Success
 Either<ParserError, Ast> parseGlue(String input) {
   final parser = GlueParser();

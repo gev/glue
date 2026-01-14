@@ -1,4 +1,5 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
+import 'package:glue/env.dart';
 
 import 'package:glue/src/ast.dart';
 
@@ -227,11 +228,6 @@ class NativeSpecial extends Native {
   @override
   int get hashCode => function.hashCode;
 }
-
-/// Environment types for closures
-/// Mirrors Haskell Frame and Env types
-typedef Frame = IMap<String, Ir>;
-typedef Env = IList<Frame>;
 
 /// Compile AST to IR
 /// Mirrors Haskell compile function exactly

@@ -1,6 +1,5 @@
-import 'package:glue/src/either.dart';
 import 'package:glue/src/env.dart';
-import 'package:glue/src/ir.dart' hide Env;
+import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval/exception.dart';
 import 'package:test/test.dart';
 
@@ -53,12 +52,10 @@ void main() {
         env = defineVar('x', IrString('shadowed'), env);
 
         final result = lookupVar('x', env);
-        switch (result) {
-          case Left(:final value):
-            fail('Should not be left: $value');
-          case Right(:final value):
-            expect(value, equals(IrString('shadowed')));
-        }
+        result.match(
+          (error) => fail('Should not be left: $error'),
+          (value) => expect(value, equals(IrString('shadowed'))),
+        );
       });
     });
 
@@ -71,12 +68,10 @@ void main() {
           env = defineVar('y', IrString('hello'), env);
 
           final result = updateVar('x', IrInteger(100), env);
-          switch (result) {
-            case Left(:final value):
-              fail('Should not be left: $value');
-            case Right(:final value):
-              expect(value[0]['x'], equals(IrInteger(100)));
-          }
+          result.match(
+            (error) => fail('Should not be left: $error'),
+            (value) => expect(value[0]['x'], equals(IrInteger(100))),
+          );
         },
       );
 
@@ -84,12 +79,11 @@ void main() {
         final env = fromList([('x', IrInteger(42))]);
 
         final result = updateVar('nonexistent', IrString('value'), env);
-        switch (result) {
-          case Left(:final value):
-            expect(value.symbol, equals('cannot-set-unbound-variable'));
-          case Right(:final value):
-            fail('Should not be right: $value');
-        }
+        result.match(
+          (error) =>
+              expect(error.symbol, equals('cannot-set-unbound-variable')),
+          (value) => fail('Should not be right: $value'),
+        );
       });
     });
 
@@ -104,12 +98,10 @@ void main() {
         final env = emptyEnv();
 
         final result = lookupVar('x', env);
-        switch (result) {
-          case Left(:final value):
-            expect(value.symbol, equals('unbound-variable'));
-          case Right(:final value):
-            fail('Should not be right: $value');
-        }
+        result.match(
+          (error) => expect(error.symbol, equals('unbound-variable')),
+          (value) => fail('Should not be right: $value'),
+        );
       });
     });
   });

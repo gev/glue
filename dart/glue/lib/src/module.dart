@@ -1,4 +1,4 @@
-import 'package:glue/src/ir.dart' hide Env, Frame;
+import 'package:glue/src/ir.dart';
 import 'package:glue/src/env.dart';
 
 /// Module system data structures

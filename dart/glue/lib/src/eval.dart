@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:glue/src/either.dart';
 import 'package:glue/src/env.dart';
 import 'package:glue/src/eval/error.dart';
-import 'package:glue/src/ir.dart' hide Env;
+import 'package:glue/src/ir.dart';
 import 'package:glue/src/lib/builtin/lambda.dart';
 import 'package:glue/src/module/cache.dart';
 import 'package:glue/src/module/registry.dart';
@@ -24,25 +24,19 @@ class Eval<T> {
   /// Map over the result
   Eval<U> map<U>(U Function(T) f) => Eval((runtime) async {
     final result = await runEval(this, runtime);
-    return switch (result) {
-      Left(:final value) => Left<EvalError, (U, Runtime)>(value),
-      Right(:final value) => Right<EvalError, (U, Runtime)>((
-        f(value.$1),
-        value.$2,
-      )),
-    };
+    return result.match(
+      (error) => Left<EvalError, (U, Runtime)>(error),
+      (value) => Right<EvalError, (U, Runtime)>((f(value.$1), value.$2)),
+    );
   });
 
   /// FlatMap (bind) operation
   Eval<U> flatMap<U>(Eval<U> Function(T) f) => Eval((runtime) async {
     final result = await runEval(this, runtime);
-    if (result is Left<EvalError, (T, Runtime)>) {
-      return Left<EvalError, (U, Runtime)>(result.value);
-    } else if (result is Right<EvalError, (T, Runtime)>) {
-      return runEval(f(result.value.$1), result.value.$2);
-    } else {
-      throw StateError('Either should be Left or Right');
-    }
+    return result.match(
+      (error) => Left<EvalError, (U, Runtime)>(error),
+      (value) => runEval(f(value.$1), value.$2),
+    );
   });
 
   /// Transform the evaluation result
@@ -50,13 +44,10 @@ class Eval<T> {
     Either<EvalError, (U, Runtime)> Function(T, Runtime) f,
   ) => Eval((runtime) async {
     final result = await runEval(this, runtime);
-    if (result is Left<EvalError, (T, Runtime)>) {
-      return Left<EvalError, (U, Runtime)>(result.value);
-    } else if (result is Right<EvalError, (T, Runtime)>) {
-      return f(result.value.$1, result.value.$2);
-    } else {
-      throw StateError('Either should be Left or Right');
-    }
+    return result.match(
+      (error) => Left<EvalError, (U, Runtime)>(error),
+      (value) => f(value.$1, value.$2),
+    );
   });
 }
 
@@ -152,13 +143,10 @@ Eval<void> defineVarEval(String name, Ir value) => Eval(
 /// Update a variable in current environment
 Eval<void> updateVarEval(String name, Ir value) => Eval((runtime) {
   final result = updateVar(name, value, runtime.env);
-  if (result is Left<RuntimeException, Env>) {
-    return Left(EvalError(runtime.context, result.value));
-  } else if (result is Right<RuntimeException, Env>) {
-    return Right(((), runtime.copyWith(env: result.value)));
-  } else {
-    throw StateError('Either should be Left or Right');
-  }
+  return result.match(
+    (error) => Left(EvalError(runtime.context, error)),
+    (env) => Right(((), runtime.copyWith(env: env))),
+  );
 });
 
 /// Run evaluation with temporary environment
@@ -166,13 +154,13 @@ Eval<T> withEnv<T>(Env tempEnv, Eval<T> action) => Eval((runtime) async {
   final originalEnv = runtime.env;
   final tempRuntime = runtime.copyWith(env: tempEnv);
   final result = await runEval(action, tempRuntime);
-  return switch (result) {
-    Left(:final value) => Left<EvalError, (T, Runtime)>(value),
-    Right(:final value) => Right<EvalError, (T, Runtime)>((
+  return result.match(
+    (error) => Left<EvalError, (T, Runtime)>(error),
+    (value) => Right<EvalError, (T, Runtime)>((
       value.$1,
       value.$2.copyWith(env: originalEnv),
     )),
-  };
+  );
 });
 
 /// Run evaluation with additional context frame
@@ -236,13 +224,10 @@ Eval<Ir> eval(Ir ir) {
 Eval<Ir> evalSymbol(String name) {
   return getEnv().flatMap((env) {
     final result = lookupVar(name, env);
-    if (result is Left<RuntimeException, Ir>) {
-      return throwError(result.value);
-    } else if (result is Right<RuntimeException, Ir>) {
-      return Eval.pure(result.value);
-    } else {
-      throw StateError('Either should be Left or Right');
-    }
+    return result.match(
+      (error) => throwError(error),
+      (value) => Eval.pure(value),
+    );
   });
 }
 
@@ -270,13 +255,14 @@ Eval<Ir> _evalWithPrefixes(List<String> parts) {
       final prefixName = prefix.join('.');
       final result = lookupVar(prefixName, env);
 
-      if (result is Right<RuntimeException, Ir>) {
-        // Found the prefix, now navigate the remaining parts
-        return _evalNestedAccess(result.value, parts.sublist(prefix.length));
-      } else {
-        // Continue to next prefix
-        continue;
+      if (result.isRight) {
+        // Found the prefix, navigate the remaining parts
+        return result.match(
+          (_) => throwError(unboundVariable(parts.join('.'))),
+          (value) => _evalNestedAccess(value, parts.sublist(prefix.length)),
+        );
       }
+      // Continue to next prefix if not found
     }
 
     // No prefix found
@@ -346,16 +332,12 @@ Eval<Ir> _evalSymbolCall(String name, List<Ir> args) {
     true => _evalSpecialForm(name, args),
     false => getEnv().flatMap((env) {
       final result = lookupVar(name, env);
-
-      if (result is Left<RuntimeException, Ir>) {
-        return throwError(result.value);
-      } else if (result is Right<RuntimeException, Ir>) {
-        return sequenceAll(
+      return result.match(
+        (error) => throwError(error),
+        (value) => sequenceAll(
           args.map(eval).toList(),
-        ).flatMap((evaluatedArgs) => apply(result.value, evaluatedArgs));
-      } else {
-        throw StateError('Either should be Left or Right');
-      }
+        ).flatMap((evaluatedArgs) => apply(value, evaluatedArgs)),
+      );
     }),
   });
 }
