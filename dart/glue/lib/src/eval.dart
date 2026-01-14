@@ -3,16 +3,17 @@ import 'package:glue/src/either.dart';
 import 'package:glue/src/env.dart';
 import 'package:glue/src/eval/error.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue/src/lib/builtin/lambda.dart';
 import 'package:glue/src/module/cache.dart';
 import 'package:glue/src/module/registry.dart';
 import 'package:glue/src/runtime.dart';
 import 'package:glue/src/eval/exception.dart';
 
+/// ============================================================================
+/// EVALUATION MONAD TYPE AND INSTANCES
+/// ============================================================================
+
 /// Evaluation monad for Glue expressions
 /// Mirrors Haskell Glue.Eval.Eval exactly
-
-/// The evaluation monad that threads runtime state through computations
 class Eval<T> {
   final FutureOr<Either<EvalError, (T, Runtime)>> Function(Runtime) _run;
 
@@ -57,11 +58,29 @@ class Eval<T> {
   });
 }
 
+/// ============================================================================
+/// BASIC EVALUATION API
+/// ============================================================================
+
 /// Run the evaluation with initial runtime (matches Haskell runEval)
 FutureOr<Either<EvalError, (T, Runtime)>> runEval<T>(
   Eval<T> eval,
   Runtime runtime,
 ) => eval._run(runtime);
+
+/// Simple evaluation with just environment
+/// Mirrors Haskell runEvalSimple exactly
+FutureOr<Either<EvalError, (T, Runtime)>> runEvalSimple<T>(
+  Eval<T> action,
+  Env initialEnv,
+) async {
+  final initialRuntime = Runtime.initial(initialEnv);
+  return runEval(action, initialRuntime);
+}
+
+/// Throw an evaluation error
+Eval<T> throwError<T>(RuntimeException exception) =>
+    Eval((runtime) => Left(EvalError(runtime.context, exception)));
 
 /// Lift an IO operation into the Eval monad
 Eval<T> liftIO<T>(FutureOr<T> io) => Eval((runtime) async {
@@ -76,7 +95,9 @@ Eval<T> liftIO<T>(FutureOr<T> io) => Eval((runtime) async {
   }
 });
 
-/// Runtime state access functions
+/// ============================================================================
+/// ENVIRONMENT AND RUNTIME ACCESS
+/// ============================================================================
 
 /// Get current environment
 Eval<Env> getEnv() => Eval((runtime) => Right((runtime.env, runtime)));
@@ -136,9 +157,9 @@ Eval<Runtime> getRuntime() => Eval((runtime) => Right((runtime, runtime)));
 Eval<void> putRuntime(Runtime newRuntime) =>
     Eval((_) => Right(((), newRuntime)));
 
-/// Throw an evaluation error
-Eval<T> throwError<T>(RuntimeException exception) =>
-    Eval((runtime) => Left(EvalError(runtime.context, exception)));
+/// ============================================================================
+/// VARIABLE MANAGEMENT
+/// ============================================================================
 
 /// Define a variable in current environment
 Eval<void> defineVarEval(String name, Ir value) => Eval(
@@ -154,6 +175,10 @@ Eval<void> updateVarEval(String name, Ir value) => Eval((runtime) {
     (env) => Right(((), runtime.copyWith(env: env))),
   );
 });
+
+/// ============================================================================
+/// ENVIRONMENT UTILITIES
+/// ============================================================================
 
 /// Run evaluation with temporary environment
 Eval<T> withEnv<T>(Env tempEnv, Eval<T> action) => Eval((runtime) async {
@@ -174,6 +199,10 @@ Eval<T> withContext<T>(String contextName, Eval<T> action) => pushContext(
   contextName,
 ).flatMap((_) => action.flatMap((value) => popContext().map((_) => value)));
 
+/// ============================================================================
+/// EVALUATION SEQUENCING
+/// ============================================================================
+
 /// Sequence two evaluations
 Eval<(T1, T2)> sequence<T1, T2>(Eval<T1> first, Eval<T2> second) =>
     first.flatMap((a) => second.map((b) => (a, b)));
@@ -192,21 +221,6 @@ Eval<T> sequence_<T>(List<Eval<dynamic>> evals, Eval<T> last) {
   if (evals.isEmpty) return last;
 
   return evals[0].flatMap((_) => sequence_(evals.sublist(1), last));
-}
-
-/// ============================================================================
-/// SIMPLE EVALUATION INTERFACE
-/// ============================================================================
-
-/// Simple evaluation with just environment
-/// Mirrors Haskell runEvalSimple exactly
-/// Returns (result, finalEnv, context) tuple
-FutureOr<Either<EvalError, (T, Runtime)>> runEvalSimple<T>(
-  Eval<T> action,
-  Env initialEnv,
-) async {
-  final initialRuntime = Runtime.initial(initialEnv);
-  return runEval(action, initialRuntime);
 }
 
 /// ============================================================================
@@ -253,127 +267,58 @@ Eval<Ir> evalDottedSymbol(List<String> parts) {
   return _evalWithPrefixes(parts);
 }
 
-/// Helper to find the longest prefix that exists
-Eval<Ir> _evalWithPrefixes(List<String> parts) {
-  return getEnv().flatMap((env) {
-    // Try prefixes from longest to shortest
-    for (final prefix in _generatePrefixes(parts)) {
-      final prefixName = prefix.join('.');
-      final result = lookupVar(prefixName, env);
-
-      if (result.isRight) {
-        // Found the prefix, navigate the remaining parts
-        return result.match(
-          (_) => throwError(unboundVariable(parts.join('.'))),
-          (value) => _evalNestedAccess(value, parts.sublist(prefix.length)),
-        );
-      }
-      // Continue to next prefix if not found
-    }
-
-    // No prefix found
-    return throwError(unboundVariable(parts.join('.')));
-  });
-}
-
-/// Generate all proper prefixes of a symbol path
-List<List<String>> _generatePrefixes(List<String> parts) {
-  final prefixes = <List<String>>[];
-  for (var i = parts.length; i > 0; i--) {
-    prefixes.add(parts.sublist(0, i));
-  }
-  return prefixes;
-}
-
-/// Navigate nested object/module access
-Eval<Ir> _evalNestedAccess(Ir obj, List<String> remainingParts) {
-  if (remainingParts.isEmpty) {
-    return Eval.pure(obj);
-  }
-
-  final prop = remainingParts[0];
-  final rest = remainingParts.sublist(1);
-
-  return switch (obj) {
-    IrObject(properties: final props) =>
-      props[prop] != null
-          ? _evalNestedAccess(props[prop]!, rest)
-          : throwError(propertyNotFound(prop)),
-    IrModule() =>
-      // Module access - for now, treat as not found
-      // This will be implemented when we add module import
-      throwError(
-        RuntimeException(
-          'module-access',
-          IrString('Module access not yet implemented'),
-        ),
-      ),
-    _ => throwError(notAnObject(obj)),
-  };
-}
-
 /// Evaluate a list (function call or literal list)
+/// Mirrors Haskell evalList exactly
 Eval<Ir> evalList(List<Ir> elements) {
   if (elements.isEmpty) {
     return Eval.pure(IrList([]));
   }
 
   final first = elements[0];
-  final args = elements.sublist(1);
 
-  // If first element is a symbol, it might be a special form or function call
+  // Check if it's a single symbol (variable lookup)
+  if (elements.length == 1 && first is IrSymbol) {
+    return withContext(
+      first.value,
+      getEnv().flatMap((env) {
+        final result = lookupVar(first.value, env);
+        return result.match(
+          (error) => throwError(error),
+          (value) => switch (_isCallable(value)) {
+            true => apply(value, []),
+            false => Eval.pure(value),
+          },
+        );
+      }),
+    );
+  }
+
+  // Check if it starts with a symbol (function call)
   if (first is IrSymbol) {
-    return _evalSymbolCall(first.value, args);
+    final name = first.value;
+    final args = elements.sublist(1);
+    return withContext(
+      name,
+      getEnv().flatMap((env) {
+        final result = lookupVar(name, env);
+        return result.match(
+          (error) => throwError(error),
+          (value) => apply(value, args),
+        );
+      }),
+    );
   }
 
   // Otherwise, evaluate all elements and create a list
-  return sequenceAll(
-    elements.map(eval).toList(),
-  ).map((evaluated) => IrList(evaluated));
-}
-
-/// Evaluate a call starting with a symbol
-Eval<Ir> _evalSymbolCall(String name, List<Ir> args) {
-  return withContext(name, switch (_isSpecialForm(name)) {
-    true => _evalSpecialForm(name, args),
-    false => getEnv().flatMap((env) {
-      final result = lookupVar(name, env);
-      return result.match(
-        (error) => throwError(error),
-        (value) => sequenceAll(
-          args.map(eval).toList(),
-        ).flatMap((evaluatedArgs) => apply(value, evaluatedArgs)),
-      );
+  return withContext(
+    '<call>',
+    sequenceAll(elements.map(eval).toList()).flatMap((evaluated) {
+      if (evaluated.isNotEmpty && _isCallable(evaluated[0])) {
+        return apply(evaluated[0], evaluated.sublist(1));
+      }
+      return Eval.pure(IrList(evaluated));
     }),
-  });
-}
-
-/// Check if a symbol is a special form
-bool _isSpecialForm(String name) {
-  return const {
-    'def',
-    'lambda',
-    'λ',
-    'let',
-    'set',
-    'import',
-    'quote',
-    'if',
-    'cond',
-  }.contains(name);
-}
-
-/// Evaluate special forms
-Eval<Ir> _evalSpecialForm(String name, List<Ir> args) {
-  return switch (name) {
-    'lambda' || 'λ' => lambda(args),
-    _ => throwError(
-      RuntimeException(
-        'special-form',
-        IrString('Special form "$name" not yet implemented'),
-      ),
-    ),
-  };
+  );
 }
 
 /// Evaluate an object
@@ -440,6 +385,78 @@ Eval<Ir> applyClosure(
     // Too many arguments
     return throwError(wrongNumberOfArguments());
   }
+}
+
+/// ============================================================================
+/// HELPER FUNCTIONS
+/// ============================================================================
+
+/// Helper to find the longest prefix that exists
+Eval<Ir> _evalWithPrefixes(List<String> parts) {
+  return getEnv().flatMap((env) {
+    // Try prefixes from longest to shortest
+    for (final prefix in _generatePrefixes(parts)) {
+      final prefixName = prefix.join('.');
+      final result = lookupVar(prefixName, env);
+
+      if (result.isRight) {
+        // Found the prefix, navigate the remaining parts
+        return result.match(
+          (_) => throwError(unboundVariable(parts.join('.'))),
+          (value) => _evalNestedAccess(value, parts.sublist(prefix.length)),
+        );
+      }
+      // Continue to next prefix if not found
+    }
+
+    // No prefix found
+    return throwError(unboundVariable(parts.join('.')));
+  });
+}
+
+/// Generate all proper prefixes of a symbol path
+List<List<String>> _generatePrefixes(List<String> parts) {
+  final prefixes = <List<String>>[];
+  for (var i = parts.length; i > 0; i--) {
+    prefixes.add(parts.sublist(0, i));
+  }
+  return prefixes;
+}
+
+/// Navigate nested object/module access
+Eval<Ir> _evalNestedAccess(Ir obj, List<String> remainingParts) {
+  if (remainingParts.isEmpty) {
+    return Eval.pure(obj);
+  }
+
+  final prop = remainingParts[0];
+  final rest = remainingParts.sublist(1);
+
+  return switch (obj) {
+    IrObject(properties: final props) =>
+      props[prop] != null
+          ? _evalNestedAccess(props[prop]!, rest)
+          : throwError(propertyNotFound(prop)),
+    IrModule() =>
+      // Module access - for now, treat as not found
+      // This will be implemented when we add module import
+      throwError(
+        RuntimeException(
+          'module-access',
+          IrString('Module access not yet implemented'),
+        ),
+      ),
+    _ => throwError(notAnObject(obj)),
+  };
+}
+
+/// Check if an IR value can be called
+bool _isCallable(Ir value) {
+  return switch (value) {
+    IrNative() => true,
+    IrClosure() => true,
+    _ => false,
+  };
 }
 
 /// Full application of a closure
