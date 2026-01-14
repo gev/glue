@@ -1,8 +1,12 @@
-import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/module.dart';
 import 'builtin/def.dart';
+import 'builtin/error.dart';
+import 'builtin/import.dart';
 import 'builtin/lambda.dart';
+import 'builtin/let.dart';
+import 'builtin/set.dart';
+import 'builtin/try.dart';
 
 /// Builtin module - special forms and core language constructs
 /// Mirrors Haskell Glue.Lib.Builtin exactly
@@ -11,31 +15,13 @@ import 'builtin/lambda.dart';
 /// Mirrors Haskell Glue.Lib.Builtin.builtin exactly
 final ModuleInfo builtin = nativeModule('ffi.builtin', [
   ('def', IrNative(NativeSpecial(def))),
-  ('set', IrNative(NativeSpecial(_set))), // TODO: implement set
+  ('set', IrNative(NativeSpecial(set))),
   ('lambda', IrNative(NativeSpecial(lambda))),
   ('\\', IrNative(NativeSpecial(lambda))), // backslash is lambda
-  ('let', IrNative(NativeSpecial(_let))), // TODO: implement let
-  ('import', IrNative(NativeSpecial(_import))), // TODO: implement import
-  ('error', IrNative(NativeSpecial(_error))), // TODO: implement error
-  ('try', IrNative(NativeSpecial(_try))), // TODO: implement try
+  ('let', IrNative(NativeSpecial(let))),
+  ('import', IrNative(NativeSpecial(importForm))),
+  ('error', IrNative(NativeSpecial(error))),
+  ('try', IrNative(NativeSpecial(tryFunc))),
 ]);
-
-/// Placeholder implementations for unimplemented special forms
-/// These will throw "not implemented" errors until properly implemented
-
-Eval<Ir> _set(List<Ir> args) =>
-    throw UnimplementedError('set special form not implemented');
-
-Eval<Ir> _let(List<Ir> args) =>
-    throw UnimplementedError('let special form not implemented');
-
-Eval<Ir> _import(List<Ir> args) =>
-    throw UnimplementedError('import special form not implemented');
-
-Eval<Ir> _error(List<Ir> args) =>
-    throw UnimplementedError('error special form not implemented');
-
-Eval<Ir> _try(List<Ir> args) =>
-    throw UnimplementedError('try special form not implemented');
 
 // Export the implemented special forms for use in eval.dart
