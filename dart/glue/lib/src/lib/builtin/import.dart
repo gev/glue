@@ -84,14 +84,23 @@ Eval<Ir> _evaluateAndCacheModule(
 
           // Extract exported values from final environment
           final moduleEnv = finalIsolatedRuntime.env;
-          final exportedValues = <String, Ir>{};
 
+          // Check all exports exist, fail fast on undefined exports
           for (final exportName in registered.exports) {
             final lookupResult = lookupVar(exportName, moduleEnv);
-            lookupResult.match((_) {
-              // Exported symbol not found - this is an error in module definition
-              throw StateError('Exported symbol not defined: $exportName');
-            }, (value) => exportedValues[exportName] = value);
+            if (lookupResult.isLeft) {
+              return throwError(undefinedExport(exportName));
+            }
+          }
+
+          // All exports validated, build the map
+          final exportedValues = <String, Ir>{};
+          for (final exportName in registered.exports) {
+            final lookupResult = lookupVar(exportName, moduleEnv);
+            lookupResult.match(
+              (_) => throw StateError('Should not happen - already validated'),
+              (value) => exportedValues[exportName] = value,
+            );
           }
 
           // Create imported module record

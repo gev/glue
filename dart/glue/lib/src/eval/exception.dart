@@ -58,5 +58,8 @@ RuntimeException notAnObject(Ir ir) => RuntimeException('not-an-object', ir);
 RuntimeException moduleNotFound(String module) =>
     RuntimeException('module-not-found', IrString(module));
 
+RuntimeException undefinedExport(String exportName) =>
+    RuntimeException('undefined-export', IrString(exportName));
+
 RuntimeException runtimeException(String symbol, Ir value) =>
     RuntimeException(symbol, value);
