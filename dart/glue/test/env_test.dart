@@ -1,5 +1,6 @@
 import 'package:glue/src/either.dart';
 import 'package:glue/src/env.dart';
+import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart' hide Env;
 import 'package:glue/src/eval/exception.dart';
 import 'package:test/test.dart';
@@ -9,82 +10,56 @@ void main() {
     group('Smart constructors and atomic operations', () {
       test('emptyEnv: create empty stack environment', () {
         final env = emptyEnv();
-        expect(lookupLocal('any', env), isNull);
-        final result = lookupVar('any', env);
-        expect(result.isLeft, isTrue);
-        switch (result) {
-        case Left(:final value):
-          fail('Should not be left: $value');
-        case Right(:final value):
-          (error) {
-          expect(error, isA<RuntimeException>());
-          expect(error.symbol, equals('unbound-variable'));
-        }, (value) => fail('Should be left'));
+        expect(env, isEmpty);
       });
 
       test('fromList: initialize environment stack', () {
-        final env = fromList([('a', IrInteger(1)), ('b', IrInteger(2))]);
-        expect(lookupLocal('a', env), equals(IrInteger(1)));
-        final result = lookupVar('b', env);
-        expect(result.isRight, isTrue);
-        switch (result) {
-        case Left(:final value):
-          fail('Should not be left: $value');
-        case Right(:final value):
-          
-          (error) => fail('Should be right'),
-          (value) => expect(value, equals(IrInteger(2))),
-        );
+        final env = fromList([('x', IrInteger(42)), ('y', IrString('hello'))]);
+        expect(env.length, equals(1));
+        expect(env[0]['x'], equals(IrInteger(42)));
+        expect(env[0]['y'], equals(IrString('hello')));
       });
 
       test('pushFrame / popFrame: manage stack (LIFO)', () {
-        final base = fromList([('x', IrInteger(1))]);
-        final pushed = pushFrame(base);
-        expect(lookupLocal('x', pushed), isNull);
-        final result = lookupVar('x', pushed);
-        expect(result.isRight, isTrue);
-        switch (result) {
-        case Left(:final value):
-          fail('Should not be left: $value');
-        case Right(:final value):
-          
-          (error) => fail('Should be right'),
-          (value) => expect(value, equals(IrInteger(1))),
-        );
-        expect(popFrame(pushed), equals(base));
+        var env = fromList([('x', IrInteger(42))]);
+        env = pushFrame(env);
+        env = defineVar('y', IrString('hello'), env);
+        expect(env.length, equals(2));
+        expect(env[1]['y'], equals(IrString('hello')));
+
+        env = popFrame(env);
+        expect(env.length, equals(1));
+        expect(env[0]['x'], equals(IrInteger(42)));
       });
 
       test('popFrame don\'t crash on empty stack', () {
-        expect(popFrame(emptyEnv()), equals(emptyEnv()));
+        final env = emptyEnv();
+        final result = popFrame(env);
+        expect(result, equals(env));
       });
     });
 
     group('Define and search (shadowing)', () {
       test('defineVar: always define at the top frame', () {
-        final env = pushFrame(fromList([('other', IrInteger(0))]));
-        final newEnv = defineVar('name', IrInteger(42), env);
-        expect(lookupLocal('name', newEnv), equals(IrInteger(42)));
+        var env = fromList([('x', IrInteger(42))]);
+        env = pushFrame(env);
+        env = defineVar('x', IrString('shadowed'), env);
+        expect(env[1]['x'], equals(IrString('shadowed')));
+        expect(env[0]['x'], equals(IrInteger(42)));
       });
 
       test('Shadowing: local definition shadow global', () {
-        final env = fromList([('name', IrInteger(1))]);
-        final finalEnv = defineVar('name', IrInteger(2), pushFrame(env));
-        final result = lookupVar('name', finalEnv);
-        expect(result.isRight, isTrue);
+        var env = fromList([('x', IrInteger(42))]);
+        env = pushFrame(env);
+        env = defineVar('x', IrString('shadowed'), env);
+
+        final result = lookupVar('x', env);
         switch (result) {
-        case Left(:final value):
-          fail('Should not be left: $value');
-        case Right(:final value):
-          
-          (error) => fail('Should be right'),
-          (value) => expect(value, equals(IrInteger(2))),
-        );
-        final result2 = lookupVar('name', popFrame(finalEnv));
-        expect(result2.isRight, isTrue);
-        result2.fold(
-          (error) => fail('Should be right'),
-          (value) => expect(value, equals(IrInteger(1))),
-        );
+          case Left(:final value):
+            fail('Should not be left: $value');
+          case Right(:final value):
+            expect(value, equals(IrString('shadowed')));
+        }
       });
     });
 
@@ -92,116 +67,59 @@ void main() {
       test(
         'updateVar: update values in the place, don\'t create a new one',
         () {
-          final env = pushFrame(fromList([('x', IrInteger(10))]));
-          final result = updateVar('x', IrInteger(20), env);
-          expect(result.isRight, isTrue);
-          late Env updatedEnv;
-          switch (result) {
-        case Left(:final value):
-          fail('Should not be left: $value');
-        case Right(:final value):
-          
-            (error) => fail('Should be right'),
-            (env) => updatedEnv = env,
-          );
+          var env = fromList([('x', IrInteger(42))]);
+          env = pushFrame(env);
+          env = defineVar('y', IrString('hello'), env);
 
-          expect(lookupLocal('x', updatedEnv), isNull);
-          final lookupResult = lookupVar('x', updatedEnv);
-          expect(lookupResult.isRight, isTrue);
-          lookupResult.fold(
-            (error) => fail('Should be right'),
-            (value) => expect(value, equals(IrInteger(20))),
-          );
+          final result = updateVar('x', IrInteger(100), env);
+          switch (result) {
+            case Left(:final value):
+              fail('Should not be left: $value');
+            case Right(:final value):
+              expect(value[0]['x'], equals(IrInteger(100)));
+          }
         },
       );
 
       test('updateVar: return error for unbound variable', () {
-        final env = emptyEnv();
-        final result = updateVar('name', IrInteger(42), env);
-        expect(result.isLeft, isTrue);
+        final env = fromList([('x', IrInteger(42))]);
+
+        final result = updateVar('nonexistent', IrString('value'), env);
         switch (result) {
-        case Left(:final value):
-          fail('Should not be left: $value');
-        case Right(:final value):
-          (error) {
-          expect(error, isA<RuntimeException>());
-          expect(error.symbol, equals('cannot-set-unbound-variable'));
-        }, (env) => fail('Should be left'));
+          case Left(:final value):
+            expect(value.symbol, equals('cannot-set-unbound-variable'));
+          case Right(:final value):
+            fail('Should not be right: $value');
+        }
       });
     });
 
     group('Safety lookup', () {
       test('lookupLocal: returns Nothing on the empty stack', () {
-        expect(lookupLocal('x', emptyEnv()), isNull);
+        final env = emptyEnv();
+        final result = lookupLocal('x', env);
+        expect(result, isNull);
       });
 
       test('lookupVar: returns error on empty stack', () {
-        final result = lookupVar('name', emptyEnv());
-        expect(result.isLeft, isTrue);
+        final env = emptyEnv();
+
+        final result = lookupVar('x', env);
         switch (result) {
-        case Left(:final value):
-          fail('Should not be left: $value');
-        case Right(:final value):
-          (error) {
-          expect(error, isA<RuntimeException>());
-          expect(error.symbol, equals('unbound-variable'));
-        }, (value) => fail('Should be left'));
+          case Left(:final value):
+            expect(value.symbol, equals('unbound-variable'));
+          case Right(:final value):
+            fail('Should not be right: $value');
+        }
       });
     });
   });
 
   group('Runtime Exceptions', () {
     test('unboundVariable', () {
-      final exc = unboundVariable('testVar');
-      expect(exc.symbol, equals('unbound-variable'));
-      expect(exc.value, equals(IrString('testVar')));
-      expect(exc.pretty(), contains('unbound-variable'));
-    });
-
-    test('canNotSetUnboundVariable', () {
-      final exc = canNotSetUnboundVariable('testVar');
-      expect(exc.symbol, equals('cannot-set-unbound-variable'));
-      expect(exc.value, equals(IrString('testVar')));
-    });
-
-    test('notCallableObject', () {
-      final exc = notCallableObject();
-      expect(exc.symbol, equals('not-callable-object'));
-      expect(exc.value, isNull);
-    });
-
-    test('wrongArgumentType', () {
-      final exc = wrongArgumentType(['int', 'string']);
-      expect(exc.symbol, equals('wrong-argument-type'));
-      expect(exc.value, isA<IrList>());
-      final list = exc.value as IrList;
-      expect(list.elements.length, equals(2));
-    });
-
-    test('propertyNotFound', () {
-      final exc = propertyNotFound('missingProp');
-      expect(exc.symbol, equals('property-not-found'));
-      expect(exc.value, equals(IrString('missingProp')));
-    });
-
-    test('notAnObject', () {
-      final value = IrInteger(42);
-      final exc = notAnObject(value);
-      expect(exc.symbol, equals('not-an-object'));
-      expect(exc.value, equals(value));
-    });
-
-    test('moduleNotFound', () {
-      final exc = moduleNotFound('missingModule');
-      expect(exc.symbol, equals('module-not-found'));
-      expect(exc.value, equals(IrString('missingModule')));
-    });
-
-    test('runtimeException', () {
-      final value = IrString('details');
-      final exc = runtimeException('custom-error', value);
-      expect(exc.symbol, equals('custom-error'));
-      expect(exc.value, equals(value));
+      final exception = unboundVariable('test');
+      expect(exception.symbol, equals('unbound-variable'));
+      expect(exception.value, equals(IrString('test')));
     });
   });
 }

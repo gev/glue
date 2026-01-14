@@ -20,10 +20,12 @@ Eval<Ir> lambda(List<Ir> args) {
   }
 
   final paramSymbols = extractSymbols(paramsIr.elements.unlock);
-  return paramSymbols.fold(
-    (error) => throwError(wrongArgumentType(['symbols in arguments', 'body'])),
-    (params) => makeClosure(params, body),
-  );
+  switch (paramSymbols) {
+    case Left(:final value):
+      return throwError(wrongArgumentType(['arguments', 'body']));
+    case Right(:final value):
+      return makeClosure(value, body);
+  }
 }
 
 /// Extract symbols from parameter list
