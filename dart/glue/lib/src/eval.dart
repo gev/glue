@@ -23,7 +23,13 @@ class Eval<T> {
   /// Map over the result
   Eval<U> map<U>(U Function(T) f) => Eval((runtime) async {
     final result = await runEval(this, runtime);
-    return result.mapRight((tuple) => (f(tuple.$1), tuple.$2));
+    return switch (result) {
+      Left(:final value) => Left<EvalError, (U, Runtime)>(value),
+      Right(:final value) => Right<EvalError, (U, Runtime)>((
+        f(value.$1),
+        value.$2,
+      )),
+    };
   });
 
   /// FlatMap (bind) operation
@@ -159,9 +165,13 @@ Eval<T> withEnv<T>(Env tempEnv, Eval<T> action) => Eval((runtime) async {
   final originalEnv = runtime.env;
   final tempRuntime = runtime.copyWith(env: tempEnv);
   final result = await runEval(action, tempRuntime);
-  return result.mapRight(
-    (tuple) => (tuple.$1, tuple.$2.copyWith(env: originalEnv)),
-  );
+  return switch (result) {
+    Left(:final value) => Left<EvalError, (T, Runtime)>(value),
+    Right(:final value) => Right<EvalError, (T, Runtime)>((
+      value.$1,
+      value.$2.copyWith(env: originalEnv),
+    )),
+  };
 });
 
 /// Run evaluation with additional context frame

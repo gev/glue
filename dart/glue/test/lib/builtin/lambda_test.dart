@@ -1,3 +1,4 @@
+import 'package:glue/src/either.dart';
 import 'package:glue/src/env.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart' hide Env;
@@ -21,7 +22,11 @@ void main() {
       final result = await runEvalSimple(lambda(args), env);
 
       expect(result.isRight, isTrue);
-      result.fold((error) => fail('Should not be left'), (tuple) {
+      switch (result) {
+        case Left(:final value):
+          fail('Should not be left: $value');
+        case Right(:final value):
+          (error) => fail('Should not be left'), (tuple) {
         final (closure, _) = tuple;
         expect(closure, isA<IrClosure>());
         final c = closure as IrClosure;
@@ -37,7 +42,11 @@ void main() {
       final result = await runEvalSimple(lambda(args), env);
 
       expect(result.isRight, isTrue);
-      result.fold((error) => fail('Should not be left'), (tuple) {
+      switch (result) {
+        case Left(:final value):
+          fail('Should not be left: $value');
+        case Right(:final value):
+          (error) => fail('Should not be left'), (tuple) {
         final (closure, _) = tuple;
         expect(closure, isA<IrClosure>());
         final c = closure as IrClosure;
@@ -50,7 +59,11 @@ void main() {
       final input = [IrSymbol('a'), IrSymbol('b')];
       final result = extractSymbols(input);
       expect(result.isRight, isTrue);
-      result.fold(
+      switch (result) {
+        case Left(:final value):
+          fail('Should not be left: $value');
+        case Right(:final value):
+          
         (error) => fail('Should not be left'),
         (symbols) => expect(symbols, equals(['a', 'b'])),
       );
@@ -69,7 +82,11 @@ void main() {
       final result = await runEvalSimple(lambda(args), env);
 
       expect(result.isLeft, isTrue);
-      result.fold(
+      switch (result) {
+        case Left(:final value):
+          fail('Should not be left: $value');
+        case Right(:final value):
+          
         (error) =>
             expect(error.exception.symbol, equals('wrong-argument-type')),
         (tuple) => fail('Should not be right'),
@@ -81,7 +98,11 @@ void main() {
       final result = await runEvalSimple(lambda(args), env);
 
       expect(result.isLeft, isTrue);
-      result.fold(
+      switch (result) {
+        case Left(:final value):
+          fail('Should not be left: $value');
+        case Right(:final value):
+          
         (error) =>
             expect(error.exception.symbol, equals('wrong-argument-type')),
         (tuple) => fail('Should not be right'),
@@ -96,7 +117,11 @@ void main() {
       final result = await runEvalSimple(lambda(args), env);
 
       expect(result.isLeft, isTrue);
-      result.fold(
+      switch (result) {
+        case Left(:final value):
+          fail('Should not be left: $value');
+        case Right(:final value):
+          
         (error) =>
             expect(error.exception.symbol, equals('wrong-argument-type')),
         (tuple) => fail('Should not be right'),

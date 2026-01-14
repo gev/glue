@@ -1,3 +1,4 @@
+import 'package:glue/src/either.dart';
 import 'package:glue/src/env.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart' hide Env;
@@ -57,7 +58,11 @@ void main() {
     test('evalSymbol looks up variables', () async {
       final result = await runEval(evalSymbol('x'), runtime);
       expect(result.isRight, isTrue);
-      result.fold(
+      switch (result) {
+        case Left(:final value):
+          fail('Should not be left: $value');
+        case Right(:final value):
+          
         (error) => fail('Should not be left'),
         (tuple) => expect(tuple.$1, equals(IrInteger(42))),
       );
@@ -73,7 +78,11 @@ void main() {
     test('evalSymbol throws error for unbound variables', () async {
       final result = await runEval(evalSymbol('nonexistent'), runtime);
       expect(result.isLeft, isTrue);
-      result.fold(
+      switch (result) {
+        case Left(:final value):
+          fail('Should not be left: $value');
+        case Right(:final value):
+          
         (error) => expect(error.exception.symbol, equals('unbound-variable')),
         (tuple) => fail('Should not be right'),
       );
@@ -83,7 +92,11 @@ void main() {
       final listIr = IrList([IrInteger(1), IrInteger(2), IrInteger(3)]);
       final result = await runEval(eval(listIr), runtime);
       expect(result.isRight, isTrue);
-      result.fold((error) => fail('Should not be left'), (tuple) {
+      switch (result) {
+        case Left(:final value):
+          fail('Should not be left: $value');
+        case Right(:final value):
+          (error) => fail('Should not be left'), (tuple) {
         expect(tuple.$1, isA<IrList>());
         final list = tuple.$1 as IrList;
         expect(list.elements.length, equals(3));
@@ -99,7 +112,11 @@ void main() {
 
       final result = await runEval(eval(callIr), runtime);
       expect(result.isRight, isTrue);
-      result.fold(
+      switch (result) {
+        case Left(:final value):
+          fail('Should not be left: $value');
+        case Right(:final value):
+          
         (error) => fail('Should not be left'),
         (tuple) => expect(tuple.$1, equals(IrInteger(50))), // 42 + 8 = 50
       );
@@ -114,7 +131,11 @@ void main() {
 
       final result = await runEval(eval(objIr), runtime);
       expect(result.isRight, isTrue);
-      result.fold((error) => fail('Should not be left'), (tuple) {
+      switch (result) {
+        case Left(:final value):
+          fail('Should not be left: $value');
+        case Right(:final value):
+          (error) => fail('Should not be left'), (tuple) {
         expect(tuple.$1, isA<IrObject>());
         final obj = tuple.$1 as IrObject;
         expect(obj.properties['a'], equals(IrInteger(1)));
@@ -134,7 +155,11 @@ void main() {
 
         final result = await runEval(eval(defCall), runtime);
         expect(result.isLeft, isTrue);
-        result.fold(
+        switch (result) {
+        case Left(:final value):
+          fail('Should not be left: $value');
+        case Right(:final value):
+          
           (error) => expect(error.exception.symbol, equals('unbound-variable')),
           (tuple) => fail('Should not be right'),
         );
@@ -152,7 +177,11 @@ void main() {
       final result = await runEval(eval(dottedIr), runtimeWithObj);
 
       expect(result.isRight, isTrue);
-      result.fold(
+      switch (result) {
+        case Left(:final value):
+          fail('Should not be left: $value');
+        case Right(:final value):
+          
         (error) => fail('Should not be left: ${error.exception.symbol}'),
         (tuple) => expect(tuple.$1, equals(IrInteger(99))),
       );
@@ -168,7 +197,11 @@ void main() {
       final result = await runEval(eval(dottedIr), runtimeWithObj);
 
       expect(result.isLeft, isTrue);
-      result.fold(
+      switch (result) {
+        case Left(:final value):
+          fail('Should not be left: $value');
+        case Right(:final value):
+          
         (error) => expect(error.exception.symbol, equals('property-not-found')),
         (tuple) => fail('Should not be right'),
       );
@@ -186,7 +219,11 @@ void main() {
       final result = await runEval(apply(closure, [IrInteger(10)]), runtime);
 
       expect(result.isRight, isTrue);
-      result.fold(
+      switch (result) {
+        case Left(:final value):
+          fail('Should not be left: $value');
+        case Right(:final value):
+          
         (error) => fail('Should not be left'),
         (tuple) => expect(tuple.$1, equals(IrInteger(11))), // 10 + 1 = 11
       );

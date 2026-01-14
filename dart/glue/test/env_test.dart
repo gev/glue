@@ -1,3 +1,4 @@
+import 'package:glue/src/either.dart';
 import 'package:glue/src/env.dart';
 import 'package:glue/src/ir.dart' hide Env;
 import 'package:glue/src/eval/exception.dart';
@@ -11,7 +12,11 @@ void main() {
         expect(lookupLocal('any', env), isNull);
         final result = lookupVar('any', env);
         expect(result.isLeft, isTrue);
-        result.fold((error) {
+        switch (result) {
+        case Left(:final value):
+          fail('Should not be left: $value');
+        case Right(:final value):
+          (error) {
           expect(error, isA<RuntimeException>());
           expect(error.symbol, equals('unbound-variable'));
         }, (value) => fail('Should be left'));
@@ -22,7 +27,11 @@ void main() {
         expect(lookupLocal('a', env), equals(IrInteger(1)));
         final result = lookupVar('b', env);
         expect(result.isRight, isTrue);
-        result.fold(
+        switch (result) {
+        case Left(:final value):
+          fail('Should not be left: $value');
+        case Right(:final value):
+          
           (error) => fail('Should be right'),
           (value) => expect(value, equals(IrInteger(2))),
         );
@@ -34,7 +43,11 @@ void main() {
         expect(lookupLocal('x', pushed), isNull);
         final result = lookupVar('x', pushed);
         expect(result.isRight, isTrue);
-        result.fold(
+        switch (result) {
+        case Left(:final value):
+          fail('Should not be left: $value');
+        case Right(:final value):
+          
           (error) => fail('Should be right'),
           (value) => expect(value, equals(IrInteger(1))),
         );
@@ -58,7 +71,11 @@ void main() {
         final finalEnv = defineVar('name', IrInteger(2), pushFrame(env));
         final result = lookupVar('name', finalEnv);
         expect(result.isRight, isTrue);
-        result.fold(
+        switch (result) {
+        case Left(:final value):
+          fail('Should not be left: $value');
+        case Right(:final value):
+          
           (error) => fail('Should be right'),
           (value) => expect(value, equals(IrInteger(2))),
         );
@@ -79,7 +96,11 @@ void main() {
           final result = updateVar('x', IrInteger(20), env);
           expect(result.isRight, isTrue);
           late Env updatedEnv;
-          result.fold(
+          switch (result) {
+        case Left(:final value):
+          fail('Should not be left: $value');
+        case Right(:final value):
+          
             (error) => fail('Should be right'),
             (env) => updatedEnv = env,
           );
@@ -98,7 +119,11 @@ void main() {
         final env = emptyEnv();
         final result = updateVar('name', IrInteger(42), env);
         expect(result.isLeft, isTrue);
-        result.fold((error) {
+        switch (result) {
+        case Left(:final value):
+          fail('Should not be left: $value');
+        case Right(:final value):
+          (error) {
           expect(error, isA<RuntimeException>());
           expect(error.symbol, equals('cannot-set-unbound-variable'));
         }, (env) => fail('Should be left'));
@@ -113,7 +138,11 @@ void main() {
       test('lookupVar: returns error on empty stack', () {
         final result = lookupVar('name', emptyEnv());
         expect(result.isLeft, isTrue);
-        result.fold((error) {
+        switch (result) {
+        case Left(:final value):
+          fail('Should not be left: $value');
+        case Right(:final value):
+          (error) {
           expect(error, isA<RuntimeException>());
           expect(error.symbol, equals('unbound-variable'));
         }, (value) => fail('Should be left'));
