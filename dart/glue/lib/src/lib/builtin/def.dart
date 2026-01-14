@@ -1,4 +1,4 @@
-import 'package:glue/src/eval.dart' hide Either, Left, Right;
+import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval/exception.dart';
 import 'lambda.dart' show extractSymbols, makeClosure;
@@ -7,7 +7,7 @@ import 'lambda.dart' show extractSymbols, makeClosure;
 /// Mirrors Haskell Glue.Lib.Builtin.Def exactly
 
 /// Def special form - defines variables and functions
-EvalIR def(List<Ir> args) {
+Eval<Ir> def(List<Ir> args) {
   if (args.length < 2) {
     return throwError(wrongArgumentType(['symbol', 'value']));
   }

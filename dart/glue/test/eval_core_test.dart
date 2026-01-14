@@ -23,7 +23,7 @@ void main() {
                   args[1] is IrInteger) {
                 final a = (args[0] as IrInteger).value;
                 final b = (args[1] as IrInteger).value;
-                return EvalIR.pure(IrInteger(a + b));
+                return Eval.pure(IrInteger(a + b));
               }
               return throwError(
                 RuntimeException(

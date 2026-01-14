@@ -1,5 +1,5 @@
 import 'package:glue/src/either.dart';
-import 'package:glue/src/eval.dart' hide Either, Left, Right;
+import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval/exception.dart';
 
@@ -7,7 +7,7 @@ import 'package:glue/src/eval/exception.dart';
 /// Mirrors Haskell Glue.Lib.Builtin.Lambda exactly
 
 /// Lambda special form - creates closures
-EvalIR lambda(List<Ir> args) {
+Eval<Ir> lambda(List<Ir> args) {
   if (args.length != 2) {
     return throwError(wrongArgumentType(['arguments', 'body']));
   }
@@ -40,6 +40,6 @@ Either<RuntimeException, List<String>> extractSymbols(List<Ir> irs) {
 }
 
 /// Create closure with parameters and body
-EvalIR makeClosure(List<String> params, Ir body) {
+Eval<Ir> makeClosure(List<String> params, Ir body) {
   return getEnv().map((env) => IrClosure(params, body, env));
 }

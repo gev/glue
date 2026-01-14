@@ -22,7 +22,7 @@ void main() {
 
       expect(result.isRight, isTrue);
       result.fold((error) => fail('Should not be left'), (tuple) {
-        final (closure, _, _) = tuple;
+        final (closure, _) = tuple;
         expect(closure, isA<IrClosure>());
         final c = closure as IrClosure;
         expect(c.params, equals(['a', 'b']));
@@ -38,7 +38,7 @@ void main() {
 
       expect(result.isRight, isTrue);
       result.fold((error) => fail('Should not be left'), (tuple) {
-        final (closure, _, _) = tuple;
+        final (closure, _) = tuple;
         expect(closure, isA<IrClosure>());
         final c = closure as IrClosure;
         expect(c.params, isEmpty);

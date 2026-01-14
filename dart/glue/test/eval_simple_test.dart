@@ -22,7 +22,7 @@ void main() {
                   args[1] is IrInteger) {
                 final a = (args[0] as IrInteger).value;
                 final b = (args[1] as IrInteger).value;
-                return EvalIR.pure(IrInteger(a + b));
+                return Eval.pure(IrInteger(a + b));
               }
               return throwError(
                 RuntimeException(
@@ -41,10 +41,10 @@ void main() {
 
       expect(result.isRight, isTrue);
       result.fold((error) => fail('Should not be left'), (tuple) {
-        final (value, finalEnv, context) = tuple;
+        final (value, runtime) = tuple;
         expect(value, equals(IrInteger(123)));
-        expect(finalEnv, equals(env)); // Environment unchanged
-        expect(context, isEmpty);
+        expect(runtime.env, equals(env)); // Environment unchanged
+        expect(runtime.context, isEmpty);
       });
     });
 
@@ -53,10 +53,10 @@ void main() {
 
       expect(result.isRight, isTrue);
       result.fold((error) => fail('Should not be left'), (tuple) {
-        final (value, finalEnv, context) = tuple;
+        final (value, runtime) = tuple;
         expect(value, equals(IrInteger(42)));
-        expect(finalEnv, equals(env));
-        expect(context, isEmpty);
+        expect(runtime.env, equals(env));
+        expect(runtime.context, isEmpty);
       });
     });
 
@@ -66,10 +66,10 @@ void main() {
 
       expect(result.isRight, isTrue);
       result.fold((error) => fail('Should not be left'), (tuple) {
-        final (value, finalEnv, context) = tuple;
+        final (value, runtime) = tuple;
         expect(value, equals(IrInteger(50))); // 42 + 8 = 50
-        expect(finalEnv, equals(env));
-        expect(context, isEmpty);
+        expect(runtime.env, equals(env));
+        expect(runtime.context, isEmpty);
       });
     });
 
@@ -89,10 +89,10 @@ void main() {
 
       expect(result.isRight, isTrue);
       result.fold((error) => fail('Should not be left'), (tuple) {
-        final (frameCount, finalEnv, context) = tuple;
+        final (frameCount, runtime) = tuple;
         expect(frameCount, equals(1)); // One frame in our test env
-        expect(finalEnv, equals(env));
-        expect(context, isEmpty);
+        expect(runtime.env, equals(env));
+        expect(runtime.context, isEmpty);
       });
     });
 
@@ -106,7 +106,7 @@ void main() {
       expect(result2.isRight, isTrue);
 
       result2.fold((error) => fail('Should not be left'), (tuple) {
-        final (value, _, _) = tuple;
+        final (value, _) = tuple;
         expect(value, equals(IrString('hello')));
       });
     });

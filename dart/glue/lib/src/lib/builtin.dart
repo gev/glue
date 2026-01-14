@@ -23,19 +23,19 @@ final ModuleInfo builtin = nativeModule('ffi.builtin', [
 /// Placeholder implementations for unimplemented special forms
 /// These will throw "not implemented" errors until properly implemented
 
-EvalIR _set(List<Ir> args) =>
+Eval<Ir> _set(List<Ir> args) =>
     throw UnimplementedError('set special form not implemented');
 
-EvalIR _let(List<Ir> args) =>
+Eval<Ir> _let(List<Ir> args) =>
     throw UnimplementedError('let special form not implemented');
 
-EvalIR _import(List<Ir> args) =>
+Eval<Ir> _import(List<Ir> args) =>
     throw UnimplementedError('import special form not implemented');
 
-EvalIR _error(List<Ir> args) =>
+Eval<Ir> _error(List<Ir> args) =>
     throw UnimplementedError('error special form not implemented');
 
-EvalIR _try(List<Ir> args) =>
+Eval<Ir> _try(List<Ir> args) =>
     throw UnimplementedError('try special form not implemented');
 
 // Export the implemented special forms for use in eval.dart

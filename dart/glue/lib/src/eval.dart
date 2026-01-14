@@ -70,9 +70,6 @@ class Eval<T> {
   });
 }
 
-/// Convenience alias for IR evaluation
-typedef EvalIR = Eval<Ir>;
-
 /// Runtime state access functions
 
 /// Get current environment
@@ -197,13 +194,12 @@ Eval<T> sequence_<T>(List<Eval<dynamic>> evals, Eval<T> last) {
 /// Simple evaluation with just environment
 /// Mirrors Haskell runEvalSimple exactly
 /// Returns (result, finalEnv, context) tuple
-FutureOr<Either<EvalError, (T, Env, Context)>> runEvalSimple<T>(
+FutureOr<Either<EvalError, (T, Runtime)>> runEvalSimple<T>(
   Eval<T> action,
   Env initialEnv,
 ) async {
   final initialRuntime = Runtime.initial(initialEnv);
-  final result = await action.runEval(initialRuntime);
-  return result.mapRight((tuple) => (tuple.$1, tuple.$2.env, tuple.$2.context));
+  return action.runEval(initialRuntime);
 }
 
 /// ============================================================================
@@ -212,25 +208,25 @@ FutureOr<Either<EvalError, (T, Env, Context)>> runEvalSimple<T>(
 
 /// Main evaluation function - evaluates IR expressions
 /// Mirrors Haskell Glue.Eval.eval exactly
-EvalIR eval(Ir ir) {
+Eval<Ir> eval(Ir ir) {
   return switch (ir) {
     IrSymbol(:final value) => evalSymbol(value),
     IrDottedSymbol(:final parts) => evalDottedSymbol(parts),
     IrList(:final elements) => evalList(elements.unlock),
     IrObject(:final properties) => evalObject(properties.unlock),
     // Literals evaluate to themselves
-    _ => EvalIR.pure(ir),
+    _ => Eval.pure(ir),
   };
 }
 
 /// Evaluate a symbol by looking it up in the environment
-EvalIR evalSymbol(String name) {
+Eval<Ir> evalSymbol(String name) {
   return getEnv().flatMap((env) {
     final result = lookupVar(name, env);
     if (result is Left<RuntimeException, Ir>) {
       return throwError(result.value);
     } else if (result is Right<RuntimeException, Ir>) {
-      return EvalIR.pure(result.value);
+      return Eval.pure(result.value);
     } else {
       throw StateError('Either should be Left or Right');
     }
@@ -238,7 +234,7 @@ EvalIR evalSymbol(String name) {
 }
 
 /// Evaluate dotted symbol access (module.property.field)
-EvalIR evalDottedSymbol(List<String> parts) {
+Eval<Ir> evalDottedSymbol(List<String> parts) {
   if (parts.isEmpty) {
     return throwError(
       RuntimeException('invalid-symbol', IrString('Empty dotted symbol')),
@@ -254,7 +250,7 @@ EvalIR evalDottedSymbol(List<String> parts) {
 }
 
 /// Helper to find the longest prefix that exists
-EvalIR _evalWithPrefixes(List<String> parts) {
+Eval<Ir> _evalWithPrefixes(List<String> parts) {
   return getEnv().flatMap((env) {
     // Try prefixes from longest to shortest
     for (final prefix in _generatePrefixes(parts)) {
@@ -285,9 +281,9 @@ List<List<String>> _generatePrefixes(List<String> parts) {
 }
 
 /// Navigate nested object/module access
-EvalIR _evalNestedAccess(Ir obj, List<String> remainingParts) {
+Eval<Ir> _evalNestedAccess(Ir obj, List<String> remainingParts) {
   if (remainingParts.isEmpty) {
-    return EvalIR.pure(obj);
+    return Eval.pure(obj);
   }
 
   final prop = remainingParts[0];
@@ -312,9 +308,9 @@ EvalIR _evalNestedAccess(Ir obj, List<String> remainingParts) {
 }
 
 /// Evaluate a list (function call or literal list)
-EvalIR evalList(List<Ir> elements) {
+Eval<Ir> evalList(List<Ir> elements) {
   if (elements.isEmpty) {
-    return EvalIR.pure(IrList([]));
+    return Eval.pure(IrList([]));
   }
 
   final first = elements[0];
@@ -332,7 +328,7 @@ EvalIR evalList(List<Ir> elements) {
 }
 
 /// Evaluate a call starting with a symbol
-EvalIR _evalSymbolCall(String name, List<Ir> args) {
+Eval<Ir> _evalSymbolCall(String name, List<Ir> args) {
   return withContext(
     name,
     getEnv().flatMap((env) {
@@ -370,7 +366,7 @@ bool _isSpecialForm(String name) {
 }
 
 /// Evaluate special forms (not yet implemented)
-EvalIR _evalSpecialForm(String name, List<Ir> args) {
+Eval<Ir> _evalSpecialForm(String name, List<Ir> args) {
   return throwError(
     RuntimeException(
       'special-form',
@@ -380,7 +376,7 @@ EvalIR _evalSpecialForm(String name, List<Ir> args) {
 }
 
 /// Evaluate an object
-EvalIR evalObject(Map<String, Ir> properties) {
+Eval<Ir> evalObject(Map<String, Ir> properties) {
   return sequenceAll(properties.values.map(eval).toList()).map((
     evaluatedValues,
   ) {
@@ -398,7 +394,7 @@ EvalIR evalObject(Map<String, Ir> properties) {
 /// ============================================================================
 
 /// Apply a function to arguments
-EvalIR apply(Ir func, List<Ir> args) {
+Eval<Ir> apply(Ir func, List<Ir> args) {
   return switch (func) {
     IrNative(value: final f) => applyNative(f, args),
     IrClosure(params: final params, body: final body, env: final closureEnv) =>
@@ -409,7 +405,7 @@ EvalIR apply(Ir func, List<Ir> args) {
 }
 
 /// Apply a native function/special form
-EvalIR applyNative(Native native, List<Ir> args) {
+Eval<Ir> applyNative(Native native, List<Ir> args) {
   return switch (native) {
     NativeFunc(function: final f) => _applyNativeFunc(f, args),
     NativeSpecial(function: final s) => s(
@@ -419,12 +415,12 @@ EvalIR applyNative(Native native, List<Ir> args) {
 }
 
 /// Apply a native function (evaluate arguments first)
-EvalIR _applyNativeFunc(dynamic func, List<Ir> rawArgs) {
+Eval<Ir> _applyNativeFunc(dynamic func, List<Ir> rawArgs) {
   return sequenceAll(rawArgs.map(eval).toList()).flatMap((args) => func(args));
 }
 
 /// Apply a closure with the given arguments
-EvalIR applyClosure(
+Eval<Ir> applyClosure(
   List<String> params,
   Ir body,
   Env closureEnv,
@@ -446,7 +442,7 @@ EvalIR applyClosure(
 }
 
 /// Full application of a closure
-EvalIR _applyFullClosure(
+Eval<Ir> _applyFullClosure(
   List<String> params,
   Ir body,
   Env closureEnv,
@@ -462,7 +458,7 @@ EvalIR _applyFullClosure(
 }
 
 /// Partial application of a closure
-EvalIR _applyPartialClosure(
+Eval<Ir> _applyPartialClosure(
   List<String> params,
   Ir body,
   Env closureEnv,
