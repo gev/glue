@@ -18,10 +18,10 @@ void expectParsesTo(String input, Ast expected) {
 void expectParseError(String input, Type errorType) {
   final result = parseGlue(input);
   result.match(
+    (error) => expect(error.runtimeType, equals(errorType)),
     (ast) => fail(
       'Expected parsing to fail with $errorType, but succeeded with: $ast',
     ),
-    (error) => expect(error.runtimeType, equals(errorType)),
   );
 }
 
