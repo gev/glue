@@ -23,7 +23,7 @@ parseModule _ = Left $ InvalidModuleStructure "Expected (module name body...)"
 extractModuleName :: IR m -> Either (ModuleRegistryError m) Text
 extractModuleName (Symbol name) = pure name
 extractModuleName (DottedSymbol parts) = pure $ T.intercalate "." parts
-extractModuleName invalid = Left $ InvalidModuleStructure "Module name must be a symbol"
+extractModuleName _ = Left $ InvalidModuleStructure "Module name must be a symbol"
 
 -- | Extract exports from module body
 extractExports :: [IR m] -> Either (ModuleRegistryError m) [Text]
