@@ -13,7 +13,7 @@ spec = describe "Glue.Lib.List.Partition (Test partition function)" do
         result <- runEvalSimple (Partition.partition args) []
         case result of
             Left err -> expectationFailure $ "Partition failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [List [Integer 4, Integer 5], List [Integer 1, Integer 2, Integer 3]]
+            Right (res, _) -> res `shouldBe` List [List [Integer 4, Integer 5], List [Integer 1, Integer 2, Integer 3]]
 
     it "partitions list with all elements matching" do
         let pred = Native (Func (\[Integer x] -> pure . Bool $ x > 0))
@@ -21,7 +21,7 @@ spec = describe "Glue.Lib.List.Partition (Test partition function)" do
         result <- runEvalSimple (Partition.partition args) []
         case result of
             Left err -> expectationFailure $ "Partition failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [List [Integer 1, Integer 2, Integer 3], List []]
+            Right (res, _) -> res `shouldBe` List [List [Integer 1, Integer 2, Integer 3], List []]
 
     it "partitions list with no elements matching" do
         let pred = Native (Func (\[Integer x] -> pure . Bool $ x > 10))
@@ -29,7 +29,7 @@ spec = describe "Glue.Lib.List.Partition (Test partition function)" do
         result <- runEvalSimple (Partition.partition args) []
         case result of
             Left err -> expectationFailure $ "Partition failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [List [], List [Integer 1, Integer 2, Integer 3]]
+            Right (res, _) -> res `shouldBe` List [List [], List [Integer 1, Integer 2, Integer 3]]
 
     it "partitions empty list" do
         let pred = Native (Func (\[Integer x] -> pure $ Bool True))
@@ -37,7 +37,7 @@ spec = describe "Glue.Lib.List.Partition (Test partition function)" do
         result <- runEvalSimple (Partition.partition args) []
         case result of
             Left err -> expectationFailure $ "Partition failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [List [], List []]
+            Right (res, _) -> res `shouldBe` List [List [], List []]
 
     it "partitions list with mixed matching" do
         let pred = Native (Func (\[Integer x] -> pure . Bool $ x `mod` 2 == 0))
@@ -45,7 +45,7 @@ spec = describe "Glue.Lib.List.Partition (Test partition function)" do
         result <- runEvalSimple (Partition.partition args) []
         case result of
             Left err -> expectationFailure $ "Partition failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [List [Integer 2, Integer 4], List [Integer 1, Integer 3, Integer 5]]
+            Right (res, _) -> res `shouldBe` List [List [Integer 2, Integer 4], List [Integer 1, Integer 3, Integer 5]]
 
     it "fails on non-list second argument" do
         let pred = Native (Func (\[Integer x] -> pure $ Bool True))

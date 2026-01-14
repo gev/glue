@@ -14,14 +14,14 @@ spec = describe "Glue.Lib.Arithmetic.Add (Test add function)" do
             result <- runEvalSimple (Add.add args) []
             case result of
                 Left err -> expectationFailure $ "Add failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 5
+                Right (res, _) -> res `shouldBe` Integer 5
 
         it "returns 3.5 for (+ 1.5 2)" do
             let args = [Float 1.5, Integer 2]
             result <- runEvalSimple (Add.add args) []
             case result of
                 Left err -> expectationFailure $ "Add failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Float 3.5
+                Right (res, _) -> res `shouldBe` Float 3.5
 
         it "fails with no arguments" do
             let args = []
@@ -49,25 +49,25 @@ spec = describe "Glue.Lib.Arithmetic.Add (Test add function)" do
             result <- runEvalSimple (Add.add args) []
             case result of
                 Left err -> expectationFailure $ "Add failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 8
+                Right (res, _) -> res `shouldBe` Integer 8
 
         it "Integer + Float = Float" do
             let args = [Integer 5, Float 3.5]
             result <- runEvalSimple (Add.add args) []
             case result of
                 Left err -> expectationFailure $ "Add failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Float 8.5
+                Right (res, _) -> res `shouldBe` Float 8.5
 
         it "Float + Integer = Float" do
             let args = [Float 5.5, Integer 3]
             result <- runEvalSimple (Add.add args) []
             case result of
                 Left err -> expectationFailure $ "Add failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Float 8.5
+                Right (res, _) -> res `shouldBe` Float 8.5
 
         it "Float + Float = Float" do
             let args = [Float 5.5, Float 3.5]
             result <- runEvalSimple (Add.add args) []
             case result of
                 Left err -> expectationFailure $ "Add failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Float 9.0
+                Right (res, _) -> res `shouldBe` Float 9.0

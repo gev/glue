@@ -22,7 +22,7 @@ runCode input = case parseGlue input of
         fullResult <- runEvalSimple (eval irTree) $ envFromModules [builtin, arithmetic, bool]
         case fullResult of
             Left err -> pure $ Left (GlueError err)
-            Right (res, _finalEnv, _ctx) -> pure $ Right res
+            Right (res, _) -> pure $ Right res
 
 spec :: Spec
 spec = describe "Glue.Eval (System Integration)" do

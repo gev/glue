@@ -15,28 +15,28 @@ spec = describe "Glue.Lib.Bool.Ne (Test ne function)" do
             result <- runEvalSimple (ne args) []
             case result of
                 Left err -> expectationFailure $ "Ne failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Bool True
+                Right (res, _) -> res `shouldBe` Bool True
 
         it "returns false for equal numbers" do
             let args = [Integer 42, Integer 42]
             result <- runEvalSimple (ne args) []
             case result of
                 Left err -> expectationFailure $ "Ne failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Bool False
+                Right (res, _) -> res `shouldBe` Bool False
 
         it "returns true for unequal strings" do
             let args = [String "hello", String "world"]
             result <- runEvalSimple (ne args) []
             case result of
                 Left err -> expectationFailure $ "Ne failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Bool True
+                Right (res, _) -> res `shouldBe` Bool True
 
         it "returns false for equal strings" do
             let args = [String "hello", String "hello"]
             result <- runEvalSimple (ne args) []
             case result of
                 Left err -> expectationFailure $ "Ne failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Bool False
+                Right (res, _) -> res `shouldBe` Bool False
 
         it "fails with wrong number of arguments" do
             let args = [Integer 42]
@@ -49,5 +49,5 @@ spec = describe "Glue.Lib.Bool.Ne (Test ne function)" do
             result1 <- runEvalSimple (ne args1) []
             result2 <- runEvalSimple (ne args2) []
             case (result1, result2) of
-                (Right (Bool True, _, _), Right (Bool False, _, _)) -> pure ()
+                (Right (Bool True, _), Right (Bool False, _)) -> pure ()
                 _ -> expectationFailure "\\= alias should work like ne"

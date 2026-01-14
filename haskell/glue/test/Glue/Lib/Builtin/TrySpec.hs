@@ -18,7 +18,7 @@ runCode input = case parseGlue input of
         fullResult <- runEvalSimple (eval irTree) $ envFromModules [builtin, arithmetic]
         case fullResult of
             Left err -> pure $ Left (GlueError err)
-            Right (res, _finalEnv, _ctx) -> pure $ Right (Just res)
+            Right (res, _) -> pure $ Right (Just res)
 
 spec :: Spec
 spec = describe "Glue.Lib.Builtin.Try (Test try special form)" do

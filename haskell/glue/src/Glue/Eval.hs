@@ -47,6 +47,7 @@ data Runtime = Runtime
     , importCache :: ImportedModuleCache Eval
     , rootEnv :: Env
     }
+    deriving (Show, Eq)
 
 newtype Eval a = Eval
     { runEval :: Runtime -> IO (Either Error (a, Runtime))
@@ -67,7 +68,7 @@ instance Monad Eval where
             Right (a, runtime') -> runEval (f a) runtime'
 
 -- | Simple runEval with empty module registry
-runEvalSimple :: Eval a -> Env -> IO (Either Error (a, Env, Context))
+runEvalSimple :: Eval a -> Env -> IO (Either Error (a, Runtime))
 runEvalSimple evalAction initialEnv = do
     let initialState =
             Runtime
@@ -77,10 +78,7 @@ runEvalSimple evalAction initialEnv = do
                 , importCache = Map.empty
                 , rootEnv = initialEnv
                 }
-    result <- runEval evalAction initialState
-    case result of
-        Left err -> pure $ Left err
-        Right (a, finalState) -> pure $ Right (a, finalState.env, finalState.context)
+    runEval evalAction initialState
 
 throwError :: Exception -> Eval a
 throwError err = Eval $ \runtime -> pure $ Left (EvalError runtime.context err)

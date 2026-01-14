@@ -14,14 +14,14 @@ spec = describe "Glue.Lib.Arithmetic.Mul (Test mul function)" do
             result <- runEvalSimple (Mul.mul args) []
             case result of
                 Left err -> expectationFailure $ "Mul failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 6
+                Right (res, _) -> res `shouldBe` Integer 6
 
         it "returns 7.5 for (* 2.5 3)" do
             let args = [Float 2.5, Integer 3]
             result <- runEvalSimple (Mul.mul args) []
             case result of
                 Left err -> expectationFailure $ "Mul failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Float 7.5
+                Right (res, _) -> res `shouldBe` Float 7.5
 
         it "fails with no arguments" do
             let args = []
@@ -49,25 +49,25 @@ spec = describe "Glue.Lib.Arithmetic.Mul (Test mul function)" do
             result <- runEvalSimple (Mul.mul args) []
             case result of
                 Left err -> expectationFailure $ "Mul failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 15
+                Right (res, _) -> res `shouldBe` Integer 15
 
         it "Integer * Float = Float" do
             let args = [Integer 5, Float 3.5]
             result <- runEvalSimple (Mul.mul args) []
             case result of
                 Left err -> expectationFailure $ "Mul failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Float 17.5
+                Right (res, _) -> res `shouldBe` Float 17.5
 
         it "Float * Integer = Float" do
             let args = [Float 5.5, Integer 3]
             result <- runEvalSimple (Mul.mul args) []
             case result of
                 Left err -> expectationFailure $ "Mul failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Float 16.5
+                Right (res, _) -> res `shouldBe` Float 16.5
 
         it "Float * Float = Float" do
             let args = [Float 5.5, Float 3.5]
             result <- runEvalSimple (Mul.mul args) []
             case result of
                 Left err -> expectationFailure $ "Mul failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Float 19.25
+                Right (res, _) -> res `shouldBe` Float 19.25

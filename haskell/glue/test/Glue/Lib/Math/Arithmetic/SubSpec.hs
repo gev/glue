@@ -14,14 +14,14 @@ spec = describe "Glue.Lib.Arithmetic.Sub (Test sub function)" do
             result <- runEvalSimple (Sub.sub args) []
             case result of
                 Left err -> expectationFailure $ "Sub failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer (-3)
+                Right (res, _) -> res `shouldBe` Integer (-3)
 
         it "returns 2.5 for (- 5.5 3)" do
             let args = [Float 5.5, Integer 3]
             result <- runEvalSimple (Sub.sub args) []
             case result of
                 Left err -> expectationFailure $ "Sub failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Float 2.5
+                Right (res, _) -> res `shouldBe` Float 2.5
 
         it "fails with no arguments" do
             let args = []
@@ -49,25 +49,25 @@ spec = describe "Glue.Lib.Arithmetic.Sub (Test sub function)" do
             result <- runEvalSimple (Sub.sub args) []
             case result of
                 Left err -> expectationFailure $ "Sub failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 7
+                Right (res, _) -> res `shouldBe` Integer 7
 
         it "Integer - Float = Float" do
             let args = [Integer 10, Float 3.5]
             result <- runEvalSimple (Sub.sub args) []
             case result of
                 Left err -> expectationFailure $ "Sub failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Float 6.5
+                Right (res, _) -> res `shouldBe` Float 6.5
 
         it "Float - Integer = Float" do
             let args = [Float 10.5, Integer 3]
             result <- runEvalSimple (Sub.sub args) []
             case result of
                 Left err -> expectationFailure $ "Sub failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Float 7.5
+                Right (res, _) -> res `shouldBe` Float 7.5
 
         it "Float - Float = Float" do
             let args = [Float 10.5, Float 3.5]
             result <- runEvalSimple (Sub.sub args) []
             case result of
                 Left err -> expectationFailure $ "Sub failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Float 7.0
+                Right (res, _) -> res `shouldBe` Float 7.0

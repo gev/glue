@@ -14,28 +14,28 @@ spec = describe "Glue.Lib.Math.Utility.Max (Test max function)" do
             result <- runEvalSimple (Max.max args) []
             case result of
                 Left err -> expectationFailure $ "Max failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 5
+                Right (res, _) -> res `shouldBe` Integer 5
 
         it "returns 3 for max(3, 3)" do
             let args = [Integer 3, Integer 3]
             result <- runEvalSimple (Max.max args) []
             case result of
                 Left err -> expectationFailure $ "Max failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 3
+                Right (res, _) -> res `shouldBe` Integer 3
 
         it "returns -2 for max(-5, -2)" do
             let args = [Float (-5), Float (-2)]
             result <- runEvalSimple (Max.max args) []
             case result of
                 Left err -> expectationFailure $ "Max failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Float (-2)
+                Right (res, _) -> res `shouldBe` Float (-2)
 
         it "returns 10 for max(1, 10)" do
             let args = [Integer 1, Integer 10]
             result <- runEvalSimple (Max.max args) []
             case result of
                 Left err -> expectationFailure $ "Max failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 10
+                Right (res, _) -> res `shouldBe` Integer 10
 
         it "fails with non-numbers (first arg)" do
             let args = [String "hello", Integer 2]

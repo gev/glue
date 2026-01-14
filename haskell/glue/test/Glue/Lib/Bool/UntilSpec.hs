@@ -2,7 +2,7 @@ module Glue.Lib.Bool.UntilSpec (spec) where
 
 import Data.Either (isLeft)
 import Glue.Env qualified as E
-import Glue.Eval (runEvalSimple)
+import Glue.Eval (Runtime (..), runEvalSimple)
 import Glue.IR (IR (..))
 import Glue.Lib.Bool.Until (until_)
 import Glue.Lib.Builtin (builtin)
@@ -17,7 +17,7 @@ spec = describe "Glue.Lib.Bool.Until (Test until special form)" do
             result <- runEvalSimple (until_ args) []
             case result of
                 Left err -> expectationFailure $ "Until failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Void
+                Right (res, _) -> res `shouldBe` Void
 
         it "executes body and modifies environment flag" do
             -- Set up environment with flag = false
@@ -27,10 +27,10 @@ spec = describe "Glue.Lib.Bool.Until (Test until special form)" do
             result <- runEvalSimple (until_ args) initialEnv
             case result of
                 Left err -> expectationFailure $ "Until failed: " <> show err
-                Right (res, finalEnv, _) -> do
+                Right (res, runtime) -> do
                     res `shouldBe` Void
                     -- Check that flag was changed to true
-                    E.lookupLocal "flag" finalEnv `shouldBe` Just (Bool True)
+                    E.lookupLocal "flag" runtime.env `shouldBe` Just (Bool True)
 
         it "fails with wrong number of arguments" do
             let args = [] -- No condition

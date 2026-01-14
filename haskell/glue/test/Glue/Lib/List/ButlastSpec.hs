@@ -12,21 +12,21 @@ spec = describe "Glue.Lib.List.Butlast (Test butlast function)" do
         result <- runEvalSimple (butlast args) []
         case result of
             Left err -> expectationFailure $ "Butlast failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Integer 1, Integer 2]
+            Right (res, _) -> res `shouldBe` List [Integer 1, Integer 2]
 
     it "returns empty list for single-element list" do
         let args = [List [Integer 42]]
         result <- runEvalSimple (butlast args) []
         case result of
             Left err -> expectationFailure $ "Butlast failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List []
+            Right (res, _) -> res `shouldBe` List []
 
     it "returns string elements except last" do
         let args = [List [String "hello", String "world", String "test"]]
         result <- runEvalSimple (butlast args) []
         case result of
             Left err -> expectationFailure $ "Butlast failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [String "hello", String "world"]
+            Right (res, _) -> res `shouldBe` List [String "hello", String "world"]
 
     it "fails on empty list" do
         let args = [List []]

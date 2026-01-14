@@ -14,7 +14,7 @@ spec = describe "Glue.Lib.Math.Logarithmic.Lg (Test lg function)" do
             result <- runEvalSimple (Lg.lg args) []
             case result of
                 Left err -> expectationFailure $ "Lg failed: " <> show err
-                Right (res, _, _) -> case res of
+                Right (res, _) -> case res of
                     Float n -> n `shouldSatisfy` (\x -> abs x < 1e-10)
                     _ -> expectationFailure "Expected a Float"
 
@@ -23,7 +23,7 @@ spec = describe "Glue.Lib.Math.Logarithmic.Lg (Test lg function)" do
             result <- runEvalSimple (Lg.lg args) []
             case result of
                 Left err -> expectationFailure $ "Lg failed: " <> show err
-                Right (res, _, _) -> case res of
+                Right (res, _) -> case res of
                     Float n -> n `shouldSatisfy` (\x -> abs (x - 1) < 1e-10)
                     _ -> expectationFailure "Expected a number"
 
@@ -32,7 +32,7 @@ spec = describe "Glue.Lib.Math.Logarithmic.Lg (Test lg function)" do
             result <- runEvalSimple (Lg.lg args) []
             case result of
                 Left err -> expectationFailure $ "Lg failed: " <> show err
-                Right (res, _, _) -> case res of
+                Right (res, _) -> case res of
                     Float n -> n `shouldSatisfy` (\x -> abs (x - 2) < 1e-10)
                     _ -> expectationFailure "Expected a number"
 
@@ -41,7 +41,7 @@ spec = describe "Glue.Lib.Math.Logarithmic.Lg (Test lg function)" do
             result <- runEvalSimple (Lg.lg args) []
             case result of
                 Left err -> expectationFailure $ "Lg failed: " <> show err
-                Right (res, _, _) -> case res of
+                Right (res, _) -> case res of
                     Float f | f == (-1 / 0) -> f `shouldBe` (-1 / 0)
                     _ -> expectationFailure "Expected -Infinity"
 
@@ -50,7 +50,7 @@ spec = describe "Glue.Lib.Math.Logarithmic.Lg (Test lg function)" do
             result <- runEvalSimple (Lg.lg args) []
             case result of
                 Left err -> expectationFailure $ "Lg failed: " <> show err
-                Right (res, _, _) -> case res of
+                Right (res, _) -> case res of
                     Float f | isNaN f -> f `shouldSatisfy` isNaN
                     _ -> expectationFailure "Expected NaN"
 

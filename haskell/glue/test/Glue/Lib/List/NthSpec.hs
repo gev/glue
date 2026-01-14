@@ -12,21 +12,21 @@ spec = describe "Glue.Lib.List.Nth (Test nth function)" do
         result <- runEvalSimple (nth args) []
         case result of
             Left err -> expectationFailure $ "Nth failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` Integer 1
+            Right (res, _) -> res `shouldBe` Integer 1
 
     it "returns element at index 1" do
         let args = [Integer 1, List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalSimple (nth args) []
         case result of
             Left err -> expectationFailure $ "Nth failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` Integer 2
+            Right (res, _) -> res `shouldBe` Integer 2
 
     it "returns element at last index" do
         let args = [Integer 2, List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalSimple (nth args) []
         case result of
             Left err -> expectationFailure $ "Nth failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` Integer 3
+            Right (res, _) -> res `shouldBe` Integer 3
 
     it "fails on negative index" do
         let args = [Float (-1), List [Integer 1, Integer 2, Integer 3]]

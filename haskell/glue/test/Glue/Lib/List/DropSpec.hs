@@ -12,28 +12,28 @@ spec = describe "Glue.Lib.List.Drop (Test drop function)" do
         result <- runEvalSimple (Drop.drop args) []
         case result of
             Left err -> expectationFailure $ "Drop failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Integer 3, Integer 4, Integer 5]
+            Right (res, _) -> res `shouldBe` List [Integer 3, Integer 4, Integer 5]
 
     it "drops fewer elements when N > list length" do
         let args = [Integer 10, List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalSimple (Drop.drop args) []
         case result of
             Left err -> expectationFailure $ "Drop failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List []
+            Right (res, _) -> res `shouldBe` List []
 
     it "drops zero elements" do
         let args = [Integer 0, List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalSimple (Drop.drop args) []
         case result of
             Left err -> expectationFailure $ "Drop failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Integer 1, Integer 2, Integer 3]
+            Right (res, _) -> res `shouldBe` List [Integer 1, Integer 2, Integer 3]
 
     it "drops all elements when N equals list length" do
         let args = [Integer 3, List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalSimple (Drop.drop args) []
         case result of
             Left err -> expectationFailure $ "Drop failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List []
+            Right (res, _) -> res `shouldBe` List []
 
     it "fails on negative count" do
         let args = [Float (-1), List [Integer 1, Integer 2, Integer 3]]

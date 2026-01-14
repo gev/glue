@@ -12,35 +12,35 @@ spec = describe "Glue.Lib.List.Zip (Test zip function)" do
         result <- runEvalSimple (Zip.zip args) []
         case result of
             Left err -> expectationFailure $ "Zip failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [List [Integer 1, String "a"], List [Integer 2, String "b"], List [Integer 3, String "c"]]
+            Right (res, _) -> res `shouldBe` List [List [Integer 1, String "a"], List [Integer 2, String "b"], List [Integer 3, String "c"]]
 
     it "zips two lists where first is shorter" do
         let args = [List [Integer 1, Integer 2], List [String "a", String "b", String "c"]]
         result <- runEvalSimple (Zip.zip args) []
         case result of
             Left err -> expectationFailure $ "Zip failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [List [Integer 1, String "a"], List [Integer 2, String "b"]]
+            Right (res, _) -> res `shouldBe` List [List [Integer 1, String "a"], List [Integer 2, String "b"]]
 
     it "zips two lists where second is shorter" do
         let args = [List [Integer 1, Integer 2, Integer 3], List [String "a", String "b"]]
         result <- runEvalSimple (Zip.zip args) []
         case result of
             Left err -> expectationFailure $ "Zip failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [List [Integer 1, String "a"], List [Integer 2, String "b"]]
+            Right (res, _) -> res `shouldBe` List [List [Integer 1, String "a"], List [Integer 2, String "b"]]
 
     it "zips two empty lists" do
         let args = [List [], List []]
         result <- runEvalSimple (Zip.zip args) []
         case result of
             Left err -> expectationFailure $ "Zip failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List []
+            Right (res, _) -> res `shouldBe` List []
 
     it "zips one empty list with non-empty" do
         let args = [List [], List [Integer 1, Integer 2]]
         result <- runEvalSimple (Zip.zip args) []
         case result of
             Left err -> expectationFailure $ "Zip failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List []
+            Right (res, _) -> res `shouldBe` List []
 
     it "fails on non-list first argument" do
         let args = [Integer 42, List [Integer 1, Integer 2]]

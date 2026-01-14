@@ -14,21 +14,21 @@ spec = describe "Glue.Lib.Bool.Not (Test not function)" do
             result <- runEvalSimple (not_ args) []
             case result of
                 Left err -> expectationFailure $ "Not failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Bool False
+                Right (res, _) -> res `shouldBe` Bool False
 
         it "returns true for false" do
             let args = [Bool False]
             result <- runEvalSimple (not_ args) []
             case result of
                 Left err -> expectationFailure $ "Not failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Bool True
+                Right (res, _) -> res `shouldBe` Bool True
 
         it "returns false for other values" do
             let args = [Integer 42]
             result <- runEvalSimple (not_ args) []
             case result of
                 Left err -> expectationFailure $ "Not failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Bool False
+                Right (res, _) -> res `shouldBe` Bool False
 
         it "fails with wrong number of arguments" do
             let args = []
@@ -43,5 +43,5 @@ spec = describe "Glue.Lib.Bool.Not (Test not function)" do
             result2 <- runEvalSimple (not_ args2) []
             result3 <- runEvalSimple (not_ args3) []
             case (result1, result2, result3) of
-                (Right (Bool True, _, _), Right (Bool False, _, _), Right (Bool False, _, _)) -> pure ()
+                (Right (Bool True, _), Right (Bool False, _), Right (Bool False, _)) -> pure ()
                 _ -> expectationFailure "! alias should work like not"

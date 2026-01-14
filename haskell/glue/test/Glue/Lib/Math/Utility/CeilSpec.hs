@@ -14,28 +14,28 @@ spec = describe "Glue.Lib.Math.Utility.Ceil (Test ceil function)" do
             result <- runEvalSimple (Ceil.ceil args) []
             case result of
                 Left err -> expectationFailure $ "Ceil failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 4
+                Right (res, _) -> res `shouldBe` Integer 4
 
         it "returns 3 for ceil(2.9)" do
             let args = [Float 2.9]
             result <- runEvalSimple (Ceil.ceil args) []
             case result of
                 Left err -> expectationFailure $ "Ceil failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 3
+                Right (res, _) -> res `shouldBe` Integer 3
 
         it "returns -3 for ceil(-3.1)" do
             let args = [Float (-3.1)]
             result <- runEvalSimple (Ceil.ceil args) []
             case result of
                 Left err -> expectationFailure $ "Ceil failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer (-3)
+                Right (res, _) -> res `shouldBe` Integer (-3)
 
         it "returns 5 for ceil(5.0)" do
             let args = [Integer 5]
             result <- runEvalSimple (Ceil.ceil args) []
             case result of
                 Left err -> expectationFailure $ "Ceil failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 5
+                Right (res, _) -> res `shouldBe` Integer 5
 
         it "fails with non-numbers" do
             let args = [String "hello"]

@@ -14,21 +14,21 @@ spec = describe "Glue.Lib.Bool.Le (Test le function)" do
             result <- runEvalSimple (le args) []
             case result of
                 Left err -> expectationFailure $ "Le failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Bool True
+                Right (res, _) -> res `shouldBe` Bool True
 
         it "returns true for lesser number" do
             let args = [Integer 5, Integer 10]
             result <- runEvalSimple (le args) []
             case result of
                 Left err -> expectationFailure $ "Le failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Bool True
+                Right (res, _) -> res `shouldBe` Bool True
 
         it "returns false for greater number" do
             let args = [Integer 10, Integer 5]
             result <- runEvalSimple (le args) []
             case result of
                 Left err -> expectationFailure $ "Le failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Bool False
+                Right (res, _) -> res `shouldBe` Bool False
 
         it "fails with non-numbers" do
             let args = [String "hello", String "world"]
@@ -48,5 +48,5 @@ spec = describe "Glue.Lib.Bool.Le (Test le function)" do
             result2 <- runEvalSimple (le args2) []
             result3 <- runEvalSimple (le args3) []
             case (result1, result2, result3) of
-                (Right (Bool True, _, _), Right (Bool True, _, _), Right (Bool False, _, _)) -> pure ()
+                (Right (Bool True, _), Right (Bool True, _), Right (Bool False, _)) -> pure ()
                 _ -> expectationFailure "<= alias should work like le"

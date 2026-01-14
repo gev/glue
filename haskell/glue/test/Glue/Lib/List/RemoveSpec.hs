@@ -12,28 +12,28 @@ spec = describe "Glue.Lib.List.Remove (Test remove function)" do
         result <- runEvalSimple (remove args) []
         case result of
             Left err -> expectationFailure $ "Remove failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Integer 1, Integer 3]
+            Right (res, _) -> res `shouldBe` List [Integer 1, Integer 3]
 
     it "removes all occurrences of item" do
         let args = [Integer 2, List [Integer 1, Integer 2, Integer 2, Integer 3]]
         result <- runEvalSimple (remove args) []
         case result of
             Left err -> expectationFailure $ "Remove failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Integer 1, Integer 3]
+            Right (res, _) -> res `shouldBe` List [Integer 1, Integer 3]
 
     it "returns same list if item not found" do
         let args = [Integer 4, List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalSimple (remove args) []
         case result of
             Left err -> expectationFailure $ "Remove failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Integer 1, Integer 2, Integer 3]
+            Right (res, _) -> res `shouldBe` List [Integer 1, Integer 2, Integer 3]
 
     it "removes from empty list" do
         let args = [Integer 1, List []]
         result <- runEvalSimple (remove args) []
         case result of
             Left err -> expectationFailure $ "Remove failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List []
+            Right (res, _) -> res `shouldBe` List []
 
     it "fails on non-list second argument" do
         let args = [Integer 1, Integer 42]

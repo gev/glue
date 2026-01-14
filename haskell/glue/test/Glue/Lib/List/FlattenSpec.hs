@@ -12,42 +12,42 @@ spec = describe "Glue.Lib.List.Flatten (Test flatten function)" do
         result <- runEvalSimple (Flatten.flatten args) []
         case result of
             Left err -> expectationFailure $ "Flatten failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Integer 1, Integer 2, Integer 3, Integer 4]
+            Right (res, _) -> res `shouldBe` List [Integer 1, Integer 2, Integer 3, Integer 4]
 
     it "flattens deeply nested lists" do
         let args = [List [List [List [Integer 1], Integer 2], Integer 3]]
         result <- runEvalSimple (Flatten.flatten args) []
         case result of
             Left err -> expectationFailure $ "Flatten failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Integer 1, Integer 2, Integer 3]
+            Right (res, _) -> res `shouldBe` List [Integer 1, Integer 2, Integer 3]
 
     it "flattens list with mixed elements" do
         let args = [List [Integer 1, List [Integer 2, Integer 3], Integer 4]]
         result <- runEvalSimple (Flatten.flatten args) []
         case result of
             Left err -> expectationFailure $ "Flatten failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Integer 1, Integer 2, Integer 3, Integer 4]
+            Right (res, _) -> res `shouldBe` List [Integer 1, Integer 2, Integer 3, Integer 4]
 
     it "flattens empty list" do
         let args = [List []]
         result <- runEvalSimple (Flatten.flatten args) []
         case result of
             Left err -> expectationFailure $ "Flatten failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List []
+            Right (res, _) -> res `shouldBe` List []
 
     it "flattens list with empty sublists" do
         let args = [List [List [], Integer 1, List []]]
         result <- runEvalSimple (Flatten.flatten args) []
         case result of
             Left err -> expectationFailure $ "Flatten failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Integer 1]
+            Right (res, _) -> res `shouldBe` List [Integer 1]
 
     it "flattens single element list" do
         let args = [List [Integer 42]]
         result <- runEvalSimple (Flatten.flatten args) []
         case result of
             Left err -> expectationFailure $ "Flatten failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Integer 42]
+            Right (res, _) -> res `shouldBe` List [Integer 42]
 
     it "fails on non-list argument" do
         let args = [Integer 42]

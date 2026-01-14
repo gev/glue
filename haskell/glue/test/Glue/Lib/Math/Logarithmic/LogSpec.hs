@@ -14,7 +14,7 @@ spec = describe "Glue.Lib.Math.Logarithmic.Log (Test log function)" do
             result <- runEvalSimple (Log.log args) []
             case result of
                 Left err -> expectationFailure $ "Log failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Float 0
+                Right (res, _) -> res `shouldBe` Float 0
 
         it "returns log(e, e) = 1" do
             let e = exp (1.0 :: Double)
@@ -22,7 +22,7 @@ spec = describe "Glue.Lib.Math.Logarithmic.Log (Test log function)" do
             result <- runEvalSimple (Log.log args) []
             case result of
                 Left err -> expectationFailure $ "Log failed: " <> show err
-                Right (res, _, _) -> case res of
+                Right (res, _) -> case res of
                     Float n -> n `shouldSatisfy` (\x -> abs (x - 1) < 1e-10)
                     _ -> expectationFailure "Expected a number"
 
@@ -33,7 +33,7 @@ spec = describe "Glue.Lib.Math.Logarithmic.Log (Test log function)" do
             result <- runEvalSimple (Log.log args) []
             case result of
                 Left err -> expectationFailure $ "Log failed: " <> show err
-                Right (res, _, _) -> case res of
+                Right (res, _) -> case res of
                     Float n -> n `shouldSatisfy` (\x -> abs (x - 2) < 1e-10)
                     _ -> expectationFailure "Expected a number"
 
@@ -42,21 +42,21 @@ spec = describe "Glue.Lib.Math.Logarithmic.Log (Test log function)" do
             result <- runEvalSimple (Log.log args) []
             case result of
                 Left err -> expectationFailure $ "Log failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Float 2
+                Right (res, _) -> res `shouldBe` Float 2
 
         it "returns log(8, 2) = 3" do
             let args = [Integer 8, Integer 2]
             result <- runEvalSimple (Log.log args) []
             case result of
                 Left err -> expectationFailure $ "Log failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Float 3
+                Right (res, _) -> res `shouldBe` Float 3
 
         it "returns -Infinity for zero value" do
             let args = [Integer 0, Integer 10]
             result <- runEvalSimple (Log.log args) []
             case result of
                 Left err -> expectationFailure $ "Log failed: " <> show err
-                Right (res, _, _) -> case res of
+                Right (res, _) -> case res of
                     Float f | f == (-1 / 0) -> f `shouldBe` (-1 / 0)
                     _ -> expectationFailure "Expected -Infinity"
 
@@ -65,7 +65,7 @@ spec = describe "Glue.Lib.Math.Logarithmic.Log (Test log function)" do
             result <- runEvalSimple (Log.log args) []
             case result of
                 Left err -> expectationFailure $ "Log failed: " <> show err
-                Right (res, _, _) -> case res of
+                Right (res, _) -> case res of
                     Float f | isNaN f -> f `shouldSatisfy` isNaN
                     _ -> expectationFailure "Expected NaN"
 
@@ -74,7 +74,7 @@ spec = describe "Glue.Lib.Math.Logarithmic.Log (Test log function)" do
             result <- runEvalSimple (Log.log args) []
             case result of
                 Left err -> expectationFailure $ "Log failed: " <> show err
-                Right (res, _, _) -> case res of
+                Right (res, _) -> case res of
                     Float f | f == 0 && (1 / f) < 0 -> f `shouldBe` (-0.0)
                     _ -> expectationFailure "Expected -0.0"
 
@@ -83,7 +83,7 @@ spec = describe "Glue.Lib.Math.Logarithmic.Log (Test log function)" do
             result <- runEvalSimple (Log.log args) []
             case result of
                 Left err -> expectationFailure $ "Log failed: " <> show err
-                Right (res, _, _) -> case res of
+                Right (res, _) -> case res of
                     Float f | isNaN f -> f `shouldSatisfy` isNaN
                     _ -> expectationFailure "Expected NaN"
 
@@ -92,7 +92,7 @@ spec = describe "Glue.Lib.Math.Logarithmic.Log (Test log function)" do
             result <- runEvalSimple (Log.log args) []
             case result of
                 Left err -> expectationFailure $ "Log failed: " <> show err
-                Right (res, _, _) -> case res of
+                Right (res, _) -> case res of
                     Float f | f == (1 / 0) -> f `shouldBe` (1 / 0)
                     _ -> expectationFailure "Expected Infinity"
 
