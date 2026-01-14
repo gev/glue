@@ -38,8 +38,6 @@ void main() {
 
     test('runEvalSimple evaluates literals', () async {
       final result = await runEvalSimple(eval(IrInteger(123)), env);
-
-      expect(result.isRight, isTrue);
       result.match((error) => fail('Should not be left: $error'), (value) {
         final (resultValue, runtime) = value;
         expect(resultValue, equals(IrInteger(123)));
@@ -48,8 +46,6 @@ void main() {
 
     test('runEvalSimple evaluates symbols', () async {
       final result = await runEvalSimple(eval(IrSymbol('x')), env);
-
-      expect(result.isRight, isTrue);
       result.match((error) => fail('Should not be left: $error'), (value) {
         final (resultValue, runtime) = value;
         expect(resultValue, equals(IrInteger(42)));
@@ -59,8 +55,6 @@ void main() {
     test('runEvalSimple evaluates function calls', () async {
       final call = IrList([IrSymbol('add'), IrSymbol('x'), IrInteger(8)]);
       final result = await runEvalSimple(eval(call), env);
-
-      expect(result.isRight, isTrue);
       result.match((error) => fail('Should not be left: $error'), (value) {
         final (resultValue, runtime) = value;
         expect(resultValue, equals(IrInteger(50))); // 42 + 8 = 50
@@ -80,8 +74,6 @@ void main() {
     test('runEvalSimple works with custom Eval actions', () async {
       final action = getEnv().map((env) => env.length);
       final result = await runEvalSimple(action, env);
-
-      expect(result.isRight, isTrue);
       result.match((error) => fail('Should not be left: $error'), (value) {
         final (frameCount, runtime) = value;
         expect(frameCount, equals(1)); // One frame in environment

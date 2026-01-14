@@ -33,7 +33,6 @@ void main() {
       const code =
           '(try (error "test-error" "hello") (catch "test-error" (lambda (err) err)))';
       final result = await runCode(code);
-      expect(result.isRight, isTrue);
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrString('hello'))),
@@ -43,7 +42,6 @@ void main() {
     test('returns normal value when no exception', () async {
       const code = '(try 42 (catch "any-error" (lambda (err) "caught")))';
       final result = await runCode(code);
-      expect(result.isRight, isTrue);
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrInteger(42))),
@@ -61,7 +59,6 @@ void main() {
       const code =
           '(try (error test-error "hello") (catch test-error (lambda (err) err)))';
       final result = await runCode(code);
-      expect(result.isRight, isTrue);
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrString('hello'))),
@@ -72,7 +69,6 @@ void main() {
       const code =
           '(try (error test-error 123) (catch test-error (lambda (err) err)))';
       final result = await runCode(code);
-      expect(result.isRight, isTrue);
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrInteger(123))),
@@ -83,7 +79,6 @@ void main() {
       const code =
           '(try (error "second-error" "second") (catch "first-error" (lambda (err) "first")) (catch "second-error" (lambda (err) err)))';
       final result = await runCode(code);
-      expect(result.isRight, isTrue);
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrString('second'))),
@@ -94,7 +89,6 @@ void main() {
       const code =
           '(try (error test-error "caught") (catch test-error (lambda (err) err)) (catch test-error (lambda (err) "second")))';
       final result = await runCode(code);
-      expect(result.isRight, isTrue);
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrString('caught'))),

@@ -58,7 +58,6 @@ void main() {
 
     test('evalSymbol looks up variables', () async {
       final result = await runEval(evalSymbol('x'), runtime);
-      expect(result.isRight, isTrue);
       result.match((error) => fail('Should not be left: $error'), (value) {
         final (result, runtime) = value;
         expect(result, equals(IrInteger(42)));
@@ -86,7 +85,6 @@ void main() {
     test('evalList creates literal lists', () async {
       final listIr = IrList([IrInteger(1), IrInteger(2), IrInteger(3)]);
       final result = await runEval(eval(listIr), runtime);
-      expect(result.isRight, isTrue);
       result.match((error) => fail('Should not be left: $error'), (value) {
         final (result, runtime) = value;
         expect(result, isA<IrList>());
@@ -101,9 +99,7 @@ void main() {
     test('evalList evaluates function calls', () async {
       // Test calling the 'add' function: (add x 8) should equal 50
       final callIr = IrList([IrSymbol('add'), IrSymbol('x'), IrInteger(8)]);
-
       final result = await runEval(eval(callIr), runtime);
-      expect(result.isRight, isTrue);
       result.match((error) => fail('Should not be left: $error'), (value) {
         final (result, runtime) = value;
         expect(result, equals(IrInteger(50))); // 42 + 8 = 50
@@ -116,9 +112,7 @@ void main() {
         'b': IrSymbol('x'), // Should evaluate to 42
         'c': IrString('literal'),
       });
-
       final result = await runEval(eval(objIr), runtime);
-      expect(result.isRight, isTrue);
       result.match((error) => fail('Should not be left: $error'), (value) {
         final (result, runtime) = value;
         expect(result, isA<IrObject>());
@@ -145,12 +139,9 @@ void main() {
       final obj = IrObject({'nested': IrInteger(99)});
       final envWithObj = defineVar('obj', obj, runtime.env);
       final runtimeWithObj = runtime.copyWith(env: envWithObj);
-
       // Access obj.nested
       final dottedIr = IrDottedSymbol(['obj', 'nested']);
       final result = await runEval(eval(dottedIr), runtimeWithObj);
-
-      expect(result.isRight, isTrue);
       result.match((error) => fail('Should not be left: $error'), (value) {
         final (result, runtime) = value;
         expect(result, equals(IrInteger(99)));
@@ -180,11 +171,8 @@ void main() {
         IrList([IrSymbol('add'), IrSymbol('a'), IrInteger(1)]),
         runtime.env,
       );
-
       // Apply it: ((lambda (a) (+ a 1)) 10) should equal 11
       final result = await runEval(apply(closure, [IrInteger(10)]), runtime);
-
-      expect(result.isRight, isTrue);
       result.match((error) => fail('Should not be left: $error'), (value) {
         final (result, runtime) = value;
         expect(result, equals(IrInteger(11))); // 10 + 1 = 11

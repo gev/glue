@@ -20,8 +20,6 @@ void main() {
       test('defines a variable in the environment', () async {
         final args = [IrSymbol('x'), IrInteger(42)];
         final result = await runEval(def(args), runtime);
-
-        expect(result.isRight, isTrue);
         result.match((error) => fail('Def failed: $error'), (value) {
           final (res, runtime) = value;
           expect(res, equals(IrVoid()));
@@ -55,8 +53,6 @@ void main() {
           IrList([IrSymbol('*'), IrSymbol('x'), IrSymbol('x')]),
         ];
         final result = await runEval(def(args), runtime);
-
-        expect(result.isRight, isTrue);
         result.match((error) => fail('Def failed: $error'), (value) {
           final (res, runtime) = value;
           // Should return the closure
@@ -81,8 +77,6 @@ void main() {
           IrList([IrSymbol('+'), IrSymbol('x'), IrSymbol('y')]),
         ];
         final result = await runEval(def(args), runtime);
-
-        expect(result.isRight, isTrue);
         result.match((error) => fail('Def failed: $error'), (value) {
           final (res, runtime) = value;
           // Should return the closure
@@ -108,8 +102,6 @@ void main() {
           IrList([IrSymbol('*'), IrSymbol('x'), IrInteger(2)]),
         ];
         final result = await runEval(def(args), runtime);
-
-        expect(result.isRight, isTrue);
         result.match((error) => fail('Def failed: $error'), (value) {
           final (res, runtime) = value;
           // Should return the closure

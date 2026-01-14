@@ -17,8 +17,6 @@ void main() {
         ];
 
         final result = await runEval(lambda(args), testRuntime);
-
-        expect(result.isRight, isTrue);
         result.match((error) => fail('Lambda failed: $error'), (value) {
           final (res, runtime) = value;
           expect(res, isA<IrClosure>());
@@ -38,10 +36,7 @@ void main() {
       test('creates a closure with no parameters', () async {
         final args = [IrList([]), IrInteger(42)];
         final runtime = Runtime.initial(fromList([]));
-
         final result = await runEval(lambda(args), runtime);
-
-        expect(result.isRight, isTrue);
         result.match((error) => fail('Lambda failed: $error'), (value) {
           final (res, runtime) = value;
           expect(res, isA<IrClosure>());

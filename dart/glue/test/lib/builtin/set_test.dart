@@ -19,10 +19,7 @@ void main() {
         final initialEnv = fromList([('x', IrInteger(10))]);
         final testRuntime = Runtime.initial(initialEnv);
         final args = [IrSymbol('x'), IrInteger(20)];
-
         final result = await runEval(set(args), testRuntime);
-
-        expect(result.isRight, isTrue);
         result.match((error) => fail('Set failed: $error'), (value) {
           final (res, runtime) = value;
           expect(res, equals(IrVoid()));
@@ -48,14 +45,10 @@ void main() {
         final initialEnv = fromList([('obj', obj)]);
         final testRuntime = Runtime.initial(initialEnv);
         final args = [IrSymbol('obj.b'), IrInteger(2)];
-
         final result = await runEval(set(args), testRuntime);
-
-        expect(result.isRight, isTrue);
         result.match((error) => fail('Set failed: $error'), (value) {
           final (res, runtime) = value;
           expect(res, equals(IrVoid()));
-
           final lookupResult = lookupVar('obj', runtime.env);
           expect(lookupResult.isRight, isTrue);
           lookupResult.match((error) => fail('Lookup failed: $error'), (obj) {
