@@ -39,14 +39,14 @@ void main() {
     });
 
     test('eval literals returns themselves', () async {
-      final intResult = await eval(IrInteger(123)).runEval(runtime);
+      final intResult = await runEval(eval(IrInteger(123)), runtime);
       expect(intResult.isRight, isTrue);
       intResult.fold(
         (error) => fail('Should not be left'),
         (tuple) => expect(tuple.$1, equals(IrInteger(123))),
       );
 
-      final stringResult = await eval(IrString('world')).runEval(runtime);
+      final stringResult = await runEval(eval(IrString('world')), runtime);
       expect(stringResult.isRight, isTrue);
       stringResult.fold(
         (error) => fail('Should not be left'),
@@ -55,14 +55,14 @@ void main() {
     });
 
     test('evalSymbol looks up variables', () async {
-      final result = await evalSymbol('x').runEval(runtime);
+      final result = await runEval(evalSymbol('x'), runtime);
       expect(result.isRight, isTrue);
       result.fold(
         (error) => fail('Should not be left'),
         (tuple) => expect(tuple.$1, equals(IrInteger(42))),
       );
 
-      final stringResult = await evalSymbol('y').runEval(runtime);
+      final stringResult = await runEval(evalSymbol('y'), runtime);
       expect(stringResult.isRight, isTrue);
       stringResult.fold(
         (error) => fail('Should not be left'),
@@ -71,7 +71,7 @@ void main() {
     });
 
     test('evalSymbol throws error for unbound variables', () async {
-      final result = await evalSymbol('nonexistent').runEval(runtime);
+      final result = await runEval(evalSymbol('nonexistent'), runtime);
       expect(result.isLeft, isTrue);
       result.fold(
         (error) => expect(error.exception.symbol, equals('unbound-variable')),
@@ -81,7 +81,7 @@ void main() {
 
     test('evalList creates literal lists', () async {
       final listIr = IrList([IrInteger(1), IrInteger(2), IrInteger(3)]);
-      final result = await eval(listIr).runEval(runtime);
+      final result = await runEval(eval(listIr), runtime);
       expect(result.isRight, isTrue);
       result.fold((error) => fail('Should not be left'), (tuple) {
         expect(tuple.$1, isA<IrList>());
@@ -97,7 +97,7 @@ void main() {
       // Test calling the 'add' function: (add x 8) should equal 50
       final callIr = IrList([IrSymbol('add'), IrSymbol('x'), IrInteger(8)]);
 
-      final result = await eval(callIr).runEval(runtime);
+      final result = await runEval(eval(callIr), runtime);
       expect(result.isRight, isTrue);
       result.fold(
         (error) => fail('Should not be left'),
@@ -112,7 +112,7 @@ void main() {
         'c': IrString('literal'),
       });
 
-      final result = await eval(objIr).runEval(runtime);
+      final result = await runEval(eval(objIr), runtime);
       expect(result.isRight, isTrue);
       result.fold((error) => fail('Should not be left'), (tuple) {
         expect(tuple.$1, isA<IrObject>());
@@ -132,7 +132,7 @@ void main() {
           IrInteger(100),
         ]);
 
-        final result = await eval(defCall).runEval(runtime);
+        final result = await runEval(eval(defCall), runtime);
         expect(result.isLeft, isTrue);
         result.fold(
           (error) => expect(error.exception.symbol, equals('unbound-variable')),
@@ -149,7 +149,7 @@ void main() {
 
       // Access obj.nested
       final dottedIr = IrDottedSymbol(['obj', 'nested']);
-      final result = await eval(dottedIr).runEval(runtimeWithObj);
+      final result = await runEval(eval(dottedIr), runtimeWithObj);
 
       expect(result.isRight, isTrue);
       result.fold(
@@ -165,7 +165,7 @@ void main() {
 
       // Try to access obj.missing
       final dottedIr = IrDottedSymbol(['obj', 'missing']);
-      final result = await eval(dottedIr).runEval(runtimeWithObj);
+      final result = await runEval(eval(dottedIr), runtimeWithObj);
 
       expect(result.isLeft, isTrue);
       result.fold(
@@ -183,7 +183,7 @@ void main() {
       );
 
       // Apply it: ((lambda (a) (+ a 1)) 10) should equal 11
-      final result = await apply(closure, [IrInteger(10)]).runEval(runtime);
+      final result = await runEval(apply(closure, [IrInteger(10)]), runtime);
 
       expect(result.isRight, isTrue);
       result.fold(
@@ -201,9 +201,10 @@ void main() {
       );
 
       // Partially apply: ((lambda (a b) (+ a b)) 5) should return a closure
-      final partialResult = await apply(closure, [
-        IrInteger(5),
-      ]).runEval(runtime);
+      final partialResult = await runEval(
+        apply(closure, [IrInteger(5)]),
+        runtime,
+      );
 
       expect(partialResult.isRight, isTrue);
       partialResult.fold((error) => fail('Should not be left'), (tuple) {

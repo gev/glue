@@ -17,39 +17,22 @@ class Eval<T> {
 
   const Eval(this._run);
 
-  /// Run the evaluation with initial runtime (matches Haskell runEval)
-  FutureOr<Either<EvalError, (T, Runtime)>> runEval(Runtime runtime) =>
-      _run(runtime);
-
   /// Create a successful evaluation
   static Eval<T> pure<T>(T value) => Eval((runtime) => Right((value, runtime)));
 
-  /// Lift an IO operation into the Eval monad
-  static Eval<T> liftIO<T>(FutureOr<T> io) => Eval((runtime) async {
-    try {
-      final result = await io;
-      return Right((result, runtime));
-    } catch (e) {
-      // Convert exceptions to EvalError
-      final exception = RuntimeException('io-error', IrString(e.toString()));
-      final error = EvalError(runtime.context, exception);
-      return Left(error);
-    }
-  });
-
   /// Map over the result
   Eval<U> map<U>(U Function(T) f) => Eval((runtime) async {
-    final result = await runEval(runtime);
+    final result = await runEval(this, runtime);
     return result.mapRight((tuple) => (f(tuple.$1), tuple.$2));
   });
 
   /// FlatMap (bind) operation
   Eval<U> flatMap<U>(Eval<U> Function(T) f) => Eval((runtime) async {
-    final result = await runEval(runtime);
+    final result = await runEval(this, runtime);
     if (result is Left<EvalError, (T, Runtime)>) {
       return Left<EvalError, (U, Runtime)>(result.value);
     } else if (result is Right<EvalError, (T, Runtime)>) {
-      return f(result.value.$1).runEval(result.value.$2);
+      return runEval(f(result.value.$1), result.value.$2);
     } else {
       throw StateError('Either should be Left or Right');
     }
@@ -59,7 +42,7 @@ class Eval<T> {
   Eval<U> transform<U>(
     Either<EvalError, (U, Runtime)> Function(T, Runtime) f,
   ) => Eval((runtime) async {
-    final result = await runEval(runtime);
+    final result = await runEval(this, runtime);
     if (result is Left<EvalError, (T, Runtime)>) {
       return Left<EvalError, (U, Runtime)>(result.value);
     } else if (result is Right<EvalError, (T, Runtime)>) {
@@ -69,6 +52,25 @@ class Eval<T> {
     }
   });
 }
+
+/// Run the evaluation with initial runtime (matches Haskell runEval)
+FutureOr<Either<EvalError, (T, Runtime)>> runEval<T>(
+  Eval<T> eval,
+  Runtime runtime,
+) => eval._run(runtime);
+
+/// Lift an IO operation into the Eval monad
+Eval<T> liftIO<T>(FutureOr<T> io) => Eval((runtime) async {
+  try {
+    final result = await io;
+    return Right((result, runtime));
+  } catch (e) {
+    // Convert exceptions to EvalError
+    final exception = RuntimeException('io-error', IrString(e.toString()));
+    final error = EvalError(runtime.context, exception);
+    return Left(error);
+  }
+});
 
 /// Runtime state access functions
 
@@ -156,7 +158,7 @@ Eval<void> updateVarEval(String name, Ir value) => Eval((runtime) {
 Eval<T> withEnv<T>(Env tempEnv, Eval<T> action) => Eval((runtime) async {
   final originalEnv = runtime.env;
   final tempRuntime = runtime.copyWith(env: tempEnv);
-  final result = await action.runEval(tempRuntime);
+  final result = await runEval(action, tempRuntime);
   return result.mapRight(
     (tuple) => (tuple.$1, tuple.$2.copyWith(env: originalEnv)),
   );
@@ -199,7 +201,7 @@ FutureOr<Either<EvalError, (T, Runtime)>> runEvalSimple<T>(
   Env initialEnv,
 ) async {
   final initialRuntime = Runtime.initial(initialEnv);
-  return action.runEval(initialRuntime);
+  return runEval(action, initialRuntime);
 }
 
 /// ============================================================================
