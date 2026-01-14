@@ -46,10 +46,13 @@ class Eval<T> {
   /// FlatMap (bind) operation
   Eval<U> flatMap<U>(Eval<U> Function(T) f) => Eval((runtime) async {
     final result = await runEval(runtime);
-    return result.fold(
-      (error) => Left<EvalError, (U, Runtime)>(error),
-      (value) => f(value.$1).runEval(value.$2),
-    );
+    if (result is Left<EvalError, (T, Runtime)>) {
+      return Left<EvalError, (U, Runtime)>(result.value);
+    } else if (result is Right<EvalError, (T, Runtime)>) {
+      return f(result.value.$1).runEval(result.value.$2);
+    } else {
+      throw StateError('Either should be Left or Right');
+    }
   });
 
   /// Transform the evaluation result
@@ -57,10 +60,13 @@ class Eval<T> {
     Either<EvalError, (U, Runtime)> Function(T, Runtime) f,
   ) => Eval((runtime) async {
     final result = await runEval(runtime);
-    return result.fold(
-      (error) => Left<EvalError, (U, Runtime)>(error),
-      (value) => f(value.$1, value.$2),
-    );
+    if (result is Left<EvalError, (T, Runtime)>) {
+      return Left<EvalError, (U, Runtime)>(result.value);
+    } else if (result is Right<EvalError, (T, Runtime)>) {
+      return f(result.value.$1, result.value.$2);
+    } else {
+      throw StateError('Either should be Left or Right');
+    }
   });
 }
 
@@ -140,10 +146,13 @@ Eval<void> defineVarEval(String name, Ir value) => Eval(
 /// Update a variable in current environment
 Eval<void> updateVarEval(String name, Ir value) => Eval((runtime) {
   final result = updateVar(name, value, runtime.env);
-  return result.fold(
-    (error) => Left(EvalError(runtime.context, error)),
-    (env) => Right(((), runtime.copyWith(env: env))),
-  );
+  if (result is Left<RuntimeException, Env>) {
+    return Left(EvalError(runtime.context, result.value));
+  } else if (result is Right<RuntimeException, Env>) {
+    return Right(((), runtime.copyWith(env: result.value)));
+  } else {
+    throw StateError('Either should be Left or Right');
+  }
 });
 
 /// Run evaluation with temporary environment
@@ -218,10 +227,13 @@ EvalIR eval(Ir ir) {
 EvalIR evalSymbol(String name) {
   return getEnv().flatMap((env) {
     final result = lookupVar(name, env);
-    return result.fold(
-      (error) => throwError(error),
-      (value) => EvalIR.pure(value),
-    );
+    if (result is Left<RuntimeException, Ir>) {
+      return throwError(result.value);
+    } else if (result is Right<RuntimeException, Ir>) {
+      return EvalIR.pure(result.value);
+    } else {
+      throw StateError('Either should be Left or Right');
+    }
   });
 }
 
@@ -249,12 +261,9 @@ EvalIR _evalWithPrefixes(List<String> parts) {
       final prefixName = prefix.join('.');
       final result = lookupVar(prefixName, env);
 
-      if (result.isRight) {
+      if (result is Right<RuntimeException, Ir>) {
         // Found the prefix, now navigate the remaining parts
-        return result.fold(
-          (error) => throwError(error), // Should not happen
-          (value) => _evalNestedAccess(value, parts.sublist(prefix.length)),
-        );
+        return _evalNestedAccess(result.value, parts.sublist(prefix.length));
       } else {
         // Continue to next prefix
         continue;
@@ -329,15 +338,18 @@ EvalIR _evalSymbolCall(String name, List<Ir> args) {
     getEnv().flatMap((env) {
       final result = lookupVar(name, env);
 
-      return result.fold(
-        (error) => throwError(error),
-        (value) => switch (_isSpecialForm(name)) {
+      if (result is Left<RuntimeException, Ir>) {
+        return throwError(result.value);
+      } else if (result is Right<RuntimeException, Ir>) {
+        return switch (_isSpecialForm(name)) {
           true => _evalSpecialForm(name, args),
           false => sequenceAll(
             args.map(eval).toList(),
-          ).flatMap((evaluatedArgs) => apply(value, evaluatedArgs)),
-        },
-      );
+          ).flatMap((evaluatedArgs) => apply(result.value, evaluatedArgs)),
+        };
+      } else {
+        throw StateError('Either should be Left or Right');
+      }
     }),
   );
 }
