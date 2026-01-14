@@ -1,4 +1,3 @@
-import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:glue/src/env.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/eval/exception.dart';
@@ -65,14 +64,9 @@ Eval<Ir> _evaluateAndCacheModule(
 ) {
   // Get root environment for consistent evaluation
   return getRootEnv().flatMap((rootEnv) {
-    // Create isolated environment with just builtins
-    final isolatedEnv = rootEnv.isNotEmpty
-        ? IList<Frame>([rootEnv.last])
-        : IList<Frame>([IMap<String, Ir>()]);
-
     return getRuntime().flatMap((currentRuntime) {
       // Create isolated runtime
-      final isolatedRuntime = currentRuntime.copyWith(env: isolatedEnv);
+      final isolatedRuntime = currentRuntime.copyWith(env: rootEnv);
 
       // Evaluate module body in isolation
       return liftIO(
