@@ -5,7 +5,7 @@ import Data.Text qualified as T
 import Glue.Env qualified as E
 import Glue.Eval (Eval, Runtime (..), eval, getCache, getEnv, getRegistry, getRootEnv, getRuntime, liftIO, putCache, putEnv, runEval, throwError)
 import Glue.Eval.Error (EvalError (..))
-import Glue.Eval.Exception (moduleNotFound, wrongArgumentType)
+import Glue.Eval.Exception (moduleNotFound, undefinedExport, wrongArgumentType)
 import Glue.IR (IR (..))
 import Glue.Module (ImportedModule (..), RegisteredModule (..))
 import Glue.Module.Cache qualified as Cache
@@ -49,25 +49,25 @@ importModule modulePath = do
                     currentState <- Glue.Eval.getRuntime
 
                     -- Create isolated runtime for module evaluation
-                    let isolatedState = currentState{Glue.Eval.env = isolatedEnv}
+                    let isolatedRuntime = currentState{env = isolatedEnv}
 
                     -- Evaluate module in complete isolation (doesn't affect current runtime)
-                    moduleEvalResult <- liftIO $ runEval (mapM eval mod.body) isolatedState
+                    moduleEvalResult <- liftIO $ runEval (mapM eval mod.body) isolatedRuntime
 
                     -- Extract exported symbols from isolated evaluation
                     exportedValues <- case moduleEvalResult of
                         Left (EvalError _ innerErr) -> throwError innerErr
-                        Right (_, finalIsolatedState) -> do
-                            let moduleEnv = Glue.Eval.env finalIsolatedState
-                            pure $
-                                Map.fromList
-                                    [ ( exportName
-                                      , case E.lookupVar exportName moduleEnv of
-                                            Right val -> val
-                                            Left _ -> error $ "Exported symbol not defined: " <> T.unpack exportName
-                                      )
-                                    | exportName <- mod.exports
-                                    ]
+                        Right (_, finalIsolatedRuntime) -> do
+                            let moduleEnv = env finalIsolatedRuntime
+                            exportPairs <-
+                                mapM
+                                    ( \exportName ->
+                                        case E.lookupVar exportName moduleEnv of
+                                            Right val -> pure (exportName, val)
+                                            Left _ -> throwError $ undefinedExport exportName
+                                    )
+                                    mod.exports
+                            pure $ Map.fromList exportPairs
 
                     -- Create imported module record
                     let importedModule =
