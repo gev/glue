@@ -62,54 +62,20 @@ Modules are declared using the `module` special form:
 ;; (+ pi x)
 ```
 
-### Dual-Access Mechanism
-
-When a module is imported, Glue integrates its exported symbols into the **current local environment frame** through a **dual-access mechanism**:
-
-1. **Direct Symbol Access**: Exported symbols become direct variables in the importing scope
-2. **Module Object Access**: The module name provides access to the complete module namespace
-
 ### Direct Symbol Integration
 
-Imported symbols are merged directly into the current environment frame:
+When a module is imported, its exported symbols are merged **directly** into the current local environment frame:
 
 ```closure
 (import math)
 (+ pi 1)        ;; 'pi' is now accessible as a direct variable
 ```
 
-### Module Object for Hierarchical Access
-
-The complete module is stored as a **Module object** under its name:
-
-```closure
-(import math.const)
-math.const.pi    ;; Access through module namespace
-```
-
-### Dotted Symbol Resolution
-
-The environment supports **hierarchical symbol resolution** for dotted access:
-
-```closure
-object.property.field      ;; Nested object access
-module.submodule.symbol    ;; Deep module access
-module.submodule.symbol.object.property.field
-```
-
-**Environment Lookup:**
-For `DottedSymbol ["base", "prop1", "prop2", ...]`:
-
-1. **Always** search `"base"` in the environment first
-2. If found, delegate property access navigation to evaluation
-3. See [Evaluation](../evaluation/) for complete dotted symbol resolution algorithm
-
 ### Features
 
 - **Direct access**: Imported symbols available without qualification
-- **Dotted access**: Hierarchical access through module namespaces
 - **Lexical scoping**: Imports work at any nesting level
-- **No conflicts**: Multiple modules can be imported safely
+- **No conflicts**: Multiple modules can be imported safely (local scope)
 - **Caching**: Subsequent imports of same module use cached results
 
 ## Architecture
@@ -193,7 +159,7 @@ When `(import module.name)` is evaluated:
    - Evaluate module body forms
    - Extract exported symbol values
    - Cache results in Imported Cache
-3. **Environment merge**: Add exported symbols and module object to current scope
+3. **Environment merge**: Add exported symbols directly to current scope
 
 ### Environment Frame Structure After Import
 
@@ -202,10 +168,10 @@ Before Import:
 [user_vars, builtins]
 
 After Import:
-[imported_symbols, module_objects, user_vars, builtins]
+[imported_symbols, user_vars, builtins]
 ```
 
-Imported modules create new frames containing both direct symbol access and module object references, maintaining clean separation while providing flexible access patterns.
+Imported symbols are merged directly into the current environment frame, providing immediate access without qualification.
 
 ### Symbol Resolution
 
