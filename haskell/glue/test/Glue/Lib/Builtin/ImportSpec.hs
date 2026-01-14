@@ -1,4 +1,4 @@
-module Glue.Module.ImportSpec where
+module Glue.Lib.Builtin.ImportSpec where
 
 import Data.Map.Strict qualified as Map
 import Glue.Env qualified as E

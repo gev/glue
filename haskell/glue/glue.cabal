@@ -145,6 +145,7 @@ test-suite glue-test
     Glue.Lib.Bool.WhenSpec
     Glue.Lib.Bool.WhileSpec
     Glue.Lib.Builtin.DefSpec
+    Glue.Lib.Builtin.ImportSpec
     Glue.Lib.Builtin.LambdaSpec
     Glue.Lib.Builtin.SetSpec
     Glue.Lib.Builtin.TrySpec
@@ -195,7 +196,6 @@ test-suite glue-test
     Glue.Lib.Math.Utility.RoundSpec
     Glue.Lib.Math.Utility.TruncSpec
     Glue.Module.CacheSpec
-    Glue.Module.ImportSpec
     Glue.Module.RegistrationSpec
     Glue.Module.RegistrySpec
     Glue.ParserSpec
