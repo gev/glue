@@ -23,9 +23,6 @@ class Eval<T> {
   /// Create a successful evaluation
   static Eval<T> pure<T>(T value) => Eval((runtime) => Right((value, runtime)));
 
-  /// Create a failed evaluation
-  static Eval<T> error<T>(EvalError error) => Eval((runtime) => Left(error));
-
   /// Lift an IO operation into the Eval monad
   static Eval<T> liftIO<T>(FutureOr<T> io) => Eval((runtime) async {
     try {

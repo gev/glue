@@ -21,17 +21,17 @@ void main() {
       });
     });
 
-    test('Eval.error creates failed evaluation', () async {
+    test('throwError creates failed evaluation', () async {
       final exception = unboundVariable('test');
-      final error = EvalError([], exception);
-      final eval = Eval.error<int>(error);
+      final expectedError = EvalError([], exception);
+      final eval = throwError<int>(exception);
       final runtime = Runtime.initial(fromList([]));
 
       final result = await eval.runEval(runtime);
 
       expect(result.isLeft, isTrue);
       result.fold(
-        (err) => expect(err, equals(error)),
+        (err) => expect(err, equals(expectedError)),
         (tuple) => fail('Should not be right'),
       );
     });
