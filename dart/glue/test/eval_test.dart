@@ -241,10 +241,10 @@ void main() {
     test('backslash alias works like lambda (lexical shadowing)', () async {
       final code = '((( \\ (x) ( \\ (y) x)) 100) 1)';
       final result = await runCode(code);
-      // result.match(
-      //   (error) => fail('Should not be left: $error'),
-      //   (value) => expect(value, equals(IrInteger(100))),
-      // );
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrInteger(100))),
+      );
     });
 
     test('backslash alias works like lambda (user-defined function)', () async {
@@ -279,7 +279,7 @@ void main() {
     });
 
     test('backslash alias works like lambda (direct call)', () async {
-      final code = '(\\ (a b) ((a) (b))) 1 2';
+      final code = '((\\ (a b) ((a) (b))) 1 2)';
       final result = await runCode(code);
       result.match(
         (error) => fail('Should not be left: $error'),
@@ -406,7 +406,7 @@ void main() {
     );
 
     test('function bodies with direct expressions work', () async {
-      final code = '(\\ (x y) x) 1 2';
+      final code = '((\\ (x y) x) 1 2)';
       final result = await runCode(code);
 
       result.match(
