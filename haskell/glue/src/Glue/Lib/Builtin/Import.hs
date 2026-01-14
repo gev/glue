@@ -42,8 +42,7 @@ importModule modulePath = do
                     rootEnv <- getRootEnv -- Initial env contains root builtins
 
                     -- Create isolated environment for module evaluation
-                    let builtinsFrame = last rootEnv -- Builtins are the bottom frame
-                    let isolatedEnv = E.pushFrame [builtinsFrame] -- [temp_frame, builtins]
+                    let isolatedEnv = [last rootEnv] -- Just builtins frame
 
                     -- Get current evaluation runtime for isolated evaluation
                     currentState <- Glue.Eval.getRuntime
