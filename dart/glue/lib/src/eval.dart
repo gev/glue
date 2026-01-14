@@ -508,3 +508,16 @@ Env _buildEnvWithBindings(Env env, List<(String, Ir)> bindings) {
   }
   return currentEnv;
 }
+
+/// Evaluate function body with implicit sequence semantics
+/// Mirrors Haskell evalBody exactly
+Eval<Ir> _evalBody(Ir body) {
+  return eval(body).flatMap((result) {
+    return switch (result) {
+      IrList(elements: final xs) => xs.isEmpty
+          ? Eval.pure(IrVoid())
+          : Eval.pure(xs.last),
+      _ => Eval.pure(result),
+    };
+  });
+}
