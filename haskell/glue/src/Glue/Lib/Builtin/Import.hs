@@ -38,17 +38,13 @@ importModule modulePath = do
                     pure Void
                 Nothing -> do
                     -- First import: evaluate module
-                    -- Get root environment for consistent evaluation
                     rootEnv <- getRootEnv -- Initial env contains root builtins
-
-                    -- Create isolated environment for module evaluation
-                    let isolatedEnv = [last rootEnv] -- Just builtins frame
 
                     -- Get current evaluation runtime for isolated evaluation
                     currentState <- Glue.Eval.getRuntime
 
                     -- Create isolated runtime for module evaluation
-                    let isolatedRuntime = currentState{env = isolatedEnv}
+                    let isolatedRuntime = currentState{env = rootEnv}
 
                     -- Evaluate module in complete isolation (doesn't affect current runtime)
                     moduleEvalResult <- liftIO $ runEval (mapM eval mod.body) isolatedRuntime
