@@ -24,19 +24,23 @@ class Eval<T> {
   /// Map over the result
   Eval<U> map<U>(U Function(T) f) => Eval((runtime) async {
     final result = await runEval(this, runtime);
-    return result.match(
-      (error) => Left<EvalError, (U, Runtime)>(error),
-      (value) => Right<EvalError, (U, Runtime)>((f(value.$1), value.$2)),
-    );
+    return result.match((error) => Left<EvalError, (U, Runtime)>(error), (
+      value,
+    ) {
+      final (result, runtime) = value;
+      return Right<EvalError, (U, Runtime)>((f(result), runtime));
+    });
   });
 
   /// FlatMap (bind) operation
   Eval<U> flatMap<U>(Eval<U> Function(T) f) => Eval((runtime) async {
     final result = await runEval(this, runtime);
-    return result.match(
-      (error) => Left<EvalError, (U, Runtime)>(error),
-      (value) => runEval(f(value.$1), value.$2),
-    );
+    return result.match((error) => Left<EvalError, (U, Runtime)>(error), (
+      value,
+    ) {
+      final (result, runtime) = value;
+      return runEval(f(result), runtime);
+    });
   });
 
   /// Transform the evaluation result
@@ -44,10 +48,12 @@ class Eval<T> {
     Either<EvalError, (U, Runtime)> Function(T, Runtime) f,
   ) => Eval((runtime) async {
     final result = await runEval(this, runtime);
-    return result.match(
-      (error) => Left<EvalError, (U, Runtime)>(error),
-      (value) => f(value.$1, value.$2),
-    );
+    return result.match((error) => Left<EvalError, (U, Runtime)>(error), (
+      value,
+    ) {
+      final (result, runtime) = value;
+      return f(result, runtime);
+    });
   });
 }
 
@@ -154,13 +160,13 @@ Eval<T> withEnv<T>(Env tempEnv, Eval<T> action) => Eval((runtime) async {
   final originalEnv = runtime.env;
   final tempRuntime = runtime.copyWith(env: tempEnv);
   final result = await runEval(action, tempRuntime);
-  return result.match(
-    (error) => Left<EvalError, (T, Runtime)>(error),
-    (value) => Right<EvalError, (T, Runtime)>((
-      value.$1,
-      value.$2.copyWith(env: originalEnv),
-    )),
-  );
+  return result.match((error) => Left<EvalError, (T, Runtime)>(error), (value) {
+    final (result, runtime) = value;
+    return Right<EvalError, (T, Runtime)>((
+      result,
+      runtime.copyWith(env: originalEnv),
+    ));
+  });
 });
 
 /// Run evaluation with additional context frame

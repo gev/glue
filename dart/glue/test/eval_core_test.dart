@@ -41,33 +41,37 @@ void main() {
     test('eval literals returns themselves', () async {
       final intResult = await runEval(eval(IrInteger(123)), runtime);
       expect(intResult.isRight, isTrue);
-      intResult.match(
-        (error) => fail('Should not be left: $error'),
-        (value) => expect(value.$1, equals(IrInteger(123))),
-      );
+      intResult.match((error) => fail('Should not be left: $error'), (value) {
+        final (result, runtime) = value;
+        expect(result, equals(IrInteger(123)));
+      });
 
       final stringResult = await runEval(eval(IrString('world')), runtime);
       expect(stringResult.isRight, isTrue);
-      stringResult.match(
-        (error) => fail('Should not be left: $error'),
-        (value) => expect(value.$1, equals(IrString('world'))),
-      );
+      stringResult.match((error) => fail('Should not be left: $error'), (
+        value,
+      ) {
+        final (result, runtime) = value;
+        expect(result, equals(IrString('world')));
+      });
     });
 
     test('evalSymbol looks up variables', () async {
       final result = await runEval(evalSymbol('x'), runtime);
       expect(result.isRight, isTrue);
-      result.match(
-        (error) => fail('Should not be left: $error'),
-        (value) => expect(value.$1, equals(IrInteger(42))),
-      );
+      result.match((error) => fail('Should not be left: $error'), (value) {
+        final (result, runtime) = value;
+        expect(result, equals(IrInteger(42)));
+      });
 
       final stringResult = await runEval(evalSymbol('y'), runtime);
       expect(stringResult.isRight, isTrue);
-      stringResult.match(
-        (error) => fail('Should not be left: $error'),
-        (value) => expect(value.$1, equals(IrString('hello'))),
-      );
+      stringResult.match((error) => fail('Should not be left: $error'), (
+        value,
+      ) {
+        final (result, runtime) = value;
+        expect(result, equals(IrString('hello')));
+      });
     });
 
     test('evalSymbol throws error for unbound variables', () async {
@@ -84,8 +88,9 @@ void main() {
       final result = await runEval(eval(listIr), runtime);
       expect(result.isRight, isTrue);
       result.match((error) => fail('Should not be left: $error'), (value) {
-        expect(value.$1, isA<IrList>());
-        final list = value.$1 as IrList;
+        final (result, runtime) = value;
+        expect(result, isA<IrList>());
+        final list = result as IrList;
         expect(list.elements.length, equals(3));
         expect(list.elements[0], equals(IrInteger(1)));
         expect(list.elements[1], equals(IrInteger(2)));
@@ -99,10 +104,10 @@ void main() {
 
       final result = await runEval(eval(callIr), runtime);
       expect(result.isRight, isTrue);
-      result.match(
-        (error) => fail('Should not be left: $error'),
-        (value) => expect(value.$1, equals(IrInteger(50))), // 42 + 8 = 50
-      );
+      result.match((error) => fail('Should not be left: $error'), (value) {
+        final (result, runtime) = value;
+        expect(result, equals(IrInteger(50))); // 42 + 8 = 50
+      });
     });
 
     test('evalObject evaluates properties', () async {
@@ -115,8 +120,9 @@ void main() {
       final result = await runEval(eval(objIr), runtime);
       expect(result.isRight, isTrue);
       result.match((error) => fail('Should not be left: $error'), (value) {
-        expect(value.$1, isA<IrObject>());
-        final obj = value.$1 as IrObject;
+        final (result, runtime) = value;
+        expect(result, isA<IrObject>());
+        final obj = result as IrObject;
         expect(obj.properties['a'], equals(IrInteger(1)));
         expect(obj.properties['b'], equals(IrInteger(42))); // x evaluated
         expect(obj.properties['c'], equals(IrString('literal')));
@@ -145,10 +151,10 @@ void main() {
       final result = await runEval(eval(dottedIr), runtimeWithObj);
 
       expect(result.isRight, isTrue);
-      result.match(
-        (error) => fail('Should not be left: $error'),
-        (value) => expect(value.$1, equals(IrInteger(99))),
-      );
+      result.match((error) => fail('Should not be left: $error'), (value) {
+        final (result, runtime) = value;
+        expect(result, equals(IrInteger(99)));
+      });
     });
 
     test('dotted symbols throw error for missing properties', () async {
@@ -179,10 +185,10 @@ void main() {
       final result = await runEval(apply(closure, [IrInteger(10)]), runtime);
 
       expect(result.isRight, isTrue);
-      result.match(
-        (error) => fail('Should not be left: $error'),
-        (value) => expect(value.$1, equals(IrInteger(11))), // 10 + 1 = 11
-      );
+      result.match((error) => fail('Should not be left: $error'), (value) {
+        final (result, runtime) = value;
+        expect(result, equals(IrInteger(11))); // 10 + 1 = 11
+      });
     });
 
     test('partial application works', () async {
@@ -203,8 +209,9 @@ void main() {
       partialResult.match((error) => fail('Should not be left: $error'), (
         value,
       ) {
-        expect(value.$1, isA<IrClosure>());
-        final partialClosure = value.$1 as IrClosure;
+        final (result, runtime) = value;
+        expect(result, isA<IrClosure>());
+        final partialClosure = result as IrClosure;
         expect(partialClosure.params, equals(['b'])); // One param left
       });
     });

@@ -49,8 +49,9 @@ void main() {
       expect(result.isRight, isTrue);
 
       result.match((error) => fail('Should not be left: $error'), (value) {
-        expect(value.$1, isA<IrClosure>());
-        final closure = value.$1 as IrClosure;
+        final (result, runtime) = value;
+        expect(result, isA<IrClosure>());
+        final closure = result as IrClosure;
         expect(closure.params, equals(['a', 'b']));
         expect(closure.body, isA<IrList>());
       });
@@ -69,7 +70,8 @@ void main() {
       result.match((error) => fail('Should not be left: $error'), (
         value,
       ) async {
-        final closure = value.$1 as IrClosure;
+        final (result, runtime) = value;
+        final closure = result as IrClosure;
         // Apply the closure: (closure 8) should equal 42 + 8 = 50
         final applyResult = await runEval(
           apply(closure, [IrInteger(8)]),
@@ -77,10 +79,12 @@ void main() {
         );
 
         expect(applyResult.isRight, isTrue);
-        applyResult.match(
-          (error) => fail('Should not be left: $error'),
-          (value) => expect(value.$1, equals(IrInteger(50))), // 42 + 8
-        );
+        applyResult.match((error) => fail('Should not be left: $error'), (
+          value,
+        ) {
+          final (result, runtime) = value;
+          expect(result, equals(IrInteger(50))); // 42 + 8
+        });
       });
     });
 
@@ -93,16 +97,19 @@ void main() {
       result.match((error) => fail('Should not be left: $error'), (
         value,
       ) async {
-        final closure = value.$1 as IrClosure;
+        final (result, runtime) = value;
+        final closure = result as IrClosure;
         expect(closure.params, isEmpty);
 
         // Apply the closure: (closure) should equal 123
         final applyResult = await runEval(apply(closure, []), runtime);
         expect(applyResult.isRight, isTrue);
-        applyResult.match(
-          (error) => fail('Should not be left: $error'),
-          (value) => expect(value.$1, equals(IrInteger(123))),
-        );
+        applyResult.match((error) => fail('Should not be left: $error'), (
+          value,
+        ) {
+          final (result, runtime) = value;
+          expect(result, equals(IrInteger(123)));
+        });
       });
     });
 
@@ -119,7 +126,8 @@ void main() {
       result.match((error) => fail('Should not be left: $error'), (
         value,
       ) async {
-        final closure = value.$1 as IrClosure;
+        final (result, runtime) = value;
+        final closure = result as IrClosure;
         expect(closure.params, equals(['x']));
 
         // Apply the closure: (closure 5) should equal 5 + 10 = 15
@@ -129,10 +137,12 @@ void main() {
         );
 
         expect(applyResult.isRight, isTrue);
-        applyResult.match(
-          (error) => fail('Should not be left: $error'),
-          (value) => expect(value.$1, equals(IrInteger(15))), // 5 + 10
-        );
+        applyResult.match((error) => fail('Should not be left: $error'), (
+          value,
+        ) {
+          final (result, runtime) = value;
+          expect(result, equals(IrInteger(15))); // 5 + 10
+        });
       });
     });
 

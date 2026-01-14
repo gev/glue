@@ -18,12 +18,21 @@ Env emptyEnv() => IList<Frame>();
 
 /// Create environment from list of bindings
 Env fromList(List<(String, Ir)> pairs) => IList<Frame>([
-  IMap<String, Ir>.fromEntries(pairs.map((e) => MapEntry(e.$1, e.$2))),
+  IMap<String, Ir>.fromEntries(
+    pairs.map((pair) {
+      final (key, value) = pair;
+      return MapEntry(key, value);
+    }),
+  ),
 ]);
 
 /// Create frame from list of bindings
-Frame frameFromList(List<(String, Ir)> pairs) =>
-    IMap<String, Ir>.fromEntries(pairs.map((e) => MapEntry(e.$1, e.$2)));
+Frame frameFromList(List<(String, Ir)> pairs) => IMap<String, Ir>.fromEntries(
+  pairs.map((pair) {
+    final (key, value) = pair;
+    return MapEntry(key, value);
+  }),
+);
 
 /// Create environment from single frame
 Env fromFrame(Frame frame) => IList<Frame>([frame]);

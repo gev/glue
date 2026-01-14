@@ -15,10 +15,10 @@ void main() {
       final result = await runEval(eval, runtime);
 
       expect(result.isRight, isTrue);
-      result.match(
-        (error) => fail('Should not be left: $error'),
-        (value) => expect(value.$1, equals(42)),
-      );
+      result.match((error) => fail('Should not be left: $error'), (value) {
+        final (result, runtime) = value;
+        expect(result, equals(42));
+      });
     });
 
     test('throwError creates failed evaluation', () async {
@@ -43,10 +43,10 @@ void main() {
       final result = await runEval(eval, runtime);
 
       expect(result.isRight, isTrue);
-      result.match(
-        (error) => fail('Should not be left: $error'),
-        (value) => expect(value.$1, equals(42)),
-      );
+      result.match((error) => fail('Should not be left: $error'), (value) {
+        final (result, runtime) = value;
+        expect(result, equals(42));
+      });
     });
 
     test('flatMap chains evaluations', () async {
@@ -56,10 +56,10 @@ void main() {
       final result = await runEval(eval, runtime);
 
       expect(result.isRight, isTrue);
-      result.match(
-        (error) => fail('Should not be left: $error'),
-        (value) => expect(value.$1, equals(42)),
-      );
+      result.match((error) => fail('Should not be left: $error'), (value) {
+        final (result, runtime) = value;
+        expect(result, equals(42));
+      });
     });
 
     test('Runtime state access functions work', () async {
@@ -69,29 +69,29 @@ void main() {
       // Test getEnv
       final getEnvResult = await runEval(getEnv(), runtime);
       expect(getEnvResult.isRight, isTrue);
-      getEnvResult.match(
-        (error) => fail('Should not be left: $error'),
-        (value) => expect(value.$1, equals(initialEnv)),
-      );
+      getEnvResult.match((error) => fail('Should not be left: $error'), (
+        value,
+      ) {
+        final (env, runtime) = value;
+        expect(env, equals(initialEnv));
+      });
 
       // Test push/pop context
       final pushResult = await runEval(pushContext('test'), runtime);
       expect(pushResult.isRight, isTrue);
       late Runtime pushedRuntime;
-      pushResult.match(
-        (error) => fail('Should not be left: $error'),
-        (value) => {
-          pushedRuntime = value.$2,
-          expect(value.$2.context, equals(['test'])),
-        },
-      );
+      pushResult.match((error) => fail('Should not be left: $error'), (value) {
+        final (result, runtime) = value;
+        pushedRuntime = runtime;
+        expect(runtime.context, equals(['test']));
+      });
 
       final popResult = await runEval(popContext(), pushedRuntime);
       expect(popResult.isRight, isTrue);
-      popResult.match(
-        (error) => fail('Should not be left: $error'),
-        (value) => expect(value.$2.context, equals([])),
-      );
+      popResult.match((error) => fail('Should not be left: $error'), (value) {
+        final (result, runtime) = value;
+        expect(runtime.context, equals([]));
+      });
     });
 
     test('defineVarEval modifies environment', () async {
@@ -100,10 +100,10 @@ void main() {
       final result = await runEval(defineVarEval('x', IrInteger(42)), runtime);
 
       expect(result.isRight, isTrue);
-      result.match(
-        (error) => fail('Should not be left: $error'),
-        (value) => expect(value.$2.env.length, equals(1)),
-      );
+      result.match((error) => fail('Should not be left: $error'), (value) {
+        final (result, runtime) = value;
+        expect(runtime.env.length, equals(1));
+      });
     });
 
     test('withEnv temporarily changes environment', () async {
@@ -115,11 +115,11 @@ void main() {
       final result = await runEval(eval, runtime);
 
       expect(result.isRight, isTrue);
-      result.match(
-        (error) => fail('Should not be left: $error'),
-        (value) => // Should get temp environment during execution
-            expect(value.$1, equals(tempEnv)),
-      );
+      result.match((error) => fail('Should not be left: $error'), (value) {
+        final (env, runtime) = value;
+        // Should get temp environment during execution
+        expect(env, equals(tempEnv));
+      });
     });
   });
 }

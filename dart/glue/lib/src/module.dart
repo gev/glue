@@ -87,7 +87,10 @@ class ModuleInfo {
 ModuleInfo nativeModule(String moduleName, List<(String, Ir)> definitions) =>
     ModuleInfo(
       moduleName: moduleName,
-      exports: definitions.map((pair) => pair.$1).toList(),
+      exports: definitions.map((pair) {
+        final (name, _) = pair;
+        return name;
+      }).toList(),
       definitions: definitions,
     );
 
@@ -121,7 +124,9 @@ bool _listsEqualIr(List<Ir> a, List<Ir> b) {
 bool _listsEqualPairs(List<(String, Ir)> a, List<(String, Ir)> b) {
   if (a.length != b.length) return false;
   for (int i = 0; i < a.length; i++) {
-    if (a[i].$1 != b[i].$1 || a[i].$2 != b[i].$2) return false;
+    final (aKey, aValue) = a[i];
+    final (bKey, bValue) = b[i];
+    if (aKey != bKey || aValue != bValue) return false;
   }
   return true;
 }
