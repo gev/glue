@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:glue/src/either.dart';
 import 'package:glue/src/env.dart';
 import 'package:glue/src/eval/error.dart';
 import 'package:glue/src/ir.dart' hide Env;
@@ -39,16 +40,16 @@ class Eval<T> {
   /// Map over the result
   Eval<U> map<U>(U Function(T) f) => Eval((runtime) async {
     final result = await runEval(runtime);
-    return result.map((tuple) => (f(tuple.$1), tuple.$2));
+    return result.mapRight((tuple) => (f(tuple.$1), tuple.$2));
   });
 
   /// FlatMap (bind) operation
   Eval<U> flatMap<U>(Eval<U> Function(T) f) => Eval((runtime) async {
     final result = await runEval(runtime);
-    return switch (result) {
-      Left() => result as Either<EvalError, (U, Runtime)>,
-      Right(:final value) => await f(value.$1).runEval(value.$2),
-    };
+    return result.fold(
+      (error) => Left<EvalError, (U, Runtime)>(error),
+      (value) => f(value.$1).runEval(value.$2),
+    );
   });
 
   /// Transform the evaluation result
@@ -56,48 +57,15 @@ class Eval<T> {
     Either<EvalError, (U, Runtime)> Function(T, Runtime) f,
   ) => Eval((runtime) async {
     final result = await runEval(runtime);
-    return switch (result) {
-      Left() => result as Either<EvalError, (U, Runtime)>,
-      Right(:final value) => f(value.$1, value.$2),
-    };
+    return result.fold(
+      (error) => Left<EvalError, (U, Runtime)>(error),
+      (value) => f(value.$1, value.$2),
+    );
   });
 }
 
 /// Convenience alias for IR evaluation
 typedef EvalIR = Eval<Ir>;
-
-/// Right-biased Either for results
-sealed class Either<L, R> {
-  const Either();
-
-  bool get isLeft => this is Left;
-  bool get isRight => this is Right;
-
-  T fold<T>(T Function(L) onLeft, T Function(R) onRight) => switch (this) {
-    Left(:final value) => onLeft(value),
-    Right(:final value) => onRight(value),
-  };
-
-  Either<L, R2> map<R2>(R2 Function(R) f) => switch (this) {
-    Left(:final value) => Left(value),
-    Right(:final value) => Right(f(value)),
-  };
-
-  Either<L, R2> flatMap<R2>(Either<L, R2> Function(R) f) => switch (this) {
-    Left(:final value) => Left(value),
-    Right(:final value) => f(value),
-  };
-}
-
-class Left<L, R> extends Either<L, R> {
-  final L value;
-  const Left(this.value);
-}
-
-class Right<L, R> extends Either<L, R> {
-  final R value;
-  const Right(this.value);
-}
 
 /// Runtime state access functions
 
@@ -183,7 +151,9 @@ Eval<T> withEnv<T>(Env tempEnv, Eval<T> action) => Eval((runtime) async {
   final originalEnv = runtime.env;
   final tempRuntime = runtime.copyWith(env: tempEnv);
   final result = await action.runEval(tempRuntime);
-  return result.map((tuple) => (tuple.$1, tuple.$2.copyWith(env: originalEnv)));
+  return result.mapRight(
+    (tuple) => (tuple.$1, tuple.$2.copyWith(env: originalEnv)),
+  );
 });
 
 /// Run evaluation with additional context frame
@@ -224,7 +194,7 @@ FutureOr<Either<EvalError, (T, Env, Context)>> runEvalSimple<T>(
 ) async {
   final initialRuntime = Runtime.initial(initialEnv);
   final result = await action.runEval(initialRuntime);
-  return result.map((tuple) => (tuple.$1, tuple.$2.env, tuple.$2.context));
+  return result.mapRight((tuple) => (tuple.$1, tuple.$2.env, tuple.$2.context));
 }
 
 /// ============================================================================
