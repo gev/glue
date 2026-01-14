@@ -1,3 +1,4 @@
+import 'package:glue/src/either.dart';
 import 'package:glue/src/env.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart' hide Env;
@@ -40,24 +41,30 @@ void main() {
       final result = await runEvalSimple(eval(IrInteger(123)), env);
 
       expect(result.isRight, isTrue);
-      result.fold((error) => fail('Should not be left'), (tuple) {
-        final (value, runtime) = tuple;
-        expect(value, equals(IrInteger(123)));
-        expect(runtime.env, equals(env)); // Environment unchanged
-        expect(runtime.context, isEmpty);
-      });
+      switch (result) {
+        case Left(:final value):
+          fail('Should not be left: $value');
+        case Right(:final value):
+          final (resultValue, runtime) = value;
+          expect(resultValue, equals(IrInteger(123)));
+          expect(runtime.env, equals(env)); // Environment unchanged
+          expect(runtime.context, isEmpty);
+      }
     });
 
     test('runEvalSimple evaluates symbols', () async {
       final result = await runEvalSimple(eval(IrSymbol('x')), env);
 
       expect(result.isRight, isTrue);
-      result.fold((error) => fail('Should not be left'), (tuple) {
-        final (value, runtime) = tuple;
-        expect(value, equals(IrInteger(42)));
-        expect(runtime.env, equals(env));
-        expect(runtime.context, isEmpty);
-      });
+      switch (result) {
+        case Left(:final value):
+          fail('Should not be left: $value');
+        case Right(:final value):
+          final (resultValue, runtime) = value;
+          expect(resultValue, equals(IrInteger(42)));
+          expect(runtime.env, equals(env));
+          expect(runtime.context, isEmpty);
+      }
     });
 
     test('runEvalSimple evaluates function calls', () async {
@@ -65,22 +72,27 @@ void main() {
       final result = await runEvalSimple(eval(call), env);
 
       expect(result.isRight, isTrue);
-      result.fold((error) => fail('Should not be left'), (tuple) {
-        final (value, runtime) = tuple;
-        expect(value, equals(IrInteger(50))); // 42 + 8 = 50
-        expect(runtime.env, equals(env));
-        expect(runtime.context, isEmpty);
-      });
+      switch (result) {
+        case Left(:final value):
+          fail('Should not be left: $value');
+        case Right(:final value):
+          final (resultValue, runtime) = value;
+          expect(resultValue, equals(IrInteger(50))); // 42 + 8 = 50
+          expect(runtime.env, equals(env));
+          expect(runtime.context, isEmpty);
+      }
     });
 
     test('runEvalSimple handles errors', () async {
       final result = await runEvalSimple(eval(IrSymbol('nonexistent')), env);
 
       expect(result.isLeft, isTrue);
-      result.fold(
-        (error) => expect(error.exception.symbol, equals('unbound-variable')),
-        (tuple) => fail('Should not be right'),
-      );
+      switch (result) {
+        case Left(:final value):
+          expect(value.exception.symbol, equals('unbound-variable'));
+        case Right(:final value):
+          fail('Should not be right: $value');
+      }
     });
 
     test('runEvalSimple works with custom Eval actions', () async {
@@ -88,12 +100,15 @@ void main() {
       final result = await runEvalSimple(action, env);
 
       expect(result.isRight, isTrue);
-      result.fold((error) => fail('Should not be left'), (tuple) {
-        final (frameCount, runtime) = tuple;
-        expect(frameCount, equals(1)); // One frame in our test env
-        expect(runtime.env, equals(env));
-        expect(runtime.context, isEmpty);
-      });
+      switch (result) {
+        case Left(:final value):
+          fail('Should not be left: $value');
+        case Right(:final value):
+          final (frameCount, runtime) = value;
+          expect(frameCount, equals(1)); // One frame in our test env
+          expect(runtime.env, equals(env));
+          expect(runtime.context, isEmpty);
+      }
     });
 
     test('runEvalSimple preserves environment state', () async {
@@ -105,10 +120,13 @@ void main() {
       final result2 = await runEvalSimple(eval(IrSymbol('y')), env);
       expect(result2.isRight, isTrue);
 
-      result2.fold((error) => fail('Should not be left'), (tuple) {
-        final (value, _) = tuple;
-        expect(value, equals(IrString('hello')));
-      });
+      switch (result2) {
+        case Left(:final value):
+          fail('Should not be left: $value');
+        case Right(:final value):
+          final (resultValue, _) = value;
+          expect(resultValue, equals(IrString('hello')));
+      }
     });
   });
 }
