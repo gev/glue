@@ -1,6 +1,4 @@
-import 'package:glue/src/ast.dart';
 import 'package:glue/src/either.dart';
-import 'package:glue/src/env.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/runtime.dart';
@@ -33,7 +31,7 @@ void main() {
   group('Try Special Form', () {
     test('catches exception and calls handler with payload', () async {
       const code =
-          '(try (error "test-error" (:msg "hello")) (catch "test-error" (lambda (err) err.msg)))';
+          '(try (error "test-error" "hello") (catch "test-error" (lambda (err) err)))';
       final result = await runCode(code);
       expect(result.isRight, isTrue);
       result.match(
@@ -54,14 +52,14 @@ void main() {
 
     test('re-throws unmatched exception', () async {
       const code =
-          '(try (error "test-error" (:msg "hello")) (catch "other-error" (lambda (err) err.msg)))';
+          '(try (error "test-error" "hello") (catch "other-error" (lambda (err) err)))';
       final result = await runCode(code);
       expect(result.isLeft, isTrue); // Should be an error
     });
 
     test('works with symbol catch names', () async {
       const code =
-          '(try (error test-error (:msg "hello")) (catch test-error (lambda (err) err.msg)))';
+          '(try (error test-error "hello") (catch test-error (lambda (err) err)))';
       final result = await runCode(code);
       expect(result.isRight, isTrue);
       result.match(
@@ -72,7 +70,7 @@ void main() {
 
     test('handler can be any callable', () async {
       const code =
-          '(try (error test-error (:val 123)) (catch test-error (lambda (err) err.val)))';
+          '(try (error test-error 123) (catch test-error (lambda (err) err)))';
       final result = await runCode(code);
       expect(result.isRight, isTrue);
       result.match(
@@ -83,7 +81,7 @@ void main() {
 
     test('multiple catch clauses work', () async {
       const code =
-          '(try (error "second-error" (:msg "second")) (catch "first-error" (lambda (err) "first")) (catch "second-error" (lambda (err) err.msg)))';
+          '(try (error "second-error" "second") (catch "first-error" (lambda (err) "first")) (catch "second-error" (lambda (err) err)))';
       final result = await runCode(code);
       expect(result.isRight, isTrue);
       result.match(
@@ -94,7 +92,7 @@ void main() {
 
     test('first matching catch is used', () async {
       const code =
-          '(try (error test-error (:msg "caught")) (catch test-error (lambda (err) err.msg)) (catch test-error (lambda (err) "second")))';
+          '(try (error test-error "caught") (catch test-error (lambda (err) err)) (catch test-error (lambda (err) "second")))';
       final result = await runCode(code);
       expect(result.isRight, isTrue);
       result.match(

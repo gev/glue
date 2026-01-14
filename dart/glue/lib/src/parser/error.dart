@@ -2,10 +2,15 @@
 /// Matches Haskell ParserError types
 library;
 
-class ParserError implements Exception {
+import 'package:glue/src/error.dart';
+
+class ParserError implements GlueError {
   final String message;
 
   ParserError(this.message);
+
+  @override
+  String pretty() => message;
 
   @override
   String toString() => message;

@@ -1,4 +1,5 @@
 import 'package:glue/src/eval/exception.dart';
+import 'package:glue/src/error.dart';
 
 /// Evaluation error handling system
 /// Mirrors Haskell Glue.Eval.Error exactly
@@ -7,11 +8,14 @@ import 'package:glue/src/eval/exception.dart';
 typedef Context = List<String>;
 
 /// Evaluation error wrapping runtime exception with context
-class EvalError {
+class EvalError implements GlueError {
   final Context context;
   final RuntimeException exception;
 
   const EvalError(this.context, this.exception);
+
+  @override
+  String pretty() => prettyShow(this);
 
   @override
   String toString() => '$context: $exception';

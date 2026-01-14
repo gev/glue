@@ -16,17 +16,22 @@ Eval<Ir> tryFunc(List<Ir> args) {
     return liftIO(runEval(eval(body), runtime)).flatMap((result) {
       return result.match(
         (error) {
-          // Handle RuntimeException
+          // Handle RuntimeException exactly like Haskell
           final runtimeExc = error.exception;
           final catchHandler = _findCatch(runtimeExc.symbol, catches);
 
           if (catchHandler != null) {
             return eval(catchHandler).flatMap((callable) {
-              // TODO: Check if callable - for now assume it is
-              return apply(
-                callable,
-                runtimeExc.value != null ? [runtimeExc.value!] : [],
-              );
+              // Check if callable like Haskell does
+              if (_isCallable(callable)) {
+                // Use same payload handling as Haskell: maybe [] (: []) payload
+                final List<Ir> payload = runtimeExc.value != null
+                    ? [runtimeExc.value!]
+                    : [];
+                return apply(callable, payload);
+              } else {
+                return throwError(notCallableObject());
+              }
             });
           } else {
             return throwError(runtimeExc);
@@ -68,4 +73,10 @@ String? _getSymbolText(Ir ir) {
     IrString(value: final text) => text,
     _ => null,
   };
+}
+
+/// Check if an IR value is callable (closure or native function)
+/// Mirrors Haskell isCallable
+bool _isCallable(Ir ir) {
+  return ir is IrClosure || (ir is IrNative && ir.value is NativeFunc);
 }
