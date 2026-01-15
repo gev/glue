@@ -88,16 +88,6 @@ ResultType functionName(Type1 param1, Type2 param2)
 
 ## Test Structure Verification
 
-### Test Organization
-```
-test/
-├── glue/
-│   ├── module_name_test.ext
-│   └── integration_test.ext
-└── spec/
-    └── compliance_test.ext
-```
-
 ### Test Case Structure
 ```haskell
 -- Haskell
