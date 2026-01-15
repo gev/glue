@@ -37,10 +37,10 @@ void main() {
     });
 
     test('round with negative float returns integer', () async {
-      final result = await runCode('(round -3.7)');
+      final result = await runCode('(round -3.5)');
       result.match(
         (error) => fail('Should not be left: $error'),
-        (value) => expect(value, equals(IrInteger(-3))),
+        (value) => expect(value, equals(IrInteger(-4))),
       );
     });
 

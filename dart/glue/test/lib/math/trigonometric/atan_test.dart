@@ -32,7 +32,7 @@ void main() {
       final result = await runCode('(atan 0)');
       result.match(
         (error) => fail('Should not be left: $error'),
-        (value) => expect((value as IrFloat).value, closeTo(1.0, 0.0001)),
+        (value) => expect((value as IrFloat).value, closeTo(0.0, 0.0001)),
       );
     });
 

@@ -32,7 +32,7 @@ void main() {
       final result = await runCode('(trunc 3.7)');
       result.match(
         (error) => fail('Should not be left: $error'),
-        (value) => expect(value, equals(IrInteger(4))),
+        (value) => expect(value, equals(IrInteger(3))),
       );
     });
 

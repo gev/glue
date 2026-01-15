@@ -32,7 +32,10 @@ void main() {
       final result = await runCode('(acos 0)');
       result.match(
         (error) => fail('Should not be left: $error'),
-        (value) => expect((value as IrFloat).value, closeTo(1.0, 0.0001)),
+        (value) => expect(
+          (value as IrFloat).value,
+          closeTo(1.5707963267948966, 0.0001),
+        ), // π/2
       );
     });
 

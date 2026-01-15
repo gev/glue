@@ -32,15 +32,15 @@ void main() {
       final result = await runCode('(floor 3.7)');
       result.match(
         (error) => fail('Should not be left: $error'),
-        (value) => expect(value, equals(IrInteger(4))),
+        (value) => expect(value, equals(IrInteger(3))),
       );
     });
 
     test('floor with negative float returns integer', () async {
-      final result = await runCode('(floor -3.7)');
+      final result = await runCode('(floor -3.1)');
       result.match(
         (error) => fail('Should not be left: $error'),
-        (value) => expect(value, equals(IrInteger(-3))),
+        (value) => expect(value, equals(IrInteger(-4))),
       );
     });
 
