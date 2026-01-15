@@ -13,6 +13,7 @@ import 'list/length.dart';
 import 'list/map.dart';
 import 'list/member.dart';
 import 'list/nth.dart';
+import 'list/partition.dart';
 import 'list/position.dart';
 import 'list/remove.dart';
 import 'list/reverse.dart';
@@ -39,6 +40,7 @@ final ModuleInfo list = nativeModule('ffi.list', [
   ('map', IrNative(NativeFunc(map))),
   ('member', IrNative(NativeFunc(member))),
   ('nth', IrNative(NativeFunc(nth))),
+  ('partition', IrNative(NativeFunc(partition))),
   ('position', IrNative(NativeFunc(position))),
   ('remove', IrNative(NativeFunc(remove))),
   ('reverse', IrNative(NativeFunc(reverse))),
