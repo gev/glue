@@ -1,6 +1,6 @@
-import '../../eval.dart';
-import '../../eval/exception.dart';
-import '../../ir.dart';
+import 'package:glue/src/eval.dart';
+import 'package:glue/src/eval/exception.dart';
+import 'package:glue/src/ir.dart';
 
 /// Flatten function - flattens nested lists into a single flat list
 /// Mirrors Haskell Glue.Lib.List.Flatten.flatten exactly

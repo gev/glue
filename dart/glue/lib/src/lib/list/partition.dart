@@ -1,6 +1,6 @@
-import '../../eval.dart';
-import '../../eval/exception.dart';
-import '../../ir.dart';
+import 'package:glue/src/eval.dart';
+import 'package:glue/src/eval/exception.dart';
+import 'package:glue/src/ir.dart';
 
 /// Partition function - splits list into two lists based on predicate
 /// Mirrors Haskell Glue.Lib.List.Partition.partition exactly

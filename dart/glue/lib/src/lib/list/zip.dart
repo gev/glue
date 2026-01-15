@@ -1,6 +1,6 @@
-import '../../eval.dart';
-import '../../eval/exception.dart';
-import '../../ir.dart';
+import 'package:glue/src/eval.dart';
+import 'package:glue/src/eval/exception.dart';
+import 'package:glue/src/ir.dart';
 
 /// Zip function - combines two lists element-wise into pairs
 /// Mirrors Haskell Glue.Lib.List.Zip.zip exactly

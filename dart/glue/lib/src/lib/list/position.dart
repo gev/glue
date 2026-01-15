@@ -1,6 +1,6 @@
-import '../../eval.dart';
-import '../../eval/exception.dart';
-import '../../ir.dart';
+import 'package:glue/src/eval.dart';
+import 'package:glue/src/eval/exception.dart';
+import 'package:glue/src/ir.dart';
 
 /// Position function - finds index of first element that satisfies a predicate
 /// Mirrors Haskell Glue.Lib.List.Position.position exactly
