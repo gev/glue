@@ -2,6 +2,7 @@ import 'package:glue/src/ir.dart';
 import 'package:glue/src/module.dart';
 import 'list/car.dart';
 import 'list/cdr.dart';
+import 'list/cons.dart';
 
 /// List module - list manipulation functions
 /// Mirrors Haskell Glue.Lib.List exactly
@@ -12,4 +13,5 @@ final ModuleInfo list = nativeModule('ffi.list', [
   // Core list operations
   ('car', IrNative(NativeFunc(car))),
   ('cdr', IrNative(NativeFunc(cdr))),
+  ('cons', IrNative(NativeFunc(cons))),
 ]);
