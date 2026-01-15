@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document describes the systematic process for creating detailed test coverage reports for both Haskell and Dart implementations of the Glue programming language. The analysis follows a structured 8-step methodology to ensure comprehensive and accurate coverage assessment.
+This document describes the systematic process for creating detailed test coverage reports for any language implementation of the Glue programming language. The analysis follows a structured 8-step methodology that uses ModuleInfo to ensure comprehensive and accurate coverage assessment across all implementations.
 
 ## Process Methodology
 
@@ -13,19 +13,52 @@ This document describes the systematic process for creating detailed test covera
 - **Process**: Parse complete directory trees to extract all module and test file inventories
 - **Output**: Structured lists of implementation modules and test files for both languages
 
-#### Step 2: Get Modules Subtree
-- **Input**: Directory structure data
-- **Process**: Extract library module subtrees focusing on standard library implementations
-- **Output**: Module inventories organized by library paths (bool, builtin, io, list, math.arithmetic, etc.)
+#### Step 2: Extract ModuleInfo from Implementation Files
+- **Input**: Individual implementation files (.hs/.dart)
+- **Process**: Extract ModuleInfo using two complementary methods:
+  - **Method A - Code Comments**: Parse "Mirrors Haskell [ModuleName]" comments
+  - **Method B - File Path Structure**: Derive from file path patterns
+- **Output**: Complete ModuleInfo mapping for all implementation files
+
+**ModuleInfo Extraction Details:**
+
+**Source 1: Code Comments**
+```dart
+/// Mirrors Haskell Glue.Lib.Bool.Eq.eq exactly
+/// Mirrors Haskell Glue.Lib.List.Append.append exactly
+```
+
+**Source 2: File Path Structure**
+```
+lib/src/lib/[module]/[function].dart
+           └───┬──┘ └───┬────┘
+               │        └─ Function name
+               └─ Module path
+```
+
+**ModuleInfo Construction Algorithm:**
+1. Parse file path: `lib/src/lib/[path]/[filename].dart`
+2. Extract path segments after `lib/src/lib/`
+3. Capitalize each segment: `bool` → `Bool`, `eq` → `Eq`
+4. Construct: `Glue.[Path1].[Path2].[Filename]`
+5. Verify with comment cross-reference
+
+**Examples:**
+```
+lib/src/lib/bool/eq.dart → Glue.Lib.Bool.Eq
+lib/src/lib/list/append.dart → Glue.Lib.List.Append
+lib/src/lib/math/arithmetic/add.dart → Glue.Lib.Math.Arithmetic.Add
+lib/ast.dart → Glue.Ast (core modules)
+```
 
 #### Step 3: Get Tests Subtree
-- **Input**: Directory structure data
-- **Process**: Extract test file subtrees and map them to corresponding modules
-- **Output**: Test file inventories with module-test relationships
+- **Input**: Directory structure data + ModuleInfo mapping
+- **Process**: Extract test file subtrees and map them to ModuleInfo
+- **Output**: Test file inventories with ModuleInfo-test relationships
 
 #### Step 4: Compare Module vs Test Structures
-- **Input**: Module and test inventories
-- **Process**: Create correspondence matrices showing which modules have tests and which don't
+- **Input**: ModuleInfo mapping + test inventories
+- **Process**: Create correspondence matrices showing which ModuleInfo have tests and which don't
 - **Output**: Coverage mapping tables identifying gaps and mismatches
 
 ### Phase 2: Module-by-Module Analysis
