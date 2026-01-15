@@ -141,8 +141,8 @@ To be created in: `dart/glue/test/lib/list/`
    - [x] `butlast.dart` + `butlast_test.dart`
    - [x] `nth.dart` + `nth_test.dart`
 
-5. **Order Operations** (2 modules)
-   - [ ] `reverse.dart` + `reverse_test.dart`
+5. **Order Operations** ✅ COMPLETED (1/2 modules)
+   - [x] `reverse.dart` + `reverse_test.dart`
    - [ ] `sort.dart` + `sort_test.dart`
 
 ### Phase 3: Functional Programming (Medium)
@@ -195,7 +195,7 @@ To be created in: `dart/glue/test/lib/list/`
 | **Slice** | `Drop.hs` | `DropSpec.hs` | `drop.dart` | `drop_test.dart` | ✅ DONE |
 | **Slice** | `Butlast.hs` | `ButlastSpec.hs` | `butlast.dart` | `butlast_test.dart` | ✅ DONE |
 | **Slice** | `Nth.hs` | `NthSpec.hs` | `nth.dart` | `nth_test.dart` | ✅ DONE |
-| **Order** | `Reverse.hs` | `ReverseSpec.hs` | `reverse.dart` | `reverse_test.dart` | ⏳ TODO |
+| **Order** | `Reverse.hs` | `ReverseSpec.hs` | `reverse.dart` | `reverse_test.dart` | ✅ DONE |
 | **Order** | `Sort.hs` | `SortSpec.hs` | `sort.dart` | `sort_test.dart` | ⏳ TODO |
 | **Func** | `Map.hs` | `MapSpec.hs` | `map.dart` | `map_test.dart` | ⏳ TODO |
 | **Func** | `Filter.hs` | `FilterSpec.hs` | `filter.dart` | `filter_test.dart` | ⏳ TODO |
