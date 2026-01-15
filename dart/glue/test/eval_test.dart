@@ -29,33 +29,31 @@ Future<Either<GlueError, Ir>> runCode(String input) async {
 void main() {
   group('Glue.Eval (System Integration)', () {
     test('handles basic values', () async {
-      final result1 = await runCode('42');
-      expect(result1.isRight, isTrue);
-      result1.match(
+      final result = await runCode('42');
+      result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrInteger(42))),
       );
+    });
 
-      final result2 = await runCode('"test"');
-      expect(result2.isRight, isTrue);
-      result2.match(
+    test('handles basic values', () async {
+      final result = await runCode('"test"');
+      result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrString('test'))),
       );
     });
 
-    test('handles basic lists', () async {
+    test('handles basic values', () async {
       final result = await runCode('(42)');
-
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrList([IrInteger(42)]))),
       );
     });
 
-    test('handles nested lists', () async {
+    test('handles basic values', () async {
       final result = await runCode('((42))');
-
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(
@@ -69,45 +67,60 @@ void main() {
       );
     });
 
-    // TODO: Arithmetic tests - will be red until arithmetic module is implemented
-    test('handles arithmetic operations', () async {
-      final result1 = await runCode('(+ 0 42)');
-      final result2 = await runCode('((+ 0 42))');
-      // These will fail until arithmetic is implemented
-      // expect(result1.isRight, isTrue);
-      // expect(result2.isRight, isTrue);
+    test('handles basic values', () async {
+      final result = await runCode('(+ 0 42)');
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrInteger(42))),
+      );
     });
 
-    // TODO: Bool tests - will be red until bool module is implemented
-    test('handles comparison operations', () async {
-      final result1 = await runCode('(== (+ 1 1) (+ 1 1))');
-      final result2 = await runCode('(== (+ 1 1) ((+ 1 1)))');
-      // These will fail until arithmetic and bool are implemented
-      // expect(result1.isLeft, isTrue);
-      // expect(result2.isLeft, isTrue);
+    test('handles basic values', () async {
+      final result = await runCode('((+ 0 42))');
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrList([IrInteger(42)]))),
+      );
     });
 
-    test('executes def', () async {
+    test('handles basic values', () async {
+      final result = await runCode('(== (+ 1 1) (+ 1 1))');
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrBool(true))),
+      );
+    });
+
+    test('handles basic values', () async {
+      final result = await runCode('(== (+ 1 1) ((+ 1 1)))');
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrBool(false))),
+      );
+    });
+
+    test('executes (def)', () async {
       final code = '((def x 1) x)';
       final result = await runCode(code);
-
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrList([IrVoid(), IrInteger(1)]))),
       );
     });
 
-    test('executes def chain', () async {
+    test('should this work?', () async {
       final code = '((def x 1) (def y 2) (+ x y))';
       final result = await runCode(code);
-      // This will fail until arithmetic is implemented
-      // expect(result.isRight, isTrue);
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) =>
+            expect(value, equals(IrList([IrVoid(), IrVoid(), IrInteger(3)]))),
+      );
     });
 
-    test('executes def with list', () async {
+    test('executes (def)', () async {
       final code = '((def x (1)) x)';
       final result = await runCode(code);
-
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(
@@ -122,10 +135,26 @@ void main() {
       );
     });
 
-    test('executes def and set chain', () async {
+    test('executes (def)', () async {
+      final code = '(1 ((def x 1) x))';
+      final result = await runCode(code);
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(
+          value,
+          equals(
+            IrList([
+              IrInteger(1),
+              IrList([IrVoid(), IrInteger(1)]),
+            ]),
+          ),
+        ),
+      );
+    });
+
+    test('executes (def) and (set) chain', () async {
       final code = '((def x 1) (set x 2) x)';
       final result = await runCode(code);
-
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) =>
@@ -133,40 +162,56 @@ void main() {
       );
     });
 
-    test('implements full closures (lexical shadowing)', () async {
+    test('implements full closures (Lexical Shadowing)', () async {
       final code = '(((lambda (x) (lambda (y) x)) 100) 1)';
       final result = await runCode(code);
-
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrInteger(100))),
       );
     });
 
-    test('def inside lambda does not corrupt global scope', () async {
-      final code = '((def x 1) ((lambda () (def x 2))) x)';
-      final result = await runCode(code);
+    test(
+      'checks that (def) inside (lambda) doesn\'t corrupt global scope',
+      () async {
+        final code = '((def x 1) ((lambda () (def x 2))) x)';
+        final result = await runCode(code);
+        result.match(
+          (error) => fail('Should not be left: $error'),
+          (value) =>
+              expect(value, equals(IrList([IrVoid(), IrVoid(), IrInteger(1)]))),
+        );
+      },
+    );
 
+    test('handles property access on property lists', () async {
+      final code = '((lambda (obj) obj.foo) (:foo 42))';
+      final result = await runCode(code);
       result.match(
         (error) => fail('Should not be left: $error'),
-        (value) =>
-            expect(value, equals(IrList([IrVoid(), IrVoid(), IrInteger(1)]))),
+        (value) => expect(value, equals(IrInteger(42))),
       );
     });
 
-    // TODO: Object property access - will be red until implemented
-    test('handles property access on objects', () async {
-      final code = '((lambda (obj) obj.foo) (:foo 42))';
-      final result = await runCode(code);
-      // This will fail until object property access is implemented
-      // expect(result.isRight, isTrue);
-    });
-
-    // TODO: Nested property access - will be red until implemented
     test('handles nested property access', () async {
       final code = '((def foo (:x (:y (:z 1)))) foo.x foo.x.y foo.x.y.z)';
       final result = await runCode(code);
-      // This will fail until nested property access is implemented
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(
+          value,
+          equals(
+            IrList([
+              IrVoid(),
+              IrObject({
+                'y': IrObject({'z': IrInteger(1)}),
+              }),
+              IrObject({'z': IrInteger(1)}),
+              IrInteger(1),
+            ]),
+          ),
+        ),
+      );
     });
 
     test('fails when calling non-existent function', () async {
@@ -186,7 +231,6 @@ void main() {
     test('user-defined function', () async {
       final code = '((def id (lambda (x) x)) (id 42))';
       final result = await runCode(code);
-
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrList([IrVoid(), IrInteger(42)]))),
@@ -196,8 +240,10 @@ void main() {
     test('user-defined function partial application (currying)', () async {
       final code = '((def add (lambda (x y) (+ x y))) ((add 5) 3))';
       final result = await runCode(code);
-      // This will fail until arithmetic is implemented
-      // expect(result.isRight, isTrue);
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrList([IrVoid(), IrInteger(8)]))),
+      );
     });
 
     test(
@@ -219,11 +265,13 @@ void main() {
     test('currying works with multiple levels', () async {
       final code = '((def add (lambda (x y z) (+ x (+ y z)))) (((add 1) 2) 3))';
       final result = await runCode(code);
-      // This will fail until arithmetic is implemented
-      // expect(result.isRight, isTrue);
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrList([IrVoid(), IrInteger(6)]))),
+      );
     });
 
-    test('user-defined function too many args fails', () async {
+    test('user-defined function too many args still fails', () async {
       final code = '((def id (lambda (x) x)) (id 1 2))';
       final result = await runCode(code);
       expect(result.isLeft, isTrue);
@@ -238,7 +286,7 @@ void main() {
       );
     });
 
-    test('backslash alias works like lambda (lexical shadowing)', () async {
+    test('\\ alias works like lambda (lexical shadowing)', () async {
       final code = '((( \\ (x) ( \\ (y) x)) 100) 1)';
       final result = await runCode(code);
       result.match(
@@ -247,7 +295,7 @@ void main() {
       );
     });
 
-    test('backslash alias works like lambda (user-defined function)', () async {
+    test('\\ alias works like lambda (user-defined function)', () async {
       final code = '((def id (\\ (x) x)) (id 42))';
       final result = await runCode(code);
       result.match(
@@ -256,20 +304,23 @@ void main() {
       );
     });
 
-    test('backslash alias works like lambda (partial application)', () async {
+    test('\\ alias works like lambda (partial application)', () async {
       final code = '((def add (\\ (x y) (+ x y))) (def add5 (add 5)) (add5 3))';
       final result = await runCode(code);
-      // This will fail until arithmetic is implemented
-      // expect(result.isRight, isTrue);
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) =>
+            expect(value, equals(IrList([IrVoid(), IrVoid(), IrInteger(8)]))),
+      );
     });
 
-    test('backslash alias works like lambda (too many args)', () async {
+    test('\\ alias works like lambda (too many args)', () async {
       final code = '((def id (\\ (x) x)) (id 1 2))';
       final result = await runCode(code);
       expect(result.isLeft, isTrue);
     });
 
-    test('backslash alias works like lambda (multi-param)', () async {
+    test('\\ alias works like lambda (multi-param)', () async {
       final code = '((def f (\\ (a b) ((a) (b)))) (f 1 2))';
       final result = await runCode(code);
       result.match(
@@ -278,7 +329,7 @@ void main() {
       );
     });
 
-    test('backslash alias works like lambda (direct call)', () async {
+    test('\\ alias works like lambda (multi-param)', () async {
       final code = '((\\ (a b) ((a) (b))) 1 2)';
       final result = await runCode(code);
       result.match(
@@ -287,60 +338,158 @@ void main() {
       );
     });
 
-    // TODO: Bool operations - will be red until bool module is implemented
-    test('comparison aliases work', () async {
-      // These will fail until bool module is implemented
-      // expect(await runCode('(== 42 42)').isRight, isTrue);
-      // expect(await runCode('(== 42 43)').isRight, isTrue);
+    test('== alias works like eq', () async {
+      final result1 = await runCode('(== 42 42)');
+      result1.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrBool(true))),
+      );
+      final result2 = await runCode('(== 42 43)');
+      result2.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrBool(false))),
+      );
+    });
+
+    test('\\= alias works like ne', () async {
+      final result1 = await runCode('(!= 42 43)');
+      result1.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrBool(true))),
+      );
+      final result2 = await runCode('(!= 42 42)');
+      result2.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrBool(false))),
+      );
+    });
+
+    test('< alias works like lt', () async {
+      final result1 = await runCode('(< 5 10)');
+      result1.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrBool(true))),
+      );
+      final result2 = await runCode('(< 10 5)');
+      result2.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrBool(false))),
+      );
+    });
+
+    test('<= alias works like le', () async {
+      final result1 = await runCode('(<= 5 5)');
+      result1.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrBool(true))),
+      );
+      final result2 = await runCode('(<= 10 5)');
+      result2.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrBool(false))),
+      );
+    });
+
+    test('> alias works like gt', () async {
+      final result1 = await runCode('(> 10 5)');
+      result1.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrBool(true))),
+      );
+      final result2 = await runCode('(> 5 10)');
+      result2.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrBool(false))),
+      );
+    });
+
+    test('>= alias works like ge', () async {
+      final result1 = await runCode('(>= 5 5)');
+      result1.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrBool(true))),
+      );
+      final result2 = await runCode('(>= 5 10)');
+      result2.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrBool(false))),
+      );
+    });
+
+    test('! alias works like not', () async {
+      final result1 = await runCode('(! false)');
+      result1.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrBool(true))),
+      );
+      final result2 = await runCode('(! true)');
+      result2.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrBool(false))),
+      );
     });
 
     test('literal lists evaluate expressions', () async {
       final code = '((+ 1 2) (* 3 4))';
       final result = await runCode(code);
-      // This will fail until arithmetic is implemented
-      // expect(result.isRight, isTrue);
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrList([IrInteger(3), IrInteger(12)]))),
+      );
     });
 
     test('literal objects evaluate values', () async {
       final code = '(:x (+ 1 2) :y (* 3 4))';
       final result = await runCode(code);
-      // This will fail until arithmetic is implemented
-      // expect(result.isRight, isTrue);
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(
+          value,
+          equals(IrObject({'x': IrInteger(3), 'y': IrInteger(12)})),
+        ),
+      );
     });
 
     test('dotted symbols work in function calls', () async {
       final code =
           '((def obj (:x (:y (:z (lambda (n) (+ n 10)))))) (obj.x.y.z 5))';
       final result = await runCode(code);
-      // This will fail until object property access and arithmetic are implemented
-      // expect(result.isRight, isTrue);
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrList([IrVoid(), IrInteger(15)]))),
+      );
     });
 
     test('deep arithmetic composition', () async {
       final code = '(* (+ 1 2) (- 10 2))';
       final result = await runCode(code);
-      // This will fail until arithmetic is implemented
-      // expect(result.isRight, isTrue);
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrInteger(24))),
+      );
     });
 
     test('complex arithmetic with mixed operations', () async {
       final code = '(/ (+ (* 3 4) 2) (- 10 3))';
       final result = await runCode(code);
-      // This will fail until arithmetic is implemented
-      // expect(result.isRight, isTrue);
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrFloat(2.0))),
+      );
     });
 
     test('deep arithmetic with floats', () async {
       final code = '(+ (* 2.5 4.0) (/ 10.0 2.0))';
       final result = await runCode(code);
-      // This will fail until arithmetic is implemented
-      // expect(result.isRight, isTrue);
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrFloat(15.0))),
+      );
     });
 
     test('let creates local bindings', () async {
       final code = '(let (:x 42) x)';
       final result = await runCode(code);
-
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrInteger(42))),
@@ -350,14 +499,15 @@ void main() {
     test('let bindings can access outer scope', () async {
       final code = '((def outer 100) (let (:x outer) (+ x 1)))';
       final result = await runCode(code);
-      // This will fail until arithmetic is implemented
-      // expect(result.isRight, isTrue);
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrList([IrVoid(), IrInteger(101)]))),
+      );
     });
 
     test('let bindings shadow outer scope', () async {
       final code = '((def x 100) (let (:x 200) x))';
       final result = await runCode(code);
-
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrList([IrVoid(), IrInteger(200)]))),
@@ -367,32 +517,36 @@ void main() {
     test('let with multiple bindings', () async {
       final code = '(let (:x 10 :y 20) (+ x y))';
       final result = await runCode(code);
-      // This will fail until arithmetic is implemented
-      // expect(result.isRight, isTrue);
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrInteger(30))),
+      );
     });
 
     test('let bindings are local', () async {
       final code = '((let (:x 42) x) x)';
       final result = await runCode(code);
-      expect(
-        result.isLeft,
-        isTrue,
-      ); // Should fail because x is not defined in outer scope
+      expect(result.isLeft, isTrue);
     });
 
     test('arithmetic with defined functions', () async {
       final code =
           '((def add (lambda (x y) (+ x y))) (def mul (lambda (x y) (* x y))) (mul (add 3 2) (add 1 2)))';
       final result = await runCode(code);
-      // This will fail until arithmetic is implemented
-      // expect(result.isRight, isTrue);
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) =>
+            expect(value, equals(IrList([IrVoid(), IrVoid(), IrInteger(15)]))),
+      );
     });
 
     test('nested function calls with arithmetic', () async {
       final code = '((def calc (lambda (a b) (* (+ a b) (- a b)))) (calc 5 3))';
       final result = await runCode(code);
-      // This will fail until arithmetic is implemented
-      // expect(result.isRight, isTrue);
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrList([IrVoid(), IrInteger(16)]))),
+      );
     });
 
     test(
@@ -400,15 +554,16 @@ void main() {
       () async {
         final code = '((\\ (x y) (42 (+ x y))) 1 2)';
         final result = await runCode(code);
-        // This will fail until arithmetic is implemented
-        // expect(result.isRight, isTrue);
+        result.match(
+          (error) => fail('Should not be left: $error'),
+          (value) => expect(value, equals(IrInteger(3))),
+        );
       },
     );
 
     test('function bodies with direct expressions work', () async {
       final code = '((\\ (x y) x) 1 2)';
       final result = await runCode(code);
-
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrInteger(1))),
@@ -416,10 +571,12 @@ void main() {
     });
 
     test('function bodies with single-element lists work', () async {
-      final code = '(\\ (x y) ((+ x y))) 1 2';
+      final code = '((\\ (x y) ((+ x y))) 1 2)';
       final result = await runCode(code);
-      // This will fail until arithmetic is implemented
-      // expect(result.isRight, isTrue);
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrInteger(3))),
+      );
     });
   });
 }
