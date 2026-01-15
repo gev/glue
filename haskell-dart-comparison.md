@@ -138,7 +138,7 @@ This report provides a comprehensive comparison between the Haskell and Dart imp
 | **Core Language** | ✅ Complete | ✅ Complete | Both fully implement core Glue features |
 | **Bool Library** | ✅ Complete | ✅ Complete | Identical boolean operation coverage |
 | **Builtin Library** | ✅ Complete | ✅ Complete | Error handling implemented but not tested - def, lambda, set, try, error implemented |
-| **IO Library** | ✅ Complete | ✅ Complete | Both have print and read implemented, but Dart missing read tests |
+| **IO Library** | ✅ Complete | ✅ Complete | Both have print and read implemented, but missing read tests |
 | **List Library** | ✅ Complete | ✅ Complete | Both have comprehensive list operations |
 | **Math Libraries** | ✅ Complete | ✅ Complete | Full math function coverage in both |
 
