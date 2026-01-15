@@ -30,13 +30,12 @@ To be created in: `dart/glue/lib/src/lib/io/`
 | `Print.hs` | `print.dart` | ⏳ TODO |
 | `Read.hs` | `read.dart` | ⏳ TODO |
 
-### Dart Test Modules (2 test modules)
+### Dart Test Modules (1 test module)
 To be created in: `dart/glue/test/lib/io/`
 
 | Haskell Test | Dart Test | Status |
 |--------------|-----------|--------|
 | `PrintSpec.hs` | `print_test.dart` | ⏳ TODO |
-| `ReadSpec.hs` | `read_test.dart` | ⏳ TODO |
 
 ## Implementation Strategy
 
@@ -54,7 +53,6 @@ To be created in: `dart/glue/test/lib/io/`
 
 3. **Module Integration**
     - [ ] Create `io.dart` main module file
-    - [ ] Update `eval_test.dart` to include io functions
     - [ ] Verify all functions work in Glue runtime
 
 4. **Final Verification**
@@ -67,7 +65,7 @@ To be created in: `dart/glue/test/lib/io/`
 | Category | Haskell Source | Haskell Test | Dart Source | Dart Test | Status |
 |----------|----------------|--------------|-------------|-----------|--------|
 | **Output** | `Print.hs` | `PrintSpec.hs` | `print.dart` | `print_test.dart` | ⏳ TODO |
-| **Input** | `Read.hs` | N/A | `read.dart` | `read_test.dart` | ⏳ TODO |
+| **Input** | `Read.hs` | N/A | `read.dart` | N/A | ⏳ TODO |
 
 ## Implementation Requirements
 
@@ -91,7 +89,7 @@ To be created in: `dart/glue/test/lib/io/`
 ## Success Criteria
 
 - [ ] **3 Dart modules** implemented with Haskell fidelity (including main io.dart)
-- [ ] **2 Dart test modules** with comprehensive coverage
+- [ ] **1 Dart test module** with comprehensive coverage
 - [ ] **Structural compliance** with Haskell organization
 - [ ] **All tests pass** with correct IO behavior
 - [ ] **Integration verified** in Glue runtime
