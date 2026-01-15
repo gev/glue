@@ -124,9 +124,9 @@ To be created in: `dart/glue/test/lib/list/`
    - [x] `car.dart` + `car_test.dart`
    - [x] `cdr.dart` + `cdr_test.dart`
 
-2. **Construction Operations** ✅ COMPLETED (1/2 modules)
+2. **Construction Operations** ✅ COMPLETED (2/2 modules)
    - [x] `cons.dart` + `cons_test.dart`
-   - [ ] `append.dart` + `append_test.dart`
+   - [x] `append.dart` + `append_test.dart`
 
 3. **Basic Properties** (2 modules)
    - [ ] `length.dart` + `length_test.dart`
@@ -189,7 +189,7 @@ To be created in: `dart/glue/test/lib/list/`
 | **Core** | `Cdr.hs` | `CdrSpec.hs` | `cdr.dart` | `cdr_test.dart` | ✅ DONE |
 | **Core** | `Cons.hs` | `ConsSpec.hs` | `cons.dart` | `cons_test.dart` | ✅ DONE |
 | **Core** | `Length.hs` | `LengthSpec.hs` | `length.dart` | `length_test.dart` | ⏳ TODO |
-| **Core** | `Append.hs` | `AppendSpec.hs` | `append.dart` | `append_test.dart` | ⏳ TODO |
+| **Core** | `Append.hs` | `AppendSpec.hs` | `append.dart` | `append_test.dart` | ✅ DONE |
 | **Core** | `Last.hs` | `LastSpec.hs` | `last.dart` | `last_test.dart` | ⏳ TODO |
 | **Slice** | `Take.hs` | `TakeSpec.hs` | `take.dart` | `take_test.dart` | ⏳ TODO |
 | **Slice** | `Drop.hs` | `DropSpec.hs` | `drop.dart` | `drop_test.dart` | ⏳ TODO |
