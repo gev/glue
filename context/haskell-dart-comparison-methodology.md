@@ -2,16 +2,8 @@
 
 This document outlines the systematic methodology for comparing the Haskell and Dart implementations of the Glue programming language. The comparison focuses on implementation completeness, test coverage, and code quality metrics.
 
-**Data Sources:**
-- [Haskell test coverage analysis](haskell/test-coverage.md)
-- [Dart test coverage analysis](dart/test-coverage.md)
-- [Test coverage analysis process](test-coverage-analysis-process.md)
-- [Haskell directory structure](haskell/directory-structure.md)
-- [Dart directory structure](dart/directory-structure.md)
-- [Dart architecture overview](dart/architecture.md)
-- [Haskell architecture overview](haskell/todo.md)
-- [Glue language specification](spec/README.md)
-- Use these existing coverage reports and directory structures as input for comparative analysis
+**Related Methodology Documents:**
+- [Test Coverage Analysis Process](test-coverage-analysis-process.md) - Follow this process to generate the coverage reports needed for comparison
 
 ## Comparison Framework
 
@@ -144,11 +136,12 @@ Compare Haskell vs Dart coverage summaries:
 3. Document architectural differences and trade-offs
 4. Provide recommendations for future development
 
-### Step 4: Reporting
+### Step 4: Documentation and Crosslinks
 1. Generate comprehensive comparison report
 2. Include all analysis tables and metrics
-3. Document methodology for reproducibility
-4. Provide actionable insights for implementation improvements
+3. **Add crosslinks between all resulting documents**: Ensure test coverage reports, comparison reports, and related documents reference each other and link to directory structures, architecture documents, and language specifications
+4. Document methodology for reproducibility
+5. Provide actionable insights for implementation improvements
 
 ## Quality Assurance
 
