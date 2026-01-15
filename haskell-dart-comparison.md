@@ -30,7 +30,7 @@ This report provides a comprehensive comparison between the Haskell and Dart imp
 |-----------|----------------|-------------|------------|
 | **Core Language** | ✅ Complete | ✅ Complete | Identical feature set - AST, IR, Parser, Environment, Evaluation, Runtime, Module System |
 | **Bool Library** | ✅ Complete | ✅ Complete | Full function coverage - eq, ge, gt, le, lt, ne, not, until, when, while |
-| **Builtin Library** | ⚠️ Partial | ⚠️ Partial | Missing error handling in both - def, lambda, set, try implemented |
+| **Builtin Library** | ⚠️ Partial | ⚠️ Partial | Error handling implemented but not tested - def, lambda, set, try, error implemented |
 | **IO Library** | ✅ Complete | ⚠️ Partial | Haskell has read function, Dart only has print |
 | **List Library** | ✅ Complete | ✅ Complete | Comprehensive list operations - append, car, cdr, cons, drop, filter, find, flatten, last, length, map, member, nth, partition, position, remove, reverse, sort, take, zip |
 | **Math Libraries** | ✅ Complete | ✅ Complete | Full math function coverage across arithmetic, logarithmic, power, trigonometric, and utility functions |
@@ -83,7 +83,7 @@ This report provides a comprehensive comparison between the Haskell and Dart imp
 | Gap Type | Haskell | Dart | Impact |
 |----------|---------|------|--------|
 | **Missing Tests** | math.const (1 file) | math.const (1 file) | Low - constants have minimal logic |
-| **Partial Coverage** | builtin (missing error) | builtin (missing error), io (missing read) | Medium - error handling gaps |
+| **Partial Coverage** | builtin (error implemented but not tested) | builtin (error implemented but not tested), io (missing read) | Medium - error handling test gaps |
 | **Test Quality** | Excellent | Excellent | Both have comprehensive test suites |
 
 ## 3. Code Quality Metrics
@@ -148,7 +148,7 @@ This report provides a comprehensive comparison between the Haskell and Dart imp
 |--------|---------------|------------|------------------|---------------|----------|
 | **core** | 133 | 189 | ✅ Complete | ✅ Complete | Both excellent core coverage |
 | **bool** | 53 | 46 | ✅ Complete | ✅ Complete | Comprehensive boolean testing |
-| **builtin** | 32 | 27 | ⚠️ Partial | ⚠️ Partial | Missing error handling tests |
+| **builtin** | 32 | 27 | ⚠️ Partial | ⚠️ Partial | Error implemented but not tested |
 | **io** | 2 | 2 | ✅ Complete | ⚠️ Partial | Haskell has better IO coverage |
 | **list** | 112 | 153 | ✅ Complete | ✅ Complete | Extensive list operation testing |
 | **math.arithmetic** | 48 | 31 | ✅ Complete | ✅ Complete | Full arithmetic function coverage |
