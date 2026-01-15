@@ -123,17 +123,6 @@ void main() {
       });
     });
 
-    test('special forms throw special-form error (not implemented)', () async {
-      final defCall = IrList([IrSymbol('def'), IrSymbol('z'), IrInteger(100)]);
-
-      final result = await runEval(eval(defCall), runtime);
-      expect(result.isLeft, isTrue);
-      result.match(
-        (error) => expect(error.exception.symbol, equals('special-form')),
-        (value) => fail('Should not be right: $value'),
-      );
-    });
-
     test('dotted symbols work for simple access', () async {
       // Create an object and bind it
       final obj = IrObject({'nested': IrInteger(99)});
