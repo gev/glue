@@ -21,9 +21,10 @@ This document provides comprehensive guidelines for verifying that any language 
 - **File naming**: `ModuleName.hs` → `module_name.ext`
 - **Import structure**: Same import groupings and aliases
 - **Export lists**: Identical public APIs
-- **Directory structure**: Identical folder hierarchies for source and test files
+- **Directory structure**: Identical folder hierarchies for ALL source and test files
 - **File mapping**: One-to-one correspondence between Haskell and target language files
-- **Test organization**: Same test file structure and naming conventions
+- **Organization**: Same file and directory organization throughout entire codebase
+- **Count matching**: Same number of files and directories as Haskell
 
 ### Module Structure Order
 Modules must maintain the same internal structure and ordering as Haskell:

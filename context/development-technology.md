@@ -72,10 +72,13 @@
 - Test against Haskell behavior for correctness
 
 ### 3. Code Structure Should Repeat Haskell Code Structure 📁
-- Mirror Haskell module organization
-- Same package/directory layout
-- Equivalent file naming and grouping
-- Parallel type definitions and function organization
+- **Exact structural mirroring**: Directory hierarchies must match Haskell exactly
+- **One-to-one file mapping**: Every Haskell source file must have equivalent target file
+- **Same directory organization**: Identical folder structures for all modules
+- **File naming convention**: `ModuleName.hs` → `module_name.ext`
+- **Module correspondence**: Source modules mirror Haskell structure exactly
+- **Same package/directory layout**: Identical organization throughout codebase
+- **Count matching**: Same number of files and directories as Haskell
 
 ### 4. Tests Structure Should Repeat Haskell Tests Structure 🧪
 - **Exact structural mirroring**: Directory hierarchies must match Haskell exactly
