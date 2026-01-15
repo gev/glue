@@ -431,14 +431,107 @@ dart/glue/
 | **Error Handling** | `src/Glue/Error.hs` | `lib/src/error.dart` | ✅ Complete | 100% |
 | **Either Monad** | N/A | `lib/either.dart`, `lib/src/either.dart` | ✅ Dart Specific | 100% |
 
-### Standard Libraries Implementation Status
-| Library | Haskell Files | Dart Files | Status | Completion | Test Coverage |
-|---------|---------------|------------|--------|------------|----------------|
-| **Bool** | 13 files | 13 files | ✅ Complete | 100% | ✅ 52/52 tests |
-| **Builtin** | 9 files | 8 files | ⚠️ 88% Complete | 89% | ✅ 38/38 tests |
-| **IO** | 3 files | 3 files | ✅ Complete | 100% | ✅ 4/4 tests |
-| **List** | 22 files | 22 files | ✅ Complete | 100% | ✅ 162/162 tests |
-| **Math** | 23 files | 6 files | ⚠️ Partial | 26% | ✅ 74/74 tests (implemented) |
+### Detailed Module-by-Module Implementation Status
+
+#### Bool Library Modules (13/13 - 100% Complete)
+| Haskell Module | Dart Module | Status | Test Coverage |
+|----------------|-------------|--------|----------------|
+| `src/Glue/Lib/Bool.hs` | `lib/src/lib/bool.dart` | ✅ Complete | N/A |
+| `src/Glue/Lib/Bool/Eq.hs` | `lib/src/lib/bool/eq.dart` | ✅ Complete | ✅ 6 tests |
+| `src/Glue/Lib/Bool/Ge.hs` | `lib/src/lib/bool/ge.dart` | ✅ Complete | ✅ 6 tests |
+| `src/Glue/Lib/Bool/Gt.hs` | `lib/src/lib/bool/gt.dart` | ✅ Complete | ✅ 6 tests |
+| `src/Glue/Lib/Bool/If.hs` | `lib/src/lib/bool/if.dart` | ✅ Complete | ✅ 4 tests |
+| `src/Glue/Lib/Bool/Le.hs` | `lib/src/lib/bool/le.dart` | ✅ Complete | ✅ 6 tests |
+| `src/Glue/Lib/Bool/Lt.hs` | `lib/src/lib/bool/lt.dart` | ✅ Complete | ✅ 6 tests |
+| `src/Glue/Lib/Bool/Ne.hs` | `lib/src/lib/bool/ne.dart` | ✅ Complete | ✅ 6 tests |
+| `src/Glue/Lib/Bool/Not.hs` | `lib/src/lib/bool/not.dart` | ✅ Complete | ✅ 4 tests |
+| `src/Glue/Lib/Bool/Until.hs` | `lib/src/lib/bool/until.dart` | ✅ Complete | ✅ 4 tests |
+| `src/Glue/Lib/Bool/When.hs` | `lib/src/lib/bool/when.dart` | ✅ Complete | ✅ 4 tests |
+| `src/Glue/Lib/Bool/While.hs` | `lib/src/lib/bool/while.dart` | ✅ Complete | ✅ 4 tests |
+
+#### Builtin Library Modules (8/9 - 89% Complete)
+| Haskell Module | Dart Module | Status | Test Coverage |
+|----------------|-------------|--------|----------------|
+| `src/Glue/Lib/Builtin.hs` | `lib/src/lib/builtin.dart` | ✅ Complete | N/A |
+| `src/Glue/Lib/Builtin/Def.hs` | `lib/src/lib/builtin/def.dart` | ✅ Complete | ✅ 8 tests |
+| `src/Glue/Lib/Builtin/Error.hs` | `lib/src/lib/builtin/error.dart` | ✅ Complete | N/A |
+| `src/Glue/Lib/Builtin/Import.hs` | `lib/src/lib/builtin/import.dart` | ✅ Complete | ✅ 4 tests |
+| `src/Glue/Lib/Builtin/Lambda.hs` | `lib/src/lib/builtin/lambda.dart` | ✅ Complete | ✅ 8 tests |
+| `src/Glue/Lib/Builtin/Let.hs` | N/A | ❌ Missing | N/A |
+| `src/Glue/Lib/Builtin/Set.hs` | `lib/src/lib/builtin/set.dart` | ✅ Complete | ✅ 6 tests |
+| `src/Glue/Lib/Builtin/Try.hs` | `lib/src/lib/builtin/try.dart` | ✅ Complete | ✅ 12 tests |
+
+#### IO Library Modules (3/3 - 100% Complete)
+| Haskell Module | Dart Module | Status | Test Coverage |
+|----------------|-------------|--------|----------------|
+| `src/Glue/Lib/IO.hs` | `lib/src/lib/io.dart` | ✅ Complete | N/A |
+| `src/Glue/Lib/IO/Print.hs` | `lib/src/lib/io/print.dart` | ✅ Complete | ✅ 4 tests |
+| `src/Glue/Lib/IO/Read.hs` | `lib/src/lib/io/read.dart` | ✅ Complete | N/A |
+
+#### List Library Modules (22/22 - 100% Complete)
+| Haskell Module | Dart Module | Status | Test Coverage |
+|----------------|-------------|--------|----------------|
+| `src/Glue/Lib/List.hs` | `lib/src/lib/list.dart` | ✅ Complete | N/A |
+| `src/Glue/Lib/List/Append.hs` | `lib/src/lib/list/append.dart` | ✅ Complete | ✅ 9 tests |
+| `src/Glue/Lib/List/Butlast.hs` | `lib/src/lib/list/butlast.dart` | ✅ Complete | ✅ 8 tests |
+| `src/Glue/Lib/List/Car.hs` | `lib/src/lib/list/car.dart` | ✅ Complete | ✅ 5 tests |
+| `src/Glue/Lib/List/Cdr.hs` | `lib/src/lib/list/cdr.dart` | ✅ Complete | ✅ 5 tests |
+| `src/Glue/Lib/List/Cons.hs` | `lib/src/lib/list/cons.dart` | ✅ Complete | ✅ 6 tests |
+| `src/Glue/Lib/List/Drop.hs` | `lib/src/lib/list/drop.dart` | ✅ Complete | ✅ 10 tests |
+| `src/Glue/Lib/List/Filter.hs` | `lib/src/lib/list/filter.dart` | ✅ Complete | ✅ 8 tests |
+| `src/Glue/Lib/List/Find.hs` | `lib/src/lib/list/find.dart` | ✅ Complete | ✅ 6 tests |
+| `src/Glue/Lib/List/Flatten.hs` | `lib/src/lib/list/flatten.dart` | ✅ Complete | ✅ 9 tests |
+| `src/Glue/Lib/List/Last.hs` | `lib/src/lib/list/last.dart` | ✅ Complete | ✅ 6 tests |
+| `src/Glue/Lib/List/Length.hs` | `lib/src/lib/list/length.dart` | ✅ Complete | ✅ 8 tests |
+| `src/Glue/Lib/List/Map.hs` | `lib/src/lib/list/map.dart` | ✅ Complete | ✅ 9 tests |
+| `src/Glue/Lib/List/Member.hs` | `lib/src/lib/list/member.dart` | ✅ Complete | ✅ 6 tests |
+| `src/Glue/Lib/List/Nth.hs` | `lib/src/lib/list/nth.dart` | ✅ Complete | ✅ 8 tests |
+| `src/Glue/Lib/List/Partition.hs` | `lib/src/lib/list/partition.dart` | ✅ Complete | ✅ 8 tests |
+| `src/Glue/Lib/List/Position.hs` | `lib/src/lib/list/position.dart` | ✅ Complete | ✅ 7 tests |
+| `src/Glue/Lib/List/Remove.hs` | `lib/src/lib/list/remove.dart` | ✅ Complete | ✅ 8 tests |
+| `src/Glue/Lib/List/Reverse.hs` | `lib/src/lib/list/reverse.dart` | ✅ Complete | ✅ 6 tests |
+| `src/Glue/Lib/List/Sort.hs` | `lib/src/lib/list/sort.dart` | ✅ Complete | ✅ 6 tests |
+| `src/Glue/Lib/List/Take.hs` | `lib/src/lib/list/take.dart` | ✅ Complete | ✅ 10 tests |
+| `src/Glue/Lib/List/Zip.hs` | `lib/src/lib/list/zip.dart` | ✅ Complete | ✅ 9 tests |
+
+#### Math Library Modules (6/23 - 26% Complete)
+| Haskell Module | Dart Module | Status | Test Coverage |
+|----------------|-------------|--------|----------------|
+| `src/Glue/Lib/Math/Arithmetic.hs` | `lib/src/lib/math/arithmetic/arithmetic.dart` | ✅ Complete | N/A |
+| `src/Glue/Lib/Math/Const.hs` | `lib/src/lib/math/const.dart` | ✅ Complete | N/A |
+| `src/Glue/Lib/Math/Logarithmic.hs` | N/A | ❌ Missing | N/A |
+| `src/Glue/Lib/Math/Power.hs` | N/A | ❌ Missing | N/A |
+| `src/Glue/Lib/Math/Trigonometric.hs` | N/A | ❌ Missing | N/A |
+| `src/Glue/Lib/Math/Utility.hs` | N/A | ❌ Missing | N/A |
+| **Arithmetic Submodules** | | | |
+| `src/Glue/Lib/Math/Arithmetic/Add.hs` | `lib/src/lib/math/arithmetic/add.dart` | ✅ Complete | ✅ 6 tests |
+| `src/Glue/Lib/Math/Arithmetic/Div.hs` | `lib/src/lib/math/arithmetic/div.dart` | ✅ Complete | ✅ 6 tests |
+| `src/Glue/Lib/Math/Arithmetic/Mod.hs` | `lib/src/lib/math/arithmetic/mod.dart` | ✅ Complete | ✅ 8 tests |
+| `src/Glue/Lib/Math/Arithmetic/Mul.hs` | `lib/src/lib/math/arithmetic/mul.dart` | ✅ Complete | ✅ 6 tests |
+| `src/Glue/Lib/Math/Arithmetic/Sub.hs` | `lib/src/lib/math/arithmetic/sub.dart` | ✅ Complete | ✅ 6 tests |
+| **Logarithmic Submodules** | | | |
+| `src/Glue/Lib/Math/Logarithmic/Lg.hs` | `lib/src/lib/math/logarithmic/lg_test.dart` | ❌ Test-only | ✅ 8 tests |
+| `src/Glue/Lib/Math/Logarithmic/Ln.hs` | `lib/src/lib/math/logarithmic/ln_test.dart` | ❌ Test-only | ✅ 8 tests |
+| `src/Glue/Lib/Math/Logarithmic/Log.hs` | `lib/src/lib/math/logarithmic/log_test.dart` | ❌ Test-only | ✅ 8 tests |
+| **Power Submodules** | | | |
+| `src/Glue/Lib/Math/Power/Exp.hs` | `lib/src/lib/math/power/exp_test.dart` | ❌ Test-only | ✅ 8 tests |
+| `src/Glue/Lib/Math/Power/Pow.hs` | `lib/src/lib/math/power/pow_test.dart` | ❌ Test-only | ✅ 8 tests |
+| `src/Glue/Lib/Math/Power/Sqrt.hs` | `lib/src/lib/math/power/sqrt_test.dart` | ❌ Test-only | ✅ 8 tests |
+| **Trigonometric Submodules** | | | |
+| `src/Glue/Lib/Math/Trigonometric/Acos.hs` | `test/lib/math/trigonometric/acos_test.dart` | ❌ Test-only | ✅ 6 tests |
+| `src/Glue/Lib/Math/Trigonometric/Asin.hs` | `test/lib/math/trigonometric/asin_test.dart` | ❌ Test-only | ✅ 6 tests |
+| `src/Glue/Lib/Math/Trigonometric/Atan.hs` | `test/lib/math/trigonometric/atan_test.dart` | ❌ Test-only | ✅ 6 tests |
+| `src/Glue/Lib/Math/Trigonometric/Cos.hs` | `test/lib/math/trigonometric/cos_test.dart` | ❌ Test-only | ✅ 6 tests |
+| `src/Glue/Lib/Math/Trigonometric/Sin.hs` | `test/lib/math/trigonometric/sin_test.dart` | ❌ Test-only | ✅ 6 tests |
+| `src/Glue/Lib/Math/Trigonometric/Tan.hs` | `test/lib/math/trigonometric/tan_test.dart` | ❌ Test-only | ✅ 6 tests |
+| **Utility Submodules** | | | |
+| `src/Glue/Lib/Math/Utility/Abs.hs` | `test/lib/math/utility/abs_test.dart` | ❌ Test-only | ✅ 8 tests |
+| `src/Glue/Lib/Math/Utility/Ceil.hs` | `test/lib/math/utility/ceil_test.dart` | ❌ Test-only | ✅ 8 tests |
+| `src/Glue/Lib/Math/Utility/Floor.hs` | `test/lib/math/utility/floor_test.dart` | ❌ Test-only | ✅ 8 tests |
+| `src/Glue/Lib/Math/Utility/Max.hs` | `test/lib/math/utility/max_test.dart` | ❌ Test-only | ✅ 8 tests |
+| `src/Glue/Lib/Math/Utility/Min.hs` | `test/lib/math/utility/min_test.dart` | ❌ Test-only | ✅ 8 tests |
+| `src/Glue/Lib/Math/Utility/Round.hs` | `test/lib/math/utility/round_test.dart` | ❌ Test-only | ✅ 8 tests |
+| `src/Glue/Lib/Math/Utility/Trunc.hs` | `test/lib/math/utility/trunc_test.dart` | ❌ Test-only | ✅ 8 tests |
 
 ### Module System Status
 | Component | Haskell Files | Dart Files | Status | Coverage |
