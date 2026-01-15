@@ -135,8 +135,8 @@ To be created in: `dart/glue/test/lib/list/`
 ### Phase 2: List Manipulation (Medium)
 **Priority: High** - Essential list processing
 
-4. **Slicing Operations** (4 modules)
-   - [ ] `take.dart` + `take_test.dart`
+4. **Slicing Operations** ✅ COMPLETED (1/4 modules)
+   - [x] `take.dart` + `take_test.dart`
    - [ ] `drop.dart` + `drop_test.dart`
    - [ ] `butlast.dart` + `butlast_test.dart`
    - [ ] `nth.dart` + `nth_test.dart`
@@ -191,7 +191,7 @@ To be created in: `dart/glue/test/lib/list/`
 | **Core** | `Length.hs` | `LengthSpec.hs` | `length.dart` | `length_test.dart` | ✅ DONE |
 | **Core** | `Append.hs` | `AppendSpec.hs` | `append.dart` | `append_test.dart` | ✅ DONE |
 | **Core** | `Last.hs` | `LastSpec.hs` | `last.dart` | `last_test.dart` | ✅ DONE |
-| **Slice** | `Take.hs` | `TakeSpec.hs` | `take.dart` | `take_test.dart` | ⏳ TODO |
+| **Slice** | `Take.hs` | `TakeSpec.hs` | `take.dart` | `take_test.dart` | ✅ DONE |
 | **Slice** | `Drop.hs` | `DropSpec.hs` | `drop.dart` | `drop_test.dart` | ⏳ TODO |
 | **Slice** | `Butlast.hs` | `ButlastSpec.hs` | `butlast.dart` | `butlast_test.dart` | ⏳ TODO |
 | **Slice** | `Nth.hs` | `NthSpec.hs` | `nth.dart` | `nth_test.dart` | ⏳ TODO |
