@@ -37,13 +37,13 @@ Implement the complete Math module in Dart following Haskell reference implement
 - [x] Verify Integer/Float type handling, division by zero, overflow
 - [x] Commit: "Implement Math Arithmetic Module"
 
-### Commit 3: Math Power Module
-- [ ] Create `dart/glue/lib/src/lib/math/power/`
-- [ ] Implement: `exp.dart`, `pow.dart`, `sqrt.dart`
-- [ ] Create `power.dart` main file with exports
-- [ ] Create tests for power functions
-- [ ] Verify negative input handling, precision matching
-- [ ] Commit: "Implement Math Power Module"
+### Commit 3: Math Power Module ✅
+- [x] Create `dart/glue/lib/src/lib/math/power/`
+- [x] Implement: `exp.dart`, `pow.dart`, `sqrt.dart`
+- [x] Create `power.dart` main file with exports
+- [x] Create tests for power functions
+- [x] Verify negative input handling, precision matching
+- [x] Commit: "Implement Math Power Module"
 
 ### Commit 4: Math Logarithmic Module
 - [ ] Create `dart/glue/lib/src/lib/math/logarithmic/`
