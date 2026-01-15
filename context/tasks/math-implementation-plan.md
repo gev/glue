@@ -29,13 +29,13 @@ Implement the complete Math module in Dart following Haskell reference implement
 - [x] Verify exact value matching Haskell constants
 - [x] Commit: "Implement Math Const Module"
 
-### Commit 2: Math Arithmetic Module
-- [ ] Create `dart/glue/lib/src/lib/math/arithmetic/`
-- [ ] Implement: `add.dart`, `sub.dart`, `mul.dart`, `div.dart`, `mod.dart`
-- [ ] Create `arithmetic.dart` main file with exports
-- [ ] Create comprehensive tests for all arithmetic operations
-- [ ] Verify Integer/Float type handling, division by zero, overflow
-- [ ] Commit: "Implement Math Arithmetic Module"
+### Commit 2: Math Arithmetic Module ✅
+- [x] Create `dart/glue/lib/src/lib/math/arithmetic/`
+- [x] Implement: `add.dart`, `sub.dart`, `mul.dart`, `div.dart`, `mod.dart`
+- [x] Create `arithmetic.dart` main file with exports
+- [x] Create comprehensive tests for all arithmetic operations
+- [x] Verify Integer/Float type handling, division by zero, overflow
+- [x] Commit: "Implement Math Arithmetic Module"
 
 ### Commit 3: Math Power Module
 - [ ] Create `dart/glue/lib/src/lib/math/power/`
