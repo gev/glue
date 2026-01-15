@@ -33,35 +33,35 @@ This comprehensive document provides a **complete analysis** of the Dart impleme
 | Haskell Module | Dart Module | Status | Test Coverage |
 |----------------|-------------|--------|----------------|
 | `src/Glue/Lib/Bool.hs` | `lib/src/lib/bool.dart` | ✅ Complete | N/A |
-| `src/Glue/Lib/Bool/Eq.hs` | `lib/src/lib/bool/eq.dart` | ✅ Complete | ✅ 6 tests |
-| `src/Glue/Lib/Bool/Ge.hs` | `lib/src/lib/bool/ge.dart` | ✅ Complete | ✅ 6 tests |
-| `src/Glue/Lib/Bool/Gt.hs` | `lib/src/lib/bool/gt.dart` | ✅ Complete | ✅ 6 tests |
-| `src/Glue/Lib/Bool/If.hs` | `lib/src/lib/bool/if.dart` | ✅ Complete | ✅ 4 tests |
-| `src/Glue/Lib/Bool/Le.hs` | `lib/src/lib/bool/le.dart` | ✅ Complete | ✅ 6 tests |
-| `src/Glue/Lib/Bool/Lt.hs` | `lib/src/lib/bool/lt.dart` | ✅ Complete | ✅ 6 tests |
-| `src/Glue/Lib/Bool/Ne.hs` | `lib/src/lib/bool/ne.dart` | ✅ Complete | ✅ 6 tests |
-| `src/Glue/Lib/Bool/Not.hs` | `lib/src/lib/bool/not.dart` | ✅ Complete | ✅ 4 tests |
-| `src/Glue/Lib/Bool/Until.hs` | `lib/src/lib/bool/until.dart` | ✅ Complete | ✅ 4 tests |
-| `src/Glue/Lib/Bool/When.hs` | `lib/src/lib/bool/when.dart` | ✅ Complete | ✅ 4 tests |
-| `src/Glue/Lib/Bool/While.hs` | `lib/src/lib/bool/while.dart` | ✅ Complete | ✅ 4 tests |
+| `src/Glue/Lib/Bool/Eq.hs` | `lib/src/lib/bool/eq.dart` | ✅ Complete | ✅ 5 tests |
+| `src/Glue/Lib/Bool/Ge.hs` | `lib/src/lib/bool/ge.dart` | ✅ Complete | ✅ 5 tests |
+| `src/Glue/Lib/Bool/Gt.hs` | `lib/src/lib/bool/gt.dart` | ✅ Complete | ✅ 5 tests |
+| `src/Glue/Lib/Bool/If.hs` | `lib/src/lib/bool/if.dart` | ✅ Complete | ✅ 3 tests |
+| `src/Glue/Lib/Bool/Le.hs` | `lib/src/lib/bool/le.dart` | ✅ Complete | ✅ 5 tests |
+| `src/Glue/Lib/Bool/Lt.hs` | `lib/src/lib/bool/lt.dart` | ✅ Complete | ✅ 5 tests |
+| `src/Glue/Lib/Bool/Ne.hs` | `lib/src/lib/bool/ne.dart` | ✅ Complete | ✅ 5 tests |
+| `src/Glue/Lib/Bool/Not.hs` | `lib/src/lib/bool/not.dart` | ✅ Complete | ✅ 3 tests |
+| `src/Glue/Lib/Bool/Until.hs` | `lib/src/lib/bool/until.dart` | ✅ Complete | ✅ 3 tests |
+| `src/Glue/Lib/Bool/When.hs` | `lib/src/lib/bool/when.dart` | ✅ Complete | ✅ 3 tests |
+| `src/Glue/Lib/Bool/While.hs` | `lib/src/lib/bool/while.dart` | ✅ Complete | ✅ 3 tests |
 
 #### Builtin Library Modules (8/8 - 100% Complete)
 | Haskell Module | Dart Module | Status | Test Coverage |
 |----------------|-------------|--------|----------------|
 | `src/Glue/Lib/Builtin.hs` | `lib/src/lib/builtin.dart` | ✅ Complete | N/A |
-| `src/Glue/Lib/Builtin/Def.hs` | `lib/src/lib/builtin/def.dart` | ✅ Complete | ✅ 8 tests |
+| `src/Glue/Lib/Builtin/Def.hs` | `lib/src/lib/builtin/def.dart` | ✅ Complete | ✅ 7 tests |
 | `src/Glue/Lib/Builtin/Error.hs` | `lib/src/lib/builtin/error.dart` | ✅ Complete | N/A |
-| `src/Glue/Lib/Builtin/Import.hs` | `lib/src/lib/builtin/import.dart` | ✅ Complete | ✅ 4 tests |
-| `src/Glue/Lib/Builtin/Lambda.hs` | `lib/src/lib/builtin/lambda.dart` | ✅ Complete | ✅ 8 tests |
+| `src/Glue/Lib/Builtin/Import.hs` | `lib/src/lib/builtin/import.dart` | ✅ Complete | N/A |
+| `src/Glue/Lib/Builtin/Lambda.hs` | `lib/src/lib/builtin/lambda.dart` | ✅ Complete | ✅ 7 tests |
 | `src/Glue/Lib/Builtin/Let.hs` | `lib/src/lib/builtin/let.dart` | ✅ Complete | N/A |
-| `src/Glue/Lib/Builtin/Set.hs` | `lib/src/lib/builtin/set.dart` | ✅ Complete | ✅ 6 tests |
-| `src/Glue/Lib/Builtin/Try.hs` | `lib/src/lib/builtin/try.dart` | ✅ Complete | ✅ 12 tests |
+| `src/Glue/Lib/Builtin/Set.hs` | `lib/src/lib/builtin/set.dart` | ✅ Complete | ✅ 5 tests |
+| `src/Glue/Lib/Builtin/Try.hs` | `lib/src/lib/builtin/try.dart` | ✅ Complete | ✅ 7 tests |
 
 #### IO Library Modules (3/3 - 100% Complete)
 | Haskell Module | Dart Module | Status | Test Coverage |
 |----------------|-------------|--------|----------------|
 | `src/Glue/Lib/IO.hs` | `lib/src/lib/io.dart` | ✅ Complete | N/A |
-| `src/Glue/Lib/IO/Print.hs` | `lib/src/lib/io/print.dart` | ✅ Complete | ✅ 4 tests |
+| `src/Glue/Lib/IO/Print.hs` | `lib/src/lib/io/print.dart` | ✅ Complete | ✅ 2 tests |
 | `src/Glue/Lib/IO/Read.hs` | `lib/src/lib/io/read.dart` | ✅ Complete | N/A |
 
 #### List Library Modules (22/22 - 100% Complete)
@@ -195,17 +195,17 @@ This comprehensive document provides a **complete analysis** of the Dart impleme
 
 | Haskell Function | Dart Function | Fidelity | Test Coverage |
 |------------------|---------------|----------|----------------|
-| `Eq.eq` | `eq.eq` | ✅ Perfect | ✅ 6 tests |
-| `Ge.ge` | `ge.ge` | ✅ Perfect | ✅ 6 tests |
-| `Gt.gt` | `gt.gt` | ✅ Perfect | ✅ 6 tests |
-| `If.if` | `if.if` | ✅ Perfect | ✅ 4 tests |
-| `Le.le` | `le.le` | ✅ Perfect | ✅ 6 tests |
-| `Lt.lt` | `lt.lt` | ✅ Perfect | ✅ 6 tests |
-| `Ne.ne` | `ne.ne` | ✅ Perfect | ✅ 6 tests |
-| `Not.not` | `not.not` | ✅ Perfect | ✅ 4 tests |
-| `Until.until` | `until.until` | ✅ Perfect | ✅ 4 tests |
-| `When.when` | `when.when` | ✅ Perfect | ✅ 4 tests |
-| `While.while` | `while.while` | ✅ Perfect | ✅ 4 tests |
+| `Eq.eq` | `eq.eq` | ✅ Perfect | ✅ 5 tests |
+| `Ge.ge` | `ge.ge` | ✅ Perfect | ✅ 5 tests |
+| `Gt.gt` | `gt.gt` | ✅ Perfect | ✅ 5 tests |
+| `If.if` | `if.if` | ✅ Perfect | ✅ 3 tests |
+| `Le.le` | `le.le` | ✅ Perfect | ✅ 5 tests |
+| `Lt.lt` | `lt.lt` | ✅ Perfect | ✅ 5 tests |
+| `Ne.ne` | `ne.ne` | ✅ Perfect | ✅ 5 tests |
+| `Not.not` | `not.not` | ✅ Perfect | ✅ 3 tests |
+| `Until.until` | `until.until` | ✅ Perfect | ✅ 3 tests |
+| `When.when` | `when.when` | ✅ Perfect | ✅ 3 tests |
+| `While.while` | `while.while` | ✅ Perfect | ✅ 3 tests |
 
 **Bool Library Summary:**
 - **12/12 functions**: 100% implemented
@@ -216,13 +216,13 @@ This comprehensive document provides a **complete analysis** of the Dart impleme
 
 | Haskell Function | Dart Function | Fidelity | Test Coverage |
 |------------------|---------------|----------|----------------|
-| `Def.def` | `def.def` | ✅ Perfect | ✅ 8 tests |
-| `Lambda.lambda` | `lambda.lambda` | ✅ Perfect | ✅ 8 tests |
+| `Def.def` | `def.def` | ✅ Perfect | ✅ 7 tests |
+| `Lambda.lambda` | `lambda.lambda` | ✅ Perfect | ✅ 7 tests |
 | `Let.let` | `let.let` | ✅ Perfect | N/A |
-| `Set.set` | `set.set` | ✅ Perfect | ✅ 6 tests |
-| `Try.try` | `try.try` | ✅ Perfect | ✅ 12 tests |
+| `Set.set` | `set.set` | ✅ Perfect | ✅ 5 tests |
+| `Try.try` | `try.try` | ✅ Perfect | ✅ 7 tests |
 | `Error.error` | `error.error` | ✅ Perfect | N/A |
-| `Import.import` | `import.import` | ✅ Perfect | ✅ 4 tests |
+| `Import.import` | `import.import` | ✅ Perfect | N/A |
 
 **Builtin Library Summary:**
 - **8/9 functions**: 89% implemented (missing 1 Haskell file)
