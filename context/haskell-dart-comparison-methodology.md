@@ -6,7 +6,12 @@ This document outlines the systematic methodology for comparing the Haskell and 
 - [Haskell test coverage analysis](haskell/test-coverage.md)
 - [Dart test coverage analysis](dart/test-coverage.md)
 - [Test coverage analysis process](test-coverage-analysis-process.md)
-- Use these existing coverage reports as input for comparative analysis
+- [Haskell directory structure](haskell/directory-structure.md)
+- [Dart directory structure](dart/directory-structure.md)
+- [Dart architecture overview](dart/architecture.md)
+- [Haskell architecture overview](haskell/todo.md)
+- [Glue language specification](spec/README.md)
+- Use these existing coverage reports and directory structures as input for comparative analysis
 
 ## Comparison Framework
 

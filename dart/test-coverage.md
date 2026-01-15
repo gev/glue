@@ -6,6 +6,9 @@ This report provides comprehensive test coverage analysis for the Dart implement
 - [Test Coverage Analysis Process](context/test-coverage-analysis-process.md)
 - [Haskell vs Dart Comparison Methodology](context/haskell-dart-comparison-methodology.md)
 - [Haskell Test Coverage Analysis](haskell/test-coverage.md)
+- [Dart Directory Structure](dart/directory-structure.md)
+- [Dart Architecture Overview](dart/architecture.md)
+- [Glue Language Specification](spec/README.md)
 
 ## One Pivot Table (Primary Analysis Table)
 

@@ -6,6 +6,9 @@ This report provides comprehensive test coverage analysis for the Haskell refere
 - [Test Coverage Analysis Process](context/test-coverage-analysis-process.md)
 - [Haskell vs Dart Comparison Methodology](context/haskell-dart-comparison-methodology.md)
 - [Dart Test Coverage Analysis](dart/test-coverage.md)
+- [Haskell Directory Structure](haskell/directory-structure.md)
+- [Haskell Architecture Overview](haskell/todo.md)
+- [Glue Language Specification](spec/README.md)
 
 ## One Pivot Table (Primary Analysis Table)
 
