@@ -11,6 +11,7 @@ import 'list/find.dart';
 import 'list/last.dart';
 import 'list/length.dart';
 import 'list/map.dart';
+import 'list/member.dart';
 import 'list/nth.dart';
 import 'list/reverse.dart';
 import 'list/sort.dart';
@@ -34,6 +35,7 @@ final ModuleInfo list = nativeModule('ffi.list', [
   ('last', IrNative(NativeFunc(last))),
   ('length', IrNative(NativeFunc(length))),
   ('map', IrNative(NativeFunc(map))),
+  ('member', IrNative(NativeFunc(member))),
   ('nth', IrNative(NativeFunc(nth))),
   ('reverse', IrNative(NativeFunc(reverse))),
   ('sort', IrNative(NativeFunc(sort))),
