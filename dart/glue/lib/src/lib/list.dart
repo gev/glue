@@ -9,6 +9,7 @@ import 'list/drop.dart';
 import 'list/last.dart';
 import 'list/length.dart';
 import 'list/nth.dart';
+import 'list/reverse.dart';
 import 'list/take.dart';
 
 /// List module - list manipulation functions
@@ -27,5 +28,6 @@ final ModuleInfo list = nativeModule('ffi.list', [
   ('last', IrNative(NativeFunc(last))),
   ('length', IrNative(NativeFunc(length))),
   ('nth', IrNative(NativeFunc(nth))),
+  ('reverse', IrNative(NativeFunc(reverse))),
   ('take', IrNative(NativeFunc(take))),
 ]);
