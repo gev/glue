@@ -21,6 +21,9 @@ This document provides comprehensive guidelines for verifying that any language 
 - **File naming**: `ModuleName.hs` → `module_name.ext`
 - **Import structure**: Same import groupings and aliases
 - **Export lists**: Identical public APIs
+- **Directory structure**: Identical folder hierarchies for source and test files
+- **File mapping**: One-to-one correspondence between Haskell and target language files
+- **Test organization**: Same test file structure and naming conventions
 
 ### Module Structure Order
 Modules must maintain the same internal structure and ordering as Haskell:
@@ -88,6 +91,13 @@ ResultType functionName(Type1 param1, Type2 param2)
 
 ## Test Structure Verification
 
+### Test File Organization
+- **Mirror Haskell exactly**: Test directory structure must match Haskell's organization
+- **One-to-one file mapping**: Every Haskell test file must have equivalent target language file
+- **Directory structure**: Identical folder hierarchies for test modules
+- **File naming**: `FunctionSpec.hs` → `function_test.ext` (language-appropriate naming)
+- **Module correspondence**: Test modules mirror source module structure exactly
+
 ### Test Case Structure
 ```haskell
 -- Haskell
@@ -111,6 +121,7 @@ group('Module.Function', () {
 - **Edge cases** - Error conditions, boundary values
 - **Integration tests** - End-to-end functionality
 - **Regression tests** - Previously fixed bugs
+- **Structural coverage** - Every Haskell test file must be mirrored
 
 ## Behavioral Verification
 

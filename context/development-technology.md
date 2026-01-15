@@ -78,10 +78,14 @@
 - Parallel type definitions and function organization
 
 ### 4. Tests Structure Should Repeat Haskell Tests Structure 🧪
-- Identical test organization and naming
-- Same test cases with language-appropriate syntax
-- Match Haskell test coverage exactly
-- Use equivalent testing frameworks (HSpec → test package, etc.)
+- **Exact structural mirroring**: Directory hierarchies must match Haskell exactly
+- **One-to-one file mapping**: Every Haskell test file must have equivalent target file
+- **Same directory organization**: Identical folder structures for test modules
+- **File naming convention**: `FunctionSpec.hs` → `function_test.ext`
+- **Module correspondence**: Test modules mirror source module structure exactly
+- **Same test cases**: Identical test scenarios with language-appropriate syntax
+- **Match coverage exactly**: Every Haskell test must be mirrored
+- **Testing frameworks**: Use equivalent frameworks (HSpec → test package, etc.)
 
 ### 5. Naming in Language Should be Equivalent to Haskell 🏷️
 - Translate Haskell function names appropriately
