@@ -1,4 +1,5 @@
 import 'package:glue/src/either.dart';
+import 'package:glue/src/error.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/runtime.dart';
@@ -8,11 +9,9 @@ import 'package:glue/src/lib/builtin.dart';
 import 'package:test/test.dart';
 
 /// Helper to run full Glue code like Haskell tests
-Future<Either<String, Ir?>> runCode(String input) async {
+Future<Either<GlueError, Ir?>> runCode(String input) async {
   final parseResult = parseGlue(input);
-  return parseResult.match((parseError) => Left('Parse error: $parseError'), (
-    ast,
-  ) async {
+  return parseResult.match((parseError) => Left(parseError), (ast) async {
     final irTree = compile(ast);
     final env = envFromModules([
       builtin,
@@ -20,7 +19,7 @@ Future<Either<String, Ir?>> runCode(String input) async {
     final runtime = Runtime.initial(env);
 
     final evalResult = await runEval(eval(irTree), runtime);
-    return evalResult.match((error) => Left('Eval error: $error'), (value) {
+    return evalResult.match((error) => Left(error), (value) {
       final (result, _) = value;
       return Right(result);
     });
@@ -31,7 +30,7 @@ void main() {
   group('Try Special Form', () {
     test('catches exception and calls handler with payload', () async {
       const code =
-          '(try (error "test-error" "hello") (catch "test-error" (lambda (err) err)))';
+          '(try (error test-error "hello") (catch test-error (lambda (err) err)))';
       final result = await runCode(code);
       result.match(
         (error) => fail('Should not be left: $error'),
@@ -50,14 +49,14 @@ void main() {
 
     test('re-throws unmatched exception', () async {
       const code =
-          '(try (error "test-error" "hello") (catch "other-error" (lambda (err) err)))';
+          '(try (error test-error "hello") (catch other-error (lambda (err) err)))';
       final result = await runCode(code);
       expect(result.isLeft, isTrue); // Should be an error
     });
 
     test('works with symbol catch names', () async {
       const code =
-          '(try (error test-error "hello") (catch test-error (lambda (err) err)))';
+          '(try (error test-error hello) (catch test-error (lambda (err) err)))';
       final result = await runCode(code);
       result.match(
         (error) => fail('Should not be left: $error'),
@@ -77,7 +76,7 @@ void main() {
 
     test('multiple catch clauses work', () async {
       const code =
-          '(try (error "second-error" "second") (catch "first-error" (lambda (err) "first")) (catch "second-error" (lambda (err) err)))';
+          '(try (error second-error "second") (catch "first-error" (lambda (err) "first")) (catch second-error (lambda (err) err)))';
       final result = await runCode(code);
       result.match(
         (error) => fail('Should not be left: $error'),
