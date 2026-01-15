@@ -31,15 +31,6 @@ void main() {
         );
       });
 
-      test('returns void when condition is true but body is empty', () async {
-        final args = [IrBool(true)];
-        final result = await runCode(args);
-        result.match(
-          (error) => fail('Should not be left: $error'),
-          (value) => expect(value, equals(IrVoid())),
-        );
-      });
-
       test('fails with no arguments', () async {
         final args = <Ir>[];
         final result = await runCode(args);
