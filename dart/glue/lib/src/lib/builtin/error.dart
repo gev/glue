@@ -17,8 +17,6 @@ Eval<Ir> error(List<Ir> args) {
   }
 
   return eval(rawVal).flatMap((val) {
-    return defineVarEval(name.value, val).flatMap((_) {
-      return throwError(runtimeException(name.value, val));
-    });
+    return throwError(runtimeException(name.value, val));
   });
 }
