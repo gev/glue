@@ -8,10 +8,6 @@ import 'package:glue/src/module/registry.dart';
 import 'package:glue/src/runtime.dart';
 import 'package:glue/src/eval/exception.dart';
 
-/// ============================================================================
-/// EVALUATION MONAD TYPE AND INSTANCES
-/// ============================================================================
-
 /// Evaluation monad for Glue expressions
 /// Mirrors Haskell Glue.Eval.Eval exactly
 class Eval<T> {
