@@ -22,12 +22,12 @@ Implement the complete Math module in Dart following Haskell reference implement
 
 ## Phase 2: Core Submodules (6 commits)
 
-### Commit 1: Math Const Module
-- [ ] Create `dart/glue/lib/src/lib/math/const.dart`
-- [ ] Implement constants: `pi`, `e`
-- [ ] Create `dart/glue/test/lib/math/const_test.dart`
-- [ ] Verify exact value matching Haskell constants
-- [ ] Commit: "Implement Math Const Module"
+### Commit 1: Math Const Module ✅
+- [x] Create `dart/glue/lib/src/lib/math/const.dart`
+- [x] Implement constants: `pi`, `e`
+- [x] Create `dart/glue/test/lib/math/const_test.dart`
+- [x] Verify exact value matching Haskell constants
+- [x] Commit: "Implement Math Const Module"
 
 ### Commit 2: Math Arithmetic Module
 - [ ] Create `dart/glue/lib/src/lib/math/arithmetic/`
