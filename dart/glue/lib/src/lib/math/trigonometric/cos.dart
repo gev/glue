@@ -1,8 +1,8 @@
 import 'dart:math' as math;
 
-import '../../../eval.dart';
-import '../../../eval/exception.dart';
-import '../../../ir.dart';
+import 'package:glue/src/../eval.dart';
+import 'package:glue/src/../eval/exception.dart';
+import 'package:glue/src/../ir.dart';
 
 /// Cosine function (radians)
 /// Mirrors Haskell Glue.Lib.Math.Trigonometric.Cos.cos exactly

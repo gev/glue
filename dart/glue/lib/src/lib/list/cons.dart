@@ -1,6 +1,6 @@
-import '../../eval.dart';
-import '../../eval/exception.dart';
-import '../../ir.dart';
+import 'package:glue/src/eval.dart';
+import 'package:glue/src/eval/exception.dart';
+import 'package:glue/src/ir.dart';
 
 /// Cons function - constructs a new list by prepending an element to a list
 /// Mirrors Haskell Glue.Lib.List.Cons.cons exactly

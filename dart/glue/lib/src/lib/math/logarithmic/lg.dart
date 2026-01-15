@@ -1,8 +1,8 @@
 import 'dart:math' as math;
 
-import '../../../eval.dart';
-import '../../../eval/exception.dart';
-import '../../../ir.dart';
+import 'package:glue/src/../eval.dart';
+import 'package:glue/src/../eval/exception.dart';
+import 'package:glue/src/../ir.dart';
 
 /// Logarithm base 10 function
 /// Mirrors Haskell Glue.Lib.Math.Logarithmic.Lg.lg exactly

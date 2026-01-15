@@ -1,6 +1,6 @@
-import '../../eval.dart';
-import '../../eval/exception.dart';
-import '../../ir.dart';
+import 'package:glue/src/eval.dart';
+import 'package:glue/src/eval/exception.dart';
+import 'package:glue/src/ir.dart';
 
 /// Reverse function - reverses the order of elements in a list
 /// Mirrors Haskell Glue.Lib.List.Reverse.reverse exactly

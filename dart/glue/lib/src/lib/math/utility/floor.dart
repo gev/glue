@@ -1,6 +1,6 @@
-import '../../../eval.dart';
-import '../../../eval/exception.dart';
-import '../../../ir.dart';
+import 'package:glue/src/../eval.dart';
+import 'package:glue/src/../eval/exception.dart';
+import 'package:glue/src/../ir.dart';
 
 /// Floor function (rounds down to nearest integer)
 /// Mirrors Haskell Glue.Lib.Math.Utility.Floor.floor exactly
