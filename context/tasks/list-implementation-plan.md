@@ -120,9 +120,9 @@ To be created in: `dart/glue/test/lib/list/`
 ### Phase 1: Core List Operations (Basic)
 **Priority: High** - Fundamental list operations
 
-1. **Car/Cdr Operations** (2 modules)
-   - [ ] `car.dart` + `car_test.dart`
-   - [ ] `cdr.dart` + `cdr_test.dart`
+1. **Car/Cdr Operations** ✅ COMPLETED (2 modules)
+   - [x] `car.dart` + `car_test.dart`
+   - [x] `cdr.dart` + `cdr_test.dart`
 
 2. **Construction Operations** (2 modules)
    - [ ] `cons.dart` + `cons_test.dart`
@@ -185,8 +185,8 @@ To be created in: `dart/glue/test/lib/list/`
 
 | Category | Haskell Source | Haskell Test | Dart Source | Dart Test | Status |
 |----------|----------------|--------------|-------------|-----------|--------|
-| **Core** | `Car.hs` | `CarSpec.hs` | `car.dart` | `car_test.dart` | ⏳ TODO |
-| **Core** | `Cdr.hs` | `CdrSpec.hs` | `cdr.dart` | `cdr_test.dart` | ⏳ TODO |
+| **Core** | `Car.hs` | `CarSpec.hs` | `car.dart` | `car_test.dart` | ✅ DONE |
+| **Core** | `Cdr.hs` | `CdrSpec.hs` | `cdr.dart` | `cdr_test.dart` | ✅ DONE |
 | **Core** | `Cons.hs` | `ConsSpec.hs` | `cons.dart` | `cons_test.dart` | ⏳ TODO |
 | **Core** | `Length.hs` | `LengthSpec.hs` | `length.dart` | `length_test.dart` | ⏳ TODO |
 | **Core** | `Append.hs` | `AppendSpec.hs` | `append.dart` | `append_test.dart` | ⏳ TODO |
