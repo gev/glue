@@ -92,13 +92,13 @@ This report provides a comprehensive comparison between the Haskell and Dart imp
 
 | Metric | Haskell | Dart | Analysis |
 |--------|---------|------|----------|
-| **Core Implementation LOC** | ~8,500 | ~7,200 | Haskell has more verbose functional code |
-| **Test LOC** | ~12,000 | ~15,600 | Dart has more granular test files |
-| **Library LOC** | ~15,000 | ~18,000 | Dart has more comprehensive standard library |
-| **Total LOC** | ~35,500 | ~40,800 | Dart has ~15% more total lines |
-| **Test-to-Code Ratio** | 1.8:1 | 2.2:1 | Dart has higher test density |
-| **LOC per Feature** | ~450 | ~380 | Haskell more concise per feature |
-| **Comment Density** | High | Medium | Haskell emphasizes documentation |
+| **Core Implementation LOC** | 2,055 | 3,167 | Dart has more verbose object-oriented code |
+| **Test LOC** | 3,674 | 6,028 | Dart has more comprehensive test suites |
+| **Library LOC** | 1,291 | 1,879 | Dart has more extensive standard library |
+| **Total Implementation LOC** | 5,732 | 9,195 | Dart has 61% more lines of code |
+| **Test-to-Code Ratio** | 0.64:1 | 0.66:1 | Nearly identical test density |
+| **LOC per Feature** | ~73 | ~88 | Haskell more concise per feature |
+| **Comment Density** | Low (2.7%) | Medium (6.6%) | Dart has better documentation |
 | **Type System** | Static + Inferred | Static + Explicit | Haskell has more inference |
 | **Memory Management** | Automatic (GHC) | Automatic (Dart VM) | Both garbage collected |
 | **Concurrency** | Green threads | Async/Await | Different concurrency models |
