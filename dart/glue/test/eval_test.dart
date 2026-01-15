@@ -7,6 +7,12 @@ import 'package:glue/src/module.dart';
 import 'package:glue/src/error.dart';
 import 'package:glue/src/lib/builtin.dart';
 import 'package:glue/src/lib/bool.dart';
+import 'package:glue/src/lib/math/arithmetic/arithmetic.dart';
+import 'package:glue/src/lib/math/const.dart';
+import 'package:glue/src/lib/math/logarithmic/logarithmic.dart';
+import 'package:glue/src/lib/math/power/power.dart';
+import 'package:glue/src/lib/math/trigonometric/trigonometric.dart';
+import 'package:glue/src/lib/math/utility/utility.dart';
 import 'package:test/test.dart';
 
 /// Helper to run full Glue code like Haskell EvalSpec.hs
@@ -17,7 +23,13 @@ Future<Either<GlueError, Ir>> runCode(String input) async {
     final env = envFromModules([
       builtin,
       bool,
-    ]); // TODO: Add arithmetic when implemented
+      arithmetic,
+      const_,
+      logarithmic,
+      power,
+      trigonometric,
+      utility,
+    ]); // All math submodules loaded
     final runtime = Runtime.initial(env);
 
     final evalResult = await runEval(eval(irTree), runtime);
@@ -69,13 +81,43 @@ void main() {
       );
     });
 
-    // test('handles basic values', () async {
-    //   final result = await runCode('(+ 0 42)');
-    //   result.match(
-    //     (error) => fail('Should not be left: $error'),
-    //     (value) => expect(value, equals(IrInteger(42))),
-    //   );
-    // });
+    test('handles basic arithmetic', () async {
+      final result = await runCode('(+ 0 42)');
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrInteger(42))),
+      );
+    });
+
+    test('handles math constants', () async {
+      final result1 = await runCode('pi');
+      result1.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect((value as IrFloat).value, closeTo(3.14159, 0.0001)),
+      );
+
+      final result2 = await runCode('e');
+      result2.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect((value as IrFloat).value, closeTo(2.71828, 0.0001)),
+      );
+    });
+
+    test('handles trigonometric functions', () async {
+      final result = await runCode('(sin 0)');
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect((value as IrFloat).value, closeTo(0.0, 0.0001)),
+      );
+    });
+
+    test('handles utility functions', () async {
+      final result = await runCode('(abs -5)');
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrInteger(5))),
+      );
+    });
 
     // test('handles basic values', () async {
     //   final result = await runCode('((+ 0 42))');
