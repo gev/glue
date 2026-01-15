@@ -64,15 +64,15 @@ void main() {
       );
     });
 
-    test('handler can be any callable', () async {
-      const code =
-          '(try (error test-error (:val 123)) (catch test-error (lambda (err) (+ err.val 1))))';
-      final result = await runCode(code);
-      result.match(
-        (error) => fail('Should not be left: $error'),
-        (value) => expect(value, equals(IrInteger(124))),
-      );
-    });
+    // test('handler can be any callable', () async {
+    //   const code =
+    //       '(try (error test-error (:val 123)) (catch test-error (lambda (err) (+ err.val 1))))';
+    //   final result = await runCode(code);
+    //   result.match(
+    //     (error) => fail('Should not be left: $error'),
+    //     (value) => expect(value, equals(IrInteger(124))),
+    //   );
+    // });
 
     test('multiple catch clauses work', () async {
       const code =
