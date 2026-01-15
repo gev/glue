@@ -30,7 +30,7 @@ void main() {
   group('Try Special Form', () {
     test('catches exception and calls handler with payload', () async {
       const code =
-          '(try (error test-error "hello") (catch test-error (lambda (err) err)))';
+          '(try (error test-error (:msg "hello")) (catch test-error (lambda (err) err.msg)))';
       final result = await runCode(code);
       result.match(
         (error) => fail('Should not be left: $error'),
@@ -39,7 +39,7 @@ void main() {
     });
 
     test('returns normal value when no exception', () async {
-      const code = '(try 42 (catch "any-error" (lambda (err) "caught")))';
+      const code = '(try 42 (catch any-error (lambda (err) "caught")))';
       final result = await runCode(code);
       result.match(
         (error) => fail('Should not be left: $error'),
@@ -49,14 +49,14 @@ void main() {
 
     test('re-throws unmatched exception', () async {
       const code =
-          '(try (error test-error "hello") (catch other-error (lambda (err) err)))';
+          '(try (error test-error (:msg "hello")) (catch other-error (lambda (err) err.msg)))';
       final result = await runCode(code);
       expect(result.isLeft, isTrue); // Should be an error
     });
 
     test('works with symbol catch names', () async {
       const code =
-          '(try (error test-error hello) (catch test-error (lambda (err) err)))';
+          '(try (error test-error (:msg "hello")) (catch test-error (lambda (err) err.msg)))';
       final result = await runCode(code);
       result.match(
         (error) => fail('Should not be left: $error'),
@@ -66,17 +66,17 @@ void main() {
 
     test('handler can be any callable', () async {
       const code =
-          '(try (error test-error 123) (catch test-error (lambda (err) err)))';
+          '(try (error test-error (:val 123)) (catch test-error (lambda (err) (+ err.val 1))))';
       final result = await runCode(code);
       result.match(
         (error) => fail('Should not be left: $error'),
-        (value) => expect(value, equals(IrInteger(123))),
+        (value) => expect(value, equals(IrInteger(124))),
       );
     });
 
     test('multiple catch clauses work', () async {
       const code =
-          '(try (error second-error "second") (catch "first-error" (lambda (err) "first")) (catch second-error (lambda (err) err)))';
+          '(try (error second-error (:msg "second")) (catch first-error (lambda (err) "first")) (catch second-error (lambda (err) err.msg)))';
       final result = await runCode(code);
       result.match(
         (error) => fail('Should not be left: $error'),
@@ -86,12 +86,22 @@ void main() {
 
     test('first matching catch is used', () async {
       const code =
-          '(try (error test-error "caught") (catch test-error (lambda (err) err)) (catch test-error (lambda (err) "second")))';
+          '(try (error test-error (:msg "caught")) (catch test-error (lambda (err) err.msg)) (catch test-error (lambda (err) "second")))';
       final result = await runCode(code);
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrString('caught'))),
       );
+    });
+
+    test('fails to catch when using string instead of symbol', () async {
+      const code =
+          '(try (error test-error (:msg "hello")) (catch "test-error" (lambda (err) err.msg)))';
+      final result = await runCode(code);
+      expect(
+        result.isLeft,
+        isTrue,
+      ); // Should be an error since string can't match symbol
     });
   });
 }

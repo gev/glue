@@ -1,5 +1,6 @@
 module Glue.Lib.Builtin.Try where
 
+import Data.Maybe (maybeToList)
 import Data.Text (Text)
 import Glue.Eval (Eval, apply, eval, getRuntime, isCallable, liftIO, putRuntime, runEval, throwError)
 import Glue.Eval.Error (EvalError (..))
@@ -19,7 +20,7 @@ tryFunc (body : catches) = do
                 Just handler -> do
                     callable <- eval handler
                     case callable of
-                        c | isCallable c -> apply c (maybe [] (: []) payload)
+                        c | isCallable c -> apply c (maybeToList payload)
                         _ -> throwError notCallableObject
                 Nothing -> throwError $ RuntimeException sym payload
 tryFunc _ = throwError $ wrongArgumentType ["body", "catch*"]
@@ -33,5 +34,4 @@ findCatch excSymbol (_ : rest) = findCatch excSymbol rest
 
 getSymbolText :: IR.IR Eval -> Maybe Text
 getSymbolText (IR.Symbol t) = Just t
-getSymbolText (IR.String t) = Just t
 getSymbolText _ = Nothing

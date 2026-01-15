@@ -70,7 +70,6 @@ Ir? _findCatch(String excSymbol, List<Ir> catches) {
 String? _getSymbolText(Ir ir) {
   return switch (ir) {
     IrSymbol(value: final text) => text,
-    IrString(value: final text) => text,
     _ => null,
   };
 }

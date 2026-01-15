@@ -52,3 +52,10 @@ spec = describe "Glue.Lib.Builtin.Try (Test try special form)" do
     it "first matching catch is used" do
         let code = "(try (error test-error (:msg \"caught\")) (catch test-error (lambda (err) err.msg)) (catch test-error (lambda (err) \"second\")))"
         runCode code `shouldReturn` Right (Just (String "caught"))
+
+    it "fails to catch when using string instead of symbol" do
+        let code = "(try (error test-error (:msg \"hello\")) (catch \"test-error\" (lambda (err) err.msg)))"
+        result <- runCode code
+        case result of
+            Left _ -> pure () -- Expected error since string can't match symbol
+            Right _ -> expectationFailure "Expected error when using string in catch clause"
