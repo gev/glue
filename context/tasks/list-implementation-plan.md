@@ -148,9 +148,9 @@ To be created in: `dart/glue/test/lib/list/`
 ### Phase 3: Functional Programming (Medium)
 **Priority: Medium** - Higher-order functions
 
-6. **Mapping Operations** ✅ COMPLETED (1/2 modules)
+6. **Mapping Operations** ✅ COMPLETED (2/2 modules)
    - [x] `map.dart` + `map_test.dart`
-   - [ ] `filter.dart` + `filter_test.dart`
+   - [x] `filter.dart` + `filter_test.dart`
 
 7. **Search Operations** (3 modules)
    - [ ] `find.dart` + `find_test.dart`
@@ -198,7 +198,7 @@ To be created in: `dart/glue/test/lib/list/`
 | **Order** | `Reverse.hs` | `ReverseSpec.hs` | `reverse.dart` | `reverse_test.dart` | ✅ DONE |
 | **Order** | `Sort.hs` | `SortSpec.hs` | `sort.dart` | `sort_test.dart` | ✅ DONE |
 | **Func** | `Map.hs` | `MapSpec.hs` | `map.dart` | `map_test.dart` | ✅ DONE |
-| **Func** | `Filter.hs` | `FilterSpec.hs` | `filter.dart` | `filter_test.dart` | ⏳ TODO |
+| **Func** | `Filter.hs` | `FilterSpec.hs` | `filter.dart` | `filter_test.dart` | ✅ DONE |
 | **Search** | `Find.hs` | `FindSpec.hs` | `find.dart` | `find_test.dart` | ⏳ TODO |
 | **Search** | `Member.hs` | `MemberSpec.hs` | `member.dart` | `member_test.dart` | ⏳ TODO |
 | **Search** | `Position.hs` | `PositionSpec.hs` | `position.dart` | `position_test.dart` | ⏳ TODO |
