@@ -177,6 +177,10 @@ ReturnType functionName(Parameters) {
 - [ ] Documentation is complete and accurate
 - [ ] Code style follows language conventions
 - [ ] Performance is comparable to Haskell
+- [ ] Directory structure mirrors Haskell exactly
+- [ ] One-to-one file mapping with Haskell
+- [ ] Same number of files and directories as Haskell
+- [ ] Test organization matches Haskell structure
 
 ### Release Verification
 - **Final compliance check** - Complete verification before release
