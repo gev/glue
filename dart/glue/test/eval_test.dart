@@ -6,6 +6,7 @@ import 'package:glue/src/parser.dart';
 import 'package:glue/src/module.dart';
 import 'package:glue/src/error.dart';
 import 'package:glue/src/lib/builtin.dart';
+import 'package:glue/src/lib/bool.dart';
 import 'package:test/test.dart';
 
 /// Helper to run full Glue code like Haskell EvalSpec.hs
@@ -15,7 +16,8 @@ Future<Either<GlueError, Ir>> runCode(String input) async {
     final irTree = compile(ast);
     final env = envFromModules([
       builtin,
-    ]); // TODO: Add arithmetic, bool when implemented
+      bool,
+    ]); // TODO: Add arithmetic when implemented
     final runtime = Runtime.initial(env);
 
     final evalResult = await runEval(eval(irTree), runtime);
