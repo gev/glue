@@ -103,13 +103,64 @@ Implement the complete Math module in Dart following Haskell reference implement
 - **Dependencies**: Requires Bool module already integrated
 - **Risks**: Precision differences between Dart and Haskell math libraries
 
-## Next Steps ✅
-1. Begin with Commit 1: Math Const Module ✅
-2. Follow systematic implementation order ✅
-3. Maintain "one module = one commit" discipline ✅
-4. Complete full verification after each module ✅
-5. **Complete final Commit 7: System Integration** ✅
+## Phase 4: Structural Compliance Fix (Required)
 
-## 🎉 **MATH MODULE IMPLEMENTATION - COMPLETE!**
+### Issue: Test Folder Structures Don't Match Haskell
+**Current Status:** ❌ **STRUCTURAL NON-COMPLIANCE**
+- Dart uses single test files per module
+- Haskell uses directories with individual function test files
+- Dart has extra `const_test.dart` (no Haskell equivalent)
+- Violates updated `implementation-verification.md` requirements
 
-**All 26 mathematical functions are now available in the Dart Glue runtime with 100% Haskell behavioral fidelity!**
+### Required Haskell-Mirroring Structure:
+```
+dart/glue/test/lib/math/
+├── arithmetic/             # Directory (like Haskell Arithmetic/)
+│   ├── add_test.dart      # Individual function test (like AddSpec.hs)
+│   ├── sub_test.dart      # Individual function test (like SubSpec.hs)
+│   ├── mul_test.dart      # Individual function test (like MulSpec.hs)
+│   ├── div_test.dart      # Individual function test (like DivSpec.hs)
+│   └── mod_test.dart      # Individual function test (like ModSpec.hs)
+├── logarithmic/           # Directory (like Haskell Logarithmic/)
+│   ├── lg_test.dart       # Individual function test
+│   ├── ln_test.dart       # Individual function test
+│   └── log_test.dart      # Individual function test
+├── power/                 # Directory (like Haskell Power/)
+│   ├── exp_test.dart      # Individual function test
+│   ├── pow_test.dart      # Individual function test
+│   └── sqrt_test.dart     # Individual function test
+├── trigonometric/         # Directory (like Haskell Trigonometric/)
+│   ├── sin_test.dart      # Individual function test
+│   ├── cos_test.dart      # Individual function test
+│   ├── tan_test.dart      # Individual function test
+│   ├── asin_test.dart     # Individual function test
+│   ├── acos_test.dart     # Individual function test
+│   └── atan_test.dart     # Individual function test
+└── utility/               # Directory (like Haskell Utility/)
+    ├── abs_test.dart      # Individual function test
+    ├── ceil_test.dart     # Individual function test
+    ├── floor_test.dart    # Individual function test
+    ├── round_test.dart    # Individual function test
+    ├── trunc_test.dart    # Individual function test
+    ├── max_test.dart      # Individual function test
+    └── min_test.dart      # Individual function test
+// ❌ REMOVE const_test.dart (no Haskell Const/ directory)
+```
+
+### Commit 8: Fix Test Folder Structures
+- [ ] Create `arithmetic/` directory and split `arithmetic_test.dart` into 5 individual files
+- [ ] Create `logarithmic/` directory and split `logarithmic_test.dart` into 3 individual files
+- [ ] Create `power/` directory and split `power_test.dart` into 3 individual files
+- [ ] Create `trigonometric/` directory and split `trigonometric_test.dart` into 6 individual files
+- [ ] Create `utility/` directory and split `utility_test.dart` into 7 individual files
+- [ ] Remove `const_test.dart` (no Haskell equivalent)
+- [ ] Verify all new test files run correctly
+- [ ] Commit: "Fix test folder structures to mirror Haskell exactly"
+
+## Next Steps 🔄
+1. **IMMEDIATE:** Execute Commit 8 to fix structural compliance
+2. **AFTER:** Re-run all tests to ensure functionality preserved
+3. **FINAL:** Update implementation plan with completion status
+
+## 🎯 **Final Goal:**
+**Achieve 100% structural compliance** with Haskell's test organization as required by `implementation-verification.md`.
