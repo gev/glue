@@ -19,6 +19,7 @@ import 'list/remove.dart';
 import 'list/reverse.dart';
 import 'list/sort.dart';
 import 'list/take.dart';
+import 'list/zip.dart';
 
 /// List module - list manipulation functions
 /// Mirrors Haskell Glue.Lib.List exactly
@@ -46,4 +47,5 @@ final ModuleInfo list = nativeModule('ffi.list', [
   ('reverse', IrNative(NativeFunc(reverse))),
   ('sort', IrNative(NativeFunc(sort))),
   ('take', IrNative(NativeFunc(take))),
+  ('zip', IrNative(NativeFunc(zip))),
 ]);

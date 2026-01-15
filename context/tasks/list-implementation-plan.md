@@ -160,9 +160,9 @@ To be created in: `dart/glue/test/lib/list/`
 ### Phase 4: Advanced Operations (Low)
 **Priority: Low** - Specialized operations
 
-8. **Set Operations** ✅ COMPLETED (1/2 modules)
+8. **Set Operations** ✅ COMPLETED (2/2 modules)
    - [x] `remove.dart` + `remove_test.dart`
-   - [ ] `partition.dart` + `partition_test.dart`
+   - [x] `partition.dart` + `partition_test.dart`
 
 9. **Combination Operations** (2 modules)
    - [ ] `zip.dart` + `zip_test.dart`
@@ -203,7 +203,7 @@ To be created in: `dart/glue/test/lib/list/`
 | **Search** | `Member.hs` | `MemberSpec.hs` | `member.dart` | `member_test.dart` | ✅ DONE |
 | **Search** | `Position.hs` | `PositionSpec.hs` | `position.dart` | `position_test.dart` | ✅ DONE |
 | **Set** | `Remove.hs` | `RemoveSpec.hs` | `remove.dart` | `remove_test.dart` | ✅ DONE |
-| **Set** | `Partition.hs` | `PartitionSpec.hs` | `partition.dart` | `partition_test.dart` | ⏳ TODO |
+| **Set** | `Partition.hs` | `PartitionSpec.hs` | `partition.dart` | `partition_test.dart` | ✅ DONE |
 | **Combo** | `Zip.hs` | `ZipSpec.hs` | `zip.dart` | `zip_test.dart` | ⏳ TODO |
 | **Combo** | `Flatten.hs` | `FlattenSpec.hs` | `flatten.dart` | `flatten_test.dart` | ⏳ TODO |
 
