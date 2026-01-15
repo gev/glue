@@ -8,6 +8,7 @@ import 'list/cons.dart';
 import 'list/drop.dart';
 import 'list/last.dart';
 import 'list/length.dart';
+import 'list/map.dart';
 import 'list/nth.dart';
 import 'list/reverse.dart';
 import 'list/sort.dart';
@@ -28,6 +29,7 @@ final ModuleInfo list = nativeModule('ffi.list', [
   ('drop', IrNative(NativeFunc(drop))),
   ('last', IrNative(NativeFunc(last))),
   ('length', IrNative(NativeFunc(length))),
+  ('map', IrNative(NativeFunc(map))),
   ('nth', IrNative(NativeFunc(nth))),
   ('reverse', IrNative(NativeFunc(reverse))),
   ('sort', IrNative(NativeFunc(sort))),
