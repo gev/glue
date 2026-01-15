@@ -236,6 +236,18 @@ Eval<Ir> eval(Ir ir) {
   };
 }
 
+/// Evaluate function body with implicit sequence semantics
+/// Mirrors Haskell Glue.Eval.evalBody exactly
+Eval<Ir> evalBody(Ir body) {
+  return eval(body).flatMap((result) {
+    return switch (result) {
+      IrList(elements: []) => Eval.pure(IrVoid()),
+      IrList(elements: final elements) => Eval.pure(elements.last),
+      _ => Eval.pure(result),
+    };
+  });
+}
+
 /// Evaluate a symbol by looking it up in the environment
 Eval<Ir> evalSymbol(String name) {
   return getEnv().flatMap((env) {
@@ -281,7 +293,7 @@ Eval<Ir> evalList(List<Ir> elements) {
         final result = lookupVar(first.value, env);
         return result.match(
           (error) => throwError(error),
-          (value) => switch (_isCallable(value)) {
+          (value) => switch (isCallable(value)) {
             true => apply(value, []),
             false => Eval.pure(value),
           },
@@ -408,13 +420,17 @@ Eval<Ir> _evalNestedAccess(Ir obj, List<String> remainingParts) {
 }
 
 /// Check if an IR value can be called
-bool _isCallable(Ir value) {
+/// Mirrors Haskell Glue.Eval.isCallable exactly
+bool isCallable(Ir value) {
   return switch (value) {
     IrNative() => true,
     IrClosure() => true,
     _ => false,
   };
 }
+
+/// Internal helper (deprecated, use isCallable)
+bool _isCallable(Ir value) => isCallable(value);
 
 /// Full application of a closure
 Eval<Ir> _applyFullClosure(
@@ -428,7 +444,7 @@ Eval<Ir> _applyFullClosure(
     for (var i = 0; i < params.length; i++) {
       bindings.add((params[i], args[i]));
     }
-    return withEnv(_buildEnvWithBindings(closureEnv, bindings), eval(body));
+    return withEnv(_buildEnvWithBindings(closureEnv, bindings), evalBody(body));
   });
 }
 
