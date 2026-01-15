@@ -6,6 +6,7 @@ import 'list/cdr.dart';
 import 'list/cons.dart';
 import 'list/last.dart';
 import 'list/length.dart';
+import 'list/take.dart';
 
 /// List module - list manipulation functions
 /// Mirrors Haskell Glue.Lib.List exactly
@@ -20,4 +21,5 @@ final ModuleInfo list = nativeModule('ffi.list', [
   ('cons', IrNative(NativeFunc(cons))),
   ('last', IrNative(NativeFunc(last))),
   ('length', IrNative(NativeFunc(length))),
+  ('take', IrNative(NativeFunc(take))),
 ]);
