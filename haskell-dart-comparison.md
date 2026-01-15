@@ -31,7 +31,7 @@ This report provides a comprehensive comparison between the Haskell and Dart imp
 | **Core Language** | ✅ Complete | ✅ Complete | Identical feature set - AST, IR, Parser, Environment, Evaluation, Runtime, Module System |
 | **Bool Library** | ✅ Complete | ✅ Complete | Full function coverage - eq, ge, gt, le, lt, ne, not, until, when, while |
 | **Builtin Library** | ⚠️ Partial | ⚠️ Partial | Error handling implemented but not tested - def, lambda, set, try, error implemented |
-| **IO Library** | ✅ Complete | ⚠️ Partial | Haskell has read function, Dart only has print |
+| **IO Library** | ✅ Complete | ⚠️ Partial | Both have print and read implemented, but Dart missing read tests |
 | **List Library** | ✅ Complete | ✅ Complete | Comprehensive list operations - append, car, cdr, cons, drop, filter, find, flatten, last, length, map, member, nth, partition, position, remove, reverse, sort, take, zip |
 | **Math Libraries** | ✅ Complete | ✅ Complete | Full math function coverage across arithmetic, logarithmic, power, trigonometric, and utility functions |
 
@@ -42,7 +42,7 @@ This report provides a comprehensive comparison between the Haskell and Dart imp
 | **core** | 12 | 16 | 7 modules | 10 modules | ✅ Complete |
 | **bool** | 13 | 13 | 11 functions | 11 functions | ✅ Complete |
 | **builtin** | 8 | 8 | 7 functions | 7 functions | ⚠️ Partial |
-| **io** | 3 | 3 | 2 functions | 1 function | ⚠️ Partial |
+| **io** | 3 | 3 | 2 functions | 2 functions | ⚠️ Partial |
 | **list** | 22 | 22 | 21 functions | 21 functions | ✅ Complete |
 | **math.arithmetic** | 6 | 6 | 5 functions | 5 functions | ✅ Complete |
 | **math.logarithmic** | 4 | 4 | 3 functions | 3 functions | ✅ Complete |
@@ -137,7 +137,7 @@ This report provides a comprehensive comparison between the Haskell and Dart imp
 |-----------|----------------|-------------|------------|
 | **Core Language** | ✅ Complete | ✅ Complete | Both fully implement core Glue features |
 | **Bool Library** | ✅ Complete | ✅ Complete | Identical boolean operation coverage |
-| **Builtin Library** | ⚠️ Partial | ⚠️ Partial | Both missing error handling functions |
+| **Builtin Library** | ⚠️ Partial | ⚠️ Partial | Error handling implemented but not tested - def, lambda, set, try, error implemented |
 | **IO Library** | ✅ Complete | ⚠️ Partial | Haskell has complete IO, Dart missing read |
 | **List Library** | ✅ Complete | ✅ Complete | Both have comprehensive list operations |
 | **Math Libraries** | ✅ Complete | ✅ Complete | Full math function coverage in both |
