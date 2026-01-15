@@ -18,204 +18,30 @@ This comprehensive document provides a **complete analysis** of the Dart impleme
 ### Haskell Reference Structure (Complete)
 ```
 haskell/glue/
-├── glue.cabal                    # Project configuration
-├── README.md                     # Documentation
-├── app/
-│   └── Main.hs                   # Executable entry point
-└── src/
-    ├── Glue.hs                   # Main module exports
-    └── Glue/
-        ├── AST.hs                # Abstract Syntax Tree
-        ├── Env.hs                # Environment management
-        ├── Error.hs              # Error handling types
-        ├── Eval.hs               # Expression evaluation
-        ├── IR.hs                 # Intermediate Representation
-        ├── Module.hs             # Module system core
-        ├── Parser.hs             # Source code parsing
-        └── Eval/
-        │   ├── Error.hs          # Evaluation errors
-        │   └── Exception.hs      # Runtime exceptions
-        └── Module/
-        │   ├── Cache.hs          # Module caching
-        │   ├── Error.hs          # Module errors
-        │   ├── Loader.hs         # Module loading
-        │   ├── Registration.hs   # Module registration
-        │   └── Registry.hs       # Module registry
-        └── Parser/
-        │   └── Error.hs          # Parser errors
-        └── Lib/
-            ├── Bool.hs           # Bool library main
-            ├── Bool/
-            │   ├── Eq.hs         # Equality operations
-            │   ├── Ge.hs         # Greater or equal
-            │   ├── Gt.hs         # Greater than
-            │   ├── If.hs         # Conditional execution
-            │   ├── Le.hs         # Less or equal
-            │   ├── Lt.hs         # Less than
-            │   ├── Ne.hs         # Not equal
-            │   ├── Not.hs        # Logical not
-            │   ├── Until.hs      # Loop until
-            │   ├── When.hs       # Conditional when
-            │   └── While.hs      # Loop while
-            ├── Builtin.hs        # Builtin functions main
-            ├── Builtin/
-            │   ├── Def.hs        # Variable definition
-            │   ├── Error.hs      # Error handling
-            │   ├── Import.hs     # Module imports
-            │   ├── Lambda.hs     # Lambda functions
-            │   ├── Let.hs        # Local bindings
-            │   ├── Set.hs        # Variable assignment
-            │   └── Try.hs        # Exception handling
-            ├── IO.hs             # IO library main
-            ├── IO/
-            │   ├── Print.hs      # Output functions
-            │   └── Read.hs       # Input functions
-            ├── List.hs           # List library main
-            ├── List/
-            │   ├── Append.hs     # List concatenation
-            │   ├── Butlast.hs    # All but last element
-            │   ├── Car.hs        # First element
-            │   ├── Cdr.hs        # Rest of list
-            │   ├── Cons.hs       # Construct list
-            │   ├── Drop.hs       # Drop elements
-            │   ├── Filter.hs     # Filter elements
-            │   ├── Find.hs       # Find element
-            │   ├── Flatten.hs    # Flatten nested lists
-            │   ├── Last.hs       # Last element
-            │   ├── Length.hs     # List length
-            │   ├── Map.hs        # Map function
-            │   ├── Member.hs     # Membership test
-            │   ├── Nth.hs        # Nth element
-            │   ├── Partition.hs  # Partition list
-            │   ├── Position.hs   # Element position
-            │   ├── Remove.hs     # Remove elements
-            │   ├── Reverse.hs    # Reverse list
-            │   ├── Sort.hs       # Sort list
-            │   ├── Take.hs       # Take elements
-            │   └── Zip.hs        # Zip lists
-            └── Math/
-                ├── Arithmetic.hs # Arithmetic main
-                ├── Const.hs      # Mathematical constants
-                ├── Logarithmic.hs# Logarithmic functions main
-                ├── Power.hs      # Power functions main
-                ├── Trigonometric.hs# Trigonometric functions main
-                └── Utility.hs    # Math utilities main
-                └── Arithmetic/
-                │   ├── Add.hs    # Addition
-                │   ├── Div.hs    # Division
-                │   ├── Mod.hs    # Modulo
-                │   ├── Mul.hs    # Multiplication
-                │   └── Sub.hs    # Subtraction
-                └── Logarithmic/
-                │   ├── Lg.hs     # Base-10 logarithm
-                │   ├── Ln.hs     # Natural logarithm
-                │   └── Log.hs    # Arbitrary base logarithm
-                └── Power/
-                │   ├── Exp.hs    # Exponential function
-                │   ├── Pow.hs    # Power function
-                │   └── Sqrt.hs   # Square root
-                └── Trigonometric/
-                │   ├── Acos.hs   # Arc cosine
-                │   ├── Asin.hs   # Arc sine
-                │   ├── Atan.hs   # Arc tangent
-                │   ├── Cos.hs    # Cosine
-                │   ├── Sin.hs    # Sine
-                │   └── Tan.hs    # Tangent
-                └── Utility/
-                    ├── Abs.hs    # Absolute value
-                    ├── Ceil.hs   # Ceiling function
-                    ├── Floor.hs  # Floor function
-                    ├── Max.hs    # Maximum value
-                    ├── Min.hs    # Minimum value
-                    ├── Round.hs  # Round to nearest
-                    └── Trunc.hs  # Truncate decimal
-└── test/
-    ├── Spec.hs                   # Test runner
-    ├── TestUtils.hs              # Test utilities
-    └── Glue/
-        ├── CompileSpec.hs        # Compilation tests
-        ├── EnvSpec.hs            # Environment tests
-        ├── EvalSpec.hs           # Evaluation tests
-        ├── ParserSpec.hs         # Parser tests
-        └── Lib/
-            ├── Bool/
-            │   ├── EqSpec.hs     # Equality tests
-            │   ├── GeSpec.hs     # Greater equal tests
-            │   ├── GtSpec.hs     # Greater than tests
-            │   ├── IfSpec.hs     # Conditional tests
-            │   ├── LeSpec.hs     # Less equal tests
-            │   ├── LtSpec.hs     # Less than tests
-            │   ├── NeSpec.hs     # Not equal tests
-            │   ├── NotSpec.hs    # Logical not tests
-            │   ├── UntilSpec.hs  # Loop until tests
-            │   ├── WhenSpec.hs   # Conditional when tests
-            │   └── WhileSpec.hs  # Loop while tests
-            ├── Builtin/
-            │   ├── DefSpec.hs    # Definition tests
-            │   ├── ErrorSpec.hs  # Error handling tests
-            │   ├── ImportSpec.hs # Import tests
-            │   ├── LambdaSpec.hs # Lambda tests
-            │   ├── LetSpec.hs    # Local binding tests
-            │   ├── SetSpec.hs    # Assignment tests
-            │   └── TrySpec.hs    # Exception tests
-            ├── IO/
-            │   └── PrintSpec.hs  # IO output tests
-            ├── List/
-            │   ├── AppendSpec.hs # List append tests
-            │   ├── ButlastSpec.hs# Butlast tests
-            │   ├── CarSpec.hs    # Car tests
-            │   ├── CdrSpec.hs    # Cdr tests
-            │   ├── ConsSpec.hs   # Cons tests
-            │   ├── DropSpec.hs   # Drop tests
-            │   ├── FilterSpec.hs # Filter tests
-            │   ├── FindSpec.hs   # Find tests
-            │   ├── FlattenSpec.hs# Flatten tests
-            │   ├── LastSpec.hs   # Last tests
-            │   ├── LengthSpec.hs # Length tests
-            │   ├── MapSpec.hs    # Map tests
-            │   ├── MemberSpec.hs # Member tests
-            │   ├── NthSpec.hs    # Nth tests
-            │   ├── PartitionSpec.hs# Partition tests
-            │   ├── PositionSpec.hs# Position tests
-            │   ├── RemoveSpec.hs # Remove tests
-            │   ├── ReverseSpec.hs# Reverse tests
-            │   ├── SortSpec.hs   # Sort tests
-            │   ├── TakeSpec.hs   # Take tests
-            │   └── ZipSpec.hs    # Zip tests
-            └── Math/
-                ├── Arithmetic/
-                │   ├── AddSpec.hs# Addition tests
-                │   ├── DivSpec.hs# Division tests
-                │   ├── ModSpec.hs# Modulo tests
-                │   ├── MulSpec.hs# Multiplication tests
-                │   └── SubSpec.hs# Subtraction tests
-                ├── Logarithmic/
-                │   ├── LgSpec.hs # Log base 10 tests
-                │   ├── LnSpec.hs # Natural log tests
-                │   └── LogSpec.hs# Arbitrary log tests
-                ├── Power/
-                │   ├── ExpSpec.hs# Exponential tests
-                │   ├── PowSpec.hs# Power tests
-                │   └── SqrtSpec.hs# Square root tests
-                └── Trigonometric/
-                    ├── AcosSpec.hs# Arc cosine tests
-                    ├── AsinSpec.hs# Arc sine tests
-                    ├── AtanSpec.hs# Arc tangent tests
-                    ├── CosSpec.hs # Cosine tests
-                    ├── SinSpec.hs # Sine tests
-                    └── TanSpec.hs # Tangent tests
-                └── Utility/
-                    ├── AbsSpec.hs # Absolute value tests
-                    ├── CeilSpec.hs# Ceiling tests
-                    ├── FloorSpec.hs# Floor tests
-                    ├── MaxSpec.hs # Maximum tests
-                    ├── MinSpec.hs # Minimum tests
-                    ├── RoundSpec.hs# Round tests
-                    └── TruncSpec.hs# Truncate tests
-        └── Module/
-            ├── CacheSpec.hs      # Cache tests
-            ├── RegistrationSpec.hs# Registration tests
-            └── RegistrySpec.hs   # Registry tests
+├── glue.cabal              # Project configuration
+├── README.md               # Documentation
+├── app/Main.hs             # Executable entry point
+├── src/Glue/               # Core language (12 files)
+│   ├── AST.hs, Env.hs, Error.hs, Eval.hs, IR.hs, Module.hs, Parser.hs
+│   ├── Eval/Error.hs, Eval/Exception.hs
+│   ├── Module/Cache.hs, Module/Error.hs, Module/Loader.hs
+│   ├── Module/Registration.hs, Module/Registry.hs
+│   ├── Parser/Error.hs
+│   └── Lib/                # Standard libraries (66 files)
+│       ├── Bool/           # 13 files (12 functions + main)
+│       ├── Builtin/        # 8 files (7 functions + main)
+│       ├── IO/             # 3 files (2 functions + main)
+│       ├── List/           # 22 files (21 functions + main)
+│       └── Math/           # 23 files (arithmetic complete)
+└── test/Glue/              # Test suite (22 files)
+    ├── Spec.hs, TestUtils.hs, CompileSpec.hs, EnvSpec.hs
+    ├── EvalSpec.hs, ParserSpec.hs
+    ├── Lib/Bool/           # 12 test files
+    ├── Lib/Builtin/        # 6 test files (Def, Error, Import, Lambda, Set, Try)
+    ├── Lib/IO/             # 1 test file
+    ├── Lib/List/           # 21 test files
+    ├── Lib/Math/           # Partial test files
+    └── Module/             # 3 test files
 ```
 
 ### Dart Implementation Structure (Complete)
