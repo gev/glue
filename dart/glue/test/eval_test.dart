@@ -340,20 +340,20 @@ void main() {
       );
     });
 
-    // test('== alias works like eq', () async {
-    //   final result1 = await runCode('(== 42 42)');
-    //   result1.match(
-    //     (error) => fail('Should not be left: $error'),
-    //     (value) => expect(value, equals(IrBool(true))),
-    //   );
-    //   final result2 = await runCode('(== 42 43)');
-    //   result2.match(
-    //     (error) => fail('Should not be left: $error'),
-    //     (value) => expect(value, equals(IrBool(false))),
-    //   );
-    // });
+    test('== alias works like eq', () async {
+      final result1 = await runCode('(== 42 42)');
+      result1.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrBool(true))),
+      );
+      final result2 = await runCode('(== 42 43)');
+      result2.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrBool(false))),
+      );
+    });
 
-    // test('\\= alias works like ne', () async {
+    // test('!= alias works like ne', () async {
     //   final result1 = await runCode('(!= 42 43)');
     //   result1.match(
     //     (error) => fail('Should not be left: $error'),
