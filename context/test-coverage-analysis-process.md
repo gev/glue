@@ -61,16 +61,17 @@ This document describes the systematic process for creating detailed test covera
 
 ## Pivot Table Structure
 
-### Core Pivot Table
+### Core Pivot Table (Primary Analysis Table)
 ```
-| Category | Haskell Modules | Dart Modules | Test Coverage | Status |
-|----------|-----------------|--------------|----------------|--------|
-| Core Language | 12 files | 16 files | X tests | ✅ Complete |
-| Bool Library | 13 files | 13 files | X tests | ✅ Complete |
-| Builtin Library | 8 files | 8 files | X tests | ⚠️ Partial |
-| IO Library | 3 files | 3 files | X tests | ✅ Complete |
-| List Library | 22 files | 22 files | X tests | ✅ Complete |
-| Math Library | 23 files | 6 files | X tests | ⚠️ Partial |
+| Category | Haskell Modules | Dart Modules | Test Coverage | Status | Details |
+|----------|-----------------|--------------|----------------|--------|---------|
+| Core Language | 12 files | 16 files | X/Y tests | ✅ Complete | AST, IR, Parser, Environment, Evaluation, Runtime, Error Handling, Either Monad |
+| Bool Library | 13 files | 13 files | X/Y tests | ✅ Complete | 12 functions + main module |
+| Builtin Library | 8 files | 8 files | X/Y tests | ⚠️ Partial | 7 functions + main module (missing: error_test.dart, let_test.dart) |
+| IO Library | 3 files | 3 files | X/Y tests | ✅ Complete | print, println, read functions |
+| List Library | 22 files | 22 files | X/Y tests | ✅ Complete | 21 functions + main module |
+| Math Library | 23 files | 6 files | X/Y tests | ⚠️ Partial | arithmetic submodule complete, others test-only |
+| Module System | 5 files | 3 files | X/Y tests | ⚠️ Partial | Cache, Registry complete; Error, Loader missing |
 ```
 
 ### Library-Specific Pivot Tables
