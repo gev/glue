@@ -61,13 +61,13 @@ Implement the complete Math module in Dart following Haskell reference implement
 - [x] Verify radian input, domain restrictions, precision
 - [x] Commit: "Implement Math Trigonometric Module"
 
-### Commit 6: Math Utility Module
-- [ ] Create `dart/glue/lib/src/lib/math/utility/`
-- [ ] Implement: `abs.dart`, `ceil.dart`, `floor.dart`, `max.dart`, `min.dart`, `round.dart`, `trunc.dart`
-- [ ] Create `utility.dart` main file with exports
-- [ ] Create tests for utility functions
-- [ ] Verify edge cases (negative zero, NaN, infinity)
-- [ ] Commit: "Implement Math Utility Module"
+### Commit 6: Math Utility Module ✅
+- [x] Create `dart/glue/lib/src/lib/math/utility/`
+- [x] Implement: `abs.dart`, `ceil.dart`, `floor.dart`, `max.dart`, `min.dart`, `round.dart`, `trunc.dart`
+- [x] Create `utility.dart` main file with exports
+- [x] Create tests for utility functions
+- [x] Verify edge cases (negative zero, NaN, infinity)
+- [x] Commit: "Implement Math Utility Module"
 
 ## Phase 3: Integration (2 commits)
 
