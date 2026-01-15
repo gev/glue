@@ -149,7 +149,7 @@ dart/glue/test/lib/math/
 
 ### Commit 8: Fix Test Folder Structures ✅
 - [x] Create `arithmetic/` directory and split `arithmetic_test.dart` into 5 individual files
-- [x] Create `logarithmic/` directory and split `logarithmic_test.dart` into 3 individual files (started)
+- [x] Create `logarithmic/` directory and split `logarithmic_test.dart` into 3 individual files
 - [x] Create `power/` directory and split `power_test.dart` into 3 individual files
 - [x] Create `trigonometric/` directory and split `trigonometric_test.dart` into 6 individual files
 - [x] Create `utility/` directory and split `utility_test.dart` into 7 individual files
