@@ -353,83 +353,83 @@ void main() {
       );
     });
 
-    // test('!= alias works like ne', () async {
-    //   final result1 = await runCode('(!= 42 43)');
-    //   result1.match(
-    //     (error) => fail('Should not be left: $error'),
-    //     (value) => expect(value, equals(IrBool(true))),
-    //   );
-    //   final result2 = await runCode('(!= 42 42)');
-    //   result2.match(
-    //     (error) => fail('Should not be left: $error'),
-    //     (value) => expect(value, equals(IrBool(false))),
-    //   );
-    // });
+    test('!= alias works like ne', () async {
+      final result1 = await runCode('(!= 42 43)');
+      result1.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrBool(true))),
+      );
+      final result2 = await runCode('(!= 42 42)');
+      result2.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrBool(false))),
+      );
+    });
 
-    // test('< alias works like lt', () async {
-    //   final result1 = await runCode('(< 5 10)');
-    //   result1.match(
-    //     (error) => fail('Should not be left: $error'),
-    //     (value) => expect(value, equals(IrBool(true))),
-    //   );
-    //   final result2 = await runCode('(< 10 5)');
-    //   result2.match(
-    //     (error) => fail('Should not be left: $error'),
-    //     (value) => expect(value, equals(IrBool(false))),
-    //   );
-    // });
+    test('< alias works like lt', () async {
+      final result1 = await runCode('(< 5 10)');
+      result1.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrBool(true))),
+      );
+      final result2 = await runCode('(< 10 5)');
+      result2.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrBool(false))),
+      );
+    });
 
-    // test('<= alias works like le', () async {
-    //   final result1 = await runCode('(<= 5 5)');
-    //   result1.match(
-    //     (error) => fail('Should not be left: $error'),
-    //     (value) => expect(value, equals(IrBool(true))),
-    //   );
-    //   final result2 = await runCode('(<= 10 5)');
-    //   result2.match(
-    //     (error) => fail('Should not be left: $error'),
-    //     (value) => expect(value, equals(IrBool(false))),
-    //   );
-    // });
+    test('<= alias works like le', () async {
+      final result1 = await runCode('(<= 5 5)');
+      result1.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrBool(true))),
+      );
+      final result2 = await runCode('(<= 10 5)');
+      result2.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrBool(false))),
+      );
+    });
 
-    // test('> alias works like gt', () async {
-    //   final result1 = await runCode('(> 10 5)');
-    //   result1.match(
-    //     (error) => fail('Should not be left: $error'),
-    //     (value) => expect(value, equals(IrBool(true))),
-    //   );
-    //   final result2 = await runCode('(> 5 10)');
-    //   result2.match(
-    //     (error) => fail('Should not be left: $error'),
-    //     (value) => expect(value, equals(IrBool(false))),
-    //   );
-    // });
+    test('> alias works like gt', () async {
+      final result1 = await runCode('(> 10 5)');
+      result1.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrBool(true))),
+      );
+      final result2 = await runCode('(> 5 10)');
+      result2.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrBool(false))),
+      );
+    });
 
-    // test('>= alias works like ge', () async {
-    //   final result1 = await runCode('(>= 5 5)');
-    //   result1.match(
-    //     (error) => fail('Should not be left: $error'),
-    //     (value) => expect(value, equals(IrBool(true))),
-    //   );
-    //   final result2 = await runCode('(>= 5 10)');
-    //   result2.match(
-    //     (error) => fail('Should not be left: $error'),
-    //     (value) => expect(value, equals(IrBool(false))),
-    //   );
-    // });
+    test('>= alias works like ge', () async {
+      final result1 = await runCode('(>= 5 5)');
+      result1.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrBool(true))),
+      );
+      final result2 = await runCode('(>= 5 10)');
+      result2.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrBool(false))),
+      );
+    });
 
-    // test('! alias works like not', () async {
-    //   final result1 = await runCode('(! false)');
-    //   result1.match(
-    //     (error) => fail('Should not be left: $error'),
-    //     (value) => expect(value, equals(IrBool(true))),
-    //   );
-    //   final result2 = await runCode('(! true)');
-    //   result2.match(
-    //     (error) => fail('Should not be left: $error'),
-    //     (value) => expect(value, equals(IrBool(false))),
-    //   );
-    // });
+    test('! alias works like not', () async {
+      final result1 = await runCode('(! false)');
+      result1.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrBool(true))),
+      );
+      final result2 = await runCode('(! true)');
+      result2.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrBool(false))),
+      );
+    });
 
     // test('literal lists evaluate expressions', () async {
     //   final code = '((+ 1 2) (* 3 4))';
