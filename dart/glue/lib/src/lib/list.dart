@@ -8,6 +8,7 @@ import 'list/cons.dart';
 import 'list/drop.dart';
 import 'list/filter.dart';
 import 'list/find.dart';
+import 'list/flatten.dart';
 import 'list/last.dart';
 import 'list/length.dart';
 import 'list/map.dart';
@@ -36,6 +37,7 @@ final ModuleInfo list = nativeModule('ffi.list', [
   ('drop', IrNative(NativeFunc(drop))),
   ('filter', IrNative(NativeFunc(filter))),
   ('find', IrNative(NativeFunc(find))),
+  ('flatten', IrNative(NativeFunc(flatten))),
   ('last', IrNative(NativeFunc(last))),
   ('length', IrNative(NativeFunc(length))),
   ('map', IrNative(NativeFunc(map))),
