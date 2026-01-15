@@ -2,16 +2,16 @@
 
 ## Overview
 
-This document describes the systematic process for creating detailed test coverage reports for any language implementation of the Glue programming language. The analysis follows a structured 8-step methodology that uses ModuleInfo to ensure comprehensive and accurate coverage assessment across all implementations.
+This document describes the systematic process for creating detailed test coverage reports for a language implementation of the Glue programming language. The analysis follows a structured 8-step methodology that uses ModuleInfo to ensure comprehensive and accurate coverage assessment.
 
 ## Process Methodology
 
 ### Phase 1: Directory Structure Analysis
 
 #### Step 1: Get Directory Tree
-- **Input**: Existing `directory-structure.md` files in `haskell/` and `dart/` folders
-- **Process**: Parse complete directory trees to extract all module and test file inventories
-- **Output**: Structured lists of implementation modules and test files for both languages
+- **Input**: Existing `directory-structure.md` file for the implementation
+- **Process**: Parse complete directory tree to extract all module and test file inventories
+- **Output**: Structured lists of implementation modules and test files
 
 #### Step 2: Extract ModuleInfo from Implementation Files
 - **Input**: Individual implementation files (.hs/.dart)
@@ -21,6 +21,8 @@ This document describes the systematic process for creating detailed test covera
 - **Output**: Complete ModuleInfo mapping for all implementation files
 
 **ModuleInfo Extraction Details:**
+
+ModuleInfo produces Glue module dotted names that identify the corresponding Glue standard library module.
 
 **Source 1: Code Comments**
 ```dart
@@ -37,18 +39,19 @@ lib/src/lib/[module]/[function].dart
 ```
 
 **ModuleInfo Construction Algorithm:**
-1. Parse file path: `lib/src/lib/[path]/[filename].dart`
-2. Extract path segments after `lib/src/lib/`
-3. Capitalize each segment: `bool` → `Bool`, `eq` → `Eq`
-4. Construct: `Glue.[Path1].[Path2].[Filename]`
-5. Verify with comment cross-reference
+1. Parse mirror comment to extract Haskell module path (e.g., Glue.Lib.Bool.Eq)
+2. Remove "Glue." prefix: Lib.Bool.Eq
+3. Lowercase all segments: lib.bool.eq
+4. Remove "lib." prefix if present: bool.eq
+5. For core modules, use the module name directly (e.g., Glue.Ast → ast)
+6. Verify with file path cross-reference
 
 **Examples:**
 ```
-lib/src/lib/bool/eq.dart → Glue.Lib.Bool.Eq
-lib/src/lib/list/append.dart → Glue.Lib.List.Append
-lib/src/lib/math/arithmetic/add.dart → Glue.Lib.Math.Arithmetic.Add
-lib/ast.dart → Glue.Ast (core modules)
+lib/src/lib/bool/eq.dart → bool
+lib/src/lib/list/append.dart → list
+lib/src/lib/math/arithmetic/add.dart → math.arithmetic
+lib/ast.dart → ast
 ```
 
 #### Step 3: Get Tests Subtree
@@ -90,63 +93,95 @@ lib/ast.dart → Glue.Ast (core modules)
 #### Step 8: Create Pivot Table Rows
 - **Input**: Coverage analysis results
 - **Process**: Generate metrics and status indicators for each module
-- **Output**: Pivot table rows with coverage data
+- **Output**: Pivot and detailed table rows with coverage data
 
 ## Pivot Table Structure
 
-### Core Pivot Table (Primary Analysis Table)
-```
-| Category | Haskell Modules | Dart Modules | Test Coverage | Status | Details |
-|----------|-----------------|--------------|----------------|--------|---------|
-| Core Language | 12 files | 16 files | X/Y tests | ✅ Complete | AST, IR, Parser, Environment, Evaluation, Runtime, Error Handling, Either Monad |
-| Bool Library | 13 files | 13 files | X/Y tests | ✅ Complete | 12 functions + main module |
-| Builtin Library | 8 files | 8 files | X/Y tests | ⚠️ Partial | 7 functions + main module (missing: error_test.dart, let_test.dart) |
-| IO Library | 3 files | 3 files | X/Y tests | ✅ Complete | print, println, read functions |
-| List Library | 22 files | 22 files | X/Y tests | ✅ Complete | 21 functions + main module |
-| Math Library | 23 files | 6 files | X/Y tests | ⚠️ Partial | arithmetic submodule complete, others test-only |
-| Module System | 5 files | 3 files | X/Y tests | ⚠️ Partial | Cache, Registry complete; Error, Loader missing |
-```
+### One Pivot Table (Primary Analysis Table)
 
-### Library-Specific Pivot Tables
+| Module | Files | Test Coverage | Status | Details |
+|--------|-------|----------------|--------|---------|
+| core | 7 files | X/Y tests | ✅ Complete | Core language modules (AST, IR, Parser, Environment, Evaluation, Runtime, Module System) |
+| bool | 13 files | X/Y tests | ✅ Complete | Boolean operations library |
+| builtin | 8 files | X/Y tests | ⚠️ Partial | Builtin operations library |
+| io | 3 files | X/Y tests | ✅ Complete | IO operations library |
+| list | 22 files | X/Y tests | ✅ Complete | List operations library |
+| math.arithmetic | 6 files | X/Y tests | ✅ Complete | Arithmetic operations |
+| math.const | 1 file | X/Y tests | ⚠️ Partial | Math constants |
+| math.power | 4 files | X/Y tests | ⚠️ Partial | Power operations |
+| ...etc for all Glue modules
 
-Each library path gets its own detailed table:
+### Detailed Tables
 
-#### Bool Library Table
-```
-| Module Path | Haskell File | Dart File | Test File | Test Count | Status |
-|-------------|--------------|-----------|-----------|------------|--------|
-| lib.bool.eq | Eq.hs | eq.dart | eq_test.dart | 5 | ✅ Complete |
-| lib.bool.ge | Ge.hs | ge.dart | ge_test.dart | 5 | ✅ Complete |
-| ...etc for all 12 bool modules
-```
+One detailed table per Glue module dotted name, with title including the dotted name.
 
-#### Builtin Library Table
-```
-| Module Path | Haskell File | Dart File | Test File | Test Count | Status |
-|-------------|--------------|-----------|------------|------------|--------|
-| lib.builtin.def | Def.hs | def.dart | def_test.dart | 7 | ✅ Complete |
-| lib.builtin.lambda | Lambda.hs | lambda.dart | lambda_test.dart | 7 | ✅ Complete |
-| lib.builtin.let | Let.hs | let.dart | N/A | N/A | ✅ Complete |
-| ...etc for all 8 builtin modules
-```
+#### Core Detailed Table
 
-#### List Library Table
-```
-| Module Path | Haskell File | Dart File | Test File | Test Count | Status |
-|-------------|--------------|-----------|-----------|------------|--------|
-| lib.list.append | Append.hs | append.dart | append_test.dart | 8 | ✅ Complete |
-| lib.list.car | Car.hs | car.dart | car_test.dart | 5 | ✅ Complete |
-| ...etc for all 21 list functions + main
-```
+| Function | Module Name | Test Name | Coverage | Status |
+|----------|-------------|-----------|----------|--------|
+| ast | ast.dart | ast_test.dart | 10 | ✅ Complete |
+| ir | ir.dart | ir_test.dart | 8 | ✅ Complete |
+| parser | parser.dart | parser_test.dart | 12 | ✅ Complete |
+| ...etc for all core modules
 
-#### Math Submodule Tables
-```
-| Module Path | Haskell File | Dart File | Test File | Test Count | Status |
-|-------------|--------------|-----------|-----------|------------|--------|
-| lib.math.arithmetic.add | Add.hs | add.dart | add_test.dart | 6 | ✅ Complete |
-| lib.math.arithmetic.div | Div.hs | div.dart | div_test.dart | 6 | ✅ Complete |
-| ...etc for all arithmetic modules
-```
+Where:
+- **Function**: The Glue function or module name being tested
+- **Module Name**: The host language implementation file name
+- **Test Name**: The test file name
+- **Coverage**: Number of test cases for this function/module
+- **Status**: Test coverage status (Complete, Partial, etc.)
+
+#### Bool Detailed Table
+
+| Function | Module Name | Test Name | Coverage | Status |
+|----------|-------------|-----------|----------|--------|
+| eq | eq.dart | eq_test.dart | 5 | ✅ Complete |
+| ge | ge.dart | ge_test.dart | 5 | ✅ Complete |
+| gt | gt.dart | gt_test.dart | 5 | ✅ Complete |
+| ...etc for all bool functions
+
+Where:
+- **Function**: The Glue function or module name being tested
+- **Module Name**: The host language implementation file name
+- **Test Name**: The test file name
+- **Coverage**: Number of test cases for this function/module
+- **Status**: Test coverage status (Complete, Partial, etc.)
+
+#### List Detailed Table
+
+| Function | Module Name | Test Name | Coverage | Status |
+|----------|-------------|-----------|----------|--------|
+| append | append.dart | append_test.dart | 8 | ✅ Complete |
+| car | car.dart | car_test.dart | 5 | ✅ Complete |
+| cdr | cdr.dart | cdr_test.dart | 5 | ✅ Complete |
+| ...etc for all list functions
+
+Where:
+- **Function**: The Glue function or module name being tested
+- **Module Name**: The host language implementation file name
+- **Test Name**: The test file name
+- **Coverage**: Number of test cases for this function/module
+- **Status**: Test coverage status (Complete, Partial, etc.)
+
+
+#### Math.Arithmetic Detailed Table
+
+| Function | Module Name | Test Name | Coverage | Status |
+|----------|-------------|-----------|----------|--------|
+| add | add.dart | add_test.dart | 6 | ✅ Complete |
+| sub | sub.dart | sub_test.dart | 6 | ✅ Complete |
+| mul | mul.dart | mul_test.dart | 6 | ✅ Complete |
+| ...etc for all math.arithmetic functions
+
+Where:
+- **Function**: The Glue function or module name being tested
+- **Module Name**: The host language implementation file name
+- **Test Name**: The test file name
+- **Coverage**: Number of test cases for this function/module
+- **Status**: Test coverage status (Complete, Partial, etc.)
+
+
+...etc for each Glue module dotted name (builtin, io, math.const, math.power, etc.)
 
 ## Coverage Metrics Methodology
 
@@ -172,12 +207,10 @@ Each library path gets its own detailed table:
 ## File Organization
 
 ### Input Files
-- `haskell/directory-structure.md` - Haskell reference structure
-- `dart/directory-structure.md` - Dart implementation structure
+- `directory-structure.md` - Implementation directory structure
 
 ### Output Files
-- `haskell/test-coverage.md` - Haskell test coverage analysis
-- `dart/test-coverage.md` - Dart test coverage analysis
+- `test-coverage.md` - Test coverage analysis
 - `context/test-coverage-analysis-process.md` - This process documentation
 
 ## Quality Assurance
@@ -196,19 +229,9 @@ Each library path gets its own detailed table:
 
 ## Expected Outcomes
 
-### Haskell Test Coverage Report
-- Complete analysis of 22 test files
-- Detailed coverage for core language + 5 libraries
-- Identification of any missing Haskell tests
+### Test Coverage Report
+- Complete analysis of test files
+- Detailed coverage for core language + libraries
+- Identification of any missing tests
 
-### Dart Test Coverage Report
-- Complete analysis of 38+ test files
-- Detailed coverage for core language + 5 libraries
-- Clear identification of missing tests (error_test.dart, let_test.dart)
-
-### Comparative Insights
-- Coverage comparison between Haskell and Dart
-- Identification of implementation differences
-- Recommendations for test coverage improvements
-
-This systematic methodology ensures comprehensive, accurate, and actionable test coverage analysis for both implementations.
+This systematic methodology ensures comprehensive, accurate, and actionable test coverage analysis for the implementation.
