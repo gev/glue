@@ -94,7 +94,7 @@ This report provides a comprehensive comparison between the Haskell and Dart imp
 |--------|---------|------|----------|
 | **Core Implementation LOC** | 2,055 | 3,167 | Dart has more verbose object-oriented code |
 | **Test LOC** | 3,674 | 6,028 | Dart has more comprehensive test suites |
-| **Library LOC** | 1,291 | 1,879 | Dart has more extensive standard library |
+| **Library LOC** | 1,291 | 1,879 | Dart has more verbose object-oriented standard library |
 | **Total Implementation LOC** | 5,732 | 9,195 | Dart has 61% more lines of code |
 | **Test-to-Code Ratio** | 0.64:1 | 0.66:1 | Nearly identical test density |
 | **LOC per Feature** | ~73 | ~88 | Haskell more concise per feature |
