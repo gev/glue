@@ -229,7 +229,7 @@ Where:
 
 - **Total Implementation Files**: 78 (12 core + 66 library)
 - **Total Test Files**: 43
-- **Total Test Cases**: 528 (473 'it' blocks + 55 QuickCheck-generated tests)
+- **Total Test Cases**: 528 (counted by HSpec framework including all test constructs)
 - **Coverage Rate**: 57% (test files exist for 43/78 implementation files)
 - **Complete Coverage**: Core (100%), Bool (100%), List (100%), Math submodules (100%)
 - **Partial/Missing**: Builtin (missing Error tests), IO (missing Read tests), Math.Const (no tests)

@@ -188,10 +188,10 @@ Where:
 ### Test Counting Methods
 
 #### Haskell Test Counting
-- **Method**: Count `it` blocks in HSpec test files + account for QuickCheck properties
-- **Example**: Each `it "description" $ do` represents one test; each `prop` generates multiple test cases (typically 100)
+- **Method**: Count all HSpec test constructs (`it`, `prop`, `describe`, etc.) in test files
+- **Example**: Each `it "description" $ do` and each `prop "description"` represents one test case
 - **Validation**: Cross-check with actual test execution output showing total examples
-- **Note**: QuickCheck properties significantly increase test coverage beyond simple `it` block counts
+- **Note**: QuickCheck properties provide additional test coverage through generated test cases, but each property counts as one HSpec test case
 
 #### Dart Test Counting
 - **Method**: Count `test()` function calls in test files
