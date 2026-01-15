@@ -3,8 +3,9 @@
 This document outlines the systematic methodology for comparing the Haskell and Dart implementations of the Glue programming language. The comparison focuses on implementation completeness, test coverage, and code quality metrics.
 
 **Data Sources:**
-- Haskell test coverage analysis: `haskell/test-coverage.md`
-- Dart test coverage analysis: `dart/test-coverage.md`
+- [Haskell test coverage analysis](haskell/test-coverage.md)
+- [Dart test coverage analysis](dart/test-coverage.md)
+- [Test coverage analysis process](test-coverage-analysis-process.md)
 - Use these existing coverage reports as input for comparative analysis
 
 ## Comparison Framework

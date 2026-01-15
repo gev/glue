@@ -4,6 +4,11 @@
 
 This document describes the systematic process for creating detailed test coverage reports for a language implementation of the Glue programming language. The analysis follows a structured 8-step methodology that uses ModuleInfo to ensure comprehensive and accurate coverage assessment.
 
+**Related Documents:**
+- [Haskell Test Coverage Analysis](haskell/test-coverage.md)
+- [Dart Test Coverage Analysis](dart/test-coverage.md)
+- [Haskell vs Dart Comparison Methodology](haskell-dart-comparison-methodology.md)
+
 ## Process Methodology
 
 ### Phase 1: Directory Structure Analysis

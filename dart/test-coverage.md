@@ -2,6 +2,11 @@
 
 This report provides comprehensive test coverage analysis for the Dart implementation of the Glue programming language, following the systematic 8-step methodology.
 
+**Related Documents:**
+- [Test Coverage Analysis Process](context/test-coverage-analysis-process.md)
+- [Haskell vs Dart Comparison Methodology](context/haskell-dart-comparison-methodology.md)
+- [Haskell Test Coverage Analysis](haskell/test-coverage.md)
+
 ## One Pivot Table (Primary Analysis Table)
 
 | Module | Files | Test Coverage | Status | Details |
