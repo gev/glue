@@ -59,7 +59,7 @@ This report provides a comprehensive comparison between the Haskell and Dart imp
 | **core** | 133 | 189 | 100% | 100% | Equal |
 | **bool** | 53 | 46 | 100% | 100% | Equal |
 | **builtin** | 32 | 27 | 87.5% | 87.5% | Equal |
-| **io** | 2 | 2 | 100% | 50% | Haskell |
+| **io** | 2 | 2 | 50% | 50% | Equal |
 | **list** | 112 | 153 | 100% | 100% | Equal |
 | **math.arithmetic** | 48 | 31 | 100% | 100% | Equal |
 | **math.logarithmic** | 31 | 25 | 100% | 100% | Equal |
@@ -83,7 +83,7 @@ This report provides a comprehensive comparison between the Haskell and Dart imp
 | Gap Type | Haskell | Dart | Impact |
 |----------|---------|------|--------|
 | **Missing Tests** | math.const (1 file) | math.const (1 file) | Low - constants have minimal logic |
-| **Partial Coverage** | builtin (error implemented but not tested) | builtin (error implemented but not tested), io (missing read) | Medium - error handling test gaps |
+| **Partial Coverage** | builtin (error implemented but not tested), io (missing read) | builtin (error implemented but not tested), io (missing read) | Medium - error handling and IO test gaps |
 | **Test Quality** | Excellent | Excellent | Both have comprehensive test suites |
 
 ## 3. Code Quality Metrics
@@ -149,7 +149,7 @@ This report provides a comprehensive comparison between the Haskell and Dart imp
 | **core** | 133 | 189 | ✅ Complete | ✅ Complete | Both excellent core coverage |
 | **bool** | 53 | 46 | ✅ Complete | ✅ Complete | Comprehensive boolean testing |
 | **builtin** | 32 | 27 | ⚠️ Partial | ⚠️ Partial | Error implemented but not tested |
-| **io** | 2 | 2 | ✅ Complete | ⚠️ Partial | Haskell has better IO coverage |
+| **io** | 2 | 2 | ⚠️ Partial | ⚠️ Partial | Both have print tested, read not tested |
 | **list** | 112 | 153 | ✅ Complete | ✅ Complete | Extensive list operation testing |
 | **math.arithmetic** | 48 | 31 | ✅ Complete | ✅ Complete | Full arithmetic function coverage |
 | **math.logarithmic** | 31 | 25 | ✅ Complete | ✅ Complete | Complete logarithmic testing |
