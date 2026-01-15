@@ -4,6 +4,7 @@ import 'list/append.dart';
 import 'list/car.dart';
 import 'list/cdr.dart';
 import 'list/cons.dart';
+import 'list/last.dart';
 import 'list/length.dart';
 
 /// List module - list manipulation functions
@@ -17,5 +18,6 @@ final ModuleInfo list = nativeModule('ffi.list', [
   ('car', IrNative(NativeFunc(car))),
   ('cdr', IrNative(NativeFunc(cdr))),
   ('cons', IrNative(NativeFunc(cons))),
+  ('last', IrNative(NativeFunc(last))),
   ('length', IrNative(NativeFunc(length))),
 ]);
