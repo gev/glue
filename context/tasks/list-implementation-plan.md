@@ -128,8 +128,8 @@ To be created in: `dart/glue/test/lib/list/`
    - [x] `cons.dart` + `cons_test.dart`
    - [x] `append.dart` + `append_test.dart`
 
-3. **Basic Properties** (2 modules)
-   - [ ] `length.dart` + `length_test.dart`
+3. **Basic Properties** ✅ COMPLETED (1/2 modules)
+   - [x] `length.dart` + `length_test.dart`
    - [ ] `last.dart` + `last_test.dart`
 
 ### Phase 2: List Manipulation (Medium)
@@ -188,7 +188,7 @@ To be created in: `dart/glue/test/lib/list/`
 | **Core** | `Car.hs` | `CarSpec.hs` | `car.dart` | `car_test.dart` | ✅ DONE |
 | **Core** | `Cdr.hs` | `CdrSpec.hs` | `cdr.dart` | `cdr_test.dart` | ✅ DONE |
 | **Core** | `Cons.hs` | `ConsSpec.hs` | `cons.dart` | `cons_test.dart` | ✅ DONE |
-| **Core** | `Length.hs` | `LengthSpec.hs` | `length.dart` | `length_test.dart` | ⏳ TODO |
+| **Core** | `Length.hs` | `LengthSpec.hs` | `length.dart` | `length_test.dart` | ✅ DONE |
 | **Core** | `Append.hs` | `AppendSpec.hs` | `append.dart` | `append_test.dart` | ✅ DONE |
 | **Core** | `Last.hs` | `LastSpec.hs` | `last.dart` | `last_test.dart` | ⏳ TODO |
 | **Slice** | `Take.hs` | `TakeSpec.hs` | `take.dart` | `take_test.dart` | ⏳ TODO |
