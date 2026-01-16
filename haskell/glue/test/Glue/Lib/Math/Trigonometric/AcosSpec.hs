@@ -14,7 +14,7 @@ spec = describe "Glue.Lib.Math.Trigonometric.Acos (Test acos function)" do
             result <- runEvalSimple (Acos.acos args) []
             case result of
                 Left err -> expectationFailure $ "Acos failed: " <> show err
-                Right (res, _, _) -> case res of
+                Right (res, _) -> case res of
                     Float n -> n `shouldSatisfy` (\x -> abs (x - pi) < 1e-10)
                     _ -> expectationFailure "Expected Number"
 
@@ -23,7 +23,7 @@ spec = describe "Glue.Lib.Math.Trigonometric.Acos (Test acos function)" do
             result <- runEvalSimple (Acos.acos args) []
             case result of
                 Left err -> expectationFailure $ "Acos failed: " <> show err
-                Right (res, _, _) -> case res of
+                Right (res, _) -> case res of
                     Float n -> n `shouldSatisfy` (\x -> abs (x - pi / 2) < 1e-10)
                     _ -> expectationFailure "Expected Number"
 
@@ -32,7 +32,7 @@ spec = describe "Glue.Lib.Math.Trigonometric.Acos (Test acos function)" do
             result <- runEvalSimple (Acos.acos args) []
             case result of
                 Left err -> expectationFailure $ "Acos failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Float 0
+                Right (res, _) -> res `shouldBe` Float 0
 
         it "fails with non-numbers" do
             let args = [String "hello"]

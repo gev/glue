@@ -22,11 +22,9 @@ module Glue.Eval (
 ) where
 
 import Control.Monad (ap, liftM)
-import Data.List (inits)
 import Data.Map (Map)
 import Data.Map.Strict qualified as Map
 import Data.Text (Text)
-import Data.Text qualified as T
 import Glue.Env qualified as E
 import Glue.Eval.Error (Context, EvalError (EvalError))
 import Glue.Eval.Exception
@@ -47,6 +45,7 @@ data Runtime = Runtime
     , importCache :: ImportedModuleCache Eval
     , rootEnv :: Env
     }
+    deriving (Show, Eq)
 
 newtype Eval a = Eval
     { runEval :: Runtime -> IO (Either Error (a, Runtime))
@@ -67,7 +66,7 @@ instance Monad Eval where
             Right (a, runtime') -> runEval (f a) runtime'
 
 -- | Simple runEval with empty module registry
-runEvalSimple :: Eval a -> Env -> IO (Either Error (a, Env, Context))
+runEvalSimple :: Eval a -> Env -> IO (Either Error (a, Runtime))
 runEvalSimple evalAction initialEnv = do
     let initialState =
             Runtime
@@ -77,10 +76,7 @@ runEvalSimple evalAction initialEnv = do
                 , importCache = Map.empty
                 , rootEnv = initialEnv
                 }
-    result <- runEval evalAction initialState
-    case result of
-        Left err -> pure $ Left err
-        Right (a, finalState) -> pure $ Right (a, finalState.env, finalState.context)
+    runEval evalAction initialState
 
 throwError :: Exception -> Eval a
 throwError err = Eval $ \runtime -> pure $ Left (EvalError runtime.context err)
@@ -93,52 +89,36 @@ liftIO action = Eval $ \runtime -> do
 -- Evaluate
 eval :: IR -> Eval IR
 eval ir = case ir of
-    IR.Symbol name -> do
-        result <- evalSymbol name
-        case result of
-            Just val -> pure val
-            Nothing -> throwError expectedValue
-    IR.DottedSymbol parts -> do
-        result <- evalDottedSymbol parts
-        case result of
-            Just val -> pure val
-            Nothing -> throwError expectedValue
+    IR.Symbol name -> evalSymbol name
+    IR.DottedSymbol parts -> evalDottedSymbol parts
     IR.List xs -> evalList xs
     IR.Object objMap -> evalObject objMap
     _ -> pure ir
 
 -- Evaluate a symbol by looking it up in the environment
-evalSymbol :: Text -> Eval (Maybe IR)
+evalSymbol :: Text -> Eval IR
 evalSymbol name = do
     env <- getEnv
     case E.lookupVar name env of
-        Right val -> pure $ Just val
+        Right val -> pure val
         Left err -> throwError err
 
 -- Evaluate dotted symbol access
-evalDottedSymbol :: [Text] -> Eval (Maybe IR)
+evalDottedSymbol :: [Text] -> Eval IR
 evalDottedSymbol parts = do
     case parts of
         [] -> throwError $ unboundVariable "" -- shouldn't happen
         [base] -> evalSymbol base
-        _ -> evalWithPrefixes (init $ inits parts) -- All proper prefixes
+        base : rest -> do
+            env <- getEnv
+            case E.lookupVar base env of
+                Left err -> throwError err
+                Right obj -> evalNestedAccess obj rest
   where
-    -- Try to find the longest prefix that exists as a symbol
-    evalWithPrefixes [] = throwError $ unboundVariable (T.intercalate "." parts)
-    evalWithPrefixes (prefix : restPrefixes) = do
-        let prefixName = T.intercalate "." prefix
-        env <- getEnv
-        case E.lookupVar prefixName env of
-            Right val -> evalNestedAccess val (drop (length prefix) parts)
-            Left _ -> evalWithPrefixes restPrefixes
-
-    evalNestedAccess obj [] = pure $ Just obj
+    evalNestedAccess obj [] = pure obj
     evalNestedAccess obj (prop : rest) = do
         case obj of
             IR.Object objMap -> case Map.lookup prop objMap of
-                Just val -> evalNestedAccess val rest
-                Nothing -> throwError $ propertyNotFound prop
-            IR.Module moduleMap -> case Map.lookup prop moduleMap of
                 Just val -> evalNestedAccess val rest
                 Nothing -> throwError $ propertyNotFound prop
             _ -> throwError $ notAnObject obj

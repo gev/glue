@@ -14,28 +14,28 @@ spec = describe "Glue.Lib.Math.Power.Sqrt (Test sqrt function)" do
             result <- runEvalSimple (Sqrt.sqrt args) []
             case result of
                 Left err -> expectationFailure $ "Sqrt failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Float 2
+                Right (res, _) -> res `shouldBe` Float 2
 
         it "returns 3 for sqrt(9)" do
             let args = [Integer 9]
             result <- runEvalSimple (Sqrt.sqrt args) []
             case result of
                 Left err -> expectationFailure $ "Sqrt failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Float 3
+                Right (res, _) -> res `shouldBe` Float 3
 
         it "returns 0 for sqrt(0)" do
             let args = [Integer 0]
             result <- runEvalSimple (Sqrt.sqrt args) []
             case result of
                 Left err -> expectationFailure $ "Sqrt failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Float 0
+                Right (res, _) -> res `shouldBe` Float 0
 
         it "returns NaN for negative numbers" do
             let args = [Float (-4)]
             result <- runEvalSimple (Sqrt.sqrt args) []
             case result of
                 Left err -> expectationFailure $ "Sqrt failed: " <> show err
-                Right (res, _, _) -> case res of
+                Right (res, _) -> case res of
                     Float f | isNaN f -> f `shouldSatisfy` isNaN
                     _ -> expectationFailure "Expected NaN"
 

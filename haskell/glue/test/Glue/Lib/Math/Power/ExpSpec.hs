@@ -14,14 +14,14 @@ spec = describe "Glue.Lib.Math.Power.Exp (Test exp function)" do
             result <- runEvalSimple (Exp.exp args) []
             case result of
                 Left err -> expectationFailure $ "Exp failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Float 1
+                Right (res, _) -> res `shouldBe` Float 1
 
         it "returns e^1 = e" do
             let args = [Integer 1]
             result <- runEvalSimple (Exp.exp args) []
             case result of
                 Left err -> expectationFailure $ "Exp failed: " <> show err
-                Right (res, _, _) -> case res of
+                Right (res, _) -> case res of
                     Float n -> n `shouldSatisfy` (\x -> abs (x - exp 1) < 1e-10)
                     _ -> expectationFailure "Expected a number"
 
@@ -30,7 +30,7 @@ spec = describe "Glue.Lib.Math.Power.Exp (Test exp function)" do
             result <- runEvalSimple (Exp.exp args) []
             case result of
                 Left err -> expectationFailure $ "Exp failed: " <> show err
-                Right (res, _, _) -> case res of
+                Right (res, _) -> case res of
                     Float n -> n `shouldSatisfy` (\x -> abs (x - exp 2) < 1e-10)
                     _ -> expectationFailure "Expected a number"
 

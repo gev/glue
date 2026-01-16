@@ -213,8 +213,7 @@ Modules define namespaces and exports.
 ### Module Usage
 ```closure
 (import math.x)
-(math.x.cos math.x.pi)
-(cos pi)
+(cos pi)        ; exports available directly
 ```
 
 ## Grammar

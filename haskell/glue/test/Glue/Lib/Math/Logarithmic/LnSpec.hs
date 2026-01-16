@@ -1,7 +1,6 @@
 module Glue.Lib.Math.Logarithmic.LnSpec (spec) where
 
 import Data.Either (isLeft)
-import GHC.Float (isNaN)
 import Glue.Eval (runEvalSimple)
 import Glue.IR (IR (..))
 import Glue.Lib.Math.Logarithmic.Ln qualified as Ln
@@ -15,14 +14,14 @@ spec = describe "Glue.Lib.Math.Logarithmic.Ln (Test ln function)" do
             result <- runEvalSimple (Ln.ln args) []
             case result of
                 Left err -> expectationFailure $ "Ln failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Float 0
+                Right (res, _) -> res `shouldBe` Float 0
 
         it "returns ln(e) = 1" do
             let args = [Float (exp 1)]
             result <- runEvalSimple (Ln.ln args) []
             case result of
                 Left err -> expectationFailure $ "Ln failed: " <> show err
-                Right (res, _, _) -> case res of
+                Right (res, _) -> case res of
                     Float n -> n `shouldSatisfy` (\x -> abs (x - 1) < 1e-10)
                     _ -> expectationFailure "Expected a number"
 
@@ -31,7 +30,7 @@ spec = describe "Glue.Lib.Math.Logarithmic.Ln (Test ln function)" do
             result <- runEvalSimple (Ln.ln args) []
             case result of
                 Left err -> expectationFailure $ "Ln failed: " <> show err
-                Right (res, _, _) -> case res of
+                Right (res, _) -> case res of
                     Float n -> n `shouldSatisfy` (\x -> abs (x - 2) < 1e-10)
                     _ -> expectationFailure "Expected a number"
 
@@ -40,7 +39,7 @@ spec = describe "Glue.Lib.Math.Logarithmic.Ln (Test ln function)" do
             result <- runEvalSimple (Ln.ln args) []
             case result of
                 Left err -> expectationFailure $ "Ln failed: " <> show err
-                Right (res, _, _) -> case res of
+                Right (res, _) -> case res of
                     Float f | f == (-1 / 0) -> f `shouldBe` (-1 / 0)
                     _ -> expectationFailure "Expected -Infinity"
 
@@ -49,7 +48,7 @@ spec = describe "Glue.Lib.Math.Logarithmic.Ln (Test ln function)" do
             result <- runEvalSimple (Ln.ln args) []
             case result of
                 Left err -> expectationFailure $ "Ln failed: " <> show err
-                Right (res, _, _) -> case res of
+                Right (res, _) -> case res of
                     Float f | isNaN f -> f `shouldSatisfy` isNaN
                     _ -> expectationFailure "Expected NaN"
 

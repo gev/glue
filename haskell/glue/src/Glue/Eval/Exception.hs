@@ -45,8 +45,8 @@ notAnObject = RuntimeException "not-an-object" . Just
 moduleNotFound :: Text -> RuntimeException m
 moduleNotFound = RuntimeException "module-not-found" . Just . String
 
-cannotModifyModule :: RuntimeException m
-cannotModifyModule = RuntimeException "cannot-modify-module" Nothing
+undefinedExport :: Text -> RuntimeException m
+undefinedExport = RuntimeException "undefined-export" . Just . String
 
 runtimeException :: Text -> IR m -> RuntimeException m
 runtimeException symbol = RuntimeException symbol . Just

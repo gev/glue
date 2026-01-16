@@ -14,28 +14,28 @@ spec = describe "Glue.Lib.Math.Utility.Trunc (Test trunc function)" do
             result <- runEvalSimple (Trunc.trunc args) []
             case result of
                 Left err -> expectationFailure $ "Trunc failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 3
+                Right (res, _) -> res `shouldBe` Integer 3
 
         it "returns 2 for trunc(2.1)" do
             let args = [Float 2.1]
             result <- runEvalSimple (Trunc.trunc args) []
             case result of
                 Left err -> expectationFailure $ "Trunc failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 2
+                Right (res, _) -> res `shouldBe` Integer 2
 
         it "returns -3 for trunc(-3.7)" do
             let args = [Float (-3.7)]
             result <- runEvalSimple (Trunc.trunc args) []
             case result of
                 Left err -> expectationFailure $ "Trunc failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer (-3)
+                Right (res, _) -> res `shouldBe` Integer (-3)
 
         it "returns 5 for trunc(5.0)" do
             let args = [Integer 5]
             result <- runEvalSimple (Trunc.trunc args) []
             case result of
                 Left err -> expectationFailure $ "Trunc failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 5
+                Right (res, _) -> res `shouldBe` Integer 5
 
         it "fails with non-numbers" do
             let args = [String "hello"]

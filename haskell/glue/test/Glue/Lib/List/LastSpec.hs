@@ -12,21 +12,21 @@ spec = describe "Glue.Lib.List.Last (Test last function)" do
         result <- runEvalSimple (Last.last args) []
         case result of
             Left err -> expectationFailure $ "Last failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` Integer 3
+            Right (res, _) -> res `shouldBe` Integer 3
 
     it "returns the only element of a single-element list" do
         let args = [List [Integer 42]]
         result <- runEvalSimple (Last.last args) []
         case result of
             Left err -> expectationFailure $ "Last failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` Integer 42
+            Right (res, _) -> res `shouldBe` Integer 42
 
     it "returns string element" do
         let args = [List [String "hello", String "world"]]
         result <- runEvalSimple (Last.last args) []
         case result of
             Left err -> expectationFailure $ "Last failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` String "world"
+            Right (res, _) -> res `shouldBe` String "world"
 
     it "fails on empty list" do
         let args = [List []]

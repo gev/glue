@@ -12,7 +12,7 @@ spec = describe "Glue.Lib.List.Car (Test car function)" do
         result <- runEvalSimple (car args) []
         case result of
             Left err -> expectationFailure $ "Car failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` Integer 1
+            Right (res, _) -> res `shouldBe` Integer 1
 
     it "fails on empty list" do
         let args = [List []]

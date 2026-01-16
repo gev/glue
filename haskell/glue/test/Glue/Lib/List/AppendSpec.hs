@@ -13,7 +13,7 @@ spec = describe "Glue.Lib.List.Append (Test append function)" do
         result <- runEvalSimple (append args) initialEnv
         case result of
             Left err -> expectationFailure $ "Append failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Integer 1, Integer 2, Integer 3, Integer 4]
+            Right (res, _) -> res `shouldBe` List [Integer 1, Integer 2, Integer 3, Integer 4]
 
     it "appends empty list to non-empty list" do
         let initialEnv = []
@@ -21,7 +21,7 @@ spec = describe "Glue.Lib.List.Append (Test append function)" do
         result <- runEvalSimple (append args) initialEnv
         case result of
             Left err -> expectationFailure $ "Append failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Integer 1, Integer 2]
+            Right (res, _) -> res `shouldBe` List [Integer 1, Integer 2]
 
     it "appends non-empty list to empty list" do
         let initialEnv = []
@@ -29,7 +29,7 @@ spec = describe "Glue.Lib.List.Append (Test append function)" do
         result <- runEvalSimple (append args) initialEnv
         case result of
             Left err -> expectationFailure $ "Append failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Integer 3, Integer 4]
+            Right (res, _) -> res `shouldBe` List [Integer 3, Integer 4]
 
     it "appends two empty lists" do
         let initialEnv = []
@@ -37,7 +37,7 @@ spec = describe "Glue.Lib.List.Append (Test append function)" do
         result <- runEvalSimple (append args) initialEnv
         case result of
             Left err -> expectationFailure $ "Append failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List []
+            Right (res, _) -> res `shouldBe` List []
 
     it "fails on non-list first argument" do
         let initialEnv = []

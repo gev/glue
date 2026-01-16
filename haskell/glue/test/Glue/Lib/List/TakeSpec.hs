@@ -12,28 +12,28 @@ spec = describe "Glue.Lib.List.Take (Test take function)" do
         result <- runEvalSimple (Take.take args) []
         case result of
             Left err -> expectationFailure $ "Take failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Integer 1, Integer 2, Integer 3]
+            Right (res, _) -> res `shouldBe` List [Integer 1, Integer 2, Integer 3]
 
     it "takes fewer elements when N > list length" do
         let args = [Integer 10, List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalSimple (Take.take args) []
         case result of
             Left err -> expectationFailure $ "Take failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Integer 1, Integer 2, Integer 3]
+            Right (res, _) -> res `shouldBe` List [Integer 1, Integer 2, Integer 3]
 
     it "takes zero elements" do
         let args = [Integer 0, List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalSimple (Take.take args) []
         case result of
             Left err -> expectationFailure $ "Take failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List []
+            Right (res, _) -> res `shouldBe` List []
 
     it "takes all elements when N equals list length" do
         let args = [Integer 3, List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalSimple (Take.take args) []
         case result of
             Left err -> expectationFailure $ "Take failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Integer 1, Integer 2, Integer 3]
+            Right (res, _) -> res `shouldBe` List [Integer 1, Integer 2, Integer 3]
 
     it "fails on negative count" do
         let args = [Float (-1), List [Integer 1, Integer 2, Integer 3]]

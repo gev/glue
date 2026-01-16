@@ -14,21 +14,21 @@ spec = describe "Glue.Lib.Arithmetic.Mod (Test mod function)" do
             result <- runEvalSimple (Mod.mod args) []
             case result of
                 Left err -> expectationFailure $ "Mod failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 1
+                Right (res, _) -> res `shouldBe` Integer 1
 
         it "returns 0 for (% 6 3)" do
             let args = [Integer 6, Integer 3]
             result <- runEvalSimple (Mod.mod args) []
             case result of
                 Left err -> expectationFailure $ "Mod failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 0
+                Right (res, _) -> res `shouldBe` Integer 0
 
         it "returns 2 for (% 17 5)" do
             let args = [Integer 17, Integer 5]
             result <- runEvalSimple (Mod.mod args) []
             case result of
                 Left err -> expectationFailure $ "Mod failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 2
+                Right (res, _) -> res `shouldBe` Integer 2
 
         it "fails with wrong number of arguments" do
             let args = [Integer 7]

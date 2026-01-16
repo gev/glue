@@ -4,3 +4,5 @@ dist-newstyle
 var
 tmp
 *.log
+.dart_tool/
+pubspec.lock

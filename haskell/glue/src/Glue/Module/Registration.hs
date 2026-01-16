@@ -3,6 +3,7 @@ module Glue.Module.Registration where
 import Control.Monad (foldM)
 import Data.Map.Strict qualified as Map
 import Data.Text (Text)
+import Data.Text qualified as T
 import Glue.IR (IR (..))
 import Glue.Module (ModuleInfo (..), RegisteredModule (..))
 import Glue.Module.Error (ModuleRegistryError (..))
@@ -11,11 +12,18 @@ import Prelude hiding (mod)
 
 -- | Parse a single module from IR
 parseModule :: IR m -> Either (ModuleRegistryError m) (ModuleInfo m)
-parseModule (List (Symbol "module" : Symbol moduleName : body)) = do
+parseModule (List (Symbol "module" : moduleNameIR : body)) = do
+    moduleName <- extractModuleName moduleNameIR
     exports <- extractExports body
     definitions <- extractDefinitions body
     pure $ ModuleInfo{..}
 parseModule _ = Left $ InvalidModuleStructure "Expected (module name body...)"
+
+-- | Extract module name from Symbol or DottedSymbol
+extractModuleName :: IR m -> Either (ModuleRegistryError m) Text
+extractModuleName (Symbol name) = pure name
+extractModuleName (DottedSymbol parts) = pure $ T.intercalate "." parts
+extractModuleName _ = Left $ InvalidModuleStructure "Module name must be a symbol"
 
 -- | Extract exports from module body
 extractExports :: [IR m] -> Either (ModuleRegistryError m) [Text]

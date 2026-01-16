@@ -12,7 +12,7 @@ spec = describe "Glue.Lib.List.Cdr (Test cdr function)" do
         result <- runEvalSimple (cdr args) []
         case result of
             Left err -> expectationFailure $ "Cdr failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Integer 2, Integer 3]
+            Right (res, _) -> res `shouldBe` List [Integer 2, Integer 3]
 
     it "fails on empty list" do
         let args = [List []]

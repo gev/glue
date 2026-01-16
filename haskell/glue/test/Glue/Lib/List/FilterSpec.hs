@@ -13,7 +13,7 @@ spec = describe "Glue.Lib.List.Filter (Test filter function)" do
         result <- runEvalSimple (Filter.filter args) []
         case result of
             Left err -> expectationFailure $ "Filter failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Integer 3, Integer 4]
+            Right (res, _) -> res `shouldBe` List [Integer 3, Integer 4]
 
     it "returns empty list when no elements satisfy predicate" do
         let pred = Native (Func (\[Integer x] -> pure . Bool $ x > 10))
@@ -21,7 +21,7 @@ spec = describe "Glue.Lib.List.Filter (Test filter function)" do
         result <- runEvalSimple (Filter.filter args) []
         case result of
             Left err -> expectationFailure $ "Filter failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List []
+            Right (res, _) -> res `shouldBe` List []
 
     it "returns all elements when all satisfy predicate" do
         let pred = Native (Func (\[Integer x] -> pure . Bool $ x > 0))
@@ -29,7 +29,7 @@ spec = describe "Glue.Lib.List.Filter (Test filter function)" do
         result <- runEvalSimple (Filter.filter args) []
         case result of
             Left err -> expectationFailure $ "Filter failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Integer 1, Integer 2, Integer 3]
+            Right (res, _) -> res `shouldBe` List [Integer 1, Integer 2, Integer 3]
 
     it "filters empty list" do
         let pred = Native (Func (\[Integer x] -> pure $ Bool True))
@@ -37,7 +37,7 @@ spec = describe "Glue.Lib.List.Filter (Test filter function)" do
         result <- runEvalSimple (Filter.filter args) []
         case result of
             Left err -> expectationFailure $ "Filter failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List []
+            Right (res, _) -> res `shouldBe` List []
 
     it "fails on non-list second argument" do
         let pred = Native (Func (\[Integer x] -> pure $ Bool True))

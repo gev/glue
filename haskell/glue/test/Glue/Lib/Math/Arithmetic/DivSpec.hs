@@ -14,14 +14,14 @@ spec = describe "Glue.Lib.Arithmetic.Div (Test div function)" do
             result <- runEvalSimple (Div.div args) []
             case result of
                 Left err -> expectationFailure $ "Div failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Float 2.0
+                Right (res, _) -> res `shouldBe` Float 2.0
 
         it "returns 2.5 for (/ 10 4)" do
             let args = [Integer 10, Integer 4]
             result <- runEvalSimple (Div.div args) []
             case result of
                 Left err -> expectationFailure $ "Div failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Float 2.5
+                Right (res, _) -> res `shouldBe` Float 2.5
 
         it "fails with no arguments" do
             let args = []
@@ -43,7 +43,7 @@ spec = describe "Glue.Lib.Arithmetic.Div (Test div function)" do
             result <- runEvalSimple (Div.div args) []
             case result of
                 Left err -> expectationFailure $ "Div failed: " <> show err
-                Right (res, _, _) -> case res of
+                Right (res, _) -> case res of
                     Float f | f == (1 / 0) -> f `shouldBe` (1 / 0)
                     _ -> expectationFailure "Expected Infinity"
 
@@ -58,34 +58,34 @@ spec = describe "Glue.Lib.Arithmetic.Div (Test div function)" do
             result <- runEvalSimple (Div.div args) []
             case result of
                 Left err -> expectationFailure $ "Div failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Float 2.0
+                Right (res, _) -> res `shouldBe` Float 2.0
 
         it "Integer / Float = Float" do
             let args = [Integer 10, Float 2.5]
             result <- runEvalSimple (Div.div args) []
             case result of
                 Left err -> expectationFailure $ "Div failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Float 4.0
+                Right (res, _) -> res `shouldBe` Float 4.0
 
         it "Float / Integer = Float" do
             let args = [Float 10.5, Integer 3]
             result <- runEvalSimple (Div.div args) []
             case result of
                 Left err -> expectationFailure $ "Div failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Float 3.5
+                Right (res, _) -> res `shouldBe` Float 3.5
 
         it "Float / Float = Float" do
             let args = [Float 10.5, Float 2.5]
             result <- runEvalSimple (Div.div args) []
             case result of
                 Left err -> expectationFailure $ "Div failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Float 4.2
+                Right (res, _) -> res `shouldBe` Float 4.2
 
         it "returns -Infinity for negative division by zero" do
             let args = [Integer (-1), Integer 0]
             result <- runEvalSimple (Div.div args) []
             case result of
                 Left err -> expectationFailure $ "Div failed: " <> show err
-                Right (res, _, _) -> case res of
+                Right (res, _) -> case res of
                     Float f | f == (-1 / 0) -> f `shouldBe` (-1 / 0)
                     _ -> expectationFailure "Expected -Infinity"

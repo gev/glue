@@ -13,7 +13,7 @@ spec = describe "Glue.Lib.List.Map (Test map function)" do
         result <- runEvalSimple (Map.map args) []
         case result of
             Left err -> expectationFailure $ "Map failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Float 2.0, Float 4.0, Float 6.0]
+            Right (res, _) -> res `shouldBe` List [Float 2.0, Float 4.0, Float 6.0]
 
     it "maps over empty list" do
         let func = Native (Func (\[Integer x] -> pure $ Float (fromIntegral x + 1)))
@@ -21,7 +21,7 @@ spec = describe "Glue.Lib.List.Map (Test map function)" do
         result <- runEvalSimple (Map.map args) []
         case result of
             Left err -> expectationFailure $ "Map failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List []
+            Right (res, _) -> res `shouldBe` List []
 
     it "fails on non-list second argument" do
         let func = Native (Func (\[Integer x] -> pure $ Float (fromIntegral x + 1)))

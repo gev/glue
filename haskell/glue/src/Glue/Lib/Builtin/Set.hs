@@ -4,7 +4,7 @@ import Data.Map.Strict qualified as Map
 import Data.Text qualified as T
 import Glue.Env (lookupVar)
 import Glue.Eval (Eval, eval, getEnv, throwError, updateVarEval)
-import Glue.Eval.Exception (cannotModifyModule, notAnObject, wrongArgumentType)
+import Glue.Eval.Exception (notAnObject, wrongArgumentType)
 import Glue.IR (IR (..))
 
 set :: [IR Eval] -> Eval (IR Eval)
@@ -25,7 +25,6 @@ set [Symbol name, rawVal] = do
                         let newObj = Object newMap
                         updateVarEval objName newObj
                         pure Void
-                    Module _ -> throwError cannotModifyModule
                     _ -> throwError $ notAnObject currentObj
                 Left err -> throwError err
         _ -> throwError $ wrongArgumentType ["target", "value"]

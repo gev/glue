@@ -12,14 +12,14 @@ spec = describe "Glue.Lib.List.Cons (Test cons function)" do
         result <- runEvalSimple (cons args) []
         case result of
             Left err -> expectationFailure $ "Cons failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [Integer 1, Integer 2, Integer 3]
+            Right (res, _) -> res `shouldBe` List [Integer 1, Integer 2, Integer 3]
 
     it "constructs a list with empty tail" do
         let args = [String "hello", List []]
         result <- runEvalSimple (cons args) []
         case result of
             Left err -> expectationFailure $ "Cons failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` List [String "hello"]
+            Right (res, _) -> res `shouldBe` List [String "hello"]
 
     it "fails on non-list tail" do
         let args = [Integer 1, Integer 2]

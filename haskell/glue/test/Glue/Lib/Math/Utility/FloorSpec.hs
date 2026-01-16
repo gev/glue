@@ -14,28 +14,28 @@ spec = describe "Glue.Lib.Math.Utility.Floor (Test floor function)" do
             result <- runEvalSimple (Floor.floor args) []
             case result of
                 Left err -> expectationFailure $ "Floor failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 3
+                Right (res, _) -> res `shouldBe` Integer 3
 
         it "returns 2 for floor(2.1)" do
             let args = [Float 2.1]
             result <- runEvalSimple (Floor.floor args) []
             case result of
                 Left err -> expectationFailure $ "Floor failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 2
+                Right (res, _) -> res `shouldBe` Integer 2
 
         it "returns -4 for floor(-3.1)" do
             let args = [Float (-3.1)]
             result <- runEvalSimple (Floor.floor args) []
             case result of
                 Left err -> expectationFailure $ "Floor failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer (-4)
+                Right (res, _) -> res `shouldBe` Integer (-4)
 
         it "returns 5 for floor(5.0)" do
             let args = [Integer 5]
             result <- runEvalSimple (Floor.floor args) []
             case result of
                 Left err -> expectationFailure $ "Floor failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 5
+                Right (res, _) -> res `shouldBe` Integer 5
 
         it "fails with non-numbers" do
             let args = [String "hello"]

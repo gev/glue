@@ -1,0 +1,8 @@
+name: glue_project
+publish_to: none
+
+environment:
+  sdk: '^3.9.2'
+
+workspace:
+  - dart/glue

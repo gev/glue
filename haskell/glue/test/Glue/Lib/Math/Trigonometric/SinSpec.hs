@@ -14,14 +14,14 @@ spec = describe "Glue.Lib.Math.Trigonometric.Sin (Test sin function)" do
             result <- runEvalSimple (Sin.sin args) []
             case result of
                 Left err -> expectationFailure $ "Sin failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Float 0
+                Right (res, _) -> res `shouldBe` Float 0
 
         it "returns 1 for sin(π/2)" do
             let args = [Float (pi / 2)]
             result <- runEvalSimple (Sin.sin args) []
             case result of
                 Left err -> expectationFailure $ "Sin failed: " <> show err
-                Right (res, _, _) -> case res of
+                Right (res, _) -> case res of
                     Float n -> n `shouldSatisfy` (\x -> abs (x - 1) < 1e-10)
                     _ -> expectationFailure "Expected Number"
 
@@ -30,7 +30,7 @@ spec = describe "Glue.Lib.Math.Trigonometric.Sin (Test sin function)" do
             result <- runEvalSimple (Sin.sin args) []
             case result of
                 Left err -> expectationFailure $ "Sin failed: " <> show err
-                Right (res, _, _) -> case res of
+                Right (res, _) -> case res of
                     Float n -> n `shouldSatisfy` (\x -> abs (x) < 1e-10)
                     _ -> expectationFailure "Expected Number"
 

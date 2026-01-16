@@ -13,7 +13,7 @@ spec = describe "Glue.Lib.List.Find (Test find function)" do
         result <- runEvalSimple (Find.find args) []
         case result of
             Left err -> expectationFailure $ "Find failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` Integer 3
+            Right (res, _) -> res `shouldBe` Integer 3
 
     it "finds first element in list" do
         let pred = Native (Func (\[Integer x] -> pure . Bool $ x > 0))
@@ -21,7 +21,7 @@ spec = describe "Glue.Lib.List.Find (Test find function)" do
         result <- runEvalSimple (Find.find args) []
         case result of
             Left err -> expectationFailure $ "Find failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` Integer 1
+            Right (res, _) -> res `shouldBe` Integer 1
 
     it "fails when no element satisfies predicate" do
         let pred = Native (Func (\[Integer x] -> pure . Bool $ x > 10))

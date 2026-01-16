@@ -16,7 +16,7 @@ spec = describe "Glue.Lib.Builtin.Lambda (Test lambda special form)" do
             result <- runEvalSimple (lambda args) initialEnv
             case result of
                 Left err -> expectationFailure $ "Lambda failed: " <> show err
-                Right (res, _, _) -> case res of
+                Right (res, _) -> case res of
                     Closure params body capturedEnv -> do
                         params `shouldBe` ["a", "b"]
                         body `shouldBe` Symbol "body"
@@ -29,7 +29,7 @@ spec = describe "Glue.Lib.Builtin.Lambda (Test lambda special form)" do
             result <- runEvalSimple (lambda args) []
             case result of
                 Left err -> expectationFailure $ "Lambda failed: " <> show err
-                Right (res, _, _) -> case res of
+                Right (res, _) -> case res of
                     Closure params body _ -> do
                         params `shouldBe` []
                         body `shouldBe` Integer 42

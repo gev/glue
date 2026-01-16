@@ -14,21 +14,21 @@ spec = describe "Glue.Lib.Math.Utility.Abs (Test abs function)" do
             result <- runEvalSimple (Abs.abs args) []
             case result of
                 Left err -> expectationFailure $ "Abs failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 5
+                Right (res, _) -> res `shouldBe` Integer 5
 
         it "returns 5 for abs(-5)" do
             let args = [Float (-5)]
             result <- runEvalSimple (Abs.abs args) []
             case result of
                 Left err -> expectationFailure $ "Abs failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Float 5
+                Right (res, _) -> res `shouldBe` Float 5
 
         it "returns 0 for abs(0)" do
             let args = [Integer 0]
             result <- runEvalSimple (Abs.abs args) []
             case result of
                 Left err -> expectationFailure $ "Abs failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 0
+                Right (res, _) -> res `shouldBe` Integer 0
 
         it "fails with non-numbers" do
             let args = [String "hello"]

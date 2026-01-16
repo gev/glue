@@ -17,7 +17,7 @@ runCode input = case parseGlue input of
         fullResult <- runEvalSimple (eval irTree) $ envFromModule io
         case fullResult of
             Left err -> pure $ Left (GlueError err)
-            Right (res, _finalEnv, _ctx) -> pure $ Right (Just res)
+            Right (res, _) -> pure $ Right (Just res)
 
 spec :: Spec
 spec = describe "Glue.Lib.IO.Print" do

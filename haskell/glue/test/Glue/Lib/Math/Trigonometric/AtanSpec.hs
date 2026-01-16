@@ -14,14 +14,14 @@ spec = describe "Glue.Lib.Math.Trigonometric.Atan (Test atan function)" do
             result <- runEvalSimple (Atan.atan args) []
             case result of
                 Left err -> expectationFailure $ "Atan failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Float 0
+                Right (res, _) -> res `shouldBe` Float 0
 
         it "returns π/4 for atan(1)" do
             let args = [Integer 1]
             result <- runEvalSimple (Atan.atan args) []
             case result of
                 Left err -> expectationFailure $ "Atan failed: " <> show err
-                Right (res, _, _) -> case res of
+                Right (res, _) -> case res of
                     Float n -> n `shouldSatisfy` (\x -> abs (x - pi / 4) < 1e-10)
                     _ -> expectationFailure "Expected Number"
 

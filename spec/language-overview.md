@@ -46,11 +46,12 @@ user.age       ;; → 30
 ```closure
 ;; Module definition and imports
 (import math)
-(import ui.components button text-input)
+(import ui.components)
 
-;; Qualified access
-math.sin  ;; Sine function
-math.pi   ;; Pi constant
+;; Direct access to exported symbols
+sin       ;; Sine function
+pi        ;; Pi constant
+button    ;; UI component
 ```
 
 ## Syntax Essentials

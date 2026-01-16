@@ -6,10 +6,13 @@ repository: https://github.com/gev/glue
 issue_tracker: https://github.com/gev/glue/issues
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: '^3.9.2'
+
+resolution: workspace
 
 dependencies:
   petitparser: any
+  fast_immutable_collections: any
 
 dev_dependencies:
   lints: ^6.0.0

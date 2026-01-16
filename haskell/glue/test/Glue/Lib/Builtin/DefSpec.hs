@@ -2,7 +2,7 @@ module Glue.Lib.Builtin.DefSpec (spec) where
 
 import Data.Either (isLeft)
 import Glue.Env qualified as E
-import Glue.Eval (runEvalSimple)
+import Glue.Eval (Runtime (..), runEvalSimple)
 import Glue.IR (IR (..))
 import Glue.Lib.Builtin (builtin)
 import Glue.Lib.Builtin.Def (def)
@@ -18,9 +18,9 @@ spec = describe "Glue.Lib.Builtin.Def (Test def special form)" do
             result <- runEvalSimple (def args) env
             case result of
                 Left err -> expectationFailure $ "Def failed: " <> show err
-                Right (res, finalEnv, _) -> do
+                Right (res, runtime) -> do
                     res `shouldBe` Void
-                    E.lookupLocal "x" finalEnv `shouldBe` Just (Integer 42)
+                    E.lookupLocal "x" runtime.env `shouldBe` Just (Integer 42)
 
         it "fails with wrong number of arguments" do
             let args = [Symbol "x"]
@@ -41,7 +41,7 @@ spec = describe "Glue.Lib.Builtin.Def (Test def special form)" do
             result <- runEvalSimple (def args) env
             case result of
                 Left err -> expectationFailure $ "Def failed: " <> show err
-                Right (res, finalEnv, _) -> do
+                Right (res, runtime) -> do
                     -- Should return the closure
                     res
                         `shouldSatisfy` ( \case
@@ -49,7 +49,7 @@ spec = describe "Glue.Lib.Builtin.Def (Test def special form)" do
                                             _ -> False
                                         )
                     -- Check that square function was also defined
-                    E.lookupLocal "square" finalEnv
+                    E.lookupLocal "square" runtime.env
                         `shouldSatisfy` ( \case
                                             Just (Closure ["x"] _ _) -> True
                                             _ -> False
@@ -61,14 +61,14 @@ spec = describe "Glue.Lib.Builtin.Def (Test def special form)" do
             result <- runEvalSimple (def args) env
             case result of
                 Left err -> expectationFailure $ "Def failed: " <> show err
-                Right (res, finalEnv, _) -> do
+                Right (res, runtime) -> do
                     -- Should return the closure
                     res
                         `shouldSatisfy` ( \case
                                             Closure ["x", "y"] _ _ -> True
                                             _ -> False
                                         )
-                    E.lookupLocal "add" finalEnv
+                    E.lookupLocal "add" runtime.env
                         `shouldSatisfy` ( \case
                                             Just (Closure ["x", "y"] _ _) -> True
                                             _ -> False
@@ -84,14 +84,14 @@ spec = describe "Glue.Lib.Builtin.Def (Test def special form)" do
             result <- runEvalSimple (def args) env
             case result of
                 Left err -> expectationFailure $ "Def failed: " <> show err
-                Right (res, finalEnv, _) -> do
+                Right (res, runtime) -> do
                     -- Should return the closure
                     res
                         `shouldSatisfy` ( \case
                                             Closure ["x"] _ _ -> True
                                             _ -> False
                                         )
-                    E.lookupLocal "test" finalEnv
+                    E.lookupLocal "test" runtime.env
                         `shouldSatisfy` ( \case
                                             Just (Closure ["x"] _ _) -> True
                                             _ -> False

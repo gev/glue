@@ -13,7 +13,7 @@ spec = describe "Glue.Lib.List.Position (Test position function)" do
         result <- runEvalSimple (Position.position args) []
         case result of
             Left err -> expectationFailure $ "Position failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` Integer 2
+            Right (res, _) -> res `shouldBe` Integer 2
 
     it "finds position of first element in list" do
         let pred = Native (Func (\[Integer x] -> pure . Bool $ x > 0))
@@ -21,7 +21,7 @@ spec = describe "Glue.Lib.List.Position (Test position function)" do
         result <- runEvalSimple (Position.position args) []
         case result of
             Left err -> expectationFailure $ "Position failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` Integer 0
+            Right (res, _) -> res `shouldBe` Integer 0
 
     it "finds position of element in middle of list" do
         let pred = Native (Func (\[Integer x] -> pure . Bool $ x == 5))
@@ -29,7 +29,7 @@ spec = describe "Glue.Lib.List.Position (Test position function)" do
         result <- runEvalSimple (Position.position args) []
         case result of
             Left err -> expectationFailure $ "Position failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` Integer 2
+            Right (res, _) -> res `shouldBe` Integer 2
 
     it "fails when no element satisfies predicate" do
         let pred = Native (Func (\[Integer x] -> pure . Bool $ x > 10))

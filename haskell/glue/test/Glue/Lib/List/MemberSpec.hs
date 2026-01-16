@@ -12,28 +12,28 @@ spec = describe "Glue.Lib.List.Member (Test member function)" do
         result <- runEvalSimple (member args) []
         case result of
             Left err -> expectationFailure $ "Member failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` Bool True
+            Right (res, _) -> res `shouldBe` Bool True
 
     it "returns false for item not in list" do
         let args = [Integer 4, List [Integer 1, Integer 2, Integer 3]]
         result <- runEvalSimple (member args) []
         case result of
             Left err -> expectationFailure $ "Member failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` Bool False
+            Right (res, _) -> res `shouldBe` Bool False
 
     it "returns true for string in list" do
         let args = [String "hello", List [String "world", String "hello", String "test"]]
         result <- runEvalSimple (member args) []
         case result of
             Left err -> expectationFailure $ "Member failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` Bool True
+            Right (res, _) -> res `shouldBe` Bool True
 
     it "returns false for empty list" do
         let args = [Integer 1, List []]
         result <- runEvalSimple (member args) []
         case result of
             Left err -> expectationFailure $ "Member failed: " <> show err
-            Right (res, _, _) -> res `shouldBe` Bool False
+            Right (res, _) -> res `shouldBe` Bool False
 
     it "fails on non-list second argument" do
         let args = [Integer 1, Integer 42]

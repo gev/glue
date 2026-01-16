@@ -14,28 +14,28 @@ spec = describe "Glue.Lib.Math.Power.Pow (Test pow function)" do
             result <- runEvalSimple (Pow.pow args) []
             case result of
                 Left err -> expectationFailure $ "Pow failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 8
+                Right (res, _) -> res `shouldBe` Integer 8
 
         it "returns 3^2 = 9" do
             let args = [Integer 3, Integer 2]
             result <- runEvalSimple (Pow.pow args) []
             case result of
                 Left err -> expectationFailure $ "Pow failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 9
+                Right (res, _) -> res `shouldBe` Integer 9
 
         it "returns 2^0 = 1" do
             let args = [Integer 2, Integer 0]
             result <- runEvalSimple (Pow.pow args) []
             case result of
                 Left err -> expectationFailure $ "Pow failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 1
+                Right (res, _) -> res `shouldBe` Integer 1
 
         it "returns 0^5 = 0" do
             let args = [Integer 0, Integer 5]
             result <- runEvalSimple (Pow.pow args) []
             case result of
                 Left err -> expectationFailure $ "Pow failed: " <> show err
-                Right (res, _, _) -> res `shouldBe` Integer 0
+                Right (res, _) -> res `shouldBe` Integer 0
 
         it "fails with non-numbers (first arg)" do
             let args = [String "hello", Integer 2]
