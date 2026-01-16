@@ -4,14 +4,14 @@ Native function evaluation executes host language functions integrated into the 
 
 ## Native Structure
 
-**Input IR:** `Native nativeImpl`
+**Input IR:** `NativeFunc impl` or `Special impl`
 **Process:** Execute host language function with provided arguments
 **Output:** Function result or side effect
 
 ### Native Types
-- **Functions:** `Func ([IR] -> m IR)` - Return evaluated result
-- **Commands:** `Cmd ([IR] -> m ())` - Perform side effects only
-- **Special Forms:** `Special ([IR] -> m (Maybe IR))` - Special evaluation rules
+- **NativeFunc:** `([IR] -> m IR)` - Functions that return evaluated results
+- **Special:** `([IR] -> m IR)` - Special forms with custom evaluation rules
+- **NativeValue:** `HostValue` - Host objects that don't need evaluation
 
 ## Evaluation Process
 
@@ -21,9 +21,9 @@ Native function evaluation executes host language functions integrated into the 
 3. **Return result:** Function result or side effect confirmation
 
 ### Argument Handling
-- **Functions:** Arguments pre-evaluated by caller
-- **Commands:** Arguments pre-evaluated by caller
-- **Special Forms:** Arguments passed raw, special evaluation rules apply
+- **NativeFunc:** Arguments pre-evaluated by caller
+- **Special:** Arguments passed raw, special evaluation rules apply
+- **NativeValue:** No evaluation needed (already host values)
 
 ## Native Function Examples
 
@@ -40,23 +40,23 @@ Native function evaluation executes host language functions integrated into the 
 
 ## Function Categories
 
-### Functions (`Func`)
+### NativeFunc
 - **Purpose:** Compute and return values
 - **Examples:** `+`, `-`, `*`, `/`, `str`, `list`
 - **Return:** Always returns an `IR` value
 - **Evaluation:** Pure computation
 
-### Commands (`Cmd`)
-- **Purpose:** Perform side effects
-- **Examples:** `println`, `read-file`, `write-file`
-- **Return:** Nothing (void)
-- **Evaluation:** May modify external state
-
-### Special Forms (`Special`)
+### Special
 - **Purpose:** Control evaluation flow
 - **Examples:** `if`, `lambda`, `def`, `set`
 - **Return:** May return value or control structure
 - **Evaluation:** Non-standard argument evaluation
+
+### NativeValue
+- **Purpose:** Store host language objects
+- **Examples:** Foreign objects, complex data structures
+- **Return:** Self (no evaluation needed)
+- **Evaluation:** Identity (returns unchanged)
 
 ## Error Conditions
 
@@ -89,10 +89,16 @@ Native function evaluation executes host language functions integrated into the 
 ### Native Registration
 ```haskell
 -- Register native function
-registerNative :: Text -> Native m -> Env m -> Env m
+registerNative :: Text -> IR m -> Env m -> Env m
 
 -- Example: register addition
-registerNative "+" (Func addImpl) env
+registerNative "+" (NativeFunc addImpl) env
+
+-- Example: register special form
+registerNative "if" (Special ifImpl) env
+
+-- Example: register host value
+registerNative "pi" (NativeValue (hostValue (3.14159 :: Double))) env
 ```
 
 ### Function Implementation
@@ -104,12 +110,17 @@ addImpl args = do
     pure $ Number $ sum numbers
 ```
 
-### Command Implementation
+### Special Form Implementation
 ```haskell
--- Example native command
-printlnImpl :: [IR] -> Eval ()
-printlnImpl [IR.String text] = liftIO $ putStrLn text
-printlnImpl _ = throwError wrongArgumentType
+-- Example special form
+ifImpl :: [IR] -> Eval IR
+ifImpl [condition, trueBranch, falseBranch] = do
+    condResult <- eval condition
+    case condResult of
+        Bool True -> eval trueBranch
+        Bool False -> eval falseBranch
+        _ -> throwError typeError
+ifImpl _ = throwError wrongNumberOfArguments
 ```
 
 ## Host Language Integration
