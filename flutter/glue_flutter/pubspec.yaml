@@ -4,6 +4,7 @@ version: 0.1.0
 homepage: https://github.com/gev/glue
 repository: https://github.com/gev/glue
 issue_tracker: https://github.com/gev/glue/issues
+publish_to: none
 
 environment:
   sdk: '^3.9.2'
@@ -14,10 +15,10 @@ resolution: workspace
 dependencies:
   flutter:
     sdk: flutter
-  glue:
-    path: ../../dart/glue
+  glue: 
+    path:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^4.0.0
+  flutter_lints: ^6.0.0

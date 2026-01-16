@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:glue/glue.dart' as glue;
 
 /// Core Glue evaluator for Flutter integration.
 ///
