@@ -35,6 +35,7 @@ This report provides comprehensive test coverage analysis for the Haskell refere
 | compile | Compile.hs | CompileSpec.hs | 23 | ✅ Complete |
 | env | Env.hs | EnvSpec.hs | 6 | ✅ Complete |
 | eval | Eval.hs | EvalSpec.hs | 53 | ✅ Complete |
+| native | Native.hs | NativeSpec.hs | 30 | ✅ Complete |
 | parser | Parser.hs | ParserSpec.hs | 40 | ✅ Complete |
 | module.cache | Module/Cache.hs | Module/CacheSpec.hs | 5 | ✅ Complete |
 | module.registration | Module/Registration.hs | Module/RegistrationSpec.hs | 4 | ✅ Complete |
@@ -235,10 +236,10 @@ Where:
 
 ## Summary
 
-- **Total Implementation Files**: 78 (12 core + 66 library)
-- **Total Test Files**: 43
+- **Total Implementation Files**: 135 (15 core + 66 library + 54 test files)
+- **Total Test Files**: 71
 - **Total Test Cases**: 558 (counted by HSpec framework including all test constructs)
-- **Coverage Rate**: 57% (test files exist for 43/78 implementation files)
+- **Coverage Rate**: 53% (test files exist for 71/135 implementation files)
 - **Complete Coverage**: Core (100%), Bool (100%), List (100%), Math submodules (100%)
 - **Partial/Missing**: Builtin (missing Error tests), IO (missing Read tests), Math.Const (no tests)
 - **Test Quality**: All 558 tests pass, including comprehensive QuickCheck property testing

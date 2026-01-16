@@ -3,6 +3,35 @@ import 'package:glue/env.dart';
 
 import 'package:glue/src/ast.dart';
 
+/// Host value wrapper for any host language object
+/// Mirrors Haskell HostValue exactly
+class HostValue {
+  final dynamic value;
+  const HostValue(this.value);
+
+  @override
+  String toString() => 'HostValue($value)';
+
+  @override
+  bool operator ==(Object other) => false; // Host values are never equal (opaque)
+
+  @override
+  int get hashCode => 0; // All host values have same hash
+}
+
+/// Create a host value from any value
+/// Mirrors Haskell hostValue exactly
+HostValue hostValue(dynamic value) => HostValue(value);
+
+/// Extract a host value with type safety
+/// Mirrors Haskell extractHostValue exactly
+T? extractHostValue<T>(HostValue hostValue) {
+  if (hostValue.value is T) {
+    return hostValue.value as T;
+  }
+  return null;
+}
+
 /// Intermediate Representation for Glue language execution
 /// Mirrors Haskell IR but simplified for Dart (no type parameter m)
 sealed class Ir {
@@ -148,18 +177,47 @@ class IrVoid extends Ir {
   int get hashCode => 'void'.hashCode;
 }
 
-class IrNative extends Ir {
-  final Native value;
-  const IrNative(this.value);
+class IrNativeValue extends Ir {
+  final HostValue value; // Host language value wrapped in HostValue
+  const IrNativeValue(this.value);
 
   @override
-  String toString() => '<native>';
+  String toString() => '<host:${value.toString()}>';
 
   @override
-  bool operator ==(Object other) => other is IrNative && other.value == value;
+  bool operator ==(Object other) =>
+      other is IrNativeValue && other.value == value;
 
   @override
   int get hashCode => value.hashCode;
+}
+
+class IrNativeFunc extends Ir {
+  final dynamic function; // ([Ir]) -> dynamic
+  const IrNativeFunc(this.function);
+
+  @override
+  String toString() => '<native-func>';
+
+  @override
+  bool operator ==(Object other) => other is IrNativeFunc; // Functions compare as equal regardless of implementation
+
+  @override
+  int get hashCode => 'native-func'.hashCode;
+}
+
+class IrSpecial extends Ir {
+  final dynamic function; // ([Ir]) -> dynamic
+  const IrSpecial(this.function);
+
+  @override
+  String toString() => '<special>';
+
+  @override
+  bool operator ==(Object other) => other is IrSpecial; // Special forms compare as equal regardless of implementation
+
+  @override
+  int get hashCode => 'special'.hashCode;
 }
 
 class IrClosure extends Ir {
@@ -180,38 +238,6 @@ class IrClosure extends Ir {
 
   @override
   int get hashCode => Object.hash(params, body, env);
-}
-
-/// Native functions and special forms
-/// Simplified for Dart (no type parameter m)
-sealed class Native {
-  const Native();
-}
-
-class NativeFunc extends Native {
-  // TODO: Type this properly when we implement evaluation
-  final dynamic function;
-  const NativeFunc(this.function);
-
-  @override
-  bool operator ==(Object other) =>
-      other is NativeFunc && other.function == function;
-
-  @override
-  int get hashCode => function.hashCode;
-}
-
-class NativeSpecial extends Native {
-  // TODO: Type this properly when we implement evaluation
-  final dynamic function;
-  const NativeSpecial(this.function);
-
-  @override
-  bool operator ==(Object other) =>
-      other is NativeSpecial && other.function == function;
-
-  @override
-  int get hashCode => function.hashCode;
 }
 
 /// Compile AST to IR
@@ -251,3 +277,10 @@ String getSymbol(Ir ir) => switch (ir) {
   IrDottedSymbol(:final parts) => parts.join('.'),
   _ => '',
 };
+
+/// Host value utilities
+/// Mirrors Haskell isHostValue and getHostValueFromIR exactly
+
+bool isHostValue(Ir ir) => ir is IrNativeValue;
+
+HostValue? getHostValueFromIR(Ir ir) => ir is IrNativeValue ? ir.value : null;

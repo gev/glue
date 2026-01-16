@@ -14,14 +14,14 @@ import 'builtin/try.dart';
 /// The builtin module containing all special forms
 /// Mirrors Haskell Glue.Lib.Builtin.builtin exactly
 final ModuleInfo builtin = nativeModule('ffi.builtin', [
-  ('def', IrNative(NativeSpecial(def))),
-  ('set', IrNative(NativeSpecial(set))),
-  ('lambda', IrNative(NativeSpecial(lambda))),
-  ('\\', IrNative(NativeSpecial(lambda))), // backslash is lambda
-  ('let', IrNative(NativeSpecial(let))),
-  ('import', IrNative(NativeSpecial(importForm))),
-  ('error', IrNative(NativeSpecial(error))),
-  ('try', IrNative(NativeSpecial(tryFunc))),
+  ('def', IrSpecial(def)),
+  ('set', IrSpecial(set)),
+  ('lambda', IrSpecial(lambda)),
+  ('\\', IrSpecial(lambda)), // backslash is lambda
+  ('let', IrSpecial(let)),
+  ('import', IrSpecial(importForm)),
+  ('error', IrSpecial(error)),
+  ('try', IrSpecial(tryFunc)),
 ]);
 
 // Export the implemented special forms for use in eval.dart

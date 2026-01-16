@@ -11,11 +11,11 @@ import 'sqrt.dart';
 /// Mirrors Haskell Glue.Lib.Math.Power.power exactly
 final ModuleInfo power = nativeModule('ffi.math.power', [
   // Exponential function
-  ('exp', IrNative(NativeFunc(exp))),
+  ('exp', IrNativeFunc(exp)),
 
   // Power function
-  ('pow', IrNative(NativeFunc(pow))),
+  ('pow', IrNativeFunc(pow)),
 
   // Square root function
-  ('sqrt', IrNative(NativeFunc(sqrt))),
+  ('sqrt', IrNativeFunc(sqrt)),
 ]);
