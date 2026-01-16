@@ -24,10 +24,10 @@ glue_demo/
 │   │   ├── examples_screen.dart     # Example code browser
 │   │   └── settings_screen.dart     # App settings
 │   ├── widgets/
-│   │   ├── code_editor.dart         # Syntax-highlighted text editor
+│   │   ├── code_forge_wrapper.dart  # Wrapper for code_forge integration
 │   │   ├── result_display.dart      # Evaluation result viewer
 │   │   ├── glue_widget_renderer.dart # Render Glue-created widgets
-│   │   └── syntax_highlighter.dart  # Glue syntax highlighting
+│   │   └── glue_highlighter.dart    # Glue syntax highlighting for code_forge
 │   ├── services/
 │   │   └── glue_service.dart        # Glue evaluation service
 │   └── utils/
@@ -57,18 +57,18 @@ glue_demo/
    - [ ] Create `GlueSession` model for execution state
    - [ ] Set up error handling and result processing
 
-### Phase 2: Code Editor
+### Phase 2: Code Editor Integration
 **Priority: High** - Primary user interface
 
-3. **Basic Editor**
-   - [ ] Implement `CodeEditor` widget with text input
-   - [ ] Add basic syntax highlighting for Glue
-   - [ ] Support for keyboard shortcuts (run, clear)
+3. **Code Forge Integration**
+   - [ ] Integrate code_forge package for code editing
+   - [ ] Configure syntax highlighting for Glue language
+   - [ ] Set up keyboard shortcuts (run, clear, save)
 
-4. **Advanced Editor Features**
-   - [ ] Line numbers and syntax highlighting
-   - [ ] Auto-completion for Glue functions
-   - [ ] Error highlighting and suggestions
+4. **Editor Customization**
+   - [ ] Customize code_forge theme for Glue syntax
+   - [ ] Add Glue-specific auto-completion
+   - [ ] Implement error highlighting and suggestions
 
 ### Phase 3: Execution & Display
 **Priority: High** - Core functionality
@@ -167,9 +167,9 @@ glue_demo/
 
 - **flutter**: Core Flutter framework
 - **glue_flutter**: Glue bindings package (to be implemented)
+- **code_forge**: Code editor package for syntax highlighting and editing
 - **provider**: State management
 - **shared_preferences**: Local storage
-- **flutter_syntax_view**: Syntax highlighting (if needed)
 
 ## Risk Assessment
 
