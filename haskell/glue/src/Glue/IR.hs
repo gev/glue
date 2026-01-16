@@ -1,15 +1,34 @@
 module Glue.IR where
 
 import Data.Bifunctor (second)
+import Data.Dynamic (Dynamic, fromDynamic, toDyn)
 import Data.Map.Strict (Map)
 import Data.Map.Strict qualified as Map
 import Data.Text (Text)
 import Data.Text qualified as T
+import Data.Typeable (Typeable)
 import Glue.AST (AST)
 import Glue.AST qualified as AST
 
 type Frame m = Map.Map Text (IR m)
 type Env m = [Frame m]
+
+-- Host value wrapper for any host language object
+newtype HostValue = HostValue {getHostValue :: Dynamic}
+    deriving (Show)
+
+instance Eq HostValue where
+    -- Host values are opaque, so we can't meaningfully compare them
+    -- For now, consider them never equal (could be improved with identity comparison)
+    _ == _ = False
+
+-- Create a host value from any typeable value
+hostValue :: (Typeable a) => a -> HostValue
+hostValue = HostValue . toDyn
+
+-- Extract a host value with type safety
+extractHostValue :: (Typeable a) => HostValue -> Maybe a
+extractHostValue = fromDynamic . getHostValue
 
 data IR m
     = Integer Int
@@ -27,6 +46,19 @@ data IR m
 data Native m
     = Func ([IR m] -> m (IR m))
     | Special ([IR m] -> m (IR m))
+    | Value HostValue -- NEW: Host language values
+
+instance Show (Native m) where
+    show = \case
+        Func _ -> "<func>"
+        Special _ -> "<special>"
+        Value hv -> "<host:" <> show hv <> ">"
+
+instance Eq (Native m) where
+    Func _ == Func _ = True
+    Special _ == Special _ = True
+    Value a == Value b = a == b
+    _ == _ = False
 
 compile :: AST -> IR m
 compile = \case
@@ -52,7 +84,7 @@ instance Show (IR m) where
         List xs -> "(" <> unwords (map show xs) <> ")"
         Object _ -> "{object}"
         Void -> "#<void>"
-        Native _ -> "<native>"
+        Native n -> show n
         Closure{} -> "<closure>"
 
 instance Eq (IR m) where
@@ -64,6 +96,7 @@ instance Eq (IR m) where
     DottedSymbol a == DottedSymbol b = a == b
     List a == List b = a == b
     Object a == Object b = a == b
+    Native a == Native b = a == b
     Void == Void = True
     _ == _ = False
 
@@ -97,3 +130,12 @@ getSymbol :: IR m -> Text
 getSymbol (Symbol s) = s
 getSymbol (DottedSymbol parts) = T.intercalate "." parts
 getSymbol _ = ""
+
+-- Host value utilities
+isHostValue :: IR m -> Bool
+isHostValue (Native (Value _)) = True
+isHostValue _ = False
+
+getHostValueFromIR :: IR m -> Maybe HostValue
+getHostValueFromIR (Native (Value hv)) = Just hv
+getHostValueFromIR _ = Nothing
