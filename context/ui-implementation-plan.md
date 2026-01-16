@@ -1,261 +1,281 @@
-# UI Module Implementation Plan
+# Framework-Agnostic UI Module (`ffi.ui`)
 
 ## Overview
-Implement the `ffi.ui` module for the Glue programming language, providing framework-agnostic UI component functions that can be implemented across different UI frameworks. This initial implementation uses Flutter widgets as the base, but the module design allows for React, Vue, or other framework implementations.
 
-## Module Architecture
+The `ffi.ui` module provides a framework-agnostic API for creating user interfaces in Glue. The same Glue code can produce UI components across different frameworks (Flutter, React, Vue, etc.) by using framework-specific implementations of the same module interface.
+
+## Core Concept
+
+**Framework-agnostic UI metadata** - Glue serves as a universal UI description language that can be compiled to different framework-specific implementations.
+
+```clojure
+;; Same Glue code works everywhere
+(import "ffi.ui")
+
+(container :children [
+  (text "Hello World" :color "blue" :size 24)
+  (button :label "Click Me" :on-tap handle-click)
+])
+```
+
+## Module Interface
 
 ### Module Name
-- **Name**: `ffi.ui`
-- **Purpose**: Framework-agnostic UI component library
-- **Import**: `(import "ffi.ui")`
+- **Import name**: `"ffi.ui"`
+- **Purpose**: Universal UI component library
+- **Framework implementations**: Flutter, React, Vue, Web Components, etc.
 
 ### Core Functions
 
-#### Text Display
+#### Text Display (`text`)
+Creates text display elements with optional styling.
+
 ```clojure
-;; Basic text
+;; Basic usage
 (text "Hello World")
 
-;; Text with styling
-(text "Styled Text" :color "blue" :size 18)
+;; With styling
+(text "Styled Text"
+  :color "blue"
+  :size 18
+  :weight "bold"
+  :align "center")
 ```
 
-#### Interactive Elements
+**Parameters:**
+- `content` (required): Text content to display
+- `:color`: Text color (named colors, hex codes)
+- `:size`: Font size in points
+- `:weight`: Font weight ("normal", "bold", etc.)
+- `:align`: Text alignment ("left", "center", "right")
+
+#### Interactive Elements (`button`)
+Creates interactive button components.
+
 ```clojure
-;; Button with label
-(button :label "Click me")
+;; Basic button
+(button :label "Click Me")
 
 ;; Button with event handler
-(button :label "Click me" :on-tap my-handler)
+(button :label "Save"
+  :on-tap save-handler
+  :disabled false
+  :variant "primary")
 ```
 
-#### Layout Containers
-```clojure
-;; Vertical container (default)
-(container :children [(text "Item 1") (text "Item 2")])
+**Parameters:**
+- `:label` (required): Button text
+- `:on-tap`: Callback function for tap events
+- `:on-press`: Callback function for press events
+- `:disabled`: Boolean to disable interaction
+- `:variant`: Visual style ("primary", "secondary", "outline")
 
-;; Horizontal container
-(container :direction "horizontal" :children [...])
-```
-
-## Implementation Strategy
-
-### Phase 1: Core Module Structure
-**Priority: High** - Establish the module foundation
-
-1. **Module Definition**
-   - [ ] Create `ui.dart` with `ModuleInfo` structure
-   - [ ] Define module name as `ffi.ui`
-   - [ ] Set up exports list
-
-2. **Basic Function Framework**
-   - [ ] Implement function signature pattern
-   - [ ] Set up argument parsing utilities
-   - [ ] Create error handling for invalid arguments
-
-### Phase 2: Text Components
-**Priority: High** - Essential display functionality
-
-3. **Text Function**
-   - [ ] Implement `(text content [options...])` function
-   - [ ] Support `:color` parameter for text color
-   - [ ] Support `:size` parameter for font size
-   - [ ] Add `:weight` parameter for font weight
-
-4. **Text Styling**
-   - [ ] Implement color parsing (named colors, hex codes)
-   - [ ] Add font family support
-   - [ ] Support text alignment options
-
-### Phase 3: Interactive Components
-**Priority: High** - User interaction capabilities
-
-5. **Button Function**
-   - [ ] Implement `(button [options...])` function
-   - [ ] Support `:label` parameter for button text
-   - [ ] Add `:on-tap` callback parameter
-   - [ ] Support `:disabled` state
-
-6. **Event Handling**
-   - [ ] Implement callback function binding
-   - [ ] Support multiple event types (tap, long-press, etc.)
-   - [ ] Add event parameter passing
-
-### Phase 4: Layout Components
-**Priority: Medium** - Structural organization
-
-7. **Container Function**
-   - [ ] Implement `(container [options...])` function
-   - [ ] Support `:children` parameter for child components
-   - [ ] Add `:direction` parameter (vertical/horizontal)
-   - [ ] Support spacing and padding options
-
-8. **Layout Properties**
-   - [ ] Implement alignment options
-   - [ ] Add flex properties for responsive layouts
-   - [ ] Support nested container structures
-
-### Phase 5: Advanced Features
-**Priority: Medium** - Enhanced functionality
-
-9. **Additional Components**
-   - [ ] Input field component
-   - [ ] Image display component
-   - [ ] Scrollable container
-   - [ ] Card/container with elevation
-
-10. **Theming Support**
-    - [ ] Global theme configuration
-    - [ ] Component variant system
-    - [ ] Dark/light mode support
-
-## Function Signatures
-
-### Text Function
-```dart
-Eval<Ir> text(List<Ir> args) {
-  // args[0]: text content (required)
-  // args[1..]: keyword arguments (:color, :size, etc.)
-}
-```
-
-### Button Function
-```dart
-Eval<Ir> button(List<Ir> args) {
-  // All arguments are keyword-based
-  // :label - button text
-  // :on-tap - callback function
-  // :disabled - boolean state
-}
-```
-
-### Container Function
-```dart
-Eval<Ir> container(List<Ir> args) {
-  // :children - list of child components
-  // :direction - "vertical" or "horizontal"
-  // :spacing - gap between children
-}
-```
-
-## Argument Parsing
-
-### Keyword Arguments
-Functions use keyword arguments in the style of Clojure:
+#### Layout Containers (`container`)
+Creates layout containers for organizing child components.
 
 ```clojure
-(button :label "Save" :on-tap save-handler :disabled false)
+;; Vertical layout (default)
+(container :children [
+  (text "Item 1")
+  (text "Item 2")
+])
+
+;; Horizontal layout
+(container :direction "horizontal"
+  :children [...]
+  :spacing 16
+  :align "center")
 ```
 
-### Type Conversion
-- **Strings**: `IrString` → `String`
-- **Numbers**: `IrInteger`/`IrFloat` → `int`/`double`
-- **Booleans**: `IrBool` → `bool`
-- **Functions**: `IrClosure` → callback functions
-- **Lists**: `IrList` → `List` of components
+**Parameters:**
+- `:children` (required): List of child components
+- `:direction`: Layout direction ("vertical", "horizontal")
+- `:spacing`: Space between children
+- `:align`: Child alignment ("start", "center", "end", "stretch")
+- `:padding`: Container padding
 
-## Error Handling
-
-### Validation Errors
-- Missing required arguments
-- Invalid argument types
-- Unknown keyword parameters
-- Malformed callback functions
-
-### Runtime Errors
-- Component rendering failures
-- Event handler exceptions
-- Layout constraint violations
-
-## Framework Implementation
+## Framework Implementations
 
 ### Flutter Implementation
 The initial implementation uses Flutter widgets:
 
-- `text` → `Text` widget
-- `button` → `ElevatedButton` widget
-- `container` → `Column`/`Row` widgets
-
-### Future Framework Support
-The module design allows for implementations in other frameworks:
-
-- **React**: `ffi.ui` → React components
-- **Vue**: `ffi.ui` → Vue components
-- **Web Components**: `ffi.ui` → Custom elements
-
-## Testing Strategy
-
-### Unit Tests
-- Function argument parsing
-- Component property mapping
-- Error condition handling
-
-### Integration Tests
-- Complete UI tree rendering
-- Event handler execution
-- Layout constraint satisfaction
-
-### Cross-Framework Compatibility
-- Ensure same Glue code works across implementations
-- Validate component API consistency
-
-## Usage Examples
-
-### Simple UI
-```clojure
-(import "ffi.ui")
-
-;; Create a simple interface
-(container :children [
-  (text "Welcome to Glue UI" :size 24 :color "blue")
-  (button :label "Get Started" :on-tap start-app)
-])
+```dart
+// text -> Text widget
+// button -> ElevatedButton widget
+// container -> Column/Row widgets
 ```
 
-### Interactive Form
-```clojure
-(import "ffi.ui")
-
-(def name "")
-(def email "")
-
-(container :children [
-  (text "Contact Form" :size 20)
-  (input :value name :placeholder "Name" :on-change update-name)
-  (input :value email :placeholder "Email" :on-change update-email)
-  (button :label "Submit" :on-tap submit-form)
-])
+### React Implementation (Future)
+```jsx
+// text -> <span> element
+// button -> <button> element
+// container -> <div> with flexbox
 ```
 
-## Success Criteria
+### Vue Implementation (Future)
+```vue
+<!-- text -> <span> component -->
+<!-- button -> <button> component -->
+<!-- container -> <div> with flex layout -->
+```
 
-- [ ] **Module Structure**: Complete `ffi.ui` module with proper exports
-- [ ] **Core Functions**: Working `text`, `button`, `container` functions
-- [ ] **Argument Parsing**: Robust keyword argument handling
-- [ ] **Error Handling**: Clear error messages for invalid usage
-- [ ] **Flutter Integration**: Seamless Flutter widget creation
-- [ ] **Testing**: Comprehensive test coverage
-- [ ] **Documentation**: Complete API documentation and examples
+## Design Principles
 
-## Dependencies
+### 1. Framework Agnostic API
+The Glue API remains consistent regardless of the target framework. Framework-specific features are abstracted behind common parameter names.
 
-- **glue**: Core Glue interpreter
-- **Framework SDK**: Flutter, React, etc. (implementation-specific)
+### 2. Progressive Enhancement
+Basic components work everywhere, advanced features are framework-specific extensions.
 
-## Risk Assessment
+### 3. Type Safety
+Strong typing in Glue prevents runtime UI errors. Parameter validation ensures correct usage.
 
-- **Framework Abstraction**: Balancing framework-agnostic API with framework-specific features
-- **Performance**: Efficient component creation and rendering
-- **API Consistency**: Maintaining consistent behavior across framework implementations
-- **Extensibility**: Supporting new components and features
+### 4. Performance Optimized
+Each framework implementation is optimized for its platform's rendering model.
 
-## Timeline Estimate
+## Component Lifecycle
 
-- **Phase 1**: 1 week (module structure and framework)
-- **Phase 2**: 2 weeks (text components)
-- **Phase 3**: 2 weeks (interactive components)
-- **Phase 4**: 1 week (layout components)
-- **Phase 5**: 1 week (advanced features and testing)
+### Creation
+Components are created through Glue function calls and return framework-specific widget objects.
 
-**Total: 7 weeks for complete UI module implementation**
+### Updates
+Glue's reactive evaluation model automatically updates UI when underlying data changes.
+
+### Events
+User interactions trigger Glue callback functions, maintaining the functional programming model.
+
+## Styling Approach
+
+### Unified Parameter System
+Common styling properties work across frameworks:
+
+```clojure
+;; Colors work everywhere
+:color "red"        ;; Named color
+:color "#FF0000"    ;; Hex color
+:color "rgb(255,0,0)" ;; RGB notation
+
+;; Sizes are framework-adapted
+:size 16            ;; Points on mobile, pixels on web
+```
+
+### Framework-Specific Extensions
+Each implementation can add framework-specific parameters:
+
+```clojure
+;; Flutter-specific
+(button :label "Flutter Button"
+  :elevation 4
+  :shape "rounded")
+
+;; React-specific
+(button :label "React Button"
+  :class-name "btn-primary"
+  :data-testid "submit-btn")
+```
+
+## Error Handling
+
+### Validation Errors
+- Missing required parameters
+- Invalid parameter types
+- Unknown parameter names
+- Malformed callback functions
+
+### Framework-Specific Errors
+- Rendering failures
+- Layout constraint violations
+- Event handler exceptions
+
+## Extensibility
+
+### Custom Components
+New components can be added to the module:
+
+```clojure
+;; Framework implementations define new functions
+(icon :name "user" :size 24)
+(card :title "Card Title" :children [...])
+```
+
+### Theming
+Global theming through module configuration:
+
+```clojure
+;; Set global theme
+(set-theme :primary-color "blue" :font-family "Roboto")
+
+;; Components inherit theme automatically
+(button :label "Themed Button") ;; Uses primary color
+```
+
+## Cross-Framework Compatibility
+
+### Code Portability
+The same Glue UI code runs on any supported framework without modification.
+
+### Progressive Web Apps
+Single Glue codebase can target mobile (Flutter), web (React), and desktop (Flutter/Electron).
+
+### Component Libraries
+Third-party component libraries can implement the `ffi.ui` interface for custom components.
+
+## Implementation Architecture
+
+### Module Structure
+```
+ffi.ui/
+├── core/           # Common interfaces and types
+├── flutter/        # Flutter implementation
+├── react/          # React implementation
+├── vue/            # Vue implementation
+└── web/            # Web Components implementation
+```
+
+### Function Registration
+Each framework registers its component implementations:
+
+```dart
+// Flutter registration
+final ui = nativeModule('ffi.ui', [
+  ('text', IrNative(NativeFunc(flutterText))),
+  ('button', IrNative(NativeFunc(flutterButton))),
+  ('container', IrNative(NativeFunc(flutterContainer))),
+]);
+```
+
+## Future Extensions
+
+### Advanced Components
+- Form inputs and validation
+- Navigation components
+- Data display (tables, lists, charts)
+- Media components (images, video)
+
+### Animation System
+- Declarative animations
+- Transition effects
+- State-based animations
+
+### Accessibility
+- Screen reader support
+- Keyboard navigation
+- Focus management
+
+## Benefits
+
+### Developer Experience
+- **Single codebase** for multi-platform UI
+- **Type-safe** UI development
+- **Hot reload** during development
+- **Consistent API** across platforms
+
+### Business Value
+- **Faster development** with unified UI language
+- **Reduced maintenance** with single source of truth
+- **Framework flexibility** for technology choices
+- **Future-proof** UI architecture
+
+## Conclusion
+
+The `ffi.ui` module represents a paradigm shift in UI development - moving from framework-specific APIs to a universal, framework-agnostic UI description language. By leveraging Glue's formal semantics and evaluation model, UI development becomes more declarative, type-safe, and portable across platforms and frameworks.
