@@ -1,0 +1,23 @@
+name: glue_flutter
+description: Flutter bindings for the Glue programming language - enabling Glue code to create and manipulate Flutter widgets.
+version: 0.1.0
+homepage: https://github.com/gev/glue
+repository: https://github.com/gev/glue
+issue_tracker: https://github.com/gev/glue/issues
+
+environment:
+  sdk: '^3.9.2'
+  flutter: ">=3.0.0"
+
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  glue:
+    path: ../../dart/glue
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
