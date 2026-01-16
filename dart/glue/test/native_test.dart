@@ -131,19 +131,16 @@ void main() {
     });
 
     group('NativeFunc and Special equality', () {
-      test('NativeFunc are equal', () {
+      test('NativeFunc aren\'t equal', () {
         final f1 = IrNativeFunc((List<Ir> args) => Eval.pure(IrInteger(1)));
         final f2 = IrNativeFunc((List<Ir> args) => Eval.pure(IrInteger(2)));
-        expect(
-          f1 == f2,
-          isTrue,
-        ); // Functions compare as equal regardless of implementation
+        expect(f1 == f2, isFalse);
       });
 
-      test('Special are equal', () {
+      test('Special aren\'t equal', () {
         final s1 = IrSpecial((List<Ir> args) => Eval.pure(IrInteger(1)));
         final s2 = IrSpecial((List<Ir> args) => Eval.pure(IrInteger(2)));
-        expect(s1 == s2, isTrue);
+        expect(s1 == s2, isFalse);
       });
     });
 
