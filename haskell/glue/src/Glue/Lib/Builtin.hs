@@ -1,7 +1,7 @@
 module Glue.Lib.Builtin where
 
 import Glue.Eval (Eval)
-import Glue.IR (IR (..), Native (..))
+import Glue.IR (IR (..))
 import Glue.Lib.Builtin.Def (def)
 import Glue.Lib.Builtin.Error (errorFunc)
 import Glue.Lib.Builtin.Import (importForm)
@@ -15,12 +15,12 @@ builtin :: ModuleInfo Eval
 builtin =
     nativeModule
         "ffi.builtin"
-        [ ("def", Native (Special def))
-        , ("set", Native (Special set))
-        , ("lambda", Native (Special lambda))
-        , ("\\", Native (Special lambda))
-        , ("let", Native (Special let'))
-        , ("import", Native (Special importForm))
-        , ("error", Native (Special errorFunc))
-        , ("try", Native (Special tryFunc))
+        [ ("def", Special def)
+        , ("set", Special set)
+        , ("lambda", Special lambda)
+        , ("\\", Special lambda)
+        , ("let", Special let')
+        , ("import", Special importForm)
+        , ("error", Special errorFunc)
+        , ("try", Special tryFunc)
         ]

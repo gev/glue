@@ -168,23 +168,18 @@ evalObject objMap = do
 
 -- Helper to determine if an IR value can be called
 isCallable :: IR -> Bool
-isCallable (IR.Native _) = True
+isCallable (IR.NativeFunc _) = True
+isCallable (IR.Special _) = True
 isCallable (IR.Closure{}) = True
 isCallable _ = False
 
 apply :: IR -> [IR] -> Eval IR
 apply ir rawArgs = case ir of
-    IR.Native native -> applyNative native rawArgs
+    IR.NativeFunc f -> f =<< mapM eval rawArgs
+    IR.Special s -> s rawArgs
     IR.Closure params body savedEnv -> applyClosure params body savedEnv rawArgs
     IR.Symbol name -> throwError $ unboundVariable name
     _ -> throwError notCallableObject
-
--- Apply a native function/command/special
-applyNative :: IR.Native Eval -> [IR] -> Eval IR
-applyNative (IR.Func f) rawArgs = do
-    args <- mapM eval rawArgs
-    f args
-applyNative (IR.Special s) rawArgs = s rawArgs
 
 -- Apply a closure with the given arguments
 applyClosure :: [Text] -> IR -> Env -> [IR] -> Eval IR

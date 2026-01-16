@@ -1,7 +1,7 @@
 module Glue.Lib.Math.Trigonometric where
 
 import Glue.Eval (Eval)
-import Glue.IR (IR (..), Native (..))
+import Glue.IR (IR (..))
 import Glue.Lib.Math.Trigonometric.Acos qualified as Acos
 import Glue.Lib.Math.Trigonometric.Asin qualified as Asin
 import Glue.Lib.Math.Trigonometric.Atan qualified as Atan
@@ -14,10 +14,10 @@ trigonometric :: ModuleInfo Eval
 trigonometric =
     nativeModule
         "ffi.math.trigonometric"
-        [ ("sin", Native (Func Sin.sin))
-        , ("cos", Native (Func Cos.cos))
-        , ("tan", Native (Func Tan.tan))
-        , ("asin", Native (Func Asin.asin))
-        , ("acos", Native (Func Acos.acos))
-        , ("atan", Native (Func Atan.atan))
+        [ ("sin", NativeFunc Sin.sin)
+        , ("cos", NativeFunc Cos.cos)
+        , ("tan", NativeFunc Tan.tan)
+        , ("asin", NativeFunc Asin.asin)
+        , ("acos", NativeFunc Acos.acos)
+        , ("atan", NativeFunc Atan.atan)
         ]

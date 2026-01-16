@@ -1,7 +1,7 @@
 module Glue.Lib.Math.Utility where
 
 import Glue.Eval (Eval)
-import Glue.IR (IR (..), Native (..))
+import Glue.IR (IR (..))
 import Glue.Lib.Math.Utility.Abs qualified as Abs
 import Glue.Lib.Math.Utility.Ceil qualified as Ceil
 import Glue.Lib.Math.Utility.Floor qualified as Floor
@@ -16,22 +16,11 @@ utility :: ModuleInfo Eval
 utility =
     nativeModule
         "ffi.math.utility"
-        [ ("abs", Native (Func Abs.abs))
-        , ("floor", Native (Func Floor.floor))
-        , ("ceil", Native (Func Ceil.ceil))
-        , ("round", Native (Func Round.round))
-        , ("trunc", Native (Func Trunc.trunc))
-        , ("min", Native (Func Min.min))
-        , ("max", Native (Func Max.max))
+        [ ("abs", NativeFunc Abs.abs)
+        , ("floor", NativeFunc Floor.floor)
+        , ("ceil", NativeFunc Ceil.ceil)
+        , ("round", NativeFunc Round.round)
+        , ("trunc", NativeFunc Trunc.trunc)
+        , ("min", NativeFunc Min.min)
+        , ("max", NativeFunc Max.max)
         ]
-
--- Note: exp, log, pow, floor, ceil, round, trunc, min, max are not yet integrated
--- expFrame = E.singletonFrame "exp" Exp.exp
--- logFrame = E.singletonFrame "log" Log.log
--- powFrame = E.singletonFrame "pow" Pow.pow
--- floorFrame = E.singletonFrame "floor" Floor.floor
--- ceilFrame = E.singletonFrame "ceil" Ceil.ceil
--- roundFrame = E.singletonFrame "round" Round.round
--- truncFrame = E.singletonFrame "trunc" Trunc.trunc
--- minFrame = E.singletonFrame "min" Min.min
--- maxFrame = E.singletonFrame "max" Max.max
