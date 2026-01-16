@@ -237,10 +237,11 @@ Where:
 
 - **Total Implementation Files**: 78 (12 core + 66 library)
 - **Total Test Files**: 43
-- **Total Test Cases**: 528 (counted by HSpec framework including all test constructs)
+- **Total Test Cases**: 558 (counted by HSpec framework including all test constructs)
 - **Coverage Rate**: 57% (test files exist for 43/78 implementation files)
 - **Complete Coverage**: Core (100%), Bool (100%), List (100%), Math submodules (100%)
 - **Partial/Missing**: Builtin (missing Error tests), IO (missing Read tests), Math.Const (no tests)
-- **Test Quality**: All 528 tests pass, including comprehensive QuickCheck property testing
+- **Test Quality**: All 558 tests pass, including comprehensive QuickCheck property testing
+- **Recent Updates**: Updated all test files to use new `NativeFunc` and `Special` constructors directly (removed `NativeCallable` wrapper)
 
 This analysis provides a comprehensive view of test coverage across the Haskell implementation, identifying areas of complete coverage and gaps requiring additional test development.
