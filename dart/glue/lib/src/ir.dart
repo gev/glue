@@ -1,5 +1,6 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:glue/env.dart';
+import 'package:glue/src/eval.dart';
 
 import 'package:glue/src/ast.dart';
 
@@ -193,7 +194,7 @@ class IrNativeValue extends Ir {
 }
 
 class IrNativeFunc extends Ir {
-  final dynamic function; // ([Ir]) -> dynamic
+  final Eval<Ir> Function(List<Ir>) function;
   const IrNativeFunc(this.function);
 
   @override
@@ -207,7 +208,7 @@ class IrNativeFunc extends Ir {
 }
 
 class IrSpecial extends Ir {
-  final dynamic function; // ([Ir]) -> dynamic
+  final Eval<Ir> Function(List<Ir>) function;
   const IrSpecial(this.function);
 
   @override

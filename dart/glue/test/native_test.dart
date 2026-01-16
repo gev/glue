@@ -120,20 +120,20 @@ void main() {
 
     group('NativeFunc and Special constructors', () {
       test('creates NativeFunc', () {
-        final nf = IrNativeFunc((List<Ir> args) => IrInteger(42));
+        final nf = IrNativeFunc((List<Ir> args) => Eval.pure(IrInteger(42)));
         expect(nf, isNotNull);
       });
 
       test('creates Special', () {
-        final s = IrSpecial((List<Ir> args) => IrInteger(42));
+        final s = IrSpecial((List<Ir> args) => Eval.pure(IrInteger(42)));
         expect(s, isNotNull);
       });
     });
 
     group('NativeFunc and Special equality', () {
       test('NativeFunc are equal', () {
-        final f1 = IrNativeFunc((List<Ir> args) => IrInteger(1));
-        final f2 = IrNativeFunc((List<Ir> args) => IrInteger(2));
+        final f1 = IrNativeFunc((List<Ir> args) => Eval.pure(IrInteger(1)));
+        final f2 = IrNativeFunc((List<Ir> args) => Eval.pure(IrInteger(2)));
         expect(
           f1 == f2,
           isTrue,
@@ -141,8 +141,8 @@ void main() {
       });
 
       test('Special are equal', () {
-        final s1 = IrSpecial((List<Ir> args) => IrInteger(1));
-        final s2 = IrSpecial((List<Ir> args) => IrInteger(2));
+        final s1 = IrSpecial((List<Ir> args) => Eval.pure(IrInteger(1)));
+        final s2 = IrSpecial((List<Ir> args) => Eval.pure(IrInteger(2)));
         expect(s1 == s2, isTrue);
       });
     });
