@@ -75,7 +75,7 @@ Implement partial application (currying) support for native functions to make Gl
 ## Implementation Order
 
 **Haskell:**
-1. Move `NativeFunc` from ModuleInfo declaration to the Function implementation (run tests and make commit for every ModuleInfo)
+1. Move `NativeFunc` AND `Special` constructors from ModuleInfo declarations to function implementations (run tests and make commit for every ModuleInfo)
 2. Fix the all Libraries!
 3. Check the tests
 4. Add arity info into `NativeFunc`
