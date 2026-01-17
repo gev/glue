@@ -133,6 +133,11 @@ test-suite glue-test
     Glue.CompileSpec
     Glue.EnvSpec
     Glue.EvalSpec
+    Glue.IR.NativeFuncSpec
+    Glue.IR.NativeValue.GettersSpec
+    Glue.IR.NativeValue.SettersSpec
+    Glue.IR.NativeValueSpec
+    Glue.IR.SpecialSpec
     Glue.Lib.Bool.EqSpec
     Glue.Lib.Bool.GeSpec
     Glue.Lib.Bool.GtSpec
@@ -198,9 +203,6 @@ test-suite glue-test
     Glue.Module.CacheSpec
     Glue.Module.RegistrationSpec
     Glue.Module.RegistrySpec
-    Glue.IR.NativeValueSpec
-    Glue.IR.NativeFuncSpec
-    Glue.IR.SpecialSpec
     Glue.ParserSpec
     Glue.TestUtils
 
