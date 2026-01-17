@@ -1,4 +1,4 @@
-module Glue.IR.NativeFunc (spec) where
+module Glue.IR.NativeFuncSpec (spec) where
 
 import Glue.IR (IR (..))
 import Test.Hspec

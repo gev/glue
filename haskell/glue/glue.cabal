@@ -198,7 +198,9 @@ test-suite glue-test
     Glue.Module.CacheSpec
     Glue.Module.RegistrationSpec
     Glue.Module.RegistrySpec
-    Glue.NativeSpec
+    Glue.IR.NativeValueSpec
+    Glue.IR.NativeFuncSpec
+    Glue.IR.SpecialSpec
     Glue.ParserSpec
     Glue.TestUtils
 

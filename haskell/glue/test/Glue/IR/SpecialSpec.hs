@@ -1,4 +1,4 @@
-module Glue.IR.Special (spec) where
+module Glue.IR.SpecialSpec (spec) where
 
 import Glue.IR (IR (..))
 import Test.Hspec

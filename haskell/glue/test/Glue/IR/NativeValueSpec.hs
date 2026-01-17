@@ -1,6 +1,6 @@
 {-# OPTIONS_GHC -Wno-orphans #-}
 
-module Glue.IR.NativeValue (spec) where
+module Glue.IR.NativeValueSpec (spec) where
 
 import Data.Functor.Identity (Identity)
 import Glue.Env qualified as E
