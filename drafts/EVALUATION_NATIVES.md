@@ -38,6 +38,79 @@ Native function evaluation executes host language functions integrated into the 
 (if condition true-branch false-branch)  ;; Native Special: conditional evaluation
 ```
 
+## Host Object Integration Examples
+
+Host objects integrate Haskell data types into Glue runtime with property access and mutation.
+
+### Haskell Data Types
+```haskell
+data Person = Person {name :: Text, age :: Int}
+data Address = Address {street :: Text, city :: Text}
+data PersonWithAddress = Person {name :: Text, age :: Int, address :: Maybe Address}
+```
+
+### Object Creation and Property Access
+```glue
+;; Create host objects using constructor functions
+(def bob (person :name "Bob" :age 25))
+(def addr (address :street "123 Main St" :city "Springfield"))
+
+;; Access properties
+bob.name        ;; → "Bob"
+bob.age         ;; → 25
+addr.street     ;; → "123 Main St"
+addr.city       ;; → "Springfield"
+```
+
+### Property Modification
+```glue
+;; Modify existing properties
+(set bob.age 26)        ;; → 26
+(set bob.name "Robert") ;; → "Robert"
+(set addr.city "Boston") ;; → "Boston"
+
+;; Verify changes persist
+bob.age     ;; → 26
+bob.name    ;; → "Robert"
+addr.city   ;; → "Boston"
+```
+
+### Nested Object Relationships
+```glue
+;; Create objects with nested relationships
+(def addr (address :street "123 Main St" :city "Springfield"))
+(def bob (person :name "Bob" :age 25 :address addr))
+
+;; Access nested properties
+bob.address.city        ;; → "Springfield"
+bob.address.street      ;; → "123 Main St"
+
+;; Modify nested properties
+(set bob.address.city "Boston")      ;; → "Boston"
+(set bob.address.street "456 Oak Ave") ;; → "456 Oak Ave"
+
+;; Verify nested changes
+bob.address.city        ;; → "Boston"
+bob.address.street      ;; → "456 Oak Ave"
+```
+
+### Complex Object Manipulation
+```glue
+;; Multiple sequential operations
+(def addr (address :street "123 Main St" :city "Springfield"))
+(def bob (person :name "Bob" :age 25 :address addr))
+
+(set bob.age 26)
+(set bob.name "Robert")
+(set bob.address.city "Boston")
+(set bob.address.street "456 Oak Ave")
+
+bob.name                ;; → "Robert"
+bob.age                 ;; → 26
+bob.address.city        ;; → "Boston"
+bob.address.street      ;; → "456 Oak Ave"
+```
+
 ## Function Categories
 
 ### NativeFunc

@@ -44,6 +44,56 @@ Object evaluation processes key-value mappings by evaluating all property values
 ;; → Object [("user", Object [("name", String "Bob"), ("id", Number 105)])]
 ```
 
+## Host Object Property Access
+
+Host objects (Haskell data types) support property access using dot notation.
+
+### Haskell Data Types
+```haskell
+data Person = Person {name :: Text, age :: Int, address :: Maybe Address}
+data Address = Address {street :: Text, city :: Text}
+```
+
+### Basic Property Access
+```glue
+;; Create host objects
+(def bob (person :name "Bob" :age 25))
+(def addr (address :street "123 Main St" :city "Springfield"))
+
+;; Access properties
+bob.name        ;; → "Bob"
+bob.age         ;; → 25
+addr.street     ;; → "123 Main St"
+addr.city       ;; → "Springfield"
+```
+
+### Nested Property Access
+```glue
+;; Create nested relationship
+(def bob (person :name "Bob" :age 25 :address addr))
+
+;; Access nested properties
+bob.address.city        ;; → "Springfield"
+bob.address.street      ;; → "123 Main St"
+
+;; Deep nesting
+(def company (:name "ACME" :hq (:city "Springfield" :state "IL")))
+company.hq.city         ;; → "Springfield"
+company.hq.state        ;; → "IL"
+```
+
+### Property Access on Optional Values
+```glue
+;; Handle optional nested objects
+(def person-no-address (person :name "Alice" :age 30))
+person-no-address.address   ;; → Error: property not found
+
+;; Safe access patterns require explicit null checking
+(if person-no-address.address
+    person-no-address.address.city
+    "No address")
+```
+
 ## Error Propagation
 
 ### Value Evaluation Errors
