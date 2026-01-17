@@ -6,11 +6,11 @@ Implement partial application (currying) support for native functions to make Gl
 ## Current Issue
 `NativeFunc` doesn't support partial application while `Closure` does, breaking functional programming principles.
 
-## Solution: Hybrid Approach
-- Add arity metadata (`minArity`, `maxArity`) to `NativeFunc` IR type
-- Partial application creates `Closure` objects that wrap native function calls
-- Zero runtime overhead (simple length checks)
-- Reuse existing closure machinery for parameter binding
+## Solution: Universal Currying Contract
+- **Single contract for ALL functions:** `IR → IR`
+- Functions take one argument, return result or closure
+- Automatic partial application (Haskell-style currying)
+- No arity declarations or complex logic
 
 ## Implementation Phases
 
@@ -27,16 +27,16 @@ Make changes in the Dart implementation in the same order from 1 to 3
 
 **See:** [Development Technology](development-technology.md) for cross-language synchronization requirements
 
-### Phase 2: Partial Application Implementation (Steps 4-12)
-**Goal:** Add arity support and implement partial application logic
+### Phase 2: Currying Implementation (Steps 4-12)
+**Goal:** Change NativeFunc to single-argument contract and implement currying
 
 #### Haskell Implementation
-4. Add arity info into `NativeFunc`
-5. Fix the all libraries
-6. Run tests
-7. Commit
-8. Implement partial application
-9. Add special tests into `EvalSpec.hs`
+4. Change `NativeFunc` from `[IR] → IR` to `IR → IR`
+5. Rewrite all native functions to use currying internally
+6. Update evaluator for single-argument application
+7. Run tests
+8. Commit
+9. Add currying tests into `EvalSpec.hs`
 10. Run tests
 11. Fix bugs
 12. Commit
@@ -54,18 +54,19 @@ Make commit
 
 ## Key Technical Decisions
 
-- **Arity representation**: `(minArity, maxArity)` where `Nothing` = unlimited
-- **Partial application**: Reuses `Closure` type with synthetic parameter names
-- **Named args**: Handled as single Object argument (arity 1)
+- **Universal contract**: All functions `IR → IR` (single argument)
+- **Internal currying**: Functions decide when to return result vs closure
+- **Automatic partial application**: Every call can be partial
 - **Special forms**: No partial application (syntactic constructs)
-- **Backward compatibility**: Changes are internal, API remains stable
+- **Pure functional**: Haskell-style evaluation model
 
 ## Success Criteria
 
 - ✅ `((+ 1) 2)` returns `3`
 - ✅ `((cons 1) (2 3 4))` works for lists
-- ✅ Performance: No overhead for full application
-- ✅ Type safety: Proper error messages for arity mismatches
+- ✅ `((print "hello") "world")` prints both strings
+- ✅ Performance: Simple single-argument application
+- ✅ Pure functional: Haskell-style currying throughout
 - ✅ Cross-implementation: Haskell and Dart behave identically
 
 ## Rationale
