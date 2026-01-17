@@ -75,21 +75,21 @@ Implement partial application (currying) support for native functions to make Gl
 ## Implementation Order
 
 **Haskell:**
-1. Move NativeFunc constructors from ModuleInfo to function implementations (incremental commits)
-2. Fix all libraries to match new structure
-3. Check tests
-4. Add arity info into NativeFunc
-5. Fix all libraries
+1. Move `NativeFunc` from ModuleInfo declaration to the Function implementation (run tests and make commit for every ModuleInfo)
+2. Fix the all Libraries!
+3. Check the tests
+4. Add arity info into `NativeFunc`
+5. Fix the all libraries
 6. Run tests
 7. Commit
 8. Implement partial application
-9. Add special tests into EvalSpec.hs
+9. Add special tests into `EvalSpec.hs`
 10. Run tests
 11. Fix bugs
 12. Commit
 
 **Dart:**
-Repeat steps 1-12
+Make changes in the Dart implementation in the same order from 1 to 12
 
 **Documentation:**
 Update drafts and specifications
