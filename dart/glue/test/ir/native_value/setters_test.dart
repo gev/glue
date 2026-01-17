@@ -49,7 +49,7 @@ void main() {
         final nameGetter = Eval(
           (runtime) => Right((IrString(person.name), runtime)),
         );
-        final nameSetter = (Ir value) => switch (value) {
+        Eval<Ir> Function(Ir) nameSetter = (Ir value) => switch (value) {
           IrString(value: final newName) => Eval<Ir>((runtime) {
             person.name = newName;
             return Right((IrVoid(), runtime));
@@ -126,7 +126,7 @@ void main() {
         final ageGetter = Eval(
           (runtime) => Right((IrInteger(person.age), runtime)),
         );
-        final ageSetter = (Ir value) => switch (value) {
+        Eval<Ir> Function(Ir) ageSetter = (Ir value) => switch (value) {
           IrInteger(value: final newAge) => Eval<Ir>((runtime) {
             person.age = newAge;
             return Right((IrVoid(), runtime));
@@ -203,7 +203,7 @@ void main() {
         final settingGetter = Eval(
           (runtime) => Right((IrString(config.setting), runtime)),
         );
-        final settingSetter = (Ir value) => switch (value) {
+        Eval<Ir> Function(Ir) settingSetter = (Ir value) => switch (value) {
           IrString(value: final newSetting) => Eval<Ir>((runtime) {
             config.setting = newSetting;
             return Right((IrVoid(), runtime));
@@ -267,7 +267,7 @@ void main() {
         final enabledGetter = Eval(
           (runtime) => Right((IrBool(config.enabled), runtime)),
         );
-        final enabledSetter = (Ir value) => switch (value) {
+        Eval<Ir> Function(Ir) enabledSetter = (Ir value) => switch (value) {
           IrBool(value: final newEnabled) => Eval<Ir>((runtime) {
             config.enabled = newEnabled;
             return Right((IrVoid(), runtime));
@@ -336,7 +336,7 @@ void main() {
         final ageGetter = Eval(
           (runtime) => Right((IrInteger(person.age), runtime)),
         );
-        final nameSetter = (Ir value) => switch (value) {
+        Eval<Ir> Function(Ir) nameSetter = (Ir value) => switch (value) {
           IrString(value: final newName) => Eval<Ir>((runtime) {
             person.name = newName;
             return Right((IrVoid(), runtime));
@@ -345,7 +345,7 @@ void main() {
             RuntimeException('wrong-argument-type', IrString('string')),
           ),
         };
-        final ageSetter = (Ir value) => switch (value) {
+        Eval<Ir> Function(Ir) ageSetter = (Ir value) => switch (value) {
           IrInteger(value: final newAge) => Eval<Ir>((runtime) {
             person.age = newAge;
             return Right((IrVoid(), runtime));

@@ -217,8 +217,7 @@ class IrNativeFunc extends Ir {
   String toString() => '<native-func>';
 
   @override
-  bool operator ==(Object other) =>
-      other is IrNativeFunc && other.function == function;
+  bool operator ==(Object other) => other is IrNativeFunc; // All NativeFunc instances are equal (like Haskell)
 
   @override
   int get hashCode => 'native-func'.hashCode;
@@ -232,8 +231,7 @@ class IrSpecial extends Ir {
   String toString() => '<special>';
 
   @override
-  bool operator ==(Object other) =>
-      other is IrSpecial && other.function == function;
+  bool operator ==(Object other) => other is IrSpecial; // All Special instances are equal (like Haskell)
 
   @override
   int get hashCode => 'special'.hashCode;
