@@ -56,29 +56,6 @@ Make commit
 - ✅ Type safety: Proper error messages for arity mismatches
 - ✅ Cross-implementation: Haskell and Dart behave identically
 
-## Implementation Order
-
-**Haskell:**
-1. Move `NativeFunc` AND `Special` constructors from ModuleInfo declarations to function implementations (run tests and make commit for every ModuleInfo)
-2. Fix the all Libraries!
-3. Check the tests
-4. Add arity info into `NativeFunc`
-5. Fix the all libraries
-6. Run tests
-7. Commit
-8. Implement partial application
-9. Add special tests into `EvalSpec.hs`
-10. Run tests
-11. Fix bugs
-12. Commit
-
-**Dart:**
-Make changes in the Dart implementation in the same order from 1 to 12
-
-**Documentation:**
-Update drafts and specifications
-Make commit
-
 ## Rationale
 
 This approach:
