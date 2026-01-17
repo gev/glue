@@ -6,13 +6,13 @@ import Data.Text (Text)
 import Data.Text qualified as T
 import Glue.Env qualified as E
 import Glue.Eval (Eval, liftIO, runEvalSimple, throwError)
-import Glue.Eval qualified as Glue.Eval
+import Glue.Eval qualified
 import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (Env, HostValue, IR (..), extractHostValue, hostValueWithProps)
-import Glue.IR qualified as Glue.IR
+import Glue.IR qualified
 import Glue.Lib.Builtin.Def (def)
 import Glue.Lib.Builtin.Set qualified as Set
-import Glue.Parser qualified as Glue.Parser
+import Glue.Parser qualified
 import Test.Hspec
 
 -- Test data types for host objects with mutable state
@@ -39,9 +39,7 @@ person [Object props] = do
             _ -> 0
         address = case Map.lookup "address" props of
             Just (NativeValue addrHostVal) ->
-                case extractAddress addrHostVal of
-                    Just addr -> Just addr
-                    Nothing -> Nothing
+                extractAddress addrHostVal
             _ -> Nothing
 
     -- Create mutable Person object
@@ -164,9 +162,7 @@ address _ = throwError $ wrongArgumentType ["object"]
 
 -- Helper to extract Address from HostValue (for type safety)
 extractAddress :: HostValue Eval -> Maybe Address
-extractAddress hv = case extractHostValue hv of
-    Just addr -> Just addr
-    Nothing -> Nothing
+extractAddress hv = maybe Nothing Just (extractHostValue hv)
 
 -- Test environment with constructors
 testEnv :: Env Eval
