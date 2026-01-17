@@ -1,11 +1,7 @@
-{-# LANGUAGE PatternSynonyms #-}
-
 module Glue.IR (
     -- Main types
     IR (..),
     HostValue (..),
-    -- Legacy compatibility (deprecated)
-    Native (..),
     -- Environment types
     Frame,
     Env,
@@ -59,7 +55,7 @@ hostValue x = HostValue (toDyn x) Map.empty Map.empty
 
 -- Create a host value with properties
 hostValueWithProps :: (Typeable a) => a -> Map Text (IR m) -> Map Text (IR m) -> HostValue m
-hostValueWithProps x getters setters = HostValue (toDyn x) getters setters
+hostValueWithProps x = HostValue (toDyn x)
 
 -- Extract a host value with type safety
 extractHostValue :: (Typeable a) => HostValue m -> Maybe a
@@ -79,22 +75,6 @@ data IR m
     | NativeFunc ([IR m] -> m (IR m)) -- Functions
     | Special ([IR m] -> m (IR m)) -- Special forms
     | Closure [Text] (IR m) (Env m)
-
--- Legacy compatibility type (deprecated - use NativeValue and NativeCallable instead)
-data Native m
-    = LegacyFunc ([IR m] -> m (IR m))
-    | LegacySpecial ([IR m] -> m (IR m))
-    | LegacyValue (HostValue m)
-
--- Pattern synonyms for backward compatibility
-pattern LegacyNativeFunc :: ([IR m] -> m (IR m)) -> Native m
-pattern LegacyNativeFunc f = LegacyFunc f
-
-pattern LegacyNativeSpecial :: ([IR m] -> m (IR m)) -> Native m
-pattern LegacyNativeSpecial f = LegacySpecial f
-
-pattern LegacyNativeValue :: HostValue m -> Native m
-pattern LegacyNativeValue hv = LegacyValue hv
 
 -- Show instance for IR handles NativeFunc and Special directly
 
