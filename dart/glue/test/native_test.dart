@@ -1,13 +1,11 @@
 import 'package:glue/env.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
-import 'package:glue/src/ast.dart';
 import 'package:glue/src/either.dart';
 import 'package:glue/src/eval/error.dart';
 import 'package:glue/src/eval/exception.dart';
 import 'package:glue/src/lib/builtin/set.dart';
 import 'package:glue/src/parser.dart';
-import 'package:glue/src/runtime.dart';
 import 'package:test/test.dart';
 
 // Test data types for host objects with mutable state
@@ -141,7 +139,7 @@ Eval<Ir> _createPerson(Map<String, Ir> props) {
     'address': (Ir value) => switch (value) {
       IrNativeValue(value: final addrHostValue) =>
         switch (extractHostValue<Address>(addrHostValue)) {
-          final addr? => Eval<Ir>((runtime) {
+          final _? => Eval<Ir>((runtime) {
             personObj.addressHostValue = addrHostValue;
             return Right((IrVoid(), runtime));
           }),
@@ -231,7 +229,7 @@ Env testEnv() {
               RuntimeException('wrong-number-of-arguments', IrString('2')),
             );
           }
-          final name;
+          final String name;
           if (args[0] case IrSymbol(value: final n)) {
             name = n;
           } else {
