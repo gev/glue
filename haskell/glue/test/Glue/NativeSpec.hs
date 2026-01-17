@@ -80,13 +80,13 @@ person [Object props] = do
                             Map.fromList
                                 [
                                     ( "street"
-                                    , \newVal -> case newVal of
+                                    , \case
                                         String newSt -> liftIO $ writeIORef addr.addressStreet newSt >> pure Void
                                         _ -> throwError $ wrongArgumentType ["string"]
                                     )
                                 ,
                                     ( "city"
-                                    , \newVal -> case newVal of
+                                    , \case
                                         String newCt -> liftIO $ writeIORef addr.addressCity newCt >> pure Void
                                         _ -> throwError $ wrongArgumentType ["string"]
                                     )
@@ -94,10 +94,10 @@ person [Object props] = do
                         addrHostVal = hostValueWithProps addr addrGetters addrSetters
                     pure (NativeValue addrHostVal)
                 Nothing -> pure (String "no address")
-        nameSetter = \newVal -> case newVal of
+        nameSetter = \case
             String newName -> liftIO $ writeIORef nameRef newName >> pure Void
             _ -> throwError $ wrongArgumentType ["string"]
-        ageSetter = \newVal -> case newVal of
+        ageSetter = \case
             Integer newAge -> liftIO $ writeIORef ageRef (fromIntegral newAge) >> pure Void
             _ -> throwError $ wrongArgumentType ["integer"]
 
@@ -139,10 +139,10 @@ address [Object props] = do
         cityGetter = do
             currentCity <- liftIO $ readIORef cityRef
             pure (String currentCity)
-        streetSetter = \newVal -> case newVal of
+        streetSetter = \case
             String newStreet -> liftIO $ writeIORef streetRef newStreet >> pure Void
             _ -> throwError $ wrongArgumentType ["string"]
-        citySetter = \newVal -> case newVal of
+        citySetter = \case
             String newCity -> liftIO $ writeIORef cityRef newCity >> pure Void
             _ -> throwError $ wrongArgumentType ["string"]
 
