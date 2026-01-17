@@ -51,12 +51,79 @@
 (set user.email "alice@example.com")  ; → "alice@example.com"
 ```
 
+### Host Object Property Updates
+
+Host objects (Haskell data types) support property updates using dot notation.
+
+**Haskell Data Types:**
+```haskell
+data Person = Person {name :: Text, age :: Int, address :: Maybe Address}
+data Address = Address {street :: Text, city :: Text}
+```
+
+**Examples:**
+```glue
+;; Create host objects
+(def bob (person :name "Bob" :age 25))
+(def addr (address :street "123 Main St" :city "Springfield"))
+
+;; Update properties
+(set bob.age 26)        ; → 26
+(set bob.name "Robert") ; → "Robert"
+(set addr.city "Boston") ; → "Boston"
+
+;; Verify updates
+bob.age     ; → 26
+bob.name    ; → "Robert"
+addr.city   ; → "Boston"
+```
+
 ## Nested Property Access
 
 ### Dotted Property Paths
 ```closure
 (def config (:database (:host "localhost" :port 5432)))
 (set config.database.port 3306)  ; Update nested property
+```
+
+### Host Object Nested Updates
+
+Host objects support nested property updates through dot notation.
+
+**Examples:**
+```glue
+;; Create nested host objects
+(def addr (address :street "123 Main St" :city "Springfield"))
+(def bob (person :name "Bob" :age 25 :address addr))
+
+;; Update nested properties
+(set bob.address.city "Boston")      ; → "Boston"
+(set bob.address.street "456 Oak Ave") ; → "456 Oak Ave"
+
+;; Verify nested updates
+bob.address.city        ; → "Boston"
+bob.address.street      ; → "456 Oak Ave"
+```
+
+### Complex Multi-Property Updates
+
+Multiple property updates can be performed in sequence:
+
+```glue
+(def addr (address :street "123 Main St" :city "Springfield"))
+(def bob (person :name "Bob" :age 25 :address addr))
+
+;; Multiple updates
+(set bob.age 26)
+(set bob.name "Robert")
+(set bob.address.city "Boston")
+(set bob.address.street "456 Oak Ave")
+
+;; All changes persist
+bob.name                ; → "Robert"
+bob.age                 ; → 26
+bob.address.city        ; → "Boston"
+bob.address.street      ; → "456 Oak Ave"
 ```
 
 ### Module Property Updates

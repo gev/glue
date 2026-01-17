@@ -1,15 +1,72 @@
-module Glue.IR where
+module Glue.IR (
+    -- Main types
+    IR (..),
+    HostValue (..),
+    -- Environment types
+    Frame,
+    Env,
+    -- Utility functions
+    hostValue,
+    hostValueWithProps,
+    extractHostValue,
+    isHostValue,
+    getHostValueFromIR,
+    -- Compilation
+    compile,
+    -- Accessor functions
+    isList,
+    listLength,
+    isObject,
+    objectSize,
+    objectLookup,
+    isSymbol,
+    getSymbol,
+) where
 
 import Data.Bifunctor (second)
+import Data.Dynamic (Dynamic, fromDynamic, toDyn)
 import Data.Map.Strict (Map)
 import Data.Map.Strict qualified as Map
 import Data.Text (Text)
 import Data.Text qualified as T
+import Data.Typeable (Typeable)
 import Glue.AST (AST)
 import Glue.AST qualified as AST
 
 type Frame m = Map.Map Text (IR m)
 type Env m = [Frame m]
+
+-- Host value wrapper for any host language object
+data HostValue m = HostValue
+    { getHostValue :: Dynamic
+    , getters :: Map Text (m (IR m))
+    , setters :: Map Text (IR m -> m (IR m))
+    }
+
+instance Show (HostValue m) where
+    show (HostValue _ getters setters) =
+        "<host-value getters:"
+            <> show (Map.size getters)
+            <> " setters:"
+            <> show (Map.size setters)
+            <> ">"
+
+instance Eq (HostValue m) where
+    -- Host values are opaque, so we can't meaningfully compare them
+    -- For now, consider them never equal (could be improved with identity comparison)
+    _ == _ = False
+
+-- Create a host value from any typeable value
+hostValue :: (Typeable a) => a -> HostValue m
+hostValue x = HostValue (toDyn x) Map.empty Map.empty
+
+-- Create a host value with properties
+hostValueWithProps :: (Typeable a) => a -> Map Text (m (IR m)) -> Map Text (IR m -> m (IR m)) -> HostValue m
+hostValueWithProps x = HostValue (toDyn x)
+
+-- Extract a host value with type safety
+extractHostValue :: (Typeable a) => HostValue m -> Maybe a
+extractHostValue = fromDynamic . getHostValue
 
 data IR m
     = Integer Int
@@ -21,12 +78,12 @@ data IR m
     | List [IR m]
     | Object (Map Text (IR m))
     | Void
-    | Native (Native m)
+    | NativeValue (HostValue m) -- Host language values (literals)
+    | NativeFunc ([IR m] -> m (IR m)) -- Functions
+    | Special ([IR m] -> m (IR m)) -- Special forms
     | Closure [Text] (IR m) (Env m)
 
-data Native m
-    = Func ([IR m] -> m (IR m))
-    | Special ([IR m] -> m (IR m))
+-- Show instance for IR handles NativeFunc and Special directly
 
 compile :: AST -> IR m
 compile = \case
@@ -52,7 +109,9 @@ instance Show (IR m) where
         List xs -> "(" <> unwords (map show xs) <> ")"
         Object _ -> "{object}"
         Void -> "#<void>"
-        Native _ -> "<native>"
+        NativeValue hv -> "<host:" <> show hv <> ">"
+        NativeFunc _ -> "<native-func>"
+        Special _ -> "<special>"
         Closure{} -> "<closure>"
 
 instance Eq (IR m) where
@@ -64,6 +123,9 @@ instance Eq (IR m) where
     DottedSymbol a == DottedSymbol b = a == b
     List a == List b = a == b
     Object a == Object b = a == b
+    NativeValue a == NativeValue b = a == b
+    NativeFunc _ == NativeFunc _ = True
+    Special _ == Special _ = True
     Void == Void = True
     _ == _ = False
 
@@ -97,3 +159,12 @@ getSymbol :: IR m -> Text
 getSymbol (Symbol s) = s
 getSymbol (DottedSymbol parts) = T.intercalate "." parts
 getSymbol _ = ""
+
+-- Host value utilities
+isHostValue :: IR m -> Bool
+isHostValue (NativeValue _) = True
+isHostValue _ = False
+
+getHostValueFromIR :: IR m -> Maybe (HostValue m)
+getHostValueFromIR (NativeValue hv) = Just hv
+getHostValueFromIR _ = Nothing

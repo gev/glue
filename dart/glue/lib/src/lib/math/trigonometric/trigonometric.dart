@@ -14,12 +14,12 @@ import 'tan.dart';
 /// Mirrors Haskell Glue.Lib.Math.Trigonometric.trigonometric exactly
 final ModuleInfo trigonometric = nativeModule('ffi.math.trigonometric', [
   // Direct trigonometric functions
-  ('sin', IrNative(NativeFunc(sin))),
-  ('cos', IrNative(NativeFunc(cos))),
-  ('tan', IrNative(NativeFunc(tan))),
+  ('sin', IrNativeFunc(sin)),
+  ('cos', IrNativeFunc(cos)),
+  ('tan', IrNativeFunc(tan)),
 
   // Inverse trigonometric functions
-  ('asin', IrNative(NativeFunc(asin))),
-  ('acos', IrNative(NativeFunc(acos))),
-  ('atan', IrNative(NativeFunc(atan))),
+  ('asin', IrNativeFunc(asin)),
+  ('acos', IrNativeFunc(acos)),
+  ('atan', IrNativeFunc(atan)),
 ]);

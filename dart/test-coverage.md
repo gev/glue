@@ -39,6 +39,7 @@ This report provides comprehensive test coverage analysis for the Dart implement
 | eval | eval.dart | eval_test.dart | 57 | ✅ Complete |
 | ir | ir.dart | ir_test.dart | 27 | ✅ Complete |
 | module | module.dart | module_test.dart | 22 | ✅ Complete |
+| native | native.dart | native_test.dart | 30 | ✅ Complete |
 | parser | parser.dart | parser_test.dart | 31 | ✅ Complete |
 | runtime | runtime.dart | runtime_test.dart | 9 | ✅ Complete |
 
@@ -224,12 +225,13 @@ Where:
 
 ## Summary
 
-- **Total Implementation Files**: 74 (16 core + 58 library)
-- **Total Test Files**: 56
-- **Total Test Cases**: 561 (counted by Dart test framework)
-- **Coverage Rate**: 76% (56/74 implementation files have tests)
+- **Total Implementation Files**: 129 (32 core + 58 library + 39 test files)
+- **Total Test Files**: 72
+- **Total Test Cases**: 591 (561 standard tests + 30 native integration tests)
+- **Coverage Rate**: 56% (72/129 implementation files have tests)
 - **Complete Coverage**: Core (100%), Bool (100%), List (100%), Math submodules (100%)
 - **Partial/Missing**: Builtin (missing 3 test files), IO (missing Read tests)
-- **Test Quality**: All 561 tests pass, comprehensive coverage of implemented functionality
+- **Test Quality**: All 591 tests pass, comprehensive coverage including Host Value system integration
+- **Advanced Features**: Includes 30 native integration tests for Host Value system
 
 This analysis provides a comprehensive view of test coverage across the Dart implementation, identifying areas of complete coverage and gaps requiring additional test development.

@@ -15,15 +15,15 @@ import 'trunc.dart';
 /// Mirrors Haskell Glue.Lib.Math.Utility.utility exactly
 final ModuleInfo utility = nativeModule('ffi.math.utility', [
   // Absolute value
-  ('abs', IrNative(NativeFunc(abs))),
+  ('abs', IrNativeFunc(abs)),
 
   // Rounding functions (always return Integer)
-  ('floor', IrNative(NativeFunc(floor))),
-  ('ceil', IrNative(NativeFunc(ceil))),
-  ('round', IrNative(NativeFunc(round))),
-  ('trunc', IrNative(NativeFunc(trunc))),
+  ('floor', IrNativeFunc(floor)),
+  ('ceil', IrNativeFunc(ceil)),
+  ('round', IrNativeFunc(round)),
+  ('trunc', IrNativeFunc(trunc)),
 
   // Min/max functions (two arguments)
-  ('min', IrNative(NativeFunc(min))),
-  ('max', IrNative(NativeFunc(max))),
+  ('min', IrNativeFunc(min)),
+  ('max', IrNativeFunc(max)),
 ]);
