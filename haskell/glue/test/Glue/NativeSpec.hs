@@ -100,13 +100,11 @@ address [Object props] = do
     -- Extract properties from object literal with type checking
     street <- case Map.lookup "street" props of
         Just (String s) -> pure s
-        Just _ -> throwError $ wrongArgumentType ["string"]
-        Nothing -> throwError $ wrongArgumentType ["street: string"]
+        _ -> throwError $ wrongArgumentType ["street: string"]
 
     city <- case Map.lookup "city" props of
         Just (String c) -> pure c
-        Just _ -> throwError $ wrongArgumentType ["string"]
-        Nothing -> throwError $ wrongArgumentType ["city: string"]
+        _ -> throwError $ wrongArgumentType ["city: string"]
 
     -- Create mutable Address object
     streetRef <- liftIO $ newIORef street
