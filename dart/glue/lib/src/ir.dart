@@ -5,13 +5,21 @@ import 'package:glue/src/eval.dart';
 import 'package:glue/src/ast.dart';
 
 /// Host value wrapper for any host language object
-/// Mirrors Haskell HostValue exactly
+/// Mirrors Haskell HostValue exactly with getters and setters
 class HostValue {
   final dynamic value;
-  const HostValue(this.value);
+  final Map<String, Eval<Ir>> getters;
+  final Map<String, Eval<Ir> Function(Ir)> setters;
+
+  const HostValue(
+    this.value, {
+    this.getters = const {},
+    this.setters = const {},
+  });
 
   @override
-  String toString() => 'HostValue($value)';
+  String toString() =>
+      'HostValue($value, getters: ${getters.length}, setters: ${setters.length})';
 
   @override
   bool operator ==(Object other) => false; // Host values are never equal (opaque)
@@ -23,6 +31,14 @@ class HostValue {
 /// Create a host value from any value
 /// Mirrors Haskell hostValue exactly
 HostValue hostValue(dynamic value) => HostValue(value);
+
+/// Create a host value with properties (getters and setters)
+/// Mirrors Haskell hostValueWithProps exactly
+HostValue hostValueWithProps(
+  dynamic value,
+  Map<String, Eval<Ir>> getters,
+  Map<String, Eval<Ir> Function(Ir)> setters,
+) => HostValue(value, getters: getters, setters: setters);
 
 /// Extract a host value with type safety
 /// Mirrors Haskell extractHostValue exactly

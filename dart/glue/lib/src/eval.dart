@@ -408,6 +408,14 @@ Eval<Ir> _evalNestedAccess(Ir obj, List<String> remainingParts) {
           ? _evalNestedAccess(props[prop]!, rest)
           : throwError(propertyNotFound(prop)),
 
+    IrNativeValue(value: final hostValue) =>
+      // Handle property access on host values (FFI)
+      hostValue.getters[prop] != null
+          ? hostValue.getters[prop]!.flatMap(
+              (result) => _evalNestedAccess(result, rest),
+            )
+          : throwError(propertyNotFound(prop)),
+
     _ => throwError(notAnObject(obj)),
   };
 }
