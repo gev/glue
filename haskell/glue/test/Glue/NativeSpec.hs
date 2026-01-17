@@ -8,7 +8,7 @@ import Glue.Env qualified as E
 import Glue.Eval (Eval, liftIO, runEvalSimple, throwError)
 import Glue.Eval qualified
 import Glue.Eval.Exception (wrongArgumentType)
-import Glue.IR (Env, HostValue, IR (..), extractHostValue, hostValueWithProps)
+import Glue.IR (Env, IR (..), extractHostValue, hostValueWithProps)
 import Glue.IR qualified
 import Glue.Lib.Builtin.Def (def)
 import Glue.Lib.Builtin.Set qualified as Set
@@ -39,7 +39,7 @@ person [Object props] = do
             _ -> 0
         address = case Map.lookup "address" props of
             Just (NativeValue addrHostVal) ->
-                extractAddress addrHostVal
+                extractHostValue addrHostVal
             _ -> Nothing
 
     -- Create mutable Person object
@@ -159,10 +159,6 @@ address [Object props] = do
 
     pure (NativeValue $ hostValueWithProps addrObj getters setters)
 address _ = throwError $ wrongArgumentType ["object"]
-
--- Helper to extract Address from HostValue (for type safety)
-extractAddress :: HostValue Eval -> Maybe Address
-extractAddress hv = maybe Nothing Just (extractHostValue hv)
 
 -- Test environment with constructors
 testEnv :: Env Eval
