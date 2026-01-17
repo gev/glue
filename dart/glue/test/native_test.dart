@@ -1,4 +1,3 @@
-import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:glue/env.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
@@ -7,35 +6,36 @@ import 'package:glue/src/either.dart';
 import 'package:glue/src/eval/error.dart';
 import 'package:glue/src/eval/exception.dart';
 import 'package:glue/src/parser.dart';
+import 'package:glue/src/runtime.dart';
 import 'package:test/test.dart';
 
 // Test data types for host objects with mutable state
 class Person {
-  final String name;
-  final int age;
-  final Address? address;
+  String name;
+  int age;
+  HostValue? addressHostValue;
 
-  const Person(this.name, this.age, this.address);
+  Person(this.name, this.age, this.addressHostValue);
 
   @override
-  String toString() => 'Person($name, $age, $address)';
+  String toString() => 'Person($name, $age, $addressHostValue)';
 
   @override
   bool operator ==(Object other) =>
       other is Person &&
       other.name == name &&
       other.age == age &&
-      other.address == address;
+      other.addressHostValue == addressHostValue;
 
   @override
-  int get hashCode => Object.hash(name, age, address);
+  int get hashCode => Object.hash(name, age, addressHostValue);
 }
 
 class Address {
-  final String street;
-  final String city;
+  String street;
+  String city;
 
-  const Address(this.street, this.city);
+  Address(this.street, this.city);
 
   @override
   String toString() => 'Address($street, $city)';
@@ -51,7 +51,7 @@ class Address {
 // Constructor functions that take object literals and create native objects
 Eval<Ir> person(List<Ir> args) {
   return switch (args) {
-    [IrObject(properties: final props)] => _createPerson(props),
+    [IrObject(properties: final props)] => _createPerson(props.unlock),
     _ => throwError(
       RuntimeException('wrong-argument-type', IrString('object')),
     ),
@@ -60,82 +60,96 @@ Eval<Ir> person(List<Ir> args) {
 
 Eval<Ir> address(List<Ir> args) {
   return switch (args) {
-    [IrObject(properties: final props)] => _createAddress(props),
+    [IrObject(properties: final props)] => _createAddress(props.unlock),
     _ => throwError(
       RuntimeException('wrong-argument-type', IrString('object')),
     ),
   };
 }
 
-Eval<Ir> _createPerson(IMap<String, Ir> props) {
-  final propsMap = props.unlock;
+Eval<Ir> _createPerson(Map<String, Ir> props) {
   // Extract properties from object literal with type checking
   final name = switch (props['name']) {
     IrString(value: final n) => n,
-    IrString() => throw RuntimeException(
-      'wrong-argument-type',
-      IrString('string'),
-    ),
-    null => throw RuntimeException(
+    _ => throw RuntimeException(
       'wrong-argument-type',
       IrString('name: string'),
     ),
-    _ => throw RuntimeException('wrong-argument-type', IrString('string')),
   };
 
   final age = switch (props['age']) {
     IrInteger(value: final a) => a,
-    IrInteger() => throw RuntimeException(
-      'wrong-argument-type',
-      IrString('integer'),
-    ),
-    null => throw RuntimeException(
+    _ => throw RuntimeException(
       'wrong-argument-type',
       IrString('age: integer'),
     ),
-    _ => throw RuntimeException('wrong-argument-type', IrString('integer')),
   };
 
-  final address = switch (props['address']) {
+  final addressHostValue = switch (props['address']) {
     IrNativeValue(value: final addrHostValue) =>
       switch (extractHostValue<Address>(addrHostValue)) {
-        final addr? => addr,
+        final addr? => addrHostValue, // Store the HostValue, not the Address
         null => throw RuntimeException(
           'wrong-argument-type',
           IrString('address: Address'),
         ),
       },
-    IrNativeValue() => throw RuntimeException(
-      'wrong-argument-type',
-      IrString('NativeValue'),
-    ),
     null => null,
-    _ => throw RuntimeException('wrong-argument-type', IrString('NativeValue')),
+    _ => throw RuntimeException(
+      'wrong-argument-type',
+      IrString('address: Address'),
+    ),
   };
 
-  final personObj = Person(name, age, address);
+  final personObj = Person(name, age, addressHostValue);
 
   // Create getters and setters
   final getters = <String, Eval<Ir>>{
-    'name': Eval.pure(IrString(personObj.name)),
-    'age': Eval.pure(IrInteger(personObj.age)),
-    'address': switch (personObj.address) {
-      final addr? => Eval.pure(IrNativeValue(hostValue(addr))),
-      null => Eval.pure(IrString('no address')),
+    'name': Eval((runtime) => Right((IrString(personObj.name), runtime))),
+    'age': Eval((runtime) => Right((IrInteger(personObj.age), runtime))),
+    'address': switch (personObj.addressHostValue) {
+      final addrHostValue? => Eval(
+        (runtime) => Right((IrNativeValue(addrHostValue), runtime)),
+      ),
+      null => Eval((runtime) => Right((IrString('no address'), runtime))),
     },
   };
 
   final setters = <String, Eval<Ir> Function(Ir)>{
     'name': (Ir value) => switch (value) {
-      IrString(value: final newName) => Eval.pure(IrVoid()),
+      IrString(value: final newName) => Eval((runtime) {
+        personObj.name = newName;
+        return Right((IrVoid(), runtime));
+      }),
       _ => throwError(
         RuntimeException('wrong-argument-type', IrString('string')),
       ),
     },
     'age': (Ir value) => switch (value) {
-      IrInteger(value: final newAge) => Eval.pure(IrVoid()),
+      IrInteger(value: final newAge) => Eval((runtime) {
+        personObj.age = newAge;
+        return Right((IrVoid(), runtime));
+      }),
       _ => throwError(
         RuntimeException('wrong-argument-type', IrString('integer')),
+      ),
+    },
+    'address': (Ir value) => switch (value) {
+      IrNativeValue(value: final addrHostValue) =>
+        switch (extractHostValue<Address>(addrHostValue)) {
+          final addr? => Eval((runtime) {
+            personObj.addressHostValue = addrHostValue;
+            return Right((IrVoid(), runtime));
+          }),
+          null => throwError(
+            RuntimeException(
+              'wrong-argument-type',
+              IrString('address: Address'),
+            ),
+          ),
+        },
+      _ => throwError(
+        RuntimeException('wrong-argument-type', IrString('NativeValue')),
       ),
     },
   };
@@ -145,52 +159,47 @@ Eval<Ir> _createPerson(IMap<String, Ir> props) {
   );
 }
 
-Eval<Ir> _createAddress(IMap<String, Ir> props) {
-  final propsMap = props.unlock;
+Eval<Ir> _createAddress(Map<String, Ir> props) {
   // Extract properties from object literal with type checking
   final street = switch (props['street']) {
     IrString(value: final s) => s,
-    IrString() => throw RuntimeException(
-      'wrong-argument-type',
-      IrString('string'),
-    ),
-    null => throw RuntimeException(
+    _ => throw RuntimeException(
       'wrong-argument-type',
       IrString('street: string'),
     ),
-    _ => throw RuntimeException('wrong-argument-type', IrString('string')),
   };
 
   final city = switch (props['city']) {
     IrString(value: final c) => c,
-    IrString() => throw RuntimeException(
-      'wrong-argument-type',
-      IrString('string'),
-    ),
-    null => throw RuntimeException(
+    _ => throw RuntimeException(
       'wrong-argument-type',
       IrString('city: string'),
     ),
-    _ => throw RuntimeException('wrong-argument-type', IrString('string')),
   };
 
   final addrObj = Address(street, city);
 
   // Create getters and setters
   final getters = <String, Eval<Ir>>{
-    'street': Eval.pure(IrString(addrObj.street)),
-    'city': Eval.pure(IrString(addrObj.city)),
+    'street': Eval((runtime) => Right((IrString(addrObj.street), runtime))),
+    'city': Eval((runtime) => Right((IrString(addrObj.city), runtime))),
   };
 
   final setters = <String, Eval<Ir> Function(Ir)>{
     'street': (Ir value) => switch (value) {
-      IrString(value: final newStreet) => Eval.pure(IrVoid()),
+      IrString(value: final newStreet) => Eval((runtime) {
+        addrObj.street = newStreet;
+        return Right((IrVoid(), runtime));
+      }),
       _ => throwError(
         RuntimeException('wrong-argument-type', IrString('string')),
       ),
     },
     'city': (Ir value) => switch (value) {
-      IrString(value: final newCity) => Eval.pure(IrVoid()),
+      IrString(value: final newCity) => Eval((runtime) {
+        addrObj.city = newCity;
+        return Right((IrVoid(), runtime));
+      }),
       _ => throwError(
         RuntimeException('wrong-argument-type', IrString('string')),
       ),
@@ -305,21 +314,25 @@ Eval<Ir> _evalSetDotted(List<String> parts, Ir value) {
 Future<Either<EvalError, Ir>> runGlueCode(String input) async {
   final parseResult = parseGlue(input);
   return parseResult.match(
-    (parseError) {
-      return Left(
-        EvalError(
-          [],
-          RuntimeException('parse-error', IrString(parseError.message)),
-        ),
-      );
-    },
+    (parseError) => Left(
+      EvalError(
+        [],
+        RuntimeException('parse-error', IrString(parseError.message)),
+      ),
+    ),
     (ast) async {
       final ir = compile(ast);
       final result = await runEvalSimple(eval(ir), testEnv());
-      return result.match(
-        (error) => Left<EvalError, Ir>(error),
-        (value) => Right<EvalError, Ir>(value.$1),
-      );
+      return result.match((error) => Left<EvalError, Ir>(error), (value) {
+        final (res, _) = value;
+        // Handle implicit sequence semantics like Haskell evalBody
+        return switch (res) {
+          IrList(elements: []) => Right<EvalError, Ir>(IrVoid()),
+          IrList(elements: final elements) when elements.isNotEmpty =>
+            Right<EvalError, Ir>(elements.last),
+          _ => Right<EvalError, Ir>(res),
+        };
+      });
     },
   );
 }
@@ -328,10 +341,9 @@ void main() {
   group('Full FFI Integration Tests', () {
     group('Basic Object Creation and Property Access', () {
       test('creates person and accesses properties', () async {
-        final result = await runGlueCode('''
-(def bob (person :name "Bob" :age 25))
-bob.name
-''');
+        final result = await runGlueCode(
+          '((def bob (person :name "Bob" :age 25)) bob.name)',
+        );
         expect(result.isRight, isTrue);
         result.match((error) => fail('Should not be left: $error'), (value) {
           expect(value, equals(IrString('Bob')));
@@ -339,10 +351,9 @@ bob.name
       });
 
       test('creates address and accesses properties', () async {
-        final result = await runGlueCode('''
-(def addr (address :street "123 Main St" :city "Springfield"))
-addr.street
-''');
+        final result = await runGlueCode(
+          '((def addr (address :street "123 Main St" :city "Springfield")) addr.street)',
+        );
         expect(result.isRight, isTrue);
         result.match((error) => fail('Should not be left: $error'), (value) {
           expect(value, equals(IrString('123 Main St')));
@@ -352,11 +363,9 @@ addr.street
 
     group('Property Modification', () {
       test('modifies person properties', () async {
-        final result = await runGlueCode('''
-(def bob (person :name "Bob" :age 25))
-(set bob.age 26)
-bob.age
-''');
+        final result = await runGlueCode(
+          '((def bob (person :name "Bob" :age 25)) (set bob.age 26) bob.age)',
+        );
         expect(result.isRight, isTrue);
         result.match((error) => fail('Should not be left: $error'), (value) {
           expect(value, equals(IrInteger(26)));
@@ -364,11 +373,9 @@ bob.age
       });
 
       test('modifies address properties', () async {
-        final result = await runGlueCode('''
-(def addr (address :street "123 Main St" :city "Springfield"))
-(set addr.city "Boston")
-addr.city
-''');
+        final result = await runGlueCode(
+          '((def addr (address :street "123 Main St" :city "Springfield")) (set addr.city "Boston") addr.city)',
+        );
         expect(result.isRight, isTrue);
         result.match((error) => fail('Should not be left: $error'), (value) {
           expect(value, equals(IrString('Boston')));
@@ -378,24 +385,18 @@ addr.city
 
     group('Complex Object Relationships', () {
       test('creates person with address', () async {
-        final result = await runGlueCode('''
-(def addr (address :street "123 Main St" :city "Springfield"))
-(def bob (person :name "Bob" :age 25 :address addr))
-bob.address.city
-''');
-        expect(result.isRight, isTrue);
-        result.match((error) => fail('Should not be left: $error'), (value) {
+        final result = await runGlueCode(
+          '((def addr (address :street "123 Main St" :city "Springfield")) (def bob (person :name "Bob" :age 25 :address addr)) bob.address.city)',
+        );
+        result.match((error) => fail('Error: $error'), (value) {
           expect(value, equals(IrString('Springfield')));
         });
       });
 
       test('modifies nested properties', () async {
-        final result = await runGlueCode('''
-(def addr (address :street "123 Main St" :city "Springfield"))
-(def bob (person :name "Bob" :age 25 :address addr))
-(set bob.address.city "Boston")
-bob.address.city
-''');
+        final result = await runGlueCode(
+          '((def addr (address :street "123 Main St" :city "Springfield")) (def bob (person :name "Bob" :age 25 :address addr)) (set bob.address.city "Boston") bob.address.city)',
+        );
         expect(result.isRight, isTrue);
         result.match((error) => fail('Should not be left: $error'), (value) {
           expect(value, equals(IrString('Boston')));
@@ -405,15 +406,9 @@ bob.address.city
 
     group('Multiple Operations in Sequence', () {
       test('performs complex object manipulation', () async {
-        final result = await runGlueCode('''
-(def addr (address :street "123 Main St" :city "Springfield"))
-(def bob (person :name "Bob" :age 25 :address addr))
-(set bob.age 26)
-(set bob.name "Robert")
-(set bob.address.city "Boston")
-(set bob.address.street "456 Oak Ave")
-bob.name
-''');
+        final result = await runGlueCode(
+          '((def addr (address :street "123 Main St" :city "Springfield")) (def bob (person :name "Bob" :age 25 :address addr)) (set bob.age 26) (set bob.name "Robert") (set bob.address.city "Boston") (set bob.address.street "456 Oak Ave") bob.name)',
+        );
         expect(result.isRight, isTrue);
         result.match((error) => fail('Should not be left: $error'), (value) {
           expect(value, equals(IrString('Robert')));
@@ -421,13 +416,9 @@ bob.name
       });
 
       test('verifies all modifications persist', () async {
-        final result = await runGlueCode('''
-(def addr (address :street "123 Main St" :city "Springfield"))
-(def bob (person :name "Bob" :age 25 :address addr))
-(set bob.age 26)
-(set bob.address.city "Boston")
-bob.age
-''');
+        final result = await runGlueCode(
+          '((def addr (address :street "123 Main St" :city "Springfield")) (def bob (person :name "Bob" :age 25 :address addr)) (set bob.age 26) (set bob.address.city "Boston") bob.age)',
+        );
         expect(result.isRight, isTrue);
         result.match((error) => fail('Should not be left: $error'), (value) {
           expect(value, equals(IrInteger(26)));
@@ -435,13 +426,9 @@ bob.age
       });
 
       test('sets new address on person', () async {
-        final result = await runGlueCode('''
-(def addr1 (address :street "123 Main St" :city "Springfield"))
-(def addr2 (address :street "456 Oak Ave" :city "Boston"))
-(def bob (person :name "Bob" :age 25 :address addr1))
-(set bob.address addr2)
-bob.address.city
-''');
+        final result = await runGlueCode(
+          '((def addr1 (address :street "123 Main St" :city "Springfield")) (def addr2 (address :street "456 Oak Ave" :city "Boston")) (def bob (person :name "Bob" :age 25 :address addr1)) (set bob.address addr2) bob.address.city)',
+        );
         expect(result.isRight, isTrue);
         result.match((error) => fail('Should not be left: $error'), (value) {
           expect(value, equals(IrString('Boston')));
@@ -507,18 +494,16 @@ bob.address.city
       });
 
       test('fails accessing non-existent properties', () async {
-        final result = await runGlueCode('''
-(def bob (person :name "Bob" :age 25))
-bob.nonexistent
-''');
+        final result = await runGlueCode(
+          '((def bob (person :name "Bob" :age 25)) bob.nonexistent)',
+        );
         expect(result.isLeft, isTrue);
       });
 
       test('fails setting wrong types', () async {
-        final result = await runGlueCode('''
-(def bob (person :name "Bob" :age 25))
-(set bob.age "not-a-number")
-''');
+        final result = await runGlueCode(
+          '((def bob (person :name "Bob" :age 25)) (set bob.age "not-a-number"))',
+        );
         expect(result.isLeft, isTrue);
       });
     });
