@@ -64,7 +64,6 @@ Make commit
 
 - ✅ `((+ 1) 2)` returns `3`
 - ✅ `((cons 1) (2 3 4))` works for lists
-- ✅ Named functions work: `(person)` creates partial expecting Object argument
 - ✅ Performance: No overhead for full application
 - ✅ Type safety: Proper error messages for arity mismatches
 - ✅ Cross-implementation: Haskell and Dart behave identically
