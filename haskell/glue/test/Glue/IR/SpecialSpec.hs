@@ -1,5 +1,6 @@
 module Glue.IR.SpecialSpec (spec) where
 
+import Data.Functor.Identity (Identity)
 import Glue.IR (IR (..))
 import Test.Hspec
 
