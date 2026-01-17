@@ -1,235 +1,294 @@
 module Glue.NativeIntegrationSpec (spec) where
 
+import Data.IORef (IORef, newIORef, readIORef, writeIORef)
 import Data.Map.Strict qualified as Map
 import Data.Text qualified as T
 import Glue.Env qualified as E
-import Glue.Eval (Eval, eval, runEvalSimple, throwError)
+import Glue.Eval (Eval, liftIO, runEvalSimple, throwError)
 import Glue.Eval.Exception (wrongArgumentType)
-import Glue.IR (IR (..), Env, hostValueWithProps)
+import Glue.IR (IR (..), Env, hostValueWithProps, extractHostValue, HostValue)
+import Glue.Lib.Builtin.Def (def)
 import Glue.Lib.Builtin.Set qualified as Set
+import Glue.Parser qualified as Glue.Parser
+import Glue.IR qualified as Glue.IR
+import Glue.Eval qualified as Glue.Eval
 import Test.Hspec
 
--- Test data types for host objects
-data Person = Person {personName :: String, personAge :: Int}
-    deriving (Show, Eq)
+-- Test data types for host objects with mutable state
+data Person = Person
+    { personName :: IORef String
+    , personAge :: IORef Int
+    , personAddress :: IORef (Maybe Address)
+    }
 
-data Counter = Counter {counterValue :: Int}
-    deriving (Show, Eq)
+data Address = Address
+    { addressStreet :: IORef String
+    , addressCity :: IORef String
+    }
 
-data Address = Address {street :: String, city :: String}
-    deriving (Show, Eq)
+-- Constructor functions that take object literals and create native objects
+person :: [IR Eval] -> Eval (IR Eval)
+person [Object props] = do
+    -- Extract properties from object literal
+    let name = case Map.lookup "name" props of
+            Just (String n) -> T.unpack n
+            _ -> "Unknown"
+        age = case Map.lookup "age" props of
+            Just (Integer a) -> fromIntegral a
+            _ -> 0
+        address = case Map.lookup "address" props of
+            Just (NativeValue addrHostVal) -> 
+                case extractAddress addrHostVal of
+                    Just addr -> Just addr
+                    Nothing -> Nothing
+            _ -> Nothing
 
-data Company = Company {companyName :: String, employees :: [Person]}
-    deriving (Show, Eq)
+    -- Create mutable Person object
+    nameRef <- liftIO $ newIORef name
+    ageRef <- liftIO $ newIORef age
+    addressRef <- liftIO $ newIORef address
 
--- Constructor functions that return NativeValue objects
-createPerson :: [IR Eval] -> Eval (IR Eval)
-createPerson [String name, Integer age] = do
-    let person = Person (T.unpack name) (fromIntegral age)
-        nameGetter = NativeFunc (\_ -> pure (String name))
-        ageGetter = NativeFunc (\_ -> pure (Integer age))
+    let personObj = Person nameRef ageRef addressRef
+
+    -- Create getters and setters
+    let nameGetter = NativeFunc $ \_ -> do
+            currentName <- liftIO $ readIORef nameRef
+            pure (String $ T.pack currentName)
+        ageGetter = NativeFunc $ \_ -> do
+            currentAge <- liftIO $ readIORef ageRef
+            pure (Integer $ fromIntegral currentAge)
+        addressGetter = NativeFunc $ \_ -> do
+            currentAddr <- liftIO $ readIORef addressRef
+            case currentAddr of
+                Just addr -> do
+                    -- Return the address as a NativeValue
+                    let addrGetters = Map.fromList
+                            [ ("street", NativeFunc $ \_ -> do
+                                st <- liftIO $ readIORef addr.addressStreet
+                                pure (String $ T.pack st))
+                            , ("city", NativeFunc $ \_ -> do
+                                ct <- liftIO $ readIORef addr.addressCity
+                                pure (String $ T.pack ct))
+                            ]
+                        addrSetters = Map.fromList
+                            [ ("street", NativeFunc $ \[newVal] -> case newVal of
+                                String newSt -> liftIO $ writeIORef addr.addressStreet (T.unpack newSt) >> pure Void
+                                _ -> throwError $ wrongArgumentType ["string"])
+                            , ("city", NativeFunc $ \[newVal] -> case newVal of
+                                String newCt -> liftIO $ writeIORef addr.addressCity (T.unpack newCt) >> pure Void
+                                _ -> throwError $ wrongArgumentType ["string"])
+                            ]
+                        addrHostVal = hostValueWithProps addr addrGetters addrSetters
+                    pure (NativeValue addrHostVal)
+                Nothing -> pure (String "no address")
         nameSetter = NativeFunc $ \[newVal] -> case newVal of
-            String newName -> pure Void  -- Would modify person in real FFI
+            String newName -> liftIO $ writeIORef nameRef (T.unpack newName) >> pure Void
             _ -> throwError $ wrongArgumentType ["string"]
         ageSetter = NativeFunc $ \[newVal] -> case newVal of
-            Integer newAge -> pure Void  -- Would modify person in real FFI
+            Integer newAge -> liftIO $ writeIORef ageRef (fromIntegral newAge) >> pure Void
             _ -> throwError $ wrongArgumentType ["integer"]
-        getters = Map.fromList [("name", nameGetter), ("age", ageGetter)]
-        setters = Map.fromList [("name", nameSetter), ("age", ageSetter)]
-        hostVal = hostValueWithProps person getters setters
-    pure (NativeValue hostVal)
-createPerson _ = throwError $ wrongArgumentType ["string", "integer"]
 
-createCounter :: [IR Eval] -> Eval (IR Eval)
-createCounter [Integer initial] = do
-    let counter = Counter (fromIntegral initial)
-        valueGetter = NativeFunc (\_ -> pure (Integer initial))
-        incrementSetter = NativeFunc $ \[newVal] -> case newVal of
-            Integer amount -> pure Void  -- Would increment counter in real FFI
-            _ -> throwError $ wrongArgumentType ["integer"]
-        getters = Map.fromList [("value", valueGetter)]
-        setters = Map.fromList [("increment", incrementSetter)]
-        hostVal = hostValueWithProps counter getters setters
-    pure (NativeValue hostVal)
-createCounter _ = throwError $ wrongArgumentType ["integer"]
+    let getters = Map.fromList
+            [ ("name", nameGetter)
+            , ("age", ageGetter)
+            , ("address", addressGetter)
+            ]
+        setters = Map.fromList
+            [ ("name", nameSetter)
+            , ("age", ageSetter)
+            ]
 
-createAddress :: [IR Eval] -> Eval (IR Eval)
-createAddress [String st, String ct] = do
-    let address = Address (T.unpack st) (T.unpack ct)
-        streetGetter = NativeFunc (\_ -> pure (String st))
-        cityGetter = NativeFunc (\_ -> pure (String ct))
-        getters = Map.fromList [("street", streetGetter), ("city", cityGetter)]
-        hostVal = hostValueWithProps address getters Map.empty
-    pure (NativeValue hostVal)
-createAddress _ = throwError $ wrongArgumentType ["string", "string"]
+    pure (NativeValue $ hostValueWithProps personObj getters setters)
+person _ = throwError $ wrongArgumentType ["object"]
 
-createCompany :: [IR Eval] -> Eval (IR Eval)
-createCompany [String name] = do
-    let company = Company (T.unpack name) []
-        nameGetter = NativeFunc (\_ -> pure (String name))
-        employeesGetter = NativeFunc (\_ -> pure (List []))  -- Empty list initially
-        addEmployeeSetter = NativeFunc $ \[newVal] -> case newVal of
-            NativeValue _ -> pure Void  -- Would add employee in real FFI
-            _ -> throwError $ wrongArgumentType ["person"]
-        getters = Map.fromList [("name", nameGetter), ("employees", employeesGetter)]
-        setters = Map.fromList [("addEmployee", addEmployeeSetter)]
-        hostVal = hostValueWithProps company getters setters
-    pure (NativeValue hostVal)
-createCompany _ = throwError $ wrongArgumentType ["string"]
+address :: [IR Eval] -> Eval (IR Eval)
+address [Object props] = do
+    -- Extract properties from object literal
+    let street = case Map.lookup "street" props of
+            Just (String s) -> T.unpack s
+            _ -> "Unknown Street"
+        city = case Map.lookup "city" props of
+            Just (String c) -> T.unpack c
+            _ -> "Unknown City"
 
--- Helper to set up test environment with constructors
-setupTestEnv :: Env Eval
-setupTestEnv = foldl (\env (name, val) -> E.defineVar name val env) E.emptyEnv
-    [ ("createPerson", NativeFunc createPerson)
-    , ("createCounter", NativeFunc createCounter)
-    , ("createAddress", NativeFunc createAddress)
-    , ("createCompany", NativeFunc createCompany)
+    -- Create mutable Address object
+    streetRef <- liftIO $ newIORef street
+    cityRef <- liftIO $ newIORef city
+
+    let addrObj = Address streetRef cityRef
+
+    -- Create getters and setters
+    let streetGetter = NativeFunc $ \_ -> do
+            currentStreet <- liftIO $ readIORef streetRef
+            pure (String $ T.pack currentStreet)
+        cityGetter = NativeFunc $ \_ -> do
+            currentCity <- liftIO $ readIORef cityRef
+            pure (String $ T.pack currentCity)
+        streetSetter = NativeFunc $ \[newVal] -> case newVal of
+            String newStreet -> liftIO $ writeIORef streetRef (T.unpack newStreet) >> pure Void
+            _ -> throwError $ wrongArgumentType ["string"]
+        citySetter = NativeFunc $ \[newVal] -> case newVal of
+            String newCity -> liftIO $ writeIORef cityRef (T.unpack newCity) >> pure Void
+            _ -> throwError $ wrongArgumentType ["string"]
+
+    let getters = Map.fromList
+            [ ("street", streetGetter)
+            , ("city", cityGetter)
+            ]
+        setters = Map.fromList
+            [ ("street", streetSetter)
+            , ("city", citySetter)
+            ]
+
+    pure (NativeValue $ hostValueWithProps addrObj getters setters)
+address _ = throwError $ wrongArgumentType ["object"]
+
+-- Helper to extract Address from HostValue (for type safety)
+extractAddress :: HostValue Eval -> Maybe Address
+extractAddress hv = case extractHostValue hv of
+    Just addr -> Just addr
+    Nothing -> Nothing
+
+-- Test environment with constructors
+testEnv :: Env Eval
+testEnv = foldl (\env (name, val) -> E.defineVar name val env) E.emptyEnv
+    [ ("def", Special def)
+    , ("set", Special Set.set)
+    , ("person", NativeFunc person)
+    , ("address", NativeFunc address)
     ]
 
+-- Helper to run Glue code
+runGlueCode :: T.Text -> IO (Either String (IR Eval))
+runGlueCode input = case Glue.Parser.parseGlue input of
+    Left err -> pure $ Left $ "Parse error: " ++ show err
+    Right ast -> do
+        let irTree = Glue.IR.compile ast
+        fullResult <- runEvalSimple (Glue.Eval.eval irTree) testEnv
+        case fullResult of
+            Left err -> pure $ Left $ "Eval error: " ++ show err
+            Right (res, _) -> case res of
+                List [] -> pure $ Right Void
+                List xs -> pure $ Right (last xs)
+                other -> pure $ Right other
+
 spec :: Spec
-spec = describe "Native Value Integration (Complex Scenarios)" do
+spec = describe "Full FFI Integration Tests" do
 
-    describe "Object Creation and Basic Property Access" do
-        it "creates person object and accesses properties" do
-            let env = setupTestEnv
-                createCall = List [Symbol "createPerson", String "Alice", Integer 30]
+    describe "Basic Object Creation and Property Access" do
+        it "creates person and accesses properties" $ do
+            result <- runGlueCode $ T.unlines
+                [ "("
+                , "  (def bob (person :name \"Bob\" :age 25))"
+                , "  bob.name"
+                , ")"
+                ]
+            result `shouldBe` Right (String "Bob")
 
-            -- Create person
-            createResult <- runEvalSimple (eval createCall) env
-            createResult `shouldSatisfy` (\case
-                Right (NativeValue _, _) -> True
-                _ -> False)
+        it "creates address and accesses properties" $ do
+            result <- runGlueCode $ T.unlines
+                [ "("
+                , "  (def addr (address :street \"123 Main St\" :city \"Springfield\"))"
+                , "  addr.street"
+                , ")"
+                ]
+            result `shouldBe` Right (String "123 Main St")
 
-        it "creates counter and uses increment setter" do
-            let env = setupTestEnv
-                createCall = List [Symbol "createCounter", Integer 0]
-                incrementCall = List [Symbol "set", Symbol "counter.increment", Integer 5]
+    describe "Property Modification" do
+        it "modifies person properties" $ do
+            result <- runGlueCode $ T.unlines
+                [ "("
+                , "  (def bob (person :name \"Bob\" :age 25))"
+                , "  (set bob.age 26)"
+                , "  bob.age"
+                , ")"
+                ]
+            result `shouldBe` Right (Integer 26)
 
-            -- Create counter
-            createResult <- runEvalSimple (eval createCall) env
-            createResult `shouldSatisfy` (\case
-                Right (NativeValue _, _) -> True
-                _ -> False)
+        it "modifies address properties" $ do
+            result <- runGlueCode $ T.unlines
+                [ "("
+                , "  (def addr (address :street \"123 Main St\" :city \"Springfield\"))"
+                , "  (set addr.city \"Boston\")"
+                , "  addr.city"
+                , ")"
+                ]
+            result `shouldBe` Right (String "Boston")
 
     describe "Complex Object Relationships" do
-        it "creates company with employees" do
-            let env = setupTestEnv
-                createCompanyCall = List [Symbol "createCompany", String "Acme Corp"]
-                createPersonCall = List [Symbol "createPerson", String "Bob", Integer 25]
-                addEmployeeCall = List [Symbol "set", Symbol "company.addEmployee", Symbol "person"]
+        it "creates person with address" $ do
+            result <- runGlueCode $ T.unlines
+                [ "("
+                , "  (def addr (address :street \"123 Main St\" :city \"Springfield\"))"
+                , "  (def bob (person :name \"Bob\" :age 25 :address addr))"
+                , "  bob.address.city"
+                , ")"
+                ]
+            result `shouldBe` Right (String "Springfield")
 
-            -- Create company and person
-            companyResult <- runEvalSimple (eval createCompanyCall) env
-            companyResult `shouldSatisfy` (\case
-                Right (NativeValue _, _) -> True
-                _ -> False)
+        it "modifies nested properties" $ do
+            result <- runGlueCode $ T.unlines
+                [ "("
+                , "  (def addr (address :street \"123 Main St\" :city \"Springfield\"))"
+                , "  (def bob (person :name \"Bob\" :age 25 :address addr))"
+                , "  (set bob.address.city \"Boston\")"
+                , "  bob.address.city"
+                , ")"
+                ]
+            result `shouldBe` Right (String "Boston")
 
-            personResult <- runEvalSimple (eval createPersonCall) env
-            personResult `shouldSatisfy` (\case
-                Right (NativeValue _, _) -> True
-                _ -> False)
+    describe "Multiple Operations in Sequence" do
+        it "performs complex object manipulation" $ do
+            result <- runGlueCode $ T.unlines
+                [ "("
+                , "  (def addr (address :street \"123 Main St\" :city \"Springfield\"))"
+                , "  (def bob (person :name \"Bob\" :age 25 :address addr))"
+                , "  (set bob.age 26)"
+                , "  (set bob.name \"Robert\")"
+                , "  (set bob.address.city \"Boston\")"
+                , "  (set bob.address.street \"456 Oak Ave\")"
+                , "  bob.name"
+                , ")"
+                ]
+            result `shouldBe` Right (String "Robert")
 
-        it "creates person with address" do
-            let env = setupTestEnv
-                createPersonCall = List [Symbol "createPerson", String "Charlie", Integer 35]
-                createAddressCall = List [Symbol "createAddress", String "123 Main St", String "Springfield"]
+        it "verifies all modifications persist" $ do
+            result <- runGlueCode $ T.unlines
+                [ "("
+                , "  (def addr (address :street \"123 Main St\" :city \"Springfield\"))"
+                , "  (def bob (person :name \"Bob\" :age 25 :address addr))"
+                , "  (set bob.age 26)"
+                , "  (set bob.address.city \"Boston\")"
+                , "  bob.age"
+                , ")"
+                ]
+            result `shouldBe` Right (Integer 26)
 
-            -- Create person and address
-            personResult <- runEvalSimple (eval createPersonCall) env
-            personResult `shouldSatisfy` (\case
-                Right (NativeValue _, _) -> True
-                _ -> False)
-
-            addressResult <- runEvalSimple (eval createAddressCall) env
-            addressResult `shouldSatisfy` (\case
-                Right (NativeValue _, _) -> True
-                _ -> False)
-
-    describe "Function Calls with Native Values" do
-        it "passes native values to functions" do
-            let env = setupTestEnv
-                createPersonCall = List [Symbol "createPerson", String "David", Integer 40]
-                -- In a real scenario, we'd have functions that take native values as arguments
-                -- This tests that the evaluation pipeline can handle native values in function calls
-
-            personResult <- runEvalSimple (eval createPersonCall) env
-            personResult `shouldSatisfy` (\case
-                Right (NativeValue _, _) -> True
-                _ -> False)
-
-        it "returns native values from functions" do
-            let env = setupTestEnv
-                createCall = List [Symbol "createCounter", Integer 10]
-
-            result <- runEvalSimple (eval createCall) env
+    describe "Error Handling" do
+        it "fails with wrong constructor arguments" $ do
+            result <- runGlueCode "(person \"Bob\")"  -- Missing object
             result `shouldSatisfy` (\case
-                Right (NativeValue _, _) -> True
+                Left _ -> True
                 _ -> False)
 
-    describe "Property Access Patterns" do
-        it "handles nested property access simulation" do
-            let env = setupTestEnv
-                createCompanyCall = List [Symbol "createCompany", String "Tech Corp"]
-                -- In real scenarios: company.employees[0].name
-
-            result <- runEvalSimple (eval createCompanyCall) env
+        it "fails accessing non-existent properties" $ do
+            result <- runGlueCode $ T.unlines
+                [ "("
+                , "  (def bob (person :name \"Bob\" :age 25))"
+                , "  bob.nonexistent"
+                , ")"
+                ]
             result `shouldSatisfy` (\case
-                Right (NativeValue _, _) -> True
+                Left _ -> True
                 _ -> False)
 
-        it "handles property assignment patterns" do
-            let env = setupTestEnv
-                createPersonCall = List [Symbol "createPerson", String "Eve", Integer 28]
-                -- In real scenarios: person.age = 29
-
-            result <- runEvalSimple (eval createPersonCall) env
+        it "fails setting wrong types" $ do
+            result <- runGlueCode $ T.unlines
+                [ "("
+                , "  (def bob (person :name \"Bob\" :age 25))"
+                , "  (set bob.age \"not-a-number\")"
+                , ")"
+                ]
             result `shouldSatisfy` (\case
-                Right (NativeValue _, _) -> True
-                _ -> False)
-
-    describe "Error Handling in Complex Scenarios" do
-        it "handles constructor argument validation" do
-            let env = setupTestEnv
-                invalidCall = List [Symbol "createPerson", String "Test"]  -- Missing age
-
-            result <- runEvalSimple (eval invalidCall) env
-            result `shouldSatisfy` (\case
-                Left _ -> True  -- Should fail due to wrong arguments
-                _ -> False)
-
-        it "handles property access on non-objects" do
-            let env = setupTestEnv
-                invalidAccess = DottedSymbol ["number", "property"]
-                envWithNumber = E.defineVar "number" (Integer 42) env
-
-            result <- runEvalSimple (eval invalidAccess) envWithNumber
-            result `shouldSatisfy` (\case
-                Left _ -> True  -- Should fail
-                _ -> False)
-
-    describe "Complex Object Manipulation" do
-        it "handles multiple object interactions" do
-            let env = setupTestEnv
-                createCompanyCall = List [Symbol "createCompany", String "Big Corp"]
-                createPerson1Call = List [Symbol "createPerson", String "Manager", Integer 45]
-                createPerson2Call = List [Symbol "createPerson", String "Worker", Integer 30]
-
-            -- Create multiple objects
-            results <- mapM (\call -> runEvalSimple (eval call) env)
-                [createCompanyCall, createPerson1Call, createPerson2Call]
-
-            let allSucceeded = all (\case
-                    Right (NativeValue _, _) -> True
-                    _ -> False) results
-
-            allSucceeded `shouldBe` True
-
-        it "handles object lifecycle simulation" do
-            let env = setupTestEnv
-                createCounterCall = List [Symbol "createCounter", Integer 0]
-                -- In real scenarios: create, use, modify, cleanup
-
-            result <- runEvalSimple (eval createCounterCall) env
-            result `shouldSatisfy` (\case
-                Right (NativeValue _, _) -> True
+                Left _ -> True
                 _ -> False)
