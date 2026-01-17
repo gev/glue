@@ -1,13 +1,8 @@
 import 'package:glue/env.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
-import 'package:glue/src/ast.dart';
-import 'package:glue/src/either.dart';
-import 'package:glue/src/eval/error.dart';
 import 'package:glue/src/eval/exception.dart';
 import 'package:glue/src/lib/builtin/set.dart';
-import 'package:glue/src/parser.dart';
-import 'package:glue/src/runtime.dart';
 import 'package:test/test.dart';
 
 // Test data types for host values with mutable properties
@@ -46,7 +41,7 @@ void main() {
     group('Property setting with type checking', () {
       test('sets string property with correct type', () async {
         // Create a setter that validates string type
-        Eval<Ir> Function(Ir) nameSetter = (Ir newVal) => switch (newVal) {
+        Eval<Ir> nameSetter(Ir newVal) => switch (newVal) {
           IrString() => Eval.pure<Ir>(IrVoid()), // Accept any string
           _ => throwError(
             RuntimeException('wrong-argument-type', IrString('string')),
@@ -74,7 +69,7 @@ void main() {
 
       test('sets numeric property with correct type', () async {
         // Create a setter that validates integer type
-        Eval<Ir> Function(Ir) sizeSetter = (Ir newVal) => switch (newVal) {
+        Eval<Ir> sizeSetter(Ir newVal) => switch (newVal) {
           IrInteger() => Eval.pure<Ir>(IrVoid()), // Accept any integer
           _ => throwError(
             RuntimeException('wrong-argument-type', IrString('integer')),
@@ -102,7 +97,7 @@ void main() {
     group('Type checking and error handling', () {
       test('throws error when setting string property to wrong type', () async {
         // Create a setter that only accepts strings
-        Eval<Ir> Function(Ir) nameSetter = (Ir newVal) => switch (newVal) {
+        Eval<Ir> nameSetter(Ir newVal) => switch (newVal) {
           IrString() => Eval.pure<Ir>(IrVoid()),
           _ => throwError(
             RuntimeException('wrong-argument-type', IrString('string')),
@@ -127,7 +122,7 @@ void main() {
 
       test('throws error when setting numeric property to wrong type', () async {
         // Create a setter that only accepts integers
-        Eval<Ir> Function(Ir) ageSetter = (Ir newVal) => switch (newVal) {
+        Eval<Ir> ageSetter(Ir newVal) => switch (newVal) {
           IrInteger() => Eval.pure<Ir>(IrVoid()),
           _ => throwError(
             RuntimeException('wrong-argument-type', IrString('integer')),
@@ -153,13 +148,13 @@ void main() {
 
     group('Multiple properties with different types', () {
       test('sets different typed properties on the same object', () async {
-        Eval<Ir> Function(Ir) nameSetter = (Ir newVal) => switch (newVal) {
+        Eval<Ir> nameSetter(Ir newVal) => switch (newVal) {
           IrString() => Eval.pure<Ir>(IrVoid()),
           _ => throwError(
             RuntimeException('wrong-argument-type', IrString('string')),
           ),
         };
-        Eval<Ir> Function(Ir) ageSetter = (Ir newVal) => switch (newVal) {
+        Eval<Ir> ageSetter(Ir newVal) => switch (newVal) {
           IrInteger() => Eval.pure<Ir>(IrVoid()),
           _ => throwError(
             RuntimeException('wrong-argument-type', IrString('integer')),
@@ -225,40 +220,5 @@ void main() {
         );
       });
     });
-  });
-}
-
-// Helper function for testing (copied from eval.dart)
-Eval<Ir> _evalSetDotted(List<String> parts, Ir value) {
-  if (parts.length < 2) {
-    return throwError(
-      RuntimeException(
-        'invalid-set-target',
-        IrString('dotted symbol with property'),
-      ),
-    );
-  }
-
-  final baseName = parts[0];
-  final prop = parts[1];
-
-  return getEnv().flatMap((env) {
-    final result = lookupVar(baseName, env);
-    return result.match(
-      (error) => throwError(error),
-      (baseValue) => switch (baseValue) {
-        IrNativeValue(value: final hostValue) =>
-          hostValue.setters[prop] != null
-              ? eval(value).flatMap(
-                  (evaluatedValue) => hostValue.setters[prop]!(evaluatedValue),
-                )
-              : throwError(
-                  RuntimeException('property-not-found', IrString(prop)),
-                ),
-        _ => throwError(
-          RuntimeException('not-an-object', IrString('host value')),
-        ),
-      },
-    );
   });
 }

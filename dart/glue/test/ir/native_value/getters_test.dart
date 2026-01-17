@@ -1,12 +1,7 @@
 import 'package:glue/env.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
-import 'package:glue/src/ast.dart';
 import 'package:glue/src/either.dart';
-import 'package:glue/src/eval/error.dart';
-import 'package:glue/src/eval/exception.dart';
-import 'package:glue/src/parser.dart';
-import 'package:glue/src/runtime.dart';
 import 'package:test/test.dart';
 
 // Test data types for host values with properties
