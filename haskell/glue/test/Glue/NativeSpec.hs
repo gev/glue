@@ -30,19 +30,24 @@ data Address = Address
 -- Constructor functions that take object literals and create native objects
 person :: [IR Eval] -> Eval (IR Eval)
 person [Object props] = do
-    -- Extract properties from object literal
-    let name = case Map.lookup "name" props of
-            Just (String n) -> n
-            _ -> "Unknown"
-        age = case Map.lookup "age" props of
-            Just (Integer a) -> fromIntegral a
-            _ -> 0
-        address = case Map.lookup "address" props of
-            Just (NativeValue addrHostValue) ->
-                case extractHostValue addrHostValue :: Maybe Address of
-                    Just _ -> Just (NativeValue addrHostValue) -- Store the NativeValue
-                    Nothing -> Nothing -- Type check failed
-            _ -> Nothing
+    -- Extract properties from object literal with type checking
+    name <- case Map.lookup "name" props of
+        Just (String n) -> pure n
+        Just _ -> throwError $ wrongArgumentType ["string"]
+        Nothing -> throwError $ wrongArgumentType ["name: string"]
+
+    age <- case Map.lookup "age" props of
+        Just (Integer a) -> pure (fromIntegral a)
+        Just _ -> throwError $ wrongArgumentType ["integer"]
+        Nothing -> throwError $ wrongArgumentType ["age: integer"]
+
+    address <- case Map.lookup "address" props of
+        Just (NativeValue addrHostValue) ->
+            case extractHostValue addrHostValue :: Maybe Address of
+                Just _ -> pure $ Just (NativeValue addrHostValue) -- Store the NativeValue
+                Nothing -> throwError $ wrongArgumentType ["address: Address"]
+        Just _ -> throwError $ wrongArgumentType ["NativeValue"]
+        Nothing -> pure Nothing -- Address is optional
 
     -- Create mutable Person object
     nameRef <- liftIO $ newIORef name
@@ -87,13 +92,16 @@ person _ = throwError $ wrongArgumentType ["object"]
 
 address :: [IR Eval] -> Eval (IR Eval)
 address [Object props] = do
-    -- Extract properties from object literal
-    let street = case Map.lookup "street" props of
-            Just (String s) -> s
-            _ -> "Unknown Street"
-        city = case Map.lookup "city" props of
-            Just (String c) -> c
-            _ -> "Unknown City"
+    -- Extract properties from object literal with type checking
+    street <- case Map.lookup "street" props of
+        Just (String s) -> pure s
+        Just _ -> throwError $ wrongArgumentType ["string"]
+        Nothing -> throwError $ wrongArgumentType ["street: string"]
+
+    city <- case Map.lookup "city" props of
+        Just (String c) -> pure c
+        Just _ -> throwError $ wrongArgumentType ["string"]
+        Nothing -> throwError $ wrongArgumentType ["city: string"]
 
     -- Create mutable Address object
     streetRef <- liftIO $ newIORef street
@@ -265,6 +273,78 @@ spec = describe "Full FFI Integration Tests" do
     describe "Error Handling" do
         it "fails with wrong constructor arguments" $ do
             result <- runGlueCode "(person \"Bob\")" -- Missing object
+            result
+                `shouldSatisfy` ( \case
+                                    Left _ -> True
+                                    _ -> False
+                                )
+
+        it "fails with wrong name type" $ do
+            result <- runGlueCode "(person :name 123 :age 25)" -- name should be string
+            result
+                `shouldSatisfy` ( \case
+                                    Left _ -> True
+                                    _ -> False
+                                )
+
+        it "fails with wrong age type" $ do
+            result <- runGlueCode "(person :name \"Bob\" :age \"25\")" -- age should be integer
+            result
+                `shouldSatisfy` ( \case
+                                    Left _ -> True
+                                    _ -> False
+                                )
+
+        it "fails with wrong address type" $ do
+            result <- runGlueCode "(person :name \"Bob\" :age 25 :address \"not-an-address\")" -- address should be Address
+            result
+                `shouldSatisfy` ( \case
+                                    Left _ -> True
+                                    _ -> False
+                                )
+
+        it "fails with missing name field" $ do
+            result <- runGlueCode "(person :age 25)" -- name is required
+            result
+                `shouldSatisfy` ( \case
+                                    Left _ -> True
+                                    _ -> False
+                                )
+
+        it "fails with missing age field" $ do
+            result <- runGlueCode "(person :name \"Bob\")" -- age is required
+            result
+                `shouldSatisfy` ( \case
+                                    Left _ -> True
+                                    _ -> False
+                                )
+
+        it "fails with wrong street type" $ do
+            result <- runGlueCode "(address :street 123 :city \"Springfield\")" -- street should be string
+            result
+                `shouldSatisfy` ( \case
+                                    Left _ -> True
+                                    _ -> False
+                                )
+
+        it "fails with wrong city type" $ do
+            result <- runGlueCode "(address :street \"123 Main St\" :city 456)" -- city should be string
+            result
+                `shouldSatisfy` ( \case
+                                    Left _ -> True
+                                    _ -> False
+                                )
+
+        it "fails with missing street field" $ do
+            result <- runGlueCode "(address :city \"Springfield\")" -- street is required
+            result
+                `shouldSatisfy` ( \case
+                                    Left _ -> True
+                                    _ -> False
+                                )
+
+        it "fails with missing city field" $ do
+            result <- runGlueCode "(address :street \"123 Main St\")" -- city is required
             result
                 `shouldSatisfy` ( \case
                                     Left _ -> True
