@@ -12,12 +12,25 @@ Implement partial application (currying) support for native functions to make Gl
 - Zero runtime overhead (simple length checks)
 - Reuse existing closure machinery for parameter binding
 
-## Implementation Steps
+## Implementation Phases
 
-### Haskell Implementation (Steps 1-12)
+### Phase 1: Constructor Migration (Steps 1-3)
+**Goal:** Move constructors from ModuleInfo to function implementations
+
+#### Haskell Implementation
 1. Move `NativeFunc` AND `Special` constructors from every ModuleInfo declarations to function implementations (run tests and make commit for every ModuleInfo)
 2. Check the all Libraries (ModuleInfo) !
 3. Check the tests
+
+#### Dart Implementation
+Make changes in the Dart implementation in the same order from 1 to 3
+
+**See:** [Development Technology](development-technology.md) for cross-language synchronization requirements
+
+### Phase 2: Partial Application Implementation (Steps 4-12)
+**Goal:** Add arity support and implement partial application logic
+
+#### Haskell Implementation
 4. Add arity info into `NativeFunc`
 5. Fix the all libraries
 6. Run tests
@@ -28,10 +41,8 @@ Implement partial application (currying) support for native functions to make Gl
 11. Fix bugs
 12. Commit
 
-### Dart Implementation
-Make changes in the Dart implementation in the same order from 1 to 12
-
-**See:** [Development Technology](development-technology.md) for cross-language synchronization requirements
+#### Dart Implementation
+Make changes in the Dart implementation in the same order from 4 to 12
 
 ### Documentation
 Update drafts and specifications
