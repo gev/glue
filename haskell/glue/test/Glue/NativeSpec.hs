@@ -8,7 +8,7 @@ import Glue.Env qualified as E
 import Glue.Eval (Eval, liftIO, runEvalSimple, throwError)
 import Glue.Eval qualified
 import Glue.Eval.Exception (wrongArgumentType)
-import Glue.IR (Env, IR (..), extractHostValue, hostValueWithProps)
+import Glue.IR (Env, IR (..), hostValueWithProps)
 import Glue.IR qualified
 import Glue.Lib.Builtin.Def (def)
 import Glue.Lib.Builtin.Set qualified as Set
@@ -19,7 +19,7 @@ import Test.Hspec
 data Person = Person
     { personName :: IORef Text
     , personAge :: IORef Int
-    , personAddress :: IORef (Maybe Address)
+    , personAddress :: IORef (Maybe (IR Eval))
     }
 
 data Address = Address
@@ -38,8 +38,7 @@ person [Object props] = do
             Just (Integer a) -> fromIntegral a
             _ -> 0
         address = case Map.lookup "address" props of
-            Just (NativeValue addrHostVal) ->
-                extractHostValue addrHostVal
+            Just addrNativeValue@(NativeValue _) -> Just addrNativeValue
             _ -> Nothing
 
     -- Create mutable Person object
@@ -59,40 +58,7 @@ person [Object props] = do
         addressGetter = do
             currentAddr <- liftIO $ readIORef addressRef
             case currentAddr of
-                Just addr -> do
-                    -- Return the address as a NativeValue
-                    let addrGetters =
-                            Map.fromList
-                                [
-                                    ( "street"
-                                    , do
-                                        st <- liftIO $ readIORef addr.addressStreet
-                                        pure (String st)
-                                    )
-                                ,
-                                    ( "city"
-                                    , do
-                                        ct <- liftIO $ readIORef addr.addressCity
-                                        pure (String ct)
-                                    )
-                                ]
-                        addrSetters =
-                            Map.fromList
-                                [
-                                    ( "street"
-                                    , \case
-                                        String newSt -> liftIO $ writeIORef addr.addressStreet newSt >> pure Void
-                                        _ -> throwError $ wrongArgumentType ["string"]
-                                    )
-                                ,
-                                    ( "city"
-                                    , \case
-                                        String newCt -> liftIO $ writeIORef addr.addressCity newCt >> pure Void
-                                        _ -> throwError $ wrongArgumentType ["string"]
-                                    )
-                                ]
-                        addrHostVal = hostValueWithProps addr addrGetters addrSetters
-                    pure (NativeValue addrHostVal)
+                Just addrNativeValue -> pure addrNativeValue
                 Nothing -> pure (String "no address")
         nameSetter = \case
             String newName -> liftIO $ writeIORef nameRef newName >> pure Void
