@@ -44,6 +44,8 @@ Make changes in the Dart implementation in the same order from 1 to 3
 #### Dart Implementation
 Make changes in the Dart implementation in the same order from 4 to 12
 
+**See:** [Development Technology](development-technology.md) for cross-language synchronization requirements
+
 ### Documentation
 Update drafts and specifications
 Make commit
@@ -62,7 +64,7 @@ Make commit
 
 - ✅ `((+ 1) 2)` returns `3`
 - ✅ `((cons 1) (2 3 4))` works for lists
-- ✅ Named functions work: `(person :name "Bob")` creates partial
+- ✅ Named functions work: `(person)` creates partial expecting Object argument
 - ✅ Performance: No overhead for full application
 - ✅ Type safety: Proper error messages for arity mismatches
 - ✅ Cross-implementation: Haskell and Dart behave identically
