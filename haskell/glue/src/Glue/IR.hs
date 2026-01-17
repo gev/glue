@@ -39,10 +39,17 @@ type Env m = [Frame m]
 -- Host value wrapper for any host language object
 data HostValue m = HostValue
     { getHostValue :: Dynamic
-    , getters :: Map Text (IR m)
-    , setters :: Map Text (IR m)
+    , getters :: Map Text (m (IR m))
+    , setters :: Map Text (IR m -> m (IR m))
     }
-    deriving (Show)
+
+instance Show (HostValue m) where
+    show (HostValue _ getters setters) =
+        "<host-value getters:"
+            <> show (Map.size getters)
+            <> " setters:"
+            <> show (Map.size setters)
+            <> ">"
 
 instance Eq (HostValue m) where
     -- Host values are opaque, so we can't meaningfully compare them
@@ -54,7 +61,7 @@ hostValue :: (Typeable a) => a -> HostValue m
 hostValue x = HostValue (toDyn x) Map.empty Map.empty
 
 -- Create a host value with properties
-hostValueWithProps :: (Typeable a) => a -> Map Text (IR m) -> Map Text (IR m) -> HostValue m
+hostValueWithProps :: (Typeable a) => a -> Map Text (m (IR m)) -> Map Text (IR m -> m (IR m)) -> HostValue m
 hostValueWithProps x = HostValue (toDyn x)
 
 -- Extract a host value with type safety

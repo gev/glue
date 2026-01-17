@@ -51,40 +51,40 @@ person [Object props] = do
     let personObj = Person nameRef ageRef addressRef
 
     -- Create getters and setters
-    let nameGetter = NativeFunc $ \_ -> do
+    let nameGetter = do
             currentName <- liftIO $ readIORef nameRef
             pure (String $ T.pack currentName)
-        ageGetter = NativeFunc $ \_ -> do
+        ageGetter = do
             currentAge <- liftIO $ readIORef ageRef
             pure (Integer $ fromIntegral currentAge)
-        addressGetter = NativeFunc $ \_ -> do
+        addressGetter = do
             currentAddr <- liftIO $ readIORef addressRef
             case currentAddr of
                 Just addr -> do
                     -- Return the address as a NativeValue
                     let addrGetters = Map.fromList
-                            [ ("street", NativeFunc $ \_ -> do
+                            [ ("street", do
                                 st <- liftIO $ readIORef addr.addressStreet
                                 pure (String $ T.pack st))
-                            , ("city", NativeFunc $ \_ -> do
+                            , ("city", do
                                 ct <- liftIO $ readIORef addr.addressCity
                                 pure (String $ T.pack ct))
                             ]
                         addrSetters = Map.fromList
-                            [ ("street", NativeFunc $ \[newVal] -> case newVal of
+                            [ ("street", \newVal -> case newVal of
                                 String newSt -> liftIO $ writeIORef addr.addressStreet (T.unpack newSt) >> pure Void
                                 _ -> throwError $ wrongArgumentType ["string"])
-                            , ("city", NativeFunc $ \[newVal] -> case newVal of
+                            , ("city", \newVal -> case newVal of
                                 String newCt -> liftIO $ writeIORef addr.addressCity (T.unpack newCt) >> pure Void
                                 _ -> throwError $ wrongArgumentType ["string"])
                             ]
                         addrHostVal = hostValueWithProps addr addrGetters addrSetters
                     pure (NativeValue addrHostVal)
                 Nothing -> pure (String "no address")
-        nameSetter = NativeFunc $ \[newVal] -> case newVal of
+        nameSetter = \newVal -> case newVal of
             String newName -> liftIO $ writeIORef nameRef (T.unpack newName) >> pure Void
             _ -> throwError $ wrongArgumentType ["string"]
-        ageSetter = NativeFunc $ \[newVal] -> case newVal of
+        ageSetter = \newVal -> case newVal of
             Integer newAge -> liftIO $ writeIORef ageRef (fromIntegral newAge) >> pure Void
             _ -> throwError $ wrongArgumentType ["integer"]
 
@@ -118,16 +118,16 @@ address [Object props] = do
     let addrObj = Address streetRef cityRef
 
     -- Create getters and setters
-    let streetGetter = NativeFunc $ \_ -> do
+    let streetGetter = do
             currentStreet <- liftIO $ readIORef streetRef
             pure (String $ T.pack currentStreet)
-        cityGetter = NativeFunc $ \_ -> do
+        cityGetter = do
             currentCity <- liftIO $ readIORef cityRef
             pure (String $ T.pack currentCity)
-        streetSetter = NativeFunc $ \[newVal] -> case newVal of
+        streetSetter = \newVal -> case newVal of
             String newStreet -> liftIO $ writeIORef streetRef (T.unpack newStreet) >> pure Void
             _ -> throwError $ wrongArgumentType ["string"]
-        citySetter = NativeFunc $ \[newVal] -> case newVal of
+        citySetter = \newVal -> case newVal of
             String newCity -> liftIO $ writeIORef cityRef (T.unpack newCity) >> pure Void
             _ -> throwError $ wrongArgumentType ["string"]
 

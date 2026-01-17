@@ -13,7 +13,7 @@ spec = describe "HostValue property setters" do
     describe "Property setting with type checking" do
         it "sets string property with correct type" do
             -- Create a setter that validates string type
-            let nameSetter = NativeFunc $ \[newVal] -> case newVal of
+            let nameSetter = \newVal -> case newVal of
                     String _ -> pure Void -- Accept any string
                     _ -> throwError $ wrongArgumentType ["string"]
                 setters = Map.fromList [("name", nameSetter)]
@@ -31,7 +31,7 @@ spec = describe "HostValue property setters" do
 
         it "sets numeric property with correct type" do
             -- Create a setter that validates integer type
-            let sizeSetter = NativeFunc $ \[newVal] -> case newVal of
+            let sizeSetter = \newVal -> case newVal of
                     Integer _ -> pure Void -- Accept any integer
                     _ -> throwError $ wrongArgumentType ["integer"]
                 setters = Map.fromList [("size", sizeSetter)]
@@ -50,7 +50,7 @@ spec = describe "HostValue property setters" do
     describe "Type checking and error handling" do
         it "throws error when setting string property to wrong type" do
             -- Create a setter that only accepts strings
-            let nameSetter = NativeFunc $ \[newVal] -> case newVal of
+            let nameSetter = \newVal -> case newVal of
                     String _ -> pure Void
                     _ -> throwError $ wrongArgumentType ["string"]
                 setters = Map.fromList [("name", nameSetter)]
@@ -68,7 +68,7 @@ spec = describe "HostValue property setters" do
 
         it "throws error when setting numeric property to wrong type" do
             -- Create a setter that only accepts integers
-            let ageSetter = NativeFunc $ \[newVal] -> case newVal of
+            let ageSetter = \newVal -> case newVal of
                     Integer _ -> pure Void
                     _ -> throwError $ wrongArgumentType ["integer"]
                 setters = Map.fromList [("age", ageSetter)]
@@ -86,10 +86,10 @@ spec = describe "HostValue property setters" do
 
     describe "Multiple properties with different types" do
         it "sets different typed properties on the same object" do
-            let nameSetter = NativeFunc $ \[newVal] -> case newVal of
+            let nameSetter = \newVal -> case newVal of
                     String _ -> pure Void
                     _ -> throwError $ wrongArgumentType ["string"]
-                ageSetter = NativeFunc $ \[newVal] -> case newVal of
+                ageSetter = \newVal -> case newVal of
                     Integer _ -> pure Void
                     _ -> throwError $ wrongArgumentType ["integer"]
                 setters = Map.fromList [("name", nameSetter), ("age", ageSetter)]

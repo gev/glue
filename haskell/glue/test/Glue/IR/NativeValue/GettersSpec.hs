@@ -19,7 +19,7 @@ spec = describe "HostValue property getters" do
         it "accesses simple property returning a string" do
             -- Create a person with a name property
             let person = Person "Alice" 30
-                nameGetter = NativeFunc (\_ -> pure (String "Alice"))
+                nameGetter = pure (String "Alice")
                 getters = Map.fromList [("name", nameGetter)]
                 hostVal = hostValueWithProps person getters Map.empty
                 hostIr = NativeValue hostVal :: IR Eval
@@ -34,7 +34,7 @@ spec = describe "HostValue property getters" do
         it "accesses property returning a number" do
             -- Create a person with an age property
             let person = Person "Bob" 25
-                ageGetter = NativeFunc (\_ -> pure (Integer 25))
+                ageGetter = pure (Integer 25)
                 getters = Map.fromList [("age", ageGetter)]
                 hostVal = hostValueWithProps person getters Map.empty
                 hostIr = NativeValue hostVal :: IR Eval
@@ -50,7 +50,7 @@ spec = describe "HostValue property getters" do
         it "calls method that computes and returns a value" do
             -- Create a calculator with a compute method
             let calc = Calculator 10
-                computeGetter = NativeFunc (\_ -> pure (Integer 42)) -- Always returns 42
+                computeGetter = pure (Integer 42) -- Always returns 42
                 getters = Map.fromList [("compute", computeGetter)]
                 hostVal = hostValueWithProps calc getters Map.empty
                 hostIr = NativeValue hostVal :: IR Eval
@@ -65,7 +65,7 @@ spec = describe "HostValue property getters" do
         it "calls method that accesses host object data" do
             -- Create a calculator that returns double its base value
             let calc = Calculator 15
-                doubleGetter = NativeFunc (\_ -> pure (Integer 30)) -- 15 * 2
+                doubleGetter = pure (Integer 30) -- 15 * 2
                 getters = Map.fromList [("double", doubleGetter)]
                 hostVal = hostValueWithProps calc getters Map.empty
                 hostIr = NativeValue hostVal :: IR Eval
@@ -80,8 +80,8 @@ spec = describe "HostValue property getters" do
     describe "Multiple properties on same object" do
         it "accesses different properties on the same host value" do
             let person = Person "Charlie" 35
-                nameGetter = NativeFunc (\_ -> pure (String "Charlie"))
-                ageGetter = NativeFunc (\_ -> pure (Integer 35))
+                nameGetter = pure (String "Charlie")
+                ageGetter = pure (Integer 35)
                 getters = Map.fromList [("name", nameGetter), ("age", ageGetter)]
                 hostVal = hostValueWithProps person getters Map.empty
                 hostIr = NativeValue hostVal :: IR Eval
@@ -104,7 +104,7 @@ spec = describe "HostValue property getters" do
     describe "Error handling" do
         it "fails when accessing non-existent property" do
             let person = Person "David" 40
-                getters = Map.fromList [("name", NativeFunc (\_ -> pure (String "David")))]
+                getters = Map.fromList [("name", pure (String "David"))]
                 hostVal = hostValueWithProps person getters Map.empty
                 hostIr = NativeValue hostVal :: IR Eval
                 env = E.defineVar "person" hostIr E.emptyEnv
