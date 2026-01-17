@@ -15,23 +15,18 @@ void main() {
         ('y', IrString('hello')),
         (
           'add',
-          IrNative(
-            NativeFunc((List<Ir> args) {
-              if (args.length == 2 &&
-                  args[0] is IrInteger &&
-                  args[1] is IrInteger) {
-                final a = (args[0] as IrInteger).value;
-                final b = (args[1] as IrInteger).value;
-                return Eval.pure(IrInteger(a + b));
-              }
-              return throwError(
-                RuntimeException(
-                  'type-error',
-                  IrString('Expected two integers'),
-                ),
-              );
-            }),
-          ),
+          IrNativeFunc((List<Ir> args) {
+            if (args.length == 2 &&
+                args[0] is IrInteger &&
+                args[1] is IrInteger) {
+              final a = (args[0] as IrInteger).value;
+              final b = (args[1] as IrInteger).value;
+              return Eval.pure(IrInteger(a + b));
+            }
+            return throwError(
+              RuntimeException('type-error', IrString('Expected two integers')),
+            );
+          }),
         ),
       ]);
     });

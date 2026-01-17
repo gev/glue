@@ -112,12 +112,13 @@ haskell/glue/
             ├── Round.hs    # Round to nearest
             └── Trunc.hs    # Truncate decimal
 
-test/Glue/                  # Test suite (22 files)
+test/Glue/                  # Test suite (29 files)
 ├── Spec.hs                 # Test runner
 ├── TestUtils.hs            # Test utilities
 ├── CompileSpec.hs          # Compilation tests
 ├── EnvSpec.hs              # Environment tests
 ├── EvalSpec.hs             # Evaluation tests
+├── NativeSpec.hs           # Host Value system tests
 ├── ParserSpec.hs           # Parser tests
 ├── Lib/Bool/               # 12 test files
 ├── Lib/Builtin/            # 6 test files (Def, Error, Import, Lambda, Set, Try)
@@ -126,27 +127,5 @@ test/Glue/                  # Test suite (22 files)
 ├── Lib/Math/               # Partial test files
 └── Module/                 # 3 test files
 ```
-
-## File Count Summary
-
-- **Total Files**: 178
-- **Source Files**: 135 (.hs files)
-- **Test Files**: 22 (Spec.hs files)
-- **Config Files**: 3 (glue.cabal, README.md, etc.)
-- **Core Language**: 12 files
-- **Standard Libraries**: 66 files
-- **Test Suite**: 22 files
-
-## Directory Breakdown
-
-| Directory | Files | Description |
-|-----------|-------|-------------|
-| `src/Glue/` | 12 | Core language implementation |
-| `src/Glue/Lib/Bool/` | 13 | Boolean operations library |
-| `src/Glue/Lib/Builtin/` | 8 | Builtin functions library |
-| `src/Glue/Lib/IO/` | 3 | Input/Output library |
-| `src/Glue/Lib/List/` | 22 | List operations library |
-| `src/Glue/Lib/Math/` | 23 | Mathematical functions library |
-| `test/Glue/` | 22 | Complete test suite |
 
 This structure serves as the reference implementation for the Glue programming language, providing a complete functional programming environment with comprehensive standard libraries.

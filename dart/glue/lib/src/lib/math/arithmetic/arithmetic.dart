@@ -13,22 +13,22 @@ import 'sub.dart';
 /// Mirrors Haskell Glue.Lib.Math.Arithmetic.arithmetic exactly
 final ModuleInfo arithmetic = nativeModule('ffi.math.arithmetic', [
   // Addition
-  ('+', IrNative(NativeFunc(add))),
-  ('add', IrNative(NativeFunc(add))),
+  ('+', IrNativeFunc(add)),
+  ('add', IrNativeFunc(add)),
 
   // Subtraction
-  ('-', IrNative(NativeFunc(sub))),
-  ('sub', IrNative(NativeFunc(sub))),
+  ('-', IrNativeFunc(sub)),
+  ('sub', IrNativeFunc(sub)),
 
   // Multiplication
-  ('*', IrNative(NativeFunc(mul))),
-  ('mul', IrNative(NativeFunc(mul))),
+  ('*', IrNativeFunc(mul)),
+  ('mul', IrNativeFunc(mul)),
 
   // Division
-  ('/', IrNative(NativeFunc(div))),
-  ('div', IrNative(NativeFunc(div))),
+  ('/', IrNativeFunc(div)),
+  ('div', IrNativeFunc(div)),
 
   // Modulo
-  ('%', IrNative(NativeFunc(mod))),
-  ('mod', IrNative(NativeFunc(mod))),
+  ('%', IrNativeFunc(mod)),
+  ('mod', IrNativeFunc(mod)),
 ]);

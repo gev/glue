@@ -351,21 +351,14 @@ Eval<Ir> evalObject(Map<String, Ir> properties) {
 /// Apply a function to arguments
 Eval<Ir> apply(Ir func, List<Ir> args) {
   return switch (func) {
-    IrNative(value: final f) => applyNative(f, args),
+    IrNativeFunc(function: final f) => _applyNativeFunc(f, args),
+    IrSpecial(function: final s) => s(
+      args,
+    ), // Special forms handle their own evaluation
     IrClosure(params: final params, body: final body, env: final closureEnv) =>
       applyClosure(params, body, closureEnv, args),
     IrSymbol(value: final name) => throwError(unboundVariable(name)),
     _ => throwError(notCallableObject()),
-  };
-}
-
-/// Apply a native function/special form
-Eval<Ir> applyNative(Native native, List<Ir> args) {
-  return switch (native) {
-    NativeFunc(function: final f) => _applyNativeFunc(f, args),
-    NativeSpecial(function: final s) => s(
-      args,
-    ), // Special forms handle their own evaluation
   };
 }
 
@@ -415,6 +408,14 @@ Eval<Ir> _evalNestedAccess(Ir obj, List<String> remainingParts) {
           ? _evalNestedAccess(props[prop]!, rest)
           : throwError(propertyNotFound(prop)),
 
+    IrNativeValue(value: final hostValue) =>
+      // Handle property access on host values (FFI)
+      hostValue.getters[prop] != null
+          ? hostValue.getters[prop]!.flatMap(
+              (result) => _evalNestedAccess(result, rest),
+            )
+          : throwError(propertyNotFound(prop)),
+
     _ => throwError(notAnObject(obj)),
   };
 }
@@ -423,7 +424,8 @@ Eval<Ir> _evalNestedAccess(Ir obj, List<String> remainingParts) {
 /// Mirrors Haskell Glue.Eval.isCallable exactly
 bool isCallable(Ir value) {
   return switch (value) {
-    IrNative() => true,
+    IrNativeFunc() => true,
+    IrSpecial() => true,
     IrClosure() => true,
     _ => false,
   };

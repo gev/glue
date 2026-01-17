@@ -77,5 +77,5 @@ String? _getSymbolText(Ir ir) {
 /// Check if an IR value is callable (closure or native function)
 /// Mirrors Haskell isCallable
 bool _isCallable(Ir ir) {
-  return ir is IrClosure || (ir is IrNative && ir.value is NativeFunc);
+  return ir is IrClosure || ir is IrNativeFunc || ir is IrSpecial;
 }

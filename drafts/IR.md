@@ -17,7 +17,9 @@ data IR m
     | List [IR m]
     | Object (Map Text (IR m))
     | Module (Map Text (IR m))
-    | Native (Native m)
+    | NativeValue HostValue
+    | NativeFunc ([IR m] -> m (IR m))
+    | Special ([IR m] -> m (IR m))
     | Closure [Text] (IR m) (Env m)
 ```
 
@@ -90,15 +92,23 @@ Represents collections of exported values and functions.
 - `Module (fromList [("pi", Number 3.14159), ("cos", <native function>)])`
 - `Module (fromList [("add", <closure>), ("multiply", <closure>)])`
 
-#### `Native`
-Represents host language functions and operations.
+#### `NativeValue`
+Represents host language objects and literals.
 
-**Structure:** `Native (Native m)`
-**Purpose:** Interface with host language functions and special forms
-**Subtypes:**
-- `Func ([IR m] -> m (IR m))` - Regular functions returning IR values
-- `Cmd ([IR m] -> m ())` - Commands with side effects (no return value)
-- `Special ([IR m] -> m (Maybe (IR m)))` - Special forms (macros, control flow)
+**Structure:** `NativeValue HostValue`
+**Purpose:** Store host language values that don't need evaluation
+
+#### `NativeFunc`
+Represents host language functions.
+
+**Structure:** `NativeFunc ([IR m] -> m (IR m))`
+**Purpose:** Interface with host language functions that return IR values
+
+#### `Special`
+Represents special forms and control flow operations.
+
+**Structure:** `Special ([IR m] -> m (IR m))`
+**Purpose:** Handle special forms like `if`, `def`, `lambda` with custom evaluation rules
 
 #### `Closure`
 Represents user-defined functions with captured environment.
