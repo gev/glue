@@ -3,9 +3,9 @@ module Glue.Lib.Builtin.Set where
 import Data.Map.Strict qualified as Map
 import Data.Text qualified as T
 import Glue.Env (lookupVar)
-import Glue.Eval (Eval, eval, getEnv, throwError, updateVarEval)
+import Glue.Eval (Eval, apply, eval, getEnv, throwError, updateVarEval)
 import Glue.Eval.Exception (notAnObject, wrongArgumentType)
-import Glue.IR (IR (..))
+import Glue.IR (IR (..), setters)
 
 set :: [IR Eval] -> Eval (IR Eval)
 set [Symbol name, rawVal] = do
@@ -25,6 +25,12 @@ set [Symbol name, rawVal] = do
                         let newObj = Object newMap
                         updateVarEval objName newObj
                         pure Void
+                    NativeValue hv -> case Map.lookup prop (setters hv) of
+                        Just setterFunc -> do
+                            -- Call the setter function with the new value
+                            _ <- apply setterFunc [val]
+                            pure Void
+                        Nothing -> throwError $ notAnObject currentObj -- or propertyNotFound
                     _ -> throwError $ notAnObject currentObj
                 Left err -> throwError err
         _ -> throwError $ wrongArgumentType ["target", "value"]

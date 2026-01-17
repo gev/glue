@@ -121,6 +121,12 @@ evalDottedSymbol parts = do
             IR.Object objMap -> case Map.lookup prop objMap of
                 Just val -> evalNestedAccess val rest
                 Nothing -> throwError $ propertyNotFound prop
+            IR.NativeValue hv -> case Map.lookup prop (IR.getters hv) of
+                Just getterFunc -> do
+                    -- Call the getter function (takes no arguments)
+                    result <- apply getterFunc []
+                    evalNestedAccess result rest
+                Nothing -> throwError $ propertyNotFound prop
             _ -> throwError $ notAnObject obj
 
 -- Evaluate a list (function call or literal list)

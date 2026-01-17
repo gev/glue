@@ -3,7 +3,7 @@
 module Glue.IR (
     -- Main types
     IR (..),
-    HostValue,
+    HostValue (..),
     -- Legacy compatibility (deprecated)
     Native (..),
     -- Environment types
@@ -11,6 +11,7 @@ module Glue.IR (
     Env,
     -- Utility functions
     hostValue,
+    hostValueWithProps,
     extractHostValue,
     isHostValue,
     getHostValueFromIR,
@@ -40,20 +41,28 @@ type Frame m = Map.Map Text (IR m)
 type Env m = [Frame m]
 
 -- Host value wrapper for any host language object
-newtype HostValue = HostValue {getHostValue :: Dynamic}
+data HostValue m = HostValue
+    { getHostValue :: Dynamic
+    , getters :: Map Text (IR m)
+    , setters :: Map Text (IR m)
+    }
     deriving (Show)
 
-instance Eq HostValue where
+instance Eq (HostValue m) where
     -- Host values are opaque, so we can't meaningfully compare them
     -- For now, consider them never equal (could be improved with identity comparison)
     _ == _ = False
 
 -- Create a host value from any typeable value
-hostValue :: (Typeable a) => a -> HostValue
-hostValue = HostValue . toDyn
+hostValue :: (Typeable a) => a -> HostValue m
+hostValue x = HostValue (toDyn x) Map.empty Map.empty
+
+-- Create a host value with properties
+hostValueWithProps :: (Typeable a) => a -> Map Text (IR m) -> Map Text (IR m) -> HostValue m
+hostValueWithProps x getters setters = HostValue (toDyn x) getters setters
 
 -- Extract a host value with type safety
-extractHostValue :: (Typeable a) => HostValue -> Maybe a
+extractHostValue :: (Typeable a) => HostValue m -> Maybe a
 extractHostValue = fromDynamic . getHostValue
 
 data IR m
@@ -66,7 +75,7 @@ data IR m
     | List [IR m]
     | Object (Map Text (IR m))
     | Void
-    | NativeValue HostValue -- Host language values (literals)
+    | NativeValue (HostValue m) -- Host language values (literals)
     | NativeFunc ([IR m] -> m (IR m)) -- Functions
     | Special ([IR m] -> m (IR m)) -- Special forms
     | Closure [Text] (IR m) (Env m)
@@ -75,7 +84,7 @@ data IR m
 data Native m
     = LegacyFunc ([IR m] -> m (IR m))
     | LegacySpecial ([IR m] -> m (IR m))
-    | LegacyValue HostValue
+    | LegacyValue (HostValue m)
 
 -- Pattern synonyms for backward compatibility
 pattern LegacyNativeFunc :: ([IR m] -> m (IR m)) -> Native m
@@ -84,7 +93,7 @@ pattern LegacyNativeFunc f = LegacyFunc f
 pattern LegacyNativeSpecial :: ([IR m] -> m (IR m)) -> Native m
 pattern LegacyNativeSpecial f = LegacySpecial f
 
-pattern LegacyNativeValue :: HostValue -> Native m
+pattern LegacyNativeValue :: HostValue m -> Native m
 pattern LegacyNativeValue hv = LegacyValue hv
 
 -- Show instance for IR handles NativeFunc and Special directly
@@ -169,6 +178,6 @@ isHostValue :: IR m -> Bool
 isHostValue (NativeValue _) = True
 isHostValue _ = False
 
-getHostValueFromIR :: IR m -> Maybe HostValue
+getHostValueFromIR :: IR m -> Maybe (HostValue m)
 getHostValueFromIR (NativeValue hv) = Just hv
 getHostValueFromIR _ = Nothing
