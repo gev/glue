@@ -10,7 +10,7 @@ import Test.Hspec
 data Person = Person {name :: String, age :: Int}
     deriving (Show, Eq)
 
-data Calculator = Calculator {baseValue :: Int}
+newtype Calculator = Calculator {baseValue :: Int}
     deriving (Show, Eq)
 
 spec :: Spec
