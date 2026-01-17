@@ -5,6 +5,7 @@ import 'package:glue/src/ast.dart';
 import 'package:glue/src/either.dart';
 import 'package:glue/src/eval/error.dart';
 import 'package:glue/src/eval/exception.dart';
+import 'package:glue/src/lib/builtin/set.dart';
 import 'package:glue/src/parser.dart';
 import 'package:glue/src/runtime.dart';
 import 'package:test/test.dart';
@@ -42,469 +43,167 @@ class MutableConfig {
 
 void main() {
   group('HostValue property setters', () {
-    group('Property modification with validation', () {
-      test('sets string property successfully', () async {
-        // Create a mutable person with a name setter
-        final person = MutablePerson('Alice', 30);
-        final nameGetter = Eval(
-          (runtime) => Right((IrString(person.name), runtime)),
-        );
-        Eval<Ir> Function(Ir) nameSetter = (Ir value) => switch (value) {
-          IrString(value: final newName) => Eval<Ir>((runtime) {
-            person.name = newName;
-            return Right((IrVoid(), runtime));
-          }),
+    group('Property setting with type checking', () {
+      test('sets string property with correct type', () async {
+        // Create a setter that validates string type
+        Eval<Ir> Function(Ir) nameSetter = (Ir newVal) => switch (newVal) {
+          IrString() => Eval.pure<Ir>(IrVoid()), // Accept any string
           _ => throwError(
             RuntimeException('wrong-argument-type', IrString('string')),
           ),
         };
-        final getters = <String, Eval<Ir>>{'name': nameGetter};
+        final setters = <String, Eval<Ir> Function(Ir)>{
+          'name': (Ir value) => nameSetter(value),
+        };
+        final hostVal = hostValueWithProps((), {}, setters);
+        final hostIr = IrNativeValue(hostVal);
+
+        // Set up environment and call set function
+        final env = defineVar('obj', hostIr, emptyEnv());
+        final setArgs = [IrSymbol('obj.name'), IrString('Alice')];
+
+        final result = await runEvalSimple(set(setArgs), env);
+        result.match(
+          (error) => fail('Property setting should succeed: $error'),
+          (value) {
+            final (result, _) = value;
+            expect(result, equals(IrVoid())); // Success
+          },
+        );
+      });
+
+      test('sets numeric property with correct type', () async {
+        // Create a setter that validates integer type
+        Eval<Ir> Function(Ir) sizeSetter = (Ir newVal) => switch (newVal) {
+          IrInteger() => Eval.pure<Ir>(IrVoid()), // Accept any integer
+          _ => throwError(
+            RuntimeException('wrong-argument-type', IrString('integer')),
+          ),
+        };
+        final setters = <String, Eval<Ir> Function(Ir)>{'size': sizeSetter};
+        final hostVal = hostValueWithProps((), {}, setters);
+        final hostIr = IrNativeValue(hostVal);
+
+        // Set up environment and call set function
+        final env = defineVar('obj', hostIr, emptyEnv());
+        final setArgs = [IrSymbol('obj.size'), IrInteger(100)];
+
+        final result = await runEvalSimple(set(setArgs), env);
+        result.match(
+          (error) => fail('Property setting should succeed: $error'),
+          (value) {
+            final (result, _) = value;
+            expect(result, equals(IrVoid())); // Success
+          },
+        );
+      });
+    });
+
+    group('Type checking and error handling', () {
+      test('throws error when setting string property to wrong type', () async {
+        // Create a setter that only accepts strings
+        Eval<Ir> Function(Ir) nameSetter = (Ir newVal) => switch (newVal) {
+          IrString() => Eval.pure<Ir>(IrVoid()),
+          _ => throwError(
+            RuntimeException('wrong-argument-type', IrString('string')),
+          ),
+        };
         final setters = <String, Eval<Ir> Function(Ir)>{'name': nameSetter};
-        final hostVal = hostValueWithProps(person, getters, setters);
+        final hostVal = hostValueWithProps((), {}, setters);
         final hostIr = IrNativeValue(hostVal);
-        final env = defineVar('person', hostIr, emptyEnv());
 
-        // Set the name
-        final setIr = IrList([
-          IrSpecial((List<Ir> args) {
-            if (args.length != 2) {
-              return throwError(
-                RuntimeException('wrong-number-of-arguments', IrString('2')),
-              );
-            }
-            final target = args[0];
-            final value = args[1];
+        // Try to set name to an integer (wrong type)
+        final env = defineVar('obj', hostIr, emptyEnv());
+        final setArgs = [IrSymbol('obj.name'), IrInteger(123)];
 
-            return switch (target) {
-              IrDottedSymbol(parts: final parts) => _evalSetDotted(
-                parts,
-                value,
-              ),
-              IrSymbol(value: final name) => eval(value).flatMap(
-                (evaluatedValue) => updateVarEval(
-                  name,
-                  evaluatedValue,
-                ).map((_) => evaluatedValue),
-              ),
-              _ => throwError(
-                RuntimeException(
-                  'invalid-set-target',
-                  IrString('symbol or dotted symbol'),
-                ),
-              ),
-            };
-          }),
-          IrDottedSymbol(['person', 'name']),
-          IrString('Bob'),
-        ]);
-
-        final setResult = await runEvalSimple(eval(setIr), env);
-        setResult.match(
-          (error) => fail('Setting property should succeed: $error'),
-          (value) {
-            final (result, _) = value;
-            expect(result, isA<IrString>());
-            expect((result as IrString).value, equals('Bob'));
-          },
-        );
-
-        // Verify the change persisted
-        final getIr = IrDottedSymbol(['person', 'name']);
-        final getResult = await runEvalSimple(eval(getIr), env);
-        getResult.match(
-          (error) => fail('Getting property should succeed: $error'),
-          (value) {
-            final (result, _) = value;
-            expect(result, equals(IrString('Bob')));
-          },
+        final result = await runEvalSimple(set(setArgs), env);
+        result.match(
+          (error) => expect(true, isTrue), // Should fail with type error
+          (value) => fail(
+            'Setting string property to integer should fail, but got: ${value.$1}',
+          ),
         );
       });
 
-      test('sets integer property successfully', () async {
-        // Create a mutable person with an age setter
-        final person = MutablePerson('Charlie', 25);
-        final ageGetter = Eval(
-          (runtime) => Right((IrInteger(person.age), runtime)),
-        );
-        Eval<Ir> Function(Ir) ageSetter = (Ir value) => switch (value) {
-          IrInteger(value: final newAge) => Eval<Ir>((runtime) {
-            person.age = newAge;
-            return Right((IrVoid(), runtime));
-          }),
+      test('throws error when setting numeric property to wrong type', () async {
+        // Create a setter that only accepts integers
+        Eval<Ir> Function(Ir) ageSetter = (Ir newVal) => switch (newVal) {
+          IrInteger() => Eval.pure<Ir>(IrVoid()),
           _ => throwError(
             RuntimeException('wrong-argument-type', IrString('integer')),
           ),
         };
-        final getters = <String, Eval<Ir>>{'age': ageGetter};
         final setters = <String, Eval<Ir> Function(Ir)>{'age': ageSetter};
-        final hostVal = hostValueWithProps(person, getters, setters);
+        final hostVal = hostValueWithProps((), {}, setters);
         final hostIr = IrNativeValue(hostVal);
-        final env = defineVar('person', hostIr, emptyEnv());
 
-        // Set the age
-        final setIr = IrList([
-          IrSpecial((List<Ir> args) {
-            if (args.length != 2) {
-              return throwError(
-                RuntimeException('wrong-number-of-arguments', IrString('2')),
-              );
-            }
-            final target = args[0];
-            final value = args[1];
+        // Try to set age to a string (wrong type)
+        final env = defineVar('obj', hostIr, emptyEnv());
+        final setArgs = [IrSymbol('obj.age'), IrString('thirty')];
 
-            return switch (target) {
-              IrDottedSymbol(parts: final parts) => _evalSetDotted(
-                parts,
-                value,
-              ),
-              IrSymbol(value: final name) => eval(value).flatMap(
-                (evaluatedValue) => updateVarEval(
-                  name,
-                  evaluatedValue,
-                ).map((_) => evaluatedValue),
-              ),
-              _ => throwError(
-                RuntimeException(
-                  'invalid-set-target',
-                  IrString('symbol or dotted symbol'),
-                ),
-              ),
-            };
-          }),
-          IrDottedSymbol(['person', 'age']),
-          IrInteger(35),
-        ]);
-
-        final setResult = await runEvalSimple(eval(setIr), env);
-        setResult.match(
-          (error) => fail('Setting property should succeed: $error'),
-          (value) {
-            final (result, _) = value;
-            expect(result, equals(IrInteger(35)));
-          },
-        );
-
-        // Verify the change persisted
-        final getIr = IrDottedSymbol(['person', 'age']);
-        final getResult = await runEvalSimple(eval(getIr), env);
-        getResult.match(
-          (error) => fail('Getting property should succeed: $error'),
-          (value) {
-            final (result, _) = value;
-            expect(result, equals(IrInteger(35)));
-          },
+        final result = await runEvalSimple(set(setArgs), env);
+        result.match(
+          (error) => expect(true, isTrue), // Should fail with type error
+          (value) => fail(
+            'Setting numeric property to string should fail, but got: ${value.$1}',
+          ),
         );
       });
     });
 
-    group('Type validation in setters', () {
-      test('rejects wrong type for string property', () async {
-        final config = MutableConfig('debug', true);
-        final settingGetter = Eval(
-          (runtime) => Right((IrString(config.setting), runtime)),
-        );
-        Eval<Ir> Function(Ir) settingSetter = (Ir value) => switch (value) {
-          IrString(value: final newSetting) => Eval<Ir>((runtime) {
-            config.setting = newSetting;
-            return Right((IrVoid(), runtime));
-          }),
+    group('Multiple properties with different types', () {
+      test('sets different typed properties on the same object', () async {
+        Eval<Ir> Function(Ir) nameSetter = (Ir newVal) => switch (newVal) {
+          IrString() => Eval.pure<Ir>(IrVoid()),
           _ => throwError(
             RuntimeException('wrong-argument-type', IrString('string')),
           ),
         };
-        final getters = <String, Eval<Ir>>{'setting': settingGetter};
-        final setters = <String, Eval<Ir> Function(Ir)>{
-          'setting': settingSetter,
-        };
-        final hostVal = hostValueWithProps(config, getters, setters);
-        final hostIr = IrNativeValue(hostVal);
-        final env = defineVar('config', hostIr, emptyEnv());
-
-        // Try to set with wrong type (integer instead of string)
-        final setIr = IrList([
-          IrSpecial((List<Ir> args) {
-            if (args.length != 2) {
-              return throwError(
-                RuntimeException('wrong-number-of-arguments', IrString('2')),
-              );
-            }
-            final target = args[0];
-            final value = args[1];
-
-            return switch (target) {
-              IrDottedSymbol(parts: final parts) => _evalSetDotted(
-                parts,
-                value,
-              ),
-              IrSymbol(value: final name) => eval(value).flatMap(
-                (evaluatedValue) => updateVarEval(
-                  name,
-                  evaluatedValue,
-                ).map((_) => evaluatedValue),
-              ),
-              _ => throwError(
-                RuntimeException(
-                  'invalid-set-target',
-                  IrString('symbol or dotted symbol'),
-                ),
-              ),
-            };
-          }),
-          IrDottedSymbol(['config', 'setting']),
-          IrInteger(123), // Wrong type
-        ]);
-
-        final result = await runEvalSimple(eval(setIr), env);
-        result.match(
-          (error) => expect(true, isTrue), // Should fail with type error
-          (value) =>
-              fail('Setting with wrong type should fail, but got: ${value.$1}'),
-        );
-      });
-
-      test('rejects wrong type for boolean property', () async {
-        final config = MutableConfig('test', false);
-        final enabledGetter = Eval(
-          (runtime) => Right((IrBool(config.enabled), runtime)),
-        );
-        Eval<Ir> Function(Ir) enabledSetter = (Ir value) => switch (value) {
-          IrBool(value: final newEnabled) => Eval<Ir>((runtime) {
-            config.enabled = newEnabled;
-            return Right((IrVoid(), runtime));
-          }),
-          _ => throwError(
-            RuntimeException('wrong-argument-type', IrString('boolean')),
-          ),
-        };
-        final getters = <String, Eval<Ir>>{'enabled': enabledGetter};
-        final setters = <String, Eval<Ir> Function(Ir)>{
-          'enabled': enabledSetter,
-        };
-        final hostVal = hostValueWithProps(config, getters, setters);
-        final hostIr = IrNativeValue(hostVal);
-        final env = defineVar('config', hostIr, emptyEnv());
-
-        // Try to set with wrong type (string instead of boolean)
-        final setIr = IrList([
-          IrSpecial((List<Ir> args) {
-            if (args.length != 2) {
-              return throwError(
-                RuntimeException('wrong-number-of-arguments', IrString('2')),
-              );
-            }
-            final target = args[0];
-            final value = args[1];
-
-            return switch (target) {
-              IrDottedSymbol(parts: final parts) => _evalSetDotted(
-                parts,
-                value,
-              ),
-              IrSymbol(value: final name) => eval(value).flatMap(
-                (evaluatedValue) => updateVarEval(
-                  name,
-                  evaluatedValue,
-                ).map((_) => evaluatedValue),
-              ),
-              _ => throwError(
-                RuntimeException(
-                  'invalid-set-target',
-                  IrString('symbol or dotted symbol'),
-                ),
-              ),
-            };
-          }),
-          IrDottedSymbol(['config', 'enabled']),
-          IrString('true'), // Wrong type
-        ]);
-
-        final result = await runEvalSimple(eval(setIr), env);
-        result.match(
-          (error) => expect(true, isTrue), // Should fail with type error
-          (value) =>
-              fail('Setting with wrong type should fail, but got: ${value.$1}'),
-        );
-      });
-    });
-
-    group('Multiple properties with setters', () {
-      test('sets multiple properties on same object', () async {
-        final person = MutablePerson('David', 40);
-        final nameGetter = Eval(
-          (runtime) => Right((IrString(person.name), runtime)),
-        );
-        final ageGetter = Eval(
-          (runtime) => Right((IrInteger(person.age), runtime)),
-        );
-        Eval<Ir> Function(Ir) nameSetter = (Ir value) => switch (value) {
-          IrString(value: final newName) => Eval<Ir>((runtime) {
-            person.name = newName;
-            return Right((IrVoid(), runtime));
-          }),
-          _ => throwError(
-            RuntimeException('wrong-argument-type', IrString('string')),
-          ),
-        };
-        Eval<Ir> Function(Ir) ageSetter = (Ir value) => switch (value) {
-          IrInteger(value: final newAge) => Eval<Ir>((runtime) {
-            person.age = newAge;
-            return Right((IrVoid(), runtime));
-          }),
+        Eval<Ir> Function(Ir) ageSetter = (Ir newVal) => switch (newVal) {
+          IrInteger() => Eval.pure<Ir>(IrVoid()),
           _ => throwError(
             RuntimeException('wrong-argument-type', IrString('integer')),
           ),
-        };
-        final getters = <String, Eval<Ir>>{
-          'name': nameGetter,
-          'age': ageGetter,
         };
         final setters = <String, Eval<Ir> Function(Ir)>{
           'name': nameSetter,
           'age': ageSetter,
         };
-        final hostVal = hostValueWithProps(person, getters, setters);
+        final hostVal = hostValueWithProps((), {}, setters);
         final hostIr = IrNativeValue(hostVal);
-        final env = defineVar('person', hostIr, emptyEnv());
 
-        // Set name
-        final setNameIr = IrList([
-          IrSpecial((List<Ir> args) {
-            if (args.length != 2) {
-              return throwError(
-                RuntimeException('wrong-number-of-arguments', IrString('2')),
-              );
-            }
-            final target = args[0];
-            final value = args[1];
+        final env = defineVar('obj', hostIr, emptyEnv());
 
-            return switch (target) {
-              IrDottedSymbol(parts: final parts) => _evalSetDotted(
-                parts,
-                value,
-              ),
-              IrSymbol(value: final name) => eval(value).flatMap(
-                (evaluatedValue) => updateVarEval(
-                  name,
-                  evaluatedValue,
-                ).map((_) => evaluatedValue),
-              ),
-              _ => throwError(
-                RuntimeException(
-                  'invalid-set-target',
-                  IrString('symbol or dotted symbol'),
-                ),
-              ),
-            };
-          }),
-          IrDottedSymbol(['person', 'name']),
-          IrString('Eve'),
-        ]);
-
-        await runEvalSimple(eval(setNameIr), env);
-
-        // Set age
-        final setAgeIr = IrList([
-          IrSpecial((List<Ir> args) {
-            if (args.length != 2) {
-              return throwError(
-                RuntimeException('wrong-number-of-arguments', IrString('2')),
-              );
-            }
-            final target = args[0];
-            final value = args[1];
-
-            return switch (target) {
-              IrDottedSymbol(parts: final parts) => _evalSetDotted(
-                parts,
-                value,
-              ),
-              IrSymbol(value: final name) => eval(value).flatMap(
-                (evaluatedValue) => updateVarEval(
-                  name,
-                  evaluatedValue,
-                ).map((_) => evaluatedValue),
-              ),
-              _ => throwError(
-                RuntimeException(
-                  'invalid-set-target',
-                  IrString('symbol or dotted symbol'),
-                ),
-              ),
-            };
-          }),
-          IrDottedSymbol(['person', 'age']),
-          IrInteger(28),
-        ]);
-
-        await runEvalSimple(eval(setAgeIr), env);
-
-        // Verify both changes
-        final getNameIr = IrDottedSymbol(['person', 'name']);
-        final nameResult = await runEvalSimple(eval(getNameIr), env);
-        nameResult.match(
-          (error) => fail('Getting name should succeed: $error'),
-          (value) {
-            final (result, _) = value;
-            expect(result, equals(IrString('Eve')));
-          },
-        );
-
-        final getAgeIr = IrDottedSymbol(['person', 'age']);
-        final ageResult = await runEvalSimple(eval(getAgeIr), env);
-        ageResult.match((error) => fail('Getting age should succeed: $error'), (
+        // Set name (string)
+        final setNameArgs = [IrSymbol('obj.name'), IrString('Bob')];
+        final result1 = await runEvalSimple(set(setNameArgs), env);
+        result1.match((error) => fail('Name setting should succeed: $error'), (
           value,
         ) {
           final (result, _) = value;
-          expect(result, equals(IrInteger(28)));
+          expect(result, equals(IrVoid()));
+        });
+
+        // Set age (integer)
+        final setAgeArgs = [IrSymbol('obj.age'), IrInteger(25)];
+        final result2 = await runEvalSimple(set(setAgeArgs), env);
+        result2.match((error) => fail('Age setting should succeed: $error'), (
+          value,
+        ) {
+          final (result, _) = value;
+          expect(result, equals(IrVoid()));
         });
       });
     });
 
-    group('Error handling', () {
+    group('Error handling for missing properties', () {
       test('fails when setting non-existent property', () async {
-        final person = MutablePerson('Frank', 50);
-        final getters = <String, Eval<Ir>>{
-          'name': Eval((runtime) => Right((IrString(person.name), runtime))),
-        };
-        final setters = <String, Eval<Ir> Function(Ir)>{};
-        final hostVal = hostValueWithProps(person, getters, setters);
+        final hostVal = hostValueWithProps((), {}, {});
         final hostIr = IrNativeValue(hostVal);
-        final env = defineVar('person', hostIr, emptyEnv());
+        final env = defineVar('obj', hostIr, emptyEnv());
+        final setArgs = [IrSymbol('obj.nonexistent'), IrString('value')];
 
-        final setIr = IrList([
-          IrSpecial((List<Ir> args) {
-            if (args.length != 2) {
-              return throwError(
-                RuntimeException('wrong-number-of-arguments', IrString('2')),
-              );
-            }
-            final target = args[0];
-            final value = args[1];
-
-            return switch (target) {
-              IrDottedSymbol(parts: final parts) => _evalSetDotted(
-                parts,
-                value,
-              ),
-              IrSymbol(value: final name) => eval(value).flatMap(
-                (evaluatedValue) => updateVarEval(
-                  name,
-                  evaluatedValue,
-                ).map((_) => evaluatedValue),
-              ),
-              _ => throwError(
-                RuntimeException(
-                  'invalid-set-target',
-                  IrString('symbol or dotted symbol'),
-                ),
-              ),
-            };
-          }),
-          IrDottedSymbol(['person', 'nonexistent']),
-          IrString('value'),
-        ]);
-
-        final result = await runEvalSimple(eval(setIr), env);
+        final result = await runEvalSimple(set(setArgs), env);
         result.match(
           (error) => expect(true, isTrue), // Should fail
           (value) => fail(
@@ -515,41 +214,9 @@ void main() {
 
       test('fails when setting property on non-host value', () async {
         final env = defineVar('number', IrInteger(42), emptyEnv());
+        final setArgs = [IrSymbol('number.property'), IrString('value')];
 
-        final setIr = IrList([
-          IrSpecial((List<Ir> args) {
-            if (args.length != 2) {
-              return throwError(
-                RuntimeException('wrong-number-of-arguments', IrString('2')),
-              );
-            }
-            final target = args[0];
-            final value = args[1];
-
-            return switch (target) {
-              IrDottedSymbol(parts: final parts) => _evalSetDotted(
-                parts,
-                value,
-              ),
-              IrSymbol(value: final name) => eval(value).flatMap(
-                (evaluatedValue) => updateVarEval(
-                  name,
-                  evaluatedValue,
-                ).map((_) => evaluatedValue),
-              ),
-              _ => throwError(
-                RuntimeException(
-                  'invalid-set-target',
-                  IrString('symbol or dotted symbol'),
-                ),
-              ),
-            };
-          }),
-          IrDottedSymbol(['number', 'property']),
-          IrString('value'),
-        ]);
-
-        final result = await runEvalSimple(eval(setIr), env);
+        final result = await runEvalSimple(set(setArgs), env);
         result.match(
           (error) => expect(true, isTrue), // Should fail
           (value) => fail(

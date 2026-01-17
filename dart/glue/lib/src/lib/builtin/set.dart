@@ -27,7 +27,7 @@ Eval<Ir> set(List<Ir> args) {
         return updateVarEval(parts[0], val).map((_) => IrVoid());
 
       case 2:
-        // Object property assignment: (set obj.prop value)
+        // Object or HostValue property assignment: (set obj.prop value)
         final objName = parts[0];
         final prop = parts[1];
 
@@ -39,6 +39,15 @@ Eval<Ir> set(List<Ir> args) {
                 currentObj.properties.add(prop, val).unlock,
               );
               return updateVarEval(objName, newObj).map((_) => IrVoid());
+            } else if (currentObj is IrNativeValue) {
+              // Handle HostValue property assignment
+              final hostValue = currentObj.value;
+              final setter = hostValue.setters[prop];
+              if (setter != null) {
+                return setter(val);
+              } else {
+                return throwError(propertyNotFound(prop));
+              }
             } else {
               return throwError(notAnObject(currentObj));
             }
