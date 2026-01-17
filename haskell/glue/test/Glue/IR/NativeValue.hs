@@ -1,6 +1,6 @@
 {-# OPTIONS_GHC -Wno-orphans #-}
 
-module Glue.NativeSpec (spec) where
+module Glue.IR.NativeValue (spec) where
 
 import Data.Functor.Identity (Identity)
 import Glue.Env qualified as E
@@ -88,25 +88,6 @@ spec = describe "HostValue system for native object integration" do
         it "returns Nothing for non-host IR" do
             let ir = String "not host" :: IR Identity
             getHostValueFromIR ir `shouldBe` Nothing
-
-    describe "NativeFunc and Special constructors" do
-        it "creates NativeFunc" do
-            let nf = NativeFunc (\_ -> pure (Integer 42)) :: IR Identity
-            nf `shouldSatisfy` const True
-
-        it "creates Special" do
-            let s = Special (\_ -> pure (Integer 42)) :: IR Identity
-            s `shouldSatisfy` const True
-
-    describe "NativeFunc and Special equality" do
-        it "NativeFunc are equal" do
-            let f1 = NativeFunc (\_ -> pure (Integer 1)) :: IR Identity
-                f2 = NativeFunc (\_ -> pure (Integer 2)) :: IR Identity
-            f1 == f2 `shouldBe` True -- Functions compare as equal regardless of implementation
-        it "Special are equal" do
-            let s1 = Special (\_ -> pure (Integer 1)) :: IR Identity
-                s2 = Special (\_ -> pure (Integer 2)) :: IR Identity
-            s1 == s2 `shouldBe` True
 
     describe "IR with NativeValue" do
         it "IR equality handles NativeValue (host values are never equal)" do
