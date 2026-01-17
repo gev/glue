@@ -14,46 +14,26 @@ Implement partial application (currying) support for native functions to make Gl
 
 ## Implementation Steps
 
-### Phase 1: Haskell Core Changes
-1. **Modify IR.hs**: Add arity fields to `NativeFunc` type
-   ```haskell
-   | NativeFunc ([IR m] -> m (IR m)) Int (Maybe Int)  -- func, minArity, maxArity
-   ```
+### Haskell Implementation (Steps 1-12)
+1. Move `NativeFunc` AND `Special` constructors from ModuleInfo declarations to function implementations (run tests and make commit for every ModuleInfo)
+2. Fix the all Libraries!
+3. Check the tests
+4. Add arity info into `NativeFunc`
+5. Fix the all libraries
+6. Run tests
+7. Commit
+8. Implement partial application
+9. Add special tests into `EvalSpec.hs`
+10. Run tests
+11. Fix bugs
+12. Commit
 
-2. **Update Eval.hs**: Modify `apply` to handle partial application
-   ```haskell
-   applyNativeFunc f minArity maxArity rawArgs = do
-       args <- mapM eval rawArgs
-       if length args < minArity then
-           -- Create closure for partial application
-           createPartialClosure f args (minArity - length args)
-       else if length args > maxArity then
-           throwError wrongNumberOfArguments
-       else
-           f args  -- Full application
-   ```
+### Dart Implementation
+Make changes in the Dart implementation in the same order from 1 to 12
 
-### Phase 2: Function Updates (Incremental)
-3. **Move constructors from ModuleInfo to function implementations**:
-   - Change `NativeFunc` functions: From `[IR] -> Eval IR` to structured return type
-   - Change `Special` functions: From `[IR] -> Eval IR` to structured return type
-   - Remove manual arg validation from functions
-   - Update module registrations to reference functions directly (no `NativeFunc`/`Special` wrappers)
-
-4. **Test each module**: Ensure functionality preserved after constructor moves
-
-### Phase 3: Testing & Refinement
-7. **Add comprehensive tests**: Partial application scenarios
-8. **Performance validation**: Ensure no runtime overhead
-9. **Edge case handling**: Error conditions and type safety
-
-### Phase 4: Dart Implementation
-10. **Repeat all steps**: Match Haskell exactly
-11. **Cross-implementation testing**: Verify identical behavior
-
-### Phase 5: Documentation
-12. **Update specifications**: Document partial application behavior
-13. **Update drafts**: Technical implementation details
+### Documentation
+Update drafts and specifications
+Make commit
 
 ## Key Technical Decisions
 
