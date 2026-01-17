@@ -34,10 +34,13 @@ Implement partial application (currying) support for native functions to make Gl
    ```
 
 ### Phase 2: Function Updates (Incremental)
-3. **Change function signatures**: From `[IR] -> Eval IR` to structured return type
-4. **Remove manual arg validation**: Functions assume correct arg count
-5. **Update module registrations**: Remove `NativeFunc` constructors
-6. **Test each module**: Ensure functionality preserved
+3. **Move constructors from ModuleInfo to function implementations**:
+   - Change `NativeFunc` functions: From `[IR] -> Eval IR` to structured return type
+   - Change `Special` functions: From `[IR] -> Eval IR` to structured return type
+   - Remove manual arg validation from functions
+   - Update module registrations to reference functions directly (no `NativeFunc`/`Special` wrappers)
+
+4. **Test each module**: Ensure functionality preserved after constructor moves
 
 ### Phase 3: Testing & Refinement
 7. **Add comprehensive tests**: Partial application scenarios
