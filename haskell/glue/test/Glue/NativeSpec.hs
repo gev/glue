@@ -33,20 +33,18 @@ person [Object props] = do
     -- Extract properties from object literal with type checking
     name <- case Map.lookup "name" props of
         Just (String n) -> pure n
-        Just _ -> throwError $ wrongArgumentType ["string"]
-        Nothing -> throwError $ wrongArgumentType ["name: string"]
+        _ -> throwError $ wrongArgumentType ["name: string"]
 
     age <- case Map.lookup "age" props of
         Just (Integer a) -> pure (fromIntegral a)
-        Just _ -> throwError $ wrongArgumentType ["integer"]
-        Nothing -> throwError $ wrongArgumentType ["age: integer"]
+        _ -> throwError $ wrongArgumentType ["age: integer"]
 
     address <- case Map.lookup "address" props of
         Just (NativeValue addrHostValue) ->
             case extractHostValue addrHostValue :: Maybe Address of
                 Just _ -> pure $ Just (NativeValue addrHostValue) -- Store the NativeValue
                 Nothing -> throwError $ wrongArgumentType ["address: Address"]
-        Just _ -> throwError $ wrongArgumentType ["NativeValue"]
+        Just _ -> throwError $ wrongArgumentType ["address: Address"]
         Nothing -> pure Nothing -- Address is optional
 
     -- Create mutable Person object
@@ -74,6 +72,12 @@ person [Object props] = do
         ageSetter = \case
             Integer newAge -> liftIO $ writeIORef ageRef (fromIntegral newAge) >> pure Void
             _ -> throwError $ wrongArgumentType ["integer"]
+        addressSetter = \case
+            NativeValue addrHostValue ->
+                case extractHostValue addrHostValue :: Maybe Address of
+                    Just _ -> liftIO $ writeIORef addressRef (Just (NativeValue addrHostValue)) >> pure Void
+                    Nothing -> throwError $ wrongArgumentType ["address: Address"]
+            _ -> throwError $ wrongArgumentType ["NativeValue"]
 
     let getters =
             Map.fromList
@@ -85,6 +89,7 @@ person [Object props] = do
             Map.fromList
                 [ ("name", nameSetter)
                 , ("age", ageSetter)
+                , ("address", addressSetter)
                 ]
 
     pure (NativeValue $ hostValueWithProps personObj getters setters)
@@ -269,6 +274,20 @@ spec = describe "Full FFI Integration Tests" do
                         , ")"
                         ]
             result `shouldBe` Right (Integer 26)
+
+        it "sets new address on person" $ do
+            result <-
+                runGlueCode $
+                    T.unlines
+                        [ "("
+                        , "  (def addr1 (address :street \"123 Main St\" :city \"Springfield\"))"
+                        , "  (def addr2 (address :street \"456 Oak Ave\" :city \"Boston\"))"
+                        , "  (def bob (person :name \"Bob\" :age 25 :address addr1))"
+                        , "  (set bob.address addr2)"
+                        , "  bob.address.city"
+                        , ")"
+                        ]
+            result `shouldBe` Right (String "Boston")
 
     describe "Error Handling" do
         it "fails with wrong constructor arguments" $ do
