@@ -1,355 +1,525 @@
-import 'package:glue/src/env.dart';
-import 'package:glue/src/eval.dart';
-import 'package:glue/src/ir.dart';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
+import 'package:glue/env.dart';
+import 'package:glue/eval.dart';
+import 'package:glue/ir.dart';
+import 'package:glue/src/ast.dart';
+import 'package:glue/src/either.dart';
+import 'package:glue/src/eval/error.dart';
+import 'package:glue/src/eval/exception.dart';
+import 'package:glue/src/parser.dart';
 import 'package:test/test.dart';
 
-// Test data types for host values
-class TestWidget {
-  final String label;
-  final bool enabled;
-  const TestWidget(this.label, this.enabled);
+// Test data types for host objects with mutable state
+class Person {
+  final String name;
+  final int age;
+  final Address? address;
+
+  const Person(this.name, this.age, this.address);
 
   @override
-  String toString() => 'TestWidget($label, $enabled)';
+  String toString() => 'Person($name, $age, $address)';
 
   @override
   bool operator ==(Object other) =>
-      other is TestWidget && other.label == label && other.enabled == enabled;
+      other is Person &&
+      other.name == name &&
+      other.age == age &&
+      other.address == address;
 
   @override
-  int get hashCode => Object.hash(label, enabled);
+  int get hashCode => Object.hash(name, age, address);
 }
 
-class TestConnection {
-  final String host;
-  final int port;
-  const TestConnection(this.host, this.port);
+class Address {
+  final String street;
+  final String city;
+
+  const Address(this.street, this.city);
 
   @override
-  String toString() => 'TestConnection($host, $port)';
+  String toString() => 'Address($street, $city)';
 
   @override
   bool operator ==(Object other) =>
-      other is TestConnection && other.host == host && other.port == port;
+      other is Address && other.street == street && other.city == city;
 
   @override
-  int get hashCode => Object.hash(host, port);
+  int get hashCode => Object.hash(street, city);
+}
+
+// Constructor functions that take object literals and create native objects
+Eval<Ir> person(List<Ir> args) {
+  return switch (args) {
+    [IrObject(properties: final props)] => _createPerson(props),
+    _ => throwError(
+      RuntimeException('wrong-argument-type', IrString('object')),
+    ),
+  };
+}
+
+Eval<Ir> address(List<Ir> args) {
+  return switch (args) {
+    [IrObject(properties: final props)] => _createAddress(props),
+    _ => throwError(
+      RuntimeException('wrong-argument-type', IrString('object')),
+    ),
+  };
+}
+
+Eval<Ir> _createPerson(IMap<String, Ir> props) {
+  final propsMap = props.unlock;
+  // Extract properties from object literal with type checking
+  final name = switch (props['name']) {
+    IrString(value: final n) => n,
+    IrString() => throw RuntimeException(
+      'wrong-argument-type',
+      IrString('string'),
+    ),
+    null => throw RuntimeException(
+      'wrong-argument-type',
+      IrString('name: string'),
+    ),
+    _ => throw RuntimeException('wrong-argument-type', IrString('string')),
+  };
+
+  final age = switch (props['age']) {
+    IrInteger(value: final a) => a,
+    IrInteger() => throw RuntimeException(
+      'wrong-argument-type',
+      IrString('integer'),
+    ),
+    null => throw RuntimeException(
+      'wrong-argument-type',
+      IrString('age: integer'),
+    ),
+    _ => throw RuntimeException('wrong-argument-type', IrString('integer')),
+  };
+
+  final address = switch (props['address']) {
+    IrNativeValue(value: final addrHostValue) =>
+      switch (extractHostValue<Address>(addrHostValue)) {
+        final addr? => addr,
+        null => throw RuntimeException(
+          'wrong-argument-type',
+          IrString('address: Address'),
+        ),
+      },
+    IrNativeValue() => throw RuntimeException(
+      'wrong-argument-type',
+      IrString('NativeValue'),
+    ),
+    null => null,
+    _ => throw RuntimeException('wrong-argument-type', IrString('NativeValue')),
+  };
+
+  final personObj = Person(name, age, address);
+
+  // Create getters and setters
+  final getters = <String, Eval<Ir>>{
+    'name': Eval.pure(IrString(personObj.name)),
+    'age': Eval.pure(IrInteger(personObj.age)),
+    'address': switch (personObj.address) {
+      final addr? => Eval.pure(IrNativeValue(hostValue(addr))),
+      null => Eval.pure(IrString('no address')),
+    },
+  };
+
+  final setters = <String, Eval<Ir> Function(Ir)>{
+    'name': (Ir value) => switch (value) {
+      IrString(value: final newName) => Eval.pure(IrVoid()),
+      _ => throwError(
+        RuntimeException('wrong-argument-type', IrString('string')),
+      ),
+    },
+    'age': (Ir value) => switch (value) {
+      IrInteger(value: final newAge) => Eval.pure(IrVoid()),
+      _ => throwError(
+        RuntimeException('wrong-argument-type', IrString('integer')),
+      ),
+    },
+  };
+
+  return Eval.pure(
+    IrNativeValue(hostValueWithProps(personObj, getters, setters)),
+  );
+}
+
+Eval<Ir> _createAddress(IMap<String, Ir> props) {
+  final propsMap = props.unlock;
+  // Extract properties from object literal with type checking
+  final street = switch (props['street']) {
+    IrString(value: final s) => s,
+    IrString() => throw RuntimeException(
+      'wrong-argument-type',
+      IrString('string'),
+    ),
+    null => throw RuntimeException(
+      'wrong-argument-type',
+      IrString('street: string'),
+    ),
+    _ => throw RuntimeException('wrong-argument-type', IrString('string')),
+  };
+
+  final city = switch (props['city']) {
+    IrString(value: final c) => c,
+    IrString() => throw RuntimeException(
+      'wrong-argument-type',
+      IrString('string'),
+    ),
+    null => throw RuntimeException(
+      'wrong-argument-type',
+      IrString('city: string'),
+    ),
+    _ => throw RuntimeException('wrong-argument-type', IrString('string')),
+  };
+
+  final addrObj = Address(street, city);
+
+  // Create getters and setters
+  final getters = <String, Eval<Ir>>{
+    'street': Eval.pure(IrString(addrObj.street)),
+    'city': Eval.pure(IrString(addrObj.city)),
+  };
+
+  final setters = <String, Eval<Ir> Function(Ir)>{
+    'street': (Ir value) => switch (value) {
+      IrString(value: final newStreet) => Eval.pure(IrVoid()),
+      _ => throwError(
+        RuntimeException('wrong-argument-type', IrString('string')),
+      ),
+    },
+    'city': (Ir value) => switch (value) {
+      IrString(value: final newCity) => Eval.pure(IrVoid()),
+      _ => throwError(
+        RuntimeException('wrong-argument-type', IrString('string')),
+      ),
+    },
+  };
+
+  return Eval.pure(
+    IrNativeValue(hostValueWithProps(addrObj, getters, setters)),
+  );
+}
+
+// Test environment with constructors
+Env testEnv() {
+  return defineVar(
+    'person',
+    IrNativeFunc(person),
+    defineVar(
+      'address',
+      IrNativeFunc(address),
+      defineVar(
+        'def',
+        IrSpecial((List<Ir> args) {
+          if (args.length != 2) {
+            return throwError(
+              RuntimeException('wrong-number-of-arguments', IrString('2')),
+            );
+          }
+          final name = switch (args[0]) {
+            IrSymbol(value: final n) => n,
+            _ => throw RuntimeException(
+              'wrong-argument-type',
+              IrString('symbol'),
+            ),
+          };
+          return eval(
+            args[1],
+          ).flatMap((value) => defineVarEval(name, value).map((_) => value));
+        }),
+        defineVar(
+          'set',
+          IrSpecial((List<Ir> args) {
+            if (args.length != 2) {
+              return throwError(
+                RuntimeException('wrong-number-of-arguments', IrString('2')),
+              );
+            }
+            final target = args[0];
+            final value = args[1];
+
+            return switch (target) {
+              IrDottedSymbol(parts: final parts) => _evalSetDotted(
+                parts,
+                value,
+              ),
+              IrSymbol(value: final name) => eval(value).flatMap(
+                (evaluatedValue) => updateVarEval(
+                  name,
+                  evaluatedValue,
+                ).map((_) => evaluatedValue),
+              ),
+              _ => throwError(
+                RuntimeException(
+                  'invalid-set-target',
+                  IrString('symbol or dotted symbol'),
+                ),
+              ),
+            };
+          }),
+          emptyEnv(),
+        ),
+      ),
+    ),
+  );
+}
+
+// Helper to handle set on dotted symbols (obj.prop = value)
+Eval<Ir> _evalSetDotted(List<String> parts, Ir value) {
+  if (parts.length < 2) {
+    return throwError(
+      RuntimeException(
+        'invalid-set-target',
+        IrString('dotted symbol with property'),
+      ),
+    );
+  }
+
+  final baseName = parts[0];
+  final prop = parts[1];
+
+  return getEnv().flatMap((env) {
+    final result = lookupVar(baseName, env);
+    return result.match(
+      (error) => throwError(error),
+      (baseValue) => switch (baseValue) {
+        IrNativeValue(value: final hostValue) =>
+          hostValue.setters[prop] != null
+              ? eval(value).flatMap(
+                  (evaluatedValue) => hostValue.setters[prop]!(evaluatedValue),
+                )
+              : throwError(
+                  RuntimeException('property-not-found', IrString(prop)),
+                ),
+        _ => throwError(
+          RuntimeException('not-an-object', IrString('host value')),
+        ),
+      },
+    );
+  });
+}
+
+// Helper to run Glue code
+Future<Either<EvalError, Ir>> runGlueCode(String input) async {
+  final parseResult = parseGlue(input);
+  return parseResult.match(
+    (parseError) {
+      return Left(
+        EvalError(
+          [],
+          RuntimeException('parse-error', IrString(parseError.message)),
+        ),
+      );
+    },
+    (ast) async {
+      final ir = compile(ast);
+      final result = await runEvalSimple(eval(ir), testEnv());
+      return result.match(
+        (error) => Left<EvalError, Ir>(error),
+        (value) => Right<EvalError, Ir>(value.$1),
+      );
+    },
+  );
 }
 
 void main() {
-  group('HostValue system for native object integration', () {
-    group('HostValue creation and extraction', () {
-      test('creates host value from any typeable value', () {
-        final widget = TestWidget('button', true);
-        final hv = hostValue(widget);
-        expect(hv, isNotNull); // Just check it creates successfully
+  group('Full FFI Integration Tests', () {
+    group('Basic Object Creation and Property Access', () {
+      test('creates person and accesses properties', () async {
+        final result = await runGlueCode('''
+(def bob (person :name "Bob" :age 25))
+bob.name
+''');
+        expect(result.isRight, isTrue);
+        result.match((error) => fail('Should not be left: $error'), (value) {
+          expect(value, equals(IrString('Bob')));
+        });
       });
 
-      test('extracts host value with correct type', () {
-        final widget = TestWidget('submit', false);
-        final hv = hostValue(widget);
-        expect(extractHostValue<TestWidget>(hv), equals(widget));
-      });
-
-      test('fails to extract with wrong type', () {
-        final widget = TestWidget('test', true);
-        final hv = hostValue(widget);
-        expect(extractHostValue<String>(hv), isNull);
-      });
-
-      test('handles different host value types', () {
-        final conn = TestConnection('localhost', 5432);
-        final hv = hostValue(conn);
-        expect(extractHostValue<TestConnection>(hv), equals(conn));
-      });
-
-      test('round-trip: any typeable value can be stored and retrieved', () {
-        final w = TestWidget('roundtrip', false);
-        final hv = hostValue(w);
-        expect(extractHostValue<TestWidget>(hv), equals(w));
+      test('creates address and accesses properties', () async {
+        final result = await runGlueCode('''
+(def addr (address :street "123 Main St" :city "Springfield"))
+addr.street
+''');
+        expect(result.isRight, isTrue);
+        result.match((error) => fail('Should not be left: $error'), (value) {
+          expect(value, equals(IrString('123 Main St')));
+        });
       });
     });
 
-    group('HostValue equality', () {
-      test('host values are never equal (opaque comparison)', () {
-        final hv1 = hostValue(TestWidget('a', true));
-        final hv2 = hostValue(TestWidget('a', true));
-        expect(hv1 == hv2, isFalse);
+    group('Property Modification', () {
+      test('modifies person properties', () async {
+        final result = await runGlueCode('''
+(def bob (person :name "Bob" :age 25))
+(set bob.age 26)
+bob.age
+''');
+        expect(result.isRight, isTrue);
+        result.match((error) => fail('Should not be left: $error'), (value) {
+          expect(value, equals(IrInteger(26)));
+        });
       });
 
-      test('different host values are not equal', () {
-        final hv1 = hostValue(TestWidget('a', true));
-        final hv2 = hostValue(TestWidget('b', false));
-        expect(hv1 == hv2, isFalse);
-      });
-    });
-
-    group('HostValue in IR system', () {
-      test('creates IR with host value', () {
-        final widget = TestWidget('test', true);
-        final hv = hostValue(widget);
-        final ir = IrNativeValue(hv);
-        expect(ir, isNotNull);
-      });
-
-      test('identifies host value IR', () {
-        final hv = hostValue(TestWidget('test', true));
-        final ir = IrNativeValue(hv);
-        expect(isHostValue(ir), isTrue);
-      });
-
-      test('non-host IR is not identified as host value', () {
-        final ir = IrInteger(42);
-        expect(isHostValue(ir), isFalse);
-      });
-
-      test('extracts host value from IR', () {
-        final widget = TestWidget('extract', false);
-        final hv = hostValue(widget);
-        final ir = IrNativeValue(hv);
-        final extracted = getHostValueFromIR(ir);
-        expect(extracted, isNotNull);
-        expect(extractHostValue<TestWidget>(extracted!), equals(widget));
-      });
-
-      test('returns Nothing for non-host IR', () {
-        final ir = IrString('not host');
-        expect(getHostValueFromIR(ir), isNull);
+      test('modifies address properties', () async {
+        final result = await runGlueCode('''
+(def addr (address :street "123 Main St" :city "Springfield"))
+(set addr.city "Boston")
+addr.city
+''');
+        expect(result.isRight, isTrue);
+        result.match((error) => fail('Should not be left: $error'), (value) {
+          expect(value, equals(IrString('Boston')));
+        });
       });
     });
 
-    group('NativeFunc and Special constructors', () {
-      test('creates NativeFunc', () {
-        final nf = IrNativeFunc((List<Ir> args) => Eval.pure(IrInteger(42)));
-        expect(nf, isNotNull);
+    group('Complex Object Relationships', () {
+      test('creates person with address', () async {
+        final result = await runGlueCode('''
+(def addr (address :street "123 Main St" :city "Springfield"))
+(def bob (person :name "Bob" :age 25 :address addr))
+bob.address.city
+''');
+        expect(result.isRight, isTrue);
+        result.match((error) => fail('Should not be left: $error'), (value) {
+          expect(value, equals(IrString('Springfield')));
+        });
       });
 
-      test('creates Special', () {
-        final s = IrSpecial((List<Ir> args) => Eval.pure(IrInteger(42)));
-        expect(s, isNotNull);
-      });
-    });
-
-    group('NativeFunc and Special equality', () {
-      test('NativeFunc aren\'t equal', () {
-        final f1 = IrNativeFunc((List<Ir> args) => Eval.pure(IrInteger(1)));
-        final f2 = IrNativeFunc((List<Ir> args) => Eval.pure(IrInteger(2)));
-        expect(f1 == f2, isFalse);
-      });
-
-      test('Special aren\'t equal', () {
-        final s1 = IrSpecial((List<Ir> args) => Eval.pure(IrInteger(1)));
-        final s2 = IrSpecial((List<Ir> args) => Eval.pure(IrInteger(2)));
-        expect(s1 == s2, isFalse);
-      });
-    });
-
-    group('IR with NativeValue', () {
-      test('IR equality handles NativeValue (host values are never equal)', () {
-        final hv1 = hostValue(TestWidget('ir', true));
-        final hv2 = hostValue(
-          TestWidget('ir', true),
-        ); // Same content, different instances
-        final ir1 = IrNativeValue(hv1);
-        final ir2 = IrNativeValue(hv2);
-        expect(ir1 == ir2, isFalse); // Host values are never equal
-      });
-
-      test('IR show displays NativeValue', () {
-        final hv = hostValue(TestWidget('show', false));
-        final ir = IrNativeValue(hv);
-        expect(ir.toString(), contains('<host:'));
+      test('modifies nested properties', () async {
+        final result = await runGlueCode('''
+(def addr (address :street "123 Main St" :city "Springfield"))
+(def bob (person :name "Bob" :age 25 :address addr))
+(set bob.address.city "Boston")
+bob.address.city
+''');
+        expect(result.isRight, isTrue);
+        result.match((error) => fail('Should not be left: $error'), (value) {
+          expect(value, equals(IrString('Boston')));
+        });
       });
     });
 
-    group('Type safety guarantees', () {
-      test('prevents incorrect type extraction at runtime', () {
-        final widget = TestWidget('type', true);
-        final hv = hostValue(widget);
-        // This should fail at runtime, not compile time
-        expect(extractHostValue<String>(hv), isNull);
+    group('Multiple Operations in Sequence', () {
+      test('performs complex object manipulation', () async {
+        final result = await runGlueCode('''
+(def addr (address :street "123 Main St" :city "Springfield"))
+(def bob (person :name "Bob" :age 25 :address addr))
+(set bob.age 26)
+(set bob.name "Robert")
+(set bob.address.city "Boston")
+(set bob.address.street "456 Oak Ave")
+bob.name
+''');
+        expect(result.isRight, isTrue);
+        result.match((error) => fail('Should not be left: $error'), (value) {
+          expect(value, equals(IrString('Robert')));
+        });
       });
 
-      test('type safety: extraction succeeds only for correct types', () {
-        final w = TestWidget('type', true);
-        final s = 'not a widget';
-        final hv = hostValue(w);
-        final widgetResult = extractHostValue<TestWidget>(hv);
-        final stringResult = extractHostValue<String>(hv);
-        expect(widgetResult, equals(w));
-        expect(stringResult, isNull);
+      test('verifies all modifications persist', () async {
+        final result = await runGlueCode('''
+(def addr (address :street "123 Main St" :city "Springfield"))
+(def bob (person :name "Bob" :age 25 :address addr))
+(set bob.age 26)
+(set bob.address.city "Boston")
+bob.age
+''');
+        expect(result.isRight, isTrue);
+        result.match((error) => fail('Should not be left: $error'), (value) {
+          expect(value, equals(IrInteger(26)));
+        });
+      });
+
+      test('sets new address on person', () async {
+        final result = await runGlueCode('''
+(def addr1 (address :street "123 Main St" :city "Springfield"))
+(def addr2 (address :street "456 Oak Ave" :city "Boston"))
+(def bob (person :name "Bob" :age 25 :address addr1))
+(set bob.address addr2)
+bob.address.city
+''');
+        expect(result.isRight, isTrue);
+        result.match((error) => fail('Should not be left: $error'), (value) {
+          expect(value, equals(IrString('Boston')));
+        });
       });
     });
 
-    group('Host value lifecycle', () {
-      test('host values can be created from complex types', () {
-        final complex = [TestWidget('a', true), TestWidget('b', false)];
-        final hv = hostValue(complex);
-        expect(extractHostValue<List<TestWidget>>(hv), equals(complex));
+    group('Error Handling', () {
+      test('fails with wrong constructor arguments', () async {
+        final result = await runGlueCode('(person "Bob")');
+        expect(result.isLeft, isTrue);
       });
 
-      test('host values preserve nested structures', () {
-        final nested = ('tuple', TestConnection('host', 8080), 42);
-        final hv = hostValue(nested);
-        expect(
-          extractHostValue<(String, TestConnection, int)>(hv),
-          equals(nested),
+      test('fails with wrong name type', () async {
+        final result = await runGlueCode('(person :name 123 :age 25)');
+        expect(result.isLeft, isTrue);
+      });
+
+      test('fails with wrong age type', () async {
+        final result = await runGlueCode('(person :name "Bob" :age "25")');
+        expect(result.isLeft, isTrue);
+      });
+
+      test('fails with wrong address type', () async {
+        final result = await runGlueCode(
+          '(person :name "Bob" :age 25 :address "not-an-address")',
         );
-      });
-    });
-
-    group('Integration with IR system', () {
-      test('host values integrate seamlessly with IR', () {
-        final w = TestWidget('complex', true);
-        final hv = hostValue(w);
-        final ir = IrNativeValue(hv);
-        expect(isHostValue(ir), isTrue);
-        final extracted = getHostValueFromIR(ir);
-        expect(extracted, isNotNull);
-        expect(extractHostValue<TestWidget>(extracted!), equals(w));
+        expect(result.isLeft, isTrue);
       });
 
-      test('host values work in complex IR structures', () {
-        final hv = hostValue(TestWidget('complex', true));
-        final listIr = IrList([IrNativeValue(hv), IrString('test')]);
-        // The list should contain the host value and string
-        expect(listIr.elements.length, equals(2));
-        expect(listIr.elements[0], isA<IrNativeValue>());
-        expect(listIr.elements[1], equals(IrString('test')));
-      });
-    });
-
-    group('HostValue evaluation behavior', () {
-      test('host values evaluate to themselves (no change)', () async {
-        final hv = hostValue(TestWidget('eval', true));
-        final ir = IrNativeValue(hv);
-        final env = emptyEnv();
-        final result = await runEvalSimple(eval(ir), env);
-        expect(result.isRight, isTrue);
-        result.match((error) => fail('Should not be left: $error'), (value) {
-          final (evaluated, _) = value;
-          // Check that it's still a host value
-          expect(isHostValue(evaluated), isTrue);
-          // Extract and compare the contents with explicit types
-          final origHv = getHostValueFromIR(ir);
-          final evaluatedHv = getHostValueFromIR(evaluated);
-          expect(origHv, isNotNull);
-          expect(evaluatedHv, isNotNull);
-          final origWidget = extractHostValue<TestWidget>(origHv!);
-          final evaluatedWidget = extractHostValue<TestWidget>(evaluatedHv!);
-          expect(origWidget, equals(evaluatedWidget));
-        });
+      test('fails with missing name field', () async {
+        final result = await runGlueCode('(person :age 25)');
+        expect(result.isLeft, isTrue);
       });
 
-      test('host values cannot be called directly (not callable)', () async {
-        final hv = hostValue(TestWidget('call', false));
-        final hostIr = IrNativeValue(hv);
-        final callIr = IrList([hostIr, IrString('arg')]);
-        final env = emptyEnv();
-        final result = await runEvalSimple(eval(callIr), env);
-        expect(result.isRight, isTrue);
-        result.match((error) => fail('Should not be left: $error'), (value) {
-          final (resultIr, _) = value;
-          // Should evaluate to a list containing the host value and string
-          expect(resultIr, isA<IrList>());
-          final listIr = resultIr as IrList;
-          expect(listIr.elements.length, equals(2));
-          expect(listIr.elements[0], isA<IrNativeValue>());
-          expect(listIr.elements[1], equals(IrString('arg')));
-        });
+      test('fails with missing age field', () async {
+        final result = await runGlueCode('(person :name "Bob")');
+        expect(result.isLeft, isTrue);
       });
 
-      test('host values can be passed as arguments to functions', () async {
-        // Create a function that accepts a host value and returns it
-        final identityFunc = IrNativeFunc(
-          (List<Ir> args) => Eval.pure(args[0]),
+      test('fails with wrong street type', () async {
+        final result = await runGlueCode(
+          '(address :street 123 :city "Springfield")',
         );
-        final hv = hostValue(TestWidget('arg', true));
-        final hostIr = IrNativeValue(hv);
-        final callIr = IrList([identityFunc, hostIr]);
-        final env = emptyEnv();
-        final result = await runEvalSimple(eval(callIr), env);
-        expect(result.isRight, isTrue);
-        result.match((error) => fail('Should not be left: $error'), (value) {
-          final (resultIr, _) = value;
-          // Check that result is a host value with the same content
-          expect(isHostValue(resultIr), isTrue);
-          final origHv = getHostValueFromIR(hostIr);
-          final resHv = getHostValueFromIR(resultIr);
-          expect(origHv, isNotNull);
-          expect(resHv, isNotNull);
-          final origWidget = extractHostValue<TestWidget>(origHv!);
-          final resWidget = extractHostValue<TestWidget>(resHv!);
-          expect(origWidget, equals(resWidget));
-        });
+        expect(result.isLeft, isTrue);
       });
 
-      test('functions can return host values', () async {
-        // Create a function that returns a host value
-        final widget = TestWidget('return', false);
-        final hv = hostValue(widget);
-        final returnFunc = IrNativeFunc(
-          (List<Ir> args) => Eval.pure(IrNativeValue(hv)),
+      test('fails with wrong city type', () async {
+        final result = await runGlueCode(
+          '(address :street "123 Main St" :city 456)',
         );
-        final callIr = IrList([returnFunc]);
-        final env = emptyEnv();
-        final result = await runEvalSimple(eval(callIr), env);
-        expect(result.isRight, isTrue);
-        result.match((error) => fail('Should not be left: $error'), (value) {
-          final (resultIr, _) = value;
-          // Check that result is a host value with the expected content
-          expect(isHostValue(resultIr), isTrue);
-          final extracted = getHostValueFromIR(resultIr);
-          expect(extracted, isNotNull);
-          expect(extractHostValue<TestWidget>(extracted!), equals(widget));
-        });
+        expect(result.isLeft, isTrue);
       });
 
-      test('host values work in nested function calls', () async {
-        // Test: (identity (create-widget "nested"))
-        final createWidgetFunc = IrNativeFunc(
-          (List<Ir> args) =>
-              Eval.pure(IrNativeValue(hostValue(TestWidget('nested', true)))),
-        );
-        final identityFunc = IrNativeFunc(
-          (List<Ir> args) => Eval.pure(args[0]),
-        );
-        final createCall = IrList([createWidgetFunc]);
-        final nestedCall = IrList([identityFunc, createCall]);
-        final env = emptyEnv();
-        final result = await runEvalSimple(eval(nestedCall), env);
-        expect(result.isRight, isTrue);
-        result.match((error) => fail('Should not be left: $error'), (value) {
-          final (resultIr, _) = value;
-          expect(isHostValue(resultIr), isTrue);
-          final extracted = getHostValueFromIR(resultIr);
-          expect(extracted, isNotNull);
-          expect(
-            extractHostValue<TestWidget>(extracted!),
-            equals(TestWidget('nested', true)),
-          );
-        });
+      test('fails with missing street field', () async {
+        final result = await runGlueCode('(address :city "Springfield")');
+        expect(result.isLeft, isTrue);
       });
 
-      test('host values in environment work correctly', () async {
-        final hv = hostValue(TestWidget('env', false));
-        final hostIr = IrNativeValue(hv);
-        final env = defineVar('myWidget', hostIr, emptyEnv());
-        final symbolIr = IrSymbol('myWidget');
-        final result = await runEvalSimple(eval(symbolIr), env);
-        expect(result.isRight, isTrue);
-        result.match((error) => fail('Should not be left: $error'), (value) {
-          final (resultIr, _) = value;
-          // Check that result is a host value with the same content
-          expect(isHostValue(resultIr), isTrue);
-          final origHv = getHostValueFromIR(hostIr);
-          final resHv = getHostValueFromIR(resultIr);
-          expect(origHv, isNotNull);
-          expect(resHv, isNotNull);
-          final origWidget = extractHostValue<TestWidget>(origHv!);
-          final resWidget = extractHostValue<TestWidget>(resHv!);
-          expect(origWidget, equals(resWidget));
-        });
+      test('fails with missing city field', () async {
+        final result = await runGlueCode('(address :street "123 Main St")');
+        expect(result.isLeft, isTrue);
+      });
+
+      test('fails accessing non-existent properties', () async {
+        final result = await runGlueCode('''
+(def bob (person :name "Bob" :age 25))
+bob.nonexistent
+''');
+        expect(result.isLeft, isTrue);
+      });
+
+      test('fails setting wrong types', () async {
+        final result = await runGlueCode('''
+(def bob (person :name "Bob" :age 25))
+(set bob.age "not-a-number")
+''');
+        expect(result.isLeft, isTrue);
       });
     });
   });
