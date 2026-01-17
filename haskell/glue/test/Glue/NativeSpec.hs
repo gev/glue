@@ -8,7 +8,7 @@ import Glue.Env qualified as E
 import Glue.Eval (Eval, liftIO, runEvalSimple, throwError)
 import Glue.Eval qualified
 import Glue.Eval.Exception (wrongArgumentType)
-import Glue.IR (Env, IR (..), hostValueWithProps)
+import Glue.IR (Env, IR (..), extractHostValue, hostValueWithProps)
 import Glue.IR qualified
 import Glue.Lib.Builtin.Def (def)
 import Glue.Lib.Builtin.Set qualified as Set
@@ -38,7 +38,10 @@ person [Object props] = do
             Just (Integer a) -> fromIntegral a
             _ -> 0
         address = case Map.lookup "address" props of
-            Just addrNativeValue@(NativeValue _) -> Just addrNativeValue
+            Just (NativeValue addrHostValue) ->
+                case extractHostValue addrHostValue :: Maybe Address of
+                    Just _ -> Just (NativeValue addrHostValue) -- Store the NativeValue
+                    Nothing -> Nothing -- Type check failed
             _ -> Nothing
 
     -- Create mutable Person object
