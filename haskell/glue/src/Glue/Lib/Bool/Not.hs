@@ -4,10 +4,15 @@ import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (IR (..))
 
-not_ :: [IR Eval] -> Eval (IR Eval)
-not_ [arg] = do
+-- Implementation function (current logic)
+notImpl :: [IR Eval] -> Eval (IR Eval)
+notImpl [arg] = do
     val <- eval arg
     case val of
         Bool False -> pure $ Bool True
         _ -> pure $ Bool False
-not_ _ = throwError $ wrongArgumentType ["arg"]
+notImpl _ = throwError $ wrongArgumentType ["arg"]
+
+-- Function definition with NativeFunc constructor
+not_ :: IR Eval
+not_ = NativeFunc notImpl
