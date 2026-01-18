@@ -1,16 +1,5 @@
 # Partial Application Implementation - Phase 1: Constructor Migration
 
-## Overview
-Implement partial application (currying) support for native functions to make Glue a proper functional programming language with first-class functions.
-
-## Current Issue
-`NativeFunc` doesn't support partial application while `Closure` does, breaking functional programming principles.
-
-## Solution: Universal Currying Contract
-- **Single contract for ALL functions:** `IR → IR`
-- Functions take one argument, return result or closure
-- Automatic partial application (Haskell-style currying)
-- No arity declarations or complex logic
 
 ## Module Inventory
 
@@ -277,14 +266,6 @@ Make identical changes in Dart implementation in same order (1-6)
 - **Math**: `lib/src/lib/math.dart`, `lib/src/lib/math/*/` (submodules)
 
 **See:** [Development Technology](development-technology.md) for cross-language synchronization requirements
-
-## Key Technical Decisions
-
-- **Universal contract**: All functions `IR → IR` (single argument)
-- **Internal currying**: Functions decide when to return result vs closure
-- **Automatic partial application**: Every call can be partial
-- **Special forms**: No partial application (syntactic constructs)
-- **Pure functional**: Haskell-style evaluation model
 
 ## Success Criteria for Phase 1
 
