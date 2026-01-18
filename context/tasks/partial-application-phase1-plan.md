@@ -1,4 +1,4 @@
-# Partial Application Implementation Plan
+# Partial Application Implementation - Phase 1: Constructor Migration
 
 ## Overview
 Implement partial application (currying) support for native functions to make Glue a proper functional programming language with first-class functions.
@@ -228,23 +228,55 @@ Implement partial application (currying) support for native functions to make Gl
 | `lib/src/lib/math/utility/min.dart` | - | min |
 | `lib/src/lib/math/utility/max.dart` | - | max |
 
-## Implementation Phases
+## Implementation Phase 1: Constructor Migration (Steps 1-6)
+**Goal:** Move constructors from ModuleInfo to function implementations for ALL modules
 
-### Phase 1: Constructor Migration
-**Goal:** Move constructors from ModuleInfo to function implementations
+#### Haskell Implementation (Steps 1-3)
 
-**See:** [Partial Application Phase 1 Plan](partial-application-phase1-plan.md) for detailed implementation steps
+**Step 1: Bool Module**
+- **Files to modify**: `Glue.Lib.Bool.hs` (remove constructors from module), `Glue.Lib.Bool.*.hs` (11 files: add constructors to functions)
+- **Test specs to update**: `Glue.Lib.Bool.*Spec.hs` (11 files: update to use `apply` instead of extracting functions)
+- **Functions affected**: eq, ne, lt, le, gt, ge, not, if, when, while, until
 
-### Phase 2: Currying Implementation
-**Goal:** Change NativeFunc to single-argument contract and implement currying
+**Step 2: IO Module**
+- **Files to modify**: `Glue.Lib.IO.hs` (remove constructors), `Glue.Lib.IO.Print.hs`, `Glue.Lib.IO.Read.hs` (add constructors)
+- **Test specs to update**: `Glue.Lib.IO.PrintSpec.hs`
+- **Functions affected**: print, println, read-line
 
-**See:** [Partial Application Phase 2 Plan](partial-application-phase2-plan.md) for detailed implementation steps
+**Step 3: Builtin Module**
+- **Files to modify**: `Glue.Lib.Builtin.hs` (remove constructors), `Glue.Lib.Builtin.*.hs` (7 files: add constructors)
+- **Test specs to update**: `Glue.Lib.Builtin.*Spec.hs` (5 files: update tests)
+- **Functions affected**: def, set, lambda, let, import, try, error
 
-### Documentation
-Update drafts and specifications
-Make commit
+**Step 4: List Module**
+- **Files to modify**: `Glue.Lib.List.hs` (remove constructors), `Glue.Lib.List.*.hs` (20 files: add constructors)
+- **Test specs to update**: `Glue.Lib.List.*Spec.hs` (21 files: update tests)
+- **Functions affected**: append, butlast, car, cdr, cons, drop, filter, find, flatten, last, length, map, member, nth, partition, position, remove, reverse, sort, take, zip
 
-**See:** [Implementation Verification](implementation-verification.md) for testing and validation procedures
+**Step 5: Math Module**
+- **Files to modify**:
+  - Main: `Glue.Lib.Math.hs`, `Glue.Lib.Math.Arithmetic.hs`, `Glue.Lib.Math.Power.hs`, `Glue.Lib.Math.Trigonometric.hs`, `Glue.Lib.Math.Logarithmic.hs`, `Glue.Lib.Math.Utility.hs`
+  - Arithmetic: `Glue.Lib.Math.Arithmetic.*.hs` (5 files)
+  - Power: `Glue.Lib.Math.Power.*.hs` (3 files)
+  - Trigonometric: `Glue.Lib.Math.Trigonometric.*.hs` (6 files)
+  - Logarithmic: `Glue.Lib.Math.Logarithmic.*.hs` (3 files)
+  - Utility: `Glue.Lib.Math.Utility.*.hs` (7 files)
+- **Test specs to update**: `Glue.Lib.Math.*.*Spec.hs` (organized by submodules)
+- **Functions affected**: add, sub, mul, div, mod, pow, sqrt, exp, sin, cos, tan, asin, acos, atan, log, ln, lg, abs, ceil, floor, round, trunc, min, max
+
+**Step 6: Final Verification**
+- **Run all tests**: Execute complete test suite
+- **Verify functionality**: Ensure all modules work correctly
+
+#### Dart Implementation (Steps 1-3 - Sync)
+Make identical changes in Dart implementation in same order (1-6)
+- **Bool**: `lib/src/lib/bool.dart`, `lib/src/lib/bool/*.dart` (11 files)
+- **IO**: `lib/src/lib/io.dart`
+- **Builtin**: `lib/src/lib/builtin.dart`
+- **List**: `lib/src/lib/list.dart`
+- **Math**: `lib/src/lib/math.dart`, `lib/src/lib/math/*/` (submodules)
+
+**See:** [Development Technology](development-technology.md) for cross-language synchronization requirements
 
 ## Key Technical Decisions
 
@@ -254,20 +286,16 @@ Make commit
 - **Special forms**: No partial application (syntactic constructs)
 - **Pure functional**: Haskell-style evaluation model
 
-## Success Criteria
+## Success Criteria for Phase 1
 
-- ✅ `((+ 1) 2)` returns `3`
-- ✅ `((cons 1) (2 3 4))` works for lists
-- ✅ `((print "hello") "world")` prints both strings
-- ✅ Performance: Simple single-argument application
-- ✅ Pure functional: Haskell-style currying throughout
-- ✅ Cross-implementation: Haskell and Dart behave identically
+- ✅ All `NativeFunc`/`Special` constructors moved from ModuleInfo to function implementations
+- ✅ All test specs updated to use `apply` instead of direct function calls
+- ✅ All modules compile and pass tests
+- ✅ Haskell and Dart implementations synchronized
+- ✅ Ready for Phase 2: Currying Implementation
 
 ## Rationale
 
-This approach:
-- Maintains functional programming principles
-- Provides zero-overhead partial application
-- Reuses existing infrastructure
-- Enables code like `((+ 1) 2)` and `((map f) list)`
-- Works for both positional and named argument functions
+Phase 1 establishes the foundation by moving all constructors to function implementations, enabling Phase 2 to change the function signatures and implement currying logic.
+
+**See:** [Partial Application Phase 2 Plan](partial-application-phase2-plan.md) for the next phase

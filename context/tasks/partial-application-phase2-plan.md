@@ -1,4 +1,4 @@
-# Partial Application Implementation Plan
+# Partial Application Implementation - Phase 2: Currying Implementation
 
 ## Overview
 Implement partial application (currying) support for native functions to make Glue a proper functional programming language with first-class functions.
@@ -228,23 +228,61 @@ Implement partial application (currying) support for native functions to make Gl
 | `lib/src/lib/math/utility/min.dart` | - | min |
 | `lib/src/lib/math/utility/max.dart` | - | max |
 
-## Implementation Phases
-
-### Phase 1: Constructor Migration
-**Goal:** Move constructors from ModuleInfo to function implementations
-
-**See:** [Partial Application Phase 1 Plan](partial-application-phase1-plan.md) for detailed implementation steps
-
-### Phase 2: Currying Implementation
+## Implementation Phase 2: Currying Implementation (Steps 4-12)
 **Goal:** Change NativeFunc to single-argument contract and implement currying
 
-**See:** [Partial Application Phase 2 Plan](partial-application-phase2-plan.md) for detailed implementation steps
+#### Haskell Implementation
 
-### Documentation
-Update drafts and specifications
-Make commit
+**Step 4: Change NativeFunc Type**
+- **Files to modify**: `Glue/IR.hs` (change `NativeFunc` type signature from `[IR] → IR` to `IR → IR`)
+- **No test changes needed**
 
-**See:** [Implementation Verification](implementation-verification.md) for testing and validation procedures
+**Step 5: Update Evaluator**
+- **Files to modify**: `Glue/Eval.hs` (change `apply` function to single argument, update `applyFunction`)
+- **No test changes needed**
+
+**Step 6: Rewrite Bool Functions for Currying**
+- **Files to modify**: `Glue.Lib.Bool.*.hs` (11 files: implement currying logic - take first arg, return function for second arg)
+- **Test specs to update**: `Glue.Lib.Bool.*Spec.hs` (11 files: update to use single arguments)
+
+**Step 7: Rewrite IO Functions for Currying**
+- **Files to modify**: `Glue.Lib.IO.Print.hs`, `Glue.Lib.IO.Read.hs` (implement currying - single arg functions)
+- **Test specs to update**: `Glue.Lib.IO.PrintSpec.hs`
+
+**Step 8: Rewrite Builtin Functions for Currying**
+- **Files to modify**: `Glue.Lib.Builtin.*.hs` (7 files: implement currying)
+- **Test specs to update**: `Glue.Lib.Builtin.*Spec.hs` (5 files: update tests)
+
+**Step 9: Rewrite List Functions for Currying**
+- **Files to modify**: `Glue.Lib.List.*.hs` (20 files: implement currying)
+- **Test specs to update**: `Glue.Lib.List.*Spec.hs` (21 files: update tests)
+
+**Step 10: Rewrite Math Functions for Currying**
+- **Files to modify**:
+  - Arithmetic: `Glue.Lib.Math.Arithmetic.*.hs` (5 files)
+  - Power: `Glue.Lib.Math.Power.*.hs` (3 files)
+  - Trigonometric: `Glue.Lib.Math.Trigonometric.*.hs` (6 files)
+  - Logarithmic: `Glue.Lib.Math.Logarithmic.*.hs` (3 files)
+  - Utility: `Glue.Lib.Math.Utility.*.hs` (7 files)
+- **Test specs to update**: `Glue.Lib.Math.*.*Spec.hs` (organized by submodules)
+
+**Step 11: Add Currying Tests**
+- **Files to modify**: `Glue/EvalSpec.hs` (add currying test cases)
+- **Run tests**: Verify currying works (`((+ 1) 2)` etc.)
+
+**Step 12: Final Verification**
+- **Run all tests**: Execute complete test suite
+- **Fix any bugs**: Address issues found in testing
+- **Commit final changes**
+
+#### Dart Implementation
+Make changes in the Dart implementation in the same order from 4 to 12
+- **IR**: `lib/src/ir.dart` (change NativeFunc type)
+- **Eval**: `lib/src/eval.dart` (update apply function)
+- **All module files**: Implement currying in all function files
+- **All test files**: Update test specs
+
+**See:** [Development Technology](development-technology.md) for cross-language synchronization requirements
 
 ## Key Technical Decisions
 
@@ -254,7 +292,7 @@ Make commit
 - **Special forms**: No partial application (syntactic constructs)
 - **Pure functional**: Haskell-style evaluation model
 
-## Success Criteria
+## Success Criteria for Phase 2
 
 - ✅ `((+ 1) 2)` returns `3`
 - ✅ `((cons 1) (2 3 4))` works for lists
@@ -263,11 +301,41 @@ Make commit
 - ✅ Pure functional: Haskell-style currying throughout
 - ✅ Cross-implementation: Haskell and Dart behave identically
 
+## Currying Implementation Details
+
+### Single-Argument Contract
+```haskell
+-- Before: [IR] → IR
+add :: [IR Eval] → Eval (IR Eval)
+add [left, right] = ...
+
+-- After: IR → IR (with currying)
+add :: IR Eval → Eval (IR Eval)
+add left = pure $ NativeFunc (addRight left)
+
+addRight :: IR Eval → IR Eval → Eval (IR Eval)
+addRight left right = ...
+```
+
+### Evaluator Changes
+```haskell
+-- Before: apply func [arg1, arg2, ...]
+apply func args = case func of
+    NativeFunc f -> f args
+
+-- After: apply func arg, then apply result to next arg
+apply func arg = case func of
+    NativeFunc f -> f arg  -- Returns either result or NativeFunc
+```
+
+### Test Updates
+```haskell
+-- Before: apply (extractFunction "+") [Integer 1, Integer 2]
+-- After: apply (apply (extractFunction "+") (Integer 1)) (Integer 2)
+```
+
 ## Rationale
 
-This approach:
-- Maintains functional programming principles
-- Provides zero-overhead partial application
-- Reuses existing infrastructure
-- Enables code like `((+ 1) 2)` and `((map f) list)`
-- Works for both positional and named argument functions
+Phase 2 implements the core currying mechanism by changing function signatures and updating the evaluator to handle single-argument application with automatic chaining.
+
+**See:** [Partial Application Phase 1 Plan](partial-application-phase1-plan.md) for Phase 1 details
