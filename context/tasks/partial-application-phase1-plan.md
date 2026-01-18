@@ -196,37 +196,37 @@ Implement partial application (currying) support for native functions to make Gl
 #### Math Module - Power Submodule
 | Source File | Test Spec | Function |
 |-------------|-----------|----------|
-| `lib/src/lib/math/power/exp.dart` | - | exp |
-| `lib/src/lib/math/power/pow.dart` | - | pow |
-| `lib/src/lib/math/power/sqrt.dart` | - | sqrt |
+| `lib/src/lib/math/power/exp.dart` | `test/lib/math/power/exp_test.dart` | exp |
+| `lib/src/lib/math/power/pow.dart` | `test/lib/math/power/pow_test.dart` | pow |
+| `lib/src/lib/math/power/sqrt.dart` | `test/lib/math/power/sqrt_test.dart` | sqrt |
 
 #### Math Module - Trigonometric Submodule
 | Source File | Test Spec | Function |
 |-------------|-----------|----------|
-| `lib/src/lib/math/trigonometric/sin.dart` | - | sin |
-| `lib/src/lib/math/trigonometric/cos.dart` | - | cos |
-| `lib/src/lib/math/trigonometric/tan.dart` | - | tan |
-| `lib/src/lib/math/trigonometric/asin.dart` | - | asin |
-| `lib/src/lib/math/trigonometric/acos.dart` | - | acos |
-| `lib/src/lib/math/trigonometric/atan.dart` | - | atan |
+| `lib/src/lib/math/trigonometric/sin.dart` | `test/lib/math/trigonometric/sin_test.dart` | sin |
+| `lib/src/lib/math/trigonometric/cos.dart` | `test/lib/math/trigonometric/cos_test.dart` | cos |
+| `lib/src/lib/math/trigonometric/tan.dart` | `test/lib/math/trigonometric/tan_test.dart` | tan |
+| `lib/src/lib/math/trigonometric/asin.dart` | `test/lib/math/trigonometric/asin_test.dart` | asin |
+| `lib/src/lib/math/trigonometric/acos.dart` | `test/lib/math/trigonometric/acos_test.dart` | acos |
+| `lib/src/lib/math/trigonometric/atan.dart` | `test/lib/math/trigonometric/atan_test.dart` | atan |
 
 #### Math Module - Logarithmic Submodule
 | Source File | Test Spec | Function |
 |-------------|-----------|----------|
-| `lib/src/lib/math/logarithmic/log.dart` | - | log |
-| `lib/src/lib/math/logarithmic/ln.dart` | - | ln |
-| `lib/src/lib/math/logarithmic/lg.dart` | - | lg |
+| `lib/src/lib/math/logarithmic/log.dart` | `test/lib/math/logarithmic/log_test.dart` | log |
+| `lib/src/lib/math/logarithmic/ln.dart` | `test/lib/math/logarithmic/ln_test.dart` | ln |
+| `lib/src/lib/math/logarithmic/lg.dart` | `test/lib/math/logarithmic/lg_test.dart` | lg |
 
 #### Math Module - Utility Submodule
 | Source File | Test Spec | Function |
 |-------------|-----------|----------|
-| `lib/src/lib/math/utility/abs.dart` | - | abs |
-| `lib/src/lib/math/utility/ceil.dart` | - | ceil |
-| `lib/src/lib/math/utility/floor.dart` | - | floor |
-| `lib/src/lib/math/utility/round.dart` | - | round |
-| `lib/src/lib/math/utility/trunc.dart` | - | trunc |
-| `lib/src/lib/math/utility/min.dart` | - | min |
-| `lib/src/lib/math/utility/max.dart` | - | max |
+| `lib/src/lib/math/utility/abs.dart` | `test/lib/math/utility/abs_test.dart` | abs |
+| `lib/src/lib/math/utility/ceil.dart` | `test/lib/math/utility/ceil_test.dart` | ceil |
+| `lib/src/lib/math/utility/floor.dart` | `test/lib/math/utility/floor_test.dart` | floor |
+| `lib/src/lib/math/utility/round.dart` | `test/lib/math/utility/round_test.dart` | round |
+| `lib/src/lib/math/utility/trunc.dart` | `test/lib/math/utility/trunc_test.dart` | trunc |
+| `lib/src/lib/math/utility/min.dart` | `test/lib/math/utility/min_test.dart` | min |
+| `lib/src/lib/math/utility/max.dart` | `test/lib/math/utility/max_test.dart` | max |
 
 ## Implementation Phase 1: Constructor Migration (Steps 1-6)
 **Goal:** Move constructors from ModuleInfo to function implementations for ALL modules
