@@ -143,55 +143,55 @@ Implement partial application (currying) support for native functions to make Gl
 | Source File | Test Spec | Function |
 |-------------|-----------|----------|
 | `lib/src/lib/io.dart` | - | - |
-| `lib/src/lib/io/print.dart` | - | print, println |
+| `lib/src/lib/io/print.dart` | `test/lib/io/print_test.dart` | print, println |
 | `lib/src/lib/io/read.dart` | - | read-line |
 
 #### Builtin Module
 | Source File | Test Spec | Function |
 |-------------|-----------|----------|
 | `lib/src/lib/builtin.dart` | - | - |
-| `lib/src/lib/builtin/def.dart` | - | def |
-| `lib/src/lib/builtin/set.dart` | - | set |
-| `lib/src/lib/builtin/lambda.dart` | - | lambda |
+| `lib/src/lib/builtin/def.dart` | `test/lib/builtin/def_test.dart` | def |
+| `lib/src/lib/builtin/set.dart` | `test/lib/builtin/set_test.dart` | set |
+| `lib/src/lib/builtin/lambda.dart` | `test/lib/builtin/lambda_test.dart` | lambda |
 | `lib/src/lib/builtin/let.dart` | - | let |
 | `lib/src/lib/builtin/import.dart` | - | import |
-| `lib/src/lib/builtin/try.dart` | - | try |
+| `lib/src/lib/builtin/try.dart` | `test/lib/builtin/try_test.dart` | try |
 | `lib/src/lib/builtin/error.dart` | - | error |
 
 #### List Module
 | Source File | Test Spec | Function |
 |-------------|-----------|----------|
 | `lib/src/lib/list.dart` | - | - |
-| `lib/src/lib/list/append.dart` | - | append |
-| `lib/src/lib/list/butlast.dart` | - | butlast |
-| `lib/src/lib/list/car.dart` | - | car |
-| `lib/src/lib/list/cdr.dart` | - | cdr |
-| `lib/src/lib/list/cons.dart` | - | cons |
-| `lib/src/lib/list/drop.dart` | - | drop |
-| `lib/src/lib/list/filter.dart` | - | filter |
-| `lib/src/lib/list/find.dart` | - | find |
-| `lib/src/lib/list/flatten.dart` | - | flatten |
-| `lib/src/lib/list/last.dart` | - | last |
-| `lib/src/lib/list/length.dart` | - | length |
-| `lib/src/lib/list/map.dart` | - | map |
-| `lib/src/lib/list/member.dart` | - | member |
-| `lib/src/lib/list/nth.dart` | - | nth |
-| `lib/src/lib/list/partition.dart` | - | partition |
-| `lib/src/lib/list/position.dart` | - | position |
-| `lib/src/lib/list/remove.dart` | - | remove |
-| `lib/src/lib/list/reverse.dart` | - | reverse |
-| `lib/src/lib/list/sort.dart` | - | sort |
-| `lib/src/lib/list/take.dart` | - | take |
-| `lib/src/lib/list/zip.dart` | - | zip |
+| `lib/src/lib/list/append.dart` | `test/lib/list/append_test.dart` | append |
+| `lib/src/lib/list/butlast.dart` | `test/lib/list/butlast_test.dart` | butlast |
+| `lib/src/lib/list/car.dart` | `test/lib/list/car_test.dart` | car |
+| `lib/src/lib/list/cdr.dart` | `test/lib/list/cdr_test.dart` | cdr |
+| `lib/src/lib/list/cons.dart` | `test/lib/list/cons_test.dart` | cons |
+| `lib/src/lib/list/drop.dart` | `test/lib/list/drop_test.dart` | drop |
+| `lib/src/lib/list/filter.dart` | `test/lib/list/filter_test.dart` | filter |
+| `lib/src/lib/list/find.dart` | `test/lib/list/find_test.dart` | find |
+| `lib/src/lib/list/flatten.dart` | `test/lib/list/flatten_test.dart` | flatten |
+| `lib/src/lib/list/last.dart` | `test/lib/list/last_test.dart` | last |
+| `lib/src/lib/list/length.dart` | `test/lib/list/length_test.dart` | length |
+| `lib/src/lib/list/map.dart` | `test/lib/list/map_test.dart` | map |
+| `lib/src/lib/list/member.dart` | `test/lib/list/member_test.dart` | member |
+| `lib/src/lib/list/nth.dart` | `test/lib/list/nth_test.dart` | nth |
+| `lib/src/lib/list/partition.dart` | `test/lib/list/partition_test.dart` | partition |
+| `lib/src/lib/list/position.dart` | `test/lib/list/position_test.dart` | position |
+| `lib/src/lib/list/remove.dart` | `test/lib/list/remove_test.dart` | remove |
+| `lib/src/lib/list/reverse.dart` | `test/lib/list/reverse_test.dart` | reverse |
+| `lib/src/lib/list/sort.dart` | `test/lib/list/sort_test.dart` | sort |
+| `lib/src/lib/list/take.dart` | `test/lib/list/take_test.dart` | take |
+| `lib/src/lib/list/zip.dart` | `test/lib/list/zip_test.dart` | zip |
 
 #### Math Module - Arithmetic Submodule
 | Source File | Test Spec | Function |
 |-------------|-----------|----------|
-| `lib/src/lib/math/arithmetic/add.dart` | - | add |
-| `lib/src/lib/math/arithmetic/sub.dart` | - | sub |
-| `lib/src/lib/math/arithmetic/mul.dart` | - | mul |
-| `lib/src/lib/math/arithmetic/div.dart` | - | div |
-| `lib/src/lib/math/arithmetic/mod.dart` | - | mod |
+| `lib/src/lib/math/arithmetic/add.dart` | `test/lib/math/arithmetic/add_test.dart` | add |
+| `lib/src/lib/math/arithmetic/sub.dart` | `test/lib/math/arithmetic/sub_test.dart` | sub |
+| `lib/src/lib/math/arithmetic/mul.dart` | `test/lib/math/arithmetic/mul_test.dart` | mul |
+| `lib/src/lib/math/arithmetic/div.dart` | `test/lib/math/arithmetic/div_test.dart` | div |
+| `lib/src/lib/math/arithmetic/mod.dart` | `test/lib/math/arithmetic/mod_test.dart` | mod |
 
 #### Math Module - Power Submodule
 | Source File | Test Spec | Function |
