@@ -7,8 +7,11 @@ import Glue.IR (IR (..))
 drop :: IR Eval
 drop = NativeFunc dropImpl
 
-dropImpl :: [IR Eval] -> Eval (IR Eval)
-dropImpl [countIR, listIR] = do
+dropImpl :: IR Eval -> Eval (IR Eval)
+dropImpl countIR = pure $ NativeFunc (dropFrom countIR)
+
+dropFrom :: IR Eval -> IR Eval -> Eval (IR Eval)
+dropFrom countIR listIR = do
     count <- eval countIR
     list <- eval listIR
     case (count, list) of
@@ -17,4 +20,3 @@ dropImpl [countIR, listIR] = do
                 then throwError $ wrongArgumentType ["non-negative integer"]
                 else pure $ List (Prelude.drop (fromIntegral n) xs)
         _ -> throwError $ wrongArgumentType ["number", "list"]
-dropImpl _ = throwError wrongNumberOfArguments
