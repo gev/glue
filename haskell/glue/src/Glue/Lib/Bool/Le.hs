@@ -7,8 +7,11 @@ import Glue.IR (IR (..))
 le :: IR Eval
 le = NativeFunc leImpl
 
-leImpl :: [IR Eval] -> Eval (IR Eval)
-leImpl [a, b] = do
+leImpl :: IR Eval -> Eval (IR Eval)
+leImpl a = pure $ NativeFunc (leRight a)
+
+leRight :: IR Eval -> IR Eval -> Eval (IR Eval)
+leRight a b = do
     va <- eval a
     vb <- eval b
     case (va, vb) of
@@ -17,4 +20,3 @@ leImpl [a, b] = do
         (Integer na, Float nb) -> pure . Bool $ fromIntegral na <= nb
         (Float na, Integer nb) -> pure . Bool $ na <= fromIntegral nb
         _ -> throwError $ wrongArgumentType ["number", "number"]
-leImpl _ = throwError $ wrongArgumentType ["number", "number"]
