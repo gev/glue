@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Butlast function - returns all elements except the last one
 /// Mirrors Haskell Glue.Lib.List.Butlast.butlast exactly
-Eval<Ir> butlast(List<Ir> args) {
+Ir butlast = IrNativeFunc(butlastImpl);
+
+/// Butlast function implementation
+/// Mirrors Haskell Glue.Lib.List.Butlast.butlastImpl exactly
+Eval<Ir> butlastImpl(List<Ir> args) {
   return switch (args) {
     [final arg] => eval(arg).flatMap((val) {
       if (val is IrList) {

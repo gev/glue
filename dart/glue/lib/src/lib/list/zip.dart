@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Zip function - combines two lists element-wise into pairs
 /// Mirrors Haskell Glue.Lib.List.Zip.zip exactly
-Eval<Ir> zip(List<Ir> args) {
+Ir zip = IrNativeFunc(zipImpl);
+
+/// Zip function implementation
+/// Mirrors Haskell Glue.Lib.List.Zip.zipImpl exactly
+Eval<Ir> zipImpl(List<Ir> args) {
   return switch (args) {
     [final list1Ir, final list2Ir] =>
       sequenceAll([eval(list1Ir), eval(list2Ir)]).flatMap((evaluated) {

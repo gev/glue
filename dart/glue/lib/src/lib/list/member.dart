@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Member function - checks if an item is in a list
 /// Mirrors Haskell Glue.Lib.List.Member.member exactly
-Eval<Ir> member(List<Ir> args) {
+Ir member = IrNativeFunc(memberImpl);
+
+/// Member function implementation
+/// Mirrors Haskell Glue.Lib.List.Member.memberImpl exactly
+Eval<Ir> memberImpl(List<Ir> args) {
   return switch (args) {
     [final itemIr, final listIr] =>
       sequenceAll([eval(itemIr), eval(listIr)]).flatMap((evaluated) {

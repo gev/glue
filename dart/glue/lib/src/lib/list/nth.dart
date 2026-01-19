@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Nth function - returns the element at the specified index in a list
 /// Mirrors Haskell Glue.Lib.List.Nth.nth exactly
-Eval<Ir> nth(List<Ir> args) {
+Ir nth = IrNativeFunc(nthImpl);
+
+/// Nth function implementation
+/// Mirrors Haskell Glue.Lib.List.Nth.nthImpl exactly
+Eval<Ir> nthImpl(List<Ir> args) {
   return switch (args) {
     [final indexIr, final listIr] =>
       sequenceAll([eval(indexIr), eval(listIr)]).flatMap((evaluated) {

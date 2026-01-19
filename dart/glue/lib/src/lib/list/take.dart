@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Take function - returns first N elements of a list
 /// Mirrors Haskell Glue.Lib.List.Take.take exactly
-Eval<Ir> take(List<Ir> args) {
+Ir take = IrNativeFunc(takeImpl);
+
+/// Take function implementation
+/// Mirrors Haskell Glue.Lib.List.Take.takeImpl exactly
+Eval<Ir> takeImpl(List<Ir> args) {
   return switch (args) {
     [final countIr, final listIr] =>
       sequenceAll([eval(countIr), eval(listIr)]).flatMap((evaluated) {

@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Partition function - splits list into two lists based on predicate
 /// Mirrors Haskell Glue.Lib.List.Partition.partition exactly
-Eval<Ir> partition(List<Ir> args) {
+Ir partition = IrNativeFunc(partitionImpl);
+
+/// Partition function implementation
+/// Mirrors Haskell Glue.Lib.List.Partition.partitionImpl exactly
+Eval<Ir> partitionImpl(List<Ir> args) {
   return switch (args) {
     [final predicateIr, final listIr] =>
       sequenceAll([eval(predicateIr), eval(listIr)]).flatMap((evaluated) {

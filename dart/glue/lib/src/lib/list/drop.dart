@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Drop function - removes first N elements from a list
 /// Mirrors Haskell Glue.Lib.List.Drop.drop exactly
-Eval<Ir> drop(List<Ir> args) {
+Ir drop = IrNativeFunc(dropImpl);
+
+/// Drop function implementation
+/// Mirrors Haskell Glue.Lib.List.Drop.dropImpl exactly
+Eval<Ir> dropImpl(List<Ir> args) {
   return switch (args) {
     [final countIr, final listIr] =>
       sequenceAll([eval(countIr), eval(listIr)]).flatMap((evaluated) {

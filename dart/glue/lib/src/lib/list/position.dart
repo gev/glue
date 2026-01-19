@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Position function - finds index of first element that satisfies a predicate
 /// Mirrors Haskell Glue.Lib.List.Position.position exactly
-Eval<Ir> position(List<Ir> args) {
+Ir position = IrNativeFunc(positionImpl);
+
+/// Position function implementation
+/// Mirrors Haskell Glue.Lib.List.Position.positionImpl exactly
+Eval<Ir> positionImpl(List<Ir> args) {
   return switch (args) {
     [final predicateIr, final listIr] =>
       sequenceAll([eval(predicateIr), eval(listIr)]).flatMap((evaluated) {

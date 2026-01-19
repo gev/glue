@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Append function - concatenates two lists
 /// Mirrors Haskell Glue.Lib.List.Append.append exactly
-Eval<Ir> append(List<Ir> args) {
+Ir append = IrNativeFunc(appendImpl);
+
+/// Append function implementation
+/// Mirrors Haskell Glue.Lib.List.Append.appendImpl exactly
+Eval<Ir> appendImpl(List<Ir> args) {
   return switch (args) {
     [final list1, final list2] =>
       sequenceAll([eval(list1), eval(list2)]).flatMap((evaluated) {

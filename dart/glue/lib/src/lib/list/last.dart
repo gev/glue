@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Last function - returns the last element of a list
 /// Mirrors Haskell Glue.Lib.List.Last.last exactly
-Eval<Ir> last(List<Ir> args) {
+Ir last = IrNativeFunc(lastImpl);
+
+/// Last function implementation
+/// Mirrors Haskell Glue.Lib.List.Last.lastImpl exactly
+Eval<Ir> lastImpl(List<Ir> args) {
   return switch (args) {
     [final arg] => eval(arg).flatMap((val) {
       if (val is IrList) {

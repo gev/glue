@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Remove function - removes all occurrences of an item from a list
 /// Mirrors Haskell Glue.Lib.List.Remove.remove exactly
-Eval<Ir> remove(List<Ir> args) {
+Ir remove = IrNativeFunc(removeImpl);
+
+/// Remove function implementation
+/// Mirrors Haskell Glue.Lib.List.Remove.removeImpl exactly
+Eval<Ir> removeImpl(List<Ir> args) {
   return switch (args) {
     [final itemIr, final listIr] =>
       sequenceAll([eval(itemIr), eval(listIr)]).flatMap((evaluated) {
