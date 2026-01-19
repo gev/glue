@@ -3,7 +3,11 @@ import 'package:glue/src/ir.dart';
 
 /// Print function - prints string without newline
 /// Mirrors Haskell Glue.Lib.IO.Print.printFunc exactly
-Eval<Ir> printFunc(List<Ir> args) {
+final Ir printFunc = IrNativeFunc(printFuncImpl);
+
+/// Print function implementation
+/// Mirrors Haskell Glue.Lib.IO.Print.printFuncImpl exactly
+Eval<Ir> printFuncImpl(List<Ir> args) {
   return switch (args) {
     [IrString(value: final value)] => liftIO(() {
       // Print without newline
@@ -15,7 +19,11 @@ Eval<Ir> printFunc(List<Ir> args) {
 
 /// Println function - prints string with newline
 /// Mirrors Haskell Glue.Lib.IO.Print.println exactly
-Eval<Ir> println(List<Ir> args) {
+final Ir println = IrNativeFunc(printlnImpl);
+
+/// Println function implementation
+/// Mirrors Haskell Glue.Lib.IO.Print.printlnImpl exactly
+Eval<Ir> printlnImpl(List<Ir> args) {
   return switch (args) {
     [IrString(value: final value)] => liftIO(() {
       // Print with newline
