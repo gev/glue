@@ -11,11 +11,10 @@ abs = NativeFunc absImpl
 
 -- Absolute value function implementation
 -- Mirrors Haskell Glue.Lib.Math.Utility.Abs.absImpl exactly
-absImpl :: [IR Eval] -> Eval (IR Eval)
-absImpl [arg] = do
+absImpl :: IR Eval -> Eval (IR Eval)
+absImpl arg = do
     va <- eval arg
     case va of
         Integer n -> pure $ Integer (Prelude.abs n)
         Float n -> pure $ Float (Prelude.abs n)
         _ -> throwError $ wrongArgumentType ["number"]
-absImpl _ = throwError wrongNumberOfArguments

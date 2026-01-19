@@ -11,11 +11,10 @@ floor = NativeFunc floorImpl
 
 -- Floor function implementation
 -- Mirrors Haskell Glue.Lib.Math.Utility.Floor.floorImpl exactly
-floorImpl :: [IR Eval] -> Eval (IR Eval)
-floorImpl [arg] = do
+floorImpl :: IR Eval -> Eval (IR Eval)
+floorImpl arg = do
     va <- eval arg
     case va of
         Integer n -> pure $ Integer n
         Float n -> pure $ Integer (Prelude.floor n)
         _ -> throwError $ wrongArgumentType ["number"]
-floorImpl _ = throwError wrongNumberOfArguments
