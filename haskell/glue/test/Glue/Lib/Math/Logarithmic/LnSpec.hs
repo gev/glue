@@ -1,9 +1,10 @@
 module Glue.Lib.Math.Logarithmic.LnSpec (spec) where
 
 import Data.Either (isLeft)
-import Glue.Eval (runEvalSimple)
+import Glue.Eval (apply, runEvalSimple)
 import Glue.IR (IR (..))
-import Glue.Lib.Math.Logarithmic.Ln qualified as Ln
+import Glue.Lib.Math.Logarithmic.Ln (ln)
+import Glue.TestUtils ()
 import Test.Hspec
 
 spec :: Spec
@@ -11,14 +12,14 @@ spec = describe "Glue.Lib.Math.Logarithmic.Ln (Test ln function)" do
     describe "Natural logarithm function" do
         it "returns ln(1) = 0" do
             let args = [Integer 1]
-            result <- runEvalSimple (Ln.ln args) []
+            result <- runEvalSimple (apply ln args) []
             case result of
                 Left err -> expectationFailure $ "Ln failed: " <> show err
                 Right (res, _) -> res `shouldBe` Float 0
 
         it "returns ln(e) = 1" do
             let args = [Float (exp 1)]
-            result <- runEvalSimple (Ln.ln args) []
+            result <- runEvalSimple (apply ln args) []
             case result of
                 Left err -> expectationFailure $ "Ln failed: " <> show err
                 Right (res, _) -> case res of
@@ -27,7 +28,7 @@ spec = describe "Glue.Lib.Math.Logarithmic.Ln (Test ln function)" do
 
         it "returns ln(e^2) = 2" do
             let args = [Float (exp 2)]
-            result <- runEvalSimple (Ln.ln args) []
+            result <- runEvalSimple (apply ln args) []
             case result of
                 Left err -> expectationFailure $ "Ln failed: " <> show err
                 Right (res, _) -> case res of
@@ -36,7 +37,7 @@ spec = describe "Glue.Lib.Math.Logarithmic.Ln (Test ln function)" do
 
         it "returns -Infinity for zero" do
             let args = [Integer 0]
-            result <- runEvalSimple (Ln.ln args) []
+            result <- runEvalSimple (apply ln args) []
             case result of
                 Left err -> expectationFailure $ "Ln failed: " <> show err
                 Right (res, _) -> case res of
@@ -45,7 +46,7 @@ spec = describe "Glue.Lib.Math.Logarithmic.Ln (Test ln function)" do
 
         it "returns NaN for negative numbers" do
             let args = [Float (-1)]
-            result <- runEvalSimple (Ln.ln args) []
+            result <- runEvalSimple (apply ln args) []
             case result of
                 Left err -> expectationFailure $ "Ln failed: " <> show err
                 Right (res, _) -> case res of
@@ -54,15 +55,15 @@ spec = describe "Glue.Lib.Math.Logarithmic.Ln (Test ln function)" do
 
         it "fails with non-numbers" do
             let args = [String "hello"]
-            result <- runEvalSimple (Ln.ln args) []
+            result <- runEvalSimple (apply ln args) []
             result `shouldSatisfy` isLeft
 
         it "fails with wrong number of arguments" do
             let args = [Integer 1, Integer 2]
-            result <- runEvalSimple (Ln.ln args) []
+            result <- runEvalSimple (apply ln args) []
             result `shouldSatisfy` isLeft
 
         it "fails with no arguments" do
             let args = []
-            result <- runEvalSimple (Ln.ln args) []
+            result <- runEvalSimple (apply ln args) []
             result `shouldSatisfy` isLeft

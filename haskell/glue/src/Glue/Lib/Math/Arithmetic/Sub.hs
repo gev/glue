@@ -5,8 +5,15 @@ import Glue.Eval.Exception
 import Glue.Eval (Eval, eval, throwError)
 import Glue.IR (IR (..))
 
-sub :: [IR Eval] -> Eval (IR Eval)
-sub [left, right] = do
+-- Subtraction function
+-- Mirrors Haskell Glue.Lib.Math.Arithmetic.Sub.sub exactly
+sub :: IR Eval
+sub = NativeFunc subImpl
+
+-- Subtraction function implementation
+-- Mirrors Haskell Glue.Lib.Math.Arithmetic.Sub.subImpl exactly
+subImpl :: [IR Eval] -> Eval (IR Eval)
+subImpl [left, right] = do
     l <- eval left
     r <- eval right
     case (l, r) of
@@ -15,4 +22,4 @@ sub [left, right] = do
         (Float a, Integer b) -> pure $ Float (a - fromIntegral b)
         (Float a, Float b) -> pure $ Float (a - b)
         _ -> throwError $ wrongArgumentType ["number"]
-sub _ = throwError wrongNumberOfArguments
+subImpl _ = throwError wrongNumberOfArguments

@@ -5,8 +5,15 @@ import Glue.Eval.Exception
 import Glue.Eval (Eval, eval, throwError)
 import Glue.IR (IR (..))
 
-mul :: [IR Eval] -> Eval (IR Eval)
-mul [left, right] = do
+-- Multiplication function
+-- Mirrors Haskell Glue.Lib.Math.Arithmetic.Mul.mul exactly
+mul :: IR Eval
+mul = NativeFunc mulImpl
+
+-- Multiplication function implementation
+-- Mirrors Haskell Glue.Lib.Math.Arithmetic.Mul.mulImpl exactly
+mulImpl :: [IR Eval] -> Eval (IR Eval)
+mulImpl [left, right] = do
     l <- eval left
     r <- eval right
     case (l, r) of
@@ -15,4 +22,4 @@ mul [left, right] = do
         (Float a, Integer b) -> pure $ Float (a * fromIntegral b)
         (Float a, Float b) -> pure $ Float (a * b)
         _ -> throwError $ wrongArgumentType ["number"]
-mul _ = throwError wrongNumberOfArguments
+mulImpl _ = throwError wrongNumberOfArguments

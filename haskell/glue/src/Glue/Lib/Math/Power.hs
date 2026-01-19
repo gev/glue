@@ -11,7 +11,4 @@ power :: ModuleInfo Eval
 power =
     nativeModule
         "ffi.math.power"
-        [ ("exp", NativeFunc Exp.exp)
-        , ("pow", NativeFunc Pow.pow)
-        , ("sqrt", NativeFunc Sqrt.sqrt)
-        ]
+        []

@@ -5,8 +5,15 @@ import Glue.Eval.Exception
 import Glue.Eval (Eval, eval, throwError)
 import Glue.IR (IR (..))
 
-div :: [IR Eval] -> Eval (IR Eval)
-div [left, right] = do
+-- Division function
+-- Mirrors Haskell Glue.Lib.Math.Arithmetic.Div.div exactly
+div :: IR Eval
+div = NativeFunc divImpl
+
+-- Division function implementation
+-- Mirrors Haskell Glue.Lib.Math.Arithmetic.Div.divImpl exactly
+divImpl :: [IR Eval] -> Eval (IR Eval)
+divImpl [left, right] = do
     l <- eval left
     r <- eval right
     case (l, r) of
@@ -15,4 +22,4 @@ div [left, right] = do
         (Float a, Integer b) -> pure $ Float (a / fromIntegral b)
         (Float a, Float b) -> pure $ Float (a / b)
         _ -> throwError $ wrongArgumentType ["number"]
-div _ = throwError wrongNumberOfArguments
+divImpl _ = throwError wrongNumberOfArguments

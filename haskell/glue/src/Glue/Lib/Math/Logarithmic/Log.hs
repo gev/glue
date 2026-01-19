@@ -4,8 +4,15 @@ import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
-log :: [IR Eval] -> Eval (IR Eval)
-log [arg, base] = do
+-- Logarithm function (log base value)
+-- Mirrors Haskell Glue.Lib.Math.Logarithmic.Log.log exactly
+log :: IR Eval
+log = NativeFunc logImpl
+
+-- Logarithm function implementation
+-- Mirrors Haskell Glue.Lib.Math.Logarithmic.Log.logImpl exactly
+logImpl :: [IR Eval] -> Eval (IR Eval)
+logImpl [arg, base] = do
     va <- eval arg
     vb <- eval base
     case (va, vb) of
@@ -14,4 +21,4 @@ log [arg, base] = do
         (Float n, Integer b) -> pure $ Float (logBase (fromIntegral b) n)
         (Float n, Float b) -> pure $ Float (logBase b n)
         _ -> throwError $ wrongArgumentType ["number", "number"]
-log _ = throwError wrongNumberOfArguments
+logImpl _ = throwError wrongNumberOfArguments

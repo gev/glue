@@ -4,8 +4,15 @@ import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
-add :: [IR Eval] -> Eval (IR Eval)
-add [left, right] = do
+-- Addition function
+-- Mirrors Haskell Glue.Lib.Math.Arithmetic.Add.add exactly
+add :: IR Eval
+add = NativeFunc addImpl
+
+-- Addition function implementation
+-- Mirrors Haskell Glue.Lib.Math.Arithmetic.Add.addImpl exactly
+addImpl :: [IR Eval] -> Eval (IR Eval)
+addImpl [left, right] = do
     l <- eval left
     r <- eval right
     case (l, r) of
@@ -14,6 +21,4 @@ add [left, right] = do
         (Float a, Integer b) -> pure $ Float (a + fromIntegral b)
         (Float a, Float b) -> pure $ Float (a + b)
         _ -> throwError $ wrongArgumentType ["number"]
-add _ = throwError wrongNumberOfArguments
-
--- Mixed types, convert to Float
+addImpl _ = throwError wrongNumberOfArguments

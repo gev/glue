@@ -1,9 +1,9 @@
 module Glue.Lib.Math.Trigonometric.SinSpec (spec) where
 
 import Data.Either (isLeft)
-import Glue.Eval (runEvalSimple)
+import Glue.Eval (apply, runEvalSimple)
 import Glue.IR (IR (..))
-import Glue.Lib.Math.Trigonometric.Sin qualified as Sin (sin)
+import Glue.Lib.Math.Trigonometric.Sin qualified as Sin
 import Test.Hspec
 
 spec :: Spec
@@ -11,14 +11,14 @@ spec = describe "Glue.Lib.Math.Trigonometric.Sin (Test sin function)" do
     describe "Sine function" do
         it "returns 0 for sin(0)" do
             let args = [Integer 0]
-            result <- runEvalSimple (Sin.sin args) []
+            result <- runEvalSimple (apply Sin.sin args) []
             case result of
                 Left err -> expectationFailure $ "Sin failed: " <> show err
                 Right (res, _) -> res `shouldBe` Float 0
 
         it "returns 1 for sin(π/2)" do
             let args = [Float (pi / 2)]
-            result <- runEvalSimple (Sin.sin args) []
+            result <- runEvalSimple (apply Sin.sin args) []
             case result of
                 Left err -> expectationFailure $ "Sin failed: " <> show err
                 Right (res, _) -> case res of
@@ -27,7 +27,7 @@ spec = describe "Glue.Lib.Math.Trigonometric.Sin (Test sin function)" do
 
         it "returns 0 for sin(π)" do
             let args = [Float pi]
-            result <- runEvalSimple (Sin.sin args) []
+            result <- runEvalSimple (apply Sin.sin args) []
             case result of
                 Left err -> expectationFailure $ "Sin failed: " <> show err
                 Right (res, _) -> case res of
@@ -36,17 +36,17 @@ spec = describe "Glue.Lib.Math.Trigonometric.Sin (Test sin function)" do
 
         it "fails with non-numbers" do
             let args = [String "hello"]
-            result <- runEvalSimple (Sin.sin args) []
+            result <- runEvalSimple (apply Sin.sin args) []
             result `shouldSatisfy` isLeft
 
         it "fails with wrong number of arguments" do
             let args = [Integer 1, Integer 2]
-            result <- runEvalSimple (Sin.sin args) []
+            result <- runEvalSimple (apply Sin.sin args) []
             result `shouldSatisfy` isLeft
 
         it "fails with no arguments" do
             let args = []
-            result <- runEvalSimple (Sin.sin args) []
+            result <- runEvalSimple (apply Sin.sin args) []
             result `shouldSatisfy` isLeft
 
 -- QuickCheck properties removed for now - need proper IO testing setup
