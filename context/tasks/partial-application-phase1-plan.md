@@ -220,6 +220,27 @@
 ## Implementation Phase 1: Constructor Migration (Steps 1-6)
 **Goal:** Move constructors from ModuleInfo to function implementations for ALL modules
 
+## Phase 1 Rules
+
+### Rule 1: Use `apply` in Tests
+All test specs must use the `apply` function instead of directly extracting functions from ModuleInfo. This ensures tests work correctly after constructors are moved to function implementations.
+
+### Rule 2: Implementation on Bottom in Function Modules
+In function modules (e.g., `Glue.Lib.Bool.Eq.hs`), put the implementation function at the bottom of the file, after the main exported function. This maintains clean code organization.
+
+Example structure:
+```haskell
+module Glue.Lib.Bool.Eq where
+
+-- Main exported function (with constructor)
+eq :: IR Eval
+eq = NativeFunc eqImpl
+
+-- Implementation function (at bottom)
+eqImpl :: [IR Eval] -> Eval (IR Eval)
+eqImpl [left, right] = ...
+```
+
 #### Haskell Implementation (Steps 1-3)
 
 **Step 1: Bool Module**
