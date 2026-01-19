@@ -11,11 +11,10 @@ asin = NativeFunc asinImpl
 
 -- Arcsine function implementation
 -- Mirrors Haskell Glue.Lib.Math.Trigonometric.Asin.asinImpl exactly
-asinImpl :: [IR Eval] -> Eval (IR Eval)
-asinImpl [arg] = do
+asinImpl :: IR Eval -> Eval (IR Eval)
+asinImpl arg = do
     va <- eval arg
     case va of
         Integer n -> pure $ Float (Prelude.asin (fromIntegral n))
         Float n -> pure $ Float (Prelude.asin n)
         _ -> throwError $ wrongArgumentType ["number"]
-asinImpl _ = throwError wrongNumberOfArguments

@@ -11,11 +11,10 @@ tan = NativeFunc tanImpl
 
 -- Tangent function implementation
 -- Mirrors Haskell Glue.Lib.Math.Trigonometric.Tan.tanImpl exactly
-tanImpl :: [IR Eval] -> Eval (IR Eval)
-tanImpl [arg] = do
+tanImpl :: IR Eval -> Eval (IR Eval)
+tanImpl arg = do
     va <- eval arg
     case va of
         Integer n -> pure $ Float (Prelude.tan (fromIntegral n))
         Float n -> pure $ Float (Prelude.tan n)
         _ -> throwError $ wrongArgumentType ["number"]
-tanImpl _ = throwError wrongNumberOfArguments

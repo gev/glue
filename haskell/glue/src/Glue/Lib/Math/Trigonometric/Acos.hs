@@ -11,11 +11,10 @@ acos = NativeFunc acosImpl
 
 -- Arccosine function implementation
 -- Mirrors Haskell Glue.Lib.Math.Trigonometric.Acos.acosImpl exactly
-acosImpl :: [IR Eval] -> Eval (IR Eval)
-acosImpl [arg] = do
+acosImpl :: IR Eval -> Eval (IR Eval)
+acosImpl arg = do
     va <- eval arg
     case va of
         Integer n -> pure $ Float (Prelude.acos (fromIntegral n))
         Float n -> pure $ Float (Prelude.acos n)
         _ -> throwError $ wrongArgumentType ["number"]
-acosImpl _ = throwError wrongNumberOfArguments
