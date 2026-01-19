@@ -1,6 +1,6 @@
-import 'package:glue/src/../eval.dart';
-import 'package:glue/src/../eval/exception.dart';
-import 'package:glue/src/../ir.dart';
+import 'package:glue/src/eval.dart';
+import 'package:glue/src/eval/exception.dart';
+import 'package:glue/src/ir.dart';
 
 /// Ceiling function (rounds up to nearest integer)
 /// Mirrors Haskell Glue.Lib.Math.Utility.Ceil.ceil exactly

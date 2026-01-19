@@ -1,12 +1,12 @@
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/module.dart';
-import 'abs.dart';
-import 'ceil.dart';
-import 'floor.dart';
-import 'max.dart';
-import 'min.dart';
-import 'round.dart';
-import 'trunc.dart';
+import 'package:glue/src/lib/math/utility/abs.dart';
+import 'package:glue/src/lib/math/utility/ceil.dart';
+import 'package:glue/src/lib/math/utility/floor.dart';
+import 'package:glue/src/lib/math/utility/max.dart';
+import 'package:glue/src/lib/math/utility/min.dart';
+import 'package:glue/src/lib/math/utility/round.dart';
+import 'package:glue/src/lib/math/utility/trunc.dart';
 
 /// Utility module - mathematical utility functions
 /// Mirrors Haskell Glue.Lib.Math.Utility exactly

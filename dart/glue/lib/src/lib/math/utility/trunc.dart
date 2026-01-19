@@ -1,6 +1,6 @@
-import 'package:glue/src/../eval.dart';
-import 'package:glue/src/../eval/exception.dart';
-import 'package:glue/src/../ir.dart';
+import 'package:glue/src/eval.dart';
+import 'package:glue/src/eval/exception.dart';
+import 'package:glue/src/ir.dart';
 
 /// Truncate function (removes decimal part)
 /// Mirrors Haskell Glue.Lib.Math.Utility.Trunc.trunc exactly

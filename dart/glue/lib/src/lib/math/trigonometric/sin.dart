@@ -1,8 +1,8 @@
 import 'dart:math' as math;
 
-import 'package:glue/src/../eval.dart';
-import 'package:glue/src/../eval/exception.dart';
-import 'package:glue/src/../ir.dart';
+import 'package:glue/src/eval.dart';
+import 'package:glue/src/eval/exception.dart';
+import 'package:glue/src/ir.dart';
 
 /// Sine function (radians)
 /// Mirrors Haskell Glue.Lib.Math.Trigonometric.Sin.sin exactly

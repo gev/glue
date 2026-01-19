@@ -1,6 +1,6 @@
-import 'package:glue/src/../eval.dart';
-import 'package:glue/src/../eval/exception.dart';
-import 'package:glue/src/../ir.dart';
+import 'package:glue/src/eval.dart';
+import 'package:glue/src/eval/exception.dart';
+import 'package:glue/src/ir.dart';
 
 /// Minimum function (returns the smaller of two numbers)
 /// Mirrors Haskell Glue.Lib.Math.Utility.Min.min exactly

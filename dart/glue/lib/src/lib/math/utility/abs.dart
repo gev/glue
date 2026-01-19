@@ -1,6 +1,6 @@
-import 'package:glue/src/../eval.dart';
-import 'package:glue/src/../eval/exception.dart';
-import 'package:glue/src/../ir.dart';
+import 'package:glue/src/eval.dart';
+import 'package:glue/src/eval/exception.dart';
+import 'package:glue/src/ir.dart';
 
 /// Absolute value function
 /// Mirrors Haskell Glue.Lib.Math.Utility.Abs.abs exactly

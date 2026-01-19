@@ -1,26 +1,26 @@
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/module.dart';
-import 'list/append.dart';
-import 'list/butlast.dart';
-import 'list/car.dart';
-import 'list/cdr.dart';
-import 'list/cons.dart';
-import 'list/drop.dart';
-import 'list/filter.dart';
-import 'list/find.dart';
-import 'list/flatten.dart';
-import 'list/last.dart';
-import 'list/length.dart';
-import 'list/map.dart';
-import 'list/member.dart';
-import 'list/nth.dart';
-import 'list/partition.dart';
-import 'list/position.dart';
-import 'list/remove.dart';
-import 'list/reverse.dart';
-import 'list/sort.dart';
-import 'list/take.dart';
-import 'list/zip.dart';
+import 'package:glue/src/lib/list/append.dart';
+import 'package:glue/src/lib/list/butlast.dart';
+import 'package:glue/src/lib/list/car.dart';
+import 'package:glue/src/lib/list/cdr.dart';
+import 'package:glue/src/lib/list/cons.dart';
+import 'package:glue/src/lib/list/drop.dart';
+import 'package:glue/src/lib/list/filter.dart';
+import 'package:glue/src/lib/list/find.dart';
+import 'package:glue/src/lib/list/flatten.dart';
+import 'package:glue/src/lib/list/last.dart';
+import 'package:glue/src/lib/list/length.dart';
+import 'package:glue/src/lib/list/map.dart';
+import 'package:glue/src/lib/list/member.dart';
+import 'package:glue/src/lib/list/nth.dart';
+import 'package:glue/src/lib/list/partition.dart';
+import 'package:glue/src/lib/list/position.dart';
+import 'package:glue/src/lib/list/remove.dart';
+import 'package:glue/src/lib/list/reverse.dart';
+import 'package:glue/src/lib/list/sort.dart';
+import 'package:glue/src/lib/list/take.dart';
+import 'package:glue/src/lib/list/zip.dart';
 
 /// List module - list manipulation functions
 /// Mirrors Haskell Glue.Lib.List exactly

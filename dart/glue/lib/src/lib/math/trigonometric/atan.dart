@@ -1,8 +1,8 @@
 import 'dart:math' as math;
 
-import 'package:glue/src/../eval.dart';
-import 'package:glue/src/../eval/exception.dart';
-import 'package:glue/src/../ir.dart';
+import 'package:glue/src/eval.dart';
+import 'package:glue/src/eval/exception.dart';
+import 'package:glue/src/ir.dart';
 
 /// Arctangent function (returns radians)
 /// Mirrors Haskell Glue.Lib.Math.Trigonometric.Atan.atan exactly

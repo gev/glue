@@ -1,16 +1,16 @@
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/module.dart';
-import 'bool/eq.dart';
-import 'bool/ge.dart';
-import 'bool/gt.dart';
-import 'bool/if.dart';
-import 'bool/le.dart';
-import 'bool/lt.dart';
-import 'bool/ne.dart';
-import 'bool/not.dart';
-import 'bool/until.dart';
-import 'bool/when.dart';
-import 'bool/while.dart';
+import 'package:glue/src/lib/bool/eq.dart';
+import 'package:glue/src/lib/bool/ge.dart';
+import 'package:glue/src/lib/bool/gt.dart';
+import 'package:glue/src/lib/bool/if.dart';
+import 'package:glue/src/lib/bool/le.dart';
+import 'package:glue/src/lib/bool/lt.dart';
+import 'package:glue/src/lib/bool/ne.dart';
+import 'package:glue/src/lib/bool/not.dart';
+import 'package:glue/src/lib/bool/until.dart';
+import 'package:glue/src/lib/bool/when.dart';
+import 'package:glue/src/lib/bool/while.dart';
 
 /// Bool module - boolean operations, comparisons, and control flow
 /// Mirrors Haskell Glue.Lib.Bool exactly

@@ -1,7 +1,8 @@
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval/exception.dart';
-import 'lambda.dart' show extractSymbols, makeClosure;
+import 'package:glue/src/lib/builtin/lambda.dart'
+    show extractSymbols, makeClosure;
 
 /// Def special form implementation
 /// Mirrors Haskell Glue.Lib.Builtin.Def exactly
