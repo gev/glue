@@ -6,7 +6,11 @@ import 'package:glue/src/ir.dart';
 
 /// Natural logarithm function (base e)
 /// Mirrors Haskell Glue.Lib.Math.Logarithmic.Ln.ln exactly
-Eval<Ir> ln(List<Ir> args) {
+final Ir ln = IrNativeFunc(lnImpl);
+
+/// Natural logarithm function implementation (base e)
+/// Mirrors Haskell Glue.Lib.Math.Logarithmic.Ln.lnImpl exactly
+Eval<Ir> lnImpl(List<Ir> args) {
   return switch (args) {
     [final arg] => eval(arg).flatMap((va) {
       return switch (va) {

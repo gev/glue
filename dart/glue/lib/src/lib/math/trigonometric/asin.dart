@@ -6,7 +6,11 @@ import 'package:glue/src/ir.dart';
 
 /// Arcsine function (returns radians)
 /// Mirrors Haskell Glue.Lib.Math.Trigonometric.Asin.asin exactly
-Eval<Ir> asin(List<Ir> args) {
+final Ir asin = IrNativeFunc(asinImpl);
+
+/// Arcsine function implementation (returns radians)
+/// Mirrors Haskell Glue.Lib.Math.Trigonometric.Asin.asinImpl exactly
+Eval<Ir> asinImpl(List<Ir> args) {
   return switch (args) {
     [final arg] => eval(arg).flatMap((va) {
       return switch (va) {

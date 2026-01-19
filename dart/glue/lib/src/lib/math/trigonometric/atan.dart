@@ -6,7 +6,11 @@ import 'package:glue/src/ir.dart';
 
 /// Arctangent function (returns radians)
 /// Mirrors Haskell Glue.Lib.Math.Trigonometric.Atan.atan exactly
-Eval<Ir> atan(List<Ir> args) {
+final Ir atan = IrNativeFunc(atanImpl);
+
+/// Arctangent function implementation (returns radians)
+/// Mirrors Haskell Glue.Lib.Math.Trigonometric.Atan.atanImpl exactly
+Eval<Ir> atanImpl(List<Ir> args) {
   return switch (args) {
     [final arg] => eval(arg).flatMap((va) {
       return switch (va) {

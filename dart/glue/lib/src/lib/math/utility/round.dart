@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Round function (rounds to nearest integer)
 /// Mirrors Haskell Glue.Lib.Math.Utility.Round.round exactly
-Eval<Ir> round(List<Ir> args) {
+final Ir round = IrNativeFunc(roundImpl);
+
+/// Round function implementation (rounds to nearest integer)
+/// Mirrors Haskell Glue.Lib.Math.Utility.Round.roundImpl exactly
+Eval<Ir> roundImpl(List<Ir> args) {
   return switch (args) {
     [final arg] => eval(arg).flatMap((va) {
       return switch (va) {

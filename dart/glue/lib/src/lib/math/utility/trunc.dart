@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Truncate function (removes decimal part)
 /// Mirrors Haskell Glue.Lib.Math.Utility.Trunc.trunc exactly
-Eval<Ir> trunc(List<Ir> args) {
+final Ir trunc = IrNativeFunc(truncImpl);
+
+/// Truncate function implementation (removes decimal part)
+/// Mirrors Haskell Glue.Lib.Math.Utility.Trunc.truncImpl exactly
+Eval<Ir> truncImpl(List<Ir> args) {
   return switch (args) {
     [final arg] => eval(arg).flatMap((va) {
       return switch (va) {

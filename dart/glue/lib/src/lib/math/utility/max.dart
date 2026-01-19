@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Maximum function (returns the larger of two numbers)
 /// Mirrors Haskell Glue.Lib.Math.Utility.Max.max exactly
-Eval<Ir> max(List<Ir> args) {
+final Ir max = IrNativeFunc(maxImpl);
+
+/// Maximum function implementation (returns the larger of two numbers)
+/// Mirrors Haskell Glue.Lib.Math.Utility.Max.maxImpl exactly
+Eval<Ir> maxImpl(List<Ir> args) {
   return switch (args) {
     [final arg1, final arg2] => sequenceAll([eval(arg1), eval(arg2)]).flatMap((
       values,

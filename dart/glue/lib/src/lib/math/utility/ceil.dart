@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Ceiling function (rounds up to nearest integer)
 /// Mirrors Haskell Glue.Lib.Math.Utility.Ceil.ceil exactly
-Eval<Ir> ceil(List<Ir> args) {
+final Ir ceil = IrNativeFunc(ceilImpl);
+
+/// Ceiling function implementation (rounds up to nearest integer)
+/// Mirrors Haskell Glue.Lib.Math.Utility.Ceil.ceilImpl exactly
+Eval<Ir> ceilImpl(List<Ir> args) {
   return switch (args) {
     [final arg] => eval(arg).flatMap((va) {
       return switch (va) {

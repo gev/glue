@@ -6,7 +6,11 @@ import 'package:glue/src/ir.dart';
 
 /// Power function (base^exponent)
 /// Mirrors Haskell Glue.Lib.Math.Power.Pow.pow exactly
-Eval<Ir> pow(List<Ir> args) {
+final Ir pow = IrNativeFunc(powImpl);
+
+/// Power function implementation (base^exponent)
+/// Mirrors Haskell Glue.Lib.Math.Power.Pow.powImpl exactly
+Eval<Ir> powImpl(List<Ir> args) {
   return switch (args) {
     [final arg1, final arg2] => sequenceAll([eval(arg1), eval(arg2)]).flatMap((
       values,

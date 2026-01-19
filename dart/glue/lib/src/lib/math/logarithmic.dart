@@ -1,4 +1,3 @@
-import 'package:glue/src/ir.dart';
 import 'package:glue/src/module.dart';
 import 'package:glue/src/lib/math/logarithmic/lg.dart';
 import 'package:glue/src/lib/math/logarithmic/ln.dart';
@@ -11,11 +10,11 @@ import 'package:glue/src/lib/math/logarithmic/log.dart';
 /// Mirrors Haskell Glue.Lib.Math.Logarithmic.logarithmic exactly
 final ModuleInfo logarithmic = nativeModule('ffi.math.logarithmic', [
   // Logarithm with arbitrary base (value, base)
-  ('log', IrNativeFunc(log)),
+  ('log', log),
 
   // Natural logarithm (base e)
-  ('ln', IrNativeFunc(ln)),
+  ('ln', ln),
 
   // Common logarithm (base 10)
-  ('lg', IrNativeFunc(lg)),
+  ('lg', lg),
 ]);

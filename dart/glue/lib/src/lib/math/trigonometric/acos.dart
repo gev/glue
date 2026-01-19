@@ -6,7 +6,11 @@ import 'package:glue/src/ir.dart';
 
 /// Arccosine function (returns radians)
 /// Mirrors Haskell Glue.Lib.Math.Trigonometric.Acos.acos exactly
-Eval<Ir> acos(List<Ir> args) {
+final Ir acos = IrNativeFunc(acosImpl);
+
+/// Arccosine function implementation (returns radians)
+/// Mirrors Haskell Glue.Lib.Math.Trigonometric.Acos.acosImpl exactly
+Eval<Ir> acosImpl(List<Ir> args) {
   return switch (args) {
     [final arg] => eval(arg).flatMap((va) {
       return switch (va) {

@@ -1,4 +1,3 @@
-import 'package:glue/src/ir.dart';
 import 'package:glue/src/module.dart';
 import 'package:glue/src/lib/io/print.dart';
 import 'package:glue/src/lib/io/read.dart';

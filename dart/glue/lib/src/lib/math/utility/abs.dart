@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Absolute value function
 /// Mirrors Haskell Glue.Lib.Math.Utility.Abs.abs exactly
-Eval<Ir> abs(List<Ir> args) {
+final Ir abs = IrNativeFunc(absImpl);
+
+/// Absolute value function implementation
+/// Mirrors Haskell Glue.Lib.Math.Utility.Abs.absImpl exactly
+Eval<Ir> absImpl(List<Ir> args) {
   return switch (args) {
     [final arg] => eval(arg).flatMap((va) {
       return switch (va) {

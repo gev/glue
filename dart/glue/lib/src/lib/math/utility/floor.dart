@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Floor function (rounds down to nearest integer)
 /// Mirrors Haskell Glue.Lib.Math.Utility.Floor.floor exactly
-Eval<Ir> floor(List<Ir> args) {
+final Ir floor = IrNativeFunc(floorImpl);
+
+/// Floor function implementation (rounds down to nearest integer)
+/// Mirrors Haskell Glue.Lib.Math.Utility.Floor.floorImpl exactly
+Eval<Ir> floorImpl(List<Ir> args) {
   return switch (args) {
     [final arg] => eval(arg).flatMap((va) {
       return switch (va) {

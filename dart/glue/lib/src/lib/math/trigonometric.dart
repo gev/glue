@@ -1,4 +1,3 @@
-import 'package:glue/src/ir.dart';
 import 'package:glue/src/module.dart';
 import 'package:glue/src/lib/math/trigonometric/acos.dart';
 import 'package:glue/src/lib/math/trigonometric/asin.dart';
@@ -14,12 +13,12 @@ import 'package:glue/src/lib/math/trigonometric/tan.dart';
 /// Mirrors Haskell Glue.Lib.Math.Trigonometric.trigonometric exactly
 final ModuleInfo trigonometric = nativeModule('ffi.math.trigonometric', [
   // Direct trigonometric functions
-  ('sin', IrNativeFunc(sin)),
-  ('cos', IrNativeFunc(cos)),
-  ('tan', IrNativeFunc(tan)),
+  ('sin', sin),
+  ('cos', cos),
+  ('tan', tan),
 
   // Inverse trigonometric functions
-  ('asin', IrNativeFunc(asin)),
-  ('acos', IrNativeFunc(acos)),
-  ('atan', IrNativeFunc(atan)),
+  ('asin', asin),
+  ('acos', acos),
+  ('atan', atan),
 ]);

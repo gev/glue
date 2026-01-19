@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Multiplication function
 /// Mirrors Haskell Glue.Lib.Math.Arithmetic.Mul.mul exactly
-Eval<Ir> mul(List<Ir> args) {
+final Ir mul = IrNativeFunc(mulImpl);
+
+/// Multiplication function implementation
+/// Mirrors Haskell Glue.Lib.Math.Arithmetic.Mul.mulImpl exactly
+Eval<Ir> mulImpl(List<Ir> args) {
   return switch (args) {
     [final left, final right] => sequenceAll([eval(left), eval(right)]).flatMap(
       (values) {

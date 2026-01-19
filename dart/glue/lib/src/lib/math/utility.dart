@@ -1,4 +1,3 @@
-import 'package:glue/src/ir.dart';
 import 'package:glue/src/module.dart';
 import 'package:glue/src/lib/math/utility/abs.dart';
 import 'package:glue/src/lib/math/utility/ceil.dart';
@@ -15,15 +14,15 @@ import 'package:glue/src/lib/math/utility/trunc.dart';
 /// Mirrors Haskell Glue.Lib.Math.Utility.utility exactly
 final ModuleInfo utility = nativeModule('ffi.math.utility', [
   // Absolute value
-  ('abs', IrNativeFunc(abs)),
+  ('abs', abs),
 
   // Rounding functions (always return Integer)
-  ('floor', IrNativeFunc(floor)),
-  ('ceil', IrNativeFunc(ceil)),
-  ('round', IrNativeFunc(round)),
-  ('trunc', IrNativeFunc(trunc)),
+  ('floor', floor),
+  ('ceil', ceil),
+  ('round', round),
+  ('trunc', trunc),
 
   // Min/max functions (two arguments)
-  ('min', IrNativeFunc(min)),
-  ('max', IrNativeFunc(max)),
+  ('min', min),
+  ('max', max),
 ]);

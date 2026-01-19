@@ -1,4 +1,3 @@
-import 'package:glue/src/ir.dart';
 import 'package:glue/src/module.dart';
 import 'package:glue/src/lib/math/arithmetic/add.dart';
 import 'package:glue/src/lib/math/arithmetic/div.dart';
@@ -13,22 +12,22 @@ import 'package:glue/src/lib/math/arithmetic/sub.dart';
 /// Mirrors Haskell Glue.Lib.Math.Arithmetic.arithmetic exactly
 final ModuleInfo arithmetic = nativeModule('ffi.math.arithmetic', [
   // Addition
-  ('+', IrNativeFunc(add)),
-  ('add', IrNativeFunc(add)),
+  ('+', add),
+  ('add', add),
 
   // Subtraction
-  ('-', IrNativeFunc(sub)),
-  ('sub', IrNativeFunc(sub)),
+  ('-', sub),
+  ('sub', sub),
 
   // Multiplication
-  ('*', IrNativeFunc(mul)),
-  ('mul', IrNativeFunc(mul)),
+  ('*', mul),
+  ('mul', mul),
 
   // Division
-  ('/', IrNativeFunc(div)),
-  ('div', IrNativeFunc(div)),
+  ('/', div),
+  ('div', div),
 
   // Modulo
-  ('%', IrNativeFunc(mod)),
-  ('mod', IrNativeFunc(mod)),
+  ('%', mod),
+  ('mod', mod),
 ]);

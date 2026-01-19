@@ -6,7 +6,11 @@ import 'package:glue/src/ir.dart';
 
 /// Exponential function (e^x)
 /// Mirrors Haskell Glue.Lib.Math.Power.Exp.exp exactly
-Eval<Ir> exp(List<Ir> args) {
+final Ir exp = IrNativeFunc(expImpl);
+
+/// Exponential function implementation (e^x)
+/// Mirrors Haskell Glue.Lib.Math.Power.Exp.expImpl exactly
+Eval<Ir> expImpl(List<Ir> args) {
   return switch (args) {
     [final arg] => eval(arg).flatMap((va) {
       return switch (va) {
