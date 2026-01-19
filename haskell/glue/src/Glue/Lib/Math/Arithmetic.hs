@@ -1,7 +1,6 @@
 module Glue.Lib.Math.Arithmetic where
 
 import Glue.Eval (Eval)
-import Glue.IR (IR (..))
 import Glue.Lib.Math.Arithmetic.Add qualified as Add
 import Glue.Lib.Math.Arithmetic.Div qualified as Div
 import Glue.Lib.Math.Arithmetic.Mod qualified as Mod
@@ -13,4 +12,14 @@ arithmetic :: ModuleInfo Eval
 arithmetic =
     nativeModule
         "ffi.math.arithmetic"
-        []
+        [ ("+", Add.add)
+        , ("add", Add.add)
+        , ("-", Sub.sub)
+        , ("sub", Sub.sub)
+        , ("*", Mul.mul)
+        , ("mul", Mul.mul)
+        , ("/", Div.div)
+        , ("div", Div.div)
+        , ("%", Mod.mod)
+        , ("mod", Mod.mod)
+        ]
