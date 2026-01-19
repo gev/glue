@@ -1,7 +1,6 @@
 module Glue.Lib.List where
 
 import Glue.Eval (Eval)
-import Glue.IR (IR (..))
 import Glue.Lib.List.Append (append)
 import Glue.Lib.List.Butlast (butlast)
 import Glue.Lib.List.Car (car)
