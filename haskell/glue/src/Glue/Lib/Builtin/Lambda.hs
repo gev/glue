@@ -5,8 +5,11 @@ import Glue.Eval (Eval, getEnv, throwError)
 import Glue.Eval.Exception (RuntimeException, expectedListOfSymbols, wrongArgumentType)
 import Glue.IR (IR (..))
 
-lambda :: [IR Eval] -> Eval (IR Eval)
-lambda [argsNode, body] = do
+lambda :: IR Eval
+lambda = Special lambdaImpl
+
+lambdaImpl :: [IR Eval] -> Eval (IR Eval)
+lambdaImpl [argsNode, body] = do
     rawArgs <- case argsNode of
         List xs -> pure xs
         _ -> throwError $ wrongArgumentType ["arguments list", "body"]
@@ -14,7 +17,7 @@ lambda [argsNode, body] = do
         Right ps -> pure ps
         Left _ -> throwError $ wrongArgumentType ["symbols in arguments", "body"]
     makeClosure params body
-lambda _ = throwError $ wrongArgumentType ["arguments", "body"]
+lambdaImpl _ = throwError $ wrongArgumentType ["arguments", "body"]
 
 makeClosure :: [Text] -> IR Eval -> Eval (IR Eval)
 makeClosure params body =

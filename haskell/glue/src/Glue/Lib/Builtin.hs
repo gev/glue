@@ -15,12 +15,12 @@ builtin :: ModuleInfo Eval
 builtin =
     nativeModule
         "ffi.builtin"
-        [ ("def", Special def)
-        , ("set", Special set)
-        , ("lambda", Special lambda)
-        , ("\\", Special lambda)
-        , ("let", Special let')
-        , ("import", Special importForm)
-        , ("error", Special errorFunc)
-        , ("try", Special tryFunc)
+        [ ("def", def)
+        , ("set", set)
+        , ("lambda", lambda)
+        , ("\\", lambda)
+        , ("let", let')
+        , ("import", importForm)
+        , ("error", errorFunc)
+        , ("try", tryFunc)
         ]

@@ -14,10 +14,13 @@ import Glue.Module.Registry qualified as Registry
 import Prelude hiding (mod)
 
 -- | Import special form - loads and evaluates a module
-importForm :: [IR Eval] -> Eval (IR Eval)
-importForm [Symbol moduleName] = importModule [moduleName]
-importForm [DottedSymbol modulePath] = importModule modulePath
-importForm _ = throwError $ wrongArgumentType ["module-name"]
+importForm :: IR Eval
+importForm = Special importFormImpl
+
+importFormImpl :: [IR Eval] -> Eval (IR Eval)
+importFormImpl [Symbol moduleName] = importModule [moduleName]
+importFormImpl [DottedSymbol modulePath] = importModule modulePath
+importFormImpl _ = throwError $ wrongArgumentType ["module-name"]
 
 importModule :: [T.Text] -> Eval (IR Eval)
 importModule [] = throwError $ wrongArgumentType ["module-name"]

@@ -7,8 +7,11 @@ import Glue.Eval.Error (EvalError (..))
 import Glue.Eval.Exception
 import Glue.IR qualified as IR
 
-tryFunc :: [IR.IR Eval] -> Eval (IR.IR Eval)
-tryFunc (body : catches) = do
+tryFunc :: IR.IR Eval
+tryFunc = IR.Special tryFuncImpl
+
+tryFuncImpl :: [IR.IR Eval] -> Eval (IR.IR Eval)
+tryFuncImpl (body : catches) = do
     runtime <- getRuntime
     result <- liftIO $ runEval (eval body) runtime
     case result of
@@ -23,7 +26,7 @@ tryFunc (body : catches) = do
                         c | isCallable c -> apply c (maybeToList payload)
                         _ -> throwError notCallableObject
                 Nothing -> throwError $ RuntimeException sym payload
-tryFunc _ = throwError $ wrongArgumentType ["body", "catch*"]
+tryFuncImpl _ = throwError $ wrongArgumentType ["body", "catch*"]
 
 findCatch :: Text -> [IR.IR Eval] -> Maybe (IR.IR Eval)
 findCatch _ [] = Nothing

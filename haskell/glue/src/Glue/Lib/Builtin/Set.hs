@@ -7,8 +7,11 @@ import Glue.Eval (Eval, apply, eval, getEnv, throwError, updateVarEval)
 import Glue.Eval.Exception (notAnObject, wrongArgumentType)
 import Glue.IR (IR (..), getters, setters)
 
-set :: [IR Eval] -> Eval (IR Eval)
-set [target, rawVal] = do
+set :: IR Eval
+set = Special setImpl
+
+setImpl :: [IR Eval] -> Eval (IR Eval)
+setImpl [target, rawVal] = do
     val <- eval rawVal
     case target of
         Symbol name -> do
@@ -69,4 +72,4 @@ set [target, rawVal] = do
                     Nothing -> throwError $ notAnObject currentObj
                 _ -> throwError $ notAnObject currentObj
             Left err -> throwError err
-set _ = throwError $ wrongArgumentType ["target", "value"]
+setImpl _ = throwError $ wrongArgumentType ["target", "value"]
