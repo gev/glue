@@ -57,7 +57,7 @@ void main() {
         final env = defineVar('obj', hostIr, emptyEnv());
         final setArgs = [IrSymbol('obj.name'), IrString('Alice')];
 
-        final result = await runEvalSimple(set(setArgs), env);
+        final result = await runEvalSimple(apply(set, setArgs), env);
         result.match(
           (error) => fail('Property setting should succeed: $error'),
           (value) {
@@ -83,7 +83,7 @@ void main() {
         final env = defineVar('obj', hostIr, emptyEnv());
         final setArgs = [IrSymbol('obj.size'), IrInteger(100)];
 
-        final result = await runEvalSimple(set(setArgs), env);
+        final result = await runEvalSimple(apply(set, setArgs), env);
         result.match(
           (error) => fail('Property setting should succeed: $error'),
           (value) {
@@ -111,7 +111,7 @@ void main() {
         final env = defineVar('obj', hostIr, emptyEnv());
         final setArgs = [IrSymbol('obj.name'), IrInteger(123)];
 
-        final result = await runEvalSimple(set(setArgs), env);
+        final result = await runEvalSimple(apply(set, setArgs), env);
         result.match(
           (error) => expect(true, isTrue), // Should fail with type error
           (value) => fail(
@@ -136,7 +136,7 @@ void main() {
         final env = defineVar('obj', hostIr, emptyEnv());
         final setArgs = [IrSymbol('obj.age'), IrString('thirty')];
 
-        final result = await runEvalSimple(set(setArgs), env);
+        final result = await runEvalSimple(apply(set, setArgs), env);
         result.match(
           (error) => expect(true, isTrue), // Should fail with type error
           (value) => fail(
@@ -171,7 +171,7 @@ void main() {
 
         // Set name (string)
         final setNameArgs = [IrSymbol('obj.name'), IrString('Bob')];
-        final result1 = await runEvalSimple(set(setNameArgs), env);
+        final result1 = await runEvalSimple(apply(set, setNameArgs), env);
         result1.match((error) => fail('Name setting should succeed: $error'), (
           value,
         ) {
@@ -181,7 +181,7 @@ void main() {
 
         // Set age (integer)
         final setAgeArgs = [IrSymbol('obj.age'), IrInteger(25)];
-        final result2 = await runEvalSimple(set(setAgeArgs), env);
+        final result2 = await runEvalSimple(apply(set, setAgeArgs), env);
         result2.match((error) => fail('Age setting should succeed: $error'), (
           value,
         ) {
@@ -198,7 +198,7 @@ void main() {
         final env = defineVar('obj', hostIr, emptyEnv());
         final setArgs = [IrSymbol('obj.nonexistent'), IrString('value')];
 
-        final result = await runEvalSimple(set(setArgs), env);
+        final result = await runEvalSimple(apply(set, setArgs), env);
         result.match(
           (error) => expect(true, isTrue), // Should fail
           (value) => fail(
@@ -211,7 +211,7 @@ void main() {
         final env = defineVar('number', IrInteger(42), emptyEnv());
         final setArgs = [IrSymbol('number.property'), IrString('value')];
 
-        final result = await runEvalSimple(set(setArgs), env);
+        final result = await runEvalSimple(apply(set, setArgs), env);
         result.match(
           (error) => expect(true, isTrue), // Should fail
           (value) => fail(

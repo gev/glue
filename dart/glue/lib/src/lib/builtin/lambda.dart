@@ -7,7 +7,12 @@ import 'package:glue/src/eval/exception.dart';
 /// Mirrors Haskell Glue.Lib.Builtin.Lambda exactly
 
 /// Lambda special form - creates closures
-Eval<Ir> lambda(List<Ir> args) {
+/// Mirrors Haskell Glue.Lib.Builtin.Lambda.lambda exactly
+final Ir lambda = IrSpecial(lambdaImpl);
+
+/// Lambda special form implementation
+/// Mirrors Haskell Glue.Lib.Builtin.Lambda.lambda exactly
+Eval<Ir> lambdaImpl(List<Ir> args) {
   if (args.length != 2) {
     return throwError(wrongArgumentType(['arguments', 'body']));
   }

@@ -241,7 +241,7 @@ Env testEnv() {
             args[1],
           ).flatMap((value) => defineVarEval(name, value).map((_) => value));
         }),
-        defineVar('set', IrSpecial(set), emptyEnv()),
+        defineVar('set', set, emptyEnv()),
       ),
     ),
   );

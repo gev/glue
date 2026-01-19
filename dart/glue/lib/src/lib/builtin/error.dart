@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Error special form - throws a runtime exception
 /// Mirrors Haskell Glue.Lib.Builtin.Error.errorFunc exactly
-Eval<Ir> error(List<Ir> args) {
+final Ir error = IrSpecial(errorImpl);
+
+/// Error special form implementation
+/// Mirrors Haskell Glue.Lib.Builtin.Error.errorFunc exactly
+Eval<Ir> errorImpl(List<Ir> args) {
   if (args.length != 2) {
     return throwError(wrongArgumentType(['symbol', 'value']));
   }

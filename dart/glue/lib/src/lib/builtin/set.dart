@@ -5,7 +5,11 @@ import 'package:glue/src/ir.dart';
 
 /// Set special form - assigns values to variables or object properties
 /// Mirrors Haskell Glue.Lib.Builtin.Set.set exactly
-Eval<Ir> set(List<Ir> args) {
+final Ir set = IrSpecial(setImpl);
+
+/// Set special form implementation
+/// Mirrors Haskell Glue.Lib.Builtin.Set.set exactly
+Eval<Ir> setImpl(List<Ir> args) {
   if (args.length != 2) {
     return throwError(wrongArgumentType(['target', 'value']));
   }

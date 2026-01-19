@@ -7,7 +7,12 @@ import 'lambda.dart' show extractSymbols, makeClosure;
 /// Mirrors Haskell Glue.Lib.Builtin.Def exactly
 
 /// Def special form - defines variables and functions
-Eval<Ir> def(List<Ir> args) {
+/// Mirrors Haskell Glue.Lib.Builtin.Def.def exactly
+final Ir def = IrSpecial(defImpl);
+
+/// Def special form implementation
+/// Mirrors Haskell Glue.Lib.Builtin.Def.defImpl exactly
+Eval<Ir> defImpl(List<Ir> args) {
   if (args.length < 2) {
     return throwError(wrongArgumentType(['symbol', 'value']));
   }
