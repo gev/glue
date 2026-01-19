@@ -12,7 +12,7 @@ Future<Either<EvalError, Ir?>> runCode(List<Ir> args) async {
   final env = emptyEnv(); // Empty env for unit tests
   final runtime = Runtime.initial(env);
 
-  final evalResult = await runEval(gt(args), runtime);
+  final evalResult = await runEval(apply(gt, args), runtime);
   return evalResult.match((error) => Left(error), (value) {
     final (result, _) = value;
     return Right(result);
