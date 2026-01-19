@@ -12,8 +12,11 @@ sub = NativeFunc subImpl
 
 -- Subtraction function implementation
 -- Mirrors Haskell Glue.Lib.Math.Arithmetic.Sub.subImpl exactly
-subImpl :: [IR Eval] -> Eval (IR Eval)
-subImpl [left, right] = do
+subImpl :: IR Eval -> Eval (IR Eval)
+subImpl left = pure $ NativeFunc (subFrom left)
+
+subFrom :: IR Eval -> IR Eval -> Eval (IR Eval)
+subFrom left right = do
     l <- eval left
     r <- eval right
     case (l, r) of
@@ -22,4 +25,3 @@ subImpl [left, right] = do
         (Float a, Integer b) -> pure $ Float (a - fromIntegral b)
         (Float a, Float b) -> pure $ Float (a - b)
         _ -> throwError $ wrongArgumentType ["number"]
-subImpl _ = throwError wrongNumberOfArguments

@@ -11,11 +11,10 @@ sqrt = NativeFunc sqrtImpl
 
 -- Square root function implementation
 -- Mirrors Haskell Glue.Lib.Math.Power.Sqrt.sqrtImpl exactly
-sqrtImpl :: [IR Eval] -> Eval (IR Eval)
-sqrtImpl [arg] = do
+sqrtImpl :: IR Eval -> Eval (IR Eval)
+sqrtImpl arg = do
     va <- eval arg
     case va of
         Integer n -> pure $ Float (Prelude.sqrt (fromIntegral n))
         Float n -> pure $ Float (Prelude.sqrt n)
         _ -> throwError $ wrongArgumentType ["number"]
-sqrtImpl _ = throwError wrongNumberOfArguments

@@ -12,8 +12,11 @@ mul = NativeFunc mulImpl
 
 -- Multiplication function implementation
 -- Mirrors Haskell Glue.Lib.Math.Arithmetic.Mul.mulImpl exactly
-mulImpl :: [IR Eval] -> Eval (IR Eval)
-mulImpl [left, right] = do
+mulImpl :: IR Eval -> Eval (IR Eval)
+mulImpl left = pure $ NativeFunc (mulBy left)
+
+mulBy :: IR Eval -> IR Eval -> Eval (IR Eval)
+mulBy left right = do
     l <- eval left
     r <- eval right
     case (l, r) of
@@ -22,4 +25,3 @@ mulImpl [left, right] = do
         (Float a, Integer b) -> pure $ Float (a * fromIntegral b)
         (Float a, Float b) -> pure $ Float (a * b)
         _ -> throwError $ wrongArgumentType ["number"]
-mulImpl _ = throwError wrongNumberOfArguments

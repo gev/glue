@@ -7,8 +7,11 @@ import Glue.IR (IR (..))
 filter :: IR Eval
 filter = NativeFunc filterImpl
 
-filterImpl :: [IR Eval] -> Eval (IR Eval)
-filterImpl [predicateIR, listIR] = do
+filterImpl :: IR Eval -> Eval (IR Eval)
+filterImpl predicateIR = pure $ NativeFunc (filterWith predicateIR)
+
+filterWith :: IR Eval -> IR Eval -> Eval (IR Eval)
+filterWith predicateIR listIR = do
     predicate <- eval predicateIR
     list <- eval listIR
     case list of
@@ -17,7 +20,6 @@ filterImpl [predicateIR, listIR] = do
             filtered <- filterElements predicate xs
             pure $ List filtered
         _ -> throwError $ wrongArgumentType ["function", "list"]
-filterImpl _ = throwError wrongNumberOfArguments
 
 -- Helper function to filter elements
 filterElements :: IR Eval -> [IR Eval] -> Eval [IR Eval]

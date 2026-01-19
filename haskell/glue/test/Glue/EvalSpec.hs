@@ -238,3 +238,42 @@ spec = describe "Glue.Eval (System Integration)" do
     it "function bodies with single-element lists work" do
         runCode "((\\ (x y) ((+ x y))) 1 2)"
             `shouldReturn` Right (Integer 3)
+
+    -- Native Function Currying Tests
+    it "native function partial application works" do
+        runCode "((+ 1) 2)" `shouldReturn` Right (Integer 3)
+
+    it "native function currying with multiple levels" do
+        runCode "(((+ 1) 2) 3)" `shouldReturn` Right (Integer 6)
+
+    it "native function currying returns native function" do
+        result <- runCode "(+ 1)"
+        result
+            `shouldSatisfy` ( \case
+                                Right (NativeFunc _) -> True
+                                _ -> False
+                            )
+
+    it "native function currying with arithmetic" do
+        runCode "((* 2) 5)" `shouldReturn` Right (Integer 10)
+        runCode "((/ 10) 2)" `shouldReturn` Right (Float 5.0)
+        runCode "((- 10) 3)" `shouldReturn` Right (Integer 7)
+
+    it "native function currying with comparison" do
+        runCode "((== 5) 5)" `shouldReturn` Right (Bool True)
+        runCode "((< 5) 10)" `shouldReturn` Right (Bool True)
+        runCode "((> 10) 5)" `shouldReturn` Right (Bool True)
+
+    it "native function currying with list operations" do
+        runCode "((cons 1) (2 3 4))" `shouldReturn` Right (List [Integer 1, Integer 2, Integer 3, Integer 4])
+        runCode "((member 2) (1 2 3))" `shouldReturn` Right (Bool True)
+        runCode "((length) (1 2 3))" `shouldReturn` Right (Integer 3)
+
+    it "native function currying with higher-order functions" do
+        runCode "((map (+ 1)) (1 2 3))" `shouldReturn` Right (List [Integer 2, Integer 3, Integer 4])
+        runCode "((filter (> 2)) (1 2 3 4))" `shouldReturn` Right (List [Integer 3, Integer 4])
+
+    it "native function currying with math functions" do
+        runCode "((sin) 0)" `shouldReturn` Right (Float 0.0)
+        runCode "((abs) (-5))" `shouldReturn` Right (Integer 5)
+        runCode "((min 10) 5)" `shouldReturn` Right (Integer 5)

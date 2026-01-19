@@ -11,11 +11,10 @@ exp = NativeFunc expImpl
 
 -- Exponential function implementation
 -- Mirrors Haskell Glue.Lib.Math.Power.Exp.expImpl exactly
-expImpl :: [IR Eval] -> Eval (IR Eval)
-expImpl [arg] = do
+expImpl :: IR Eval -> Eval (IR Eval)
+expImpl arg = do
     va <- eval arg
     case va of
         Integer n -> pure $ Float (Prelude.exp (fromIntegral n))
         Float n -> pure $ Float (Prelude.exp n)
         _ -> throwError $ wrongArgumentType ["number"]
-expImpl _ = throwError wrongNumberOfArguments
