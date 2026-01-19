@@ -4,8 +4,11 @@ import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception (wrongArgumentType, wrongNumberOfArguments)
 import Glue.IR (IR (..))
 
-filter :: [IR Eval] -> Eval (IR Eval)
-filter [predicateIR, listIR] = do
+filter :: IR Eval
+filter = NativeFunc filterImpl
+
+filterImpl :: [IR Eval] -> Eval (IR Eval)
+filterImpl [predicateIR, listIR] = do
     predicate <- eval predicateIR
     list <- eval listIR
     case list of
@@ -14,7 +17,7 @@ filter [predicateIR, listIR] = do
             filtered <- filterElements predicate xs
             pure $ List filtered
         _ -> throwError $ wrongArgumentType ["function", "list"]
-filter _ = throwError wrongNumberOfArguments
+filterImpl _ = throwError wrongNumberOfArguments
 
 -- Helper function to filter elements
 filterElements :: IR Eval -> [IR Eval] -> Eval [IR Eval]

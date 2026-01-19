@@ -146,8 +146,8 @@ testEnv =
     foldl
         (\env (name, val) -> E.defineVar name val env)
         E.emptyEnv
-        [ ("def", Special def)
-        , ("set", Special Set.set)
+        [ ("def", def)
+        , ("set", Set.set)
         , ("person", NativeFunc person)
         , ("address", NativeFunc address)
         ]

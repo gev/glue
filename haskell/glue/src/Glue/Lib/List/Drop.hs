@@ -4,8 +4,11 @@ import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
-drop :: [IR Eval] -> Eval (IR Eval)
-drop [countIR, listIR] = do
+drop :: IR Eval
+drop = NativeFunc dropImpl
+
+dropImpl :: [IR Eval] -> Eval (IR Eval)
+dropImpl [countIR, listIR] = do
     count <- eval countIR
     list <- eval listIR
     case (count, list) of
@@ -14,4 +17,4 @@ drop [countIR, listIR] = do
                 then throwError $ wrongArgumentType ["non-negative integer"]
                 else pure $ List (Prelude.drop (fromIntegral n) xs)
         _ -> throwError $ wrongArgumentType ["number", "list"]
-drop _ = throwError wrongNumberOfArguments
+dropImpl _ = throwError wrongNumberOfArguments

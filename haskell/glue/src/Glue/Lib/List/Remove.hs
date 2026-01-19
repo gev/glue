@@ -4,8 +4,11 @@ import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
-remove :: [IR Eval] -> Eval (IR Eval)
-remove [itemIR, listIR] = do
+remove :: IR Eval
+remove = NativeFunc removeImpl
+
+removeImpl :: [IR Eval] -> Eval (IR Eval)
+removeImpl [itemIR, listIR] = do
     item <- eval itemIR
     list <- eval listIR
     case list of
@@ -13,4 +16,4 @@ remove [itemIR, listIR] = do
             let filtered = filter (/= item) xs
             pure $ List filtered
         _ -> throwError $ wrongArgumentType ["list"]
-remove _ = throwError wrongNumberOfArguments
+removeImpl _ = throwError wrongNumberOfArguments

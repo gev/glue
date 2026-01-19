@@ -4,8 +4,11 @@ import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception (wrongArgumentType, wrongNumberOfArguments)
 import Glue.IR (IR (..))
 
-append :: [IR Eval] -> Eval (IR Eval)
-append args = do
+append :: IR Eval
+append = NativeFunc appendImpl
+
+appendImpl :: [IR Eval] -> Eval (IR Eval)
+appendImpl args = do
     case args of
         [list1, list2] -> do
             val1 <- eval list1
