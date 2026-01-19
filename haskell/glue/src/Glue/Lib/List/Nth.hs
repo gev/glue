@@ -7,8 +7,11 @@ import Glue.IR (IR (..))
 nth :: IR Eval
 nth = NativeFunc nthImpl
 
-nthImpl :: [IR Eval] -> Eval (IR Eval)
-nthImpl [indexIR, listIR] = do
+nthImpl :: IR Eval -> Eval (IR Eval)
+nthImpl indexIR = pure $ NativeFunc (nthFrom indexIR)
+
+nthFrom :: IR Eval -> IR Eval -> Eval (IR Eval)
+nthFrom indexIR listIR = do
     indexVal <- eval indexIR
     listVal <- eval listIR
     case (indexVal, listVal) of
@@ -17,4 +20,3 @@ nthImpl [indexIR, listIR] = do
                 then throwError $ wrongArgumentType ["valid index"]
                 else pure $ xs !! fromIntegral idx
         _ -> throwError $ wrongArgumentType ["number", "list"]
-nthImpl _ = throwError wrongNumberOfArguments

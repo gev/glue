@@ -7,8 +7,11 @@ import Glue.IR (IR (..))
 remove :: IR Eval
 remove = NativeFunc removeImpl
 
-removeImpl :: [IR Eval] -> Eval (IR Eval)
-removeImpl [itemIR, listIR] = do
+removeImpl :: IR Eval -> Eval (IR Eval)
+removeImpl itemIR = pure $ NativeFunc (removeFrom itemIR)
+
+removeFrom :: IR Eval -> IR Eval -> Eval (IR Eval)
+removeFrom itemIR listIR = do
     item <- eval itemIR
     list <- eval listIR
     case list of
@@ -16,4 +19,3 @@ removeImpl [itemIR, listIR] = do
             let filtered = filter (/= item) xs
             pure $ List filtered
         _ -> throwError $ wrongArgumentType ["list"]
-removeImpl _ = throwError wrongNumberOfArguments
