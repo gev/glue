@@ -7,11 +7,10 @@ import Glue.IR (IR (..))
 last :: IR Eval
 last = NativeFunc lastImpl
 
-lastImpl :: [IR Eval] -> Eval (IR Eval)
-lastImpl [arg] = do
+lastImpl :: IR Eval -> Eval (IR Eval)
+lastImpl arg = do
     val <- eval arg
     case val of
         List [] -> throwError $ wrongArgumentType ["non-empty list"]
         List xs -> pure $ Prelude.last xs
         _ -> throwError $ wrongArgumentType ["list"]
-lastImpl _ = throwError wrongNumberOfArguments

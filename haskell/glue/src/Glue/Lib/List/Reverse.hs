@@ -7,10 +7,9 @@ import Glue.IR (IR (..))
 reverse :: IR Eval
 reverse = NativeFunc reverseImpl
 
-reverseImpl :: [IR Eval] -> Eval (IR Eval)
-reverseImpl [arg] = do
+reverseImpl :: IR Eval -> Eval (IR Eval)
+reverseImpl arg = do
     val <- eval arg
     case val of
         List xs -> pure $ List (Prelude.reverse xs)
         _ -> throwError $ wrongArgumentType ["list"]
-reverseImpl _ = throwError wrongNumberOfArguments

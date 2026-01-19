@@ -7,11 +7,10 @@ import Glue.IR (IR (..))
 car :: IR Eval
 car = NativeFunc carImpl
 
-carImpl :: [IR Eval] -> Eval (IR Eval)
-carImpl [arg] = do
+carImpl :: IR Eval -> Eval (IR Eval)
+carImpl arg = do
     val <- eval arg
     case val of
         List (x : _) -> pure x
         List [] -> throwError $ wrongArgumentType ["non-empty list"]
         _ -> throwError $ wrongArgumentType ["list"]
-carImpl _ = throwError wrongNumberOfArguments
