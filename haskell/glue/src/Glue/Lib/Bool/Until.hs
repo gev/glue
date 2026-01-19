@@ -4,8 +4,11 @@ import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (IR (..))
 
-until_ :: [IR Eval] -> Eval (IR Eval)
-until_ (cond : body) = loop
+until_ :: IR Eval
+until_ = Special untilImpl
+
+untilImpl :: [IR Eval] -> Eval (IR Eval)
+untilImpl (cond : body) = loop
   where
     loop = do
         case body of
@@ -20,4 +23,4 @@ until_ (cond : body) = loop
                 case condVal of
                     Bool False -> loop
                     _ -> pure Void
-until_ _ = throwError $ wrongArgumentType ["condition", "body"]
+untilImpl _ = throwError $ wrongArgumentType ["condition", "body"]

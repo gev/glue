@@ -4,8 +4,11 @@ import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (IR (..))
 
-when_ :: [IR Eval] -> Eval (IR Eval)
-when_ (cond : body) = do
+when_ :: IR Eval
+when_ = Special whenImpl
+
+whenImpl :: [IR Eval] -> Eval (IR Eval)
+whenImpl (cond : body) = do
     condVal <- eval cond
     case condVal of
         Bool False -> pure Void
@@ -14,4 +17,4 @@ when_ (cond : body) = do
             _ -> do
                 results <- mapM eval body
                 pure $ last results
-when_ _ = throwError $ wrongArgumentType ["condition", "body"]
+whenImpl _ = throwError $ wrongArgumentType ["condition", "body"]

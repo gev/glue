@@ -4,8 +4,11 @@ import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (IR (..))
 
-while_ :: [IR Eval] -> Eval (IR Eval)
-while_ (cond : body) = loop
+while_ :: IR Eval
+while_ = Special whileImpl
+
+whileImpl :: [IR Eval] -> Eval (IR Eval)
+whileImpl (cond : body) = loop
  where
   loop = do
     condVal <- eval cond
@@ -16,4 +19,4 @@ while_ (cond : body) = loop
         _ -> do
           mapM_ eval body
           loop
-while_ _ = throwError $ wrongArgumentType ["condition", "body"]
+whileImpl _ = throwError $ wrongArgumentType ["condition", "body"]
