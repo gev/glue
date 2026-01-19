@@ -23,7 +23,9 @@ tryFuncImpl (body : catches) = do
                 Just handler -> do
                     callable <- eval handler
                     case callable of
-                        c | isCallable c -> apply c (maybeToList payload)
+                        c | isCallable c -> case payload of
+                            Just p -> apply c p -- Apply with single argument
+                            Nothing -> apply c IR.Void -- Apply with void if no payload
                         _ -> throwError notCallableObject
                 Nothing -> throwError $ RuntimeException sym payload
 tryFuncImpl _ = throwError $ wrongArgumentType ["body", "catch*"]
