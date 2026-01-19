@@ -10,7 +10,7 @@ io :: ModuleInfo Eval
 io =
     nativeModule
         "ffi.io"
-        [ ("print", NativeFunc printFunc)
-        , ("println", NativeFunc println)
-        , ("read-line", NativeFunc readLine)
+        [ ("print", printFunc)
+        , ("println", println)
+        , ("read-line", readLine)
         ]
