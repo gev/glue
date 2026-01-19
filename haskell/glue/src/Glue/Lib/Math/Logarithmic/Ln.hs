@@ -11,11 +11,10 @@ ln = NativeFunc lnImpl
 
 -- Natural logarithm function implementation
 -- Mirrors Haskell Glue.Lib.Math.Logarithmic.Ln.lnImpl exactly
-lnImpl :: [IR Eval] -> Eval (IR Eval)
-lnImpl [arg] = do
+lnImpl :: IR Eval -> Eval (IR Eval)
+lnImpl arg = do
     va <- eval arg
     case va of
         Integer n -> pure $ Float (Prelude.log (fromIntegral n))
         Float n -> pure $ Float (Prelude.log n)
         _ -> throwError $ wrongArgumentType ["number"]
-lnImpl _ = throwError wrongNumberOfArguments

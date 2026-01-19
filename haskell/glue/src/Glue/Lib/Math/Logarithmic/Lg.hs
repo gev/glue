@@ -11,11 +11,10 @@ lg = NativeFunc lgImpl
 
 -- Common logarithm function implementation
 -- Mirrors Haskell Glue.Lib.Math.Logarithmic.Lg.lgImpl exactly
-lgImpl :: [IR Eval] -> Eval (IR Eval)
-lgImpl [arg] = do
+lgImpl :: IR Eval -> Eval (IR Eval)
+lgImpl arg = do
     va <- eval arg
     case va of
         Integer n -> pure $ Float (logBase 10 (fromIntegral n))
         Float n -> pure $ Float (logBase 10 n)
         _ -> throwError $ wrongArgumentType ["number"]
-lgImpl _ = throwError wrongNumberOfArguments
