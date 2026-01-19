@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Map function - applies a function to each element of a list
 /// Mirrors Haskell Glue.Lib.List.Map.map exactly
-Eval<Ir> map(List<Ir> args) {
+Ir map = IrNativeFunc(mapImpl);
+
+/// Map function implementation
+/// Mirrors Haskell Glue.Lib.List.Map.mapImpl exactly
+Eval<Ir> mapImpl(List<Ir> args) {
   return switch (args) {
     [final funcIr, final listIr] =>
       sequenceAll([eval(funcIr), eval(listIr)]).flatMap((evaluated) {

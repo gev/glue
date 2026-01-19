@@ -4,8 +4,11 @@ import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
-nth :: [IR Eval] -> Eval (IR Eval)
-nth [indexIR, listIR] = do
+nth :: IR Eval
+nth = NativeFunc nthImpl
+
+nthImpl :: [IR Eval] -> Eval (IR Eval)
+nthImpl [indexIR, listIR] = do
     indexVal <- eval indexIR
     listVal <- eval listIR
     case (indexVal, listVal) of
@@ -14,4 +17,4 @@ nth [indexIR, listIR] = do
                 then throwError $ wrongArgumentType ["valid index"]
                 else pure $ xs !! fromIntegral idx
         _ -> throwError $ wrongArgumentType ["number", "list"]
-nth _ = throwError wrongNumberOfArguments
+nthImpl _ = throwError wrongNumberOfArguments

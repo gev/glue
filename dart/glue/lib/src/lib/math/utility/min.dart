@@ -1,10 +1,14 @@
-import 'package:glue/src/../eval.dart';
-import 'package:glue/src/../eval/exception.dart';
-import 'package:glue/src/../ir.dart';
+import 'package:glue/src/eval.dart';
+import 'package:glue/src/eval/exception.dart';
+import 'package:glue/src/ir.dart';
 
 /// Minimum function (returns the smaller of two numbers)
 /// Mirrors Haskell Glue.Lib.Math.Utility.Min.min exactly
-Eval<Ir> min(List<Ir> args) {
+final Ir min = IrNativeFunc(minImpl);
+
+/// Minimum function implementation (returns the smaller of two numbers)
+/// Mirrors Haskell Glue.Lib.Math.Utility.Min.minImpl exactly
+Eval<Ir> minImpl(List<Ir> args) {
   return switch (args) {
     [final arg1, final arg2] => sequenceAll([eval(arg1), eval(arg2)]).flatMap((
       values,

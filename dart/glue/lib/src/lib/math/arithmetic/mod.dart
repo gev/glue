@@ -1,10 +1,14 @@
-import 'package:glue/src/../eval.dart';
-import 'package:glue/src/../eval/exception.dart';
-import 'package:glue/src/../ir.dart';
+import 'package:glue/src/eval.dart';
+import 'package:glue/src/eval/exception.dart';
+import 'package:glue/src/ir.dart';
 
 /// Modulo function
 /// Mirrors Haskell Glue.Lib.Math.Arithmetic.Mod.mod exactly
-Eval<Ir> mod(List<Ir> args) {
+final Ir mod = IrNativeFunc(modImpl);
+
+/// Modulo function implementation
+/// Mirrors Haskell Glue.Lib.Math.Arithmetic.Mod.modImpl exactly
+Eval<Ir> modImpl(List<Ir> args) {
   return switch (args) {
     [final arg1, final arg2] => sequenceAll([eval(arg1), eval(arg2)]).flatMap((
       values,

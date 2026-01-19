@@ -14,10 +14,4 @@ trigonometric :: ModuleInfo Eval
 trigonometric =
     nativeModule
         "ffi.math.trigonometric"
-        [ ("sin", NativeFunc Sin.sin)
-        , ("cos", NativeFunc Cos.cos)
-        , ("tan", NativeFunc Tan.tan)
-        , ("asin", NativeFunc Asin.asin)
-        , ("acos", NativeFunc Acos.acos)
-        , ("atan", NativeFunc Atan.atan)
-        ]
+        []

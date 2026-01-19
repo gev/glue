@@ -1,10 +1,14 @@
-import 'package:glue/src/../eval.dart';
-import 'package:glue/src/../eval/exception.dart';
-import 'package:glue/src/../ir.dart';
+import 'package:glue/src/eval.dart';
+import 'package:glue/src/eval/exception.dart';
+import 'package:glue/src/ir.dart';
 
 /// Addition function
 /// Mirrors Haskell Glue.Lib.Math.Arithmetic.Add.add exactly
-Eval<Ir> add(List<Ir> args) {
+final Ir add = IrNativeFunc(addImpl);
+
+/// Addition function implementation
+/// Mirrors Haskell Glue.Lib.Math.Arithmetic.Add.addImpl exactly
+Eval<Ir> addImpl(List<Ir> args) {
   return switch (args) {
     [final left, final right] => sequenceAll([eval(left), eval(right)]).flatMap(
       (values) {

@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Greater than comparison function
 /// Mirrors Haskell Glue.Lib.Bool.Gt.gt exactly
-Eval<Ir> gt(List<Ir> args) {
+final Ir gt = IrNativeFunc(gtImpl);
+
+/// Greater than comparison implementation
+/// Mirrors Haskell Glue.Lib.Bool.Gt.gtImpl exactly
+Eval<Ir> gtImpl(List<Ir> args) {
   return switch (args) {
     [final a, final b] => sequenceAll([eval(a), eval(b)]).flatMap((evaluated) {
       final va = evaluated[0];

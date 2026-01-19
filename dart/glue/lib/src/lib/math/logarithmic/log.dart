@@ -1,12 +1,16 @@
 import 'dart:math' as math;
 
-import 'package:glue/src/../eval.dart';
-import 'package:glue/src/../eval/exception.dart';
-import 'package:glue/src/../ir.dart';
+import 'package:glue/src/eval.dart';
+import 'package:glue/src/eval/exception.dart';
+import 'package:glue/src/ir.dart';
 
 /// Logarithm with arbitrary base function
 /// Mirrors Haskell Glue.Lib.Math.Logarithmic.Log.log exactly
-Eval<Ir> log(List<Ir> args) {
+final Ir log = IrNativeFunc(logImpl);
+
+/// Logarithm with arbitrary base function implementation
+/// Mirrors Haskell Glue.Lib.Math.Logarithmic.Log.logImpl exactly
+Eval<Ir> logImpl(List<Ir> args) {
   return switch (args) {
     [final arg, final base] => sequenceAll([eval(arg), eval(base)]).flatMap((
       values,

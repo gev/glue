@@ -16,7 +16,7 @@ void main() {
           IrSymbol('body'),
         ];
 
-        final result = await runEval(lambda(args), testRuntime);
+        final result = await runEval(apply(lambda, args), testRuntime);
         result.match((error) => fail('Lambda failed: $error'), (value) {
           final (res, runtime) = value;
           expect(res, isA<IrClosure>());
@@ -36,7 +36,7 @@ void main() {
       test('creates a closure with no parameters', () async {
         final args = [IrList([]), IrInteger(42)];
         final runtime = Runtime.initial(fromList([]));
-        final result = await runEval(lambda(args), runtime);
+        final result = await runEval(apply(lambda, args), runtime);
         result.match((error) => fail('Lambda failed: $error'), (value) {
           final (res, runtime) = value;
           expect(res, isA<IrClosure>());
@@ -73,14 +73,14 @@ void main() {
           IrList([IrSymbol('x')]),
         ];
         final runtime = Runtime.initial(fromList([]));
-        final result = await runEval(lambda(args), runtime);
+        final result = await runEval(apply(lambda, args), runtime);
         expect(result.isLeft, isTrue);
       });
 
       test('fails with non-list as parameters', () async {
         final args = [IrInteger(1), IrSymbol('body')];
         final runtime = Runtime.initial(fromList([]));
-        final result = await runEval(lambda(args), runtime);
+        final result = await runEval(apply(lambda, args), runtime);
         expect(result.isLeft, isTrue);
       });
 
@@ -90,7 +90,7 @@ void main() {
           IrSymbol('body'),
         ];
         final runtime = Runtime.initial(fromList([]));
-        final result = await runEval(lambda(args), runtime);
+        final result = await runEval(apply(lambda, args), runtime);
         expect(result.isLeft, isTrue);
       });
     });

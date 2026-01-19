@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Sort function - sorts elements in a list in ascending order
 /// Mirrors Haskell Glue.Lib.List.Sort.sort exactly
-Eval<Ir> sort(List<Ir> args) {
+Ir sort = IrNativeFunc(sortImpl);
+
+/// Sort function implementation
+/// Mirrors Haskell Glue.Lib.List.Sort.sortImpl exactly
+Eval<Ir> sortImpl(List<Ir> args) {
   if (args.length != 1) {
     return throwError(wrongNumberOfArguments());
   }

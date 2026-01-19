@@ -3,7 +3,7 @@ module Glue.Lib.Builtin.SetSpec (spec) where
 import Data.Either (isLeft)
 import Data.Map.Strict qualified as Map
 import Glue.Env qualified as E
-import Glue.Eval (Runtime (..), runEvalSimple)
+import Glue.Eval (Runtime (..), apply, runEvalSimple)
 import Glue.IR (IR (..))
 import Glue.Lib.Builtin.Set (set)
 import Test.Hspec
@@ -14,7 +14,7 @@ spec = describe "Glue.Lib.Builtin.Set (Test set special form)" do
         it "updates an existing variable" do
             let initialEnv = E.fromList [("x", Integer 10)]
             let args = [Symbol "x", Integer 20]
-            result <- runEvalSimple (set args) initialEnv
+            result <- runEvalSimple (apply set args) initialEnv
             case result of
                 Left err -> expectationFailure $ "Set failed: " <> show err
                 Right (res, runtime) -> do
@@ -23,7 +23,7 @@ spec = describe "Glue.Lib.Builtin.Set (Test set special form)" do
 
         it "fails to set unbound variable" do
             let args = [Symbol "x", Integer 42]
-            result <- runEvalSimple (set args) []
+            result <- runEvalSimple (apply set args) []
             result `shouldSatisfy` isLeft
 
     describe "Setting object properties" do
@@ -31,7 +31,7 @@ spec = describe "Glue.Lib.Builtin.Set (Test set special form)" do
             let obj = Object (Map.fromList [("a", Integer 1)])
             let initialEnv = E.fromList [("obj", obj)]
             let args = [Symbol "obj.b", Integer 2]
-            result <- runEvalSimple (set args) initialEnv
+            result <- runEvalSimple (apply set args) initialEnv
             case result of
                 Left err -> expectationFailure $ "Set failed: " <> show err
                 Right (res, runtime) -> do
@@ -45,11 +45,11 @@ spec = describe "Glue.Lib.Builtin.Set (Test set special form)" do
         it "fails to set property on non-object" do
             let initialEnv = E.fromList [("x", Integer 10)]
             let args = [Symbol "x.prop", Integer 42]
-            result <- runEvalSimple (set args) initialEnv
+            result <- runEvalSimple (apply set args) initialEnv
             result `shouldSatisfy` isLeft
 
     describe "Error cases" do
         it "fails with wrong number of arguments" do
             let args = [Symbol "x"]
-            result <- runEvalSimple (set args) []
+            result <- runEvalSimple (apply set args) []
             result `shouldSatisfy` isLeft

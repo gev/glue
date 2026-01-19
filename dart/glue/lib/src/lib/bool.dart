@@ -1,16 +1,16 @@
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/module.dart';
-import 'bool/eq.dart';
-import 'bool/ge.dart';
-import 'bool/gt.dart';
-import 'bool/if.dart';
-import 'bool/le.dart';
-import 'bool/lt.dart';
-import 'bool/ne.dart';
-import 'bool/not.dart';
-import 'bool/until.dart';
-import 'bool/when.dart';
-import 'bool/while.dart';
+import 'package:glue/src/lib/bool/eq.dart';
+import 'package:glue/src/lib/bool/ge.dart';
+import 'package:glue/src/lib/bool/gt.dart';
+import 'package:glue/src/lib/bool/if.dart';
+import 'package:glue/src/lib/bool/le.dart';
+import 'package:glue/src/lib/bool/lt.dart';
+import 'package:glue/src/lib/bool/ne.dart';
+import 'package:glue/src/lib/bool/not.dart';
+import 'package:glue/src/lib/bool/until.dart';
+import 'package:glue/src/lib/bool/when.dart';
+import 'package:glue/src/lib/bool/while.dart';
 
 /// Bool module - boolean operations, comparisons, and control flow
 /// Mirrors Haskell Glue.Lib.Bool exactly
@@ -23,26 +23,25 @@ final ModuleInfo bool = nativeModule('ffi.bool', [
   ('false', IrBool(false)),
 
   // Comparison functions
-  ('eq', IrNativeFunc(eq)),
-  ('==', IrNativeFunc(eq)),
-  ('ne', IrNativeFunc(ne)),
-  ('!=', IrNativeFunc(ne)),
-  ('lt', IrNativeFunc(lt)),
-  ('<', IrNativeFunc(lt)),
-  ('le', IrNativeFunc(le)),
-  ('<=', IrNativeFunc(le)),
-  ('gt', IrNativeFunc(gt)),
-  ('>', IrNativeFunc(gt)),
-  ('ge', IrNativeFunc(ge)),
-  ('>=', IrNativeFunc(ge)),
+  ('==', eq),
+  ('ne', ne),
+  ('!=', ne),
+  ('lt', lt),
+  ('<', lt),
+  ('le', le),
+  ('<=', le),
+  ('gt', gt),
+  ('>', gt),
+  ('ge', ge),
+  ('>=', ge),
 
   // Logical functions
-  ('not', IrNativeFunc(not)),
-  ('!', IrNativeFunc(not)),
+  ('not', not),
+  ('!', not),
 
   // Special forms
-  ('if', IrSpecial(if_)),
-  ('when', IrSpecial(when_)),
-  ('while', IrSpecial(while_)),
-  ('until', IrSpecial(until_)),
+  ('if', if_),
+  ('when', when_),
+  ('while', while_),
+  ('until', until_),
 ]);

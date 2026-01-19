@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Car function - returns the first element of a list
 /// Mirrors Haskell Glue.Lib.List.Car.car exactly
-Eval<Ir> car(List<Ir> args) {
+Ir car = IrNativeFunc(carImpl);
+
+/// Car function implementation
+/// Mirrors Haskell Glue.Lib.List.Car.carImpl exactly
+Eval<Ir> carImpl(List<Ir> args) {
   return switch (args) {
     [final arg] => eval(arg).flatMap((val) {
       if (val is IrList) {

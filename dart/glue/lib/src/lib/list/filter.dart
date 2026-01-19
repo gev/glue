@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Filter function - filters elements that satisfy a predicate
 /// Mirrors Haskell Glue.Lib.List.Filter.filter exactly
-Eval<Ir> filter(List<Ir> args) {
+Ir filter = IrNativeFunc(filterImpl);
+
+/// Filter function implementation
+/// Mirrors Haskell Glue.Lib.List.Filter.filterImpl exactly
+Eval<Ir> filterImpl(List<Ir> args) {
   return switch (args) {
     [final predicateIr, final listIr] =>
       sequenceAll([eval(predicateIr), eval(listIr)]).flatMap((evaluated) {

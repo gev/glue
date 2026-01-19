@@ -1,12 +1,16 @@
 import 'dart:math' as math;
 
-import 'package:glue/src/../eval.dart';
-import 'package:glue/src/../eval/exception.dart';
-import 'package:glue/src/../ir.dart';
+import 'package:glue/src/eval.dart';
+import 'package:glue/src/eval/exception.dart';
+import 'package:glue/src/ir.dart';
 
 /// Square root function
 /// Mirrors Haskell Glue.Lib.Math.Power.Sqrt.sqrt exactly
-Eval<Ir> sqrt(List<Ir> args) {
+final Ir sqrt = IrNativeFunc(sqrtImpl);
+
+/// Square root function implementation
+/// Mirrors Haskell Glue.Lib.Math.Power.Sqrt.sqrtImpl exactly
+Eval<Ir> sqrtImpl(List<Ir> args) {
   return switch (args) {
     [final arg] => eval(arg).flatMap((va) {
       return switch (va) {

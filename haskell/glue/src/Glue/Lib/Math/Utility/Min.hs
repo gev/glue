@@ -4,8 +4,15 @@ import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
-min :: [IR Eval] -> Eval (IR Eval)
-min [arg1, arg2] = do
+-- Minimum function
+-- Mirrors Haskell Glue.Lib.Math.Utility.Min.min exactly
+min :: IR Eval
+min = NativeFunc minImpl
+
+-- Minimum function implementation
+-- Mirrors Haskell Glue.Lib.Math.Utility.Min.minImpl exactly
+minImpl :: [IR Eval] -> Eval (IR Eval)
+minImpl [arg1, arg2] = do
     va1 <- eval arg1
     va2 <- eval arg2
     case (va1, va2) of
@@ -14,4 +21,4 @@ min [arg1, arg2] = do
         (Integer n1, Float n2) -> pure $ Float (Prelude.min (fromIntegral n1) n2)
         (Float n1, Integer n2) -> pure $ Float (Prelude.min n1 (fromIntegral n2))
         _ -> throwError $ wrongArgumentType ["number", "number"]
-min _ = throwError wrongNumberOfArguments
+minImpl _ = throwError wrongNumberOfArguments

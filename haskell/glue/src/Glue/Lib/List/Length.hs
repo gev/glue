@@ -4,10 +4,13 @@ import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
-length :: [IR Eval] -> Eval (IR Eval)
-length [arg] = do
+length :: IR Eval
+length = NativeFunc lengthImpl
+
+lengthImpl :: [IR Eval] -> Eval (IR Eval)
+lengthImpl [arg] = do
     val <- eval arg
     case val of
         List xs -> pure $ Integer (fromIntegral $ Prelude.length xs)
         _ -> throwError $ wrongArgumentType ["list"]
-length _ = throwError wrongNumberOfArguments
+lengthImpl _ = throwError wrongNumberOfArguments

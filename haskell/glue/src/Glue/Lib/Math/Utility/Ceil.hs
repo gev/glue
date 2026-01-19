@@ -4,11 +4,18 @@ import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
-ceil :: [IR Eval] -> Eval (IR Eval)
-ceil [arg] = do
+-- Ceiling function
+-- Mirrors Haskell Glue.Lib.Math.Utility.Ceil.ceil exactly
+ceil :: IR Eval
+ceil = NativeFunc ceilImpl
+
+-- Ceiling function implementation
+-- Mirrors Haskell Glue.Lib.Math.Utility.Ceil.ceilImpl exactly
+ceilImpl :: [IR Eval] -> Eval (IR Eval)
+ceilImpl [arg] = do
     va <- eval arg
     case va of
         Integer n -> pure $ Integer n
         Float n -> pure $ Integer (Prelude.ceiling n)
         _ -> throwError $ wrongArgumentType ["number"]
-ceil _ = throwError wrongNumberOfArguments
+ceilImpl _ = throwError wrongNumberOfArguments

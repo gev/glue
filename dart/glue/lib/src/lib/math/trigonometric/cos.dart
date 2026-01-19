@@ -1,12 +1,16 @@
 import 'dart:math' as math;
 
-import 'package:glue/src/../eval.dart';
-import 'package:glue/src/../eval/exception.dart';
-import 'package:glue/src/../ir.dart';
+import 'package:glue/src/eval.dart';
+import 'package:glue/src/eval/exception.dart';
+import 'package:glue/src/ir.dart';
 
 /// Cosine function (radians)
 /// Mirrors Haskell Glue.Lib.Math.Trigonometric.Cos.cos exactly
-Eval<Ir> cos(List<Ir> args) {
+final Ir cos = IrNativeFunc(cosImpl);
+
+/// Cosine function implementation (radians)
+/// Mirrors Haskell Glue.Lib.Math.Trigonometric.Cos.cosImpl exactly
+Eval<Ir> cosImpl(List<Ir> args) {
   return switch (args) {
     [final arg] => eval(arg).flatMap((va) {
       return switch (va) {

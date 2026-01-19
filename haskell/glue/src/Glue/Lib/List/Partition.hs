@@ -4,8 +4,11 @@ import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
-partition :: [IR Eval] -> Eval (IR Eval)
-partition [predicateIR, listIR] = do
+partition :: IR Eval
+partition = NativeFunc partitionImpl
+
+partitionImpl :: [IR Eval] -> Eval (IR Eval)
+partitionImpl [predicateIR, listIR] = do
     predicate <- eval predicateIR
     list <- eval listIR
     case list of
@@ -14,7 +17,7 @@ partition [predicateIR, listIR] = do
             (matching, nonMatching) <- partitionList predicate xs
             pure $ List [List matching, List nonMatching]
         _ -> throwError $ wrongArgumentType ["function", "list"]
-partition _ = throwError wrongNumberOfArguments
+partitionImpl _ = throwError wrongNumberOfArguments
 
 -- Helper function to partition list based on predicate
 partitionList :: IR Eval -> [IR Eval] -> Eval ([IR Eval], [IR Eval])

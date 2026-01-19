@@ -4,8 +4,15 @@ import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
-mod :: [IR Eval] -> Eval (IR Eval)
-mod [arg1, arg2] = do
+-- Modulo function
+-- Mirrors Haskell Glue.Lib.Math.Arithmetic.Mod.mod exactly
+mod :: IR Eval
+mod = NativeFunc modImpl
+
+-- Modulo function implementation
+-- Mirrors Haskell Glue.Lib.Math.Arithmetic.Mod.modImpl exactly
+modImpl :: [IR Eval] -> Eval (IR Eval)
+modImpl [arg1, arg2] = do
     va1 <- eval arg1
     va2 <- eval arg2
     case (va1, va2) of
@@ -26,4 +33,4 @@ mod [arg1, arg2] = do
                 then throwError divByZero
                 else pure $ Float (fromIntegral @Int (truncate n1 `Prelude.mod` n2))
         _ -> throwError $ wrongArgumentType ["number", "number"]
-mod _ = throwError wrongNumberOfArguments
+modImpl _ = throwError wrongNumberOfArguments

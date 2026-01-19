@@ -6,91 +6,66 @@ Implement partial application (currying) support for native functions to make Gl
 ## Current Issue
 `NativeFunc` doesn't support partial application while `Closure` does, breaking functional programming principles.
 
-## Solution: Hybrid Approach
-- Add arity metadata (`minArity`, `maxArity`) to `NativeFunc` IR type
-- Partial application creates `Closure` objects that wrap native function calls
-- Zero runtime overhead (simple length checks)
-- Reuse existing closure machinery for parameter binding
+## Solution: Universal Currying Contract
+- **Single contract for ALL functions:** `IR → IR`
+- Functions take one argument, return result or closure
+- Automatic partial application (Haskell-style currying)
+- No arity declarations or complex logic
 
-## Implementation Steps
+## Module Overview
 
-### Phase 1: Haskell Core Changes
-1. **Modify IR.hs**: Add arity fields to `NativeFunc` type
-   ```haskell
-   | NativeFunc ([IR m] -> m (IR m)) Int (Maybe Int)  -- func, minArity, maxArity
-   ```
+### Haskell Implementation
+- **Bool Module**: 11 functions (eq, ne, lt, le, gt, ge, not, if, when, while, until)
+- **IO Module**: 3 functions (print, println, read-line)
+- **Builtin Module**: 7+ functions (def, set, lambda, let, import, try, error, etc.)
+- **List Module**: 21 functions (append, butlast, car, cdr, cons, drop, filter, find, flatten, last, length, map, member, nth, partition, position, remove, reverse, sort, take, zip)
+- **Math Module**: 25+ functions across 5 submodules (Arithmetic, Power, Trigonometric, Logarithmic, Utility)
 
-2. **Update Eval.hs**: Modify `apply` to handle partial application
-   ```haskell
-   applyNativeFunc f minArity maxArity rawArgs = do
-       args <- mapM eval rawArgs
-       if length args < minArity then
-           -- Create closure for partial application
-           createPartialClosure f args (minArity - length args)
-       else if length args > maxArity then
-           throwError wrongNumberOfArguments
-       else
-           f args  -- Full application
-   ```
+### Dart Implementation
+- **Bool Module**: 11 functions (identical to Haskell)
+- **IO Module**: 3 functions (identical to Haskell)
+- **Builtin Module**: 7+ functions (identical to Haskell)
+- **List Module**: 21 functions (identical to Haskell)
+- **Math Module**: 25+ functions (identical to Haskell)
 
-### Phase 2: Function Updates (Incremental)
-3. **Change function signatures**: From `[IR] -> Eval IR` to structured return type
-4. **Remove manual arg validation**: Functions assume correct arg count
-5. **Update module registrations**: Remove `NativeFunc` constructors
-6. **Test each module**: Ensure functionality preserved
+**Total: 140+ files across both implementations**
 
-### Phase 3: Testing & Refinement
-7. **Add comprehensive tests**: Partial application scenarios
-8. **Performance validation**: Ensure no runtime overhead
-9. **Edge case handling**: Error conditions and type safety
+**See detailed file inventories in the phase-specific plans below.**
 
-### Phase 4: Dart Implementation
-10. **Repeat all steps**: Match Haskell exactly
-11. **Cross-implementation testing**: Verify identical behavior
+## Implementation Phases
 
-### Phase 5: Documentation
-12. **Update specifications**: Document partial application behavior
-13. **Update drafts**: Technical implementation details
+### Phase 1: Constructor Migration
+**Goal:** Move constructors from ModuleInfo to function implementations
+
+**See:** [Partial Application Phase 1 Plan](partial-application-phase1-plan.md) for detailed implementation steps
+
+### Phase 2: Currying Implementation
+**Goal:** Change NativeFunc to single-argument contract and implement currying
+
+**See:** [Partial Application Phase 2 Plan](partial-application-phase2-plan.md) for detailed implementation steps
+
+### Documentation
+Update drafts and specifications
+Make commit
+
+**See:** [Implementation Verification](implementation-verification.md) for testing and validation procedures
 
 ## Key Technical Decisions
 
-- **Arity representation**: `(minArity, maxArity)` where `Nothing` = unlimited
-- **Partial application**: Reuses `Closure` type with synthetic parameter names
-- **Named args**: Handled as single Object argument (arity 1)
+- **Universal contract**: All functions `IR → IR` (single argument)
+- **Internal currying**: Functions decide when to return result vs closure
+- **Automatic partial application**: Every call can be partial
 - **Special forms**: No partial application (syntactic constructs)
-- **Backward compatibility**: Changes are internal, API remains stable
+- **Pure functional**: Haskell-style evaluation model
 
 ## Success Criteria
 
 - ✅ `((+ 1) 2)` returns `3`
 - ✅ `((cons 1) (2 3 4))` works for lists
-- ✅ Named functions work: `(person :name "Bob")` creates partial
-- ✅ Performance: No overhead for full application
-- ✅ Type safety: Proper error messages for arity mismatches
+- ✅ `((print "hello") "world")` prints both strings
+- ✅ Performance: Simple single-argument application
+- ✅ Pure functional: Haskell-style currying throughout
 - ✅ Cross-implementation: Haskell and Dart behave identically
-
-## Implementation Order
-
-**Haskell:**
-1. Move NativeFunc constructors from ModuleInfo to function implementations (incremental commits)
-2. Fix all libraries to match new structure
-3. Check tests
-4. Add arity info into NativeFunc
-5. Fix all libraries
-6. Run tests
-7. Commit
-8. Implement partial application
-9. Add special tests into EvalSpec.hs
-10. Run tests
-11. Fix bugs
-12. Commit
-
-**Dart:**
-Repeat steps 1-12
-
-**Documentation:**
-Update drafts and specifications
-Make commit
 
 ## Rationale
 

@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Length function - returns the number of elements in a list
 /// Mirrors Haskell Glue.Lib.List.Length.length exactly
-Eval<Ir> length(List<Ir> args) {
+Ir length = IrNativeFunc(lengthImpl);
+
+/// Length function implementation
+/// Mirrors Haskell Glue.Lib.List.Length.lengthImpl exactly
+Eval<Ir> lengthImpl(List<Ir> args) {
   return switch (args) {
     [final arg] => eval(arg).flatMap((val) {
       if (val is IrList) {

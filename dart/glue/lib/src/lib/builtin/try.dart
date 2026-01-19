@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Try special form - exception handling with catch blocks
 /// Mirrors Haskell Glue.Lib.Builtin.Try.tryFunc exactly
-Eval<Ir> tryFunc(List<Ir> args) {
+final Ir tryFunc = IrSpecial(tryFuncImpl);
+
+/// Try special form implementation
+/// Mirrors Haskell Glue.Lib.Builtin.Try.tryFunc exactly
+Eval<Ir> tryFuncImpl(List<Ir> args) {
   if (args.isEmpty) {
     return throwError(wrongArgumentType(['body', 'catch*']));
   }

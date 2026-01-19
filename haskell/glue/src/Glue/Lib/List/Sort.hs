@@ -4,13 +4,16 @@ import Glue.Eval (Eval, throwError)
 import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
-sort :: [IR Eval] -> Eval (IR Eval)
-sort [listIR] = case listIR of
+sort :: IR Eval
+sort = NativeFunc sortImpl
+
+sortImpl :: [IR Eval] -> Eval (IR Eval)
+sortImpl [listIR] = case listIR of
     List xs -> do
         sorted <- sortList xs
         pure $ List sorted
     _ -> throwError $ wrongArgumentType ["list"]
-sort _ = throwError wrongNumberOfArguments
+sortImpl _ = throwError wrongNumberOfArguments
 
 -- Helper function to sort a list using merge sort
 sortList :: [IR Eval] -> Eval [IR Eval]

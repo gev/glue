@@ -11,7 +11,4 @@ logarithmic :: ModuleInfo Eval
 logarithmic =
     nativeModule
         "ffi.math.logarithmic"
-        [ ("log", NativeFunc Log.log)
-        , ("ln", NativeFunc Ln.ln)
-        , ("lg", NativeFunc Lg.lg)
-        ]
+        []

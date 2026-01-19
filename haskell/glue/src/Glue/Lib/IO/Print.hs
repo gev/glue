@@ -4,10 +4,16 @@ import Data.Text (unpack)
 import Glue.Eval (Eval, liftIO)
 import Glue.IR (IR (..))
 
-printFunc :: [IR Eval] -> Eval (IR Eval)
-printFunc [String s] = liftIO (putStr (unpack s)) >> pure Void
-printFunc _ = pure Void
+printFunc :: IR Eval
+printFunc = NativeFunc printFuncImpl
 
-println :: [IR Eval] -> Eval (IR Eval)
-println [String s] = liftIO (putStrLn (unpack s)) >> pure Void
-println _ = pure Void
+printFuncImpl :: [IR Eval] -> Eval (IR Eval)
+printFuncImpl [String s] = liftIO (putStr (unpack s)) >> pure Void
+printFuncImpl _ = pure Void
+
+println :: IR Eval
+println = NativeFunc printlnImpl
+
+printlnImpl :: [IR Eval] -> Eval (IR Eval)
+printlnImpl [String s] = liftIO (putStrLn (unpack s)) >> pure Void
+printlnImpl _ = pure Void

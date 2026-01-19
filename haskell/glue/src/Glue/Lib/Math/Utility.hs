@@ -16,11 +16,4 @@ utility :: ModuleInfo Eval
 utility =
     nativeModule
         "ffi.math.utility"
-        [ ("abs", NativeFunc Abs.abs)
-        , ("floor", NativeFunc Floor.floor)
-        , ("ceil", NativeFunc Ceil.ceil)
-        , ("round", NativeFunc Round.round)
-        , ("trunc", NativeFunc Trunc.trunc)
-        , ("min", NativeFunc Min.min)
-        , ("max", NativeFunc Max.max)
-        ]
+        []

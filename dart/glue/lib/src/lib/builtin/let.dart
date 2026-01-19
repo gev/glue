@@ -5,7 +5,11 @@ import 'package:glue/src/ir.dart';
 
 /// Let special form - creates a new scope with local bindings
 /// Mirrors Haskell Glue.Lib.Builtin.Let.let' exactly
-Eval<Ir> let(List<Ir> args) {
+final Ir let = IrSpecial(letImpl);
+
+/// Let special form implementation
+/// Mirrors Haskell Glue.Lib.Builtin.Let.let' exactly
+Eval<Ir> letImpl(List<Ir> args) {
   if (args.length != 2) {
     return throwError(wrongArgumentType(['object', 'body']));
   }

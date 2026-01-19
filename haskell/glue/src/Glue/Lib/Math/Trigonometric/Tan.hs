@@ -4,11 +4,18 @@ import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
-tan :: [IR Eval] -> Eval (IR Eval)
-tan [arg] = do
+-- Tangent function
+-- Mirrors Haskell Glue.Lib.Math.Trigonometric.Tan.tan exactly
+tan :: IR Eval
+tan = NativeFunc tanImpl
+
+-- Tangent function implementation
+-- Mirrors Haskell Glue.Lib.Math.Trigonometric.Tan.tanImpl exactly
+tanImpl :: [IR Eval] -> Eval (IR Eval)
+tanImpl [arg] = do
     va <- eval arg
     case va of
         Integer n -> pure $ Float (Prelude.tan (fromIntegral n))
         Float n -> pure $ Float (Prelude.tan n)
         _ -> throwError $ wrongArgumentType ["number"]
-tan _ = throwError wrongNumberOfArguments
+tanImpl _ = throwError wrongNumberOfArguments

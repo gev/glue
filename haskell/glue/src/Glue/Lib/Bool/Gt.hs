@@ -4,8 +4,11 @@ import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (IR (..))
 
-gt :: [IR Eval] -> Eval (IR Eval)
-gt [a, b] = do
+gt :: IR Eval
+gt = NativeFunc gtImpl
+
+gtImpl :: [IR Eval] -> Eval (IR Eval)
+gtImpl [a, b] = do
     va <- eval a
     vb <- eval b
     case (va, vb) of
@@ -14,4 +17,4 @@ gt [a, b] = do
         (Integer na, Float nb) -> pure . Bool $ fromIntegral na > nb
         (Float na, Integer nb) -> pure . Bool $ na > fromIntegral nb
         _ -> throwError $ wrongArgumentType ["number", "number"]
-gt _ = throwError $ wrongArgumentType ["number", "number"]
+gtImpl _ = throwError $ wrongArgumentType ["number", "number"]

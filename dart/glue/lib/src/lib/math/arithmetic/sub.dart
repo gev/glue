@@ -1,10 +1,14 @@
-import 'package:glue/src/../eval.dart';
-import 'package:glue/src/../eval/exception.dart';
-import 'package:glue/src/../ir.dart';
+import 'package:glue/src/eval.dart';
+import 'package:glue/src/eval/exception.dart';
+import 'package:glue/src/ir.dart';
 
 /// Subtraction function
 /// Mirrors Haskell Glue.Lib.Math.Arithmetic.Sub.sub exactly
-Eval<Ir> sub(List<Ir> args) {
+final Ir sub = IrNativeFunc(subImpl);
+
+/// Subtraction function implementation
+/// Mirrors Haskell Glue.Lib.Math.Arithmetic.Sub.subImpl exactly
+Eval<Ir> subImpl(List<Ir> args) {
   return switch (args) {
     [final left, final right] => sequenceAll([eval(left), eval(right)]).flatMap(
       (values) {

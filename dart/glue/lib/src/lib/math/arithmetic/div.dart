@@ -1,10 +1,14 @@
-import 'package:glue/src/../eval.dart';
-import 'package:glue/src/../eval/exception.dart';
-import 'package:glue/src/../ir.dart';
+import 'package:glue/src/eval.dart';
+import 'package:glue/src/eval/exception.dart';
+import 'package:glue/src/ir.dart';
 
 /// Division function
 /// Mirrors Haskell Glue.Lib.Math.Arithmetic.Div.div exactly
-Eval<Ir> div(List<Ir> args) {
+final Ir div = IrNativeFunc(divImpl);
+
+/// Division function implementation
+/// Mirrors Haskell Glue.Lib.Math.Arithmetic.Div.divImpl exactly
+Eval<Ir> divImpl(List<Ir> args) {
   return switch (args) {
     [final left, final right] => sequenceAll([eval(left), eval(right)]).flatMap(
       (values) {

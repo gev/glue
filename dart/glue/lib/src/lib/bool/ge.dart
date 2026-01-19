@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Greater than or equal comparison function
 /// Mirrors Haskell Glue.Lib.Bool.Ge.ge exactly
-Eval<Ir> ge(List<Ir> args) {
+final Ir ge = IrNativeFunc(geImpl);
+
+/// Greater than or equal comparison implementation
+/// Mirrors Haskell Glue.Lib.Bool.Ge.geImpl exactly
+Eval<Ir> geImpl(List<Ir> args) {
   return switch (args) {
     [final a, final b] => sequenceAll([eval(a), eval(b)]).flatMap((evaluated) {
       final va = evaluated[0];

@@ -4,8 +4,11 @@ import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
-map :: [IR Eval] -> Eval (IR Eval)
-map [funcIR, listIR] = do
+map :: IR Eval
+map = NativeFunc mapImpl
+
+mapImpl :: [IR Eval] -> Eval (IR Eval)
+mapImpl [funcIR, listIR] = do
     func <- eval funcIR
     list <- eval listIR
     case list of
@@ -14,4 +17,4 @@ map [funcIR, listIR] = do
             results <- mapM (\x -> eval (List [func, x])) xs
             pure $ List results
         _ -> throwError $ wrongArgumentType ["function", "list"]
-map _ = throwError wrongNumberOfArguments
+mapImpl _ = throwError wrongNumberOfArguments

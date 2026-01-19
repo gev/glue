@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Find function - finds first element that satisfies a predicate
 /// Mirrors Haskell Glue.Lib.List.Find.find exactly
-Eval<Ir> find(List<Ir> args) {
+Ir find = IrNativeFunc(findImpl);
+
+/// Find function implementation
+/// Mirrors Haskell Glue.Lib.List.Find.findImpl exactly
+Eval<Ir> findImpl(List<Ir> args) {
   return switch (args) {
     [final predicateIr, final listIr] =>
       sequenceAll([eval(predicateIr), eval(listIr)]).flatMap((evaluated) {

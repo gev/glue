@@ -13,14 +13,4 @@ arithmetic :: ModuleInfo Eval
 arithmetic =
     nativeModule
         "ffi.math.arithmetic"
-        [ ("+", NativeFunc Add.add)
-        , ("add", NativeFunc Add.add)
-        , ("-", NativeFunc Sub.sub)
-        , ("sub", NativeFunc Sub.sub)
-        , ("*", NativeFunc Mul.mul)
-        , ("mul", NativeFunc Mul.mul)
-        , ("/", NativeFunc Div.div)
-        , ("div", NativeFunc Div.div)
-        , ("%", NativeFunc Mod.mod)
-        , ("mod", NativeFunc Mod.mod)
-        ]
+        []

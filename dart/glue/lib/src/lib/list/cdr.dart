@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Cdr function - returns the rest of a list after the first element
 /// Mirrors Haskell Glue.Lib.List.Cdr.cdr exactly
-Eval<Ir> cdr(List<Ir> args) {
+Ir cdr = IrNativeFunc(cdrImpl);
+
+/// Cdr function implementation
+/// Mirrors Haskell Glue.Lib.List.Cdr.cdrImpl exactly
+Eval<Ir> cdrImpl(List<Ir> args) {
   return switch (args) {
     [final arg] => eval(arg).flatMap((val) {
       if (val is IrList) {

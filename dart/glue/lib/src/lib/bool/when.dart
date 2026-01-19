@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// When conditional execution special form
 /// Mirrors Haskell Glue.Lib.Bool.When.when_ exactly
-Eval<Ir> when_(List<Ir> args) {
+final Ir when_ = IrSpecial(whenImpl);
+
+/// When conditional execution special form implementation
+/// Mirrors Haskell Glue.Lib.Bool.When.whenImpl exactly
+Eval<Ir> whenImpl(List<Ir> args) {
   return switch (args) {
     [final cond, ...final body] => eval(cond).flatMap((condVal) {
       return switch (condVal) {
