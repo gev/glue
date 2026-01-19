@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Logical not function
 /// Mirrors Haskell Glue.Lib.Bool.Not.not_ exactly
-Eval<Ir> not(List<Ir> args) {
+final Ir not = IrNativeFunc(notImpl);
+
+/// Logical not implementation
+/// Mirrors Haskell Glue.Lib.Bool.Not.notImpl exactly
+Eval<Ir> notImpl(List<Ir> args) {
   return switch (args) {
     [final arg] => eval(arg).flatMap((value) {
       return switch (value) {

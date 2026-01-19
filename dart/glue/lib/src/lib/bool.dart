@@ -23,26 +23,25 @@ final ModuleInfo bool = nativeModule('ffi.bool', [
   ('false', IrBool(false)),
 
   // Comparison functions
-  ('eq', IrNativeFunc(eq)),
-  ('==', IrNativeFunc(eq)),
-  ('ne', IrNativeFunc(ne)),
-  ('!=', IrNativeFunc(ne)),
-  ('lt', IrNativeFunc(lt)),
-  ('<', IrNativeFunc(lt)),
-  ('le', IrNativeFunc(le)),
-  ('<=', IrNativeFunc(le)),
-  ('gt', IrNativeFunc(gt)),
-  ('>', IrNativeFunc(gt)),
-  ('ge', IrNativeFunc(ge)),
-  ('>=', IrNativeFunc(ge)),
+  ('==', eq),
+  ('ne', ne),
+  ('!=', ne),
+  ('lt', lt),
+  ('<', lt),
+  ('le', le),
+  ('<=', le),
+  ('gt', gt),
+  ('>', gt),
+  ('ge', ge),
+  ('>=', ge),
 
   // Logical functions
-  ('not', IrNativeFunc(not)),
-  ('!', IrNativeFunc(not)),
+  ('not', not),
+  ('!', not),
 
   // Special forms
-  ('if', IrSpecial(if_)),
-  ('when', IrSpecial(when_)),
-  ('while', IrSpecial(while_)),
-  ('until', IrSpecial(until_)),
+  ('if', if_),
+  ('when', when_),
+  ('while', while_),
+  ('until', until_),
 ]);

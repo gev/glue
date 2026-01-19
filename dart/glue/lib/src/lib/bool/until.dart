@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Until loop special form
 /// Mirrors Haskell Glue.Lib.Bool.Until.until_ exactly
-Eval<Ir> until_(List<Ir> args) {
+final Ir until_ = IrSpecial(untilImpl);
+
+/// Until loop special form implementation
+/// Mirrors Haskell Glue.Lib.Bool.Until.untilImpl exactly
+Eval<Ir> untilImpl(List<Ir> args) {
   return switch (args) {
     [final cond, ...final body] => _loopUntil(cond, body),
     _ => throwError(wrongArgumentType(['condition', 'body'])),

@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// Less than or equal comparison function
 /// Mirrors Haskell Glue.Lib.Bool.Le.le exactly
-Eval<Ir> le(List<Ir> args) {
+final Ir le = IrNativeFunc(leImpl);
+
+/// Less than or equal comparison implementation
+/// Mirrors Haskell Glue.Lib.Bool.Le.leImpl exactly
+Eval<Ir> leImpl(List<Ir> args) {
   return switch (args) {
     [final a, final b] => sequenceAll([eval(a), eval(b)]).flatMap((evaluated) {
       final va = evaluated[0];
