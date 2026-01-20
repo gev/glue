@@ -10,15 +10,12 @@ final Ir sin = IrNativeFunc(sinImpl);
 
 /// Sine function implementation (radians)
 /// Mirrors Haskell Glue.Lib.Math.Trigonometric.Sin.sinImpl exactly
-Eval<Ir> sinImpl(List<Ir> args) {
-  return switch (args) {
-    [final arg] => eval(arg).flatMap((va) {
-      return switch (va) {
-        IrInteger(value: final n) => Eval.pure(IrFloat(math.sin(n.toDouble()))),
-        IrFloat(value: final n) => Eval.pure(IrFloat(math.sin(n))),
-        _ => throwError(wrongArgumentType(['number'])),
-      };
-    }),
-    _ => throwError(wrongNumberOfArguments()),
-  };
+Eval<Ir> sinImpl(Ir arg) {
+  return eval(arg).flatMap((va) {
+    return switch (va) {
+      IrInteger(value: final n) => Eval.pure(IrFloat(math.sin(n.toDouble()))),
+      IrFloat(value: final n) => Eval.pure(IrFloat(math.sin(n))),
+      _ => throwError(wrongArgumentType(['number'])),
+    };
+  });
 }

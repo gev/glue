@@ -8,24 +8,30 @@ Ir nth = IrNativeFunc(nthImpl);
 
 /// Nth function implementation
 /// Mirrors Haskell Glue.Lib.List.Nth.nthImpl exactly
-Eval<Ir> nthImpl(List<Ir> args) {
-  return switch (args) {
-    [final indexIr, final listIr] =>
-      sequenceAll([eval(indexIr), eval(listIr)]).flatMap((evaluated) {
-        final index = evaluated[0];
-        final list = evaluated[1];
-        if (index is IrInteger && list is IrList) {
-          final idx = index.value;
-          final elements = list.elements;
-          if (idx < 0 || idx >= elements.length) {
-            return throwError(wrongArgumentType(['valid index']));
-          } else {
-            return Eval.pure(elements[idx]);
-          }
-        } else {
-          return throwError(wrongArgumentType(['number', 'list']));
-        }
-      }),
-    _ => throwError(wrongNumberOfArguments()),
+Eval<Ir> nthImpl(Ir indexIr) {
+  return Eval.pure(IrNativeFunc(nthFrom(indexIr)));
+}
+
+/// Helper function for list argument
+/// Mirrors Haskell Glue.Lib.List.Nth.nthFrom exactly
+Eval<Ir> Function(Ir) nthFrom(Ir indexIr) {
+  return (Ir listIr) {
+    return sequenceAll([eval(indexIr), eval(listIr)]).flatMap((evaluated) {
+      return switch (evaluated) {
+        [final index, final list] =>
+          index is IrInteger && list is IrList
+              ? () {
+                  final idx = index.value;
+                  final elements = list.elements;
+                  if (idx < 0 || idx >= elements.length) {
+                    return throwError(wrongArgumentType(['valid index']));
+                  } else {
+                    return Eval.pure(elements[idx]);
+                  }
+                }()
+              : throwError(wrongArgumentType(['number', 'list'])),
+        _ => throwError(wrongArgumentType(['number', 'list'])),
+      };
+    });
   };
 }

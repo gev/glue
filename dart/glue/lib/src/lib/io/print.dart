@@ -7,14 +7,16 @@ final Ir printFunc = IrNativeFunc(printFuncImpl);
 
 /// Print function implementation
 /// Mirrors Haskell Glue.Lib.IO.Print.printFuncImpl exactly
-Eval<Ir> printFuncImpl(List<Ir> args) {
-  return switch (args) {
-    [IrString(value: final value)] => liftIO(() {
-      // Print without newline
-      return print(value);
-    }).map((_) => IrVoid()),
-    _ => Eval.pure(IrVoid()), // Haskell version ignores wrong arguments
-  };
+Eval<Ir> printFuncImpl(Ir arg) {
+  return eval(arg).flatMap((evaluated) {
+    return switch (evaluated) {
+      IrString(value: final value) => liftIO(() {
+        // Print without newline
+        return print(value);
+      }).map((_) => IrVoid()),
+      _ => Eval.pure(IrVoid()), // Haskell version ignores wrong arguments
+    };
+  });
 }
 
 /// Println function - prints string with newline
@@ -23,12 +25,14 @@ final Ir println = IrNativeFunc(printlnImpl);
 
 /// Println function implementation
 /// Mirrors Haskell Glue.Lib.IO.Print.printlnImpl exactly
-Eval<Ir> printlnImpl(List<Ir> args) {
-  return switch (args) {
-    [IrString(value: final value)] => liftIO(() {
-      // Print with newline
-      return print(value);
-    }).map((_) => IrVoid()),
-    _ => Eval.pure(IrVoid()), // Haskell version ignores wrong arguments
-  };
+Eval<Ir> printlnImpl(Ir arg) {
+  return eval(arg).flatMap((evaluated) {
+    return switch (evaluated) {
+      IrString(value: final value) => liftIO(() {
+        // Print with newline
+        return print(value);
+      }).map((_) => IrVoid()),
+      _ => Eval.pure(IrVoid()), // Haskell version ignores wrong arguments
+    };
+  });
 }

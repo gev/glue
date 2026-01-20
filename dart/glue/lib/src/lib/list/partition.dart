@@ -8,35 +8,39 @@ Ir partition = IrNativeFunc(partitionImpl);
 
 /// Partition function implementation
 /// Mirrors Haskell Glue.Lib.List.Partition.partitionImpl exactly
-Eval<Ir> partitionImpl(List<Ir> args) {
-  return switch (args) {
-    [final predicateIr, final listIr] =>
-      sequenceAll([eval(predicateIr), eval(listIr)]).flatMap((evaluated) {
-        final predicate = evaluated[0];
-        final list = evaluated[1];
-        if (list is IrList) {
-          return partitionList(predicate, list.elements.toList()).map((
-            partitioned,
-          ) {
-            final (matching, nonMatching) = partitioned;
-            return IrList([IrList(matching), IrList(nonMatching)]);
-          });
-        } else {
-          return throwError(wrongArgumentType(['function', 'list']));
-        }
-      }),
-    _ => throwError(wrongNumberOfArguments()),
+Eval<Ir> partitionImpl(Ir predicateIr) {
+  return Eval.pure(IrNativeFunc(partitionList(predicateIr)));
+}
+
+/// Helper function for list argument
+/// Mirrors Haskell Glue.Lib.List.Partition.partitionList exactly
+Eval<Ir> Function(Ir) partitionList(Ir predicateIr) {
+  return (Ir listIr) {
+    return sequenceAll([eval(predicateIr), eval(listIr)]).flatMap((evaluated) {
+      return switch (evaluated) {
+        [final predicate, final list] =>
+          list is IrList
+              ? partitionElements(predicate, list.elements.toList()).map((
+                  partitioned,
+                ) {
+                  final (matching, nonMatching) = partitioned;
+                  return IrList([IrList(matching), IrList(nonMatching)]);
+                })
+              : throwError(wrongArgumentType(['function', 'list'])),
+        _ => throwError(wrongArgumentType(['function', 'list'])),
+      };
+    });
   };
 }
 
 /// Helper function to partition list based on predicate
-Eval<(List<Ir>, List<Ir>)> partitionList(Ir predicate, List<Ir> elements) {
+Eval<(List<Ir>, List<Ir>)> partitionElements(Ir predicate, List<Ir> elements) {
   if (elements.isEmpty) {
     return Eval.pure(([], []));
   }
 
   return applyPredicate(predicate, elements[0]).flatMap((satisfies) {
-    return partitionList(predicate, elements.sublist(1)).map((partitioned) {
+    return partitionElements(predicate, elements.sublist(1)).map((partitioned) {
       final (matching, nonMatching) = partitioned;
       if (satisfies) {
         return ([elements[0], ...matching], nonMatching);

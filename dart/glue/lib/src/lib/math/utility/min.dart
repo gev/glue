@@ -8,29 +8,30 @@ final Ir min = IrNativeFunc(minImpl);
 
 /// Minimum function implementation (returns the smaller of two numbers)
 /// Mirrors Haskell Glue.Lib.Math.Utility.Min.minImpl exactly
-Eval<Ir> minImpl(List<Ir> args) {
-  return switch (args) {
-    [final arg1, final arg2] => sequenceAll([eval(arg1), eval(arg2)]).flatMap((
-      values,
-    ) {
-      final va1 = values[0];
-      final va2 = values[1];
-      return switch ((va1, va2)) {
-        (IrInteger(value: final n1), IrInteger(value: final n2)) => Eval.pure(
+Eval<Ir> minImpl(Ir left) {
+  return Eval.pure(IrNativeFunc(minWith(left)));
+}
+
+/// Helper function for second argument
+/// Mirrors Haskell Glue.Lib.Math.Utility.Min.minWith exactly
+Eval<Ir> Function(Ir) minWith(Ir left) {
+  return (Ir right) {
+    return sequenceAll([eval(left), eval(right)]).flatMap((values) {
+      return switch (values) {
+        [IrInteger(value: final n1), IrInteger(value: final n2)] => Eval.pure(
           IrInteger(n1 < n2 ? n1 : n2),
         ),
-        (IrFloat(value: final n1), IrFloat(value: final n2)) => Eval.pure(
+        [IrFloat(value: final n1), IrFloat(value: final n2)] => Eval.pure(
           IrFloat(n1 < n2 ? n1 : n2),
         ),
-        (IrInteger(value: final n1), IrFloat(value: final n2)) => Eval.pure(
+        [IrInteger(value: final n1), IrFloat(value: final n2)] => Eval.pure(
           IrFloat(n1 < n2 ? n1.toDouble() : n2),
         ),
-        (IrFloat(value: final n1), IrInteger(value: final n2)) => Eval.pure(
+        [IrFloat(value: final n1), IrInteger(value: final n2)] => Eval.pure(
           IrFloat(n1 < n2 ? n1 : n2.toDouble()),
         ),
         _ => throwError(wrongArgumentType(['number', 'number'])),
       };
-    }),
-    _ => throwError(wrongNumberOfArguments()),
+    });
   };
 }

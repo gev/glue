@@ -10,17 +10,12 @@ final Ir acos = IrNativeFunc(acosImpl);
 
 /// Arccosine function implementation (returns radians)
 /// Mirrors Haskell Glue.Lib.Math.Trigonometric.Acos.acosImpl exactly
-Eval<Ir> acosImpl(List<Ir> args) {
-  return switch (args) {
-    [final arg] => eval(arg).flatMap((va) {
-      return switch (va) {
-        IrInteger(value: final n) => Eval.pure(
-          IrFloat(math.acos(n.toDouble())),
-        ),
-        IrFloat(value: final n) => Eval.pure(IrFloat(math.acos(n))),
-        _ => throwError(wrongArgumentType(['number'])),
-      };
-    }),
-    _ => throwError(wrongNumberOfArguments()),
-  };
+Eval<Ir> acosImpl(Ir arg) {
+  return eval(arg).flatMap((va) {
+    return switch (va) {
+      IrInteger(value: final n) => Eval.pure(IrFloat(math.acos(n.toDouble()))),
+      IrFloat(value: final n) => Eval.pure(IrFloat(math.acos(n))),
+      _ => throwError(wrongArgumentType(['number'])),
+    };
+  });
 }

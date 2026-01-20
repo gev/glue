@@ -1,5 +1,6 @@
 import 'package:glue/src/either.dart';
 import 'package:glue/src/eval.dart';
+import 'package:glue/src/env.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval/exception.dart';
 
@@ -44,7 +45,20 @@ Either<RuntimeException, List<String>> extractSymbols(List<Ir> irs) {
   return Right(symbols);
 }
 
-/// Create closure with parameters and body
+/// Create closure with parameters and body (desugars multi-param to nested single-param)
 Eval<Ir> makeClosure(List<String> params, Ir body) {
-  return getEnv().map((env) => IrClosure(params, body, env));
+  return getEnv().map((env) => _makeNestedClosure(params, body, env));
+}
+
+/// Helper to create nested single-param closures
+Ir _makeNestedClosure(List<String> params, Ir body, Env env) {
+  return switch (params) {
+    [] => body, // No params, just return body
+    [final param] => IrClosure(param, body, env), // Single param
+    [final param, ...final rest] => IrClosure(
+      param,
+      _makeNestedClosure(rest, body, env),
+      env,
+    ), // Nested closure
+  };
 }

@@ -8,19 +8,22 @@ Ir member = IrNativeFunc(memberImpl);
 
 /// Member function implementation
 /// Mirrors Haskell Glue.Lib.List.Member.memberImpl exactly
-Eval<Ir> memberImpl(List<Ir> args) {
-  return switch (args) {
-    [final itemIr, final listIr] =>
-      sequenceAll([eval(itemIr), eval(listIr)]).flatMap((evaluated) {
-        final item = evaluated[0];
-        final list = evaluated[1];
-        if (list is IrList) {
-          final isMember = list.elements.contains(item);
-          return Eval.pure(IrBool(isMember));
-        } else {
-          return throwError(wrongArgumentType(['list']));
-        }
-      }),
-    _ => throwError(wrongNumberOfArguments()),
+Eval<Ir> memberImpl(Ir itemIr) {
+  return Eval.pure(IrNativeFunc(memberIn(itemIr)));
+}
+
+/// Helper function for list argument
+/// Mirrors Haskell Glue.Lib.List.Member.memberIn exactly
+Eval<Ir> Function(Ir) memberIn(Ir itemIr) {
+  return (Ir listIr) {
+    return sequenceAll([eval(itemIr), eval(listIr)]).flatMap((evaluated) {
+      return switch (evaluated) {
+        [final item, final list] =>
+          list is IrList
+              ? Eval.pure(IrBool(list.elements.contains(item)))
+              : throwError(wrongArgumentType(['list'])),
+        _ => throwError(wrongArgumentType(['list'])),
+      };
+    });
   };
 }

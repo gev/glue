@@ -8,15 +8,12 @@ Ir length = IrNativeFunc(lengthImpl);
 
 /// Length function implementation
 /// Mirrors Haskell Glue.Lib.List.Length.lengthImpl exactly
-Eval<Ir> lengthImpl(List<Ir> args) {
-  return switch (args) {
-    [final arg] => eval(arg).flatMap((val) {
-      if (val is IrList) {
-        return Eval.pure(IrInteger(val.elements.length));
-      } else {
-        return throwError(wrongArgumentType(['list']));
-      }
-    }),
-    _ => throwError(wrongNumberOfArguments()),
-  };
+Eval<Ir> lengthImpl(Ir arg) {
+  return eval(arg).flatMap((val) {
+    if (val is IrList) {
+      return Eval.pure(IrInteger(val.elements.length));
+    } else {
+      return throwError(wrongArgumentType(['list']));
+    }
+  });
 }

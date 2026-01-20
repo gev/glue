@@ -8,24 +8,21 @@ Ir butlast = IrNativeFunc(butlastImpl);
 
 /// Butlast function implementation
 /// Mirrors Haskell Glue.Lib.List.Butlast.butlastImpl exactly
-Eval<Ir> butlastImpl(List<Ir> args) {
-  return switch (args) {
-    [final arg] => eval(arg).flatMap((val) {
-      if (val is IrList) {
-        if (val.elements.isEmpty) {
-          return throwError(wrongArgumentType(['non-empty list']));
-        } else if (val.elements.length == 1) {
-          return Eval.pure(IrList([]));
-        } else {
-          final resultElements = val.elements
-              .sublist(0, val.elements.length - 1)
-              .toList();
-          return Eval.pure(IrList(resultElements));
-        }
+Eval<Ir> butlastImpl(Ir arg) {
+  return eval(arg).flatMap((val) {
+    if (val is IrList) {
+      if (val.elements.isEmpty) {
+        return throwError(wrongArgumentType(['non-empty list']));
+      } else if (val.elements.length == 1) {
+        return Eval.pure(IrList([]));
       } else {
-        return throwError(wrongArgumentType(['list']));
+        final resultElements = val.elements
+            .sublist(0, val.elements.length - 1)
+            .toList();
+        return Eval.pure(IrList(resultElements));
       }
-    }),
-    _ => throwError(wrongNumberOfArguments()),
-  };
+    } else {
+      return throwError(wrongArgumentType(['list']));
+    }
+  });
 }

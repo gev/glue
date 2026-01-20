@@ -8,15 +8,12 @@ final Ir ceil = IrNativeFunc(ceilImpl);
 
 /// Ceiling function implementation (rounds up to nearest integer)
 /// Mirrors Haskell Glue.Lib.Math.Utility.Ceil.ceilImpl exactly
-Eval<Ir> ceilImpl(List<Ir> args) {
-  return switch (args) {
-    [final arg] => eval(arg).flatMap((va) {
-      return switch (va) {
-        IrInteger(value: final n) => Eval.pure(IrInteger(n)),
-        IrFloat(value: final n) => Eval.pure(IrInteger(n.ceil())),
-        _ => throwError(wrongArgumentType(['number'])),
-      };
-    }),
-    _ => throwError(wrongNumberOfArguments()),
-  };
+Eval<Ir> ceilImpl(Ir arg) {
+  return eval(arg).flatMap((va) {
+    return switch (va) {
+      IrInteger(value: final n) => Eval.pure(IrInteger(n)),
+      IrFloat(value: final n) => Eval.pure(IrInteger(n.ceil())),
+      _ => throwError(wrongArgumentType(['number'])),
+    };
+  });
 }

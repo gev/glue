@@ -8,12 +8,8 @@ Ir sort = IrNativeFunc(sortImpl);
 
 /// Sort function implementation
 /// Mirrors Haskell Glue.Lib.List.Sort.sortImpl exactly
-Eval<Ir> sortImpl(List<Ir> args) {
-  if (args.length != 1) {
-    return throwError(wrongNumberOfArguments());
-  }
-
-  return eval(args[0]).flatMap((val) {
+Eval<Ir> sortImpl(Ir arg) {
+  return eval(arg).flatMap((val) {
     if (val is IrList) {
       return sortList(
         val.elements.toList(),

@@ -8,23 +8,27 @@ Ir zip = IrNativeFunc(zipImpl);
 
 /// Zip function implementation
 /// Mirrors Haskell Glue.Lib.List.Zip.zipImpl exactly
-Eval<Ir> zipImpl(List<Ir> args) {
-  return switch (args) {
-    [final list1Ir, final list2Ir] =>
-      sequenceAll([eval(list1Ir), eval(list2Ir)]).flatMap((evaluated) {
-        final list1 = evaluated[0];
-        final list2 = evaluated[1];
-        if (list1 is IrList && list2 is IrList) {
-          final zipped = zipLists(
-            list1.elements.toList(),
-            list2.elements.toList(),
-          );
-          return Eval.pure(IrList(zipped));
-        } else {
-          return throwError(wrongArgumentType(['list', 'list']));
-        }
-      }),
-    _ => throwError(wrongNumberOfArguments()),
+Eval<Ir> zipImpl(Ir list1Ir) {
+  return Eval.pure(IrNativeFunc(zipWith(list1Ir)));
+}
+
+/// Helper function for second list argument
+/// Mirrors Haskell Glue.Lib.List.Zip.zipWith exactly
+Eval<Ir> Function(Ir) zipWith(Ir list1Ir) {
+  return (Ir list2Ir) {
+    return sequenceAll([eval(list1Ir), eval(list2Ir)]).flatMap((evaluated) {
+      return switch (evaluated) {
+        [final list1, final list2] =>
+          list1 is IrList && list2 is IrList
+              ? Eval.pure(
+                  IrList(
+                    zipLists(list1.elements.toList(), list2.elements.toList()),
+                  ),
+                )
+              : throwError(wrongArgumentType(['list', 'list'])),
+        _ => throwError(wrongArgumentType(['list', 'list'])),
+      };
+    });
   };
 }
 

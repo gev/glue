@@ -8,27 +8,30 @@ final Ir lt = IrNativeFunc(ltImpl);
 
 /// Less than comparison implementation
 /// Mirrors Haskell Glue.Lib.Bool.Lt.ltImpl exactly
-Eval<Ir> ltImpl(List<Ir> args) {
-  return switch (args) {
-    [final a, final b] => sequenceAll([eval(a), eval(b)]).flatMap((evaluated) {
-      final va = evaluated[0];
-      final vb = evaluated[1];
-      return switch ((va, vb)) {
-        (IrInteger(value: final na), IrInteger(value: final nb)) => Eval.pure(
+Eval<Ir> ltImpl(Ir a) {
+  return Eval.pure(IrNativeFunc(ltRight(a)));
+}
+
+/// Helper function for second argument
+/// Mirrors Haskell Glue.Lib.Bool.Lt.ltRight exactly
+Eval<Ir> Function(Ir) ltRight(Ir a) {
+  return (Ir b) {
+    return sequenceAll([eval(a), eval(b)]).flatMap((values) {
+      return switch (values) {
+        [IrInteger(value: final na), IrInteger(value: final nb)] => Eval.pure(
           IrBool(na < nb),
         ),
-        (IrFloat(value: final na), IrFloat(value: final nb)) => Eval.pure(
+        [IrFloat(value: final na), IrFloat(value: final nb)] => Eval.pure(
           IrBool(na < nb),
         ),
-        (IrInteger(value: final na), IrFloat(value: final nb)) => Eval.pure(
+        [IrInteger(value: final na), IrFloat(value: final nb)] => Eval.pure(
           IrBool(na < nb),
         ),
-        (IrFloat(value: final na), IrInteger(value: final nb)) => Eval.pure(
+        [IrFloat(value: final na), IrInteger(value: final nb)] => Eval.pure(
           IrBool(na < nb),
         ),
         _ => throwError(wrongArgumentType(['number', 'number'])),
       };
-    }),
-    _ => throwError(wrongArgumentType(['number', 'number'])),
+    });
   };
 }

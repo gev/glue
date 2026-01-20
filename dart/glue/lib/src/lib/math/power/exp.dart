@@ -10,15 +10,12 @@ final Ir exp = IrNativeFunc(expImpl);
 
 /// Exponential function implementation (e^x)
 /// Mirrors Haskell Glue.Lib.Math.Power.Exp.expImpl exactly
-Eval<Ir> expImpl(List<Ir> args) {
-  return switch (args) {
-    [final arg] => eval(arg).flatMap((va) {
-      return switch (va) {
-        IrInteger(value: final n) => Eval.pure(IrFloat(math.exp(n.toDouble()))),
-        IrFloat(value: final n) => Eval.pure(IrFloat(math.exp(n))),
-        _ => throwError(wrongArgumentType(['number'])),
-      };
-    }),
-    _ => throwError(wrongNumberOfArguments()),
-  };
+Eval<Ir> expImpl(Ir arg) {
+  return eval(arg).flatMap((va) {
+    return switch (va) {
+      IrInteger(value: final n) => Eval.pure(IrFloat(math.exp(n.toDouble()))),
+      IrFloat(value: final n) => Eval.pure(IrFloat(math.exp(n))),
+      _ => throwError(wrongArgumentType(['number'])),
+    };
+  });
 }
