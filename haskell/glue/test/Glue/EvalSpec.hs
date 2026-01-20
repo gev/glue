@@ -1,5 +1,6 @@
 module Glue.EvalSpec (spec) where
 
+import Data.Either (isLeft)
 import Data.Map.Strict qualified as Map
 import Data.Text (Text)
 import Glue.Error (GlueError (..))
@@ -238,3 +239,25 @@ spec = describe "Glue.Eval (System Integration)" do
     it "function bodies with single-element lists work" do
         runCode "((\\ (x y) ((+ x y))) 1 2)"
             `shouldReturn` Right (Integer 3)
+
+    describe "NativeFunc Partial Application" do
+        it "native function single arg returns function" do
+            result <- runCode "((+) 5)"
+            result `shouldSatisfy` (\case Right (NativeFunc _) -> True; _ -> False)
+
+        it "native function double args return result" do
+            runCode "((+) 5 3)" `shouldReturn` Right (Integer 8)
+            runCode "((-) 10 4)" `shouldReturn` Right (Integer 6)
+            runCode "((*) 3 7)" `shouldReturn` Right (Integer 21)
+            runCode "((/) 15 3)" `shouldReturn` Right (Float 5.0)
+
+        it "native function triple args fail" do
+            result1 <- runCode "((+) 5 3 1)"
+            result1 `shouldSatisfy` isLeft
+            result2 <- runCode "((-) 10 4 2)"
+            result2 `shouldSatisfy` isLeft
+
+        it "nested partial application works" do
+            runCode "(((+) 5) 3)" `shouldReturn` Right (Integer 8)
+            runCode "(((+) ((-) 10 2)) 3)" `shouldReturn` Right (Integer 11)
+            runCode "(((*) ((+) 2 3)) 4)" `shouldReturn` Right (Integer 20)
