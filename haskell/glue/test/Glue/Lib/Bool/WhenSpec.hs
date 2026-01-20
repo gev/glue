@@ -1,6 +1,5 @@
 module Glue.Lib.Bool.WhenSpec (spec) where
 
-import Data.Either (isLeft)
 import Glue.Eval (apply, runEvalSimple)
 import Glue.IR (IR (..))
 import Glue.Lib.Bool.When (when_)
@@ -29,8 +28,3 @@ spec = describe "Glue.Lib.Bool.When (Test when special form)" do
             case result of
                 Left err -> expectationFailure $ "When failed: " <> show err
                 Right (res, _) -> res `shouldBe` Integer 3
-
-        it "fails with wrong number of arguments" do
-            let args = [] -- No condition
-            result <- runEvalSimple (apply when_ args) []
-            result `shouldSatisfy` isLeft

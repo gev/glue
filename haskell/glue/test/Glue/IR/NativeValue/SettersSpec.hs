@@ -2,7 +2,7 @@ module Glue.IR.NativeValue.SettersSpec (spec) where
 
 import Data.Map.Strict qualified as Map
 import Glue.Env qualified as E
-import Glue.Eval (Eval, apply, runEvalSimple, throwError)
+import Glue.Eval (apply, runEvalSimple, throwError)
 import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (IR (..), hostValueWithProps)
 import Glue.Lib.Builtin.Set qualified as Set

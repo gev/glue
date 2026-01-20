@@ -45,11 +45,6 @@ spec = describe "Glue.Lib.Builtin.Lambda (Test lambda special form)" do
             extractSymbols irs `shouldSatisfy` isLeft
 
     describe "Error cases" do
-        it "fails with wrong number of arguments" do
-            let args = [List [Symbol "x"]]
-            result <- runEvalSimple (apply lambda args) []
-            result `shouldSatisfy` isLeft
-
         it "fails with non-list as parameters" do
             let args = [Integer 1, Symbol "body"]
             result <- runEvalSimple (apply lambda args) []

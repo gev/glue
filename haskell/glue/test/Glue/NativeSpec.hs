@@ -5,8 +5,7 @@ import Data.Map.Strict qualified as Map
 import Data.Text (Text)
 import Data.Text qualified as T
 import Glue.Env qualified as E
-import Glue.Eval (Eval, liftIO, runEvalSimple, throwError)
-import Glue.Eval qualified
+import Glue.Eval (Eval, eval, liftIO, runEvalSimple, throwError)
 import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (Env, IR (..), extractHostValue, hostValueWithProps)
 import Glue.IR qualified
@@ -28,8 +27,8 @@ data Address = Address
     }
 
 -- Constructor functions that take object literals and create native objects
-person :: [IR Eval] -> Eval (IR Eval)
-person [Object props] = do
+person :: IR Eval -> Eval (IR Eval)
+person (Object props) = do
     -- Extract properties from object literal with type checking
     name <- case Map.lookup "name" props of
         Just (String n) -> pure n
@@ -40,11 +39,14 @@ person [Object props] = do
         _ -> throwError $ wrongArgumentType ["age: integer"]
 
     address <- case Map.lookup "address" props of
-        Just (NativeValue addrHostValue) ->
-            case extractHostValue addrHostValue :: Maybe Address of
-                Just _ -> pure $ Just (NativeValue addrHostValue) -- Store the NativeValue
-                Nothing -> throwError $ wrongArgumentType ["address: Address"]
-        Just _ -> throwError $ wrongArgumentType ["address: Address"]
+        Just arg -> do
+            evaluatedAddress <- eval arg
+            case evaluatedAddress of
+                (NativeValue addrHostValue) ->
+                    case extractHostValue addrHostValue :: Maybe Address of
+                        Just _ -> pure $ Just (NativeValue addrHostValue) -- Store the NativeValue
+                        Nothing -> throwError $ wrongArgumentType ["address: Address"]
+                _ -> throwError $ wrongArgumentType ["NativeValue"]
         Nothing -> pure Nothing -- Address is optional
 
     -- Create mutable Person object
@@ -95,8 +97,8 @@ person [Object props] = do
     pure (NativeValue $ hostValueWithProps personObj getters setters)
 person _ = throwError $ wrongArgumentType ["object"]
 
-address :: [IR Eval] -> Eval (IR Eval)
-address [Object props] = do
+address :: IR Eval -> Eval (IR Eval)
+address (Object props) = do
     -- Extract properties from object literal with type checking
     street <- case Map.lookup "street" props of
         Just (String s) -> pure s

@@ -1,6 +1,5 @@
 module Glue.Lib.List.SortSpec (spec) where
 
-import Glue.Env qualified as E
 import Glue.Eval (apply, runEvalSimple)
 import Glue.IR (IR (..))
 import Glue.Lib.List.Sort qualified as Sort

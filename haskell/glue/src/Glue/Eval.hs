@@ -137,9 +137,7 @@ evalList [IR.Symbol name] = do
     case E.lookupVar name env of
         Right func | isCallable func -> do
             -- For zero-argument calls, pass Void as dummy argument
-            result <- apply func IR.Void
-            popContext
-            pure result
+            pure func
         Right val -> do
             popContext
             pure val
@@ -151,7 +149,7 @@ evalList (IR.Symbol name : rawArgs) = do
     env <- getEnv
     case E.lookupVar name env of
         Right func -> do
-            result <- applyArgs func rawArgs
+            result <- apply func rawArgs
             popContext
             pure result
         Left err -> do
@@ -162,17 +160,21 @@ evalList xs = do
     case results of
         (f : args) | isCallable f -> do
             pushContext "<call>"
-            result <- applyArgs f args
+            result <- apply f args
             popContext
             pure result
         res -> pure $ IR.List res
 
 -- Apply multiple arguments sequentially for currying
-applyArgs :: IR -> [IR] -> Eval IR
-applyArgs func [] = pure func -- No args, return function as-is
+applyArgs :: (IR -> Eval IR) -> [IR] -> Eval IR
+applyArgs func [] = pure $ IR.NativeFunc func -- No args, return function as-is
 applyArgs func (arg : rest) = do
-    result <- apply func arg
-    applyArgs result rest -- Apply remaining args to result
+    result <- func arg
+    if isCallable result
+        then apply result rest -- Apply remaining args to result
+        else case rest of
+            [] -> pure result
+            _ -> throwError wrongNumberOfArguments
 
 -- Evaluate an object
 evalObject :: Map Text IR -> Eval IR
@@ -187,11 +189,11 @@ isCallable (IR.Special _) = True
 isCallable (IR.Closure{}) = True
 isCallable _ = False
 
-apply :: IR -> IR -> Eval IR
-apply ir arg = case ir of
-    IR.NativeFunc f -> f arg
-    IR.Special s -> s [arg] -- Special forms still take lists
-    IR.Closure params body savedEnv -> applyClosure params body savedEnv [arg]
+apply :: IR -> [IR] -> Eval IR
+apply ir args = case ir of
+    IR.NativeFunc f -> applyArgs f args
+    IR.Special s -> s args -- Special forms still take lists
+    IR.Closure params body savedEnv -> applyClosure params body savedEnv args
     IR.Symbol name -> throwError $ unboundVariable name
     _ -> throwError notCallableObject
 

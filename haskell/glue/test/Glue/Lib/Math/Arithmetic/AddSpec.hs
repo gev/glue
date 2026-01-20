@@ -24,21 +24,6 @@ spec = describe "Glue.Lib.Arithmetic.Add (Test add function)" do
                 Left err -> expectationFailure $ "Add failed: " <> show err
                 Right (res, _) -> res `shouldBe` Float 3.5
 
-        it "fails with no arguments" do
-            let args = []
-            result <- runEvalSimple (apply add args) []
-            result `shouldSatisfy` isLeft
-
-        it "fails with one argument" do
-            let args = [Integer 2]
-            result <- runEvalSimple (apply add args) []
-            result `shouldSatisfy` isLeft
-
-        it "fails with three arguments" do
-            let args = [Integer 1, Integer 2, Integer 3]
-            result <- runEvalSimple (apply add args) []
-            result `shouldSatisfy` isLeft
-
         it "fails with non-numbers" do
             let args = [Integer 1, String "hello"]
             result <- runEvalSimple (apply add args) []

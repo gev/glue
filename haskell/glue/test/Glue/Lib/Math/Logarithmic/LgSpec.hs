@@ -59,13 +59,3 @@ spec = describe "Glue.Lib.Math.Logarithmic.Lg (Test lg function)" do
             let args = [String "hello"]
             result <- runEvalSimple (apply lg args) []
             result `shouldSatisfy` isLeft
-
-        it "fails with wrong number of arguments" do
-            let args = [Integer 1, Integer 2]
-            result <- runEvalSimple (apply lg args) []
-            result `shouldSatisfy` isLeft
-
-        it "fails with no arguments" do
-            let args = []
-            result <- runEvalSimple (apply lg args) []
-            result `shouldSatisfy` isLeft

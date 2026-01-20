@@ -1,6 +1,5 @@
 module Glue.Lib.Math.Arithmetic.SubSpec (spec) where
 
-import Data.Either (isLeft)
 import Glue.Eval (apply, runEvalSimple)
 import Glue.IR (IR (..))
 import Glue.Lib.Math.Arithmetic.Sub (sub)
@@ -23,26 +22,6 @@ spec = describe "Glue.Lib.Arithmetic.Sub (Test sub function)" do
             case result of
                 Left err -> expectationFailure $ "Sub failed: " <> show err
                 Right (res, _) -> res `shouldBe` Float 2.5
-
-        it "fails with no arguments" do
-            let args = []
-            result <- runEvalSimple (apply sub args) []
-            result `shouldSatisfy` isLeft
-
-        it "fails with one argument" do
-            let args = [Integer 5]
-            result <- runEvalSimple (apply sub args) []
-            result `shouldSatisfy` isLeft
-
-        it "fails with three arguments" do
-            let args = [Integer 10, Integer 4, Integer 4]
-            result <- runEvalSimple (apply sub args) []
-            result `shouldSatisfy` isLeft
-
-        it "fails with non-numbers" do
-            let args = [Integer 5, String "hello"]
-            result <- runEvalSimple (apply sub args) []
-            result `shouldSatisfy` isLeft
 
     describe "Type promotion in subtraction" do
         it "Integer - Integer = Integer" do

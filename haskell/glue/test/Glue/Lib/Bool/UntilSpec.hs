@@ -1,6 +1,5 @@
 module Glue.Lib.Bool.UntilSpec (spec) where
 
-import Data.Either (isLeft)
 import Glue.Env qualified as E
 import Glue.Eval (Runtime (..), apply, runEvalSimple)
 import Glue.IR (IR (..))
@@ -31,8 +30,3 @@ spec = describe "Glue.Lib.Bool.Until (Test until special form)" do
                     res `shouldBe` Void
                     -- Check that flag was changed to true
                     E.lookupLocal "flag" runtime.env `shouldBe` Just (Bool True)
-
-        it "fails with wrong number of arguments" do
-            let args = [] -- No condition
-            result <- runEvalSimple (apply until_ args) []
-            result `shouldSatisfy` isLeft

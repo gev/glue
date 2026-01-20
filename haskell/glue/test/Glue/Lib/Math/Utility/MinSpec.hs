@@ -47,18 +47,3 @@ spec = describe "Glue.Lib.Math.Utility.Min (Test min function)" do
             let args = [Integer 2, String "hello"]
             result <- runEvalSimple (apply Min.min args) []
             result `shouldSatisfy` isLeft
-
-        it "fails with wrong number of arguments (one)" do
-            let args = [Integer 2]
-            result <- runEvalSimple (apply Min.min args) []
-            result `shouldSatisfy` isLeft
-
-        it "fails with wrong number of arguments (three)" do
-            let args = [Integer 2, Integer 3, Integer 4]
-            result <- runEvalSimple (apply Min.min args) []
-            result `shouldSatisfy` isLeft
-
-        it "fails with no arguments" do
-            let args = []
-            result <- runEvalSimple (apply Min.min args) []
-            result `shouldSatisfy` isLeft

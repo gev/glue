@@ -35,11 +35,6 @@ spec = describe "Glue.Lib.Bool.Lt (Test lt function)" do
             result <- runEvalSimple (apply lt args) []
             result `shouldSatisfy` isLeft
 
-        it "fails with wrong number of arguments" do
-            let args = [Integer 5]
-            result <- runEvalSimple (apply lt args) []
-            result `shouldSatisfy` isLeft
-
         it "< alias works identically to lt" do
             let args1 = [Integer 5, Integer 10] -- lesser
             let args2 = [Integer 5, Integer 5] -- equal
