@@ -1,6 +1,6 @@
-# Function Application
+# Function Application & Currying
 
-Function application evaluates lists where the first element is callable. Glue supports multiple types of callable values: native functions, closures, and dynamically resolved symbols.
+Function application evaluates lists where the first element is callable. Glue implements **universal currying** - all functions follow a single-argument contract with automatic partial application. Glue supports multiple types of callable values: native functions, closures, and dynamically resolved symbols.
 
 ## Function Call Detection
 
@@ -72,6 +72,48 @@ Function application evaluates lists where the first element is callable. Glue s
 - Symbol resolved at call time
 - Enables dynamic function binding
 - Supports higher-order programming
+
+## Universal Currying & Partial Application
+
+Glue implements **universal currying** - all functions follow a single-argument contract with automatic partial application. This enables functional programming patterns where functions can be partially applied naturally.
+
+### Single-Argument Contract
+- **All functions take exactly 1 argument**
+- **Multi-argument functions** are syntactic sugar for nested single-argument functions
+- **Partial application** returns a new function expecting the remaining arguments
+
+### Currying Examples
+```glue
+;; Multi-arg function (syntactic sugar)
+(lambda (a b c) (+ a b c))
+
+;; Desugars to nested functions
+(lambda (a)
+  (lambda (b)
+    (lambda (c)
+      (+ a b c))))
+
+;; Partial application works naturally
+(def add (lambda (a b) (+ a b)))
+(def add5 (add 5))        ;; Returns function expecting 1 more arg
+(add5 3)                  ;; → 8
+```
+
+### Native Function Currying
+- **Arithmetic operators** support currying: `(+ 5)` returns function that adds 5
+- **All built-in functions** follow single-argument contract
+- **Automatic partial application** for any argument count
+
+### Closure Currying
+- **User-defined functions** support currying through partial application
+- **Parameter binding** creates new closures with remaining parameters
+- **Environment capture** preserves lexical scope
+
+### Currying Benefits
+- **Functional composition**: Easy function combination
+- **Point-free style**: Omit arguments in pipelines
+- **Reusability**: Create specialized functions from general ones
+- **Type safety**: Gradual argument application
 
 ## Argument Evaluation
 

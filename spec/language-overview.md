@@ -24,6 +24,15 @@ Designed to embed seamlessly in existing applications with minimal runtime footp
 (def add-five (make-adder 5))
 (add-five 3)  ;; → 8
 
+;; Universal currying - all functions support partial application
+(def add (lambda (a b) (+ a b)))
+(def add-five (add 5))  ;; Partial application
+(add-five 3)            ;; → 8
+
+;; Built-in functions also curry
+(def multiply-by-two (* 2))  ;; Partial application of *
+(multiply-by-two 5)          ;; → 10
+
 ;; Higher-order functions
 (map (lambda (x) (* x 2)) '(1 2 3))  ;; → (2 4 6)
 ```
