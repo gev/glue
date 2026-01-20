@@ -210,7 +210,8 @@ class IrNativeValue extends Ir {
 }
 
 class IrNativeFunc extends Ir {
-  final Eval<Ir> Function(List<Ir>) function;
+  final Eval<Ir> Function(Ir)
+  function; // Single-arg contract for universal currying
   const IrNativeFunc(this.function);
 
   @override
@@ -238,10 +239,10 @@ class IrSpecial extends Ir {
 }
 
 class IrClosure extends Ir {
-  final List<String> params;
+  final String param; // Single param for universal currying
   final Ir body;
   final Env env;
-  const IrClosure(this.params, this.body, this.env);
+  const IrClosure(this.param, this.body, this.env);
 
   @override
   String toString() => '<closure>';
