@@ -6,23 +6,20 @@ import 'package:glue_flutter/src/utils/color_parser.dart';
 /// All extraction functions use pattern matching for clean, type-safe code
 
 /// Extract string from Glue IR value
-String? extractString(dynamic value) => switch (value) {
+String? extractString(Ir value) => switch (value) {
   IrString(:final value) => value,
-  String string => string,
   _ => null,
 };
 
 /// Extract bool from Glue IR value
-bool? extractBool(dynamic value) => switch (value) {
+bool? extractBool(Ir value) => switch (value) {
   IrBool(:final value) => value,
-  bool boolean => boolean,
   _ => null,
 };
 
 /// Extract int from Glue IR value
-int? extractInt(dynamic value) => switch (value) {
+int? extractInt(Ir value) => switch (value) {
   IrInteger(:final value) => value,
-  int integer => integer,
   _ => null,
 };
 
@@ -34,33 +31,33 @@ double? extractDouble(Ir value) => switch (value) {
 };
 
 /// Extract color from Glue IR value
-Color? extractColor(dynamic value) => switch (value) {
+Color? extractColor(Ir value) => switch (value) {
   IrNativeValue(value: HostValue(value: Color color)) => color,
   IrString() => parseColor(value),
   _ => null,
 };
 
 /// Extract FontWeight from Glue IR value
-FontWeight? extractFontWeight(dynamic value) => switch (value) {
+FontWeight? extractFontWeight(Ir value) => switch (value) {
   IrNativeValue(value: HostValue(value: FontWeight weight)) => weight,
   _ => null,
 };
 
 /// Extract TextAlign from Glue IR value
-TextAlign? extractTextAlign(dynamic value) => switch (value) {
+TextAlign? extractTextAlign(Ir value) => switch (value) {
   IrNativeValue(value: HostValue(value: TextAlign align)) => align,
   _ => null,
 };
 
 /// Extract MainAxisAlignment from Glue IR value
-MainAxisAlignment? extractMainAxisAlignment(dynamic value) => switch (value) {
+MainAxisAlignment? extractMainAxisAlignment(Ir value) => switch (value) {
   IrNativeValue(value: HostValue(value: MainAxisAlignment alignment)) =>
     alignment,
   _ => null,
 };
 
 /// Extract CrossAxisAlignment from Glue IR value
-CrossAxisAlignment? extractCrossAxisAlignment(dynamic value) => switch (value) {
+CrossAxisAlignment? extractCrossAxisAlignment(Ir value) => switch (value) {
   IrNativeValue(value: HostValue(value: CrossAxisAlignment alignment)) =>
     alignment,
   _ => null,
