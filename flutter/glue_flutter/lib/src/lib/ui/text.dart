@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval/exception.dart';
-import 'package:glue_flutter/src/utils/value_extractors.dart';
+import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// Text widget function
 /// Creates Flutter Text widget from Glue (text content props) expressions
@@ -23,17 +23,17 @@ Eval<Ir> Function(Ir) textWithContent(Ir content) {
       return throwError(wrongArgumentType(['object']));
     }
 
-    // Extract values from Glue IR properties
-    final properties = props.properties.unlock as Map<String, dynamic>;
-    final color = extractColor(properties['color']);
-    final size = extractDouble(properties['size']);
-    final weight = extractFontWeight(properties['weight']);
-    final align = extractTextAlign(properties['align']);
+    // Extract properties using lazy wrapper
+    final properties = Properties(props.properties.unlock);
 
     final textWidget = Text(
       content.value,
-      style: TextStyle(color: color, fontSize: size, fontWeight: weight),
-      textAlign: align,
+      style: TextStyle(
+        color: properties.color,
+        fontSize: properties.size,
+        fontWeight: properties.weight,
+      ),
+      textAlign: properties.align,
     );
     return Eval.pure(IrNativeValue(HostValue(textWidget)));
   };

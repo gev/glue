@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval/exception.dart';
-import 'package:glue_flutter/src/utils/value_extractors.dart';
+import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// Button widget function
 /// Creates Flutter ElevatedButton from Glue (button props) expressions
@@ -14,15 +14,12 @@ Eval<Ir> buttonImpl(Ir props) {
     return throwError(wrongArgumentType(['object']));
   }
 
-  // Extract values from Glue IR properties
-  final properties = props.properties.unlock as Map<String, dynamic>;
-  final label = extractString(properties['label']) ?? 'Button';
-  final onPressed = extractVoidCallback(properties['on-tap']);
-  final disabled = extractBool(properties['disabled']) ?? false;
+  // Extract properties using lazy wrapper
+  final properties = Properties(props.properties.unlock);
 
   final buttonWidget = ElevatedButton(
-    onPressed: disabled ? null : onPressed,
-    child: Text(label),
+    onPressed: properties.disabled == true ? null : properties.onTap,
+    child: Text(properties.label ?? 'Button'),
   );
   return Eval.pure(IrNativeValue(HostValue(buttonWidget)));
 }

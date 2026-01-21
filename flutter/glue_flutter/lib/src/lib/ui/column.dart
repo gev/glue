@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval/exception.dart';
-import 'package:glue_flutter/src/utils/value_extractors.dart';
+import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// Column widget function
 /// Creates Flutter Column from Glue (column props) expressions
@@ -14,20 +14,13 @@ Eval<Ir> columnImpl(Ir props) {
     return throwError(wrongArgumentType(['object']));
   }
 
-  // Extract values from Glue IR properties
-  final properties = props.properties.unlock as Map<String, dynamic>;
-  final children = extractChildren(properties['children']) ?? [];
-  final mainAxis =
-      extractMainAxisAlignment(properties['main-axis-align']) ??
-      MainAxisAlignment.start;
-  final crossAxis =
-      extractCrossAxisAlignment(properties['cross-axis-align']) ??
-      CrossAxisAlignment.start;
+  // Extract properties using lazy wrapper
+  final properties = Properties(props.properties.unlock);
 
   final columnWidget = Column(
-    children: children,
-    mainAxisAlignment: mainAxis,
-    crossAxisAlignment: crossAxis,
+    children: properties.children ?? [],
+    mainAxisAlignment: properties.mainAlign ?? MainAxisAlignment.start,
+    crossAxisAlignment: properties.crossAlign ?? CrossAxisAlignment.start,
   );
   return Eval.pure(IrNativeValue(HostValue(columnWidget)));
 }
