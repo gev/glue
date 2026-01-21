@@ -18,9 +18,9 @@ Eval<Ir> columnImpl(Ir props) {
   final properties = Properties(props.properties.unlock);
 
   final columnWidget = Column(
-    children: properties.children ?? [],
-    mainAxisAlignment: properties.mainAlign ?? MainAxisAlignment.start,
-    crossAxisAlignment: properties.crossAlign ?? CrossAxisAlignment.start,
+    children: properties.children,
+    mainAxisAlignment: properties.mainAlign,
+    crossAxisAlignment: properties.crossAlign,
   );
   return Eval.pure(IrNativeValue(HostValue(columnWidget)));
 }

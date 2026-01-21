@@ -18,8 +18,8 @@ Eval<Ir> buttonImpl(Ir props) {
   final properties = Properties(props.properties.unlock);
 
   final buttonWidget = ElevatedButton(
-    onPressed: properties.disabled == true ? null : properties.onTap,
-    child: Text(properties.label ?? 'Button'),
+    onPressed: properties.disabled ? null : properties.onTap,
+    child: Text(properties.label),
   );
   return Eval.pure(IrNativeValue(HostValue(buttonWidget)));
 }
