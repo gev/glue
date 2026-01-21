@@ -1,7 +1,7 @@
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval/exception.dart';
-import '../../widgets/glue_column.dart';
+import 'package:glue_flutter/src/widgets/glue_column.dart';
 
 /// Column widget function
 /// Creates Flutter Column from Glue (column props) expressions

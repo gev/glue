@@ -1,7 +1,7 @@
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval/exception.dart';
-import '../../widgets/glue_text.dart';
+import 'package:glue_flutter/src/widgets/glue_text.dart';
 
 /// Text widget function
 /// Creates Flutter Text widget from Glue (text content props) expressions

@@ -1,7 +1,7 @@
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval/exception.dart';
-import '../../widgets/glue_padding.dart';
+import 'package:glue_flutter/src/widgets/glue_padding.dart';
 
 /// Padding widget function
 /// Creates Flutter Padding from Glue (padding child props) expressions

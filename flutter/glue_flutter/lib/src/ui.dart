@@ -1,20 +1,20 @@
 import 'package:glue/src/module.dart';
-import 'lib/ui/text.dart';
-import 'lib/ui/button.dart';
-import 'lib/ui/container.dart';
-import 'lib/ui/column.dart';
-import 'lib/ui/row.dart';
-import 'lib/ui/padding.dart';
-import 'lib/ui/center.dart';
+import 'package:glue_flutter/src/lib/ui/text.dart';
+import 'package:glue_flutter/src/lib/ui/button.dart';
+import 'package:glue_flutter/src/lib/ui/container.dart';
+import 'package:glue_flutter/src/lib/ui/column.dart';
+import 'package:glue_flutter/src/lib/ui/row.dart';
+import 'package:glue_flutter/src/lib/ui/padding.dart';
+import 'package:glue_flutter/src/lib/ui/center.dart';
 
 // Export individual functions for testing and external access
-export 'lib/ui/text.dart' show text;
-export 'lib/ui/button.dart' show button;
-export 'lib/ui/container.dart' show container;
-export 'lib/ui/column.dart' show column;
-export 'lib/ui/row.dart' show row;
-export 'lib/ui/padding.dart' show padding;
-export 'lib/ui/center.dart' show center;
+export 'package:glue_flutter/src/lib/ui/text.dart' show text;
+export 'package:glue_flutter/src/lib/ui/button.dart' show button;
+export 'package:glue_flutter/src/lib/ui/container.dart' show container;
+export 'package:glue_flutter/src/lib/ui/column.dart' show column;
+export 'package:glue_flutter/src/lib/ui/row.dart' show row;
+export 'package:glue_flutter/src/lib/ui/padding.dart' show padding;
+export 'package:glue_flutter/src/lib/ui/center.dart' show center;
 
 /// UI module - Flutter implementation of framework-agnostic UI API
 /// Provides concrete Flutter rendering for abstract UI specifications

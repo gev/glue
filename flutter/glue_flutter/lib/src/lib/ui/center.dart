@@ -1,7 +1,7 @@
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval/exception.dart';
-import '../../widgets/glue_center.dart';
+import 'package:glue_flutter/src/widgets/glue_center.dart';
 
 /// Center widget function
 /// Creates Flutter Center from Glue (center child) expressions

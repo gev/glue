@@ -1,7 +1,7 @@
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval/exception.dart';
-import '../../widgets/glue_button.dart';
+import 'package:glue_flutter/src/widgets/glue_button.dart';
 
 /// Button widget function
 /// Creates Flutter ElevatedButton from Glue (button props) expressions
