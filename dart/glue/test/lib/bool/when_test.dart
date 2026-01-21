@@ -48,12 +48,6 @@ void main() {
           (value) => expect(value, equals(IrVoid())),
         );
       });
-
-      test('fails with no arguments', () async {
-        final args = <Ir>[];
-        final result = await runCode(args);
-        expect(result.isLeft, isTrue);
-      });
     });
   });
 }

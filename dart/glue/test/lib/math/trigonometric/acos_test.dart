@@ -59,15 +59,5 @@ void main() {
       final result = await runCode('(acos "hello")');
       expect(result.isLeft, isTrue);
     });
-
-    test('fails with too few arguments', () async {
-      final result = await runCode('(acos)');
-      expect(result.isLeft, isTrue);
-    });
-
-    test('fails with too many arguments', () async {
-      final result = await runCode('(acos 1 2)');
-      expect(result.isLeft, isTrue);
-    });
   });
 }

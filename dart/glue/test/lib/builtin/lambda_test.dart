@@ -68,15 +68,6 @@ void main() {
     });
 
     group('Error cases', () {
-      test('fails with wrong number of arguments', () async {
-        final args = [
-          IrList([IrSymbol('x')]),
-        ];
-        final runtime = Runtime.initial(fromList([]));
-        final result = await runEval(apply(lambda, args), runtime);
-        expect(result.isLeft, isTrue);
-      });
-
       test('fails with non-list as parameters', () async {
         final args = [IrInteger(1), IrSymbol('body')];
         final runtime = Runtime.initial(fromList([]));

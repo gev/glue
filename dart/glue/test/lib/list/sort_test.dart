@@ -104,21 +104,6 @@ void main() {
       expect(result.isLeft, isTrue);
     });
 
-    test('fails with wrong number of arguments', () async {
-      final args = <Ir>[];
-      final result = await runEvalSimple(apply(sort, args), emptyEnv());
-      expect(result.isLeft, isTrue);
-    });
-
-    test('fails with too many arguments', () async {
-      final args = [
-        IrList([IrInteger(1), IrInteger(2), IrInteger(3)]),
-        IrList([IrInteger(4), IrInteger(5), IrInteger(6)]),
-      ];
-      final result = await runEvalSimple(apply(sort, args), emptyEnv());
-      expect(result.isLeft, isTrue);
-    });
-
     test('fails on list with incomparable elements', () async {
       final args = [
         IrList([

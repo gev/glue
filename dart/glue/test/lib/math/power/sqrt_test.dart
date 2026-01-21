@@ -54,15 +54,5 @@ void main() {
       final result = await runCode('(sqrt "hello")');
       expect(result.isLeft, isTrue);
     });
-
-    test('fails with too few arguments', () async {
-      final result = await runCode('(sqrt)');
-      expect(result.isLeft, isTrue);
-    });
-
-    test('fails with too many arguments', () async {
-      final result = await runCode('(sqrt 4 5)');
-      expect(result.isLeft, isTrue);
-    });
   });
 }

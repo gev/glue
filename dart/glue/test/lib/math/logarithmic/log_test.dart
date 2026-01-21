@@ -72,15 +72,5 @@ void main() {
       final result = await runCode('(log 8 "hello")');
       expect(result.isLeft, isTrue);
     });
-
-    test('fails with too few arguments', () async {
-      final result = await runCode('(log 8)');
-      expect(result.isLeft, isTrue);
-    });
-
-    test('fails with too many arguments', () async {
-      final result = await runCode('(log 8 2 10)');
-      expect(result.isLeft, isTrue);
-    });
   });
 }

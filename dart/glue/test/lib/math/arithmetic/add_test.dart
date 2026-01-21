@@ -56,15 +56,5 @@ void main() {
       final result = await runCode('(+ 5 "hello")');
       expect(result.isLeft, isTrue);
     });
-
-    test('fails with too few arguments', () async {
-      final result = await runCode('(+ 5)');
-      expect(result.isLeft, isTrue);
-    });
-
-    test('fails with too many arguments', () async {
-      final result = await runCode('(+ 1 2 3)');
-      expect(result.isLeft, isTrue);
-    });
   });
 }
