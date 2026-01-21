@@ -13,7 +13,10 @@ import 'package:glue_flutter/src/lib/ui/font_weight.dart';
 import 'package:glue_flutter/src/lib/ui/color/colors.dart'; // Named colors object
 import 'package:glue_flutter/src/lib/ui/color/rgb.dart'; // RGB function
 import 'package:glue_flutter/src/lib/ui/color/rgba.dart'; // RGBA function
-import 'package:glue_flutter/src/lib/ui/paddings.dart'; // Includes padding functions
+import 'package:glue_flutter/src/lib/ui/padding/padding_all.dart'; // padding-all function
+import 'package:glue_flutter/src/lib/ui/padding/padding_symmetric.dart'; // padding-symmetric function
+import 'package:glue_flutter/src/lib/ui/padding/padding_only.dart'; // padding-only function
+import 'package:glue_flutter/src/lib/ui/padding/padding_directional.dart'; // padding-directional function
 
 // Note: All exports are handled through the Glue ModuleInfo below.
 // No Dart re-exports to keep the module boundary clean.
