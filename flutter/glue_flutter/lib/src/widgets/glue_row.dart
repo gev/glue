@@ -1,55 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:glue/src/ir.dart';
-import 'glue_widget.dart';
-
-/// Helper function to extract enum value from HostValue only (no parsing)
-T? extractEnumValue<T>(Ir? ir) {
-  if (ir == null) return null;
-
-  // Only accept direct enum objects - no string parsing
-  if (ir is IrNativeValue) {
-    final hostValue = ir.value;
-    if (hostValue.value is T) {
-      return hostValue.value as T;
-    }
-  }
-
-  return null; // No fallback parsing
-}
+import 'package:glue_flutter/src/widgets/glue_widget.dart';
 
 /// Glue Row widget - Flutter implementation of horizontal layout
 class GlueRow extends GlueWidget {
-  GlueRow({super.properties, super.key});
+  final List<Widget> children;
+  final MainAxisAlignment mainAxisAlignment;
+  final CrossAxisAlignment crossAxisAlignment;
+
+  const GlueRow({
+    required this.children,
+    this.mainAxisAlignment = MainAxisAlignment.start,
+    this.crossAxisAlignment = CrossAxisAlignment.start,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final children = _parseChildren(properties['children']);
-    final mainAxis =
-        extractEnumValue<MainAxisAlignment>(properties['main-axis-align']) ??
-        MainAxisAlignment.start;
-    final crossAxis =
-        extractEnumValue<CrossAxisAlignment>(properties['cross-axis-align']) ??
-        CrossAxisAlignment.start;
-
     return Row(
       children: children,
-      mainAxisAlignment: mainAxis,
-      crossAxisAlignment: crossAxis,
+      mainAxisAlignment: mainAxisAlignment,
+      crossAxisAlignment: crossAxisAlignment,
     );
-  }
-
-  List<Widget> _parseChildren(dynamic childrenProp) {
-    if (childrenProp is List) {
-      return childrenProp.map((child) {
-        if (child is IrNativeValue) {
-          final hostValue = child.value;
-          if (hostValue.value is GlueWidget) {
-            return hostValue.value as GlueWidget;
-          }
-        }
-        return const SizedBox.shrink(); // Invalid child
-      }).toList();
-    }
-    return [];
   }
 }
