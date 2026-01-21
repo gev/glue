@@ -239,10 +239,10 @@ class IrSpecial extends Ir {
 }
 
 class IrClosure extends Ir {
-  final String param; // Single param for universal currying
+  final List<String> params; // Multiple params like Haskell
   final Ir body;
   final Env env;
-  const IrClosure(this.param, this.body, this.env);
+  const IrClosure(this.params, this.body, this.env);
 
   @override
   String toString() => '<closure>';
@@ -250,7 +250,7 @@ class IrClosure extends Ir {
   @override
   bool operator ==(Object other) =>
       other is IrClosure &&
-      other.params == params &&
+      _listsEqual(other.params, params) &&
       other.body == body &&
       other.env == env;
 
