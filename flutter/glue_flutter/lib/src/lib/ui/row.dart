@@ -8,10 +8,13 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 /// Creates Flutter Row from Glue (row props) expressions
 final Ir row = IrNativeFunc(rowImpl);
 
-/// Row implementation - takes properties object
+/// Row implementation - takes properties object or children list
 Eval<Ir> rowImpl(Ir arg) => switch (arg) {
   IrObject(:final properties) => _createRow(Properties(properties.unlock)),
-  _ => throwError(wrongArgumentType(['object'])),
+  IrList(:final elements) => _createRow(
+    Properties({'children': IrList(elements.toList())}),
+  ),
+  _ => throwError(wrongArgumentType(['object', 'list'])),
 };
 
 /// Create Row widget from properties
