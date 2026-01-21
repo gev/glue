@@ -59,26 +59,22 @@ final rgb = IrNativeFunc(rgbImpl);
 /// RGBA function - (rgba 255 0 0 128)
 final rgba = IrNativeFunc(rgbaImpl);
 
-Eval<Ir> rgbImpl(Ir r) {
-  return Eval.pure(
-    IrNativeFunc(
-      (Ir g) => Eval.pure(IrNativeFunc((Ir b) => createRgbColor(r, g, b))),
-    ),
-  );
-}
+Eval<Ir> rgbImpl(Ir r) => Eval.pure(
+  IrNativeFunc(
+    (Ir g) => Eval.pure(IrNativeFunc((Ir b) => createRgbColor(r, g, b))),
+  ),
+);
 
-Eval<Ir> rgbaImpl(Ir r) {
-  return Eval.pure(
-    IrNativeFunc(
-      (Ir g) => Eval.pure(
-        IrNativeFunc(
-          (Ir b) =>
-              Eval.pure(IrNativeFunc((Ir a) => createRgbaColor(r, g, b, a))),
-        ),
+Eval<Ir> rgbaImpl(Ir r) => Eval.pure(
+  IrNativeFunc(
+    (Ir g) => Eval.pure(
+      IrNativeFunc(
+        (Ir b) =>
+            Eval.pure(IrNativeFunc((Ir a) => createRgbaColor(r, g, b, a))),
       ),
     ),
-  );
-}
+  ),
+);
 
 Eval<Ir> createRgbColor(Ir r, Ir g, Ir b) {
   final red = extractInt(r)?.clamp(0, 255) ?? 0;
