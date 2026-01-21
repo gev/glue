@@ -8,15 +8,15 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 /// Creates Flutter Column from Glue (column props) expressions
 final Ir column = IrNativeFunc(columnImpl);
 
-/// Column implementation - takes properties object or children list
-Eval<Ir> columnImpl(Ir arg) => switch (arg) {
-  IrObject(:final properties) => _createColumn(Properties(properties.unlock)),
-  IrList(:final elements) => _createColumn(Properties({'children': elements})),
-  _ => throwError(wrongArgumentType(['object', 'list'])),
-};
+/// Column implementation - takes properties object
+Eval<Ir> columnImpl(Ir props) {
+  if (props is! IrObject) {
+    return throwError(wrongArgumentType(['object']));
+  }
 
-/// Create Column widget from properties
-Eval<Ir> _createColumn(Properties properties) {
+  // Extract properties using lazy wrapper
+  final properties = Properties(props.properties.unlock);
+
   final columnWidget = Column(
     children: properties.children,
     mainAxisAlignment: properties.mainAlign,
