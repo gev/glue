@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/eval/exception.dart';
 import 'package:glue/src/ir.dart';
@@ -52,46 +53,31 @@ final colors = IrObject({
   'deepOrangeAccent': IrNativeValue(HostValue(Colors.deepOrangeAccent)),
 });
 
-/// RGB function - creates color from list [r,g,b] values (0-255)
+/// RGB function - (rgb 255 0 0)
 final rgb = IrNativeFunc(rgbImpl);
 
-/// RGBA function - creates color from list [r,g,b,a] values (0-255)
+/// RGBA function - (rgba 255 0 0 128)
 final rgba = IrNativeFunc(rgbaImpl);
 
-Eval<Ir> rgbImpl(Ir args) => switch (args) {
-  IrList(elements: final elements) => createRgbFromList(elements.unlock),
-  _ => throwError(wrongArgumentType(['list'])),
-};
-
-Eval<Ir> rgbaImpl(Ir args) => switch (args) {
-  IrList(elements: final elements) => createRgbaFromList(elements.unlock),
-  _ => throwError(wrongArgumentType(['list'])),
-};
-
-/// Create RGB color from list [r, g, b]
-Eval<Ir> createRgbFromList(List<Ir> elements) {
-  if (elements.length != 3) {
-    return throwError(
-      RuntimeException(
-        'rgb-error',
-        IrString('RGB requires exactly 3 values [r, g, b]'),
-      ),
-    );
-  }
-  return createRgbColor(elements[0], elements[1], elements[2]);
+Eval<Ir> rgbImpl(Ir r) {
+  return Eval.pure(
+    IrNativeFunc(
+      (Ir g) => Eval.pure(IrNativeFunc((Ir b) => createRgbColor(r, g, b))),
+    ),
+  );
 }
 
-/// Create RGBA color from list [r, g, b, a]
-Eval<Ir> createRgbaFromList(List<Ir> elements) {
-  if (elements.length != 4) {
-    return throwError(
-      RuntimeException(
-        'rgba-error',
-        IrString('RGBA requires exactly 4 values [r, g, b, a]'),
+Eval<Ir> rgbaImpl(Ir r) {
+  return Eval.pure(
+    IrNativeFunc(
+      (Ir g) => Eval.pure(
+        IrNativeFunc(
+          (Ir b) =>
+              Eval.pure(IrNativeFunc((Ir a) => createRgbaColor(r, g, b, a))),
+        ),
       ),
-    );
-  }
-  return createRgbaColor(elements[0], elements[1], elements[2], elements[3]);
+    ),
+  );
 }
 
 Eval<Ir> createRgbColor(Ir r, Ir g, Ir b) {
