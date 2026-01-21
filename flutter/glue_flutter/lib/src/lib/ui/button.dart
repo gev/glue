@@ -8,19 +8,21 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 /// Creates Flutter ElevatedButton from Glue (button props) expressions
 final Ir button = IrNativeFunc(buttonImpl);
 
-/// Button implementation - requires positional label, optional properties
-Eval<Ir> buttonImpl(Ir label) => switch (label) {
-  IrString(:final value) => IrNativeFunc(
-    (Ir props) => switch (props) {
-      IrObject(:final properties) => _createButton(
+/// Button implementation - takes label
+Eval<Ir> buttonImpl(Ir label) {
+  return Eval.pure(IrNativeFunc(buttonWithLabel(label)));
+}
+
+/// Button with label - takes optional properties
+Eval<Ir> Function(Ir) buttonWithLabel(Ir label) =>
+    (Ir props) => switch ((label, props)) {
+      (IrString(:final value), IrObject(:final properties)) => _createButton(
         value,
         Properties(properties.unlock),
       ),
-      _ => _createButton(value, Properties(null)),
-    }(),
-  ),
-  _ => throwError(wrongArgumentType(['string'])),
-};
+      (IrString(:final value), _) => _createButton(value, Properties(null)),
+      _ => throwError(wrongArgumentType(['string', 'object?'])),
+    };
 
 /// Create Button widget from label and properties
 Eval<Ir> _createButton(String label, Properties properties) {
