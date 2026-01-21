@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval/exception.dart';
-import 'package:glue_flutter/src/utils/edge_insets_parser.dart';
+import 'package:glue_flutter/src/utils/value_extractors.dart';
 
 /// Padding widget function
 /// Creates Flutter Padding from Glue (padding child props) expressions
@@ -20,9 +20,8 @@ Eval<Ir> Function(Ir) paddingWithChild(Ir child) =>
           when props is IrObject =>
         () {
           final properties = props.properties.unlock as Map<String, dynamic>;
-          final padding = properties['padding'] != null
-              ? parseEdgeInsets(properties['padding']!)
-              : EdgeInsets.zero;
+          final padding =
+              extractEdgeInsets(properties['padding']) ?? EdgeInsets.zero;
 
           final paddingWidget = Padding(
             padding: padding ?? EdgeInsets.zero,
