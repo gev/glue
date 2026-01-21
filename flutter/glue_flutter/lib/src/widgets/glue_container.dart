@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:glue/src/ir.dart';
 import 'glue_widget.dart';
 
 /// Glue Container widget - Flutter implementation of layout container
 class GlueContainer extends GlueWidget {
-  final IMap<String, dynamic> properties;
+  final Map<String, dynamic> properties;
 
   const GlueContainer(this.properties);
 

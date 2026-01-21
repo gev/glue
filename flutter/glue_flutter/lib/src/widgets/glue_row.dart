@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:glue/src/ir.dart';
 import 'glue_widget.dart';
 import '../utils/main_axis_alignment_parser.dart';
@@ -7,7 +6,7 @@ import '../utils/cross_axis_alignment_parser.dart';
 
 /// Glue Row widget - Flutter implementation of horizontal layout
 class GlueRow extends GlueWidget {
-  final IMap<String, dynamic> properties;
+  final Map<String, dynamic> properties;
 
   const GlueRow(this.properties);
 

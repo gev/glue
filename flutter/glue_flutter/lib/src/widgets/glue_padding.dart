@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:glue/src/ir.dart';
 import 'glue_widget.dart';
 import '../utils/edge_insets_parser.dart';
@@ -7,7 +6,7 @@ import '../utils/edge_insets_parser.dart';
 /// Glue Padding widget - Flutter implementation of padding wrapper
 class GluePadding extends GlueWidget {
   final IrNativeValue child;
-  final IMap<String, dynamic> properties;
+  final Map<String, dynamic> properties;
 
   const GluePadding(this.child, this.properties);
 

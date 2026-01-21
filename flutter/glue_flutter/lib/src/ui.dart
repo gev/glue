@@ -57,7 +57,7 @@ Eval<Ir> Function(Ir) textWithContent(Ir content) {
       return throwError(wrongArgumentType(['object']));
     }
 
-    final textWidget = GlueText(content.value, props.properties);
+    final textWidget = GlueText(content.value, props.properties.unlock);
     return Eval.pure(IrNativeValue(HostValue(textWidget)));
   };
 }
@@ -72,7 +72,7 @@ Eval<Ir> buttonImpl(Ir props) {
     return throwError(wrongArgumentType(['object']));
   }
 
-  final buttonWidget = GlueButton(props.properties);
+  final buttonWidget = GlueButton(props.properties.unlock);
   return Eval.pure(IrNativeValue(HostValue(buttonWidget)));
 }
 
@@ -86,7 +86,7 @@ Eval<Ir> containerImpl(Ir props) {
     return throwError(wrongArgumentType(['object']));
   }
 
-  final containerWidget = GlueContainer(props.properties);
+  final containerWidget = GlueContainer(props.properties.unlock);
   return Eval.pure(IrNativeValue(HostValue(containerWidget)));
 }
 
@@ -100,7 +100,7 @@ Eval<Ir> columnImpl(Ir props) {
     return throwError(wrongArgumentType(['object']));
   }
 
-  final columnWidget = GlueColumn(props.properties);
+  final columnWidget = GlueColumn(props.properties.unlock);
   return Eval.pure(IrNativeValue(HostValue(columnWidget)));
 }
 
@@ -114,7 +114,7 @@ Eval<Ir> rowImpl(Ir props) {
     return throwError(wrongArgumentType(['object']));
   }
 
-  final rowWidget = GlueRow(props.properties);
+  final rowWidget = GlueRow(props.properties.unlock);
   return Eval.pure(IrNativeValue(HostValue(rowWidget)));
 }
 
@@ -137,7 +137,7 @@ Eval<Ir> Function(Ir) paddingWithChild(Ir child) {
       return throwError(wrongArgumentType(['object']));
     }
 
-    final paddingWidget = GluePadding(child, props.properties);
+    final paddingWidget = GluePadding(child, props.properties.unlock);
     return Eval.pure(IrNativeValue(HostValue(paddingWidget)));
   };
 }

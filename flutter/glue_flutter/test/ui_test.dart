@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/module.dart';
 import 'package:glue_flutter/src/ui.dart';
@@ -51,7 +50,7 @@ void main() {
 
   group('Widget Creation', () {
     testWidgets('GlueText builds correctly', (WidgetTester tester) async {
-      final properties = IMap<String, dynamic>({});
+      final properties = <String, dynamic>{};
       final glueText = GlueText('Hello', properties);
 
       await tester.pumpWidget(MaterialApp(home: glueText));
@@ -62,11 +61,11 @@ void main() {
     testWidgets('GlueText with properties builds correctly', (
       WidgetTester tester,
     ) async {
-      final properties = IMap<String, dynamic>({
+      final properties = <String, dynamic>{
         'color': IrString('blue'),
         'size': IrInteger(24),
         'weight': IrString('bold'),
-      });
+      };
       final glueText = GlueText('Styled', properties);
 
       await tester.pumpWidget(MaterialApp(home: glueText));

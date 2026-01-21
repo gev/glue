@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:glue/src/ir.dart';
 import 'glue_widget.dart';
 import '../utils/color_parser.dart';
@@ -9,7 +8,7 @@ import '../utils/text_align_parser.dart';
 /// Glue Text widget - Flutter implementation of text display
 class GlueText extends GlueWidget {
   final String text;
-  final IMap<String, dynamic> properties;
+  final Map<String, dynamic> properties;
 
   const GlueText(this.text, this.properties);
 

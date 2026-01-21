@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'glue_widget.dart';
 
 /// Glue Button widget - Flutter implementation of interactive button
 class GlueButton extends GlueWidget {
-  final IMap<String, dynamic> properties;
+  final Map<String, dynamic> properties;
 
   const GlueButton(this.properties);
 
