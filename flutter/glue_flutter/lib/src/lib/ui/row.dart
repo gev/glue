@@ -9,18 +9,17 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir row = IrNativeFunc(rowImpl);
 
 /// Row implementation - takes properties object
-Eval<Ir> rowImpl(Ir props) {
-  if (props is! IrObject) {
-    return throwError(wrongArgumentType(['object']));
-  }
+Eval<Ir> rowImpl(Ir props) => switch (props) {
+  IrObject() => () {
+    // Extract properties using lazy wrapper
+    final properties = Properties(props.properties.unlock);
 
-  // Extract properties using lazy wrapper
-  final properties = Properties(props.properties.unlock);
-
-  final rowWidget = Row(
-    children: properties.children,
-    mainAxisAlignment: properties.mainAlign,
-    crossAxisAlignment: properties.crossAlign,
-  );
-  return Eval.pure(IrNativeValue(HostValue(rowWidget)));
-}
+    final rowWidget = Row(
+      children: properties.children,
+      mainAxisAlignment: properties.mainAlign,
+      crossAxisAlignment: properties.crossAlign,
+    );
+    return Eval.pure(IrNativeValue(HostValue(rowWidget)));
+  }(),
+  _ => throwError(wrongArgumentType(['object'])),
+};
