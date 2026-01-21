@@ -169,7 +169,8 @@ evalList xs = do
 applyArgs :: (IR -> Eval IR) -> [IR] -> Eval IR
 applyArgs func [] = pure $ IR.NativeFunc func -- No args, return function as-is
 applyArgs func (arg : rest) = do
-    result <- func arg
+    evaluatedArg <- eval arg -- Evaluate argument before passing to function
+    result <- func evaluatedArg
     if isCallable result
         then apply result rest -- Apply remaining args to result
         else case rest of

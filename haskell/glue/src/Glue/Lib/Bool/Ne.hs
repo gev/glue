@@ -1,7 +1,6 @@
 module Glue.Lib.Bool.Ne where
 
-import Glue.Eval (Eval, eval, throwError)
-import Glue.Eval.Exception (wrongArgumentType)
+import Glue.Eval (Eval)
 import Glue.IR (IR (..))
 
 ne :: IR Eval
@@ -11,7 +10,4 @@ neImpl :: IR Eval -> Eval (IR Eval)
 neImpl a = pure $ NativeFunc (neRight a)
 
 neRight :: IR Eval -> IR Eval -> Eval (IR Eval)
-neRight a b = do
-    va <- eval a
-    vb <- eval b
-    pure . Bool $ va /= vb
+neRight a b = pure . Bool $ a /= b
