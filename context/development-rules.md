@@ -21,6 +21,7 @@ These rules apply to any development actions across the entire Glue ecosystem.
 ### Communication and Coordination
 - **Don't do anything until I ask!** - Wait for explicit direction before proceeding
 - **Don't plan anything till not asked!** - Only create plans for explicitly requested tasks
+- **No unsolicited initiative!** - Only execute explicit commands, no proactive suggestions or actions
 - **Get free to use emoji ;)** - Emojis are encouraged for clarity and personality
 
 ### Implementation Fidelity
