@@ -5,33 +5,23 @@ import 'package:glue/src/eval/exception.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// Container widget function
-/// Creates Flutter Container from Glue (container child props) expressions
+/// Creates Flutter Container from Glue (container props) expressions
 final Ir container = IrNativeFunc(containerImpl);
 
-/// Container implementation - takes child widget
-Eval<Ir> containerImpl(Ir child) {
-  return Eval.pure(IrNativeFunc(containerWithChild(child)));
-}
+/// Container implementation - takes properties object
+Eval<Ir> containerImpl(Ir props) => switch (props) {
+  IrObject(:final properties) => _createContainer(
+    Properties(properties.unlock),
+  ),
+  _ => throwError(wrongArgumentType(['object'])),
+};
 
-/// Container with child - takes optional properties
-Eval<Ir> Function(Ir) containerWithChild(Ir child) =>
-    (Ir props) => switch ((child, props)) {
-      (
-        IrNativeValue(value: HostValue(value: Widget childWidget)),
-        IrObject(:final properties),
-      ) =>
-        _createContainer(childWidget, Properties(properties.unlock)),
-      (IrNativeValue(value: HostValue(value: Widget childWidget)), _) =>
-        _createContainer(childWidget, Properties.empty()),
-      _ => throwError(wrongArgumentType(['widget', 'object?'])),
-    };
-
-/// Create Container widget from child and properties
-Eval<Ir> _createContainer(Widget child, Properties properties) {
+/// Create Container widget from properties
+Eval<Ir> _createContainer(Properties properties) {
   final containerWidget = Container(
     padding: properties.padding,
     color: properties.color,
-    child: child,
+    child: properties.children.isNotEmpty ? properties.children.first : null,
   );
   return Eval.pure(IrNativeValue(HostValue(containerWidget)));
 }
