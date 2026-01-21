@@ -1,63 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:glue/src/ir.dart';
 import 'package:glue_flutter/src/widgets/glue_widget.dart';
 
 /// Glue Container widget - Flutter implementation of layout container
 class GlueContainer extends GlueWidget {
-  GlueContainer({super.properties, super.key});
+  final List<Widget> children;
+  final Axis direction;
+  final double? spacing;
+
+  const GlueContainer({
+    required this.children,
+    this.direction = Axis.vertical,
+    this.spacing,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final children = _parseChildren(properties['children']);
-    final direction = properties['direction'] as String? ?? 'vertical';
-    final spacing = properties['spacing'];
-
-    double? gap;
-    if (spacing is int) {
-      gap = spacing.toDouble();
-    } else if (spacing is double) {
-      gap = spacing;
-    }
+    final spacedChildren = _buildChildrenWithSpacing(children, spacing);
 
     return switch (direction) {
-      'horizontal' => Row(
-        children: _buildChildrenWithSpacing(children, gap, isHorizontal: true),
+      Axis.horizontal => Row(
+        children: spacedChildren,
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
       ),
-      'vertical' => Column(
-        children: _buildChildrenWithSpacing(children, gap, isHorizontal: false),
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-      ),
-      _ => Column(
-        children: _buildChildrenWithSpacing(children, gap, isHorizontal: false),
+      Axis.vertical => Column(
+        children: spacedChildren,
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
       ),
     };
   }
 
-  List<Widget> _parseChildren(dynamic childrenProp) {
-    if (childrenProp is List) {
-      return childrenProp.map((child) {
-        if (child is IrNativeValue) {
-          final hostValue = child.value;
-          if (hostValue.value is GlueWidget) {
-            return hostValue.value as GlueWidget;
-          }
-        }
-        return const SizedBox.shrink(); // Invalid child
-      }).toList();
-    }
-    return [];
-  }
-
-  List<Widget> _buildChildrenWithSpacing(
-    List<Widget> children,
-    double? gap, {
-    required bool isHorizontal,
-  }) {
+  List<Widget> _buildChildrenWithSpacing(List<Widget> children, double? gap) {
     if (gap == null || gap == 0 || children.isEmpty) {
       return children;
     }
@@ -66,7 +41,7 @@ class GlueContainer extends GlueWidget {
     for (var i = 0; i < children.length; i++) {
       spacedChildren.add(children[i]);
       if (i < children.length - 1) {
-        if (isHorizontal) {
+        if (direction == Axis.horizontal) {
           spacedChildren.add(SizedBox(width: gap));
         } else {
           spacedChildren.add(SizedBox(height: gap));

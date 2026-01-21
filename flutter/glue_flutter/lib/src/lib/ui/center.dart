@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval/exception.dart';
@@ -13,6 +14,13 @@ Eval<Ir> centerImpl(Ir child) {
     return throwError(wrongArgumentType(['widget']));
   }
 
-  final centerWidget = GlueCenter(child);
+  // Extract the child widget from IrNativeValue
+  final hostValue = child.value;
+  if (hostValue.value is! Widget) {
+    return throwError(wrongArgumentType(['widget']));
+  }
+
+  final childWidget = hostValue.value as Widget;
+  final centerWidget = GlueCenter(child: childWidget);
   return Eval.pure(IrNativeValue(HostValue(centerWidget)));
 }

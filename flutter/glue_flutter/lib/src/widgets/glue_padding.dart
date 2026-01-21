@@ -1,33 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:glue/src/ir.dart';
-import 'package:glue_flutter/src/utils/edge_insets_parser.dart';
-import 'glue_widget.dart';
+import 'package:glue_flutter/src/widgets/glue_widget.dart';
 
 /// Glue Padding widget - Flutter implementation of padding wrapper
 class GluePadding extends GlueWidget {
-  final IrNativeValue child;
+  final Widget child;
+  final EdgeInsetsGeometry padding;
 
-  GluePadding(this.child, {super.properties, super.key});
+  const GluePadding({
+    required this.child,
+    this.padding = EdgeInsets.zero,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final padding = properties['padding'] != null
-        ? parseEdgeInsets(properties['padding']!)
-        : EdgeInsets.zero;
-
-    final childWidget = _extractChildWidget();
-    if (childWidget == null) {
-      return const SizedBox.shrink();
-    }
-
-    return Padding(padding: padding ?? EdgeInsets.zero, child: childWidget);
-  }
-
-  Widget? _extractChildWidget() {
-    final hostValue = child.value;
-    if (hostValue.value is GlueWidget) {
-      return hostValue.value as GlueWidget;
-    }
-    return null;
+    return Padding(padding: padding, child: child);
   }
 }
