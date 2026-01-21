@@ -157,7 +157,7 @@ runGlueCode input = case Glue.Parser.parseGlue input of
     Left err -> pure $ Left $ "Parse error: " ++ show err
     Right ast -> do
         let irTree = Glue.IR.compile ast
-        fullResult <- runEvalSimple (Glue.Eval.eval irTree) testEnv
+        fullResult <- runEvalSimple (eval irTree) testEnv
         case fullResult of
             Left err -> pure $ Left $ "Eval error: " ++ show err
             Right (res, _) -> case res of
