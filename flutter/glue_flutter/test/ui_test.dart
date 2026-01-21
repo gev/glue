@@ -7,7 +7,7 @@ import 'package:glue_flutter/src/lib/ui/cross_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/main_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/text_align.dart';
 import 'package:glue_flutter/src/lib/ui/font_weight.dart';
-import 'package:glue_flutter/src/lib/ui/colors.dart';
+import 'package:glue_flutter/src/lib/ui/color/colors.dart';
 
 /// Helper function to extract enum value from HostValue only (no parsing)
 T? extractEnumValue<T>(Ir? ir) {

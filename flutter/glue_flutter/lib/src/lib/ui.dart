@@ -10,7 +10,9 @@ import 'package:glue_flutter/src/lib/ui/cross_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/main_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/text_align.dart';
 import 'package:glue_flutter/src/lib/ui/font_weight.dart';
-import 'package:glue_flutter/src/lib/ui/colors.dart'; // Includes rgb, rgba functions
+import 'package:glue_flutter/src/lib/ui/color/colors.dart'; // Named colors object
+import 'package:glue_flutter/src/lib/ui/color/rgb.dart'; // RGB function
+import 'package:glue_flutter/src/lib/ui/color/rgba.dart'; // RGBA function
 import 'package:glue_flutter/src/lib/ui/paddings.dart'; // Includes padding functions
 
 // Note: All exports are handled through the Glue ModuleInfo below.
