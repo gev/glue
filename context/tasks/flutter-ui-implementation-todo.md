@@ -64,6 +64,7 @@ Implement the Flutter-specific version of the `ui` module for the Glue programmi
 - [ ] Test error handling for invalid inputs
 
 ### Integration
+- [ ] Create flutter/glue_flutter/lib/glue_flutter.dart main package export file
 - [ ] Update flutter/glue_flutter/lib/glue_flutter.dart exports
 - [ ] Ensure module is properly registered in Glue environment
 - [ ] Test integration with Glue evaluator
@@ -84,7 +85,6 @@ Widget functions follow pattern: (function content? props?)
 
 ## Dependencies
 - glue: Core Glue interpreter
-- flutter/material.dart: Flutter widget framework
 
 ## Implementation Notes
 - All widgets return IrNativeValue(HostValue(FlutterWidget)) without getters/setters
