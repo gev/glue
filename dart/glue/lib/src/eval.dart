@@ -351,7 +351,7 @@ Eval<Ir> apply(Ir func, List<Ir> args) {
 }
 
 /// Apply a native function with universal currying
-/// Mirrors Haskell applyArgs exactly
+/// Mirrors Haskell applyNativeFunc exactly
 Eval<Ir> _applyNativeFunc(Eval<Ir> Function(Ir) func, List<Ir> args) {
   return switch (args) {
     [] => func(IrVoid()), // No args, call with Void (0-arg functions)

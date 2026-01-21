@@ -166,9 +166,9 @@ evalList xs = do
         res -> pure $ IR.List res
 
 -- Apply multiple arguments sequentially for currying
-applyArgs :: (IR -> Eval IR) -> [IR] -> Eval IR
-applyArgs func [] = pure $ IR.NativeFunc func -- No args, return function as-is
-applyArgs func (arg : rest) = do
+applyNativeFunc :: (IR -> Eval IR) -> [IR] -> Eval IR
+applyNativeFunc func [] = pure $ IR.NativeFunc func -- No args, return function as-is
+applyNativeFunc func (arg : rest) = do
     evaluatedArg <- eval arg -- Evaluate argument before passing to function
     result <- func evaluatedArg
     if isCallable result
@@ -192,7 +192,7 @@ isCallable _ = False
 
 apply :: IR -> [IR] -> Eval IR
 apply ir args = case ir of
-    IR.NativeFunc f -> applyArgs f args
+    IR.NativeFunc f -> applyNativeFunc f args
     IR.Special s -> s args -- Special forms still take lists
     IR.Closure params body savedEnv -> applyClosure params body savedEnv args
     IR.Symbol name -> throwError $ unboundVariable name
