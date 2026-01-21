@@ -50,7 +50,6 @@ void main() {
       expect(ui.exports, contains('container'));
       expect(ui.exports, contains('column'));
       expect(ui.exports, contains('row'));
-      expect(ui.exports, contains('padding'));
       expect(ui.exports, contains('center'));
       expect(ui.exports, contains('cross-axis-alignment'));
       expect(ui.exports, contains('main-axis-alignment'));

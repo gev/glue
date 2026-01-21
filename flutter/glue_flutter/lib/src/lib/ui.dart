@@ -1,11 +1,10 @@
 import 'package:glue/src/module.dart';
-import 'package:glue_flutter/src/lib/ui/text.dart';
-import 'package:glue_flutter/src/lib/ui/button.dart';
-import 'package:glue_flutter/src/lib/ui/container.dart';
-import 'package:glue_flutter/src/lib/ui/column.dart';
-import 'package:glue_flutter/src/lib/ui/row.dart';
-import 'package:glue_flutter/src/lib/ui/padding.dart';
-import 'package:glue_flutter/src/lib/ui/center.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/text.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/button.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/container.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/column.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/row.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/center.dart';
 import 'package:glue_flutter/src/lib/ui/cross_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/main_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/text_align.dart';
@@ -33,7 +32,6 @@ final ModuleInfo ui = nativeModule('ui', [
   ('container', container),
   ('column', column),
   ('row', row),
-  ('padding', padding),
   ('center', center),
 
   // Color creation functions
