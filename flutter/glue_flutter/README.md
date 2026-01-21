@@ -32,28 +32,92 @@ Glue Flutter provides a framework-agnostic UI module implementation for Flutter,
 - `scaffold` - Material Design scaffold
 - `app-bar` - Application bar with title
 
+## Enum Constants
+
+Glue Flutter provides direct access to Flutter enum values through **enum union objects**. Instead of using string parsing, you access enum values directly as object properties.
+
+### Available Enum Objects
+
+#### `cross-axis-alignment`
+Cross-axis alignment values for layout widgets:
+- `cross-axis-alignment.start`
+- `cross-axis-alignment.end`
+- `cross-axis-alignment.center`
+- `cross-axis-alignment.stretch`
+- `cross-axis-alignment.baseline`
+
+#### `main-axis-alignment`
+Main-axis alignment values for layout widgets:
+- `main-axis-alignment.start`
+- `main-axis-alignment.end`
+- `main-axis-alignment.center`
+- `main-axis-alignment.spaceBetween`
+- `main-axis-alignment.spaceAround`
+- `main-axis-alignment.spaceEvenly`
+
+#### `text-align`
+Text alignment values:
+- `text-align.left`
+- `text-align.right`
+- `text-align.center`
+- `text-align.justify`
+- `text-align.start`
+- `text-align.end`
+
+#### `font-weight`
+Font weight values:
+- `font-weight.normal`
+- `font-weight.bold`
+- `font-weight.w100`, `font-weight.w200`, ..., `font-weight.w900`
+
+#### `colors`
+Material Design color constants:
+- Primary colors: `colors.red`, `colors.blue`, `colors.green`, etc.
+- Accent colors: `colors.redAccent`, `colors.blueAccent`, etc.
+- Special colors: `colors.black`, `colors.white`, `colors.transparent`
+
+### Usage Examples
+
+```glue
+;; Using enum constants directly (type-safe, no string parsing!)
+(column
+  (:cross-axis-alignment cross-axis-alignment.center)
+  (:main-axis-alignment main-axis-alignment.spaceEvenly)
+  (children
+    (text "Hello World"
+      (:color colors.blue)
+      (:weight font-weight.bold)
+      (:align text-align.center))))
+
+;; Button with color enum
+(button
+  :label "Click Me"
+  (:color colors.red))
+```
+
 ## Widget Properties
 
 ### Common Properties
-- `:color` - Color values ("red", "#FF0000", "rgb(255,0,0)")
+- `:color` - Color enum values (`colors.red`, `colors.blue`, etc.) OR string values ("red", "#FF0000")
 - `:size` - Numeric sizes (points for mobile, pixels for web)
 - `:padding` - Padding values
 - `:margin` - Margin values
 
 ### Text Properties
-- `:weight` - Font weight ("normal", "bold")
-- `:align` - Text alignment ("left", "center", "right")
+- `:weight` - Font weight enum values (`font-weight.normal`, `font-weight.bold`) OR strings ("normal", "bold")
+- `:align` - Text alignment enum values (`text-align.left`, `text-align.center`) OR strings ("left", "center")
 
 ### Button Properties
 - `:label` - Button text (required)
 - `:on-tap` - Tap callback function
 - `:disabled` - Boolean to disable interaction
 
-### Container Properties
+### Layout Properties
+- `:cross-axis-alignment` - Cross-axis alignment enum values
+- `:main-axis-alignment` - Main-axis alignment enum values
 - `:children` - List of child widgets (required)
 - `:direction` - Layout direction ("vertical", "horizontal")
 - `:spacing` - Space between children
-- `:align` - Child alignment
 
 ## Architecture
 
