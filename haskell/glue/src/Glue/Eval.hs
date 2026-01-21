@@ -132,18 +132,10 @@ evalDottedSymbol parts = do
 -- Evaluate a list (function call or literal list)
 evalList :: [IR] -> Eval IR
 evalList [IR.Symbol name] = do
-    pushContext name
     env <- getEnv
     case E.lookupVar name env of
-        Right func | isCallable func -> do
-            -- For zero-argument calls, pass Void as dummy argument
-            pure func
-        Right val -> do
-            popContext
-            pure val
-        Left err -> do
-            popContext
-            throwError err
+        Right val -> pure val
+        Left err -> throwError err
 evalList (IR.Symbol name : rawArgs) = do
     pushContext name
     env <- getEnv
