@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval/exception.dart';
-import 'package:glue_flutter/src/widgets/glue_row.dart';
 
 /// Row widget function
 /// Creates Flutter Row from Glue (row props) expressions
@@ -24,7 +23,7 @@ Eval<Ir> rowImpl(Ir props) {
       _extractCrossAxisAlignment(properties['cross-axis-align']) ??
       CrossAxisAlignment.start;
 
-  final rowWidget = GlueRow(
+  final rowWidget = Row(
     children: children,
     mainAxisAlignment: mainAxis,
     crossAxisAlignment: crossAxis,

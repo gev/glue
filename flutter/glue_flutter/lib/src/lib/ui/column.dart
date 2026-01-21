@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval/exception.dart';
-import 'package:glue_flutter/src/widgets/glue_column.dart';
 
 /// Column widget function
 /// Creates Flutter Column from Glue (column props) expressions
@@ -24,7 +23,7 @@ Eval<Ir> columnImpl(Ir props) {
       _extractCrossAxisAlignment(properties['cross-axis-align']) ??
       CrossAxisAlignment.start;
 
-  final columnWidget = GlueColumn(
+  final columnWidget = Column(
     children: children,
     mainAxisAlignment: mainAxis,
     crossAxisAlignment: crossAxis,

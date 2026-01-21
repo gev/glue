@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval/exception.dart';
-import 'package:glue_flutter/src/widgets/glue_container.dart';
 
 /// Container widget function
 /// Creates Flutter Column/Row from Glue (container props) expressions
@@ -20,11 +19,17 @@ Eval<Ir> containerImpl(Ir props) {
   final direction = _extractAxis(properties['direction']) ?? Axis.vertical;
   final spacing = _extractDouble(properties['spacing']);
 
-  final containerWidget = GlueContainer(
-    children: children,
-    direction: direction,
-    spacing: spacing,
-  );
+  final containerWidget = direction == Axis.horizontal
+      ? Row(
+          children: _buildChildrenWithSpacing(children, spacing),
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+        )
+      : Column(
+          children: _buildChildrenWithSpacing(children, spacing),
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+        );
   return Eval.pure(IrNativeValue(HostValue(containerWidget)));
 }
 
@@ -65,4 +70,20 @@ double? _extractDouble(dynamic value) {
   if (value is double) return value;
   if (value is int) return value.toDouble();
   return null;
+}
+
+/// Build children with spacing
+List<Widget> _buildChildrenWithSpacing(List<Widget> children, double? gap) {
+  if (gap == null || gap == 0 || children.isEmpty) {
+    return children;
+  }
+
+  final spacedChildren = <Widget>[];
+  for (var i = 0; i < children.length; i++) {
+    spacedChildren.add(children[i]);
+    if (i < children.length - 1) {
+      spacedChildren.add(SizedBox(width: gap, height: gap));
+    }
+  }
+  return spacedChildren;
 }

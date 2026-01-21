@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval/exception.dart';
-import 'package:glue_flutter/src/widgets/glue_center.dart';
 
 /// Center widget function
 /// Creates Flutter Center from Glue (center child) expressions
@@ -21,6 +20,6 @@ Eval<Ir> centerImpl(Ir child) {
   }
 
   final childWidget = hostValue.value as Widget;
-  final centerWidget = GlueCenter(child: childWidget);
+  final centerWidget = Center(child: childWidget);
   return Eval.pure(IrNativeValue(HostValue(centerWidget)));
 }

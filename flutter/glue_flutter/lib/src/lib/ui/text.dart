@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval/exception.dart';
-import 'package:glue_flutter/src/widgets/glue_text.dart';
 
 /// Text widget function
 /// Creates Flutter Text widget from Glue (text content props) expressions
@@ -30,11 +29,9 @@ Eval<Ir> Function(Ir) textWithContent(Ir content) {
     final weight = _extractFontWeight(properties['weight']);
     final align = _extractTextAlign(properties['align']);
 
-    final textWidget = GlueText(
+    final textWidget = Text(
       content.value,
-      color: color,
-      fontSize: size,
-      fontWeight: weight,
+      style: TextStyle(color: color, fontSize: size, fontWeight: weight),
       textAlign: align,
     );
     return Eval.pure(IrNativeValue(HostValue(textWidget)));
