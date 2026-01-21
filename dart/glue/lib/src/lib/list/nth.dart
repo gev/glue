@@ -20,15 +20,9 @@ Eval<Ir> Function(Ir) nthFrom(Ir indexIr) {
       return switch (evaluated) {
         [final index, final list] =>
           index is IrInteger && list is IrList
-              ? () {
-                  final idx = index.value;
-                  final elements = list.elements;
-                  if (idx < 0 || idx >= elements.length) {
-                    return throwError(wrongArgumentType(['valid index']));
-                  } else {
-                    return Eval.pure(elements[idx]);
-                  }
-                }()
+              ? (index.value < 0 || index.value >= list.elements.length
+                    ? throwError(wrongArgumentType(['valid index']))
+                    : Eval.pure(list.elements[index.value]))
               : throwError(wrongArgumentType(['number', 'list'])),
         _ => throwError(wrongArgumentType(['number', 'list'])),
       };
