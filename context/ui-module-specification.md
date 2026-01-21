@@ -123,17 +123,38 @@ User interactions trigger Glue callback functions, maintaining the functional pr
 
 ## Styling Approach
 
-### Unified Parameter System
-Common styling properties work across frameworks:
+### Enum Union Objects (Recommended)
+Framework implementations provide **enum union objects** for type-safe access to styling constants:
 
 ```clojure
-;; Colors work everywhere
+;; Direct enum access (type-safe, preferred)
+(text "Hello World"
+  (:color colors.blue)           ;; Enum object
+  (:weight font-weight.bold)     ;; Enum object
+  (:align text-align.center))    ;; Enum object
+
+;; Layout with enum objects
+(column
+  (:cross-axis-alignment cross-axis-alignment.center)
+  (:main-axis-alignment main-axis-alignment.spaceEvenly)
+  (children [...]))
+```
+
+### Unified Parameter System
+For backward compatibility, string parsing is still supported:
+
+```clojure
+;; String parsing (still works, but less type-safe)
 :color "red"        ;; Named color
 :color "#FF0000"    ;; Hex color
 :color "rgb(255,0,0)" ;; RGB notation
 
 ;; Sizes are framework-adapted
-:size 16            ;; Points on mobile, pixels on web
+:size 16            ;; Points on mobile, pixels for web
+
+;; Legacy string enums
+:weight "bold"      ;; String parsing
+:align "center"     ;; String parsing
 ```
 
 ### Framework-Specific Extensions
