@@ -267,9 +267,6 @@ Eval<Ir> evalDottedSymbol(List<String> parts) {
 /// Mirrors Haskell evalList exactly using pattern matching
 Eval<Ir> evalList(List<Ir> elements) {
   return switch (elements) {
-    // Pattern: []
-    [] => Eval.pure(IrList([])),
-
     // Pattern: [IR.Symbol name]
     [IrSymbol(value: final name)] => withContext(
       name,
@@ -277,10 +274,7 @@ Eval<Ir> evalList(List<Ir> elements) {
         final result = lookupVar(name, env);
         return result.match(
           (error) => throwError(error),
-          (value) => switch (isCallable(value)) {
-            true => apply(value, []),
-            false => Eval.pure(value),
-          },
+          (value) => Eval.pure(value),
         );
       }),
     ),
@@ -347,7 +341,9 @@ Eval<Ir> apply(Ir func, List<Ir> args) {
 /// Mirrors Haskell applyNativeFunc exactly
 Eval<Ir> _applyNativeFunc(Eval<Ir> Function(Ir) func, List<Ir> args) {
   return switch (args) {
-    [] => func(IrVoid()), // No args, call with Void (0-arg functions)
+    [] => Eval.pure(
+      IrNativeFunc(func),
+    ), // No args, return function as-is (like Haskell)
     [final first, ...final rest] => eval(first).flatMap((arg) {
       return func(arg).flatMap((result) {
         return switch (isCallable(result)) {
