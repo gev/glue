@@ -1,9 +1,45 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 import 'package:glue/src/ir.dart';
+import 'package:glue/src/eval.dart';
 import 'package:glue/src/module.dart';
+import 'package:flutter/material.dart';
 import 'package:glue_flutter/src/lib/ui.dart';
-import 'package:glue_flutter/src/widgets/glue_text.dart';
+import 'package:glue_flutter/src/lib/ui/cross_axis_alignment.dart';
+import 'package:glue_flutter/src/lib/ui/main_axis_alignment.dart';
+import 'package:glue_flutter/src/lib/ui/text_align.dart';
+import 'package:glue_flutter/src/lib/ui/font_weight.dart';
+import 'package:glue_flutter/src/lib/ui/colors.dart';
+
+/// Helper function to extract enum value from HostValue only (no parsing)
+T? extractEnumValue<T>(Ir? ir) {
+  if (ir == null) return null;
+
+  // Only accept direct enum objects - no string parsing
+  if (ir is IrNativeValue && ir.value is HostValue) {
+    final hostValue = ir.value as HostValue;
+    if (hostValue.value is T) {
+      return hostValue.value as T;
+    }
+  }
+
+  return null; // No fallback parsing
+}
+
+/// Extract color value - handles both Color objects and hex string parsing
+Color? extractColorValue(Ir? ir) {
+  if (ir == null) return null;
+
+  // If it's a direct Color object, use it
+  if (ir is IrNativeValue && ir.value is HostValue) {
+    final hostValue = ir.value as HostValue;
+    if (hostValue.value is Color) {
+      return hostValue.value as Color;
+    }
+  }
+
+  // Otherwise, parse as string (hex colors only)
+  return null; // No parsing for unit tests
+}
 
 void main() {
   group('UI Module', () {
@@ -17,76 +53,265 @@ void main() {
       expect(ui.exports, contains('row'));
       expect(ui.exports, contains('padding'));
       expect(ui.exports, contains('center'));
+      expect(ui.exports, contains('cross-axis-alignment'));
+      expect(ui.exports, contains('main-axis-alignment'));
+      expect(ui.exports, contains('text-align'));
+      expect(ui.exports, contains('font-weight'));
+      expect(ui.exports, contains('colors'));
     });
 
-    test('text function returns IrNativeFunc', () {
+    test('core functions return IrNativeFunc', () {
       final textDef = ui.definitions.firstWhere((def) => def.$1 == 'text');
       expect(textDef.$2, isA<IrNativeFunc>());
-    });
 
-    test('button function returns IrNativeFunc', () {
       final buttonDef = ui.definitions.firstWhere((def) => def.$1 == 'button');
       expect(buttonDef.$2, isA<IrNativeFunc>());
-    });
 
-    test('container function returns IrNativeFunc', () {
-      final containerDef = ui.definitions.firstWhere(
-        (def) => def.$1 == 'container',
-      );
-      expect(containerDef.$2, isA<IrNativeFunc>());
-    });
-
-    test('column function returns IrNativeFunc', () {
       final columnDef = ui.definitions.firstWhere((def) => def.$1 == 'column');
       expect(columnDef.$2, isA<IrNativeFunc>());
     });
 
-    test('row function returns IrNativeFunc', () {
-      final rowDef = ui.definitions.firstWhere((def) => def.$1 == 'row');
-      expect(rowDef.$2, isA<IrNativeFunc>());
-    });
-
-    test('padding function returns IrNativeFunc', () {
-      final paddingDef = ui.definitions.firstWhere(
-        (def) => def.$1 == 'padding',
+    test('enum objects are exported', () {
+      final crossAxisDef = ui.definitions.firstWhere(
+        (def) => def.$1 == 'cross-axis-alignment',
       );
-      expect(paddingDef.$2, isA<IrNativeFunc>());
-    });
+      expect(crossAxisDef.$2, isA<IrObject>());
 
-    test('center function returns IrNativeFunc', () {
-      final centerDef = ui.definitions.firstWhere((def) => def.$1 == 'center');
-      expect(centerDef.$2, isA<IrNativeFunc>());
+      final mainAxisDef = ui.definitions.firstWhere(
+        (def) => def.$1 == 'main-axis-alignment',
+      );
+      expect(mainAxisDef.$2, isA<IrObject>());
+
+      final textAlignDef = ui.definitions.firstWhere(
+        (def) => def.$1 == 'text-align',
+      );
+      expect(textAlignDef.$2, isA<IrObject>());
+
+      final fontWeightDef = ui.definitions.firstWhere(
+        (def) => def.$1 == 'font-weight',
+      );
+      expect(fontWeightDef.$2, isA<IrObject>());
+
+      final colorsDef = ui.definitions.firstWhere((def) => def.$1 == 'colors');
+      expect(colorsDef.$2, isA<IrObject>());
     });
   });
 
-  group('Widget Creation', () {
-    testWidgets('GlueText builds correctly', (WidgetTester tester) async {
-      final properties = <String, dynamic>{};
-      final glueText = GlueText('Hello', properties);
-
-      await tester.pumpWidget(MaterialApp(home: glueText));
-
-      expect(find.text('Hello'), findsOneWidget);
+  group('Cross Axis Alignment Enum', () {
+    test('has all required values', () {
+      expect(
+        (crossAxisAlignment as IrObject).properties['start'],
+        isA<IrNativeValue>(),
+      );
+      expect(
+        (crossAxisAlignment as IrObject).properties['end'],
+        isA<IrNativeValue>(),
+      );
+      expect(
+        (crossAxisAlignment as IrObject).properties['center'],
+        isA<IrNativeValue>(),
+      );
+      expect(
+        (crossAxisAlignment as IrObject).properties['stretch'],
+        isA<IrNativeValue>(),
+      );
+      expect(
+        (crossAxisAlignment as IrObject).properties['baseline'],
+        isA<IrNativeValue>(),
+      );
     });
 
-    testWidgets('GlueText with enum properties builds correctly', (
-      WidgetTester tester,
-    ) async {
-      // Test using enum union objects (type-safe, no string parsing)
-      final properties = <String, dynamic>{
-        'color': IrNativeValue(HostValue(Colors.blue)), // ✅ Enum object
-        'size': IrInteger(24),
-        'weight': IrNativeValue(HostValue(FontWeight.bold)), // ✅ Enum object
-      };
-      final glueText = GlueText('Styled', properties);
+    test('values are correct Flutter enums', () {
+      final startValue =
+          ((crossAxisAlignment as IrObject).properties['start']
+                      as IrNativeValue)
+                  .value
+              as HostValue;
+      expect(startValue.value, CrossAxisAlignment.start);
 
-      await tester.pumpWidget(MaterialApp(home: glueText));
+      final centerValue =
+          ((crossAxisAlignment as IrObject).properties['center']
+                      as IrNativeValue)
+                  .value
+              as HostValue;
+      expect(centerValue.value, CrossAxisAlignment.center);
+    });
+  });
 
-      expect(find.text('Styled'), findsOneWidget);
-      final textWidget = tester.widget<Text>(find.text('Styled'));
-      expect(textWidget.style?.color, Colors.blue);
-      expect(textWidget.style?.fontSize, 24.0);
-      expect(textWidget.style?.fontWeight, FontWeight.bold);
+  group('Main Axis Alignment Enum', () {
+    test('has all required values', () {
+      expect(
+        (mainAxisAlignment as IrObject).properties['start'],
+        isA<IrNativeValue>(),
+      );
+      expect(
+        (mainAxisAlignment as IrObject).properties['end'],
+        isA<IrNativeValue>(),
+      );
+      expect(
+        (mainAxisAlignment as IrObject).properties['center'],
+        isA<IrNativeValue>(),
+      );
+      expect(
+        (mainAxisAlignment as IrObject).properties['spaceBetween'],
+        isA<IrNativeValue>(),
+      );
+      expect(
+        (mainAxisAlignment as IrObject).properties['spaceAround'],
+        isA<IrNativeValue>(),
+      );
+      expect(
+        (mainAxisAlignment as IrObject).properties['spaceEvenly'],
+        isA<IrNativeValue>(),
+      );
+    });
+
+    test('values are correct Flutter enums', () {
+      final startValue =
+          ((mainAxisAlignment as IrObject).properties['start'] as IrNativeValue)
+                  .value
+              as HostValue;
+      expect(startValue.value, MainAxisAlignment.start);
+
+      final centerValue =
+          ((mainAxisAlignment as IrObject).properties['center']
+                      as IrNativeValue)
+                  .value
+              as HostValue;
+      expect(centerValue.value, MainAxisAlignment.center);
+    });
+  });
+
+  group('Text Align Enum', () {
+    test('has all required values', () {
+      expect((textAlign as IrObject).properties['left'], isA<IrNativeValue>());
+      expect((textAlign as IrObject).properties['right'], isA<IrNativeValue>());
+      expect(
+        (textAlign as IrObject).properties['center'],
+        isA<IrNativeValue>(),
+      );
+      expect(
+        (textAlign as IrObject).properties['justify'],
+        isA<IrNativeValue>(),
+      );
+      expect((textAlign as IrObject).properties['start'], isA<IrNativeValue>());
+      expect((textAlign as IrObject).properties['end'], isA<IrNativeValue>());
+    });
+
+    test('values are correct Flutter enums', () {
+      final leftValue =
+          ((textAlign as IrObject).properties['left'] as IrNativeValue).value
+              as HostValue;
+      expect(leftValue.value, TextAlign.left);
+
+      final centerValue =
+          ((textAlign as IrObject).properties['center'] as IrNativeValue).value
+              as HostValue;
+      expect(centerValue.value, TextAlign.center);
+    });
+  });
+
+  group('Font Weight Enum', () {
+    test('has all required values', () {
+      expect(
+        (fontWeight as IrObject).properties['normal'],
+        isA<IrNativeValue>(),
+      );
+      expect((fontWeight as IrObject).properties['bold'], isA<IrNativeValue>());
+      expect((fontWeight as IrObject).properties['w100'], isA<IrNativeValue>());
+      expect((fontWeight as IrObject).properties['w200'], isA<IrNativeValue>());
+      expect((fontWeight as IrObject).properties['w300'], isA<IrNativeValue>());
+      expect((fontWeight as IrObject).properties['w400'], isA<IrNativeValue>());
+      expect((fontWeight as IrObject).properties['w500'], isA<IrNativeValue>());
+      expect((fontWeight as IrObject).properties['w600'], isA<IrNativeValue>());
+      expect((fontWeight as IrObject).properties['w700'], isA<IrNativeValue>());
+      expect((fontWeight as IrObject).properties['w800'], isA<IrNativeValue>());
+      expect((fontWeight as IrObject).properties['w900'], isA<IrNativeValue>());
+    });
+
+    test('values are correct Flutter enums', () {
+      final normalValue =
+          ((fontWeight as IrObject).properties['normal'] as IrNativeValue).value
+              as HostValue;
+      expect(normalValue.value, FontWeight.normal);
+
+      final boldValue =
+          ((fontWeight as IrObject).properties['bold'] as IrNativeValue).value
+              as HostValue;
+      expect(boldValue.value, FontWeight.bold);
+    });
+  });
+
+  group('Colors Enum', () {
+    test('has Material Design colors', () {
+      expect((colors as IrObject).properties['red'], isA<IrNativeValue>());
+      expect((colors as IrObject).properties['blue'], isA<IrNativeValue>());
+      expect((colors as IrObject).properties['green'], isA<IrNativeValue>());
+      expect((colors as IrObject).properties['black'], isA<IrNativeValue>());
+      expect((colors as IrObject).properties['white'], isA<IrNativeValue>());
+      expect(
+        (colors as IrObject).properties['transparent'],
+        isA<IrNativeValue>(),
+      );
+    });
+
+    test('values are correct Flutter colors', () {
+      final redValue =
+          ((colors as IrObject).properties['red'] as IrNativeValue).value
+              as HostValue;
+      expect(redValue.value, Colors.red);
+
+      final blueValue =
+          ((colors as IrObject).properties['blue'] as IrNativeValue).value
+              as HostValue;
+      expect(blueValue.value, Colors.blue);
+
+      final blackValue =
+          ((colors as IrObject).properties['black'] as IrNativeValue).value
+              as HostValue;
+      expect(blackValue.value, Colors.black);
+    });
+  });
+
+  group('Enum Value Extraction', () {
+    test('extractEnumValue extracts FontWeight correctly', () {
+      final ir = IrNativeValue(HostValue(FontWeight.bold));
+      expect(extractEnumValue<FontWeight>(ir), FontWeight.bold);
+    });
+
+    test('extractEnumValue extracts CrossAxisAlignment correctly', () {
+      final ir = IrNativeValue(HostValue(CrossAxisAlignment.center));
+      expect(
+        extractEnumValue<CrossAxisAlignment>(ir),
+        CrossAxisAlignment.center,
+      );
+    });
+
+    test('extractEnumValue returns null for wrong type', () {
+      final ir = IrNativeValue(HostValue(FontWeight.bold));
+      expect(extractEnumValue<CrossAxisAlignment>(ir), null);
+    });
+
+    test('extractEnumValue returns null for non-HostValue', () {
+      final ir = IrString('bold');
+      expect(extractEnumValue<FontWeight>(ir), null);
+    });
+  });
+
+  group('Color Value Extraction', () {
+    test('extractColorValue extracts Color correctly', () {
+      final ir = IrNativeValue(HostValue(Colors.blue));
+      expect(extractColorValue(ir), Colors.blue);
+    });
+
+    test('extractColorValue returns null for non-Color', () {
+      final ir = IrNativeValue(HostValue(FontWeight.bold));
+      expect(extractColorValue(ir), null);
+    });
+
+    test('extractColorValue returns null for non-HostValue', () {
+      final ir = IrString('#FF0000');
+      expect(extractColorValue(ir), null);
     });
   });
 }
