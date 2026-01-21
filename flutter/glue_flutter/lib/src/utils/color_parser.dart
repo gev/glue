@@ -42,10 +42,7 @@ Color? _parseColorString(String colorStr) {
     return _parseHexColor(colorStr);
   }
 
-  // RGB notation rgb(r,g,b) or rgba(r,g,b,a)
-  if (colorStr.toLowerCase().startsWith('rgb')) {
-    return _parseRgbColor(colorStr);
-  }
+  // RGB notation removed - use runtime rgb/rgba functions instead
 
   return null;
 }

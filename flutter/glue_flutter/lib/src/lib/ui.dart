@@ -10,7 +10,7 @@ import 'package:glue_flutter/src/lib/ui/cross_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/main_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/text_align.dart';
 import 'package:glue_flutter/src/lib/ui/font_weight.dart';
-import 'package:glue_flutter/src/lib/ui/colors.dart';
+import 'package:glue_flutter/src/lib/ui/colors.dart'; // Includes rgb, rgba functions
 
 // Note: All exports are handled through the Glue ModuleInfo below.
 // No Dart re-exports to keep the module boundary clean.
@@ -29,6 +29,10 @@ final ModuleInfo ui = nativeModule('ui', [
   ('row', row),
   ('padding', padding),
   ('center', center),
+
+  // Color creation functions
+  ('rgb', rgb),
+  ('rgba', rgba),
 
   // Enum union objects
   ('cross-axis-alignment', crossAxisAlignment),
