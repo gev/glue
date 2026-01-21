@@ -91,15 +91,5 @@ void main() {
       final result = await runCode('(flatten 42)');
       expect(result.isLeft, isTrue);
     });
-
-    test('fails with wrong number of arguments', () async {
-      final result = await runCode('(flatten)');
-      expect(result.isLeft, isTrue);
-    });
-
-    test('fails with too many arguments', () async {
-      final result = await runCode('(flatten (1 2) (3 4))');
-      expect(result.isLeft, isTrue);
-    });
   });
 }

@@ -1,7 +1,6 @@
 module Glue.Lib.Math.Utility where
 
 import Glue.Eval (Eval)
-import Glue.IR (IR (..))
 import Glue.Lib.Math.Utility.Abs qualified as Abs
 import Glue.Lib.Math.Utility.Ceil qualified as Ceil
 import Glue.Lib.Math.Utility.Floor qualified as Floor
@@ -16,11 +15,11 @@ utility :: ModuleInfo Eval
 utility =
     nativeModule
         "ffi.math.utility"
-        [ ("abs", NativeFunc Abs.abs)
-        , ("floor", NativeFunc Floor.floor)
-        , ("ceil", NativeFunc Ceil.ceil)
-        , ("round", NativeFunc Round.round)
-        , ("trunc", NativeFunc Trunc.trunc)
-        , ("min", NativeFunc Min.min)
-        , ("max", NativeFunc Max.max)
+        [ ("abs", Abs.abs)
+        , ("ceil", Ceil.ceil)
+        , ("floor", Floor.floor)
+        , ("round", Round.round)
+        , ("trunc", Trunc.trunc)
+        , ("min", Min.min)
+        , ("max", Max.max)
         ]

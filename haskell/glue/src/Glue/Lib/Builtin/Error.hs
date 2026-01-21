@@ -4,8 +4,11 @@ import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception (runtimeException, wrongArgumentType)
 import Glue.IR (IR (..))
 
-errorFunc :: [IR Eval] -> Eval (IR Eval)
-errorFunc [Symbol name, rawVal] = do
+errorFunc :: IR Eval
+errorFunc = Special errorFuncImpl
+
+errorFuncImpl :: [IR Eval] -> Eval (IR Eval)
+errorFuncImpl [Symbol name, rawVal] = do
     val <- eval rawVal
     throwError $ runtimeException name val
-errorFunc _ = throwError $ wrongArgumentType ["symbol", "value"]
+errorFuncImpl _ = throwError $ wrongArgumentType ["symbol", "value"]

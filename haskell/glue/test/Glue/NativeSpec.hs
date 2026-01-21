@@ -5,8 +5,7 @@ import Data.Map.Strict qualified as Map
 import Data.Text (Text)
 import Data.Text qualified as T
 import Glue.Env qualified as E
-import Glue.Eval (Eval, liftIO, runEvalSimple, throwError)
-import Glue.Eval qualified
+import Glue.Eval (Eval, eval, liftIO, runEvalSimple, throwError)
 import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (Env, IR (..), extractHostValue, hostValueWithProps)
 import Glue.IR qualified
@@ -28,8 +27,8 @@ data Address = Address
     }
 
 -- Constructor functions that take object literals and create native objects
-person :: [IR Eval] -> Eval (IR Eval)
-person [Object props] = do
+person :: IR Eval -> Eval (IR Eval)
+person (Object props) = do
     -- Extract properties from object literal with type checking
     name <- case Map.lookup "name" props of
         Just (String n) -> pure n
@@ -95,8 +94,8 @@ person [Object props] = do
     pure (NativeValue $ hostValueWithProps personObj getters setters)
 person _ = throwError $ wrongArgumentType ["object"]
 
-address :: [IR Eval] -> Eval (IR Eval)
-address [Object props] = do
+address :: IR Eval -> Eval (IR Eval)
+address (Object props) = do
     -- Extract properties from object literal with type checking
     street <- case Map.lookup "street" props of
         Just (String s) -> pure s
@@ -146,8 +145,8 @@ testEnv =
     foldl
         (\env (name, val) -> E.defineVar name val env)
         E.emptyEnv
-        [ ("def", Special def)
-        , ("set", Special Set.set)
+        [ ("def", def)
+        , ("set", Set.set)
         , ("person", NativeFunc person)
         , ("address", NativeFunc address)
         ]
@@ -158,7 +157,7 @@ runGlueCode input = case Glue.Parser.parseGlue input of
     Left err -> pure $ Left $ "Parse error: " ++ show err
     Right ast -> do
         let irTree = Glue.IR.compile ast
-        fullResult <- runEvalSimple (Glue.Eval.eval irTree) testEnv
+        fullResult <- runEvalSimple (eval irTree) testEnv
         case fullResult of
             Left err -> pure $ Left $ "Eval error: " ++ show err
             Right (res, _) -> case res of

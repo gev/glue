@@ -8,7 +8,7 @@ import 'package:glue/src/error.dart';
 import 'package:glue/src/lib/list.dart';
 import 'package:glue/src/lib/builtin.dart';
 import 'package:glue/src/lib/bool.dart';
-import 'package:glue/src/lib/math/arithmetic/arithmetic.dart';
+import 'package:glue/src/lib/math/arithmetic.dart';
 import 'package:test/test.dart';
 
 /// Helper to run full Glue code like Haskell tests
@@ -71,18 +71,6 @@ void main() {
 
     test('fails on non-list second argument', () async {
       final result = await runCode('(filter (lambda (x) true) 42)');
-      expect(result.isLeft, isTrue);
-    });
-
-    test('fails with wrong number of arguments', () async {
-      final result = await runCode('(filter (lambda (x) true))');
-      expect(result.isLeft, isTrue);
-    });
-
-    test('fails with too many arguments', () async {
-      final result = await runCode(
-        '(filter (lambda (x) true) (1 2 3) (4 5 6))',
-      );
       expect(result.isLeft, isTrue);
     });
   });

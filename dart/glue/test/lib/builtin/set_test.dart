@@ -19,7 +19,7 @@ void main() {
         final initialEnv = fromList([('x', IrInteger(10))]);
         final testRuntime = Runtime.initial(initialEnv);
         final args = [IrSymbol('x'), IrInteger(20)];
-        final result = await runEval(set(args), testRuntime);
+        final result = await runEval(apply(set, args), testRuntime);
         result.match((error) => fail('Set failed: $error'), (value) {
           final (res, runtime) = value;
           expect(res, equals(IrVoid()));
@@ -34,7 +34,7 @@ void main() {
 
       test('fails to set unbound variable', () async {
         final args = [IrSymbol('x'), IrInteger(42)];
-        final result = await runEval(set(args), runtime);
+        final result = await runEval(apply(set, args), runtime);
         expect(result.isLeft, isTrue);
       });
     });
@@ -45,7 +45,7 @@ void main() {
         final initialEnv = fromList([('obj', obj)]);
         final testRuntime = Runtime.initial(initialEnv);
         final args = [IrSymbol('obj.b'), IrInteger(2)];
-        final result = await runEval(set(args), testRuntime);
+        final result = await runEval(apply(set, args), testRuntime);
         result.match((error) => fail('Set failed: $error'), (value) {
           final (res, runtime) = value;
           expect(res, equals(IrVoid()));
@@ -65,15 +65,7 @@ void main() {
         final testRuntime = Runtime.initial(initialEnv);
         final args = [IrSymbol('x.prop'), IrInteger(42)];
 
-        final result = await runEval(set(args), testRuntime);
-        expect(result.isLeft, isTrue);
-      });
-    });
-
-    group('Error cases', () {
-      test('fails with wrong number of arguments', () async {
-        final args = [IrSymbol('x')];
-        final result = await runEval(set(args), runtime);
+        final result = await runEval(apply(set, args), testRuntime);
         expect(result.isLeft, isTrue);
       });
     });

@@ -136,9 +136,8 @@ evalList [IR.Symbol name] = do
     env <- getEnv
     case E.lookupVar name env of
         Right func | isCallable func -> do
-            result <- apply func []
-            popContext
-            pure result
+            -- For zero-argument calls, pass Void as dummy argument
+            pure func
         Right val -> do
             popContext
             pure val
@@ -166,6 +165,18 @@ evalList xs = do
             pure result
         res -> pure $ IR.List res
 
+-- Apply multiple arguments sequentially for currying
+applyNativeFunc :: (IR -> Eval IR) -> [IR] -> Eval IR
+applyNativeFunc func [] = pure $ IR.NativeFunc func -- No args, return function as-is
+applyNativeFunc func (arg : rest) = do
+    evaluatedArg <- eval arg -- Evaluate argument before passing to function
+    result <- func evaluatedArg
+    if isCallable result
+        then apply result rest -- Apply remaining args to result
+        else case rest of
+            [] -> pure result
+            _ -> throwError wrongNumberOfArguments
+
 -- Evaluate an object
 evalObject :: Map Text IR -> Eval IR
 evalObject objMap = do
@@ -180,10 +191,10 @@ isCallable (IR.Closure{}) = True
 isCallable _ = False
 
 apply :: IR -> [IR] -> Eval IR
-apply ir rawArgs = case ir of
-    IR.NativeFunc f -> f =<< mapM eval rawArgs
-    IR.Special s -> s rawArgs
-    IR.Closure params body savedEnv -> applyClosure params body savedEnv rawArgs
+apply ir args = case ir of
+    IR.NativeFunc f -> applyNativeFunc f args
+    IR.Special s -> s args -- Special forms still take lists
+    IR.Closure params body savedEnv -> applyClosure params body savedEnv args
     IR.Symbol name -> throwError $ unboundVariable name
     _ -> throwError notCallableObject
 

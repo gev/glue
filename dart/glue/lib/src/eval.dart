@@ -39,19 +39,6 @@ class Eval<T> {
       return runEval(f(result), runtime);
     });
   });
-
-  /// Transform the evaluation result
-  Eval<U> transform<U>(
-    Either<EvalError, (U, Runtime)> Function(T, Runtime) f,
-  ) => Eval((runtime) async {
-    final result = await runEval(this, runtime);
-    return result.match((error) => Left<EvalError, (U, Runtime)>(error), (
-      value,
-    ) {
-      final (result, runtime) = value;
-      return f(result, runtime);
-    });
-  });
 }
 
 /// ============================================================================
@@ -348,7 +335,8 @@ Eval<Ir> evalObject(Map<String, Ir> properties) {
 /// FUNCTION APPLICATION
 /// ============================================================================
 
-/// Apply a function to arguments
+/// Apply a function to arguments (universal currying)
+/// Mirrors Haskell Glue.Eval.apply exactly
 Eval<Ir> apply(Ir func, List<Ir> args) {
   return switch (func) {
     IrNativeFunc(function: final f) => _applyNativeFunc(f, args),
@@ -362,9 +350,23 @@ Eval<Ir> apply(Ir func, List<Ir> args) {
   };
 }
 
-/// Apply a native function (evaluate arguments first)
-Eval<Ir> _applyNativeFunc(dynamic func, List<Ir> rawArgs) {
-  return sequenceAll(rawArgs.map(eval).toList()).flatMap((args) => func(args));
+/// Apply a native function with universal currying
+/// Mirrors Haskell applyNativeFunc exactly
+Eval<Ir> _applyNativeFunc(Eval<Ir> Function(Ir) func, List<Ir> args) {
+  return switch (args) {
+    [] => func(IrVoid()), // No args, call with Void (0-arg functions)
+    [final first, ...final rest] => eval(first).flatMap((arg) {
+      return func(arg).flatMap((result) {
+        return switch (isCallable(result)) {
+          true => apply(result, rest), // Apply remaining args to result
+          false => switch (rest) {
+            [] => Eval.pure(result), // No more args, return result
+            _ => throwError(wrongNumberOfArguments()), // Too many args
+          },
+        };
+      });
+    }),
+  };
 }
 
 /// Apply a closure with the given arguments

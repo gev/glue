@@ -4,8 +4,12 @@ import Data.Text (pack)
 import Glue.Eval (Eval, liftIO)
 import Glue.IR (IR (..))
 
-readLine :: [IR Eval] -> Eval (IR Eval)
-readLine [] = do
+readLine :: IR Eval
+readLine = NativeFunc readLineImpl
+
+readLineImpl :: IR Eval -> Eval (IR Eval)
+readLineImpl Void = do
+    -- Accept Void as dummy argument for nullary call
     line <- liftIO getLine
     pure $ String (pack line)
-readLine _ = pure $ String ""
+readLineImpl _ = pure $ String ""

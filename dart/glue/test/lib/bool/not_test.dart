@@ -12,7 +12,7 @@ Future<Either<EvalError, Ir?>> runCode(List<Ir> args) async {
   final env = emptyEnv(); // Empty env for unit tests
   final runtime = Runtime.initial(env);
 
-  final evalResult = await runEval(not(args), runtime);
+  final evalResult = await runEval(apply(not, args), runtime);
   return evalResult.match((error) => Left(error), (value) {
     final (result, _) = value;
     return Right(result);
@@ -38,12 +38,6 @@ void main() {
           (error) => fail('Should not be left: $error'),
           (value) => expect(value, equals(IrBool(false))),
         );
-      });
-
-      test('fails with wrong number of arguments', () async {
-        final args = <Ir>[];
-        final result = await runCode(args);
-        expect(result.isLeft, isTrue);
       });
     });
   });

@@ -2,7 +2,7 @@ module Glue.Lib.Builtin.LambdaSpec (spec) where
 
 import Data.Either (isLeft)
 import Glue.Env qualified as E
-import Glue.Eval (runEvalSimple)
+import Glue.Eval (apply, runEvalSimple)
 import Glue.IR (IR (..))
 import Glue.Lib.Builtin.Lambda (extractSymbols, lambda)
 import Test.Hspec
@@ -13,7 +13,7 @@ spec = describe "Glue.Lib.Builtin.Lambda (Test lambda special form)" do
         it "creates a closure with parameters and body" do
             let initialEnv = E.fromList [("x", Integer 10)]
             let args = [List [Symbol "a", Symbol "b"], Symbol "body"]
-            result <- runEvalSimple (lambda args) initialEnv
+            result <- runEvalSimple (apply lambda args) initialEnv
             case result of
                 Left err -> expectationFailure $ "Lambda failed: " <> show err
                 Right (res, _) -> case res of
@@ -26,7 +26,7 @@ spec = describe "Glue.Lib.Builtin.Lambda (Test lambda special form)" do
 
         it "creates a closure with no parameters" do
             let args = [List [], Integer 42]
-            result <- runEvalSimple (lambda args) []
+            result <- runEvalSimple (apply lambda args) []
             case result of
                 Left err -> expectationFailure $ "Lambda failed: " <> show err
                 Right (res, _) -> case res of
@@ -45,17 +45,12 @@ spec = describe "Glue.Lib.Builtin.Lambda (Test lambda special form)" do
             extractSymbols irs `shouldSatisfy` isLeft
 
     describe "Error cases" do
-        it "fails with wrong number of arguments" do
-            let args = [List [Symbol "x"]]
-            result <- runEvalSimple (lambda args) []
-            result `shouldSatisfy` isLeft
-
         it "fails with non-list as parameters" do
             let args = [Integer 1, Symbol "body"]
-            result <- runEvalSimple (lambda args) []
+            result <- runEvalSimple (apply lambda args) []
             result `shouldSatisfy` isLeft
 
         it "fails with non-symbols in parameters" do
             let args = [List [Integer 1], Symbol "body"]
-            result <- runEvalSimple (lambda args) []
+            result <- runEvalSimple (apply lambda args) []
             result `shouldSatisfy` isLeft

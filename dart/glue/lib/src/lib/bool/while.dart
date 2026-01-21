@@ -4,7 +4,11 @@ import 'package:glue/src/ir.dart';
 
 /// While loop special form
 /// Mirrors Haskell Glue.Lib.Bool.While.while_ exactly
-Eval<Ir> while_(List<Ir> args) {
+final Ir while_ = IrSpecial(whileImpl);
+
+/// While loop special form implementation
+/// Mirrors Haskell Glue.Lib.Bool.While.whileImpl exactly
+Eval<Ir> whileImpl(List<Ir> args) {
   return switch (args) {
     [final cond, ...final body] => _loop(cond, body),
     _ => throwError(wrongArgumentType(['condition', 'body'])),

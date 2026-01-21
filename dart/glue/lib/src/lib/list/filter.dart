@@ -4,22 +4,25 @@ import 'package:glue/src/ir.dart';
 
 /// Filter function - filters elements that satisfy a predicate
 /// Mirrors Haskell Glue.Lib.List.Filter.filter exactly
-Eval<Ir> filter(List<Ir> args) {
-  return switch (args) {
-    [final predicateIr, final listIr] =>
-      sequenceAll([eval(predicateIr), eval(listIr)]).flatMap((evaluated) {
-        final predicate = evaluated[0];
-        final list = evaluated[1];
-        if (list is IrList) {
-          return filterElements(
-            predicate,
-            list.elements.toList(),
-          ).map((filtered) => IrList(filtered));
-        } else {
-          return throwError(wrongArgumentType(['function', 'list']));
-        }
-      }),
-    _ => throwError(wrongNumberOfArguments()),
+Ir filter = IrNativeFunc(filterImpl);
+
+/// Filter function implementation
+/// Mirrors Haskell Glue.Lib.List.Filter.filterImpl exactly
+Eval<Ir> filterImpl(Ir predicateIr) {
+  return Eval.pure(IrNativeFunc(filterList(predicateIr)));
+}
+
+/// Helper function for list argument
+/// Mirrors Haskell Glue.Lib.List.Filter.filterList exactly
+Eval<Ir> Function(Ir) filterList(Ir predicate) {
+  return (Ir list) {
+    return switch (list) {
+      IrList(elements: final elements) => filterElements(
+        predicate,
+        elements.toList(),
+      ).map((filtered) => IrList(filtered)),
+      _ => throwError(wrongArgumentType(['function', 'list'])),
+    };
   };
 }
 

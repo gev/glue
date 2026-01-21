@@ -1,12 +1,11 @@
-import 'package:glue/src/ir.dart';
 import 'package:glue/src/module.dart';
-import 'builtin/def.dart';
-import 'builtin/error.dart';
-import 'builtin/import.dart';
-import 'builtin/lambda.dart';
-import 'builtin/let.dart';
-import 'builtin/set.dart';
-import 'builtin/try.dart';
+import 'package:glue/src/lib/builtin/def.dart';
+import 'package:glue/src/lib/builtin/error.dart';
+import 'package:glue/src/lib/builtin/import.dart';
+import 'package:glue/src/lib/builtin/lambda.dart';
+import 'package:glue/src/lib/builtin/let.dart';
+import 'package:glue/src/lib/builtin/set.dart';
+import 'package:glue/src/lib/builtin/try.dart';
 
 /// Builtin module - special forms and core language constructs
 /// Mirrors Haskell Glue.Lib.Builtin exactly
@@ -14,14 +13,14 @@ import 'builtin/try.dart';
 /// The builtin module containing all special forms
 /// Mirrors Haskell Glue.Lib.Builtin.builtin exactly
 final ModuleInfo builtin = nativeModule('ffi.builtin', [
-  ('def', IrSpecial(def)),
-  ('set', IrSpecial(set)),
-  ('lambda', IrSpecial(lambda)),
-  ('\\', IrSpecial(lambda)), // backslash is lambda
-  ('let', IrSpecial(let)),
-  ('import', IrSpecial(importForm)),
-  ('error', IrSpecial(error)),
-  ('try', IrSpecial(tryFunc)),
+  ('def', def),
+  ('set', set),
+  ('lambda', lambda),
+  ('\\', lambda), // backslash is lambda
+  ('let', let),
+  ('import', importForm),
+  ('error', error),
+  ('try', tryFunc),
 ]);
 
 // Export the implemented special forms for use in eval.dart

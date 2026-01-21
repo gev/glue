@@ -20,12 +20,6 @@ class HostValue {
   @override
   String toString() =>
       'HostValue($value, getters: ${getters.length}, setters: ${setters.length})';
-
-  @override
-  bool operator ==(Object other) => false; // Host values are never equal (opaque)
-
-  @override
-  int get hashCode => 0; // All host values have same hash
 }
 
 /// Create a host value from any value
@@ -200,24 +194,18 @@ class IrNativeValue extends Ir {
 
   @override
   String toString() => '<host:${value.toString()}>';
-
-  @override
-  bool operator ==(Object other) =>
-      other is IrNativeValue && other.value == value;
-
-  @override
-  int get hashCode => value.hashCode;
 }
 
 class IrNativeFunc extends Ir {
-  final Eval<Ir> Function(List<Ir>) function;
+  final Eval<Ir> Function(Ir)
+  function; // Single-arg contract for universal currying
   const IrNativeFunc(this.function);
 
   @override
   String toString() => '<native-func>';
 
   @override
-  bool operator ==(Object other) => other is IrNativeFunc; // All NativeFunc instances are equal (like Haskell)
+  bool operator ==(Object other) => false; // All NativeFunc instances are equal (like Haskell)
 
   @override
   int get hashCode => 'native-func'.hashCode;
@@ -238,7 +226,7 @@ class IrSpecial extends Ir {
 }
 
 class IrClosure extends Ir {
-  final List<String> params;
+  final List<String> params; // Multiple params like Haskell
   final Ir body;
   final Env env;
   const IrClosure(this.params, this.body, this.env);
@@ -249,7 +237,7 @@ class IrClosure extends Ir {
   @override
   bool operator ==(Object other) =>
       other is IrClosure &&
-      other.params == params &&
+      _listsEqual(other.params, params) &&
       other.body == body &&
       other.env == env;
 

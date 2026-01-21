@@ -5,8 +5,11 @@ import Glue.Eval (Eval, eval, getEnv, putEnv, throwError)
 import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (IR (..))
 
-let' :: [IR Eval] -> Eval (IR Eval)
-let' [Object bindingsMap, body] = do
+let' :: IR Eval
+let' = Special letImpl
+
+letImpl :: [IR Eval] -> Eval (IR Eval)
+letImpl [Object bindingsMap, body] = do
   -- bindingsMap already has keys without : prefix
   evaluatedPairs <- mapM evalBinding (Map.toList bindingsMap)
 
@@ -26,4 +29,4 @@ let' [Object bindingsMap, body] = do
   evalBinding (name, rawVal) = do
     val <- eval rawVal
     pure (name, val)
-let' _ = throwError $ wrongArgumentType ["object", "body"]
+letImpl _ = throwError $ wrongArgumentType ["object", "body"]

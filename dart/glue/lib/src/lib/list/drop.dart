@@ -4,27 +4,24 @@ import 'package:glue/src/ir.dart';
 
 /// Drop function - removes first N elements from a list
 /// Mirrors Haskell Glue.Lib.List.Drop.drop exactly
-Eval<Ir> drop(List<Ir> args) {
-  return switch (args) {
-    [final countIr, final listIr] =>
-      sequenceAll([eval(countIr), eval(listIr)]).flatMap((evaluated) {
-        final count = evaluated[0];
-        final list = evaluated[1];
-        if (count is IrInteger && list is IrList) {
-          if (count.value < 0) {
-            return throwError(wrongArgumentType(['non-negative integer']));
-          } else {
-            final dropCount = count.value;
-            final elements = list.elements;
-            final resultElements = dropCount >= elements.length
-                ? <Ir>[]
-                : elements.skip(dropCount).toList();
-            return Eval.pure(IrList(resultElements));
-          }
-        } else {
-          return throwError(wrongArgumentType(['number', 'list']));
-        }
-      }),
-    _ => throwError(wrongNumberOfArguments()),
+Ir drop = IrNativeFunc(dropImpl);
+
+/// Drop function implementation
+/// Mirrors Haskell Glue.Lib.List.Drop.dropImpl exactly
+Eval<Ir> dropImpl(Ir countIr) {
+  return Eval.pure(IrNativeFunc(dropFrom(countIr)));
+}
+
+/// Helper function for list argument
+/// Mirrors Haskell Glue.Lib.List.Drop.dropFrom exactly
+Eval<Ir> Function(Ir) dropFrom(Ir countIr) {
+  return (Ir listIr) => switch ((countIr, listIr)) {
+    (IrInteger(value: final n), IrList(elements: final elements)) =>
+      n < 0
+          ? throwError(wrongArgumentType(['non-negative integer']))
+          : Eval.pure(
+              IrList(n >= elements.length ? <Ir>[] : elements.skip(n).toList()),
+            ),
+    _ => throwError(wrongArgumentType(['number', 'list'])),
   };
 }

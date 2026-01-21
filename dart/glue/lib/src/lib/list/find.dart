@@ -4,19 +4,25 @@ import 'package:glue/src/ir.dart';
 
 /// Find function - finds first element that satisfies a predicate
 /// Mirrors Haskell Glue.Lib.List.Find.find exactly
-Eval<Ir> find(List<Ir> args) {
-  return switch (args) {
-    [final predicateIr, final listIr] =>
-      sequenceAll([eval(predicateIr), eval(listIr)]).flatMap((evaluated) {
-        final predicate = evaluated[0];
-        final list = evaluated[1];
-        if (list is IrList) {
-          return findElement(predicate, list.elements.toList());
-        } else {
-          return throwError(wrongArgumentType(['function', 'list']));
-        }
-      }),
-    _ => throwError(wrongNumberOfArguments()),
+Ir find = IrNativeFunc(findImpl);
+
+/// Find function implementation
+/// Mirrors Haskell Glue.Lib.List.Find.findImpl exactly
+Eval<Ir> findImpl(Ir predicateIr) {
+  return Eval.pure(IrNativeFunc(findIn(predicateIr)));
+}
+
+/// Helper function for list argument
+/// Mirrors Haskell Glue.Lib.List.Find.findIn exactly
+Eval<Ir> Function(Ir) findIn(Ir predicate) {
+  return (Ir list) {
+    return switch (list) {
+      IrList(elements: final elements) => findElement(
+        predicate,
+        elements.toList(),
+      ),
+      _ => throwError(wrongArgumentType(['function', 'list'])),
+    };
   };
 }
 

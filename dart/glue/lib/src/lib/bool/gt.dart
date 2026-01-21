@@ -4,27 +4,30 @@ import 'package:glue/src/ir.dart';
 
 /// Greater than comparison function
 /// Mirrors Haskell Glue.Lib.Bool.Gt.gt exactly
-Eval<Ir> gt(List<Ir> args) {
-  return switch (args) {
-    [final a, final b] => sequenceAll([eval(a), eval(b)]).flatMap((evaluated) {
-      final va = evaluated[0];
-      final vb = evaluated[1];
-      return switch ((va, vb)) {
-        (IrInteger(value: final na), IrInteger(value: final nb)) => Eval.pure(
-          IrBool(na > nb),
-        ),
-        (IrFloat(value: final na), IrFloat(value: final nb)) => Eval.pure(
-          IrBool(na > nb),
-        ),
-        (IrInteger(value: final na), IrFloat(value: final nb)) => Eval.pure(
-          IrBool(na > nb),
-        ),
-        (IrFloat(value: final na), IrInteger(value: final nb)) => Eval.pure(
-          IrBool(na > nb),
-        ),
-        _ => throwError(wrongArgumentType(['number', 'number'])),
-      };
-    }),
+final Ir gt = IrNativeFunc(gtImpl);
+
+/// Greater than comparison implementation
+/// Mirrors Haskell Glue.Lib.Bool.Gt.gtImpl exactly
+Eval<Ir> gtImpl(Ir a) {
+  return Eval.pure(IrNativeFunc(gtRight(a)));
+}
+
+/// Helper function for second argument
+/// Mirrors Haskell Glue.Lib.Bool.Gt.gtRight exactly
+Eval<Ir> Function(Ir) gtRight(Ir a) {
+  return (Ir b) => switch ((a, b)) {
+    (IrInteger(value: final na), IrInteger(value: final nb)) => Eval.pure(
+      IrBool(na > nb),
+    ),
+    (IrFloat(value: final na), IrFloat(value: final nb)) => Eval.pure(
+      IrBool(na > nb),
+    ),
+    (IrInteger(value: final na), IrFloat(value: final nb)) => Eval.pure(
+      IrBool(na > nb),
+    ),
+    (IrFloat(value: final na), IrInteger(value: final nb)) => Eval.pure(
+      IrBool(na > nb),
+    ),
     _ => throwError(wrongArgumentType(['number', 'number'])),
   };
 }

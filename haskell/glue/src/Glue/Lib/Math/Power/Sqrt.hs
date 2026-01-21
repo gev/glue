@@ -1,14 +1,18 @@
 module Glue.Lib.Math.Power.Sqrt where
 
-import Glue.Eval (Eval, eval, throwError)
-import Glue.Eval.Exception
+import Glue.Eval (Eval, throwError)
+import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (IR (..))
 
-sqrt :: [IR Eval] -> Eval (IR Eval)
-sqrt [arg] = do
-    va <- eval arg
-    case va of
-        Integer n -> pure $ Float (Prelude.sqrt (fromIntegral n))
-        Float n -> pure $ Float (Prelude.sqrt n)
-        _ -> throwError $ wrongArgumentType ["number"]
-sqrt _ = throwError wrongNumberOfArguments
+-- Square root function
+-- Mirrors Haskell Glue.Lib.Math.Power.Sqrt.sqrt exactly
+sqrt :: IR Eval
+sqrt = NativeFunc sqrtImpl
+
+-- Square root function implementation
+-- Mirrors Haskell Glue.Lib.Math.Power.Sqrt.sqrtImpl exactly
+sqrtImpl :: IR Eval -> Eval (IR Eval)
+sqrtImpl arg = case arg of
+    Integer n -> pure $ Float (Prelude.sqrt (fromIntegral n))
+    Float n -> pure $ Float (Prelude.sqrt n)
+    _ -> throwError $ wrongArgumentType ["number"]

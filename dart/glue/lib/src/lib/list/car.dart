@@ -4,19 +4,16 @@ import 'package:glue/src/ir.dart';
 
 /// Car function - returns the first element of a list
 /// Mirrors Haskell Glue.Lib.List.Car.car exactly
-Eval<Ir> car(List<Ir> args) {
-  return switch (args) {
-    [final arg] => eval(arg).flatMap((val) {
-      if (val is IrList) {
-        if (val.elements.isNotEmpty) {
-          return Eval.pure(val.elements[0]);
-        } else {
-          return throwError(wrongArgumentType(['non-empty list']));
-        }
-      } else {
-        return throwError(wrongArgumentType(['list']));
-      }
-    }),
-    _ => throwError(wrongNumberOfArguments()),
+Ir car = IrNativeFunc(carImpl);
+
+/// Car function implementation
+/// Mirrors Haskell Glue.Lib.List.Car.carImpl exactly
+Eval<Ir> carImpl(Ir arg) {
+  return switch (arg) {
+    IrList(:final elements) =>
+      elements.isEmpty
+          ? throwError(wrongArgumentType(['non-empty list']))
+          : Eval.pure(elements.first),
+    _ => throwError(wrongArgumentType(['list'])),
   };
 }

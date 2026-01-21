@@ -1,14 +1,18 @@
 module Glue.Lib.Math.Power.Exp where
 
-import Glue.Eval (Eval, eval, throwError)
-import Glue.Eval.Exception
+import Glue.Eval (Eval, throwError)
+import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (IR (..))
 
-exp :: [IR Eval] -> Eval (IR Eval)
-exp [arg] = do
-    va <- eval arg
-    case va of
-        Integer n -> pure $ Float (Prelude.exp (fromIntegral n))
-        Float n -> pure $ Float (Prelude.exp n)
-        _ -> throwError $ wrongArgumentType ["number"]
-exp _ = throwError wrongNumberOfArguments
+-- Exponential function (e^x)
+-- Mirrors Haskell Glue.Lib.Math.Power.Exp.exp exactly
+exp :: IR Eval
+exp = NativeFunc expImpl
+
+-- Exponential function implementation
+-- Mirrors Haskell Glue.Lib.Math.Power.Exp.expImpl exactly
+expImpl :: IR Eval -> Eval (IR Eval)
+expImpl arg = case arg of
+    Integer n -> pure $ Float (Prelude.exp (fromIntegral n))
+    Float n -> pure $ Float (Prelude.exp n)
+    _ -> throwError $ wrongArgumentType ["number"]

@@ -4,16 +4,15 @@ import 'package:glue/src/ir.dart';
 
 /// Reverse function - reverses the order of elements in a list
 /// Mirrors Haskell Glue.Lib.List.Reverse.reverse exactly
-Eval<Ir> reverse(List<Ir> args) {
-  return switch (args) {
-    [final arg] => eval(arg).flatMap((val) {
-      if (val is IrList) {
-        final reversedElements = val.elements.reversed.toList();
-        return Eval.pure(IrList(reversedElements));
-      } else {
-        return throwError(wrongArgumentType(['list']));
-      }
-    }),
-    _ => throwError(wrongNumberOfArguments()),
+Ir reverse = IrNativeFunc(reverseImpl);
+
+/// Reverse function implementation
+/// Mirrors Haskell Glue.Lib.List.Reverse.reverseImpl exactly
+Eval<Ir> reverseImpl(Ir arg) {
+  return switch (arg) {
+    IrList(elements: final elements) => Eval.pure(
+      IrList(elements.reversed.toList()),
+    ),
+    _ => throwError(wrongArgumentType(['list'])),
   };
 }

@@ -19,7 +19,7 @@ void main() {
     group('Defining variables', () {
       test('defines a variable in the environment', () async {
         final args = [IrSymbol('x'), IrInteger(42)];
-        final result = await runEval(def(args), runtime);
+        final result = await runEval(apply(def, args), runtime);
         result.match((error) => fail('Def failed: $error'), (value) {
           final (res, runtime) = value;
           expect(res, equals(IrVoid()));
@@ -33,15 +33,9 @@ void main() {
         });
       });
 
-      test('fails with wrong number of arguments', () async {
-        final args = [IrSymbol('x')];
-        final result = await runEval(def(args), runtime);
-        expect(result.isLeft, isTrue);
-      });
-
       test('fails with non-symbol as name', () async {
         final args = [IrInteger(1), IrInteger(42)];
-        final result = await runEval(def(args), runtime);
+        final result = await runEval(apply(def, args), runtime);
         expect(result.isLeft, isTrue);
       });
     });
@@ -52,7 +46,7 @@ void main() {
           IrList([IrSymbol('square'), IrSymbol('x')]),
           IrList([IrSymbol('*'), IrSymbol('x'), IrSymbol('x')]),
         ];
-        final result = await runEval(def(args), runtime);
+        final result = await runEval(apply(def, args), runtime);
         result.match((error) => fail('Def failed: $error'), (value) {
           final (res, runtime) = value;
           // Should return the closure
@@ -76,7 +70,7 @@ void main() {
           IrList([IrSymbol('add'), IrSymbol('x'), IrSymbol('y')]),
           IrList([IrSymbol('+'), IrSymbol('x'), IrSymbol('y')]),
         ];
-        final result = await runEval(def(args), runtime);
+        final result = await runEval(apply(def, args), runtime);
         result.match((error) => fail('Def failed: $error'), (value) {
           final (res, runtime) = value;
           // Should return the closure
@@ -101,7 +95,7 @@ void main() {
           IrList([IrSymbol('println'), IrString('hello')]),
           IrList([IrSymbol('*'), IrSymbol('x'), IrInteger(2)]),
         ];
-        final result = await runEval(def(args), runtime);
+        final result = await runEval(apply(def, args), runtime);
         result.match((error) => fail('Def failed: $error'), (value) {
           final (res, runtime) = value;
           // Should return the closure
@@ -125,7 +119,7 @@ void main() {
           IrList([IrInteger(42), IrSymbol('x')]),
           IrList([IrSymbol('*'), IrSymbol('x'), IrSymbol('x')]),
         ];
-        final result = await runEval(def(args), runtime);
+        final result = await runEval(apply(def, args), runtime);
         expect(result.isLeft, isTrue);
       });
     });

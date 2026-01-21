@@ -4,18 +4,16 @@ import 'package:glue/src/ir.dart';
 
 /// Flatten function - flattens nested lists into a single flat list
 /// Mirrors Haskell Glue.Lib.List.Flatten.flatten exactly
-Eval<Ir> flatten(List<Ir> args) {
-  return switch (args) {
-    [final listIr] => eval(listIr).flatMap((list) {
-      if (list is IrList) {
-        return flattenList(
-          list.elements.toList(),
-        ).map((flattened) => IrList(flattened));
-      } else {
-        return throwError(wrongArgumentType(['list']));
-      }
-    }),
-    _ => throwError(wrongNumberOfArguments()),
+Ir flatten = IrNativeFunc(flattenImpl);
+
+/// Flatten function implementation
+/// Mirrors Haskell Glue.Lib.List.Flatten.flattenImpl exactly
+Eval<Ir> flattenImpl(Ir list) {
+  return switch (list) {
+    IrList(elements: final elements) => flattenList(
+      elements.toList(),
+    ).map((flattened) => IrList(flattened)),
+    _ => throwError(wrongArgumentType(['list'])),
   };
 }
 
