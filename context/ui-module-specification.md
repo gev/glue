@@ -13,7 +13,7 @@ The `ui` module provides a framework-agnostic API for creating user interfaces i
 (import "ui")
 
 (container :children (
-  (text "Hello World" :color "blue" :size 24)
+  (text "Hello World" :color colors.blue :size 24)
   (button :label "Click Me" :on-tap handle-click)
 ))
 ```
@@ -36,10 +36,10 @@ Creates text display elements with optional styling.
 
 ;; With styling
 (text "Styled Text"
-  (:color "blue"
+  (:color colors.blue
    :size 18
-   :weight "bold"
-   :align "center"))
+   :weight font-weight.bold
+   :align text-align.center))
 ```
 
 **Parameters:**
