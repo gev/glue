@@ -12,10 +12,10 @@ The `ffi.ui` module provides a framework-agnostic API for creating user interfac
 ;; Same Glue code works everywhere
 (import "ffi.ui")
 
-(container :children [
+(container :children (
   (text "Hello World" :color "blue" :size 24)
   (button :label "Click Me" :on-tap handle-click)
-])
+))
 ```
 
 ## Module Interface
@@ -82,7 +82,7 @@ Creates layout containers for organizing child components.
 
 ;; Horizontal layout
 (container :direction "horizontal"
-  :children [...]
+  :children (...)
   :spacing 16
   :align "center")
 ```
@@ -94,30 +94,7 @@ Creates layout containers for organizing child components.
 - `:align`: Child alignment ("start", "center", "end", "stretch")
 - `:padding`: Container padding
 
-## Framework Implementations
 
-### Flutter Implementation
-The initial implementation uses Flutter widgets:
-
-```dart
-// text -> Text widget
-// button -> ElevatedButton widget
-// container -> Column/Row widgets
-```
-
-### React Implementation (Future)
-```jsx
-// text -> <span> element
-// button -> <button> element
-// container -> <div> with flexbox
-```
-
-### Vue Implementation (Future)
-```vue
-<!-- text -> <span> component -->
-<!-- button -> <button> component -->
-<!-- container -> <div> with flex layout -->
-```
 
 ## Design Principles
 
@@ -195,7 +172,7 @@ New components can be added to the module:
 ```clojure
 ;; Framework implementations define new functions
 (icon :name "user" :size 24)
-(card :title "Card Title" :children [...])
+(card :title "Card Title" :children (...)
 ```
 
 ### Theming
@@ -220,29 +197,7 @@ Single Glue codebase can target mobile (Flutter), web (React), and desktop (Flut
 ### Component Libraries
 Third-party component libraries can implement the `ffi.ui` interface for custom components.
 
-## Implementation Architecture
 
-### Module Structure
-```
-ffi.ui/
-├── core/           # Common interfaces and types
-├── flutter/        # Flutter implementation
-├── react/          # React implementation
-├── vue/            # Vue implementation
-└── web/            # Web Components implementation
-```
-
-### Function Registration
-Each framework registers its component implementations:
-
-```dart
-// Flutter registration
-final ui = nativeModule('ffi.ui', [
-  ('text', IrNative(NativeFunc(flutterText))),
-  ('button', IrNative(NativeFunc(flutterButton))),
-  ('container', IrNative(NativeFunc(flutterContainer))),
-]);
-```
 
 ## Future Extensions
 
