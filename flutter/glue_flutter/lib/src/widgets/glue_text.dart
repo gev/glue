@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glue/src/ir.dart';
 import 'glue_widget.dart';
-import '../utils/color_parser.dart';
+import 'package:glue_flutter/src/utils/color_parser.dart';
 
 /// Helper function to extract enum value from HostValue only (no parsing)
 T? extractEnumValue<T>(Ir? ir) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:glue/src/ir.dart';
-import 'glue_widget.dart';
+import 'package:glue_flutter/src/widgets/glue_widget.dart';
 
 /// Glue Container widget - Flutter implementation of layout container
 class GlueContainer extends GlueWidget {

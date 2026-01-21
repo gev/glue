@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'glue_widget.dart';
+import 'package:glue_flutter/src/widgets/glue_widget.dart';
 
 /// Glue Button widget - Flutter implementation of interactive button
 class GlueButton extends GlueWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glue/src/ir.dart';
+import 'package:glue_flutter/src/utils/edge_insets_parser.dart';
 import 'glue_widget.dart';
-import '../utils/edge_insets_parser.dart';
 
 /// Glue Padding widget - Flutter implementation of padding wrapper
 class GluePadding extends GlueWidget {
