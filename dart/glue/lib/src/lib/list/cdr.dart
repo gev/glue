@@ -9,15 +9,11 @@ Ir cdr = IrNativeFunc(cdrImpl);
 /// Cdr function implementation
 /// Mirrors Haskell Glue.Lib.List.Cdr.cdrImpl exactly
 Eval<Ir> cdrImpl(Ir arg) {
-  return eval(arg).flatMap((val) {
-    if (val is IrList) {
-      if (val.elements.isNotEmpty) {
-        return Eval.pure(IrList(val.elements.sublist(1).toList()));
-      } else {
-        return throwError(wrongArgumentType(['non-empty list']));
-      }
-    } else {
-      return throwError(wrongArgumentType(['list']));
-    }
-  });
+  return switch (arg) {
+    IrList(:final elements) =>
+      elements.isEmpty
+          ? throwError(wrongArgumentType(['non-empty list']))
+          : Eval.pure(IrList(elements.skip(1).toList())),
+    _ => throwError(wrongArgumentType(['list'])),
+  };
 }

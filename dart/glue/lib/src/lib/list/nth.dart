@@ -14,18 +14,12 @@ Eval<Ir> nthImpl(Ir indexIr) {
 
 /// Helper function for list argument
 /// Mirrors Haskell Glue.Lib.List.Nth.nthFrom exactly
-Eval<Ir> Function(Ir) nthFrom(Ir indexIr) {
-  return (Ir listIr) {
-    return sequenceAll([eval(indexIr), eval(listIr)]).flatMap((evaluated) {
-      return switch (evaluated) {
-        [final index, final list] =>
-          index is IrInteger && list is IrList
-              ? (index.value < 0 || index.value >= list.elements.length
-                    ? throwError(wrongArgumentType(['valid index']))
-                    : Eval.pure(list.elements[index.value]))
-              : throwError(wrongArgumentType(['number', 'list'])),
-        _ => throwError(wrongArgumentType(['number', 'list'])),
-      };
-    });
+Eval<Ir> Function(Ir) nthFrom(Ir index) {
+  return (Ir list) => switch ((index, list)) {
+    (IrInteger(:final value), IrList(:final elements)) =>
+      (value < 0 || value >= elements.length)
+          ? throwError(wrongArgumentType(['valid index']))
+          : Eval.pure(elements[value]),
+    _ => throwError(wrongArgumentType(['number', 'list'])),
   };
 }

@@ -39,19 +39,6 @@ class Eval<T> {
       return runEval(f(result), runtime);
     });
   });
-
-  /// Transform the evaluation result
-  Eval<U> transform<U>(
-    Either<EvalError, (U, Runtime)> Function(T, Runtime) f,
-  ) => Eval((runtime) async {
-    final result = await runEval(this, runtime);
-    return result.match((error) => Left<EvalError, (U, Runtime)>(error), (
-      value,
-    ) {
-      final (result, runtime) = value;
-      return f(result, runtime);
-    });
-  });
 }
 
 /// ============================================================================

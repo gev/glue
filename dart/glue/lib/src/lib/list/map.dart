@@ -16,18 +16,11 @@ Eval<Ir> mapImpl(Ir funcIr) {
 /// Mirrors Haskell Glue.Lib.List.Map.mapOver exactly
 Eval<Ir> Function(Ir) mapOver(Ir funcIr) {
   return (Ir listIr) {
-    return sequenceAll([eval(funcIr), eval(listIr)]).flatMap((evaluated) {
-      return switch (evaluated) {
-        [final func, final list] =>
-          list is IrList
-              ? sequenceAll(
-                  list.elements
-                      .map((element) => eval(IrList([func, element])))
-                      .toList(),
-                ).map((results) => IrList(results))
-              : throwError(wrongArgumentType(['function', 'list'])),
-        _ => throwError(wrongArgumentType(['function', 'list'])),
-      };
-    });
+    return switch (listIr) {
+      IrList(elements: final elements) => sequenceAll(
+        elements.map((element) => eval(IrList([funcIr, element]))).toList(),
+      ).map((results) => IrList(results)),
+      _ => throwError(wrongArgumentType(['function', 'list'])),
+    };
   };
 }

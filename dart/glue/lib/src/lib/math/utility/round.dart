@@ -9,11 +9,9 @@ final Ir round = IrNativeFunc(roundImpl);
 /// Round function implementation (rounds to nearest integer)
 /// Mirrors Haskell Glue.Lib.Math.Utility.Round.roundImpl exactly
 Eval<Ir> roundImpl(Ir arg) {
-  return eval(arg).flatMap((va) {
-    return switch (va) {
-      IrInteger(value: final n) => Eval.pure(IrInteger(n)),
-      IrFloat(value: final n) => Eval.pure(IrInteger(n.round())),
-      _ => throwError(wrongArgumentType(['number'])),
-    };
-  });
+  return switch (arg) {
+    IrInteger(value: final n) => Eval.pure(IrInteger(n)),
+    IrFloat(value: final n) => Eval.pure(IrInteger(n.round())),
+    _ => throwError(wrongArgumentType(['number'])),
+  };
 }

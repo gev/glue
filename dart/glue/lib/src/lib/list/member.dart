@@ -14,16 +14,9 @@ Eval<Ir> memberImpl(Ir itemIr) {
 
 /// Helper function for list argument
 /// Mirrors Haskell Glue.Lib.List.Member.memberIn exactly
-Eval<Ir> Function(Ir) memberIn(Ir itemIr) {
-  return (Ir listIr) {
-    return sequenceAll([eval(itemIr), eval(listIr)]).flatMap((evaluated) {
-      return switch (evaluated) {
-        [final item, final list] =>
-          list is IrList
-              ? Eval.pure(IrBool(list.elements.contains(item)))
-              : throwError(wrongArgumentType(['list'])),
-        _ => throwError(wrongArgumentType(['list'])),
-      };
-    });
+Eval<Ir> Function(Ir) memberIn(Ir item) {
+  return (Ir list) => switch (list) {
+    IrList(:final elements) => Eval.pure(IrBool(elements.contains(item))),
+    _ => throwError(wrongArgumentType(['list'])),
   };
 }

@@ -11,15 +11,12 @@ partitionImpl :: IR Eval -> Eval (IR Eval)
 partitionImpl predicateIR = pure $ NativeFunc (partitionList predicateIR)
 
 partitionList :: IR Eval -> IR Eval -> Eval (IR Eval)
-partitionList predicateIR listIR = do
-    predicate <- eval predicateIR
-    list <- eval listIR
-    case list of
-        List xs -> do
-            -- Partition list into two lists based on predicate
-            (matching, nonMatching) <- partitionElements predicate xs
-            pure $ List [List matching, List nonMatching]
-        _ -> throwError $ wrongArgumentType ["function", "list"]
+partitionList predicate list = case list of
+    List xs -> do
+        -- Partition list into two lists based on predicate
+        (matching, nonMatching) <- partitionElements predicate xs
+        pure $ List [List matching, List nonMatching]
+    _ -> throwError $ wrongArgumentType ["function", "list"]
 
 -- Helper function to partition list based on predicate
 partitionElements :: IR Eval -> [IR Eval] -> Eval ([IR Eval], [IR Eval])

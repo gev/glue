@@ -15,24 +15,13 @@ Eval<Ir> dropImpl(Ir countIr) {
 /// Helper function for list argument
 /// Mirrors Haskell Glue.Lib.List.Drop.dropFrom exactly
 Eval<Ir> Function(Ir) dropFrom(Ir countIr) {
-  return (Ir listIr) {
-    return sequenceAll([eval(countIr), eval(listIr)]).flatMap((evaluated) {
-      return switch (evaluated) {
-        [final count, final list] =>
-          count is IrInteger && list is IrList
-              ? count.value < 0
-                    ? throwError(wrongArgumentType(['non-negative integer']))
-                    : () {
-                        final dropCount = count.value;
-                        final elements = list.elements;
-                        final resultElements = dropCount >= elements.length
-                            ? <Ir>[]
-                            : elements.skip(dropCount).toList();
-                        return Eval.pure(IrList(resultElements));
-                      }()
-              : throwError(wrongArgumentType(['number', 'list'])),
-        _ => throwError(wrongArgumentType(['number', 'list'])),
-      };
-    });
+  return (Ir listIr) => switch ((countIr, listIr)) {
+    (IrInteger(value: final n), IrList(elements: final elements)) =>
+      n < 0
+          ? throwError(wrongArgumentType(['non-negative integer']))
+          : Eval.pure(
+              IrList(n >= elements.length ? <Ir>[] : elements.skip(n).toList()),
+            ),
+    _ => throwError(wrongArgumentType(['number', 'list'])),
   };
 }

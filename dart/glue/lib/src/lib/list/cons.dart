@@ -15,15 +15,8 @@ Eval<Ir> consImpl(Ir head) {
 /// Helper function for tail argument
 /// Mirrors Haskell Glue.Lib.List.Cons.consWith exactly
 Eval<Ir> Function(Ir) consWith(Ir head) {
-  return (Ir tail) {
-    return sequenceAll([eval(head), eval(tail)]).flatMap((values) {
-      return switch (values) {
-        [final headVal, final tailVal] =>
-          tailVal is IrList
-              ? Eval.pure(IrList([headVal, ...tailVal.elements]))
-              : throwError(wrongArgumentType(['list'])),
-        _ => throwError(wrongArgumentType(['list'])),
-      };
-    });
+  return (Ir tail) => switch (tail) {
+    IrList(elements: final elements) => Eval.pure(IrList([head, ...elements])),
+    _ => throwError(wrongArgumentType(['list'])),
   };
 }

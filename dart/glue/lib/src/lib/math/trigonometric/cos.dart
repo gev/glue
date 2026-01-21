@@ -11,11 +11,9 @@ final Ir cos = IrNativeFunc(cosImpl);
 /// Cosine function implementation (radians)
 /// Mirrors Haskell Glue.Lib.Math.Trigonometric.Cos.cosImpl exactly
 Eval<Ir> cosImpl(Ir arg) {
-  return eval(arg).flatMap((va) {
-    return switch (va) {
-      IrInteger(value: final n) => Eval.pure(IrFloat(math.cos(n.toDouble()))),
-      IrFloat(value: final n) => Eval.pure(IrFloat(math.cos(n))),
-      _ => throwError(wrongArgumentType(['number'])),
-    };
-  });
+  return switch (arg) {
+    IrInteger(value: final n) => Eval.pure(IrFloat(math.cos(n.toDouble()))),
+    IrFloat(value: final n) => Eval.pure(IrFloat(math.cos(n))),
+    _ => throwError(wrongArgumentType(['number'])),
+  };
 }

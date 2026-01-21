@@ -15,23 +15,19 @@ Eval<Ir> gtImpl(Ir a) {
 /// Helper function for second argument
 /// Mirrors Haskell Glue.Lib.Bool.Gt.gtRight exactly
 Eval<Ir> Function(Ir) gtRight(Ir a) {
-  return (Ir b) {
-    return sequenceAll([eval(a), eval(b)]).flatMap((values) {
-      return switch (values) {
-        [IrInteger(value: final na), IrInteger(value: final nb)] => Eval.pure(
-          IrBool(na > nb),
-        ),
-        [IrFloat(value: final na), IrFloat(value: final nb)] => Eval.pure(
-          IrBool(na > nb),
-        ),
-        [IrInteger(value: final na), IrFloat(value: final nb)] => Eval.pure(
-          IrBool(na > nb),
-        ),
-        [IrFloat(value: final na), IrInteger(value: final nb)] => Eval.pure(
-          IrBool(na > nb),
-        ),
-        _ => throwError(wrongArgumentType(['number', 'number'])),
-      };
-    });
+  return (Ir b) => switch ((a, b)) {
+    (IrInteger(value: final na), IrInteger(value: final nb)) => Eval.pure(
+      IrBool(na > nb),
+    ),
+    (IrFloat(value: final na), IrFloat(value: final nb)) => Eval.pure(
+      IrBool(na > nb),
+    ),
+    (IrInteger(value: final na), IrFloat(value: final nb)) => Eval.pure(
+      IrBool(na > nb),
+    ),
+    (IrFloat(value: final na), IrInteger(value: final nb)) => Eval.pure(
+      IrBool(na > nb),
+    ),
+    _ => throwError(wrongArgumentType(['number', 'number'])),
   };
 }

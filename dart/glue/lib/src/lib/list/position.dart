@@ -14,17 +14,16 @@ Eval<Ir> positionImpl(Ir predicateIr) {
 
 /// Helper function for list argument
 /// Mirrors Haskell Glue.Lib.List.Position.positionIn exactly
-Eval<Ir> Function(Ir) positionIn(Ir predicateIr) {
-  return (Ir listIr) {
-    return sequenceAll([eval(predicateIr), eval(listIr)]).flatMap((evaluated) {
-      return switch (evaluated) {
-        [final predicate, final list] =>
-          list is IrList
-              ? findPosition(predicate, list.elements.toList(), 0)
-              : throwError(wrongArgumentType(['function', 'list'])),
-        _ => throwError(wrongArgumentType(['function', 'list'])),
-      };
-    });
+Eval<Ir> Function(Ir) positionIn(Ir predicate) {
+  return (Ir list) {
+    return switch (list) {
+      IrList(elements: final elements) => findPosition(
+        predicate,
+        elements.toList(),
+        0,
+      ),
+      _ => throwError(wrongArgumentType(['function', 'list'])),
+    };
   };
 }
 

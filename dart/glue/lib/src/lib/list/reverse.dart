@@ -9,12 +9,10 @@ Ir reverse = IrNativeFunc(reverseImpl);
 /// Reverse function implementation
 /// Mirrors Haskell Glue.Lib.List.Reverse.reverseImpl exactly
 Eval<Ir> reverseImpl(Ir arg) {
-  return eval(arg).flatMap((val) {
-    if (val is IrList) {
-      final reversedElements = val.elements.reversed.toList();
-      return Eval.pure(IrList(reversedElements));
-    } else {
-      return throwError(wrongArgumentType(['list']));
-    }
-  });
+  return switch (arg) {
+    IrList(elements: final elements) => Eval.pure(
+      IrList(elements.reversed.toList()),
+    ),
+    _ => throwError(wrongArgumentType(['list'])),
+  };
 }

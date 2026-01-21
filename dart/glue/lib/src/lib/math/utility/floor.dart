@@ -9,11 +9,9 @@ final Ir floor = IrNativeFunc(floorImpl);
 /// Floor function implementation (rounds down to nearest integer)
 /// Mirrors Haskell Glue.Lib.Math.Utility.Floor.floorImpl exactly
 Eval<Ir> floorImpl(Ir arg) {
-  return eval(arg).flatMap((va) {
-    return switch (va) {
-      IrInteger(value: final n) => Eval.pure(IrInteger(n)),
-      IrFloat(value: final n) => Eval.pure(IrInteger(n.floor())),
-      _ => throwError(wrongArgumentType(['number'])),
-    };
-  });
+  return switch (arg) {
+    IrInteger(value: final n) => Eval.pure(IrInteger(n)),
+    IrFloat(value: final n) => Eval.pure(IrInteger(n.floor())),
+    _ => throwError(wrongArgumentType(['number'])),
+  };
 }

@@ -11,11 +11,9 @@ final Ir ln = IrNativeFunc(lnImpl);
 /// Natural logarithm function implementation (base e)
 /// Mirrors Haskell Glue.Lib.Math.Logarithmic.Ln.lnImpl exactly
 Eval<Ir> lnImpl(Ir arg) {
-  return eval(arg).flatMap((va) {
-    return switch (va) {
-      IrInteger(value: final n) => Eval.pure(IrFloat(math.log(n.toDouble()))),
-      IrFloat(value: final n) => Eval.pure(IrFloat(math.log(n))),
-      _ => throwError(wrongArgumentType(['number'])),
-    };
-  });
+  return switch (arg) {
+    IrInteger(value: final n) => Eval.pure(IrFloat(math.log(n.toDouble()))),
+    IrFloat(value: final n) => Eval.pure(IrFloat(math.log(n))),
+    _ => throwError(wrongArgumentType(['number'])),
+  };
 }

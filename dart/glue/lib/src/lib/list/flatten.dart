@@ -8,16 +8,13 @@ Ir flatten = IrNativeFunc(flattenImpl);
 
 /// Flatten function implementation
 /// Mirrors Haskell Glue.Lib.List.Flatten.flattenImpl exactly
-Eval<Ir> flattenImpl(Ir arg) {
-  return eval(arg).flatMap((list) {
-    if (list is IrList) {
-      return flattenList(
-        list.elements.toList(),
-      ).map((flattened) => IrList(flattened));
-    } else {
-      return throwError(wrongArgumentType(['list']));
-    }
-  });
+Eval<Ir> flattenImpl(Ir list) {
+  return switch (list) {
+    IrList(elements: final elements) => flattenList(
+      elements.toList(),
+    ).map((flattened) => IrList(flattened)),
+    _ => throwError(wrongArgumentType(['list'])),
+  };
 }
 
 /// Helper function to flatten a list recursively

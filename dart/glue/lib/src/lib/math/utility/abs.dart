@@ -9,11 +9,9 @@ final Ir abs = IrNativeFunc(absImpl);
 /// Absolute value function implementation
 /// Mirrors Haskell Glue.Lib.Math.Utility.Abs.absImpl exactly
 Eval<Ir> absImpl(Ir arg) {
-  return eval(arg).flatMap((va) {
-    return switch (va) {
-      IrInteger(value: final n) => Eval.pure(IrInteger(n.abs())),
-      IrFloat(value: final n) => Eval.pure(IrFloat(n.abs())),
-      _ => throwError(wrongArgumentType(['number'])),
-    };
-  });
+  return switch (arg) {
+    IrInteger(value: final n) => Eval.pure(IrInteger(n.abs())),
+    IrFloat(value: final n) => Eval.pure(IrFloat(n.abs())),
+    _ => throwError(wrongArgumentType(['number'])),
+  };
 }

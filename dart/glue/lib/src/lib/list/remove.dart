@@ -12,20 +12,11 @@ Eval<Ir> removeImpl(Ir itemIr) {
   return Eval.pure(IrNativeFunc(removeFrom(itemIr)));
 }
 
-Eval<Ir> Function(Ir) removeFrom(Ir itemIr) {
-  return (Ir listIr) {
-    return sequenceAll([eval(itemIr), eval(listIr)]).flatMap((evaluated) {
-      return switch (evaluated) {
-        [final item, final list] =>
-          list is IrList
-              ? Eval.pure(
-                  IrList(
-                    list.elements.where((element) => element != item).toList(),
-                  ),
-                )
-              : throwError(wrongArgumentType(['list'])),
-        _ => throwError(wrongArgumentType(['list'])),
-      };
-    });
+Eval<Ir> Function(Ir) removeFrom(Ir item) {
+  return (Ir list) => switch (list) {
+    IrList(:final elements) => Eval.pure(
+      IrList(elements.where((element) => element != item).toList()),
+    ),
+    _ => throwError(wrongArgumentType(['list'])),
   };
 }

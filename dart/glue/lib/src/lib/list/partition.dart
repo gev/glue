@@ -14,22 +14,16 @@ Eval<Ir> partitionImpl(Ir predicateIr) {
 
 /// Helper function for list argument
 /// Mirrors Haskell Glue.Lib.List.Partition.partitionList exactly
-Eval<Ir> Function(Ir) partitionList(Ir predicateIr) {
-  return (Ir listIr) {
-    return sequenceAll([eval(predicateIr), eval(listIr)]).flatMap((evaluated) {
-      return switch (evaluated) {
-        [final predicate, final list] =>
-          list is IrList
-              ? partitionElements(predicate, list.elements.toList()).map((
-                  partitioned,
-                ) {
-                  final (matching, nonMatching) = partitioned;
-                  return IrList([IrList(matching), IrList(nonMatching)]);
-                })
-              : throwError(wrongArgumentType(['function', 'list'])),
-        _ => throwError(wrongArgumentType(['function', 'list'])),
-      };
-    });
+Eval<Ir> Function(Ir) partitionList(Ir predicate) {
+  return (Ir list) {
+    return switch (list) {
+      IrList(elements: final elements) =>
+        partitionElements(predicate, elements.toList()).map((partitioned) {
+          final (matching, nonMatching) = partitioned;
+          return IrList([IrList(matching), IrList(nonMatching)]);
+        }),
+      _ => throwError(wrongArgumentType(['function', 'list'])),
+    };
   };
 }
 

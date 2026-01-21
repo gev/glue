@@ -14,21 +14,12 @@ Eval<Ir> zipImpl(Ir list1Ir) {
 
 /// Helper function for second list argument
 /// Mirrors Haskell Glue.Lib.List.Zip.zipWith exactly
-Eval<Ir> Function(Ir) zipWith(Ir list1Ir) {
-  return (Ir list2Ir) {
-    return sequenceAll([eval(list1Ir), eval(list2Ir)]).flatMap((evaluated) {
-      return switch (evaluated) {
-        [final list1, final list2] =>
-          list1 is IrList && list2 is IrList
-              ? Eval.pure(
-                  IrList(
-                    zipLists(list1.elements.toList(), list2.elements.toList()),
-                  ),
-                )
-              : throwError(wrongArgumentType(['list', 'list'])),
-        _ => throwError(wrongArgumentType(['list', 'list'])),
-      };
-    });
+Eval<Ir> Function(Ir) zipWith(Ir list1) {
+  return (Ir list2) => switch ((list1, list2)) {
+    (IrList(elements: final e1), IrList(elements: final e2)) => Eval.pure(
+      IrList(zipLists(e1.toList(), e2.toList())),
+    ),
+    _ => throwError(wrongArgumentType(['list', 'list'])),
   };
 }
 

@@ -14,17 +14,15 @@ Eval<Ir> findImpl(Ir predicateIr) {
 
 /// Helper function for list argument
 /// Mirrors Haskell Glue.Lib.List.Find.findIn exactly
-Eval<Ir> Function(Ir) findIn(Ir predicateIr) {
-  return (Ir listIr) {
-    return sequenceAll([eval(predicateIr), eval(listIr)]).flatMap((evaluated) {
-      return switch (evaluated) {
-        [final predicate, final list] =>
-          list is IrList
-              ? findElement(predicate, list.elements.toList())
-              : throwError(wrongArgumentType(['function', 'list'])),
-        _ => throwError(wrongArgumentType(['function', 'list'])),
-      };
-    });
+Eval<Ir> Function(Ir) findIn(Ir predicate) {
+  return (Ir list) {
+    return switch (list) {
+      IrList(elements: final elements) => findElement(
+        predicate,
+        elements.toList(),
+      ),
+      _ => throwError(wrongArgumentType(['function', 'list'])),
+    };
   };
 }
 

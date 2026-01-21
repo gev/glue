@@ -8,10 +8,8 @@ final Ir not = IrNativeFunc(notImpl);
 /// Logical not implementation
 /// Mirrors Haskell Glue.Lib.Bool.Not.notImpl exactly
 Eval<Ir> notImpl(Ir arg) {
-  return eval(arg).flatMap((value) {
-    return switch (value) {
-      IrBool(value: false) => Eval.pure(IrBool(true)),
-      _ => Eval.pure(IrBool(false)),
-    };
-  });
+  return switch (arg) {
+    IrBool(value: false) => Eval.pure(IrBool(true)),
+    _ => Eval.pure(IrBool(false)),
+  };
 }

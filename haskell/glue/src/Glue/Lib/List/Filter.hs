@@ -1,7 +1,7 @@
 module Glue.Lib.List.Filter where
 
 import Glue.Eval (Eval, eval, throwError)
-import Glue.Eval.Exception (wrongArgumentType, wrongNumberOfArguments)
+import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (IR (..))
 
 filter :: IR Eval
@@ -11,15 +11,12 @@ filterImpl :: IR Eval -> Eval (IR Eval)
 filterImpl predicateIR = pure $ NativeFunc (filterWith predicateIR)
 
 filterWith :: IR Eval -> IR Eval -> Eval (IR Eval)
-filterWith predicateIR listIR = do
-    predicate <- eval predicateIR
-    list <- eval listIR
-    case list of
-        List xs -> do
-            -- Filter elements that satisfy the predicate
-            filtered <- filterElements predicate xs
-            pure $ List filtered
-        _ -> throwError $ wrongArgumentType ["function", "list"]
+filterWith predicate list = case list of
+    List xs -> do
+        -- Filter elements that satisfy the predicate
+        filtered <- filterElements predicate xs
+        pure $ List filtered
+    _ -> throwError $ wrongArgumentType ["function", "list"]
 
 -- Helper function to filter elements
 filterElements :: IR Eval -> [IR Eval] -> Eval [IR Eval]

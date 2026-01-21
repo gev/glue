@@ -11,11 +11,9 @@ final Ir sqrt = IrNativeFunc(sqrtImpl);
 /// Square root function implementation
 /// Mirrors Haskell Glue.Lib.Math.Power.Sqrt.sqrtImpl exactly
 Eval<Ir> sqrtImpl(Ir arg) {
-  return eval(arg).flatMap((va) {
-    return switch (va) {
-      IrInteger(value: final n) => Eval.pure(IrFloat(math.sqrt(n.toDouble()))),
-      IrFloat(value: final n) => Eval.pure(IrFloat(math.sqrt(n))),
-      _ => throwError(wrongArgumentType(['number'])),
-    };
-  });
+  return switch (arg) {
+    IrInteger(value: final n) => Eval.pure(IrFloat(math.sqrt(n.toDouble()))),
+    IrFloat(value: final n) => Eval.pure(IrFloat(math.sqrt(n))),
+    _ => throwError(wrongArgumentType(['number'])),
+  };
 }

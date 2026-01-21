@@ -17,23 +17,19 @@ Eval<Ir> powImpl(Ir base) {
 /// Helper function for second argument
 /// Mirrors Haskell Glue.Lib.Math.Power.Pow.powTo exactly
 Eval<Ir> Function(Ir) powTo(Ir base) {
-  return (Ir exponent) {
-    return sequenceAll([eval(base), eval(exponent)]).flatMap((values) {
-      return switch (values) {
-        [IrInteger(value: final b), IrInteger(value: final e)] => Eval.pure(
-          IrInteger(math.pow(b, e).toInt()),
-        ),
-        [IrInteger(value: final b), IrFloat(value: final e)] => Eval.pure(
-          IrFloat(math.pow(b.toDouble(), e).toDouble()),
-        ),
-        [IrFloat(value: final b), IrInteger(value: final e)] => Eval.pure(
-          IrFloat(math.pow(b, e.toDouble()).toDouble()),
-        ),
-        [IrFloat(value: final b), IrFloat(value: final e)] => Eval.pure(
-          IrFloat(math.pow(b, e).toDouble()),
-        ),
-        _ => throwError(wrongArgumentType(['number', 'number'])),
-      };
-    });
+  return (Ir exponent) => switch ((base, exponent)) {
+    (IrInteger(value: final b), IrInteger(value: final e)) => Eval.pure(
+      IrInteger(math.pow(b, e).toInt()),
+    ),
+    (IrInteger(value: final b), IrFloat(value: final e)) => Eval.pure(
+      IrFloat(math.pow(b.toDouble(), e).toDouble()),
+    ),
+    (IrFloat(value: final b), IrInteger(value: final e)) => Eval.pure(
+      IrFloat(math.pow(b, e.toDouble()).toDouble()),
+    ),
+    (IrFloat(value: final b), IrFloat(value: final e)) => Eval.pure(
+      IrFloat(math.pow(b, e).toDouble()),
+    ),
+    _ => throwError(wrongArgumentType(['number', 'number'])),
   };
 }

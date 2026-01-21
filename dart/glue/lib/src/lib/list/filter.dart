@@ -14,20 +14,15 @@ Eval<Ir> filterImpl(Ir predicateIr) {
 
 /// Helper function for list argument
 /// Mirrors Haskell Glue.Lib.List.Filter.filterList exactly
-Eval<Ir> Function(Ir) filterList(Ir predicateIr) {
-  return (Ir listIr) {
-    return sequenceAll([eval(predicateIr), eval(listIr)]).flatMap((evaluated) {
-      return switch (evaluated) {
-        [final predicate, final list] =>
-          list is IrList
-              ? filterElements(
-                  predicate,
-                  list.elements.toList(),
-                ).map((filtered) => IrList(filtered))
-              : throwError(wrongArgumentType(['function', 'list'])),
-        _ => throwError(wrongArgumentType(['function', 'list'])),
-      };
-    });
+Eval<Ir> Function(Ir) filterList(Ir predicate) {
+  return (Ir list) {
+    return switch (list) {
+      IrList(elements: final elements) => filterElements(
+        predicate,
+        elements.toList(),
+      ).map((filtered) => IrList(filtered)),
+      _ => throwError(wrongArgumentType(['function', 'list'])),
+    };
   };
 }
 

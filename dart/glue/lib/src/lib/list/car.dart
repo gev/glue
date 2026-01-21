@@ -9,15 +9,11 @@ Ir car = IrNativeFunc(carImpl);
 /// Car function implementation
 /// Mirrors Haskell Glue.Lib.List.Car.carImpl exactly
 Eval<Ir> carImpl(Ir arg) {
-  return eval(arg).flatMap((val) {
-    if (val is IrList) {
-      if (val.elements.isNotEmpty) {
-        return Eval.pure(val.elements[0]);
-      } else {
-        return throwError(wrongArgumentType(['non-empty list']));
-      }
-    } else {
-      return throwError(wrongArgumentType(['list']));
-    }
-  });
+  return switch (arg) {
+    IrList(:final elements) =>
+      elements.isEmpty
+          ? throwError(wrongArgumentType(['non-empty list']))
+          : Eval.pure(elements.first),
+    _ => throwError(wrongArgumentType(['list'])),
+  };
 }

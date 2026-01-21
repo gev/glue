@@ -17,23 +17,19 @@ Eval<Ir> logImpl(Ir value) {
 /// Helper function for base argument
 /// Mirrors Haskell Glue.Lib.Math.Logarithmic.Log.logWithBase exactly
 Eval<Ir> Function(Ir) logWithBase(Ir value) {
-  return (Ir base) {
-    return sequenceAll([eval(value), eval(base)]).flatMap((values) {
-      return switch (values) {
-        [IrInteger(value: final n), IrInteger(value: final b)] => Eval.pure(
-          IrFloat(math.log(n.toDouble()) / math.log(b.toDouble())),
-        ),
-        [IrInteger(value: final n), IrFloat(value: final b)] => Eval.pure(
-          IrFloat(math.log(n.toDouble()) / math.log(b)),
-        ),
-        [IrFloat(value: final n), IrInteger(value: final b)] => Eval.pure(
-          IrFloat(math.log(n) / math.log(b.toDouble())),
-        ),
-        [IrFloat(value: final n), IrFloat(value: final b)] => Eval.pure(
-          IrFloat(math.log(n) / math.log(b)),
-        ),
-        _ => throwError(wrongArgumentType(['number', 'number'])),
-      };
-    });
+  return (Ir base) => switch ((value, base)) {
+    (IrInteger(value: final n), IrInteger(value: final b)) => Eval.pure(
+      IrFloat(math.log(n.toDouble()) / math.log(b.toDouble())),
+    ),
+    (IrInteger(value: final n), IrFloat(value: final b)) => Eval.pure(
+      IrFloat(math.log(n.toDouble()) / math.log(b)),
+    ),
+    (IrFloat(value: final n), IrInteger(value: final b)) => Eval.pure(
+      IrFloat(math.log(n) / math.log(b.toDouble())),
+    ),
+    (IrFloat(value: final n), IrFloat(value: final b)) => Eval.pure(
+      IrFloat(math.log(n) / math.log(b)),
+    ),
+    _ => throwError(wrongArgumentType(['number', 'number'])),
   };
 }
