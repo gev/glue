@@ -27,11 +27,9 @@ int? extractInt(dynamic value) => switch (value) {
 };
 
 /// Extract double from Glue IR value
-double? extractDouble(dynamic value) => switch (value) {
+double? extractDouble(Ir value) => switch (value) {
   IrInteger(:final value) => value.toDouble(),
   IrFloat(:final value) => value,
-  double d => d,
-  int i => i.toDouble(),
   _ => null,
 };
 
