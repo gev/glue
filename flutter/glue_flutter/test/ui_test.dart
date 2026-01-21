@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/module.dart';
-import 'package:glue_flutter/src/ui.dart';
+import 'package:glue_flutter/src/lib/ui.dart';
 import 'package:glue_flutter/src/widgets/glue_text.dart';
 
 void main() {
