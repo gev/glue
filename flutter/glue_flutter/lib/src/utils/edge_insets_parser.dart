@@ -11,25 +11,6 @@ EdgeInsets? parseEdgeInsets(Ir ir) {
   };
 }
 
-/// Parse edge insets from list
-EdgeInsets? _parseEdgeInsetsFromList(dynamic elements) {
-  final list = elements.unlock as List<Ir>;
-  return switch (list.length) {
-    1 => EdgeInsets.all((list[0] as IrFloat).value),
-    2 => EdgeInsets.symmetric(
-      vertical: (list[0] as IrFloat).value,
-      horizontal: (list[1] as IrFloat).value,
-    ),
-    4 => EdgeInsets.only(
-      top: (list[0] as IrFloat).value,
-      right: (list[1] as IrFloat).value,
-      bottom: (list[2] as IrFloat).value,
-      left: (list[3] as IrFloat).value,
-    ),
-    _ => null,
-  };
-}
-
 /// Parse edge insets from object properties
 EdgeInsets? _parseEdgeInsetsFromObject(dynamic properties) {
   final props = (properties as IMap<String, Ir>).unlock as Map<String, dynamic>;
@@ -40,11 +21,14 @@ EdgeInsets? _parseEdgeInsetsFromObject(dynamic properties) {
     if (value != null) return EdgeInsets.all(value);
   }
 
-  // Symmetric properties
+  // Symmetric properties (allow either vertical or horizontal)
   final vertical = extractDouble(props['vertical']);
   final horizontal = extractDouble(props['horizontal']);
-  if (vertical != null && horizontal != null) {
-    return EdgeInsets.symmetric(vertical: vertical, horizontal: horizontal);
+  if (vertical != null || horizontal != null) {
+    return EdgeInsets.symmetric(
+      vertical: vertical ?? 0,
+      horizontal: horizontal ?? 0,
+    );
   }
 
   // Individual side properties (only start/end, no left/right)
