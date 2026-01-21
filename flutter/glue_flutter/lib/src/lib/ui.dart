@@ -12,23 +12,8 @@ import 'package:glue_flutter/src/lib/ui/text_align.dart';
 import 'package:glue_flutter/src/lib/ui/font_weight.dart';
 import 'package:glue_flutter/src/lib/ui/colors.dart';
 
-// Export individual functions for testing and external access
-export 'package:glue_flutter/src/lib/ui/text.dart' show text;
-export 'package:glue_flutter/src/lib/ui/button.dart' show button;
-export 'package:glue_flutter/src/lib/ui/container.dart' show container;
-export 'package:glue_flutter/src/lib/ui/column.dart' show column;
-export 'package:glue_flutter/src/lib/ui/row.dart' show row;
-export 'package:glue_flutter/src/lib/ui/padding.dart' show padding;
-export 'package:glue_flutter/src/lib/ui/center.dart' show center;
-
-// Export enum objects
-export 'package:glue_flutter/src/lib/ui/cross_axis_alignment.dart'
-    show crossAxisAlignment;
-export 'package:glue_flutter/src/lib/ui/main_axis_alignment.dart'
-    show mainAxisAlignment;
-export 'package:glue_flutter/src/lib/ui/text_align.dart' show textAlign;
-export 'package:glue_flutter/src/lib/ui/font_weight.dart' show fontWeight;
-export 'package:glue_flutter/src/lib/ui/colors.dart' show colors;
+// Note: All exports are handled through the Glue ModuleInfo below.
+// No Dart re-exports to keep the module boundary clean.
 
 /// UI module - Flutter implementation of framework-agnostic UI API
 /// Provides concrete Flutter rendering for abstract UI specifications

@@ -20,31 +20,42 @@ void main() {
     });
 
     test('text function returns IrNativeFunc', () {
-      expect(text, isA<IrNativeFunc>());
+      final textDef = ui.definitions.firstWhere((def) => def.$1 == 'text');
+      expect(textDef.$2, isA<IrNativeFunc>());
     });
 
     test('button function returns IrNativeFunc', () {
-      expect(button, isA<IrNativeFunc>());
+      final buttonDef = ui.definitions.firstWhere((def) => def.$1 == 'button');
+      expect(buttonDef.$2, isA<IrNativeFunc>());
     });
 
     test('container function returns IrNativeFunc', () {
-      expect(container, isA<IrNativeFunc>());
+      final containerDef = ui.definitions.firstWhere(
+        (def) => def.$1 == 'container',
+      );
+      expect(containerDef.$2, isA<IrNativeFunc>());
     });
 
     test('column function returns IrNativeFunc', () {
-      expect(column, isA<IrNativeFunc>());
+      final columnDef = ui.definitions.firstWhere((def) => def.$1 == 'column');
+      expect(columnDef.$2, isA<IrNativeFunc>());
     });
 
     test('row function returns IrNativeFunc', () {
-      expect(row, isA<IrNativeFunc>());
+      final rowDef = ui.definitions.firstWhere((def) => def.$1 == 'row');
+      expect(rowDef.$2, isA<IrNativeFunc>());
     });
 
     test('padding function returns IrNativeFunc', () {
-      expect(padding, isA<IrNativeFunc>());
+      final paddingDef = ui.definitions.firstWhere(
+        (def) => def.$1 == 'padding',
+      );
+      expect(paddingDef.$2, isA<IrNativeFunc>());
     });
 
     test('center function returns IrNativeFunc', () {
-      expect(center, isA<IrNativeFunc>());
+      final centerDef = ui.definitions.firstWhere((def) => def.$1 == 'center');
+      expect(centerDef.$2, isA<IrNativeFunc>());
     });
   });
 
