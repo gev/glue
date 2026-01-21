@@ -23,10 +23,7 @@ Eval<Ir> Function(Ir) paddingWithChild(Ir child) =>
           final padding =
               extractEdgeInsets(properties['padding']) ?? EdgeInsets.zero;
 
-          final paddingWidget = Padding(
-            padding: padding ?? EdgeInsets.zero,
-            child: childWidget,
-          );
+          final paddingWidget = Padding(padding: padding, child: childWidget);
           return Eval.pure(IrNativeValue(HostValue(paddingWidget)));
         }(),
       _ => throwError(wrongArgumentType(['widget', 'object'])),
