@@ -1,8 +1,8 @@
-# Framework-Agnostic UI Module (`ffi.ui`)
+# Framework-Agnostic UI Module (`ui`)
 
 ## Overview
 
-The `ffi.ui` module provides a framework-agnostic API for creating user interfaces in Glue. The same Glue code can produce UI components across different frameworks (Flutter, React, Vue, etc.) by using framework-specific implementations of the same module interface.
+The `ui` module provides a framework-agnostic API for creating user interfaces in Glue. The same Glue code can produce UI components across different frameworks (Flutter, React, Vue, etc.) by using framework-specific implementations of the same module interface.
 
 ## Core Concept
 
@@ -10,7 +10,7 @@ The `ffi.ui` module provides a framework-agnostic API for creating user interfac
 
 ```clojure
 ;; Same Glue code works everywhere
-(import "ffi.ui")
+(import "ui")
 
 (container :children (
   (text "Hello World" :color "blue" :size 24)
@@ -21,9 +21,9 @@ The `ffi.ui` module provides a framework-agnostic API for creating user interfac
 ## Module Interface
 
 ### Module Name
-- **Import name**: `"ffi.ui"`
+- **Import name**: `"ui"`
 - **Purpose**: Universal UI component library
-- **Framework implementations**: Flutter, React, Vue, Web Components, etc.
+- **Framework implementations**: Flutter, SwiftUI, JetPack Compose, React, Vue, Web Components, etc.
 
 ### Core Functions
 
