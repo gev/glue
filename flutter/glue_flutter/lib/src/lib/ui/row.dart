@@ -9,14 +9,13 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir row = IrNativeFunc(rowImpl);
 
 /// Row implementation - takes properties object
-Eval<Ir> rowImpl(Ir props) {
-  if (props is! IrObject) {
-    return throwError(wrongArgumentType(['object']));
-  }
+Eval<Ir> rowImpl(Ir props) => switch (props) {
+  IrObject(:final properties) => _createRow(Properties(properties.unlock)),
+  _ => throwError(wrongArgumentType(['object'])),
+};
 
-  // Extract properties using lazy wrapper
-  final properties = Properties(props.properties.unlock);
-
+/// Create Row widget from properties
+Eval<Ir> _createRow(Properties properties) {
   final rowWidget = Row(
     children: properties.children,
     mainAxisAlignment: properties.mainAlign,
