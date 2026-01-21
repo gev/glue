@@ -9,14 +9,13 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir column = IrNativeFunc(columnImpl);
 
 /// Column implementation - takes properties object
-Eval<Ir> columnImpl(Ir props) {
-  if (props is! IrObject) {
-    return throwError(wrongArgumentType(['object']));
-  }
+Eval<Ir> columnImpl(Ir arg) => switch (arg) {
+  IrObject(:final properties) => _createColumn(Properties(properties.unlock)),
+  _ => throwError(wrongArgumentType(['object'])),
+};
 
-  // Extract properties using lazy wrapper
-  final properties = Properties(props.properties.unlock);
-
+/// Create Column widget from properties
+Eval<Ir> _createColumn(Properties properties) {
   final columnWidget = Column(
     children: properties.children,
     mainAxisAlignment: properties.mainAlign,

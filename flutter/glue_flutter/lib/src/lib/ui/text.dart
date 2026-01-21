@@ -14,27 +14,25 @@ Eval<Ir> textImpl(Ir content) {
 }
 
 /// Text with content - takes properties object
-Eval<Ir> Function(Ir) textWithContent(Ir content) {
-  return (Ir props) {
-    if (content is! IrString) {
-      return throwError(wrongArgumentType(['string']));
-    }
-    if (props is! IrObject) {
-      return throwError(wrongArgumentType(['object']));
-    }
-
-    // Extract properties using lazy wrapper
-    final properties = Properties(props.properties.unlock);
-
-    final textWidget = Text(
-      content.value,
-      style: TextStyle(
-        color: properties.color,
-        fontSize: properties.size,
-        fontWeight: properties.weight,
+Eval<Ir> Function(Ir) textWithContent(Ir content) =>
+    (Ir props) => switch ((content, props)) {
+      (IrString(:final value), IrObject(:final properties)) => _createText(
+        value,
+        Properties(properties.unlock),
       ),
-      textAlign: properties.align,
-    );
-    return Eval.pure(IrNativeValue(HostValue(textWidget)));
-  };
+      _ => throwError(wrongArgumentType(['string', 'object'])),
+    };
+
+/// Create Text widget from content and properties
+Eval<Ir> _createText(String content, Properties properties) {
+  final textWidget = Text(
+    content,
+    style: TextStyle(
+      color: properties.color,
+      fontSize: properties.size,
+      fontWeight: properties.weight,
+    ),
+    textAlign: properties.align,
+  );
+  return Eval.pure(IrNativeValue(HostValue(textWidget)));
 }
