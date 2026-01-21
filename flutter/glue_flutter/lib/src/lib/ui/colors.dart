@@ -77,18 +77,18 @@ Eval<Ir> rgbaImpl(Ir r) => Eval.pure(
 );
 
 Eval<Ir> createRgbColor(Ir r, Ir g, Ir b) {
-  final red = extractInt(r)?.clamp(0, 255) ?? 0;
-  final green = extractInt(g)?.clamp(0, 255) ?? 0;
-  final blue = extractInt(b)?.clamp(0, 255) ?? 0;
+  final red = extractDouble(r)?.round().clamp(0, 255) ?? 0;
+  final green = extractDouble(g)?.round().clamp(0, 255) ?? 0;
+  final blue = extractDouble(b)?.round().clamp(0, 255) ?? 0;
   final color = Color.fromARGB(255, red, green, blue);
   return Eval.pure(IrNativeValue(HostValue(color)));
 }
 
 Eval<Ir> createRgbaColor(Ir r, Ir g, Ir b, Ir a) {
-  final red = extractInt(r)?.clamp(0, 255) ?? 0;
-  final green = extractInt(g)?.clamp(0, 255) ?? 0;
-  final blue = extractInt(b)?.clamp(0, 255) ?? 0;
-  final alpha = extractInt(a)?.clamp(0, 255) ?? 255;
+  final red = extractDouble(r)?.round().clamp(0, 255) ?? 0;
+  final green = extractDouble(g)?.round().clamp(0, 255) ?? 0;
+  final blue = extractDouble(b)?.round().clamp(0, 255) ?? 0;
+  final alpha = extractDouble(a)?.round().clamp(0, 255) ?? 255;
   final color = Color.fromARGB(alpha, red, green, blue);
   return Eval.pure(IrNativeValue(HostValue(color)));
 }
