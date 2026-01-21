@@ -3,26 +3,22 @@ import 'package:glue_flutter/src/widgets/glue_widget.dart';
 
 /// Glue Button widget - Flutter implementation of interactive button
 class GlueButton extends GlueWidget {
-  GlueButton({super.properties, super.key});
+  final String label;
+  final VoidCallback? onPressed;
+  final bool disabled;
+
+  const GlueButton({
+    required this.label,
+    this.onPressed,
+    this.disabled = false,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final label = properties['label'];
-    final onTap = properties['on-tap'];
-    final disabled = properties['disabled'];
-
-    final String buttonText = label is String ? label : 'Button';
-    final bool isDisabled = disabled is bool ? disabled : false;
-
     return ElevatedButton(
-      onPressed: isDisabled ? null : (_handleTap(onTap)),
-      child: Text(buttonText),
+      onPressed: disabled ? null : onPressed,
+      child: Text(label),
     );
-  }
-
-  VoidCallback? _handleTap(dynamic onTap) {
-    // For now, just return null - event handling needs more work
-    // TODO: Implement callback extraction from IrClosure
-    return null;
   }
 }
