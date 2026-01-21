@@ -20,12 +20,6 @@ class HostValue {
   @override
   String toString() =>
       'HostValue($value, getters: ${getters.length}, setters: ${setters.length})';
-
-  @override
-  bool operator ==(Object other) => false; // Host values are never equal (opaque)
-
-  @override
-  int get hashCode => 0; // All host values have same hash
 }
 
 /// Create a host value from any value
@@ -200,13 +194,6 @@ class IrNativeValue extends Ir {
 
   @override
   String toString() => '<host:${value.toString()}>';
-
-  @override
-  bool operator ==(Object other) =>
-      other is IrNativeValue && other.value == value;
-
-  @override
-  int get hashCode => value.hashCode;
 }
 
 class IrNativeFunc extends Ir {
@@ -218,7 +205,7 @@ class IrNativeFunc extends Ir {
   String toString() => '<native-func>';
 
   @override
-  bool operator ==(Object other) => other is IrNativeFunc; // All NativeFunc instances are equal (like Haskell)
+  bool operator ==(Object other) => false; // All NativeFunc instances are equal (like Haskell)
 
   @override
   int get hashCode => 'native-func'.hashCode;

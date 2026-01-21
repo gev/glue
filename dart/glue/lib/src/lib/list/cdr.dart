@@ -14,7 +14,7 @@ Eval<Ir> cdrImpl(Ir arg) {
       if (val.elements.isNotEmpty) {
         return Eval.pure(IrList(val.elements.sublist(1).toList()));
       } else {
-        return Eval.pure(IrList([]));
+        return throwError(wrongArgumentType(['non-empty list']));
       }
     } else {
       return throwError(wrongArgumentType(['list']));
