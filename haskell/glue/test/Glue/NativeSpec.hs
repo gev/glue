@@ -39,14 +39,11 @@ person (Object props) = do
         _ -> throwError $ wrongArgumentType ["age: integer"]
 
     address <- case Map.lookup "address" props of
-        Just arg -> do
-            evaluatedAddress <- eval arg
-            case evaluatedAddress of
-                (NativeValue addrHostValue) ->
-                    case extractHostValue addrHostValue :: Maybe Address of
-                        Just _ -> pure $ Just (NativeValue addrHostValue) -- Store the NativeValue
-                        Nothing -> throwError $ wrongArgumentType ["address: Address"]
-                _ -> throwError $ wrongArgumentType ["NativeValue"]
+        Just (NativeValue addrHostValue) ->
+            case extractHostValue addrHostValue :: Maybe Address of
+                Just _ -> pure $ Just (NativeValue addrHostValue) -- Store the NativeValue
+                Nothing -> throwError $ wrongArgumentType ["address: Address"]
+        Just _ -> throwError $ wrongArgumentType ["address: Address"]
         Nothing -> pure Nothing -- Address is optional
 
     -- Create mutable Person object
