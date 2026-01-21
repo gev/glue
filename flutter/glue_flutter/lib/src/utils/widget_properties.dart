@@ -6,7 +6,7 @@ import 'package:glue_flutter/src/utils/value_extractors.dart';
 class Properties {
   final Map<String, dynamic> _props;
 
-  Properties([Map<String, dynamic>? props]) : _props = props ?? {};
+  Properties(Map<String, dynamic> props) : _props = props;
 
   /// Creates empty properties with all defaults
   Properties.empty() : _props = {};

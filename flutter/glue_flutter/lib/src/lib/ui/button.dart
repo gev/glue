@@ -20,7 +20,7 @@ Eval<Ir> Function(Ir) buttonWithLabel(Ir label) =>
         value,
         Properties(properties.unlock),
       ),
-      (IrString(:final value), _) => _createButton(value, Properties(null)),
+      (IrString(:final value), _) => _createButton(value, Properties.empty()),
       _ => throwError(wrongArgumentType(['string', 'object?'])),
     };
 
