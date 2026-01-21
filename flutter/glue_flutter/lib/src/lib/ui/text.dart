@@ -8,19 +8,20 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 /// Creates Flutter Text widget from Glue (text content props) expressions
 final Ir text = IrNativeFunc(textImpl);
 
-/// Text implementation - takes content string
+/// Text implementation - takes content
 Eval<Ir> textImpl(Ir content) {
   return Eval.pure(IrNativeFunc(textWithContent(content)));
 }
 
-/// Text with content - takes properties object
+/// Text with content - takes optional properties
 Eval<Ir> Function(Ir) textWithContent(Ir content) =>
     (Ir props) => switch ((content, props)) {
       (IrString(:final value), IrObject(:final properties)) => _createText(
         value,
         Properties(properties.unlock),
       ),
-      _ => throwError(wrongArgumentType(['string', 'object'])),
+      (IrString(:final value), _) => _createText(value, Properties.empty()),
+      _ => throwError(wrongArgumentType(['string', 'object?'])),
     };
 
 /// Create Text widget from content and properties
