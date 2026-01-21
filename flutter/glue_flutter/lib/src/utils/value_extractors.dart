@@ -78,20 +78,20 @@ List<Widget>? extractChildren(dynamic value) => switch (value) {
 };
 
 /// Extract Axis from Glue IR value
-Axis? extractAxis(dynamic value) => switch (value) {
+Axis? extractAxis(Ir value) => switch (value) {
   IrString(value: 'horizontal') => Axis.horizontal,
   IrString(value: 'vertical') => Axis.vertical,
   _ => null,
 };
 
 /// Extract VoidCallback from Glue IR value
-VoidCallback? extractVoidCallback(dynamic value) => switch (value) {
+VoidCallback? extractVoidCallback(Ir value) => switch (value) {
   // TODO: Implement callback extraction from IrClosure
   _ => null,
 };
 
 /// Extract EdgeInsetsGeometry from Glue IR value
-EdgeInsetsGeometry? extractEdgeInsets(dynamic value) => switch (value) {
+EdgeInsetsGeometry? extractEdgeInsets(Ir value) => switch (value) {
   IrNativeValue(value: HostValue(value: EdgeInsetsGeometry insets)) => insets,
   _ => null,
 };
