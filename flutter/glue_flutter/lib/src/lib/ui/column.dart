@@ -11,9 +11,7 @@ final Ir column = IrNativeFunc(columnImpl);
 /// Column implementation - takes properties object or children list
 Eval<Ir> columnImpl(Ir arg) => switch (arg) {
   IrObject(:final properties) => _createColumn(Properties(properties.unlock)),
-  IrList(:final elements) => _createColumn(
-    Properties({'children': IrList(elements.toList())}),
-  ),
+  IrList(:final elements) => _createColumn(Properties({'children': elements})),
   _ => throwError(wrongArgumentType(['object', 'list'])),
 };
 
