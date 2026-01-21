@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval/exception.dart';
@@ -11,18 +10,16 @@ final Ir row = IrNativeFunc(rowImpl);
 
 /// Row implementation - takes properties object
 Eval<Ir> rowImpl(Ir arg) => switch (arg) {
-  IrObject(:final properties) => _createRow(properties),
+  IrObject(:final properties) => _createRow(Properties(properties.unlock)),
   _ => throwError(wrongArgumentType(['object'])),
 };
 
 /// Create Row widget from properties
-Eval<Ir> _createRow(IMap<String, Ir> properties) {
-  // Extract properties using lazy wrapper
-  final props = Properties(properties.unlock);
+Eval<Ir> _createRow(Properties properties) {
   final rowWidget = Row(
-    children: props.children,
-    mainAxisAlignment: props.mainAlign,
-    crossAxisAlignment: props.crossAlign,
+    children: properties.children,
+    mainAxisAlignment: properties.mainAlign,
+    crossAxisAlignment: properties.crossAlign,
   );
   return Eval.pure(IrNativeValue(HostValue(rowWidget)));
 }
