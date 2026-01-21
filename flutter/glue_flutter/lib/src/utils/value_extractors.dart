@@ -37,8 +37,32 @@ double? extractDouble(dynamic value) => switch (value) {
 /// Extract color from Glue IR value
 Color? extractColor(dynamic value) => switch (value) {
   IrNativeValue(value: HostValue(value: Color color)) => color,
-  _ => null, // TODO: Handle hex string parsing
+  IrString(:final value) => _parseHexColor(value),
+  _ => null,
 };
+
+/// Parse hex color string (e.g., "#FF0000" or "#FF0000FF")
+Color? _parseHexColor(String hexString) {
+  if (!hexString.startsWith('#')) return null;
+
+  try {
+    // Remove # and parse as hex
+    final hexValue = int.parse(hexString.substring(1), radix: 16);
+
+    // Handle different formats
+    if (hexString.length == 7) {
+      // #RRGGBB - add full alpha
+      return Color(0xFF000000 | hexValue);
+    } else if (hexString.length == 9) {
+      // #AARRGGBB - use as-is
+      return Color(hexValue);
+    }
+  } catch (_) {
+    // Invalid hex format
+  }
+
+  return null;
+}
 
 /// Extract FontWeight from Glue IR value
 FontWeight? extractFontWeight(dynamic value) => switch (value) {
