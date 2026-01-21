@@ -36,10 +36,10 @@ Creates text display elements with optional styling.
 
 ;; With styling
 (text "Styled Text"
-  :color "blue"
-  :size 18
-  :weight "bold"
-  :align "center")
+  (:color "blue"
+   :size 18
+   :weight "bold"
+   :align "center"))
 ```
 
 **Parameters:**

@@ -74,12 +74,11 @@ flutter/glue_flutter/
 ├── lib/
 │   ├── glue_flutter.dart          # Main package export
 │   ├── src/
-│   │   ├── lib/
-│   │   │   └── ui.dart            # ffi.ui module implementation
+│   │   │── ui.dart                # ffi.ui module implementation
 │   │   └── widgets/               # Flutter widget classes
 │   │       ├── glue_widget.dart
 │   │       ├── glue_text.dart
-│   │       └── ...
+│  ...      └── ...
 └── test/
     └── ui_test.dart               # Module tests
 ```
