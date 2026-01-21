@@ -98,9 +98,6 @@ VoidCallback? extractVoidCallback(dynamic value) => switch (value) {
 
 /// Extract EdgeInsetsGeometry from Glue IR value
 EdgeInsetsGeometry? extractEdgeInsets(dynamic value) => switch (value) {
-  IrFloat() => parseEdgeInsets(value),
-  IrInteger() => parseEdgeInsets(value),
   IrObject() => parseEdgeInsets(value),
-  IrList() => parseEdgeInsets(value),
   _ => null,
 };

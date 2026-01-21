@@ -6,10 +6,7 @@ import 'package:glue_flutter/src/utils/value_extractors.dart';
 /// Parse edge insets from Glue IR value
 EdgeInsets? parseEdgeInsets(Ir ir) {
   return switch (ir) {
-    IrFloat(value: final val) => EdgeInsets.all(val),
-    IrInteger(value: final val) => EdgeInsets.all(val.toDouble()),
     IrObject(:final properties) => _parseEdgeInsetsFromObject(properties),
-    IrList(elements: final elements) => _parseEdgeInsetsFromList(elements),
     _ => null,
   };
 }
@@ -50,16 +47,14 @@ EdgeInsets? _parseEdgeInsetsFromObject(dynamic properties) {
     return EdgeInsets.symmetric(vertical: vertical, horizontal: horizontal);
   }
 
-  // Individual side properties
+  // Individual side properties (only start/end, no left/right)
   final top = extractDouble(props['top']) ?? 0;
-  final right =
-      extractDouble(props['right']) ?? extractDouble(props['end']) ?? 0;
+  final end = extractDouble(props['end']) ?? 0;
   final bottom = extractDouble(props['bottom']) ?? 0;
-  final left =
-      extractDouble(props['left']) ?? extractDouble(props['start']) ?? 0;
+  final start = extractDouble(props['start']) ?? 0;
 
-  if (top != 0 || right != 0 || bottom != 0 || left != 0) {
-    return EdgeInsets.only(top: top, right: right, bottom: bottom, left: left);
+  if (top != 0 || end != 0 || bottom != 0 || start != 0) {
+    return EdgeInsets.only(top: top, right: end, bottom: bottom, left: start);
   }
 
   return null;
