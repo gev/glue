@@ -38,7 +38,7 @@ double? extractDouble(dynamic value) => switch (value) {
 /// Extract color from Glue IR value
 Color? extractColor(dynamic value) => switch (value) {
   IrNativeValue(value: HostValue(value: Color color)) => color,
-  IrString() => parseColor(value), // ✅ Use existing parser
+  IrString() => parseColor(value),
   _ => null,
 };
 
