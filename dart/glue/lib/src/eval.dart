@@ -264,20 +264,17 @@ Eval<Ir> evalDottedSymbol(List<String> parts) {
 }
 
 /// Evaluate a list (function call or literal list)
-/// Mirrors Haskell evalList exactly
+/// Mirrors Haskell evalList exactly using pattern matching
 Eval<Ir> evalList(List<Ir> elements) {
-  if (elements.isEmpty) {
-    return Eval.pure(IrList([]));
-  }
+  return switch (elements) {
+    // Pattern: []
+    [] => Eval.pure(IrList([])),
 
-  final first = elements[0];
-
-  // Check if it's a single symbol (variable lookup)
-  if (elements.length == 1 && first is IrSymbol) {
-    return withContext(
-      first.value,
+    // Pattern: [IR.Symbol name]
+    [IrSymbol(value: final name)] => withContext(
+      name,
       getEnv().flatMap((env) {
-        final result = lookupVar(first.value, env);
+        final result = lookupVar(name, env);
         return result.match(
           (error) => throwError(error),
           (value) => switch (isCallable(value)) {
@@ -286,35 +283,31 @@ Eval<Ir> evalList(List<Ir> elements) {
           },
         );
       }),
-    );
-  }
+    ),
 
-  // Check if it starts with a symbol (function call)
-  if (first is IrSymbol) {
-    final name = first.value;
-    final args = elements.sublist(1);
-    return withContext(
+    // Pattern: (IR.Symbol name : rawArgs)
+    [IrSymbol(value: final name), ...final rawArgs] => withContext(
       name,
       getEnv().flatMap((env) {
         final result = lookupVar(name, env);
         return result.match(
           (error) => throwError(error),
-          (value) => apply(value, args),
+          (value) => apply(value, rawArgs),
         );
       }),
-    );
-  }
+    ),
 
-  // Otherwise, evaluate all elements and create a list
-  return withContext(
-    '<call>',
-    sequenceAll(elements.map(eval).toList()).flatMap((evaluated) {
-      if (evaluated.isNotEmpty && _isCallable(evaluated[0])) {
-        return apply(evaluated[0], evaluated.sublist(1));
-      }
-      return Eval.pure(IrList(evaluated));
-    }),
-  );
+    // Pattern: xs (other lists)
+    _ => withContext(
+      '<call>',
+      sequenceAll(elements.map(eval).toList()).flatMap((evaluated) {
+        return switch (evaluated) {
+          [final f, ...final args] when isCallable(f) => apply(f, args),
+          _ => Eval.pure(IrList(evaluated)),
+        };
+      }),
+    ),
+  };
 }
 
 /// Evaluate an object
