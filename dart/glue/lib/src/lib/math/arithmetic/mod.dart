@@ -8,31 +8,28 @@ final Ir mod = IrNativeFunc(modImpl);
 
 /// Modulo function implementation
 /// Mirrors Haskell Glue.Lib.Math.Arithmetic.Mod.modImpl exactly
-Eval<Ir> modImpl(List<Ir> args) {
-  return switch (args) {
-    [final arg1, final arg2] => sequenceAll([eval(arg1), eval(arg2)]).flatMap((
-      values,
-    ) {
-      final va1 = values[0];
-      final va2 = values[1];
-      return switch ((va1, va2)) {
-        (IrInteger(value: final n1), IrInteger(value: final n2)) =>
-          n2 == 0 ? throwError(divByZero()) : Eval.pure(IrInteger(n1 % n2)),
-        (IrFloat(value: final n1), IrFloat(value: final n2)) =>
-          n2 == 0
-              ? throwError(divByZero())
-              : Eval.pure(IrFloat((n1.toInt() % n2.toInt()).toDouble())),
-        (IrInteger(value: final n1), IrFloat(value: final n2)) =>
-          n2 == 0
-              ? throwError(divByZero())
-              : Eval.pure(IrFloat((n1 % n2.toInt()).toDouble())),
-        (IrFloat(value: final n1), IrInteger(value: final n2)) =>
-          n2 == 0
-              ? throwError(divByZero())
-              : Eval.pure(IrFloat((n1.toInt() % n2).toDouble())),
-        _ => throwError(wrongArgumentType(['number', 'number'])),
-      };
-    }),
-    _ => throwError(wrongNumberOfArguments()),
+Eval<Ir> modImpl(Ir left) {
+  return Eval.pure(IrNativeFunc(modBy(left)));
+}
+
+/// Helper function for second argument
+/// Mirrors Haskell Glue.Lib.Math.Arithmetic.Mod.modBy exactly
+Eval<Ir> Function(Ir) modBy(Ir left) {
+  return (Ir right) => switch ((left, right)) {
+    (IrInteger(value: final n1), IrInteger(value: final n2)) =>
+      n2 == 0 ? throwError(divByZero()) : Eval.pure(IrInteger(n1 % n2)),
+    (IrFloat(value: final n1), IrFloat(value: final n2)) =>
+      n2 == 0
+          ? throwError(divByZero())
+          : Eval.pure(IrFloat((n1.toInt() % n2.toInt()).toDouble())),
+    (IrInteger(value: final n1), IrFloat(value: final n2)) =>
+      n2 == 0
+          ? throwError(divByZero())
+          : Eval.pure(IrFloat((n1 % n2.toInt()).toDouble())),
+    (IrFloat(value: final n1), IrInteger(value: final n2)) =>
+      n2 == 0
+          ? throwError(divByZero())
+          : Eval.pure(IrFloat((n1.toInt() % n2).toDouble())),
+    _ => throwError(wrongArgumentType(['number', 'number'])),
   };
 }

@@ -73,23 +73,5 @@ void main() {
       final result = await runEvalSimple(apply(append, args), emptyEnv());
       expect(result.isLeft, isTrue);
     });
-
-    test('fails with wrong number of arguments', () async {
-      final args = [
-        IrList([IrInteger(1), IrInteger(2)]),
-      ];
-      final result = await runEvalSimple(apply(append, args), emptyEnv());
-      expect(result.isLeft, isTrue);
-    });
-
-    test('fails with too many arguments', () async {
-      final args = [
-        IrList([IrInteger(1), IrInteger(2)]),
-        IrList([IrInteger(3), IrInteger(4)]),
-        IrList([IrInteger(5), IrInteger(6)]),
-      ];
-      final result = await runEvalSimple(apply(append, args), emptyEnv());
-      expect(result.isLeft, isTrue);
-    });
   });
 }

@@ -1,5 +1,4 @@
 import 'package:glue/src/eval.dart';
-import 'package:glue/src/eval/exception.dart';
 import 'package:glue/src/ir.dart';
 
 /// Equality comparison function
@@ -8,13 +7,12 @@ final Ir eq = IrNativeFunc(eqImpl);
 
 /// Equality comparison implementation
 /// Mirrors Haskell Glue.Lib.Bool.Eq.eqImpl exactly
-Eval<Ir> eqImpl(List<Ir> args) {
-  return switch (args) {
-    [final a, final b] => sequenceAll([eval(a), eval(b)]).flatMap((evaluated) {
-      final va = evaluated[0];
-      final vb = evaluated[1];
-      return Eval.pure(IrBool(va == vb));
-    }),
-    _ => throwError(wrongArgumentType(['arg', 'arg'])),
-  };
+Eval<Ir> eqImpl(Ir a) {
+  return Eval.pure(IrNativeFunc(eqRight(a)));
+}
+
+/// Helper function for second argument
+/// Mirrors Haskell Glue.Lib.Bool.Eq.eqRight exactly
+Eval<Ir> Function(Ir) eqRight(Ir a) {
+  return (Ir b) => Eval.pure(IrBool(a == b));
 }

@@ -64,15 +64,5 @@ void main() {
       final result = await runCode('(find (lambda (x) true) 42)');
       expect(result.isLeft, isTrue);
     });
-
-    test('fails with wrong number of arguments', () async {
-      final result = await runCode('(find (lambda (x) true))');
-      expect(result.isLeft, isTrue);
-    });
-
-    test('fails with too many arguments', () async {
-      final result = await runCode('(find (lambda (x) true) (1 2 3) (4 5 6))');
-      expect(result.isLeft, isTrue);
-    });
   });
 }

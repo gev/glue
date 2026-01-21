@@ -1,7 +1,6 @@
 module Glue.Lib.Builtin where
 
 import Glue.Eval (Eval)
-import Glue.IR (IR (..))
 import Glue.Lib.Builtin.Def (def)
 import Glue.Lib.Builtin.Error (errorFunc)
 import Glue.Lib.Builtin.Import (importForm)

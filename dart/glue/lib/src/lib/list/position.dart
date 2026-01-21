@@ -8,19 +8,22 @@ Ir position = IrNativeFunc(positionImpl);
 
 /// Position function implementation
 /// Mirrors Haskell Glue.Lib.List.Position.positionImpl exactly
-Eval<Ir> positionImpl(List<Ir> args) {
-  return switch (args) {
-    [final predicateIr, final listIr] =>
-      sequenceAll([eval(predicateIr), eval(listIr)]).flatMap((evaluated) {
-        final predicate = evaluated[0];
-        final list = evaluated[1];
-        if (list is IrList) {
-          return findPosition(predicate, list.elements.toList(), 0);
-        } else {
-          return throwError(wrongArgumentType(['function', 'list']));
-        }
-      }),
-    _ => throwError(wrongNumberOfArguments()),
+Eval<Ir> positionImpl(Ir predicateIr) {
+  return Eval.pure(IrNativeFunc(positionIn(predicateIr)));
+}
+
+/// Helper function for list argument
+/// Mirrors Haskell Glue.Lib.List.Position.positionIn exactly
+Eval<Ir> Function(Ir) positionIn(Ir predicate) {
+  return (Ir list) {
+    return switch (list) {
+      IrList(elements: final elements) => findPosition(
+        predicate,
+        elements.toList(),
+        0,
+      ),
+      _ => throwError(wrongArgumentType(['function', 'list'])),
+    };
   };
 }
 

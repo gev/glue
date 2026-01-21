@@ -31,11 +31,6 @@ spec = describe "Glue.Lib.Arithmetic.Mod (Test mod function)" do
                 Left err -> expectationFailure $ "Mod failed: " <> show err
                 Right (res, _) -> res `shouldBe` Integer 2
 
-        it "fails with wrong number of arguments" do
-            let args = [Integer 7]
-            result <- runEvalSimple (apply Mod.mod args) []
-            result `shouldSatisfy` isLeft
-
         it "fails with division by zero" do
             let args = [Integer 7, Integer 0]
             result <- runEvalSimple (apply Mod.mod args) []

@@ -10,15 +10,10 @@ final Ir tan = IrNativeFunc(tanImpl);
 
 /// Tangent function implementation (radians)
 /// Mirrors Haskell Glue.Lib.Math.Trigonometric.Tan.tanImpl exactly
-Eval<Ir> tanImpl(List<Ir> args) {
-  return switch (args) {
-    [final arg] => eval(arg).flatMap((va) {
-      return switch (va) {
-        IrInteger(value: final n) => Eval.pure(IrFloat(math.tan(n.toDouble()))),
-        IrFloat(value: final n) => Eval.pure(IrFloat(math.tan(n))),
-        _ => throwError(wrongArgumentType(['number'])),
-      };
-    }),
-    _ => throwError(wrongNumberOfArguments()),
+Eval<Ir> tanImpl(Ir arg) {
+  return switch (arg) {
+    IrInteger(value: final n) => Eval.pure(IrFloat(math.tan(n.toDouble()))),
+    IrFloat(value: final n) => Eval.pure(IrFloat(math.tan(n))),
+    _ => throwError(wrongArgumentType(['number'])),
   };
 }

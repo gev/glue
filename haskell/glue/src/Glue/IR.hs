@@ -79,7 +79,7 @@ data IR m
     | Object (Map Text (IR m))
     | Void
     | NativeValue (HostValue m) -- Host language values (literals)
-    | NativeFunc ([IR m] -> m (IR m)) -- Functions
+    | NativeFunc (IR m -> m (IR m)) -- Functions
     | Special ([IR m] -> m (IR m)) -- Special forms
     | Closure [Text] (IR m) (Env m)
 

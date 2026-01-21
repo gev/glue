@@ -42,13 +42,3 @@ spec = describe "Glue.Lib.Math.Utility.Ceil (Test ceil function)" do
             let args = [String "hello"]
             result <- runEvalSimple (apply ceil args) []
             result `shouldSatisfy` isLeft
-
-        it "fails with wrong number of arguments" do
-            let args = [Integer 1, Integer 2]
-            result <- runEvalSimple (apply ceil args) []
-            result `shouldSatisfy` isLeft
-
-        it "fails with no arguments" do
-            let args = []
-            result <- runEvalSimple (apply ceil args) []
-            result `shouldSatisfy` isLeft

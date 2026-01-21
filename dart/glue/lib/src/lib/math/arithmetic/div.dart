@@ -8,29 +8,26 @@ final Ir div = IrNativeFunc(divImpl);
 
 /// Division function implementation
 /// Mirrors Haskell Glue.Lib.Math.Arithmetic.Div.divImpl exactly
-Eval<Ir> divImpl(List<Ir> args) {
-  return switch (args) {
-    [final left, final right] => sequenceAll([eval(left), eval(right)]).flatMap(
-      (values) {
-        final l = values[0];
-        final r = values[1];
-        return switch ((l, r)) {
-          (IrInteger(value: final a), IrInteger(value: final b)) => Eval.pure(
-            IrFloat(a / b),
-          ),
-          (IrInteger(value: final a), IrFloat(value: final b)) => Eval.pure(
-            IrFloat(a / b),
-          ),
-          (IrFloat(value: final a), IrInteger(value: final b)) => Eval.pure(
-            IrFloat(a / b),
-          ),
-          (IrFloat(value: final a), IrFloat(value: final b)) => Eval.pure(
-            IrFloat(a / b),
-          ),
-          _ => throwError(wrongArgumentType(['number'])),
-        };
-      },
+Eval<Ir> divImpl(Ir left) {
+  return Eval.pure(IrNativeFunc(divBy(left)));
+}
+
+/// Helper function for second argument
+/// Mirrors Haskell Glue.Lib.Math.Arithmetic.Div.divBy exactly
+Eval<Ir> Function(Ir) divBy(Ir left) {
+  return (Ir right) => switch ((left, right)) {
+    (IrInteger(value: final a), IrInteger(value: final b)) => Eval.pure(
+      IrFloat(a / b),
     ),
-    _ => throwError(wrongNumberOfArguments()),
+    (IrInteger(value: final a), IrFloat(value: final b)) => Eval.pure(
+      IrFloat(a / b),
+    ),
+    (IrFloat(value: final a), IrInteger(value: final b)) => Eval.pure(
+      IrFloat(a / b),
+    ),
+    (IrFloat(value: final a), IrFloat(value: final b)) => Eval.pure(
+      IrFloat(a / b),
+    ),
+    _ => throwError(wrongArgumentType(['number'])),
   };
 }

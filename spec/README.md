@@ -29,7 +29,8 @@ Glue is designed to be:
 - **[Module System](module-system.md)** - Code organization and imports
 
 ### Evaluation
-- **[Evaluation Overview](evaluation/README.md)** - Runtime execution model
+- **[Evaluation Overview](evaluation/README.md)** - Runtime execution model with universal currying
+- **[Function Application & Currying](drafts/EVALUATION_FUNCTIONS.md)** - Universal currying and partial application
 - **[Evaluation State](evaluation/evaluation-runtime.md)** - Execution context
 - **[Evaluation Preparation](evaluation/envirenment-preparation.md)** - Setup and initialization
 - **[Module Registration](evaluation/module-registration.md)** - Module loading process
@@ -67,8 +68,8 @@ For first-time readers, follow this sequence:
 
 ## Implementation Status
 
-- ✅ **Complete**: Syntax, AST, IR, Compilation, Environment, Module System
-- 🚧 **In Progress**: Evaluation system, Standard Library
+- ✅ **Complete**: Syntax, AST, IR, Compilation, Environment, Module System, Evaluation (Universal Currying)
+- 🚧 **In Progress**: Standard Library completion
 - 📋 **Planned**: Advanced features, error handling, optimization
 
 ## Contributing

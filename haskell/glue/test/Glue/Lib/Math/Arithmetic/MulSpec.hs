@@ -24,21 +24,6 @@ spec = describe "Glue.Lib.Arithmetic.Mul (Test mul function)" do
                 Left err -> expectationFailure $ "Mul failed: " <> show err
                 Right (res, _) -> res `shouldBe` Float 7.5
 
-        it "fails with no arguments" do
-            let args = []
-            result <- runEvalSimple (apply mul args) []
-            result `shouldSatisfy` isLeft
-
-        it "fails with one argument" do
-            let args = [Integer 2]
-            result <- runEvalSimple (apply mul args) []
-            result `shouldSatisfy` isLeft
-
-        it "fails with three arguments" do
-            let args = [Integer 2, Integer 3, Integer 4]
-            result <- runEvalSimple (apply mul args) []
-            result `shouldSatisfy` isLeft
-
         it "fails with non-numbers" do
             let args = [Integer 2, String "hello"]
             result <- runEvalSimple (apply mul args) []

@@ -56,15 +56,5 @@ void main() {
       final result = await runCode('(ln true)');
       expect(result.isLeft, isTrue);
     });
-
-    test('fails with too few arguments', () async {
-      final result = await runCode('(ln)');
-      expect(result.isLeft, isTrue);
-    });
-
-    test('fails with too many arguments', () async {
-      final result = await runCode('(ln 2.718 1)');
-      expect(result.isLeft, isTrue);
-    });
   });
 }

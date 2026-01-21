@@ -1,6 +1,5 @@
 module Glue.Lib.Bool.NeSpec (spec) where
 
-import Data.Either (isLeft)
 import Glue.Eval (apply, runEvalSimple)
 import Glue.IR (IR (..))
 import Glue.Lib.Bool.Ne (ne)
@@ -37,11 +36,6 @@ spec = describe "Glue.Lib.Bool.Ne (Test ne function)" do
             case result of
                 Left err -> expectationFailure $ "Ne failed: " <> show err
                 Right (res, _) -> res `shouldBe` Bool False
-
-        it "fails with wrong number of arguments" do
-            let args = [Integer 42]
-            result <- runEvalSimple (apply ne args) []
-            result `shouldSatisfy` isLeft
 
         it "\\= alias works identically to ne" do
             let args1 = [Integer 42, Integer 43] -- unequal

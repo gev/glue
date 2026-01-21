@@ -22,12 +22,6 @@ spec = describe "Glue.Lib.Builtin.Def (Test def special form)" do
                     res `shouldBe` Void
                     E.lookupLocal "x" runtime.env `shouldBe` Just (Integer 42)
 
-        it "fails with wrong number of arguments" do
-            let args = [Symbol "x"]
-            let env = envFromModules [builtin]
-            result <- runEvalSimple (apply def args) env
-            result `shouldSatisfy` isLeft
-
         it "fails with non-symbol as name" do
             let args = [Integer 1, Integer 42]
             let env = envFromModules [builtin]

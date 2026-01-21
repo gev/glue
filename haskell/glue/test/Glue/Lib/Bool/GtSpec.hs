@@ -35,11 +35,6 @@ spec = describe "Glue.Lib.Bool.Gt (Test gt function)" do
             result <- runEvalSimple (apply gt args) []
             result `shouldSatisfy` isLeft
 
-        it "fails with wrong number of arguments" do
-            let args = [Integer 5]
-            result <- runEvalSimple (apply gt args) []
-            result `shouldSatisfy` isLeft
-
         it "> alias works identically to gt" do
             let args1 = [Integer 10, Integer 5] -- greater
             let args2 = [Integer 5, Integer 5] -- equal

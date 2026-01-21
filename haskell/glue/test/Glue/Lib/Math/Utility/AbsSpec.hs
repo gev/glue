@@ -34,13 +34,3 @@ spec = describe "Glue.Lib.Math.Utility.Abs (Test abs function)" do
             let args = [String "hello"]
             result <- runEvalSimple (apply Abs.abs args) []
             result `shouldSatisfy` isLeft
-
-        it "fails with wrong number of arguments" do
-            let args = [Integer 1, Integer 2]
-            result <- runEvalSimple (apply Abs.abs args) []
-            result `shouldSatisfy` isLeft
-
-        it "fails with no arguments" do
-            let args = []
-            result <- runEvalSimple (apply Abs.abs args) []
-            result `shouldSatisfy` isLeft

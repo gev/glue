@@ -33,12 +33,6 @@ void main() {
         });
       });
 
-      test('fails with wrong number of arguments', () async {
-        final args = [IrSymbol('x')];
-        final result = await runEval(apply(def, args), runtime);
-        expect(result.isLeft, isTrue);
-      });
-
       test('fails with non-symbol as name', () async {
         final args = [IrInteger(1), IrInteger(42)];
         final result = await runEval(apply(def, args), runtime);

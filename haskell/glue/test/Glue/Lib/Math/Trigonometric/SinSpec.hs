@@ -38,15 +38,3 @@ spec = describe "Glue.Lib.Math.Trigonometric.Sin (Test sin function)" do
             let args = [String "hello"]
             result <- runEvalSimple (apply Sin.sin args) []
             result `shouldSatisfy` isLeft
-
-        it "fails with wrong number of arguments" do
-            let args = [Integer 1, Integer 2]
-            result <- runEvalSimple (apply Sin.sin args) []
-            result `shouldSatisfy` isLeft
-
-        it "fails with no arguments" do
-            let args = []
-            result <- runEvalSimple (apply Sin.sin args) []
-            result `shouldSatisfy` isLeft
-
--- QuickCheck properties removed for now - need proper IO testing setup

@@ -1,6 +1,5 @@
 module Glue.Lib.Bool.IfSpec (spec) where
 
-import Data.Either (isLeft)
 import Glue.Eval (apply, runEvalSimple)
 import Glue.IR (IR (..))
 import Glue.Lib.Bool.If (if_)
@@ -22,8 +21,3 @@ spec = describe "Glue.Lib.Bool.If (Test if special form)" do
             case result of
                 Left err -> expectationFailure $ "If failed: " <> show err
                 Right (res, _) -> res `shouldBe` Integer 0
-
-        it "fails with wrong number of arguments" do
-            let args = [Bool True, Integer 42]
-            result <- runEvalSimple (apply if_ args) []
-            result `shouldSatisfy` isLeft

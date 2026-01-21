@@ -3,8 +3,10 @@
 module Glue.IR.NativeValueSpec (spec) where
 
 import Data.Functor.Identity (Identity)
+import Data.Maybe (isNothing)
+import Data.Text (Text)
 import Glue.Env qualified as E
-import Glue.Eval (Eval, eval, runEvalSimple)
+import Glue.Eval (eval, runEvalSimple)
 import Glue.IR (IR (..), extractHostValue, getHostValueFromIR, hostValue, isHostValue)
 import Test.Hspec
 import Test.Hspec.QuickCheck
@@ -12,10 +14,10 @@ import Test.QuickCheck
 import Test.QuickCheck.Instances ()
 
 -- Test data types for host values
-data TestWidget = TestWidget {label :: String, enabled :: Bool}
+data TestWidget = TestWidget {label :: Text, enabled :: Bool}
     deriving (Show, Eq)
 
-data TestConnection = TestConnection {host :: String, port :: Int}
+data TestConnection = TestConnection {host :: Text, port :: Int}
     deriving (Show, Eq)
 
 instance Arbitrary TestWidget where
@@ -39,7 +41,7 @@ spec = describe "HostValue system for native object integration" do
         it "fails to extract with wrong type" do
             let widget = TestWidget "test" True
                 hv = hostValue widget
-            extractHostValue hv `shouldNotBe` (Just "not a widget" :: Maybe String)
+            extractHostValue hv `shouldNotBe` Just @Text "not a widget"
 
         it "handles different host value types" do
             let conn = TestConnection "localhost" 5432
@@ -108,11 +110,11 @@ spec = describe "HostValue system for native object integration" do
             -- This should fail at runtime, not compile time
             extractHostValue hv `shouldNotBe` (Just "not a widget" :: Maybe String)
 
-        prop "type safety: extraction succeeds only for correct types" $ \(w :: TestWidget) (s :: String) ->
+        prop "type safety: extraction succeeds only for correct types" $ \(w :: TestWidget) ->
             let hv = hostValue w
                 widgetResult = extractHostValue hv :: Maybe TestWidget
                 stringResult = extractHostValue hv :: Maybe String
-             in widgetResult == Just w && stringResult == Nothing
+             in widgetResult == Just w && isNothing stringResult
 
     describe "Host value lifecycle" do
         it "host values can be created from complex types" do
@@ -121,7 +123,7 @@ spec = describe "HostValue system for native object integration" do
             extractHostValue hv `shouldBe` Just complex
 
         it "host values preserve nested structures" do
-            let nested = ("tuple", TestConnection "host" 8080, 42 :: Int)
+            let nested = ("tuple" :: Text, TestConnection "host" 8080, 42 :: Int)
                 hv = hostValue nested
             extractHostValue hv `shouldBe` Just nested
 
@@ -146,7 +148,7 @@ spec = describe "HostValue system for native object integration" do
     describe "HostValue evaluation behavior" do
         it "host values evaluate to themselves (no change)" do
             let hv = hostValue (TestWidget "eval" True)
-                ir = NativeValue hv :: IR Eval
+                ir = NativeValue hv
                 env = E.emptyEnv
             result <- runEvalSimple (eval ir) env
             case result of
@@ -164,8 +166,8 @@ spec = describe "HostValue system for native object integration" do
 
         it "host values cannot be called directly (not callable)" do
             let hv = hostValue (TestWidget "call" False)
-                hostIr = NativeValue hv :: IR Eval
-                callIr = List [hostIr, String "arg"] :: IR Eval
+                hostIr = NativeValue hv
+                callIr = List [hostIr, String "arg"]
                 env = E.emptyEnv
             result <- runEvalSimple (eval callIr) env
             case result of
@@ -178,10 +180,10 @@ spec = describe "HostValue system for native object integration" do
 
         it "host values can be passed as arguments to functions" do
             -- Create a function that accepts a host value and returns it
-            let identityFunc = NativeFunc (\[arg] -> pure arg) :: IR Eval
+            let identityFunc = NativeFunc pure
                 hv = hostValue (TestWidget "arg" True)
-                hostIr = NativeValue hv :: IR Eval
-                callIr = List [identityFunc, hostIr] :: IR Eval
+                hostIr = NativeValue hv
+                callIr = List [identityFunc, hostIr]
                 env = E.emptyEnv
             result <- runEvalSimple (eval callIr) env
             case result of
@@ -200,8 +202,8 @@ spec = describe "HostValue system for native object integration" do
             -- Create a function that returns a host value
             let widget = TestWidget "return" False
                 hv = hostValue widget
-                returnFunc = NativeFunc (\_ -> pure (NativeValue hv)) :: IR Eval
-                callIr = List [returnFunc] :: IR Eval
+                returnFunc = NativeFunc (\_ -> pure (NativeValue hv))
+                callIr = List [returnFunc, Void]
                 env = E.emptyEnv
             result <- runEvalSimple (eval callIr) env
             case result of
@@ -215,10 +217,10 @@ spec = describe "HostValue system for native object integration" do
 
         it "host values work in nested function calls" do
             -- Test: (identity (create-widget "nested"))
-            let createWidgetFunc = NativeFunc (\_ -> pure (NativeValue (hostValue (TestWidget "nested" True)))) :: IR Eval
-                identityFunc = NativeFunc (\[arg] -> pure arg) :: IR Eval
-                createCall = List [createWidgetFunc] :: IR Eval
-                nestedCall = List [identityFunc, createCall] :: IR Eval
+            let createWidgetFunc = NativeFunc (\_ -> pure (NativeValue (hostValue (TestWidget "nested" True))))
+                identityFunc = NativeFunc pure
+                createCall = List [createWidgetFunc, Void]
+                nestedCall = List [identityFunc, createCall]
                 env = E.emptyEnv
             result <- runEvalSimple (eval nestedCall) env
             case result of
@@ -231,9 +233,9 @@ spec = describe "HostValue system for native object integration" do
 
         it "host values in environment work correctly" do
             let hv = hostValue (TestWidget "env" False)
-                hostIr = NativeValue hv :: IR Eval
+                hostIr = NativeValue hv
                 env = E.defineVar "myWidget" hostIr E.emptyEnv
-                symbolIr = Symbol "myWidget" :: IR Eval
+                symbolIr = Symbol "myWidget"
             result <- runEvalSimple (eval symbolIr) env
             case result of
                 Right (resultIr, _) -> do

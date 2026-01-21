@@ -10,29 +10,26 @@ final Ir pow = IrNativeFunc(powImpl);
 
 /// Power function implementation (base^exponent)
 /// Mirrors Haskell Glue.Lib.Math.Power.Pow.powImpl exactly
-Eval<Ir> powImpl(List<Ir> args) {
-  return switch (args) {
-    [final arg1, final arg2] => sequenceAll([eval(arg1), eval(arg2)]).flatMap((
-      values,
-    ) {
-      final va1 = values[0];
-      final va2 = values[1];
-      return switch ((va1, va2)) {
-        (IrInteger(value: final n1), IrInteger(value: final n2)) => Eval.pure(
-          IrInteger(math.pow(n1, n2).toInt()),
-        ),
-        (IrInteger(value: final n1), IrFloat(value: final n2)) => Eval.pure(
-          IrFloat(math.pow(n1.toDouble(), n2).toDouble()),
-        ),
-        (IrFloat(value: final n1), IrInteger(value: final n2)) => Eval.pure(
-          IrFloat(math.pow(n1, n2.toDouble()).toDouble()),
-        ),
-        (IrFloat(value: final n1), IrFloat(value: final n2)) => Eval.pure(
-          IrFloat(math.pow(n1, n2).toDouble()),
-        ),
-        _ => throwError(wrongArgumentType(['number', 'number'])),
-      };
-    }),
-    _ => throwError(wrongNumberOfArguments()),
+Eval<Ir> powImpl(Ir base) {
+  return Eval.pure(IrNativeFunc(powTo(base)));
+}
+
+/// Helper function for second argument
+/// Mirrors Haskell Glue.Lib.Math.Power.Pow.powTo exactly
+Eval<Ir> Function(Ir) powTo(Ir base) {
+  return (Ir exponent) => switch ((base, exponent)) {
+    (IrInteger(value: final b), IrInteger(value: final e)) => Eval.pure(
+      IrInteger(math.pow(b, e).toInt()),
+    ),
+    (IrInteger(value: final b), IrFloat(value: final e)) => Eval.pure(
+      IrFloat(math.pow(b.toDouble(), e).toDouble()),
+    ),
+    (IrFloat(value: final b), IrInteger(value: final e)) => Eval.pure(
+      IrFloat(math.pow(b, e.toDouble()).toDouble()),
+    ),
+    (IrFloat(value: final b), IrFloat(value: final e)) => Eval.pure(
+      IrFloat(math.pow(b, e).toDouble()),
+    ),
+    _ => throwError(wrongArgumentType(['number', 'number'])),
   };
 }

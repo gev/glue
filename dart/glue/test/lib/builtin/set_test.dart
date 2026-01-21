@@ -69,13 +69,5 @@ void main() {
         expect(result.isLeft, isTrue);
       });
     });
-
-    group('Error cases', () {
-      test('fails with wrong number of arguments', () async {
-        final args = [IrSymbol('x')];
-        final result = await runEval(apply(set, args), runtime);
-        expect(result.isLeft, isTrue);
-      });
-    });
   });
 }

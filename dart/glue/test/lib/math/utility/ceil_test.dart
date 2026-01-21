@@ -56,15 +56,5 @@ void main() {
       final result = await runCode('(ceil "hello")');
       expect(result.isLeft, isTrue);
     });
-
-    test('fails with too few arguments', () async {
-      final result = await runCode('(ceil)');
-      expect(result.isLeft, isTrue);
-    });
-
-    test('fails with too many arguments', () async {
-      final result = await runCode('(ceil 1 2)');
-      expect(result.isLeft, isTrue);
-    });
   });
 }

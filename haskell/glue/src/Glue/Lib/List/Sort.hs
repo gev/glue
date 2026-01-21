@@ -7,13 +7,12 @@ import Glue.IR (IR (..))
 sort :: IR Eval
 sort = NativeFunc sortImpl
 
-sortImpl :: [IR Eval] -> Eval (IR Eval)
-sortImpl [listIR] = case listIR of
+sortImpl :: IR Eval -> Eval (IR Eval)
+sortImpl listIR = case listIR of
     List xs -> do
         sorted <- sortList xs
         pure $ List sorted
     _ -> throwError $ wrongArgumentType ["list"]
-sortImpl _ = throwError wrongNumberOfArguments
 
 -- Helper function to sort a list using merge sort
 sortList :: [IR Eval] -> Eval [IR Eval]

@@ -8,7 +8,8 @@ Implement partial application (currying) support for native functions to make Gl
 
 ## Solution: Universal Currying Contract
 - **Single contract for ALL functions:** `IR → IR`
-- Functions take one argument, return result or closure
+- Native functions take one argument, return result or new native function
+- Closures reserved for user-defined lambdas
 - Automatic partial application (Haskell-style currying)
 - No arity declarations or complex logic
 
@@ -287,7 +288,8 @@ Make changes in the Dart implementation in the same order from 4 to 12
 ## Key Technical Decisions
 
 - **Universal contract**: All functions `IR → IR` (single argument)
-- **Internal currying**: Functions decide when to return result vs closure
+- **Native function chaining**: Native functions return new native functions for partial application
+- **Closure reserved for user lambdas**: Only user-defined functions use closures
 - **Automatic partial application**: Every call can be partial
 - **Special forms**: No partial application (syntactic constructs)
 - **Pure functional**: Haskell-style evaluation model
@@ -309,7 +311,7 @@ Make changes in the Dart implementation in the same order from 4 to 12
 add :: [IR Eval] → Eval (IR Eval)
 add [left, right] = ...
 
--- After: IR → IR (with currying)
+-- After: IR → IR (with native function chaining)
 add :: IR Eval → Eval (IR Eval)
 add left = pure $ NativeFunc (addRight left)
 

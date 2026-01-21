@@ -8,24 +8,19 @@ Ir map = IrNativeFunc(mapImpl);
 
 /// Map function implementation
 /// Mirrors Haskell Glue.Lib.List.Map.mapImpl exactly
-Eval<Ir> mapImpl(List<Ir> args) {
-  return switch (args) {
-    [final funcIr, final listIr] =>
-      sequenceAll([eval(funcIr), eval(listIr)]).flatMap((evaluated) {
-        final func = evaluated[0];
-        final list = evaluated[1];
-        if (list is IrList) {
-          // Apply the function to each element by evaluating [func, element]
-          final elementEvals = list.elements.map(
-            (element) => eval(IrList([func, element])),
-          );
-          return sequenceAll(
-            elementEvals.toList(),
-          ).map((results) => IrList(results));
-        } else {
-          return throwError(wrongArgumentType(['function', 'list']));
-        }
-      }),
-    _ => throwError(wrongNumberOfArguments()),
+Eval<Ir> mapImpl(Ir funcIr) {
+  return Eval.pure(IrNativeFunc(mapOver(funcIr)));
+}
+
+/// Helper function for list argument
+/// Mirrors Haskell Glue.Lib.List.Map.mapOver exactly
+Eval<Ir> Function(Ir) mapOver(Ir funcIr) {
+  return (Ir listIr) {
+    return switch (listIr) {
+      IrList(elements: final elements) => sequenceAll(
+        elements.map((element) => eval(IrList([funcIr, element]))).toList(),
+      ).map((results) => IrList(results)),
+      _ => throwError(wrongArgumentType(['function', 'list'])),
+    };
   };
 }

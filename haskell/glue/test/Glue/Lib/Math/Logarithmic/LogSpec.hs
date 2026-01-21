@@ -106,18 +106,3 @@ spec = describe "Glue.Lib.Math.Logarithmic.Log (Test log function)" do
             let args = [Integer 10, String "hello"]
             result <- runEvalSimple (apply Log.log args) []
             result `shouldSatisfy` isLeft
-
-        it "fails with wrong number of arguments (one)" do
-            let args = [Integer 1]
-            result <- runEvalSimple (apply Log.log args) []
-            result `shouldSatisfy` isLeft
-
-        it "fails with wrong number of arguments (three)" do
-            let args = [Integer 1, Integer 2, Integer 3]
-            result <- runEvalSimple (apply Log.log args) []
-            result `shouldSatisfy` isLeft
-
-        it "fails with no arguments" do
-            let args = []
-            result <- runEvalSimple (apply Log.log args) []
-            result `shouldSatisfy` isLeft

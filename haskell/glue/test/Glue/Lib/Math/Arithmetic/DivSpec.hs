@@ -24,21 +24,6 @@ spec = describe "Glue.Lib.Arithmetic.Div (Test div function)" do
                 Left err -> expectationFailure $ "Div failed: " <> show err
                 Right (res, _) -> res `shouldBe` Float 2.5
 
-        it "fails with no arguments" do
-            let args = []
-            result <- runEvalSimple (apply Div.div args) []
-            result `shouldSatisfy` isLeft
-
-        it "fails with one argument" do
-            let args = [Integer 10]
-            result <- runEvalSimple (apply Div.div args) []
-            result `shouldSatisfy` isLeft
-
-        it "fails with three arguments" do
-            let args = [Integer 10, Integer 2, Integer 2]
-            result <- runEvalSimple (apply Div.div args) []
-            result `shouldSatisfy` isLeft
-
         it "returns Infinity for division by zero" do
             let args = [Integer 10, Integer 0]
             result <- runEvalSimple (apply Div.div args) []

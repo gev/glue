@@ -8,29 +8,26 @@ final Ir max = IrNativeFunc(maxImpl);
 
 /// Maximum function implementation (returns the larger of two numbers)
 /// Mirrors Haskell Glue.Lib.Math.Utility.Max.maxImpl exactly
-Eval<Ir> maxImpl(List<Ir> args) {
-  return switch (args) {
-    [final arg1, final arg2] => sequenceAll([eval(arg1), eval(arg2)]).flatMap((
-      values,
-    ) {
-      final va1 = values[0];
-      final va2 = values[1];
-      return switch ((va1, va2)) {
-        (IrInteger(value: final n1), IrInteger(value: final n2)) => Eval.pure(
-          IrInteger(n1 > n2 ? n1 : n2),
-        ),
-        (IrFloat(value: final n1), IrFloat(value: final n2)) => Eval.pure(
-          IrFloat(n1 > n2 ? n1 : n2),
-        ),
-        (IrInteger(value: final n1), IrFloat(value: final n2)) => Eval.pure(
-          IrFloat(n1 > n2 ? n1.toDouble() : n2),
-        ),
-        (IrFloat(value: final n1), IrInteger(value: final n2)) => Eval.pure(
-          IrFloat(n1 > n2 ? n1 : n2.toDouble()),
-        ),
-        _ => throwError(wrongArgumentType(['number', 'number'])),
-      };
-    }),
-    _ => throwError(wrongNumberOfArguments()),
+Eval<Ir> maxImpl(Ir left) {
+  return Eval.pure(IrNativeFunc(maxWith(left)));
+}
+
+/// Helper function for second argument
+/// Mirrors Haskell Glue.Lib.Math.Utility.Max.maxWith exactly
+Eval<Ir> Function(Ir) maxWith(Ir left) {
+  return (Ir right) => switch ((left, right)) {
+    (IrInteger(value: final n1), IrInteger(value: final n2)) => Eval.pure(
+      IrInteger(n1 > n2 ? n1 : n2),
+    ),
+    (IrFloat(value: final n1), IrFloat(value: final n2)) => Eval.pure(
+      IrFloat(n1 > n2 ? n1 : n2),
+    ),
+    (IrInteger(value: final n1), IrFloat(value: final n2)) => Eval.pure(
+      IrFloat(n1 > n2 ? n1.toDouble() : n2),
+    ),
+    (IrFloat(value: final n1), IrInteger(value: final n2)) => Eval.pure(
+      IrFloat(n1 > n2 ? n1 : n2.toDouble()),
+    ),
+    _ => throwError(wrongArgumentType(['number', 'number'])),
   };
 }

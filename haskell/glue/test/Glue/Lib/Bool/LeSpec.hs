@@ -35,11 +35,6 @@ spec = describe "Glue.Lib.Bool.Le (Test le function)" do
             result <- runEvalSimple (apply le args) []
             result `shouldSatisfy` isLeft
 
-        it "fails with wrong number of arguments" do
-            let args = [Integer 5]
-            result <- runEvalSimple (apply le args) []
-            result `shouldSatisfy` isLeft
-
         it "<= alias works identically to le" do
             let args1 = [Integer 5, Integer 5] -- equal
             let args2 = [Integer 5, Integer 10] -- lesser

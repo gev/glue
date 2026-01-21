@@ -1,6 +1,5 @@
 module Glue.Lib.Bool.WhileSpec (spec) where
 
-import Data.Either (isLeft)
 import Glue.Env qualified as E
 import Glue.Eval (Runtime (..), apply, runEvalSimple)
 import Glue.IR (IR (..))
@@ -31,8 +30,3 @@ spec = describe "Glue.Lib.Bool.While (Test while special form)" do
                     res `shouldBe` Void
                     -- Check that flag was changed to false
                     E.lookupLocal "flag" runtime.env `shouldBe` Just (Bool False)
-
-        it "fails with wrong number of arguments" do
-            let args = [] -- No condition
-            result <- runEvalSimple (apply while_ args) []
-            result `shouldSatisfy` isLeft

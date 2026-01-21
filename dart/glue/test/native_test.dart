@@ -48,18 +48,18 @@ class Address {
 }
 
 // Constructor functions that take object literals and create native objects
-Eval<Ir> person(List<Ir> args) {
-  return switch (args) {
-    [IrObject(properties: final props)] => _createPerson(props.unlock),
+Eval<Ir> person(Ir arg) {
+  return switch (arg) {
+    IrObject(properties: final props) => _createPerson(props.unlock),
     _ => throwError(
       RuntimeException('wrong-argument-type', IrString('object')),
     ),
   };
 }
 
-Eval<Ir> address(List<Ir> args) {
-  return switch (args) {
-    [IrObject(properties: final props)] => _createAddress(props.unlock),
+Eval<Ir> address(Ir arg) {
+  return switch (arg) {
+    IrObject(properties: final props) => _createAddress(props.unlock),
     _ => throwError(
       RuntimeException('wrong-argument-type', IrString('object')),
     ),

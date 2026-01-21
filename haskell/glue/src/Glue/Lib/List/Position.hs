@@ -7,16 +7,15 @@ import Glue.IR (IR (..))
 position :: IR Eval
 position = NativeFunc positionImpl
 
-positionImpl :: [IR Eval] -> Eval (IR Eval)
-positionImpl [predicateIR, listIR] = do
-    predicate <- eval predicateIR
-    list <- eval listIR
-    case list of
-        List xs -> do
-            -- Find index of first element that satisfies predicate
-            findPosition predicate xs 0
-        _ -> throwError $ wrongArgumentType ["function", "list"]
-positionImpl _ = throwError wrongNumberOfArguments
+positionImpl :: IR Eval -> Eval (IR Eval)
+positionImpl predicateIR = pure $ NativeFunc (positionIn predicateIR)
+
+positionIn :: IR Eval -> IR Eval -> Eval (IR Eval)
+positionIn predicate list = case list of
+    List xs -> do
+        -- Find index of first element that satisfies predicate
+        findPosition predicate xs 0
+    _ -> throwError $ wrongArgumentType ["function", "list"]
 
 -- Helper function to find position of first element satisfying predicate
 findPosition :: IR Eval -> [IR Eval] -> Int -> Eval (IR Eval)

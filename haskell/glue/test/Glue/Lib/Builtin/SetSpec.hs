@@ -47,9 +47,3 @@ spec = describe "Glue.Lib.Builtin.Set (Test set special form)" do
             let args = [Symbol "x.prop", Integer 42]
             result <- runEvalSimple (apply set args) initialEnv
             result `shouldSatisfy` isLeft
-
-    describe "Error cases" do
-        it "fails with wrong number of arguments" do
-            let args = [Symbol "x"]
-            result <- runEvalSimple (apply set args) []
-            result `shouldSatisfy` isLeft

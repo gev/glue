@@ -39,12 +39,6 @@ void main() {
           (value) => expect(value, equals(IrBool(false))),
         );
       });
-
-      test('fails with wrong number of arguments', () async {
-        final args = <Ir>[];
-        final result = await runCode(args);
-        expect(result.isLeft, isTrue);
-      });
     });
   });
 }

@@ -10,29 +10,26 @@ final Ir log = IrNativeFunc(logImpl);
 
 /// Logarithm with arbitrary base function implementation
 /// Mirrors Haskell Glue.Lib.Math.Logarithmic.Log.logImpl exactly
-Eval<Ir> logImpl(List<Ir> args) {
-  return switch (args) {
-    [final arg, final base] => sequenceAll([eval(arg), eval(base)]).flatMap((
-      values,
-    ) {
-      final va = values[0];
-      final vb = values[1];
-      return switch ((va, vb)) {
-        (IrInteger(value: final n), IrInteger(value: final b)) => Eval.pure(
-          IrFloat(math.log(n.toDouble()) / math.log(b.toDouble())),
-        ),
-        (IrInteger(value: final n), IrFloat(value: final b)) => Eval.pure(
-          IrFloat(math.log(n.toDouble()) / math.log(b)),
-        ),
-        (IrFloat(value: final n), IrInteger(value: final b)) => Eval.pure(
-          IrFloat(math.log(n) / math.log(b.toDouble())),
-        ),
-        (IrFloat(value: final n), IrFloat(value: final b)) => Eval.pure(
-          IrFloat(math.log(n) / math.log(b)),
-        ),
-        _ => throwError(wrongArgumentType(['number', 'number'])),
-      };
-    }),
-    _ => throwError(wrongNumberOfArguments()),
+Eval<Ir> logImpl(Ir value) {
+  return Eval.pure(IrNativeFunc(logWithBase(value)));
+}
+
+/// Helper function for base argument
+/// Mirrors Haskell Glue.Lib.Math.Logarithmic.Log.logWithBase exactly
+Eval<Ir> Function(Ir) logWithBase(Ir value) {
+  return (Ir base) => switch ((value, base)) {
+    (IrInteger(value: final n), IrInteger(value: final b)) => Eval.pure(
+      IrFloat(math.log(n.toDouble()) / math.log(b.toDouble())),
+    ),
+    (IrInteger(value: final n), IrFloat(value: final b)) => Eval.pure(
+      IrFloat(math.log(n.toDouble()) / math.log(b)),
+    ),
+    (IrFloat(value: final n), IrInteger(value: final b)) => Eval.pure(
+      IrFloat(math.log(n) / math.log(b.toDouble())),
+    ),
+    (IrFloat(value: final n), IrFloat(value: final b)) => Eval.pure(
+      IrFloat(math.log(n) / math.log(b)),
+    ),
+    _ => throwError(wrongArgumentType(['number', 'number'])),
   };
 }
