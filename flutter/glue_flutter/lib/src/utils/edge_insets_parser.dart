@@ -32,12 +32,17 @@ EdgeInsets? _parseEdgeInsetsFromObject(dynamic properties) {
   }
 
   // Individual side properties (only start/end, no left/right)
-  final top = extractDouble(props['top']) ?? 0;
-  final end = extractDouble(props['end']) ?? 0;
-  final bottom = extractDouble(props['bottom']) ?? 0;
-  final start = extractDouble(props['start']) ?? 0;
+  final hasTop = props.containsKey('top');
+  final hasBottom = props.containsKey('bottom');
+  final hasStart = props.containsKey('start');
+  final hasEnd = props.containsKey('end');
 
-  if (top != 0 || end != 0 || bottom != 0 || start != 0) {
+  if (hasTop || hasBottom || hasStart || hasEnd) {
+    final top = extractDouble(props['top']) ?? 0;
+    final end = extractDouble(props['end']) ?? 0;
+    final bottom = extractDouble(props['bottom']) ?? 0;
+    final start = extractDouble(props['start']) ?? 0;
+
     return EdgeInsets.only(top: top, right: end, bottom: bottom, left: start);
   }
 
