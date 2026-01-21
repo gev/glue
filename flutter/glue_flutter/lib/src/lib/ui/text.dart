@@ -39,57 +39,26 @@ Eval<Ir> Function(Ir) textWithContent(Ir content) {
 }
 
 /// Extract color from Glue IR value
-Color? _extractColor(dynamic value) {
-  if (value == null) return null;
-
-  // If it's a direct Color object from enum
-  if (value is IrNativeValue) {
-    final hostValue = value.value;
-    if (hostValue.value is Color) {
-      return hostValue.value as Color;
-    }
-  }
-
-  // TODO: Handle hex string parsing
-  return null;
-}
+Color? _extractColor(dynamic value) => switch (value) {
+  IrNativeValue(value: HostValue(value: Color color)) => color,
+  _ => null, // TODO: Handle hex string parsing
+};
 
 /// Extract double from Glue IR value
-double? _extractDouble(dynamic value) {
-  if (value == null) return null;
-
-  if (value is IrInteger) return value.value.toDouble();
-  if (value is IrFloat) return value.value;
-
-  return null;
-}
+double? _extractDouble(dynamic value) => switch (value) {
+  IrInteger(:final value) => value.toDouble(),
+  IrFloat(:final value) => value,
+  _ => null,
+};
 
 /// Extract FontWeight from Glue IR value
-FontWeight? _extractFontWeight(dynamic value) {
-  if (value == null) return null;
-
-  // Only accept direct enum objects - no string parsing
-  if (value is IrNativeValue) {
-    final hostValue = value.value;
-    if (hostValue.value is FontWeight) {
-      return hostValue.value as FontWeight;
-    }
-  }
-
-  return null;
-}
+FontWeight? _extractFontWeight(dynamic value) => switch (value) {
+  IrNativeValue(value: HostValue(value: FontWeight weight)) => weight,
+  _ => null,
+};
 
 /// Extract TextAlign from Glue IR value
-TextAlign? _extractTextAlign(dynamic value) {
-  if (value == null) return null;
-
-  // Only accept direct enum objects - no string parsing
-  if (value is IrNativeValue) {
-    final hostValue = value.value;
-    if (hostValue.value is TextAlign) {
-      return hostValue.value as TextAlign;
-    }
-  }
-
-  return null;
-}
+TextAlign? _extractTextAlign(dynamic value) => switch (value) {
+  IrNativeValue(value: HostValue(value: TextAlign align)) => align,
+  _ => null,
+};

@@ -8,18 +8,9 @@ import 'package:glue/src/eval/exception.dart';
 final Ir center = IrNativeFunc(centerImpl);
 
 /// Center implementation - takes child
-Eval<Ir> centerImpl(Ir child) {
-  if (child is! IrNativeValue) {
-    return throwError(wrongArgumentType(['widget']));
-  }
-
-  // Extract the child widget from IrNativeValue
-  final hostValue = child.value;
-  if (hostValue.value is! Widget) {
-    return throwError(wrongArgumentType(['widget']));
-  }
-
-  final childWidget = hostValue.value as Widget;
-  final centerWidget = Center(child: childWidget);
-  return Eval.pure(IrNativeValue(HostValue(centerWidget)));
-}
+Eval<Ir> centerImpl(Ir child) => switch (child) {
+  IrNativeValue(value: HostValue(value: Widget childWidget)) => Eval.pure(
+    IrNativeValue(HostValue(Center(child: childWidget))),
+  ),
+  _ => throwError(wrongArgumentType(['widget'])),
+};

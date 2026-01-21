@@ -14,32 +14,21 @@ Eval<Ir> paddingImpl(Ir child) {
 }
 
 /// Padding with child - takes properties object
-Eval<Ir> Function(Ir) paddingWithChild(Ir child) {
-  return (Ir props) {
-    if (child is! IrNativeValue) {
-      return throwError(wrongArgumentType(['widget']));
-    }
-    if (props is! IrObject) {
-      return throwError(wrongArgumentType(['object']));
-    }
+Eval<Ir> Function(Ir) paddingWithChild(Ir child) =>
+    (Ir props) => switch (child) {
+      IrNativeValue(value: HostValue(value: Widget childWidget))
+          when props is IrObject =>
+        () {
+          final properties = props.properties.unlock as Map<String, dynamic>;
+          final padding = properties['padding'] != null
+              ? parseEdgeInsets(properties['padding']!)
+              : EdgeInsets.zero;
 
-    // Extract the child widget from IrNativeValue
-    final hostValue = child.value;
-    if (hostValue.value is! Widget) {
-      return throwError(wrongArgumentType(['widget']));
-    }
-    final childWidget = hostValue.value as Widget;
-
-    // Extract padding from properties
-    final properties = props.properties.unlock as Map<String, dynamic>;
-    final padding = properties['padding'] != null
-        ? parseEdgeInsets(properties['padding']!)
-        : EdgeInsets.zero;
-
-    final paddingWidget = Padding(
-      padding: padding ?? EdgeInsets.zero,
-      child: childWidget,
-    );
-    return Eval.pure(IrNativeValue(HostValue(paddingWidget)));
-  };
-}
+          final paddingWidget = Padding(
+            padding: padding ?? EdgeInsets.zero,
+            child: childWidget,
+          );
+          return Eval.pure(IrNativeValue(HostValue(paddingWidget)));
+        }(),
+      _ => throwError(wrongArgumentType(['widget', 'object'])),
+    };

@@ -27,26 +27,21 @@ Eval<Ir> buttonImpl(Ir props) {
 }
 
 /// Extract string from Glue IR value
-String? _extractString(dynamic value) {
-  if (value == null) return null;
-  if (value is IrString) return value.value;
-  if (value is String) return value;
-  return null;
-}
+String? _extractString(dynamic value) => switch (value) {
+  IrString(:final value) => value,
+  String string => string,
+  _ => null,
+};
 
 /// Extract bool from Glue IR value
-bool? _extractBool(dynamic value) {
-  if (value == null) return null;
-  if (value is IrBool) return value.value;
-  if (value is bool) return value;
-  return null;
-}
+bool? _extractBool(dynamic value) => switch (value) {
+  IrBool(:final value) => value,
+  bool boolean => boolean,
+  _ => null,
+};
 
 /// Extract VoidCallback from Glue IR value
-VoidCallback? _extractVoidCallback(dynamic value) {
-  if (value == null) return null;
-
+VoidCallback? _extractVoidCallback(dynamic value) => switch (value) {
   // TODO: Implement callback extraction from IrClosure
-  // For now, return null
-  return null;
-}
+  _ => null,
+};

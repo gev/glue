@@ -32,47 +32,30 @@ Eval<Ir> rowImpl(Ir props) {
 }
 
 /// Extract children list from Glue IR value
-List<Widget>? _extractChildren(dynamic value) {
-  if (value == null) return null;
-  if (value is! List) return null;
-
-  return value.map((child) {
-    if (child is IrNativeValue) {
-      final hostValue = child.value;
-      if (hostValue.value is Widget) {
-        return hostValue.value as Widget;
-      }
-    }
-    return const SizedBox.shrink(); // Invalid child
-  }).toList();
-}
+List<Widget>? _extractChildren(dynamic value) => switch (value) {
+  List list =>
+    list
+        .map(
+          (child) => switch (child) {
+            IrNativeValue(value: HostValue(value: Widget widget)) => widget,
+            _ => const SizedBox.shrink(),
+          },
+        )
+        .toList(),
+  _ => null,
+};
 
 /// Extract MainAxisAlignment from Glue IR value
-MainAxisAlignment? _extractMainAxisAlignment(dynamic value) {
-  if (value == null) return null;
-
-  // Only accept direct enum objects - no string parsing
-  if (value is IrNativeValue) {
-    final hostValue = value.value;
-    if (hostValue.value is MainAxisAlignment) {
-      return hostValue.value as MainAxisAlignment;
-    }
-  }
-
-  return null;
-}
+MainAxisAlignment? _extractMainAxisAlignment(dynamic value) => switch (value) {
+  IrNativeValue(value: HostValue(value: MainAxisAlignment alignment)) =>
+    alignment,
+  _ => null,
+};
 
 /// Extract CrossAxisAlignment from Glue IR value
-CrossAxisAlignment? _extractCrossAxisAlignment(dynamic value) {
-  if (value == null) return null;
-
-  // Only accept direct enum objects - no string parsing
-  if (value is IrNativeValue) {
-    final hostValue = value.value;
-    if (hostValue.value is CrossAxisAlignment) {
-      return hostValue.value as CrossAxisAlignment;
-    }
-  }
-
-  return null;
-}
+CrossAxisAlignment? _extractCrossAxisAlignment(dynamic value) =>
+    switch (value) {
+      IrNativeValue(value: HostValue(value: CrossAxisAlignment alignment)) =>
+        alignment,
+      _ => null,
+    };
