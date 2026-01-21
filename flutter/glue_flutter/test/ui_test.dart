@@ -69,13 +69,14 @@ void main() {
       expect(find.text('Hello'), findsOneWidget);
     });
 
-    testWidgets('GlueText with properties builds correctly', (
+    testWidgets('GlueText with enum properties builds correctly', (
       WidgetTester tester,
     ) async {
+      // Test using enum union objects (type-safe, no string parsing)
       final properties = <String, dynamic>{
-        'color': IrString('blue'),
+        'color': IrNativeValue(HostValue(Colors.blue)), // ✅ Enum object
         'size': IrInteger(24),
-        'weight': IrString('bold'),
+        'weight': IrNativeValue(HostValue(FontWeight.bold)), // ✅ Enum object
       };
       final glueText = GlueText('Styled', properties);
 
