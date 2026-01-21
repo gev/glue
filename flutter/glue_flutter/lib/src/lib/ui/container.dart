@@ -21,7 +21,7 @@ Eval<Ir> _createContainer(Properties properties) {
   final containerWidget = Container(
     padding: properties.padding,
     color: properties.color,
-    child: properties.children.isNotEmpty ? properties.children.first : null,
+    child: properties.child,
   );
   return Eval.pure(IrNativeValue(HostValue(containerWidget)));
 }
