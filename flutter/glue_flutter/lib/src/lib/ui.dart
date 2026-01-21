@@ -9,6 +9,7 @@ import 'package:glue_flutter/src/lib/ui/center.dart';
 import 'package:glue_flutter/src/lib/ui/cross_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/main_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/text_align.dart';
+import 'package:glue_flutter/src/lib/ui/font_weight.dart';
 
 // Export individual functions for testing and external access
 export 'package:glue_flutter/src/lib/ui/text.dart' show text;
@@ -25,6 +26,7 @@ export 'package:glue_flutter/src/lib/ui/cross_axis_alignment.dart'
 export 'package:glue_flutter/src/lib/ui/main_axis_alignment.dart'
     show mainAxisAlignment;
 export 'package:glue_flutter/src/lib/ui/text_align.dart' show textAlign;
+export 'package:glue_flutter/src/lib/ui/font_weight.dart' show fontWeight;
 
 /// UI module - Flutter implementation of framework-agnostic UI API
 /// Provides concrete Flutter rendering for abstract UI specifications
@@ -45,4 +47,5 @@ final ModuleInfo ui = nativeModule('ui', [
   ('cross-axis-alignment', crossAxisAlignment),
   ('main-axis-alignment', mainAxisAlignment),
   ('text-align', textAlign),
+  ('font-weight', fontWeight),
 ]);
