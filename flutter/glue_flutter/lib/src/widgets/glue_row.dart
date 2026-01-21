@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue/src/eval.dart';
 import 'glue_widget.dart';
 
 /// Helper function to extract enum value from HostValue only (no parsing)
@@ -8,8 +7,8 @@ T? extractEnumValue<T>(Ir? ir) {
   if (ir == null) return null;
 
   // Only accept direct enum objects - no string parsing
-  if (ir is IrNativeValue && ir.value is HostValue) {
-    final hostValue = ir.value as HostValue;
+  if (ir is IrNativeValue) {
+    final hostValue = ir.value;
     if (hostValue.value is T) {
       return hostValue.value as T;
     }
@@ -36,8 +35,8 @@ class GlueRow extends GlueWidget {
 
     return Row(
       children: children,
-      mainAxisAlignment: mainAxis ?? MainAxisAlignment.start,
-      crossAxisAlignment: crossAxis ?? CrossAxisAlignment.start,
+      mainAxisAlignment: mainAxis,
+      crossAxisAlignment: crossAxis,
     );
   }
 

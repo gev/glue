@@ -1,6 +1,5 @@
 import 'package:test/test.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue/src/eval.dart';
 import 'package:glue/src/module.dart';
 import 'package:flutter/material.dart';
 import 'package:glue_flutter/src/lib/ui.dart';
@@ -15,8 +14,8 @@ T? extractEnumValue<T>(Ir? ir) {
   if (ir == null) return null;
 
   // Only accept direct enum objects - no string parsing
-  if (ir is IrNativeValue && ir.value is HostValue) {
-    final hostValue = ir.value as HostValue;
+  if (ir is IrNativeValue) {
+    final hostValue = ir.value;
     if (hostValue.value is T) {
       return hostValue.value as T;
     }
@@ -30,8 +29,8 @@ Color? extractColorValue(Ir? ir) {
   if (ir == null) return null;
 
   // If it's a direct Color object, use it
-  if (ir is IrNativeValue && ir.value is HostValue) {
-    final hostValue = ir.value as HostValue;
+  if (ir is IrNativeValue) {
+    final hostValue = ir.value;
     if (hostValue.value is Color) {
       return hostValue.value as Color;
     }
@@ -99,176 +98,118 @@ void main() {
 
   group('Cross Axis Alignment Enum', () {
     test('has all required values', () {
-      expect(
-        (crossAxisAlignment as IrObject).properties['start'],
-        isA<IrNativeValue>(),
-      );
-      expect(
-        (crossAxisAlignment as IrObject).properties['end'],
-        isA<IrNativeValue>(),
-      );
-      expect(
-        (crossAxisAlignment as IrObject).properties['center'],
-        isA<IrNativeValue>(),
-      );
-      expect(
-        (crossAxisAlignment as IrObject).properties['stretch'],
-        isA<IrNativeValue>(),
-      );
-      expect(
-        (crossAxisAlignment as IrObject).properties['baseline'],
-        isA<IrNativeValue>(),
-      );
+      expect((crossAxisAlignment).properties['start'], isA<IrNativeValue>());
+      expect((crossAxisAlignment).properties['end'], isA<IrNativeValue>());
+      expect((crossAxisAlignment).properties['center'], isA<IrNativeValue>());
+      expect((crossAxisAlignment).properties['stretch'], isA<IrNativeValue>());
+      expect((crossAxisAlignment).properties['baseline'], isA<IrNativeValue>());
     });
 
     test('values are correct Flutter enums', () {
       final startValue =
-          ((crossAxisAlignment as IrObject).properties['start']
-                      as IrNativeValue)
-                  .value
-              as HostValue;
+          ((crossAxisAlignment).properties['start'] as IrNativeValue).value;
       expect(startValue.value, CrossAxisAlignment.start);
 
       final centerValue =
-          ((crossAxisAlignment as IrObject).properties['center']
-                      as IrNativeValue)
-                  .value
-              as HostValue;
+          ((crossAxisAlignment).properties['center'] as IrNativeValue).value;
       expect(centerValue.value, CrossAxisAlignment.center);
     });
   });
 
   group('Main Axis Alignment Enum', () {
     test('has all required values', () {
+      expect((mainAxisAlignment).properties['start'], isA<IrNativeValue>());
+      expect((mainAxisAlignment).properties['end'], isA<IrNativeValue>());
+      expect((mainAxisAlignment).properties['center'], isA<IrNativeValue>());
       expect(
-        (mainAxisAlignment as IrObject).properties['start'],
+        (mainAxisAlignment).properties['spaceBetween'],
         isA<IrNativeValue>(),
       );
       expect(
-        (mainAxisAlignment as IrObject).properties['end'],
+        (mainAxisAlignment).properties['spaceAround'],
         isA<IrNativeValue>(),
       );
       expect(
-        (mainAxisAlignment as IrObject).properties['center'],
-        isA<IrNativeValue>(),
-      );
-      expect(
-        (mainAxisAlignment as IrObject).properties['spaceBetween'],
-        isA<IrNativeValue>(),
-      );
-      expect(
-        (mainAxisAlignment as IrObject).properties['spaceAround'],
-        isA<IrNativeValue>(),
-      );
-      expect(
-        (mainAxisAlignment as IrObject).properties['spaceEvenly'],
+        (mainAxisAlignment).properties['spaceEvenly'],
         isA<IrNativeValue>(),
       );
     });
 
     test('values are correct Flutter enums', () {
       final startValue =
-          ((mainAxisAlignment as IrObject).properties['start'] as IrNativeValue)
-                  .value
-              as HostValue;
+          ((mainAxisAlignment).properties['start'] as IrNativeValue).value;
       expect(startValue.value, MainAxisAlignment.start);
 
       final centerValue =
-          ((mainAxisAlignment as IrObject).properties['center']
-                      as IrNativeValue)
-                  .value
-              as HostValue;
+          ((mainAxisAlignment).properties['center'] as IrNativeValue).value;
       expect(centerValue.value, MainAxisAlignment.center);
     });
   });
 
   group('Text Align Enum', () {
     test('has all required values', () {
-      expect((textAlign as IrObject).properties['left'], isA<IrNativeValue>());
-      expect((textAlign as IrObject).properties['right'], isA<IrNativeValue>());
-      expect(
-        (textAlign as IrObject).properties['center'],
-        isA<IrNativeValue>(),
-      );
-      expect(
-        (textAlign as IrObject).properties['justify'],
-        isA<IrNativeValue>(),
-      );
-      expect((textAlign as IrObject).properties['start'], isA<IrNativeValue>());
-      expect((textAlign as IrObject).properties['end'], isA<IrNativeValue>());
+      expect((textAlign).properties['left'], isA<IrNativeValue>());
+      expect((textAlign).properties['right'], isA<IrNativeValue>());
+      expect((textAlign).properties['center'], isA<IrNativeValue>());
+      expect((textAlign).properties['justify'], isA<IrNativeValue>());
+      expect((textAlign).properties['start'], isA<IrNativeValue>());
+      expect((textAlign).properties['end'], isA<IrNativeValue>());
     });
 
     test('values are correct Flutter enums', () {
-      final leftValue =
-          ((textAlign as IrObject).properties['left'] as IrNativeValue).value
-              as HostValue;
+      final leftValue = ((textAlign).properties['left'] as IrNativeValue).value;
       expect(leftValue.value, TextAlign.left);
 
       final centerValue =
-          ((textAlign as IrObject).properties['center'] as IrNativeValue).value
-              as HostValue;
+          ((textAlign).properties['center'] as IrNativeValue).value;
       expect(centerValue.value, TextAlign.center);
     });
   });
 
   group('Font Weight Enum', () {
     test('has all required values', () {
-      expect(
-        (fontWeight as IrObject).properties['normal'],
-        isA<IrNativeValue>(),
-      );
-      expect((fontWeight as IrObject).properties['bold'], isA<IrNativeValue>());
-      expect((fontWeight as IrObject).properties['w100'], isA<IrNativeValue>());
-      expect((fontWeight as IrObject).properties['w200'], isA<IrNativeValue>());
-      expect((fontWeight as IrObject).properties['w300'], isA<IrNativeValue>());
-      expect((fontWeight as IrObject).properties['w400'], isA<IrNativeValue>());
-      expect((fontWeight as IrObject).properties['w500'], isA<IrNativeValue>());
-      expect((fontWeight as IrObject).properties['w600'], isA<IrNativeValue>());
-      expect((fontWeight as IrObject).properties['w700'], isA<IrNativeValue>());
-      expect((fontWeight as IrObject).properties['w800'], isA<IrNativeValue>());
-      expect((fontWeight as IrObject).properties['w900'], isA<IrNativeValue>());
+      expect((fontWeight).properties['normal'], isA<IrNativeValue>());
+      expect((fontWeight).properties['bold'], isA<IrNativeValue>());
+      expect((fontWeight).properties['w100'], isA<IrNativeValue>());
+      expect((fontWeight).properties['w200'], isA<IrNativeValue>());
+      expect((fontWeight).properties['w300'], isA<IrNativeValue>());
+      expect((fontWeight).properties['w400'], isA<IrNativeValue>());
+      expect((fontWeight).properties['w500'], isA<IrNativeValue>());
+      expect((fontWeight).properties['w600'], isA<IrNativeValue>());
+      expect((fontWeight).properties['w700'], isA<IrNativeValue>());
+      expect((fontWeight).properties['w800'], isA<IrNativeValue>());
+      expect((fontWeight).properties['w900'], isA<IrNativeValue>());
     });
 
     test('values are correct Flutter enums', () {
       final normalValue =
-          ((fontWeight as IrObject).properties['normal'] as IrNativeValue).value
-              as HostValue;
+          ((fontWeight).properties['normal'] as IrNativeValue).value;
       expect(normalValue.value, FontWeight.normal);
 
       final boldValue =
-          ((fontWeight as IrObject).properties['bold'] as IrNativeValue).value
-              as HostValue;
+          ((fontWeight).properties['bold'] as IrNativeValue).value;
       expect(boldValue.value, FontWeight.bold);
     });
   });
 
   group('Colors Enum', () {
     test('has Material Design colors', () {
-      expect((colors as IrObject).properties['red'], isA<IrNativeValue>());
-      expect((colors as IrObject).properties['blue'], isA<IrNativeValue>());
-      expect((colors as IrObject).properties['green'], isA<IrNativeValue>());
-      expect((colors as IrObject).properties['black'], isA<IrNativeValue>());
-      expect((colors as IrObject).properties['white'], isA<IrNativeValue>());
-      expect(
-        (colors as IrObject).properties['transparent'],
-        isA<IrNativeValue>(),
-      );
+      expect((colors).properties['red'], isA<IrNativeValue>());
+      expect((colors).properties['blue'], isA<IrNativeValue>());
+      expect((colors).properties['green'], isA<IrNativeValue>());
+      expect((colors).properties['black'], isA<IrNativeValue>());
+      expect((colors).properties['white'], isA<IrNativeValue>());
+      expect((colors).properties['transparent'], isA<IrNativeValue>());
     });
 
     test('values are correct Flutter colors', () {
-      final redValue =
-          ((colors as IrObject).properties['red'] as IrNativeValue).value
-              as HostValue;
+      final redValue = ((colors).properties['red'] as IrNativeValue).value;
       expect(redValue.value, Colors.red);
 
-      final blueValue =
-          ((colors as IrObject).properties['blue'] as IrNativeValue).value
-              as HostValue;
+      final blueValue = ((colors).properties['blue'] as IrNativeValue).value;
       expect(blueValue.value, Colors.blue);
 
-      final blackValue =
-          ((colors as IrObject).properties['black'] as IrNativeValue).value
-              as HostValue;
+      final blackValue = ((colors).properties['black'] as IrNativeValue).value;
       expect(blackValue.value, Colors.black);
     });
   });
