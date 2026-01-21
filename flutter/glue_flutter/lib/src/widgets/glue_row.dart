@@ -1,8 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:glue/src/ir.dart';
+import 'package:glue/src/eval.dart';
 import 'glue_widget.dart';
-import '../utils/main_axis_alignment_parser.dart';
-import '../utils/cross_axis_alignment_parser.dart';
+
+/// Helper function to extract enum value from HostValue or parse string
+T? extractEnumOrParse<T>(Ir? ir, T? Function(Ir) parseFunction) {
+  if (ir == null) return null;
+
+  // If it's already a HostValue with the enum, extract it directly
+  if (ir is IrNativeValue && ir.value is HostValue) {
+    final hostValue = ir.value as HostValue;
+    if (hostValue.value is T) {
+      return hostValue.value as T;
+    }
+  }
+
+  // Otherwise, parse as string for backward compatibility
+  return parseFunction(ir);
+}
+
+/// Parse main axis alignment from string
+MainAxisAlignment? _parseMainAxisAlignment(Ir ir) {
+  return switch (ir) {
+    IrString(value: final alignStr) => switch (alignStr.toLowerCase()) {
+      'start' => MainAxisAlignment.start,
+      'end' => MainAxisAlignment.end,
+      'center' => MainAxisAlignment.center,
+      'spacebetween' || 'space-between' => MainAxisAlignment.spaceBetween,
+      'spacearound' || 'space-around' => MainAxisAlignment.spaceAround,
+      'spaceevenly' || 'space-evenly' => MainAxisAlignment.spaceEvenly,
+      _ => null,
+    },
+    _ => null,
+  };
+}
+
+/// Parse cross axis alignment from string
+CrossAxisAlignment? _parseCrossAxisAlignment(Ir ir) {
+  return switch (ir) {
+    IrString(value: final alignStr) => switch (alignStr.toLowerCase()) {
+      'start' => CrossAxisAlignment.start,
+      'end' => CrossAxisAlignment.end,
+      'center' => CrossAxisAlignment.center,
+      'stretch' => CrossAxisAlignment.stretch,
+      'baseline' => CrossAxisAlignment.baseline,
+      _ => null,
+    },
+    _ => null,
+  };
+}
 
 /// Glue Row widget - Flutter implementation of horizontal layout
 class GlueRow extends GlueWidget {
@@ -13,12 +59,18 @@ class GlueRow extends GlueWidget {
   @override
   Widget build(BuildContext context) {
     final children = _parseChildren(properties['children']);
-    final mainAxis = properties['main-axis-align'] != null
-        ? parseMainAxisAlignment(properties['main-axis-align']!)
-        : MainAxisAlignment.start;
-    final crossAxis = properties['cross-axis-align'] != null
-        ? parseCrossAxisAlignment(properties['cross-axis-align']!)
-        : CrossAxisAlignment.start;
+    final mainAxis =
+        extractEnumOrParse<MainAxisAlignment>(
+          properties['main-axis-align'],
+          (ir) => _parseMainAxisAlignment(ir),
+        ) ??
+        MainAxisAlignment.start;
+    final crossAxis =
+        extractEnumOrParse<CrossAxisAlignment>(
+          properties['cross-axis-align'],
+          (ir) => _parseCrossAxisAlignment(ir),
+        ) ??
+        CrossAxisAlignment.start;
 
     return Row(
       children: children,
