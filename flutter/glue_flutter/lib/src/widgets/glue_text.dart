@@ -37,9 +37,8 @@ Color? extractColorValue(Ir? ir) {
 /// Glue Text widget - Flutter implementation of text display
 class GlueText extends GlueWidget {
   final String text;
-  final Map<String, dynamic> properties;
 
-  const GlueText(this.text, this.properties);
+  const GlueText(this.text, super.properties);
 
   @override
   Widget build(BuildContext context) {

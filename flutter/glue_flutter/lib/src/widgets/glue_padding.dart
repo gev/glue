@@ -6,9 +6,8 @@ import '../utils/edge_insets_parser.dart';
 /// Glue Padding widget - Flutter implementation of padding wrapper
 class GluePadding extends GlueWidget {
   final IrNativeValue child;
-  final Map<String, dynamic> properties;
 
-  const GluePadding(this.child, this.properties);
+  const GluePadding(this.child, super.properties);
 
   @override
   Widget build(BuildContext context) {

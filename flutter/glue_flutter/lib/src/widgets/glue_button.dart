@@ -3,9 +3,7 @@ import 'glue_widget.dart';
 
 /// Glue Button widget - Flutter implementation of interactive button
 class GlueButton extends GlueWidget {
-  final Map<String, dynamic> properties;
-
-  const GlueButton(this.properties);
+  const GlueButton(super.properties);
 
   @override
   Widget build(BuildContext context) {

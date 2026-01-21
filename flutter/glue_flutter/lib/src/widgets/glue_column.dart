@@ -19,9 +19,7 @@ T? extractEnumValue<T>(Ir? ir) {
 
 /// Glue Column widget - Flutter implementation of vertical layout
 class GlueColumn extends GlueWidget {
-  final Map<String, dynamic> properties;
-
-  const GlueColumn(this.properties);
+  const GlueColumn(super.properties);
 
   @override
   Widget build(BuildContext context) {

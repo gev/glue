@@ -4,9 +4,7 @@ import 'glue_widget.dart';
 
 /// Glue Container widget - Flutter implementation of layout container
 class GlueContainer extends GlueWidget {
-  final Map<String, dynamic> properties;
-
-  const GlueContainer(this.properties);
+  const GlueContainer(super.properties);
 
   @override
   Widget build(BuildContext context) {

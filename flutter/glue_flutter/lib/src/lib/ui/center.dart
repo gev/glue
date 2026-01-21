@@ -13,6 +13,6 @@ Eval<Ir> centerImpl(Ir child) {
     return throwError(wrongArgumentType(['widget']));
   }
 
-  final centerWidget = GlueCenter(child);
+  final centerWidget = GlueCenter(child, {});
   return Eval.pure(IrNativeValue(HostValue(centerWidget)));
 }
