@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue_flutter/src/utils/color_parser.dart';
-import 'package:glue_flutter/src/utils/edge_insets_parser.dart';
 
 /// Utility functions for extracting values from Glue IR
 /// All extraction functions use pattern matching for clean, type-safe code
@@ -98,6 +97,6 @@ VoidCallback? extractVoidCallback(dynamic value) => switch (value) {
 
 /// Extract EdgeInsetsGeometry from Glue IR value
 EdgeInsetsGeometry? extractEdgeInsets(dynamic value) => switch (value) {
-  IrObject() => parseEdgeInsets(value),
+  IrNativeValue(value: HostValue(value: EdgeInsetsGeometry insets)) => insets,
   _ => null,
 };
