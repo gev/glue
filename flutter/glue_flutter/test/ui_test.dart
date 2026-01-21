@@ -3,11 +3,11 @@ import 'package:glue/src/ir.dart';
 import 'package:glue/src/module.dart';
 import 'package:flutter/material.dart';
 import 'package:glue_flutter/src/lib/ui.dart';
-import 'package:glue_flutter/src/lib/ui/cross_axis_alignment.dart';
-import 'package:glue_flutter/src/lib/ui/main_axis_alignment.dart';
-import 'package:glue_flutter/src/lib/ui/text_align.dart';
-import 'package:glue_flutter/src/lib/ui/font_weight.dart';
-import 'package:glue_flutter/src/lib/ui/color/colors.dart';
+import 'package:glue_flutter/src/lib/ui/styles/cross_axis_alignment.dart';
+import 'package:glue_flutter/src/lib/ui/styles/main_axis_alignment.dart';
+import 'package:glue_flutter/src/lib/ui/styles/text_align.dart';
+import 'package:glue_flutter/src/lib/ui/styles/font_weight.dart';
+import 'package:glue_flutter/src/lib/ui/styles/colors.dart';
 
 /// Helper function to extract enum value from HostValue only (no parsing)
 T? extractEnumValue<T>(Ir? ir) {
