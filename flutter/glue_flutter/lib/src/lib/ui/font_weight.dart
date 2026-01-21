@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue/src/eval.dart';
 
 /// Font weight enum object - represents all FontWeight values as Glue object properties
 /// Each property is a NativeValue wrapping the Flutter FontWeight enum value
