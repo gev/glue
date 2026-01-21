@@ -1,9 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/module.dart';
 import 'package:glue/src/eval/exception.dart';
-import 'widgets/glue_widget.dart';
 import 'widgets/glue_text.dart';
 import 'widgets/glue_button.dart';
 import 'widgets/glue_container.dart';
@@ -11,18 +9,12 @@ import 'widgets/glue_column.dart';
 import 'widgets/glue_row.dart';
 import 'widgets/glue_padding.dart';
 import 'widgets/glue_center.dart';
-import 'utils/color_parser.dart';
-import 'utils/font_weight_parser.dart';
-import 'utils/text_align_parser.dart';
-import 'utils/main_axis_alignment_parser.dart';
-import 'utils/cross_axis_alignment_parser.dart';
-import 'utils/edge_insets_parser.dart';
 
 /// UI module - Flutter implementation of framework-agnostic UI API
-/// Mirrors Haskell Glue.UI exactly
+/// Provides concrete Flutter rendering for abstract UI specifications
 
 /// The ui module containing all UI functions
-/// Mirrors Haskell Glue.UI.ui exactly
+/// Implements the framework-agnostic UI API with Flutter widgets
 final ModuleInfo ui = nativeModule('ui', [
   // Core widget functions
   ('text', text),
@@ -39,7 +31,7 @@ final ModuleInfo ui = nativeModule('ui', [
 /// ============================================================================
 
 /// Text widget function
-/// Mirrors Haskell Glue.UI.Text.text exactly
+/// Creates Flutter Text widget from Glue (text content props) expressions
 final Ir text = IrNativeFunc(textImpl);
 
 /// Text implementation - takes content string
@@ -63,7 +55,7 @@ Eval<Ir> Function(Ir) textWithContent(Ir content) {
 }
 
 /// Button widget function
-/// Mirrors Haskell Glue.UI.Button.button exactly
+/// Creates Flutter ElevatedButton from Glue (button props) expressions
 final Ir button = IrNativeFunc(buttonImpl);
 
 /// Button implementation - takes properties object (label is in props)
@@ -77,7 +69,7 @@ Eval<Ir> buttonImpl(Ir props) {
 }
 
 /// Container widget function
-/// Mirrors Haskell Glue.UI.Container.container exactly
+/// Creates Flutter Column/Row from Glue (container props) expressions
 final Ir container = IrNativeFunc(containerImpl);
 
 /// Container implementation - takes properties object (children in props)
@@ -91,7 +83,7 @@ Eval<Ir> containerImpl(Ir props) {
 }
 
 /// Column widget function
-/// Mirrors Haskell Glue.UI.Column.column exactly
+/// Creates Flutter Column from Glue (column props) expressions
 final Ir column = IrNativeFunc(columnImpl);
 
 /// Column implementation - takes properties object
@@ -105,7 +97,7 @@ Eval<Ir> columnImpl(Ir props) {
 }
 
 /// Row widget function
-/// Mirrors Haskell Glue.UI.Row.row exactly
+/// Creates Flutter Row from Glue (row props) expressions
 final Ir row = IrNativeFunc(rowImpl);
 
 /// Row implementation - takes properties object
@@ -119,7 +111,7 @@ Eval<Ir> rowImpl(Ir props) {
 }
 
 /// Padding widget function
-/// Mirrors Haskell Glue.UI.Padding.padding exactly
+/// Creates Flutter Padding from Glue (padding child props) expressions
 final Ir padding = IrNativeFunc(paddingImpl);
 
 /// Padding implementation - takes child, then properties
@@ -143,7 +135,7 @@ Eval<Ir> Function(Ir) paddingWithChild(Ir child) {
 }
 
 /// Center widget function
-/// Mirrors Haskell Glue.UI.Center.center exactly
+/// Creates Flutter Center from Glue (center child) expressions
 final Ir center = IrNativeFunc(centerImpl);
 
 /// Center implementation - takes child
