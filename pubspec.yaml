@@ -6,3 +6,4 @@ environment:
 
 workspace:
   - dart/glue
+  - flutter/glue_flutter

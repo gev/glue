@@ -617,5 +617,69 @@ void main() {
         (value) => expect(value, equals(IrInteger(3))),
       );
     });
+
+    group('NativeFunc Partial Application', () {
+      test('native function single arg returns function', () async {
+        final result = await runCode('((+) 5)');
+        result.match(
+          (error) => fail('Should not be left: $error'),
+          (value) => expect(value, isA<IrNativeFunc>()),
+        );
+      });
+
+      test('native function double args return result', () async {
+        final result1 = await runCode('((+) 5 3)');
+        result1.match(
+          (error) => fail('Should not be left: $error'),
+          (value) => expect(value, equals(IrInteger(8))),
+        );
+
+        final result2 = await runCode('((-) 10 4)');
+        result2.match(
+          (error) => fail('Should not be left: $error'),
+          (value) => expect(value, equals(IrInteger(6))),
+        );
+
+        final result3 = await runCode('((*) 3 7)');
+        result3.match(
+          (error) => fail('Should not be left: $error'),
+          (value) => expect(value, equals(IrInteger(21))),
+        );
+
+        final result4 = await runCode('((/) 15 3)');
+        result4.match(
+          (error) => fail('Should not be left: $error'),
+          (value) => expect(value, equals(IrFloat(5.0))),
+        );
+      });
+
+      test('native function triple args fail', () async {
+        final result1 = await runCode('((+) 5 3 1)');
+        expect(result1.isLeft, isTrue);
+
+        final result2 = await runCode('((-) 10 4 2)');
+        expect(result2.isLeft, isTrue);
+      });
+
+      test('nested partial application works', () async {
+        final result1 = await runCode('(((+) 5) 3)');
+        result1.match(
+          (error) => fail('Should not be left: $error'),
+          (value) => expect(value, equals(IrInteger(8))),
+        );
+
+        final result2 = await runCode('(((+) ((-) 10 2)) 3)');
+        result2.match(
+          (error) => fail('Should not be left: $error'),
+          (value) => expect(value, equals(IrInteger(11))),
+        );
+
+        final result3 = await runCode('(((*) ((+) 2 3)) 4)');
+        result3.match(
+          (error) => fail('Should not be left: $error'),
+          (value) => expect(value, equals(IrInteger(20))),
+        );
+      });
+    });
   });
 }
