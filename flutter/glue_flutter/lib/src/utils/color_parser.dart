@@ -74,26 +74,3 @@ Color? _parseHexColor(String hex) {
   }
   return null;
 }
-
-/// Parse RGB color
-Color? _parseRgbColor(String rgb) {
-  try {
-    final rgbRegex = RegExp(
-      r'rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)',
-    );
-    final match = rgbRegex.firstMatch(rgb.toLowerCase());
-    if (match != null) {
-      final r = int.parse(match.group(1)!).clamp(0, 255);
-      final g = int.parse(match.group(2)!).clamp(0, 255);
-      final b = int.parse(match.group(3)!).clamp(0, 255);
-      final a = match.group(4) != null
-          ? (double.parse(match.group(4)!) * 255).round().clamp(0, 255)
-          : 255;
-
-      return Color.fromARGB(a, r, g, b);
-    }
-  } catch (_) {
-    // Invalid RGB format
-  }
-  return null;
-}
