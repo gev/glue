@@ -35,6 +35,11 @@ These rules apply to any development actions across the entire Glue ecosystem.
 - **Read user fixes before making commits!** - Always review manual changes before committing
 - **Never push to upstream!** - Local commits only, explicit push control required
 
+### Version Control
+- **One point – one task – one commit!** - Each commit addresses exactly one logical change
+- **Simple commit messages!** - Keep commit messages concise and avoid shell-breaking quotes
+- **Moderate descriptions** - Add brief context but avoid overly verbose explanations
+
 ## Application
 
 These rules apply to all specification development activities:
