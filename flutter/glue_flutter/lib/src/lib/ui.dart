@@ -5,17 +5,17 @@ import 'package:glue_flutter/src/lib/ui/widgets/container.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/column.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/row.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/center.dart';
-import 'package:glue_flutter/src/lib/ui/cross_axis_alignment.dart';
-import 'package:glue_flutter/src/lib/ui/main_axis_alignment.dart';
-import 'package:glue_flutter/src/lib/ui/text_align.dart';
-import 'package:glue_flutter/src/lib/ui/font_weight.dart';
-import 'package:glue_flutter/src/lib/ui/color/colors.dart'; // Named colors object
-import 'package:glue_flutter/src/lib/ui/color/rgb.dart'; // RGB function
-import 'package:glue_flutter/src/lib/ui/color/rgba.dart'; // RGBA function
-import 'package:glue_flutter/src/lib/ui/padding/padding_all.dart'; // padding-all function
-import 'package:glue_flutter/src/lib/ui/padding/padding_symmetric.dart'; // padding-symmetric function
-import 'package:glue_flutter/src/lib/ui/padding/padding_only.dart'; // padding-only function
-import 'package:glue_flutter/src/lib/ui/padding/padding_directional.dart'; // padding-directional function
+import 'package:glue_flutter/src/lib/ui/styles/cross_axis_alignment.dart';
+import 'package:glue_flutter/src/lib/ui/styles/main_axis_alignment.dart';
+import 'package:glue_flutter/src/lib/ui/styles/text_align.dart';
+import 'package:glue_flutter/src/lib/ui/styles/font_weight.dart';
+import 'package:glue_flutter/src/lib/ui/styles/colors.dart'; // Named colors object
+import 'package:glue_flutter/src/lib/ui/styles/rgb.dart'; // RGB function
+import 'package:glue_flutter/src/lib/ui/styles/rgba.dart'; // RGBA function
+import 'package:glue_flutter/src/lib/ui/styles/padding_all.dart'; // padding-all function
+import 'package:glue_flutter/src/lib/ui/styles/padding_symmetric.dart'; // padding-symmetric function
+import 'package:glue_flutter/src/lib/ui/styles/padding_only.dart'; // padding-only function
+import 'package:glue_flutter/src/lib/ui/styles/padding_directional.dart'; // padding-directional function
 
 // Note: All exports are handled through the Glue ModuleInfo below.
 // No Dart re-exports to keep the module boundary clean.
