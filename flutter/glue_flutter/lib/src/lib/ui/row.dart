@@ -13,6 +13,6 @@ Eval<Ir> rowImpl(Ir props) {
     return throwError(wrongArgumentType(['object']));
   }
 
-  final rowWidget = GlueRow(props.properties.unlock);
+  final rowWidget = GlueRow(properties: props.properties.unlock);
   return Eval.pure(IrNativeValue(HostValue(rowWidget)));
 }

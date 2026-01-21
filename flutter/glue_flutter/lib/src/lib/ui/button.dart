@@ -13,6 +13,6 @@ Eval<Ir> buttonImpl(Ir props) {
     return throwError(wrongArgumentType(['object']));
   }
 
-  final buttonWidget = GlueButton(props.properties.unlock);
+  final buttonWidget = GlueButton(properties: props.properties.unlock);
   return Eval.pure(IrNativeValue(HostValue(buttonWidget)));
 }

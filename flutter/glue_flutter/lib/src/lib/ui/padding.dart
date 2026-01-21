@@ -22,7 +22,10 @@ Eval<Ir> Function(Ir) paddingWithChild(Ir child) {
       return throwError(wrongArgumentType(['object']));
     }
 
-    final paddingWidget = GluePadding(child, props.properties.unlock);
+    final paddingWidget = GluePadding(
+      child,
+      properties: props.properties.unlock,
+    );
     return Eval.pure(IrNativeValue(HostValue(paddingWidget)));
   };
 }

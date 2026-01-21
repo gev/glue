@@ -13,6 +13,6 @@ Eval<Ir> containerImpl(Ir props) {
     return throwError(wrongArgumentType(['object']));
   }
 
-  final containerWidget = GlueContainer(props.properties.unlock);
+  final containerWidget = GlueContainer(properties: props.properties.unlock);
   return Eval.pure(IrNativeValue(HostValue(containerWidget)));
 }

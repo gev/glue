@@ -13,6 +13,6 @@ Eval<Ir> columnImpl(Ir props) {
     return throwError(wrongArgumentType(['object']));
   }
 
-  final columnWidget = GlueColumn(props.properties.unlock);
+  final columnWidget = GlueColumn(properties: props.properties.unlock);
   return Eval.pure(IrNativeValue(HostValue(columnWidget)));
 }

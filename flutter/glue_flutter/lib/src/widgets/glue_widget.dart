@@ -6,5 +6,5 @@ abstract class GlueWidget extends StatelessWidget {
   /// Properties map containing widget configuration from Glue
   final Map<String, dynamic> properties;
 
-  const GlueWidget(this.properties, {super.key});
+  GlueWidget({this.properties = const {}, super.key});
 }

@@ -19,7 +19,7 @@ T? extractEnumValue<T>(Ir? ir) {
 
 /// Glue Row widget - Flutter implementation of horizontal layout
 class GlueRow extends GlueWidget {
-  const GlueRow(super.properties);
+  GlueRow({super.properties, super.key});
 
   @override
   Widget build(BuildContext context) {

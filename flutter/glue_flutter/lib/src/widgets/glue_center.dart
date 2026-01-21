@@ -6,7 +6,7 @@ import 'glue_widget.dart';
 class GlueCenter extends GlueWidget {
   final IrNativeValue child;
 
-  const GlueCenter(this.child, super.properties);
+  GlueCenter(this.child, {super.properties, super.key});
 
   @override
   Widget build(BuildContext context) {

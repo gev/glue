@@ -38,7 +38,7 @@ Color? extractColorValue(Ir? ir) {
 class GlueText extends GlueWidget {
   final String text;
 
-  const GlueText(this.text, super.properties);
+  GlueText(this.text, {super.properties, super.key});
 
   @override
   Widget build(BuildContext context) {

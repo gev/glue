@@ -22,7 +22,10 @@ Eval<Ir> Function(Ir) textWithContent(Ir content) {
       return throwError(wrongArgumentType(['object']));
     }
 
-    final textWidget = GlueText(content.value, props.properties.unlock);
+    final textWidget = GlueText(
+      content.value,
+      properties: props.properties.unlock,
+    );
     return Eval.pure(IrNativeValue(HostValue(textWidget)));
   };
 }

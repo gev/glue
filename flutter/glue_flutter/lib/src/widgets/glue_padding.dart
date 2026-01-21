@@ -7,7 +7,7 @@ import '../utils/edge_insets_parser.dart';
 class GluePadding extends GlueWidget {
   final IrNativeValue child;
 
-  const GluePadding(this.child, super.properties);
+  GluePadding(this.child, {super.properties, super.key});
 
   @override
   Widget build(BuildContext context) {
