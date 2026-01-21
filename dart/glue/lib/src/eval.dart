@@ -422,9 +422,6 @@ bool isCallable(Ir value) {
   };
 }
 
-/// Internal helper (deprecated, use isCallable)
-bool _isCallable(Ir value) => isCallable(value);
-
 /// Full application of a closure
 Eval<Ir> _applyFullClosure(
   List<String> params,

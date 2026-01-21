@@ -1,6 +1,15 @@
-# Development Rules for Glue Specification
+# Development Rules for Glue
 
-This document outlines the most important rules and guidelines for developing and maintaining the Glue language specification.
+This document outlines the most important rules and guidelines for developing and maintaining all aspects of the Glue programming language, including:
+
+- Glue language specification
+- Glue implementation
+- Glue library implementation
+- Glue UI framework
+- Glue UI implementations
+- Glue anything else
+
+These rules apply to any development actions across the entire Glue ecosystem.
 
 ## Core Development Principles
 
@@ -11,6 +20,8 @@ This document outlines the most important rules and guidelines for developing an
 
 ### Communication and Coordination
 - **Don't do anything until I ask!** - Wait for explicit direction before proceeding
+- **Don't plan anything till not asked!** - Only create plans for explicitly requested tasks
+- **No unsolicited initiative!** - Only execute explicit commands, no proactive suggestions or actions
 - **Get free to use emoji ;)** - Emojis are encouraged for clarity and personality
 
 ### Implementation Fidelity
@@ -23,6 +34,11 @@ This document outlines the most important rules and guidelines for developing an
 - **Never touch my fixes!** - Respect and preserve existing corrections
 - **Read user fixes before making commits!** - Always review manual changes before committing
 - **Never push to upstream!** - Local commits only, explicit push control required
+
+### Version Control
+- **One point – one task – one commit!** - Each commit addresses exactly one logical change
+- **Simple commit messages!** - Keep commit messages concise and avoid shell-breaking quotes
+- **Moderate descriptions** - Add brief context but avoid overly verbose explanations
 
 ## Application
 

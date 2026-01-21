@@ -1,8 +1,17 @@
-# Framework-Agnostic UI Module (`ffi.ui`)
+# Framework-Agnostic UI Module (`ui`)
+
+## Implementation Status
+
+### ✅ **Flutter Implementation Complete**
+- **Status**: Production-ready Flutter implementation completed
+- **Location**: `flutter/glue_flutter/`
+- **Tests**: 20/20 passing
+- **Architecture**: Perfectly organized with `styles/` and `widgets/` folders
+- **Type Safety**: Complete with Ir types throughout
 
 ## Overview
 
-The `ffi.ui` module provides a framework-agnostic API for creating user interfaces in Glue. The same Glue code can produce UI components across different frameworks (Flutter, React, Vue, etc.) by using framework-specific implementations of the same module interface.
+The `ui` module provides a framework-agnostic API for creating user interfaces in Glue. The same Glue code can produce UI components across different frameworks (Flutter, React, Vue, etc.) by using framework-specific implementations of the same module interface.
 
 ## Core Concept
 
@@ -10,20 +19,20 @@ The `ffi.ui` module provides a framework-agnostic API for creating user interfac
 
 ```clojure
 ;; Same Glue code works everywhere
-(import "ffi.ui")
+(import "ui")
 
-(container :children [
-  (text "Hello World" :color "blue" :size 24)
+(container :children (
+  (text "Hello World" :color colors.blue :size 24)
   (button :label "Click Me" :on-tap handle-click)
-])
+))
 ```
 
 ## Module Interface
 
 ### Module Name
-- **Import name**: `"ffi.ui"`
+- **Import name**: `"ui"`
 - **Purpose**: Universal UI component library
-- **Framework implementations**: Flutter, React, Vue, Web Components, etc.
+- **Framework implementations**: Flutter, SwiftUI, JetPack Compose, React, Vue, Web Components, etc.
 
 ### Core Functions
 
@@ -36,10 +45,10 @@ Creates text display elements with optional styling.
 
 ;; With styling
 (text "Styled Text"
-  :color "blue"
-  :size 18
-  :weight "bold"
-  :align "center")
+  (:color colors.blue
+   :size 18
+   :weight font-weight.bold
+   :align text-align.center))
 ```
 
 **Parameters:**
@@ -82,7 +91,7 @@ Creates layout containers for organizing child components.
 
 ;; Horizontal layout
 (container :direction "horizontal"
-  :children [...]
+  :children (...)
   :spacing 16
   :align "center")
 ```
@@ -94,30 +103,7 @@ Creates layout containers for organizing child components.
 - `:align`: Child alignment ("start", "center", "end", "stretch")
 - `:padding`: Container padding
 
-## Framework Implementations
 
-### Flutter Implementation
-The initial implementation uses Flutter widgets:
-
-```dart
-// text -> Text widget
-// button -> ElevatedButton widget
-// container -> Column/Row widgets
-```
-
-### React Implementation (Future)
-```jsx
-// text -> <span> element
-// button -> <button> element
-// container -> <div> with flexbox
-```
-
-### Vue Implementation (Future)
-```vue
-<!-- text -> <span> component -->
-<!-- button -> <button> component -->
-<!-- container -> <div> with flex layout -->
-```
 
 ## Design Principles
 
@@ -146,17 +132,38 @@ User interactions trigger Glue callback functions, maintaining the functional pr
 
 ## Styling Approach
 
-### Unified Parameter System
-Common styling properties work across frameworks:
+### Enum Union Objects (Recommended)
+Framework implementations provide **enum union objects** for type-safe access to styling constants:
 
 ```clojure
-;; Colors work everywhere
+;; Direct enum access (type-safe, preferred)
+(text "Hello World"
+  (:color colors.blue)           ;; Enum object
+  (:weight font-weight.bold)     ;; Enum object
+  (:align text-align.center))    ;; Enum object
+
+;; Layout with enum objects
+(column
+  (:cross-axis-alignment cross-axis-alignment.center)
+  (:main-axis-alignment main-axis-alignment.spaceEvenly)
+  (children [...]))
+```
+
+### Unified Parameter System
+For backward compatibility, string parsing is still supported:
+
+```clojure
+;; String parsing (still works, but less type-safe)
 :color "red"        ;; Named color
 :color "#FF0000"    ;; Hex color
 :color "rgb(255,0,0)" ;; RGB notation
 
 ;; Sizes are framework-adapted
-:size 16            ;; Points on mobile, pixels on web
+:size 16            ;; Points on mobile, pixels for web
+
+;; Legacy string enums
+:weight "bold"      ;; String parsing
+:align "center"     ;; String parsing
 ```
 
 ### Framework-Specific Extensions
@@ -195,7 +202,7 @@ New components can be added to the module:
 ```clojure
 ;; Framework implementations define new functions
 (icon :name "user" :size 24)
-(card :title "Card Title" :children [...])
+(card :title "Card Title" :children (...)
 ```
 
 ### Theming
@@ -220,29 +227,7 @@ Single Glue codebase can target mobile (Flutter), web (React), and desktop (Flut
 ### Component Libraries
 Third-party component libraries can implement the `ffi.ui` interface for custom components.
 
-## Implementation Architecture
 
-### Module Structure
-```
-ffi.ui/
-├── core/           # Common interfaces and types
-├── flutter/        # Flutter implementation
-├── react/          # React implementation
-├── vue/            # Vue implementation
-└── web/            # Web Components implementation
-```
-
-### Function Registration
-Each framework registers its component implementations:
-
-```dart
-// Flutter registration
-final ui = nativeModule('ffi.ui', [
-  ('text', IrNative(NativeFunc(flutterText))),
-  ('button', IrNative(NativeFunc(flutterButton))),
-  ('container', IrNative(NativeFunc(flutterContainer))),
-]);
-```
 
 ## Future Extensions
 
