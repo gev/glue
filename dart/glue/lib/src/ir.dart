@@ -166,9 +166,9 @@ class IrObject extends Ir {
   @override
   String toString() {
     final entries = properties.entries
-        .map((entry) => '${entry.key}: ${entry.value}')
-        .join(', ');
-    return '{$entries}';
+        .map((entry) => ':${entry.key} ${entry.value}')
+        .join(' ');
+    return '($entries)';
   }
 
   @override

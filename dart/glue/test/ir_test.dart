@@ -82,7 +82,7 @@ void main() {
 
       expect(ir1, equals(ir2));
       expect(ir1, isNot(equals(ir3)));
-      expect(ir1.toString(), equals('{name: "Alice", age: 30}'));
+      expect(ir1.toString(), equals('(:name "Alice" :age 30)'));
     });
 
     test('IrVoid equality and toString', () {
