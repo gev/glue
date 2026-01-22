@@ -17,31 +17,27 @@ class CodeEditorPane extends StatelessWidget {
       color: Theme.of(context).colorScheme.surface,
       child: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            color: Theme.of(context).colorScheme.primaryContainer,
-            child: Row(
-              children: [
-                Text(
-                  'Glue Code Editor',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const Spacer(),
-                if (isEvaluating)
+          if (isEvaluating)
+            Container(
+              padding: const EdgeInsets.all(8),
+              color: Theme.of(context).colorScheme.primaryContainer,
+              child: Row(
+                children: [
+                  const Spacer(),
                   const SizedBox(
                     width: 16,
                     height: 16,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   ),
-              ],
+                ],
+              ),
             ),
-          ),
           Expanded(
             child: TextField(
               controller: codeController,
               maxLines: null,
               expands: true,
-              style: const TextStyle(fontFamily: 'monospace', fontSize: 14),
+              style: const TextStyle(fontFamily: 'monospace', fontSize: 20),
               decoration: const InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.all(16),
