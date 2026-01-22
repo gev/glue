@@ -7,6 +7,7 @@
 - [ ] **Read [flutter/glue_flutter/GLUE_BINDINGS_HOWTO.md](../../flutter/glue_flutter/GLUE_BINDINGS_HOWTO.md)** - Implementation guide
 - [ ] **Read [dart/glue/README.md](../../dart/glue/README.md)** - Dart Glue interpreter API and evaluation workflow
 - [ ] **Read [pub.dev/packages/code_forge](https://pub.dev/packages/code_forge)** - Code editor package documentation
+- [ ] **Read [code_forge API docs](https://pub.dev/documentation/code_forge/latest/)** - Complete API documentation (use `curl` or `wget` to fetch if needed)
 
 **⚠️ IMPORTANT: All prerequisites above must be read and understood before starting any work on glue_demo. These are required reading for every implementation session, not one-time tasks.**
 
