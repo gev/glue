@@ -338,7 +338,7 @@ final uiCode = '''
   (column
     (text-field :label "Username" :validator validateUsername)
     (text-field :label "Password" :validator validatePassword)
-    (button :label "Submit" :action submitLogin)))
+    (button :label "Submit" :on-tap submitLogin)))
 ''';
 
 // Evaluates to Flutter widgets
