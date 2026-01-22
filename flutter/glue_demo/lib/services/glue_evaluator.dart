@@ -30,8 +30,7 @@ class GlueEvaluator {
           final env = envFromModules([ui]);
           print('✅ Environment created with UI module: $ui');
 
-          final runtime = Runtime.initial(env);
-          final evalResult = await runEval(eval(irTree), runtime);
+          final evalResult = await runEvalSimple(eval(irTree), env);
 
           return evalResult.match(
             (error) => throw Exception('Evaluation error: $error'),
