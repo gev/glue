@@ -11,6 +11,17 @@ This document outlines the most important rules and guidelines for developing an
 
 These rules apply to any development actions across the entire Glue ecosystem.
 
+## Prerequisites
+
+### Required Reading
+
+Before contributing to Glue development, you must read and understand the following documents to ensure consistent understanding of Glue's unique features and proper documentation practices:
+
+- **[Glue Language Syntax Specification](../spec/syntax.md)** - Read the complete syntax specification and EBNF grammar to understand Glue's Lisp-inspired syntax and avoid confusion with other LISP dialects like Scheme and Clojure
+- **[Abstract Syntax Tree (AST) Specification](../spec/ast.md)** - Understand the AST data structure and how source code is represented after parsing
+- **[Intermediate Representation (IR) Specification](../spec/ir.md)** - Understand the IR structure used for execution and compilation
+- **[Markdown Style Guide for Glue Specifications](../context/markdown-style-guide.md)** - Read the rules for consistent markdown formatting, syntax highlighting, and documentation standards
+
 ## Core Development Principles
 
 ### Process Discipline
