@@ -1,12 +1,14 @@
 # Glue Demo Implementation Plan
 
 ## Prerequisites
-- [x] **Read and understand [context/development-rules.md](../development-rules.md)** - All implementation must follow Glue development rules
-- [x] Read [context/ui-module-specification.md](../ui-module-specification.md) - Framework-agnostic UI API specification
-- [x] Read [flutter/glue_flutter/README.md](../../flutter/glue_flutter/README.md) - Flutter bindings documentation
-- [x] Read [flutter/glue_flutter/GLUE_BINDINGS_HOWTO.md](../../flutter/glue_flutter/GLUE_BINDINGS_HOWTO.md) - Implementation guide
-- [ ] Read [dart/glue/README.md](../../dart/glue/README.md) - Dart Glue interpreter documentation
-- [ ] Read [pub.dev/packages/code_forge](https://pub.dev/packages/code_forge) - Code editor package documentation
+- [ ] **Read and understand [context/development-rules.md](../development-rules.md)** - All implementation must follow Glue development rules
+- [ ] **Read [context/ui-module-specification.md](../ui-module-specification.md)** - Framework-agnostic UI API specification
+- [ ] **Read [flutter/glue_flutter/README.md](../../flutter/glue_flutter/README.md)** - Flutter bindings documentation
+- [ ] **Read [flutter/glue_flutter/GLUE_BINDINGS_HOWTO.md](../../flutter/glue_flutter/GLUE_BINDINGS_HOWTO.md)** - Implementation guide
+- [ ] **Read [dart/glue/README.md](../../dart/glue/README.md)** - Dart Glue interpreter documentation
+- [ ] **Read [pub.dev/packages/code_forge](https://pub.dev/packages/code_forge)** - Code editor package documentation
+
+**⚠️ IMPORTANT: All prerequisites above must be read and understood before starting any work on glue_demo. These are required reading for every implementation session, not one-time tasks.**
 
 ## Overview
 Create a Flutter desktop application that demonstrates dynamic UI creation using the Glue programming language. The application will feature a split-pane interface with a code editor on the left and a live UI renderer on the right, showcasing the `ffi.ui` module capabilities through real-time Glue code evaluation.
