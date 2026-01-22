@@ -49,8 +49,8 @@ class _GlueDemoHomePageState extends State<GlueDemoHomePage> {
   :size 24
   :weight font-weight.bold))
 
-;; Try these examples:
-;; (text "Hello" (:color "#FF0000" :size 20))
+;; Try these examples (uncomment one at a time):
+;; (text "Hello World" (:color "#FF0000" :size 20))
 ;; (button :label "Click me!")
 ;; (column :children ((text "Item 1") (text "Item 2")))
 ''';
