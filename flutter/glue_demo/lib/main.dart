@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:code_forge/code_forge.dart';
 
 void main() {
   runApp(const GlueDemoApp());
@@ -182,20 +183,7 @@ class _GlueDemoHomePageState extends State<GlueDemoHomePage> {
                       ],
                     ),
                   ),
-                  Expanded(
-                    child: TextField(
-                      controller: codeController,
-                      maxLines: null,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.all(8),
-                      ),
-                      style: const TextStyle(
-                        fontFamily: 'monospace',
-                        fontSize: 14,
-                      ),
-                    ),
-                  ),
+                  Expanded(child: CodeForge()),
                 ],
               ),
             ),

@@ -96,6 +96,11 @@ Organize classes/types/functions in modules in the following order from top to b
     glue:        # No path needed for workspace packages
     glue_flutter: # Workspace resolution handles local development
   ```
+- **Package installation**: Use `flutter pub add` for Flutter packages, `dart pub add` for pure Dart packages
+  ```bash
+  flutter pub add code_forge      # Flutter packages
+  dart pub add fast_ui           # Pure Dart packages
+  ```
 
 ### Cross-Language Consistency
 
