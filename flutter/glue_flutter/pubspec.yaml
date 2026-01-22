@@ -16,7 +16,6 @@ dependencies:
   flutter:
     sdk: flutter
   glue:
-    path: ../../dart/glue
 
 dev_dependencies:
   flutter_test:
