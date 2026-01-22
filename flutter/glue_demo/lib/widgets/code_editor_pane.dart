@@ -40,15 +40,13 @@ class _CodeEditorPaneState extends State<CodeEditorPane> {
                 ),
               ),
             Expanded(
-              child: TextField(
-                controller: widget.codeController,
-                maxLines: null,
-                expands: true,
-                style: const TextStyle(fontFamily: 'monospace', fontSize: 20),
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.all(16),
-                ),
+              child: CodeEditor(
+                text: widget.codeController.text,
+                onChanged: (text) {
+                  widget.codeController.text = text;
+                },
+                fontSize: 20,
+                fontFamily: 'monospace',
               ),
             ),
           ],
