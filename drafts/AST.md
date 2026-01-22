@@ -86,7 +86,6 @@ Represents property objects (dictionaries/maps).
 **Examples:**
 ```closure
 (:name "Alice" :age 30)
-(:)
 (:x (+ 1 2) :y (* 3 4))
 ```
 

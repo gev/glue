@@ -83,7 +83,7 @@ Glue implements **universal currying** - all functions follow a single-argument 
 - **Partial application** returns a new function expecting the remaining arguments
 
 ### Currying Examples
-```glue
+```closure
 ;; Multi-arg function (syntactic sugar)
 (lambda (a b c) (+ a b c))
 

@@ -55,7 +55,7 @@ data Address = Address {street :: Text, city :: Text}
 ```
 
 ### Basic Property Access
-```glue
+```closure
 ;; Create host objects
 (def bob (person :name "Bob" :age 25))
 (def addr (address :street "123 Main St" :city "Springfield"))
@@ -68,7 +68,7 @@ addr.city       ;; → "Springfield"
 ```
 
 ### Nested Property Access
-```glue
+```closure
 ;; Create nested relationship
 (def bob (person :name "Bob" :age 25 :address addr))
 
@@ -83,7 +83,7 @@ company.hq.state        ;; → "IL"
 ```
 
 ### Property Access on Optional Values
-```glue
+```closure
 ;; Handle optional nested objects
 (def person-no-address (person :name "Alice" :age 30))
 person-no-address.address   ;; → Error: property not found

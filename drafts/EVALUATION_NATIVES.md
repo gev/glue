@@ -50,7 +50,7 @@ data PersonWithAddress = Person {name :: Text, age :: Int, address :: Maybe Addr
 ```
 
 ### Object Creation and Property Access
-```glue
+```closure
 ;; Create host objects using constructor functions
 (def bob (person :name "Bob" :age 25))
 (def addr (address :street "123 Main St" :city "Springfield"))
@@ -63,7 +63,7 @@ addr.city       ;; → "Springfield"
 ```
 
 ### Property Modification
-```glue
+```closure
 ;; Modify existing properties
 (set bob.age 26)        ;; → 26
 (set bob.name "Robert") ;; → "Robert"
@@ -76,7 +76,7 @@ addr.city   ;; → "Boston"
 ```
 
 ### Nested Object Relationships
-```glue
+```closure
 ;; Create objects with nested relationships
 (def addr (address :street "123 Main St" :city "Springfield"))
 (def bob (person :name "Bob" :age 25 :address addr))
@@ -95,7 +95,7 @@ bob.address.street      ;; → "456 Oak Ave"
 ```
 
 ### Complex Object Manipulation
-```glue
+```closure
 ;; Multiple sequential operations
 (def addr (address :street "123 Main St" :city "Springfield"))
 (def bob (person :name "Bob" :age 25 :address addr))
