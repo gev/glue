@@ -5,7 +5,7 @@
 - [ ] **Read [context/ui-module-specification.md](../ui-module-specification.md)** - Framework-agnostic UI API specification
 - [ ] **Read [flutter/glue_flutter/README.md](../../flutter/glue_flutter/README.md)** - Flutter bindings documentation
 - [ ] **Read [flutter/glue_flutter/GLUE_BINDINGS_HOWTO.md](../../flutter/glue_flutter/GLUE_BINDINGS_HOWTO.md)** - Implementation guide
-- [ ] **Read [dart/glue/README.md](../../dart/glue/README.md)** - Dart Glue interpreter documentation
+- [ ] **Read [dart/glue/README.md](../../dart/glue/README.md)** - Dart Glue interpreter API and evaluation workflow
 - [ ] **Read [pub.dev/packages/code_forge](https://pub.dev/packages/code_forge)** - Code editor package documentation
 
 **⚠️ IMPORTANT: All prerequisites above must be read and understood before starting any work on glue_demo. These are required reading for every implementation session, not one-time tasks.**
@@ -50,10 +50,14 @@ Create a Flutter desktop application that demonstrates dynamic UI creation using
 - [ ] Implement code validation and basic syntax checking (basic auto-evaluation exists)
 
 ### Glue Evaluation Engine
-- [ ] Integrate Dart Glue interpreter for code evaluation
-- [ ] Load `ffi.ui` module into evaluation environment
+- [ ] Integrate Dart Glue interpreter for code evaluation using `runEvalSimple()` pattern
+- [ ] **Use `envFromModules([modules])` for environment creation** (see `runCode` in `dart/glue/test/eval_test.dart`)
+- [ ] Create proper UI modules following stdlib pattern (not manual bindings)
+- [ ] Load UI modules into evaluation environment using module system
 - [ ] Implement safe evaluation with timeout protection
 - [ ] Create evaluation result handling (success/error states)
+
+**⚠️ CRITICAL: Do NOT use manual environment bindings! Use `envFromModules([uiModules])` following the stdlib pattern shown in `dart/glue/test/eval_test.dart` `runCode` function.**
 
 ### Dynamic UI Rendering
 - [ ] Convert Glue evaluation results to Flutter widgets
