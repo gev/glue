@@ -25,7 +25,7 @@ class Properties {
 
   // Layout properties
   List<Widget> get children => extractChildren(_props['children']) ?? [];
-  Widget? get child => children.isNotEmpty ? children.first : null;
+  Widget? get child => extractChild(_props['child']);
   MainAxisAlignment get mainAlign =>
       extractMainAxisAlignment(_props['main-axis-align']) ??
       MainAxisAlignment.start;
