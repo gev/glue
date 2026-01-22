@@ -84,7 +84,9 @@ Material Design color constants:
       (:color colors.blue
        :weight font-weight.bold
        :align text-align.center)))
+```
 
+```closure
 ;; Button with color enum
 (button
   :label "Click Me"
