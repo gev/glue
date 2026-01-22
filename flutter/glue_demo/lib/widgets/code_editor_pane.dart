@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:code_forge/code_forge.dart';
 
 /// Left pane widget containing the Glue code editor
 class CodeEditorPane extends StatelessWidget {
@@ -37,7 +36,18 @@ class CodeEditorPane extends StatelessWidget {
               ],
             ),
           ),
-          Expanded(child: CodeForge()),
+          Expanded(
+            child: TextField(
+              controller: codeController,
+              maxLines: null,
+              expands: true,
+              style: const TextStyle(fontFamily: 'monospace', fontSize: 14),
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.all(16),
+              ),
+            ),
+          ),
         ],
       ),
     );
