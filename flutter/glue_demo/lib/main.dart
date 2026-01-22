@@ -61,7 +61,9 @@ class _GlueDemoHomePageState extends State<GlueDemoHomePage> {
 ;; Try these examples (uncomment one at a time):
 ;; (text :content "Hello World" :color "#FF0000" :size 20)
 ;; (button :label "Click me!")
-;; (column :children ((text :content "Item 1") (text :content "Item 2")))
+;; (column :children (
+;;    (text :content "Item 1") 
+;;    (text :content "Item 2")))
 ''';
 
   @override
