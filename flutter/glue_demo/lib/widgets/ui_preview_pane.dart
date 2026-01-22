@@ -39,7 +39,7 @@ class UiPreviewPane extends StatelessWidget {
                 ),
               )
             : renderedWidget != null
-            ? SingleChildScrollView(child: renderedWidget)
+            ? SingleChildScrollView(child: Center(child: renderedWidget))
             : Center(child: Text('No UI to display')),
       ),
     );
