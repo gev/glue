@@ -12,6 +12,7 @@ class Properties {
   Properties.empty() : _props = {};
 
   // Button properties
+  String? get label => extractString(_props['label']);
   VoidCallback? get onTap => extractVoidCallback(_props['on-tap']);
   bool get disabled => extractBool(_props['disabled']) ?? false;
 
