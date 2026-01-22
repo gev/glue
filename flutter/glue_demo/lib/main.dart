@@ -1,27 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:code_forge/code_forge.dart';
-import 'package:glue/ast.dart';
 import 'package:glue/ir.dart';
 import 'package:glue/parser.dart';
 import 'package:glue/eval.dart';
-import 'package:glue/env.dart';
-import 'package:glue/either.dart';
+import 'package:glue/runtime.dart';
+import 'package:glue/module.dart';
 import 'package:glue_flutter/glue_flutter.dart';
-import 'package:glue_flutter/src/lib/ui/widgets/text.dart' as ui_text;
-import 'package:glue_flutter/src/lib/ui/widgets/button.dart' as ui_button;
-import 'package:glue_flutter/src/lib/ui/widgets/container.dart' as ui_container;
-import 'package:glue_flutter/src/lib/ui/widgets/column.dart' as ui_column;
-import 'package:glue_flutter/src/lib/ui/widgets/row.dart' as ui_row;
-import 'package:glue_flutter/src/lib/ui/widgets/center.dart' as ui_center;
-import 'package:glue_flutter/src/lib/ui/styles/colors.dart' as ui_colors;
-import 'package:glue_flutter/src/lib/ui/styles/font_weight.dart'
-    as ui_font_weight;
-import 'package:glue_flutter/src/lib/ui/styles/text_align.dart'
-    as ui_text_align;
-import 'package:glue_flutter/src/lib/ui/styles/cross_axis_alignment.dart'
-    as ui_cross_axis;
-import 'package:glue_flutter/src/lib/ui/styles/main_axis_alignment.dart'
-    as ui_main_axis;
 
 void main() {
   runApp(const GlueDemoApp());
@@ -108,61 +92,38 @@ class _GlueDemoHomePageState extends State<GlueDemoHomePage> {
     });
 
     try {
-      // 1. Parse Glue code to AST
-      print('📝 Step 1: Parsing Glue code...');
+      // Follow runCode pattern from dart/glue/test/eval_test.dart
       final parseResult = parseGlue(code.trim());
-      final ast = parseResult.match(
-        (error) {
-          print('❌ Parse error: $error');
-          throw Exception('Parse error: $error');
-        },
-        (ast) {
+      final result = parseResult.match(
+        (parseError) => throw Exception('Parse error: $parseError'),
+        (ast) async {
           print('✅ Parse successful: $ast');
-          return ast;
+
+          final irTree = compile(ast);
+          print('✅ Compilation successful: $irTree');
+
+          // Create environment with UI module (following stdlib pattern)
+          final env = envFromModules([ui]);
+          print('✅ Environment created with UI module: $ui');
+
+          final runtime = Runtime.initial(env);
+          final evalResult = await runEval(eval(irTree), runtime);
+
+          return evalResult.match(
+            (error) => throw Exception('Evaluation error: $error'),
+            (value) {
+              final (resultIr, _) = value;
+              print('✅ Evaluation successful: $resultIr');
+              return resultIr;
+            },
+          );
         },
       );
 
-      // 2. Compile AST to IR
-      print('🔧 Step 2: Compiling AST to IR...');
-      final ir = compile(ast);
-      print('✅ Compilation successful: $ir');
+      final resultIr = await result;
 
-      // 3. Create environment with UI functions
-      print('🏗️ Step 3: Creating evaluation environment...');
-      // Add UI functions directly to environment for demo purposes
-      final bindings = <(String, Ir)>[
-        ('text', IrNativeFunc(text)),
-        ('button', IrNativeFunc(button)),
-        ('container', IrNativeFunc(container)),
-        ('column', IrNativeFunc(column)),
-        ('row', IrNativeFunc(row)),
-        ('center', IrNativeFunc(center)),
-        ('colors', IrNativeValue(hostValue(colors))),
-        ('font-weight', IrNativeValue(hostValue(fontWeight))),
-        ('text-align', IrNativeValue(hostValue(textAlign))),
-        ('cross-axis-alignment', IrNativeValue(hostValue(crossAxisAlignment))),
-        ('main-axis-alignment', IrNativeValue(hostValue(mainAxisAlignment))),
-      ];
-      final initialEnv = fromFrame(frameFromList(bindings));
-      print('✅ Environment created with ${bindings.length} UI bindings');
-
-      // 4. Evaluate IR in the environment
-      print('⚡ Step 4: Evaluating IR...');
-      final evalResult = await runEvalSimple(eval(ir), initialEnv);
-
-      final (resultIr, _) = evalResult.match(
-        (error) {
-          print('❌ Evaluation error: $error');
-          throw Exception('Evaluation error: $error');
-        },
-        (result) {
-          print('✅ Evaluation successful: $result');
-          return result;
-        },
-      );
-
-      // 5. Extract Flutter widget from evaluation result
-      print('🎨 Step 5: Extracting widget from result...');
+      // Extract Flutter widget from evaluation result
+      print('🎨 Extracting widget from result...');
       final widget = _extractWidgetFromIr(resultIr);
       print('✅ Widget extraction complete: ${widget.runtimeType}');
 
