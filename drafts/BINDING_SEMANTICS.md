@@ -11,13 +11,13 @@ Glue provides sophisticated variable binding semantics with clear distinctions b
 **Purpose**: Creates new bindings in the current lexical environment.
 
 #### Simple Symbols
-```closure
+```clojure
 (def x 42)        ;; Creates local variable x = 42
 (def y "hello")   ;; Creates local variable y = "hello"
 ```
 
 #### Dotted Symbols (Object Extension)
-```closure
+```clojure
 (def obj.a 1)     ;; Creates local obj = {:a 1}
 (def obj.b 2)     ;; Extends local obj = {:a 1, :b 2}
 ```
@@ -33,12 +33,12 @@ Glue provides sophisticated variable binding semantics with clear distinctions b
 **Purpose**: Modifies existing variables in the global environment.
 
 #### Simple Symbols
-```closure
+```clojure
 (set x 100)       ;; Updates global variable x to 100
 ```
 
 #### Dotted Symbols (Property Setting)
-```closure
+```clojure
 (set obj.field value)  ;; Updates global obj.field
 ```
 
@@ -53,12 +53,12 @@ Glue provides sophisticated variable binding semantics with clear distinctions b
 **Purpose**: Brings module exports into the current lexical environment.
 
 #### Simple Modules
-```closure
+```clojure
 (import math.x)   ;; Creates local math = (:x module)
 ```
 
 #### Dotted Modules
-```closure
+```clojure
 (import math.x.y) ;; Creates hierarchical local structure math = (:x (:y module))
 ```
 
@@ -72,7 +72,7 @@ Glue provides sophisticated variable binding semantics with clear distinctions b
 
 ### Lexical vs Dynamic Scope
 
-```closure
+```clojure
 ;; Global scope
 (def global-obj (:a 1))
 
@@ -90,7 +90,7 @@ global-obj                ;; → {:a 1, :c 3} (global mutation)
 
 ### Shadowing Behavior
 
-```closure
+```clojure
 (def x 1)                 ;; Global x = 1
 
 (lambda ()
@@ -105,7 +105,7 @@ x                          ;; → 1 (global still exists)
 
 ### Pattern 1: Global Object Building with `set`
 
-```closure
+```clojure
 (def config (:debug false))
 (set config.logging.level "info")    ;; Requires config to exist
 (set config.database.host "localhost")
@@ -114,7 +114,7 @@ x                          ;; → 1 (global still exists)
 
 ### Pattern 2: Local Object Extension with `def`
 
-```closure
+```clojure
 (lambda (base-config)
   (def base-config.timeout 30)       ;; Local extension
   (def base-config.retries 3)        ;; More local extensions
@@ -125,7 +125,7 @@ x                          ;; → 1 (global still exists)
 
 ### Pattern 3: Module Composition with `import`
 
-```closure
+```clojure
 (import math.x)        ;; Local binding: x = math.x
 (import math.y)        ;; Local binding: y = math.y
 (x.cos 0.5)           ;; Use local x
@@ -155,21 +155,21 @@ x                          ;; → 1 (global still exists)
 ## Error Conditions
 
 ### `def` Errors
-```closure
+```clojure
 (def x.y 1)      ;; OK - creates local object
 (def nonexistent.field 2)  ;; OK - creates new local object
 ;; No errors - always succeeds by creating local bindings
 ```
 
 ### `set` Errors
-```closure
+```clojure
 (set nonexistent 1)        ;; ERROR: unbound variable
 (set nonexistent.field 1)  ;; ERROR: object doesn't exist
 ;; No other errors - set accepts DottedSymbol directly
 ```
 
 ### `import` Errors
-```closure
+```clojure
 (import nonexistent)       ;; ERROR: module not found
 ;; No other errors - modules are always available once imported
 ```
@@ -178,7 +178,7 @@ x                          ;; → 1 (global still exists)
 
 ### Functional Object Extension
 
-```closure
+```clojure
 (def create-extended-config
   (lambda (base)
     (lambda ()
@@ -193,7 +193,7 @@ x                          ;; → 1 (global still exists)
 
 ### Module Namespace Management
 
-```closure
+```clojure
 ;; Selective importing
 (import math.x (cos sin as trig-functions))
 trig-functions.cos  ;; → cos function
@@ -205,7 +205,7 @@ trig.cos  ;; → cos function
 
 ### Hybrid Data/Code Composition
 
-```closure
+```clojure
 ;; Mix data and imported functions
 (def ui (:theme "dark"
          :components (:button math.x :input math.y)))

@@ -20,7 +20,7 @@
 ## Examples
 
 ### Simple Lambda
-```closure
+```clojure
 (lambda (x) (* x x))
 ```
 **Process:**
@@ -30,7 +30,7 @@
 4. Result: Closure object
 
 ### Multiple Parameters
-```closure
+```clojure
 (lambda (a b) (+ a b))
 ```
 **Process:**
@@ -40,7 +40,7 @@
 4. Result: Closure object
 
 ### No Parameters
-```closure
+```clojure
 (lambda () "hello")
 ```
 **Process:**
@@ -54,7 +54,7 @@
 ### Lexical Scoping
 Closures capture variables from their definition scope:
 
-```closure
+```clojure
 (def multiplier 2)
 (def make-multiplier
   (lambda (x) (lambda (y) (* x y multiplier))))
@@ -73,7 +73,7 @@ The captured environment includes all accessible variables at definition time.
 
 Lambda-created closures are applied using normal function call syntax:
 
-```closure
+```clojure
 ((lambda (x) (* x 2)) 5)  ; → 10
 ```
 
@@ -82,7 +82,7 @@ Lambda-created closures are applied using normal function call syntax:
 ### Positional Parameters
 Parameters are bound positionally during application:
 
-```closure
+```clojure
 (def add (lambda (a b) (+ a b)))
 (add 3 4)  ; a=3, b=4 → 7
 ```

@@ -30,7 +30,7 @@ Object evaluation processes key-value mappings by evaluating all property values
 
 ## Object Evaluation Examples
 
-```closure
+```clojure
 ;; Simple object
 (:name "Alice" :age 25)
 ;; → Object [("name", String "Alice"), ("age", Number 25)]
@@ -55,7 +55,7 @@ data Address = Address {street :: Text, city :: Text}
 ```
 
 ### Basic Property Access
-```closure
+```clojure
 ;; Create host objects
 (def bob (person :name "Bob" :age 25))
 (def addr (address :street "123 Main St" :city "Springfield"))
@@ -68,7 +68,7 @@ addr.city       ;; → "Springfield"
 ```
 
 ### Nested Property Access
-```closure
+```clojure
 ;; Create nested relationship
 (def bob (person :name "Bob" :age 25 :address addr))
 
@@ -83,7 +83,7 @@ company.hq.state        ;; → "IL"
 ```
 
 ### Property Access on Optional Values
-```closure
+```clojure
 ;; Handle optional nested objects
 (def person-no-address (person :name "Alice" :age 30))
 person-no-address.address   ;; → Error: property not found
@@ -166,13 +166,13 @@ evalObject objMap = do
 ## Object Operations
 
 ### Property Access
-```closure
+```clojure
 (:x 1 :y 2).x  ;; → 1
 (:x 1 :y 2).z  ;; Error: PropertyNotFound
 ```
 
 ### Object Construction
-```closure
+```clojure
 (def obj (:a 1 :b 2))  ;; Create object
 (set obj.c 3)          ;; Add property
 ```

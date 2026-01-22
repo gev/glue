@@ -7,7 +7,7 @@ This document provides guidelines for consistent markdown formatting and syntax 
 Use the following language identifiers for code blocks:
 
 ### Primary Languages
-- **`closure`** - Glue language code examples
+- **`clojure`** - Glue language code examples
 - **`haskell`** - Haskell implementation code
 - **`ebnf`** - EBNF grammar specifications
 
@@ -18,7 +18,7 @@ Use the following language identifiers for code blocks:
 ### Examples
 
 #### Glue Code
-```closure
+```clojure
 ;; Define a function
 (def add (lambda (a b) (+ a b)))
 

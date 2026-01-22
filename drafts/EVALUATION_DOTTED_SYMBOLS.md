@@ -9,7 +9,7 @@ Dotted symbol evaluation traverses object and module properties hierarchically u
 **Output:** Final property value or error
 
 ### Syntax
-```closure
+```clojure
 obj.field           ;; Access 'field' on object 'obj'
 module.func         ;; Access 'func' export from module
 data.user.name      ;; Deep property access
@@ -42,7 +42,7 @@ For a dotted path like `a.b.c.d`:
 
 ## Traversal Examples
 
-```closure
+```clojure
 ;; Object property access
 (:name "Alice" :age 25).name  ;; → "Alice"
 

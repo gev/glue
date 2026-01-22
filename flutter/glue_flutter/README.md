@@ -74,7 +74,7 @@ Material Design color constants:
 
 ### Usage Examples
 
-```closure
+```clojure
 ;; Using enum constants directly (type-safe, no string parsing!)
 (column
   :cross-axis-alignment cross-axis-alignment.center
@@ -84,7 +84,9 @@ Material Design color constants:
       (:color colors.blue
        :weight font-weight.bold
        :align text-align.center)))
+```
 
+```clojure
 ;; Button with color enum
 (button
   :label "Click Me"

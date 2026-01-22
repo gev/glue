@@ -9,21 +9,21 @@ Glue uses a Lisp-inspired syntax with modern enhancements for property objects, 
 ### Atoms (Primitive Values)
 
 #### Numbers
-```closure
+```clojure
 42          ;; Integer
 3.14159     ;; Float
 -273.15     ;; Negative float
 ```
 
 #### Strings
-```closure
+```clojure
 "hello world"
 "multi\nline\tstring"
 "quote: \" and backslash: \\"
 ```
 
 #### Symbols (Identifiers)
-```closure
+```clojure
 my-variable
 function-name
 x
@@ -32,13 +32,13 @@ math.pi
 ```
 
 #### Booleans
-```closure
+```clojure
 true
 false
 ```
 
 ### Comments
-```closure
+```clojure
 ;; Single line comment
 
 ;; Multi-line comments
@@ -50,7 +50,7 @@ false
 ## Lists (Function Calls & Data Structures)
 
 ### Function Calls
-```closure
+```clojure
 ;; Basic function call
 (+ 1 2 3)              ;; → 6
 
@@ -65,7 +65,7 @@ false
 ```
 
 ### Data Lists
-```closure
+```clojure
 ;; List literals
 '(1 2 3 4)
 '("apple" "banana" "cherry")
@@ -78,7 +78,7 @@ false
 ## Property Objects
 
 ### Basic Object Creation
-```closure
+```clojure
 ;; Empty object
 (:)
 
@@ -94,7 +94,7 @@ false
 ```
 
 ### Property Access
-```closure
+```clojure
 ;; Direct property access
 (:name "Alice").name           ;; → "Alice"
 
@@ -107,7 +107,7 @@ user.address.city              ;; → nested access
 ```
 
 ### Property Update
-```closure
+```clojure
 ;; Create object
 (def user (:name "Alice" :age 30))
 
@@ -121,7 +121,7 @@ user.address.city              ;; → nested access
 ## Variable Management
 
 ### Definition (`def`)
-```closure
+```clojure
 ;; Simple variables
 (def x 42)
 (def greeting "Hello")
@@ -134,7 +134,7 @@ user.address.city              ;; → nested access
 ```
 
 ### Mutation (`set`)
-```closure
+```clojure
 ;; Variable update
 (set x 100)
 
@@ -146,7 +146,7 @@ user.address.city              ;; → nested access
 ```
 
 ### Import (`import`)
-```closure
+```clojure
 ;; Module import
 (import math.x)         ;; Import specific module
 (import math)           ;; Import namespace (if supported)
@@ -158,7 +158,7 @@ user.address.city              ;; → nested access
 ## Functions
 
 ### Lambda Functions
-```closure
+```clojure
 ;; Anonymous function
 (lambda (x) (* x x))
 
@@ -175,7 +175,7 @@ user.address.city              ;; → nested access
 ```
 
 ### Function Application
-```closure
+```clojure
 ;; Direct call
 ((lambda (x) (* x 2)) 5)  ;; → 10
 
@@ -191,7 +191,7 @@ user.address.city              ;; → nested access
 ## Control Flow
 
 ### Conditional (`if`)
-```closure
+```clojure
 ;; Basic conditional
 (if (> x 0) "positive" "non-positive")
 
@@ -207,7 +207,7 @@ user.address.city              ;; → nested access
 ```
 
 ### Logical Operators
-```closure
+```clojure
 ;; And
 (and (> x 0) (< x 100))  ;; → true if 0 < x < 100
 
@@ -221,7 +221,7 @@ user.address.city              ;; → nested access
 ## Data Structures
 
 ### Lists
-```closure
+```clojure
 ;; List creation
 (list 1 2 3 4)
 '(1 2 3 4)               ;; Quoted list
@@ -238,7 +238,7 @@ user.address.city              ;; → nested access
 ```
 
 ### Objects as Maps
-```closure
+```clojure
 ;; Object creation
 (def person (:name "Alice" :age 30))
 
@@ -255,7 +255,7 @@ person.age               ;; → 30
 ## Modules and Namespaces
 
 ### Module Definition
-```closure
+```clojure
 ;; Module files define exports
 ;; math.x.glue
 (def pi 3.14159)
@@ -264,7 +264,7 @@ person.age               ;; → 30
 ```
 
 ### Module Usage
-```closure
+```clojure
 ;; Import specific functions
 (import math.x)
 math.x.cos               ;; → cosine function
@@ -279,7 +279,7 @@ math.y.sin               ;; → sine function
 ## Special Forms
 
 ### Evaluation (`eval`)
-```closure
+```clojure
 ;; Evaluate data as code
 (eval '(+ 1 2))          ;; → 3
 (eval (list '+ 1 2))     ;; → 3
@@ -292,7 +292,7 @@ math.y.sin               ;; → sine function
 ## Operators
 
 ### Arithmetic
-```closure
+```clojure
 (+ 1 2 3)                ;; → 6
 (- 10 3)                 ;; → 7
 (* 2 3 4)                ;; → 24
@@ -301,7 +301,7 @@ math.y.sin               ;; → sine function
 ```
 
 ### Comparison
-```closure
+```clojure
 (= 1 1)                  ;; → true
 (!= 1 2)                 ;; → true
 (< 1 2 3)                ;; → true (1 < 2 < 3)
@@ -311,7 +311,7 @@ math.y.sin               ;; → sine function
 ```
 
 ### String Operations
-```closure
+```clojure
 (str "Hello" " " "World")  ;; → "Hello World"
 (length "hello")          ;; → 5
 (substring "hello" 1 3)   ;; → "el"
@@ -321,7 +321,7 @@ math.y.sin               ;; → sine function
 ## Advanced Features
 
 ### Pattern Matching (if supported)
-```closure
+```clojure
 ;; Hypothetical pattern matching
 (match value
   (:type "user" :name n)  (str "User: " n)
@@ -338,7 +338,7 @@ Glue provides special forms for control flow and evaluation:
 - `import` - module loading
 
 ### Error Handling
-```closure
+```clojure
 ;; Try/catch (if supported)
 (try
   (/ 10 0)
@@ -393,12 +393,12 @@ Glue is a Lisp-1 with no operator precedence:
 ## Examples
 
 ### Hello World
-```closure
+```clojure
 (print "Hello, World!")
 ```
 
 ### Factorial
-```closure
+```clojure
 (def factorial
   (lambda (n)
     (if (= n 0)
@@ -409,7 +409,7 @@ Glue is a Lisp-1 with no operator precedence:
 ```
 
 ### Object Processing
-```closure
+```clojure
 (def users ((:name "Alice" :age 30)
             (:name "Bob" :age 25)
             (:name "Charlie" :age 35)))
@@ -422,7 +422,7 @@ Glue is a Lisp-1 with no operator precedence:
 ```
 
 ### Configuration Management
-```closure
+```clojure
 (def config (:debug false :port 8080))
 
 ;; Local configuration extension
