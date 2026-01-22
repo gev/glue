@@ -35,10 +35,81 @@ Complete documentation for the `code_forge` package (v5.2.0):
 ### Updating Existing Documentation
 
 When packages are updated:
-1. Check the new version's documentation
-2. Update local docs to match
-3. Update version numbers in README
-4. Test integration still works
+
+#### Automated Documentation Fetch (Recommended)
+
+```bash
+# Fetch latest documentation for a specific package
+PACKAGE_NAME="code_forge"
+VERSION="latest"
+
+# Download HTML documentation
+curl -s "https://pub.dev/documentation/${PACKAGE_NAME}/${VERSION}/" > /tmp/${PACKAGE_NAME}_docs.html
+
+# For API-specific pages, fetch individual class docs
+curl -s "https://pub.dev/documentation/${PACKAGE_NAME}/${VERSION}/${PACKAGE_NAME}/CodeForge-class.html" > /tmp/${PACKAGE_NAME}_api.html
+```
+
+#### Manual Documentation Extraction
+
+1. **Fetch HTML Documentation:**
+   ```bash
+   # Main package page
+   curl -s "https://pub.dev/packages/code_forge" > code_forge_package.html
+
+   # API documentation
+   curl -s "https://pub.dev/documentation/code_forge/latest/" > code_forge_api.html
+
+   # Specific class documentation
+   curl -s "https://pub.dev/documentation/code_forge/latest/code_forge/CodeForge-class.html" > codeforge_class.html
+   ```
+
+2. **Extract Key Information:**
+   ```bash
+   # Extract constructor signatures
+   grep -A 10 "CodeForge(" codeforge_class.html
+
+   # Extract method documentation
+   grep -A 5 "text" codeforge_class.html
+
+   # Extract class descriptions
+   grep -A 3 "class CodeForge" codeforge_class.html
+   ```
+
+3. **Transform to Markdown:**
+   ```bash
+   # Convert HTML headers to markdown
+   sed 's/<h1/<#/g; s/<\/h1/>/<\/#/g' code_forge_api.html > temp.md
+   # (Additional conversion steps would be needed for full HTML->Markdown)
+   ```
+
+4. **Update Local Documentation:**
+   - Copy extracted information to `context/docs/code_forge/README.md`
+   - Update version numbers and dates
+   - Add new features or API changes
+   - Test examples still work with new version
+
+#### Alternative: Pandoc for HTML->Markdown Conversion
+
+```bash
+# Install pandoc (if not available)
+brew install pandoc  # macOS
+# apt install pandoc  # Linux
+
+# Convert HTML to Markdown
+pandoc -f html -t markdown code_forge_api.html > code_forge_api.md
+
+# Clean up and format for documentation
+# (Manual editing may be needed for optimal formatting)
+```
+
+#### Testing Updated Documentation
+
+After updating:
+1. Update version numbers in README headers
+2. Test integration examples still compile
+3. Verify all API calls match new signatures
+4. Update any breaking change notes
 
 ### Documentation Standards
 
