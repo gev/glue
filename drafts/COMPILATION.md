@@ -42,7 +42,7 @@ data IR m
 **Rule:** Numeric literals pass through unchanged
 
 **Example:**
-```closure
+```clojure
 42
 ```
 **AST:** `Number 42`
@@ -54,7 +54,7 @@ data IR m
 **Rule:** String literals pass through unchanged
 
 **Example:**
-```closure
+```clojure
 "hello"
 ```
 **AST:** `String "hello"`
@@ -68,7 +68,7 @@ data IR m
 **Rule:** Simple identifiers pass through unchanged
 
 **Example:**
-```closure
+```clojure
 my-var
 ```
 **AST:** `Symbol "my-var"`
@@ -80,14 +80,14 @@ my-var
 **Rule:** Dot-separated identifiers become hierarchical symbol lists
 
 **Example:**
-```closure
+```clojure
 math.pi
 ```
 **AST:** `Symbol "math.pi"`
 **IR:** `DottedSymbol ["math", "pi"]`
 
 **Example:**
-```closure
+```clojure
 user.address.city
 ```
 **AST:** `Symbol "user.address.city"`
@@ -101,7 +101,7 @@ user.address.city
 **Rule:** List elements are recursively compiled
 
 **Example:**
-```closure
+```clojure
 (+ 1 2)
 ```
 **AST:** `AtomList [Symbol "+", Number 1, Number 2]`
@@ -113,7 +113,7 @@ user.address.city
 **Rule:** Property key-value pairs become object map entries
 
 **Example:**
-```closure
+```clojure
 (:name "Alice" :age 30)
 ```
 **AST:** `PropList [("name", String "Alice"), ("age", Number 30)]`
@@ -122,14 +122,14 @@ user.address.city
 ### Complex Examples
 
 #### Function Call with Object
-```closure
+```clojure
 (foo :x 1 :y 2)
 ```
 **AST:** `AtomList [Symbol "foo", PropList [("x", Number 1), ("y", Number 2)]]`
 **IR:** `List [Symbol "foo", Object (fromList [("x", Number 1), ("y", Number 2)])]`
 
 #### Nested Structures
-```closure
+```clojure
 (:user (:name "Bob") :data (1 2 3))
 ```
 **AST:** `PropList [("user", PropList [("name", String "Bob")]), ("data", AtomList [Number 1, Number 2, Number 3])]`

@@ -20,7 +20,7 @@ Glue's module system provides clean separation of code into reusable units with 
 
 Modules are declared using the `module` special form:
 
-```closure
+```clojure
 (module <name>
     (export <symbol> ...)
     <body> ...)
@@ -32,7 +32,7 @@ Modules are declared using the `module` special form:
 
 ### Example
 
-```closure
+```clojure
 (module math.utils
     (export add multiply divide)
 
@@ -49,7 +49,7 @@ Modules are declared using the `module` special form:
 
 **Important**: Module imports are **local to the frame** where the import occurs, not global. Imported modules and their symbols are only available within the scope that performed the import.
 
-```closure
+```clojure
 ;; Global scope - no imports
 (def x 1)
 
@@ -66,7 +66,7 @@ Modules are declared using the `module` special form:
 
 When a module is imported, its exported symbols are merged **directly** into the current local environment frame:
 
-```closure
+```clojure
 (import math)
 (+ pi 1)        ;; 'pi' is now accessible as a direct variable
 ```
@@ -123,7 +123,7 @@ Modules are evaluated in isolated environments containing only:
 
 #### Example Security Property
 
-```closure
+```clojure
 ;; Main program
 (def secret-password "admin123")
 
@@ -163,7 +163,7 @@ When `(import module.name)` is evaluated:
 
 ### Environment Frame Structure After Import
 
-```closure
+```clojure
 Before Import:
 [user_vars, builtins]
 
@@ -201,7 +201,7 @@ stdlib/
 
 ### Basic Module Usage
 
-```closure
+```clojure
 ;; Define module
 (module calculator
     (export add subtract)
@@ -218,7 +218,7 @@ stdlib/
 
 ### Module Dependencies
 
-```closure
+```clojure
 ;; Base math module
 (module math.basic
     (export add multiply)

@@ -18,7 +18,7 @@ Designed to embed seamlessly in existing applications with minimal runtime footp
 ## Core Features
 
 ### Functional Programming
-```closure
+```clojure
 ;; First-class functions and closures
 (def make-adder (lambda (x) (lambda (y) (+ x y))))
 (def add-five (make-adder 5))
@@ -38,7 +38,7 @@ Designed to embed seamlessly in existing applications with minimal runtime footp
 ```
 
 ### Property-Based Objects
-```closure
+```clojure
 ;; Object creation and manipulation
 (def user (:name "Alice" :age 30 :email "alice@example.com"))
 
@@ -52,7 +52,7 @@ user.age       ;; → 30
 ```
 
 ### Module System
-```closure
+```clojure
 ;; Module definition and imports
 (import math)
 (import ui.components)
@@ -72,7 +72,7 @@ button    ;; UI component
 - **Booleans**: `true`, `false`
 
 ### Lists and Calls
-```closure
+```clojure
 ;; Function calls
 (+ 1 2 3)              ;; → 6
 (* (+ 1 2) (+ 3 4))    ;; → 21
@@ -83,7 +83,7 @@ button    ;; UI component
 ```
 
 ### Property Objects
-```closure
+```clojure
 ;; Object literals
 (:name "Alice" :age 30)
 
@@ -93,7 +93,7 @@ button    ;; UI component
 ```
 
 ### Control Flow
-```closure
+```clojure
 ;; Conditional execution
 (if (> x 0) "positive" "non-positive")
 
@@ -115,12 +115,12 @@ Minimal footprint and clean host language integration make Glue ideal for embedd
 ## Hello World Examples
 
 ### Simple Script
-```closure
+```clojure
 (print "Hello, Glue World!")
 ```
 
 ### Functional Programming
-```closure
+```clojure
 (def factorial
   (lambda (n)
     (if (= n 0)
@@ -131,7 +131,7 @@ Minimal footprint and clean host language integration make Glue ideal for embedd
 ```
 
 ### Object Processing
-```closure
+```clojure
 (def users ((:name "Alice" :age 30)
             (:name "Bob" :age 25)
             (:name "Charlie" :age 35)))
@@ -144,7 +144,7 @@ Minimal footprint and clean host language integration make Glue ideal for embedd
 ```
 
 ### Configuration Management
-```closure
+```clojure
 (def config (:debug false
               :server (:host "localhost" :port 8080)
               :database (:type "postgres" :name "myapp")))

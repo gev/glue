@@ -11,21 +11,21 @@ Glue employs a Lisp-inspired syntax with extensions for property objects, functi
 Atoms represent primitive values that evaluate to themselves.
 
 #### Numbers
-```closure
+```clojure
 42          ; integer
 3.14159     ; float
 -273.15     ; negative float
 ```
 
 #### Strings
-```closure
+```clojure
 "hello world"
 "quote: \" and backslash: \\"
 ```
 
 #### Symbols
 Symbols serve as identifiers.
-```closure
+```clojure
 my-variable
 function-name
 x
@@ -35,7 +35,7 @@ math.pi
 
 ### Comments
 Comments are ignored during evaluation.
-```closure
+```clojure
 ;; single line comment
 
 ;; multi-line comments
@@ -52,7 +52,7 @@ Lists are ordered sequences enclosed in parentheses. Evaluation depends on the f
 
 #### Function Calls
 Lists beginning with a symbol are evaluated as function applications.
-```closure
+```clojure
 (+ 1 2 3)              ; addition
 (* (+ 1 2) (+ 3 4))    ; nested calls
 (now)                   ; no arguments - symbol evaluated
@@ -61,7 +61,7 @@ Lists beginning with a symbol are evaluated as function applications.
 
 #### Data Lists
 Lists not beginning with a symbol are evaluated as data structures.
-```closure
+```clojure
 (1 2 3)                 ; literal numbers
 (("a" "b") ("c" "d"))   ; nested lists
 ```
@@ -73,7 +73,7 @@ Lists not beginning with a symbol are evaluated as data structures.
 Property objects are key-value collections.
 
 #### Creation
-```closure
+```clojure
 (:)                     ; empty object
 (:name "Alice" :age 30) ; simple properties
 (:user (:name "Bob" :age 25)
@@ -82,7 +82,7 @@ Property objects are key-value collections.
 ```
 
 #### Access
-```closure
+```clojure
 (:name "Alice").name           ; direct access
 (:user (:name "Bob")).user.name  ; nested access
 user.name                      ; dotted notation
@@ -90,7 +90,7 @@ user.address.city              ; deep access
 ```
 
 #### Update
-```closure
+```clojure
 (set user.age 31)
 (set user.email "alice@example.com")
 (set config.database.host "localhost")
@@ -101,7 +101,7 @@ user.address.city              ; deep access
 Special forms have evaluation rules different from regular function calls.
 
 #### Definition
-```closure
+```clojure
 (def x 42)
 (def greeting "Hello")
 (def config (:debug true :port 8080))
@@ -117,27 +117,27 @@ Special forms have evaluation rules different from regular function calls.
 ```
 
 #### Mutation
-```closure
+```clojure
 (set x 100)
 (set user.name "Bob")
 (set config.database.host "localhost")
 ```
 
 #### Import
-```closure
+```clojure
 (import math.x)
 (import math)
 ```
 
 #### Lambda
-```closure
+```clojure
 (lambda (x) (* x x))
 (lambda (a b) (+ a b))
 (lambda () "hello")
 ```
 
 #### Conditional
-```closure
+```clojure
 (if (> x 0) "positive" "non-positive")
 (if (even? x) "even" "odd")
 ```
@@ -147,7 +147,7 @@ Special forms have evaluation rules different from regular function calls.
 ## Operators
 
 ### Arithmetic
-```closure
+```clojure
 (+ 1 2 3)    ; addition
 (- 10 3)     ; subtraction
 (* 2 3 4)    ; multiplication
@@ -156,7 +156,7 @@ Special forms have evaluation rules different from regular function calls.
 ```
 
 ### Comparison
-```closure
+```clojure
 (== 1 1)     ; equality
 (!= 1 2)     ; inequality
 (< 1 2 3)    ; less than
@@ -166,14 +166,14 @@ Special forms have evaluation rules different from regular function calls.
 ```
 
 ### Logical
-```closure
+```clojure
 (& (> x 0) (< x 100))
 (| (= x 0) (= x 1))
 (! (= x 0))
 ```
 
 ### String
-```closure
+```clojure
 (str "Hello" " " "World")
 (length "hello")
 (substring "hello" 1 3)
@@ -183,7 +183,7 @@ Special forms have evaluation rules different from regular function calls.
 ## Data Structures
 
 ### Lists
-```closure
+```clojure
 (car (1 2 3))           ; first element
 (cdr (1 2 3))           ; rest
 (cons 0 (1 2 3))        ; prepend
@@ -192,7 +192,7 @@ Special forms have evaluation rules different from regular function calls.
 ```
 
 ### Objects as Maps
-```closure
+```clojure
 (def person (:name "Alice" :age 30))
 person.name
 (keys person)
@@ -203,7 +203,7 @@ person.name
 
 ### Module Definition
 Modules define namespaces and exports.
-```closure
+```clojure
 (module math.x.glue
     (export pi cos)
     (def pi 3.14159)
@@ -211,7 +211,7 @@ Modules define namespaces and exports.
 ```
 
 ### Module Usage
-```closure
+```clojure
 (import math.x)
 (cos pi)        ; exports available directly
 ```

@@ -26,7 +26,7 @@ Represents string literals in source code.
 **AST:** `String "hello world"`
 
 **Examples:**
-```closure
+```clojure
 "simple string"
 "with \"quotes\" and \n escapes"
 ```
@@ -38,7 +38,7 @@ Represents numeric literals (integers and floats).
 **AST:** `Number 42`, `Number 3.14159`
 
 **Examples:**
-```closure
+```clojure
 42
 -15
 3.14159
@@ -56,7 +56,7 @@ Represents identifiers, keywords, and operators.
 - During compilation, these become `DottedSymbol ["obj", "field"]` in IR
 
 **Examples:**
-```closure
+```clojure
 x
 my-variable
 +
@@ -71,7 +71,7 @@ Represents function calls, special forms, and data lists.
 **AST:** `AtomList [expr1, expr2, expr3]`
 
 **Examples:**
-```closure
+```clojure
 (+ 1 2 3)           ;; Function call
 (if (> x 0) x (- x)) ;; Special form
 (list a b c)        ;; Function call
@@ -84,7 +84,7 @@ Represents property objects (dictionaries/maps).
 **AST:** `PropList [("key1", value1), ("key2", value2)]`
 
 **Examples:**
-```closure
+```clojure
 (:name "Alice" :age 30)
 (:x (+ 1 2) :y (* 3 4))
 ```
@@ -211,12 +211,12 @@ The parser prevents invalid AST through:
 **Trigger:** Mixing properties and positional arguments in the same list
 
 **Invalid example:**
-```closure
+```clojure
 (+ :x 1 2)  ;; ERROR: Cannot mix ':x' property with positional args
 ```
 
 **Valid alternatives:**
-```closure
+```clojure
 (+ 1 2)           ;; All positional arguments
 (:x 1 :y 2)       ;; All properties
 ```
@@ -225,12 +225,12 @@ The parser prevents invalid AST through:
 **Trigger:** Property key without a corresponding value
 
 **Invalid example:**
-```closure
+```clojure
 (:name "Alice" :age)  ;; ERROR: ':age' has no value
 ```
 
 **Valid example:**
-```closure
+```clojure
 (:name "Alice" :age 30)
 ```
 
@@ -246,25 +246,25 @@ The parser prevents invalid AST through:
 ### Error Examples
 
 #### Unmatched Parentheses
-```closure
+```clojure
 ;; Input: (+ 1 2
 ;; Error: Unexpected end of input
 ```
 
 #### Invalid Number Format
-```closure
+```clojure
 ;; Input: 1.2.3
 ;; Error: Multiple decimal points not allowed
 ```
 
 #### Mixed Content in Lists
-```closure
+```clojure
 ;; Input: (f arg1 :key val)
 ;; Error: Cannot mix positional and property arguments
 ```
 
 #### Missing Property Values
-```closure
+```clojure
 ;; Input: (:name "Alice" :age)
 ;; Error: Property ':age' requires a value
 ```
@@ -289,7 +289,7 @@ parseReactor :: Text -> Either ParseError AST
 ### Example Transformations
 
 #### Simple Expression
-```closure
+```clojure
 (+ 1 2)
 ```
 ```haskell
@@ -301,7 +301,7 @@ AtomList [
 ```
 
 #### Property Object
-```closure
+```clojure
 (:name "Alice" :age 30)
 ```
 ```haskell
@@ -312,7 +312,7 @@ PropList [
 ```
 
 #### Function Call with Object Argument
-```closure
+```clojure
 (foo :x 1 :y 2)
 ```
 ```haskell
@@ -326,7 +326,7 @@ AtomList [
 ```
 
 #### Nested Objects
-```closure
+```clojure
 (:user (:name "Bob" :age 25) :config (:theme "dark"))
 ```
 ```haskell
@@ -342,7 +342,7 @@ PropList [
 ```
 
 #### Nested Expression
-```closure
+```clojure
 (if (> x 0) (* x 2) 0)
 ```
 ```haskell

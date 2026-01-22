@@ -29,7 +29,7 @@
 4. Return the new value
 
 **Examples:**
-```closure
+```clojure
 (def x 1)
 (set x 42)  ; → 42, x is now 42
 ```
@@ -45,7 +45,7 @@
 4. Return the new value
 
 **Examples:**
-```closure
+```clojure
 (def user (:name "Alice" :age 25))
 (set user.age 26)     ; → 26, user.age is now 26
 (set user.email "alice@example.com")  ; → "alice@example.com"
@@ -62,7 +62,7 @@ data Address = Address {street :: Text, city :: Text}
 ```
 
 **Examples:**
-```closure
+```clojure
 ;; Create host objects
 (def bob (person :name "Bob" :age 25))
 (def addr (address :street "123 Main St" :city "Springfield"))
@@ -81,7 +81,7 @@ addr.city   ; → "Boston"
 ## Nested Property Access
 
 ### Dotted Property Paths
-```closure
+```clojure
 (def config (:database (:host "localhost" :port 5432)))
 (set config.database.port 3306)  ; Update nested property
 ```
@@ -91,7 +91,7 @@ addr.city   ; → "Boston"
 Host objects support nested property updates through dot notation.
 
 **Examples:**
-```closure
+```clojure
 ;; Create nested host objects
 (def addr (address :street "123 Main St" :city "Springfield"))
 (def bob (person :name "Bob" :age 25 :address addr))
@@ -109,7 +109,7 @@ bob.address.street      ; → "456 Oak Ave"
 
 Multiple property updates can be performed in sequence:
 
-```closure
+```clojure
 (def addr (address :street "123 Main St" :city "Springfield"))
 (def bob (person :name "Bob" :age 25 :address addr))
 
@@ -127,7 +127,7 @@ bob.address.street      ; → "456 Oak Ave"
 ```
 
 ### Module Property Updates
-```closure
+```clojure
 (set math.constants.pi 3.14)  ; Update module export
 ```
 
@@ -159,7 +159,7 @@ Arguments are evaluated in order:
 
 `set` always returns the assigned value:
 
-```closure
+```clojure
 (def result (set x 100))  ; result = 100
 ```
 
@@ -168,7 +168,7 @@ Arguments are evaluated in order:
 ### Environment Frames
 `set` searches for variables starting from the current frame outward:
 
-```closure
+```clojure
 (def x 1)              ; global x
 (lambda ()
   (def x 2)            ; local x shadows global
@@ -180,7 +180,7 @@ x                       ; returns 1 (global unchanged)
 ### Closure Capture
 `set` can modify variables captured by closures:
 
-```closure
+```clojure
 (def counter
   (let ((count 0))
     (lambda () (set count (+ count 1)) count)))

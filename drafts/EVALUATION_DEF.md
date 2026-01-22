@@ -19,7 +19,7 @@
 ## Examples
 
 ### Simple Definition
-```closure
+```clojure
 (def x 42)
 ```
 **Process:**
@@ -28,7 +28,7 @@
 3. Return `42`
 
 ### Computed Definition
-```closure
+```clojure
 (def result (+ 1 2 3))
 ```
 **Process:**
@@ -37,7 +37,7 @@
 3. Return `6`
 
 ### Object Definition
-```closure
+```clojure
 (def user (:name "Alice" :age 30))
 ```
 **Process:**
@@ -49,7 +49,7 @@
 
 `def` can shadow existing bindings from outer scopes:
 
-```closure
+```clojure
 (def x 1)        ; global x = 1
 (lambda ()
   (def x 2)      ; local x = 2 (shadows global)
@@ -80,19 +80,19 @@ Definitions are scoped to the current environment frame:
 
 Glue supports Scheme-style function definition syntax:
 
-```closure
+```clojure
 (def (function-name param1 param2 ...) body...)
 ```
 
 This expands to:
 
-```closure
+```clojure
 (def function-name (lambda (param1 param2 ...) body...))
 ```
 
 ### Examples
 
-```closure
+```clojure
 ;; Simple function
 (def (square x) (* x x))
 ;; Expands to: (def square (lambda (x) (* x x)))
@@ -123,7 +123,7 @@ The sugar is transformed at evaluation time:
 - **Variable definitions**: Return `Void`
 - **Function definitions**: Return the created closure
 
-```closure
+```clojure
 ;; Variable definition returns Void
 (def x 42)  ; returns ()
 
