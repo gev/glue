@@ -90,16 +90,15 @@ Organize classes/types/functions in modules in the following order from top to b
 
 - Use package style imports
 - Prefer pattern matching in most cases
+- Avoid using `dynamic` and `Object` types - prefer specific types for type safety
 - **Workspace dependencies**: Use simple dependency declarations without path for workspace packages
   ```yaml
   dependencies:
     glue:        # No path needed for workspace packages
-    glue_flutter: # Workspace resolution handles local development
   ```
 - **Package installation**: Use `flutter pub add` for Flutter packages, `dart pub add` for pure Dart packages
   ```bash
   flutter pub add code_forge      # Flutter packages
-  dart pub add fast_ui           # Pure Dart packages
   ```
 
 ### Flutter Code
@@ -125,19 +124,26 @@ Organize code within Flutter modules to avoid monolithic classes and maintain cl
 
 Within each module file, organize in this order from top to bottom:
 
-- Imports (flutter/material.dart first, then others alphabetically)
 - Constants and typedefs
 - Widget classes (StatelessWidget then StatefulWidget)
 - Helper classes and mixins
 - Utility functions
 - Private implementation details
+- 
+- **Workspace dependencies**: Use simple dependency declarations without path for workspace packages
+  ```yaml
+  dependencies:
+    glue_flutter: # Workspace resolution handles local development
+  ```
+- **Package installation**: Use `flutter pub add` for Flutter packages, `dart pub add` for pure Dart packages
+  ```bash
+  flutter pub add code_forge      # Flutter packages
+  ```
+
 
 #### State Management
 
-- **Simple Apps**: Use setState() for local widget state
-- **Complex Apps**: Use Provider, Riverpod, or Bloc for global state
 - **Widget Lifecycle**: Properly dispose controllers and clean up resources
-- **Rebuild Optimization**: Use const constructors and keys appropriately
 
 #### Naming Conventions
 
