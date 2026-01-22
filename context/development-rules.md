@@ -102,6 +102,50 @@ Organize classes/types/functions in modules in the following order from top to b
   dart pub add fast_ui           # Pure Dart packages
   ```
 
+### Flutter Code
+
+#### Code Separation by Modules (Avoid BBOM - Big Ball of Mud)
+
+Organize code within Flutter modules to avoid monolithic classes and maintain clean separation of concerns:
+
+- **Widget Classes**: UI component definitions and layouts
+- **Business Logic**: State management, calculations, and data processing
+- **Service Calls**: External API calls, database operations, and I/O
+- **Utility Functions**: Helper methods, formatters, and shared logic
+- **Constants**: App-wide constants, colors, strings, and configuration
+
+#### Widget Tree Separation
+
+- **One Widget Per Class**: Each UI component should be its own widget class
+- **Stateless vs Stateful**: Use StatelessWidget for pure UI, StatefulWidget only when internal state is needed
+- **Composition over Inheritance**: Build complex UIs through widget composition, not deep inheritance
+- **Single Responsibility**: Each widget should have one clear purpose
+
+#### Module Organization Order
+
+Within each module file, organize in this order from top to bottom:
+
+- Imports (flutter/material.dart first, then others alphabetically)
+- Constants and typedefs
+- Widget classes (StatelessWidget then StatefulWidget)
+- Helper classes and mixins
+- Utility functions
+- Private implementation details
+
+#### State Management
+
+- **Simple Apps**: Use setState() for local widget state
+- **Complex Apps**: Use Provider, Riverpod, or Bloc for global state
+- **Widget Lifecycle**: Properly dispose controllers and clean up resources
+- **Rebuild Optimization**: Use const constructors and keys appropriately
+
+#### Naming Conventions
+
+- **Widgets**: PascalCase (MyCustomWidget)
+- **Variables**: camelCase (myVariableName)
+- **Files**: snake_case (custom_widget.dart)
+- **Folders**: snake_case (ui_components/)
+
 ### Cross-Language Consistency
 
 Same code and tests in different languages should have the same structure:
