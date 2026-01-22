@@ -13,38 +13,40 @@ class CodeEditorPane extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).colorScheme.surface,
-      child: Column(
-        children: [
-          if (isEvaluating)
-            Container(
-              padding: const EdgeInsets.all(8),
-              color: Theme.of(context).colorScheme.primaryContainer,
-              child: Row(
-                children: [
-                  const Spacer(),
-                  const SizedBox(
-                    width: 16,
-                    height: 16,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  ),
-                ],
+    return Expanded(
+      child: Container(
+        color: Theme.of(context).colorScheme.surface,
+        child: Column(
+          children: [
+            if (isEvaluating)
+              Container(
+                padding: const EdgeInsets.all(8),
+                color: Theme.of(context).colorScheme.primaryContainer,
+                child: Row(
+                  children: [
+                    const Spacer(),
+                    const SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                  ],
+                ),
+              ),
+            Expanded(
+              child: TextField(
+                controller: codeController,
+                maxLines: null,
+                expands: true,
+                style: const TextStyle(fontFamily: 'monospace', fontSize: 20),
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.all(16),
+                ),
               ),
             ),
-          Expanded(
-            child: TextField(
-              controller: codeController,
-              maxLines: null,
-              expands: true,
-              style: const TextStyle(fontFamily: 'monospace', fontSize: 20),
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.all(16),
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

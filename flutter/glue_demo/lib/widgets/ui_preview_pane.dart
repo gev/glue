@@ -9,36 +9,39 @@ class UiPreviewPane extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child: errorMessage != null
-          ? Container(
-              color: Theme.of(context).colorScheme.errorContainer,
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Evaluation Error:',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.error,
-                      fontWeight: FontWeight.bold,
+    return Expanded(
+      child: Container(
+        color: Theme.of(context).colorScheme.surface,
+        padding: const EdgeInsets.all(16),
+        child: errorMessage != null
+            ? Container(
+                color: Theme.of(context).colorScheme.errorContainer,
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Evaluation Error:',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.error,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    errorMessage!,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.error,
-                      fontFamily: 'monospace',
+                    SizedBox(height: 8),
+                    Text(
+                      errorMessage!,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.error,
+                        fontFamily: 'monospace',
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            )
-          : renderedWidget != null
-          ? SingleChildScrollView(child: renderedWidget)
-          : Center(child: Text('No UI to display')),
+                  ],
+                ),
+              )
+            : renderedWidget != null
+            ? SingleChildScrollView(child: renderedWidget)
+            : Center(child: Text('No UI to display')),
+      ),
     );
   }
 }
