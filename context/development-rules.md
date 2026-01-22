@@ -91,6 +91,7 @@ Organize classes/types/functions in modules in the following order from top to b
 - Use package style imports
 - Prefer pattern matching in most cases
 - Avoid using `dynamic` and `Object` types - prefer specific types for type safety
+- Avoid using aliases for imported modules - use direct imports for clarity
 - **Workspace dependencies**: Use simple dependency declarations without path for workspace packages
   ```yaml
   dependencies:
