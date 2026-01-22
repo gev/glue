@@ -62,7 +62,7 @@ data Address = Address {street :: Text, city :: Text}
 ```
 
 **Examples:**
-```glue
+```closure
 ;; Create host objects
 (def bob (person :name "Bob" :age 25))
 (def addr (address :street "123 Main St" :city "Springfield"))
@@ -91,7 +91,7 @@ addr.city   ; → "Boston"
 Host objects support nested property updates through dot notation.
 
 **Examples:**
-```glue
+```closure
 ;; Create nested host objects
 (def addr (address :street "123 Main St" :city "Springfield"))
 (def bob (person :name "Bob" :age 25 :address addr))
@@ -109,7 +109,7 @@ bob.address.street      ; → "456 Oak Ave"
 
 Multiple property updates can be performed in sequence:
 
-```glue
+```closure
 (def addr (address :street "123 Main St" :city "Springfield"))
 (def bob (person :name "Bob" :age 25 :address addr))
 

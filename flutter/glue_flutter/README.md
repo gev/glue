@@ -74,21 +74,21 @@ Material Design color constants:
 
 ### Usage Examples
 
-```glue
+```closure
 ;; Using enum constants directly (type-safe, no string parsing!)
 (column
-  (:cross-axis-alignment cross-axis-alignment.center)
-  (:main-axis-alignment main-axis-alignment.spaceEvenly)
-  (children
+  :cross-axis-alignment cross-axis-alignment.center
+  :main-axis-alignment main-axis-alignment.spaceEvenly
+  :children
     (text "Hello World"
-      (:color colors.blue)
-      (:weight font-weight.bold)
-      (:align text-align.center))))
+      (:color colors.blue
+       :weight font-weight.bold
+       :align text-align.center)))
 
 ;; Button with color enum
 (button
   :label "Click Me"
-  (:color colors.red))
+  :color colors.red)
 ```
 
 ## Widget Properties
