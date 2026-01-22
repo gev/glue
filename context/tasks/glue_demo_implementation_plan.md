@@ -10,6 +10,8 @@
 
 **⚠️ IMPORTANT: All prerequisites above must be read and understood before starting any work on glue_demo. These are required reading for every implementation session, not one-time tasks.**
 
+**⚠️ DEPENDENCY CHANGES REQUIRE APPROVAL: Always ask permission before modifying dependencies or code in packages outside the current task scope (like glue_flutter, glue, etc.).**
+
 ## Overview
 Create a Flutter desktop application that demonstrates dynamic UI creation using the Glue programming language. The application will feature a split-pane interface with a code editor on the left and a live UI renderer on the right, showcasing the `ffi.ui` module capabilities through real-time Glue code evaluation.
 
