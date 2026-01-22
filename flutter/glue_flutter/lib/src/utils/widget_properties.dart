@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/value_extractors.dart';
 
 /// Properties wrapper with lazy getters
 /// Provides clean API for accessing widget properties without pre-computing everything
 class Properties {
-  final Map<String, dynamic> _props;
+  final Map<String, Ir> _props;
 
-  Properties(Map<String, dynamic> props) : _props = props;
+  Properties(Map<String, Ir> props) : _props = props;
 
   /// Creates empty properties with all defaults
   Properties.empty() : _props = {};
