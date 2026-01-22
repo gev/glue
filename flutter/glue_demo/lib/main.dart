@@ -51,7 +51,7 @@ class _GlueDemoHomePageState extends State<GlueDemoHomePage> {
 
 ;; Try these examples:
 ;; (button :label "Click me!")
-;; (column :children [(text "Item 1") (text "Item 2")])
+;; (column :children ((text "Item 1") (text "Item 2")))
 ''';
 
   @override
