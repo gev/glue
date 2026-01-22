@@ -52,15 +52,15 @@ class _GlueDemoHomePageState extends State<GlueDemoHomePage> {
 ;; Welcome to Glue Demo!
 ;; Edit this code and see the UI update in real-time
 
-(text "Hello, Glue!"
-  (:color colors.blue
-   :size 24
-   :weight font-weight.bold))
+;; (text :content "Hello, Glue!"
+;;   (:color colors.blue
+;;    :size 24
+;;    :weight font-weight.bold))
 
 ;; Try these examples (uncomment one at a time):
-;; (text "Hello World" (:color "#FF0000" :size 20))
+;; (text :content "Hello World" :color "#FF0000" :size 20)
 ;; (button :label "Click me!")
-;; (column :children ((text "Item 1") (text "Item 2")))
+(column :children ((text :content "Item 1") (text :content "Item 2")))
 ''';
 
   @override
