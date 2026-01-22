@@ -71,8 +71,8 @@ Widget? extractChild(Ir? value) => switch (value) {
 
 /// Extract children list from Glue IR value
 List<Widget>? extractChildren(Ir? value) => switch (value) {
-  List list =>
-    list
+  IrList(:final elements) =>
+    elements
         .map(
           (child) => switch (child) {
             IrNativeValue(value: HostValue(value: Widget widget)) => widget,
