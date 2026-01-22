@@ -73,13 +73,13 @@ Widget? extractChildren(Ir? value) => switch (value) {
 List<Widget>? extractChild(Ir? value) => switch (value) {
   List list =>
     list
-        .where(
-          (child) =>
-              child is IrNativeValue &&
-              child.value is HostValue &&
-              child.value.value is Widget,
+        .map(
+          (child) => switch (child) {
+            IrNativeValue(value: HostValue(value: Widget widget)) => widget,
+            _ => null,
+          },
         )
-        .map((child) => (child as IrNativeValue).value.value as Widget)
+        .whereType<Widget>()
         .toList(),
   _ => null,
 };
