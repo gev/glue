@@ -1,6 +1,13 @@
 # Glue Flutter Components
 
-This directory contains the Flutter implementation of Glue, providing a complete UI framework and development tools for building dynamic user interfaces with the Glue programming language.
+This directory contains the Flutter implementation of **Glue**, providing a complete UI framework and development tools for building dynamic user interfaces with the [Glue programming language](../../README.md).
+
+**Glue** is a Lisp-inspired programming language designed for functional UI development, featuring:
+- Homoiconic syntax (code as data)
+- Immutable data structures
+- Functional composition
+- Live evaluation and hot reloading
+- Cross-platform UI rendering
 
 ## Overview
 
