@@ -25,17 +25,14 @@ The Flutter components enable developers to:
 A desktop application demonstrating Glue's UI capabilities with:
 - Split-pane code editor and live renderer
 - Real-time evaluation and visual feedback
-- Professional code editing with syntax highlighting
 - Error display and debugging tools
-- System theme support (dark/light mode)
 
 **Status:** ✅ Production-ready development tool
 
 **Technologies:**
-- Flutter Desktop (macOS, Linux, Windows)
-- CodeForge - Advanced code editor
-- Glue Interpreter integration
-- Material Design 3
+- [Flutter Desktop](https://flutter.dev/desktop) (macOS, Linux, Windows)
+- [CodeForge](https://pub.dev/packages/code_forge) - Advanced code editor
+- [Glue Interpreter](../../dart/glue/) integration
 
 ### [glue_flutter/](./glue_flutter/)
 **Flutter Bindings for Glue UI Framework**
