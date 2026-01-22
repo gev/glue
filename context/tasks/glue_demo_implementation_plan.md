@@ -26,7 +26,7 @@ Create a Flutter desktop application that demonstrates dynamic UI creation using
 - [ ] Configure pubspec.yaml with required dependencies:
   - `glue`: Core Glue interpreter (workspace reference)
   - `glue_flutter`: UI bindings (workspace reference)
-  - `code_forge`: Code editor widget
+  - `code_forge`: Code editor widget ([pub.dev/packages/code_forge](https://pub.dev/packages/code_forge))
   - Desktop platform support packages
 
 ### Application Architecture
