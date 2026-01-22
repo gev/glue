@@ -87,7 +87,7 @@ Implement the Flutter-specific version of the `ui` module for the Glue programmi
 ## Syntax Requirements
 Widget functions follow pattern: (function content? props?)
 - Text: (text "content" (:color "blue" :size 18 :weight "bold"))
-- Button: (button (:label "Click" :on-tap callback))
+- Button: (button :label "Click" :on-tap callback)
 - Container: (container (:children [child1 child2] :direction "vertical"))
 
 ## Success Criteria
