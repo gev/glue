@@ -45,9 +45,9 @@ class _GlueDemoHomePageState extends State<GlueDemoHomePage> {
 ;; Edit this code and see the UI update in real-time
 
 (text "Hello, Glue!"
-  (:color colors.blue
+  :color colors.blue
   :size 24
-  :weight font-weight.bold))
+  :weight font-weight.bold)
 
 ;; Try these examples (uncomment one at a time):
 ;; (text "Hello World" (:color "#FF0000" :size 20))
