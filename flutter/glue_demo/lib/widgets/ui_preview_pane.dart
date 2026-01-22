@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'error_display_widget.dart';
+import 'widget_renderer_widget.dart';
 
 /// Right pane widget containing the UI preview and error display
+/// Coordinates between ErrorDisplayWidget and WidgetRendererWidget
 class UiPreviewPane extends StatelessWidget {
   final Widget? renderedWidget;
   final String? errorMessage;
@@ -9,33 +12,10 @@ class UiPreviewPane extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return errorMessage != null
-        ? Container(
-            color: Theme.of(context).colorScheme.errorContainer,
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Evaluation Error:',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.error,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    errorMessage!,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.error,
-                      fontFamily: 'monospace',
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          )
-        : Center(child: renderedWidget ?? Text('No UI to display'));
+    return Expanded(
+      child: errorMessage != null
+          ? ErrorDisplayWidget(errorMessage: errorMessage)
+          : WidgetRendererWidget(renderedWidget: renderedWidget),
+    );
   }
 }
