@@ -20,17 +20,13 @@ Glue Flutter provides a framework-agnostic UI module implementation for Flutter,
 ### Core Widgets
 - `text` - Display text with styling
 - `button` - Interactive buttons with callbacks
-- `container` - Layout containers (Column, Row, Stack)
+- `container` - Container for padding, color, and single child
 - `padding` - Add padding around widgets
 
 ### Layout Widgets
 - `column` - Vertical layout container
 - `row` - Horizontal layout container
 - `center` - Center child widgets
-
-### Advanced Widgets
-- `scaffold` - Material Design scaffold
-- `app-bar` - Application bar with title
 
 ## Enum Constants
 
@@ -101,7 +97,6 @@ Material Design color constants:
 - `:color` - Color enum values (`colors.red`, `colors.blue`, etc.) OR string values ("red", "#FF0000")
 - `:size` - Numeric sizes (points for mobile, pixels for web)
 - `:padding` - Padding values
-- `:margin` - Margin values
 
 ### Text Properties
 - `:weight` - Font weight enum values (`font-weight.normal`, `font-weight.bold`) OR strings ("normal", "bold")
@@ -137,22 +132,23 @@ Widgets are created through native functions that:
 flutter/glue_flutter/
 ├── lib/
 │   ├── glue_flutter.dart          # Main package export
-│   ├── src/
-│   │   │── ui.dart                # ffi.ui module implementation
-│   │   └── widgets/               # Flutter widget classes
-│   │       ├── glue_widget.dart
-│   │       ├── glue_text.dart
-│  ...      └── ...
+│   └── src/
+│       └── lib/
+│           ├── ui.dart            # ffi.ui module implementation
+│           └── ui/
+│               ├── styles/        # Enum objects & color functions
+│               └── widgets/       # Widget constructors
 └── test/
     └── ui_test.dart               # Module tests
 ```
 
 ### Adding New Widgets
 
-1. Create widget class in `lib/src/widgets/`
-2. Add native function in `lib/src/lib/ui.dart`
-3. Register in module exports
-4. Add tests
+1. Read the [Glue Bindings How-To Guide](GLUE_BINDINGS_HOWTO.md) for comprehensive implementation details
+2. Create widget constructor in `lib/src/lib/ui/widgets/`
+3. Add native function in `lib/src/lib/ui.dart`
+4. Register in module exports
+5. Add tests
 
 ## Contributing
 

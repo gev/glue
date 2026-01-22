@@ -15,7 +15,7 @@ resolution: workspace
 dependencies:
   flutter:
     sdk: flutter
-  glue: 
+  glue:
 
 dev_dependencies:
   flutter_test:

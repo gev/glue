@@ -3,7 +3,7 @@ import 'package:glue/src/ir.dart';
 
 /// Parse color from Glue IR value
 /// Supports named colors, hex codes, and rgb() notation
-Color? parseColor(Ir ir) {
+Color? parseColor(Ir? ir) {
   return switch (ir) {
     IrString(value: final colorStr) => _parseColorString(colorStr),
     _ => null,

@@ -1,31 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue/src/eval/exception.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// Button widget function
 /// Creates Flutter ElevatedButton from Glue (button props) expressions
+/// Expects keyword arguments: :label, :on-tap, :disabled, etc.
 final Ir button = IrNativeFunc(buttonImpl);
 
-/// Button implementation - takes label
-Eval<Ir> buttonImpl(Ir label) {
-  return Eval.pure(IrNativeFunc(buttonWithLabel(label)));
-}
+/// Button implementation - takes properties object with keyword arguments
+Eval<Ir> buttonImpl(Ir props) => switch (props) {
+  IrObject(:final properties) => _createButton(Properties(properties.unlock)),
+  _ => _createButton(Properties.empty()),
+};
 
-/// Button with label - takes optional properties
-Eval<Ir> Function(Ir) buttonWithLabel(Ir label) =>
-    (Ir props) => switch ((label, props)) {
-      (IrString(:final value), IrObject(:final properties)) => _createButton(
-        value,
-        Properties(properties.unlock),
-      ),
-      (IrString(:final value), _) => _createButton(value, Properties.empty()),
-      _ => throwError(wrongArgumentType(['string', 'object?'])),
-    };
-
-/// Create Button widget from label and properties
-Eval<Ir> _createButton(String label, Properties properties) {
+/// Create Button widget from properties object
+Eval<Ir> _createButton(Properties properties) {
+  final label = properties.label ?? 'Button'; // Extract label from properties
   final buttonWidget = ElevatedButton(
     onPressed: properties.disabled ? null : properties.onTap,
     child: Text(label),
