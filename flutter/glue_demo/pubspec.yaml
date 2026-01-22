@@ -1,5 +1,5 @@
 name: glue_demo
-description: "A new Flutter project."
+description: "Glue Demo - Live UI Editor for the Glue programming language"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -35,9 +35,7 @@ dependencies:
 
   # Workspace dependencies
   glue:
-    path: ../../dart/glue
   glue_flutter:
-    path: ../glue_flutter
 
 
 

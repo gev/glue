@@ -90,6 +90,12 @@ Organize classes/types/functions in modules in the following order from top to b
 
 - Use package style imports
 - Prefer pattern matching in most cases
+- **Workspace dependencies**: Use simple dependency declarations without path for workspace packages
+  ```yaml
+  dependencies:
+    glue:        # No path needed for workspace packages
+    glue_flutter: # Workspace resolution handles local development
+  ```
 
 ### Cross-Language Consistency
 
