@@ -1,6 +1,6 @@
 # Glue Flutter Components
 
-This directory contains the Flutter implementation of **Glue**, providing a complete UI framework and development tools for building dynamic user interfaces with the [Glue programming language](../../README.md).
+This directory contains the Flutter implementation of **Glue**, providing a complete UI framework and development tools for building dynamic user interfaces with the [Glue programming language](../README.md).
 
 **Glue** is a Lisp-inspired programming language designed for functional UI development, featuring:
 - Homoiconic syntax (code as data)
@@ -19,7 +19,7 @@ The Flutter components enable developers to:
 
 ## Packages
 
-### [glue_demo/](./glue_demo/)
+### [glue_demo/](./glue_demo/README.md)
 **Live Glue UI Development Environment**
 
 A desktop application demonstrating Glue's UI capabilities with:
@@ -32,10 +32,10 @@ A desktop application demonstrating Glue's UI capabilities with:
 **Technologies:**
 - [Flutter Desktop](https://flutter.dev/desktop) (macOS, Linux, Windows)
 - [CodeForge](https://pub.dev/packages/code_forge) - Advanced code editor
-- [Glue Interpreter](../../dart/glue/) integration
+- [Glue Interpreter](../dart/glue/README.md) integration
 
-### [glue_flutter/](./glue_flutter/)
-**Flutter Bindings for Glue UI Framework**
+### [glue_flutter/](./glue_flutter/README.md)
+**[Flutter Bindings](../../context/ui-module-specification.md) for Glue UI Framework**
 
 Core library providing Glue-to-Flutter widget bindings:
 - Complete widget library (Text, Button, Container, Column, etc.)
@@ -77,40 +77,6 @@ flutter/
     └── test/                     # Unit tests (20/20 passing)
 ```
 
-## Quick Start
-
-### Running the Demo
-
-```bash
-cd flutter/glue_demo
-flutter pub get
-flutter run -d macos  # or linux/windows
-```
-
-### Using Glue Flutter in Your App
-
-```yaml
-dependencies:
-  glue_flutter:
-    path: ../../flutter/glue_flutter
-```
-
-```dart
-import 'package:glue_flutter/glue_flutter.dart';
-
-// Create Glue runtime
-final runtime = await createGlueRuntime();
-
-// Evaluate Glue UI code
-final result = await runtime.evaluate('''
-(text "Hello, Glue!"
-  (:color "#FF0000")
-  (:size 24))
-''');
-
-// Render Flutter widget
-return result.toWidget();
-```
 
 ## Key Features
 
