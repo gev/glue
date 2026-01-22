@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:code_forge/code_forge.dart';
+import 'package:glue/ast.dart';
+import 'package:glue/ir.dart';
+import 'package:glue/parser.dart';
+import 'package:glue/eval.dart';
+import 'package:glue/env.dart';
+import 'package:glue/either.dart';
+import 'package:glue_flutter/glue_flutter.dart';
 
 void main() {
   runApp(const GlueDemoApp());
@@ -83,69 +90,65 @@ class _GlueDemoHomePageState extends State<GlueDemoHomePage> {
       errorMessage = null;
     });
 
-    // Simulate evaluation delay
-    await Future.delayed(const Duration(milliseconds: 500));
-
     try {
-      // Simple pattern matching for demo purposes
-      final trimmedCode = code.trim();
+      // 1. Parse Glue code to AST
+      final parseResult = parseGlue(code.trim());
+      final ast = parseResult.match(
+        (error) => throw Exception('Parse error: $error'),
+        (ast) => ast,
+      );
 
-      if (trimmedCode.contains('(text')) {
-        // Demo text widget
-        setState(() {
-          renderedWidget = const Text(
-            'Hello from Glue!',
-            style: TextStyle(
-              color: Colors.blue,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          );
-          isEvaluating = false;
-        });
-      } else if (trimmedCode.contains('(button')) {
-        // Demo button widget
-        setState(() {
-          renderedWidget = ElevatedButton(
-            onPressed: () {},
-            child: const Text('Demo Button'),
-          );
-          isEvaluating = false;
-        });
-      } else if (trimmedCode.contains('(column')) {
-        // Demo column widget
-        setState(() {
-          renderedWidget = const Column(
-            children: [
-              Text('Item 1'),
-              SizedBox(height: 8),
-              Text('Item 2'),
-              SizedBox(height: 8),
-              Text('Item 3'),
-            ],
-          );
-          isEvaluating = false;
-        });
-      } else {
-        // Show the code as text for unrecognized patterns
-        setState(() {
-          renderedWidget = Container(
-            padding: const EdgeInsets.all(16),
-            child: Text(
-              'Glue Code Preview:\n\n$code',
-              style: const TextStyle(fontFamily: 'monospace'),
-            ),
-          );
-          isEvaluating = false;
-        });
-      }
+      // 2. Compile AST to IR
+      final ir = compile(ast);
+
+      // 3. Create environment with UI module
+      // Convert ModuleInfo to Ir representation
+      final uiIr = IrNativeValue(hostValue(ui));
+      final initialEnv = fromFrame(frameFromList([('ui', uiIr)]));
+
+      // 4. Evaluate IR in the environment
+      final evalResult = await runEvalSimple(eval(ir), initialEnv);
+
+      final (resultIr, _) = evalResult.match(
+        (error) => throw Exception('Evaluation error: $error'),
+        (result) => result,
+      );
+
+      // 5. Extract Flutter widget from evaluation result
+      final widget = _extractWidgetFromIr(resultIr);
+
+      setState(() {
+        renderedWidget = widget;
+        isEvaluating = false;
+      });
     } catch (e) {
       setState(() {
-        errorMessage = 'Demo evaluation failed: ${e.toString()}';
+        errorMessage = 'Glue evaluation failed: ${e.toString()}';
         renderedWidget = null;
         isEvaluating = false;
       });
     }
+  }
+
+  /// Extract Flutter widget from Glue IR evaluation result
+  Widget _extractWidgetFromIr(Ir ir) {
+    return switch (ir) {
+      IrNativeValue(value: final hostValue) => switch (hostValue.value) {
+        Widget widget => widget,
+        _ => Container(
+          padding: const EdgeInsets.all(16),
+          child: Text('Result: ${hostValue.value}'),
+        ),
+      },
+      IrString(value: final value) => Text(value),
+      IrInteger(value: final value) => Text(value.toString()),
+      IrFloat(value: final value) => Text(value.toString()),
+      IrBool(value: final value) => Text(value.toString()),
+      _ => Container(
+        padding: const EdgeInsets.all(16),
+        child: Text('Glue Result: ${ir.toString()}'),
+      ),
+    };
   }
 
   @override
