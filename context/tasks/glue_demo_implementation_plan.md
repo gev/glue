@@ -57,7 +57,32 @@ Create a Flutter desktop application that demonstrates dynamic UI creation using
 - [ ] Implement safe evaluation with timeout protection
 - [ ] Create evaluation result handling (success/error states)
 
-**⚠️ CRITICAL: Do NOT use manual environment bindings! Use `envFromModules([uiModules])` following the stdlib pattern shown in `dart/glue/test/eval_test.dart` `runCode` function.**
+**⚠️ CRITICAL: Do NOT use manual environment bindings! Use `envFromModules([uiModules])` following the stdlib pattern shown below:**
+
+```dart
+/// Helper to run full Glue code like Haskell EvalSpec.hs
+Future<Either<GlueError, Ir>> runCode(String input) async {
+  final parseResult = parseGlue(input);
+  return parseResult.match((parseError) => Left(parseError), (ast) async {
+    final irTree = compile(ast);
+    final env = envFromModules([
+      builtin,
+      bool,
+      const_,
+      arithmetic,
+      trigonometric,
+      utility,
+    ]); // All math submodules loaded
+    final runtime = Runtime.initial(env);
+    final evalResult = await runEval(eval(irTree), runtime);
+    return evalResult.match((error) => Left(error), (value) {
+      final (result, _) = value;
+      return Right(result);
+    });
+  });
+}
+```
+*Reference: `dart/glue/test/eval_test.dart`*
 
 ### Dynamic UI Rendering
 - [ ] Convert Glue evaluation results to Flutter widgets
