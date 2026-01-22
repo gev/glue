@@ -25,7 +25,7 @@ import 'package:glue_flutter/src/lib/ui/styles/padding_directional.dart'; // pad
 
 /// The ui module containing all UI functions and enum objects
 /// Implements the framework-agnostic UI API with Flutter widgets and enum unions
-final ModuleInfo ui = nativeModule('ui', [
+final ModuleInfo ui = nativeModule('ffi.ui', [
   // Core widget functions
   ('text', text),
   ('button', button),
