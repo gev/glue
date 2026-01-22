@@ -14,7 +14,7 @@ Future<Either<GlueError, Ir?>> runCode(String input) async {
   return parseResult.match((parseError) => Left(parseError), (ast) async {
     final irTree = compile(ast);
     final env = envFromModules([
-      builtin,
+      builtinModule,
     ]); // TODO: Add arithmetic module when implemented
     final runtime = Runtime.initial(env);
 

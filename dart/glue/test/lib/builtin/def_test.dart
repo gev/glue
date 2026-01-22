@@ -12,7 +12,7 @@ void main() {
     late Runtime runtime;
 
     setUp(() {
-      final env = envFromModules([builtin]);
+      final env = envFromModules([builtinModule]);
       runtime = Runtime.initial(env);
     });
 

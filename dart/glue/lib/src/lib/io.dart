@@ -7,7 +7,7 @@ import 'package:glue/src/lib/io/read.dart';
 
 /// The io module containing all IO functions
 /// Mirrors Haskell Glue.Lib.IO.io exactly
-final ModuleInfo io = nativeModule('ffi.io', [
+final ModuleInfo ioModule = nativeModule('ffi.io', [
   ('print', printFunc),
   ('println', println),
   ('read-line', readLine),

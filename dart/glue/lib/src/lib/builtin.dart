@@ -12,7 +12,7 @@ import 'package:glue/src/lib/builtin/try.dart';
 
 /// The builtin module containing all special forms
 /// Mirrors Haskell Glue.Lib.Builtin.builtin exactly
-final ModuleInfo builtin = nativeModule('ffi.builtin', [
+final ModuleInfo builtinModule = nativeModule('ffi.builtin', [
   ('def', def),
   ('set', set),
   ('lambda', lambda),

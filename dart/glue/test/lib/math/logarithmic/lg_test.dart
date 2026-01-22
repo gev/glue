@@ -14,7 +14,7 @@ Future<Either<GlueError, Ir>> runCode(String input) async {
   return parseResult.match((parseError) => Left(parseError), (ast) async {
     final irTree = compile(ast);
     final env = envFromModules([
-      logarithmic,
+      logarithmicModule,
     ]); // Load only logarithmic module for testing
     final runtime = Runtime.initial(env);
 

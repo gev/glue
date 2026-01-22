@@ -43,54 +43,62 @@ Color? extractColorValue(Ir? ir) {
 void main() {
   group('UI Module', () {
     test('module is properly defined', () {
-      expect(ui, isA<ModuleInfo>());
-      expect(ui.moduleName, 'ffi.ui');
-      expect(ui.exports, contains('text'));
-      expect(ui.exports, contains('button'));
-      expect(ui.exports, contains('container'));
-      expect(ui.exports, contains('column'));
-      expect(ui.exports, contains('row'));
-      expect(ui.exports, contains('center'));
-      expect(ui.exports, contains('cross-axis-alignment'));
-      expect(ui.exports, contains('main-axis-alignment'));
-      expect(ui.exports, contains('text-align'));
-      expect(ui.exports, contains('font-weight'));
-      expect(ui.exports, contains('colors'));
+      expect(uiModule, isA<ModuleInfo>());
+      expect(uiModule.moduleName, 'ffi.ui');
+      expect(uiModule.exports, contains('text'));
+      expect(uiModule.exports, contains('button'));
+      expect(uiModule.exports, contains('container'));
+      expect(uiModule.exports, contains('column'));
+      expect(uiModule.exports, contains('row'));
+      expect(uiModule.exports, contains('center'));
+      expect(uiModule.exports, contains('cross-axis-alignment'));
+      expect(uiModule.exports, contains('main-axis-alignment'));
+      expect(uiModule.exports, contains('text-align'));
+      expect(uiModule.exports, contains('font-weight'));
+      expect(uiModule.exports, contains('colors'));
     });
 
     test('core functions return IrNativeFunc', () {
-      final textDef = ui.definitions.firstWhere((def) => def.$1 == 'text');
+      final textDef = uiModule.definitions.firstWhere(
+        (def) => def.$1 == 'text',
+      );
       expect(textDef.$2, isA<IrNativeFunc>());
 
-      final buttonDef = ui.definitions.firstWhere((def) => def.$1 == 'button');
+      final buttonDef = uiModule.definitions.firstWhere(
+        (def) => def.$1 == 'button',
+      );
       expect(buttonDef.$2, isA<IrNativeFunc>());
 
-      final columnDef = ui.definitions.firstWhere((def) => def.$1 == 'column');
+      final columnDef = uiModule.definitions.firstWhere(
+        (def) => def.$1 == 'column',
+      );
       expect(columnDef.$2, isA<IrNativeFunc>());
     });
 
     test('enum objects are exported', () {
-      final crossAxisDef = ui.definitions.firstWhere(
+      final crossAxisDef = uiModule.definitions.firstWhere(
         (def) => def.$1 == 'cross-axis-alignment',
       );
       expect(crossAxisDef.$2, isA<IrObject>());
 
-      final mainAxisDef = ui.definitions.firstWhere(
+      final mainAxisDef = uiModule.definitions.firstWhere(
         (def) => def.$1 == 'main-axis-alignment',
       );
       expect(mainAxisDef.$2, isA<IrObject>());
 
-      final textAlignDef = ui.definitions.firstWhere(
+      final textAlignDef = uiModule.definitions.firstWhere(
         (def) => def.$1 == 'text-align',
       );
       expect(textAlignDef.$2, isA<IrObject>());
 
-      final fontWeightDef = ui.definitions.firstWhere(
+      final fontWeightDef = uiModule.definitions.firstWhere(
         (def) => def.$1 == 'font-weight',
       );
       expect(fontWeightDef.$2, isA<IrObject>());
 
-      final colorsDef = ui.definitions.firstWhere((def) => def.$1 == 'colors');
+      final colorsDef = uiModule.definitions.firstWhere(
+        (def) => def.$1 == 'colors',
+      );
       expect(colorsDef.$2, isA<IrObject>());
     });
   });

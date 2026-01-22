@@ -1,9 +1,11 @@
 import 'package:glue/ir.dart';
+import 'package:glue/lib/builtin.dart';
 import 'package:glue/parser.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/module.dart';
 import 'package:glue_flutter/glue_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:glue/lib/bool.dart';
 
 /// Service for evaluating Glue code and converting results to Flutter widgets
 class GlueEvaluator {
@@ -23,8 +25,8 @@ class GlueEvaluator {
           print('✅ Compilation successful: $irTree');
 
           // Create environment with UI module (following stdlib pattern)
-          final env = envFromModules([ui]);
-          print('✅ Environment created with UI module: $ui');
+          final env = envFromModules([builtinModule, boolModule, uiModule]);
+          print('✅ Environment created with UI module: $uiModule');
 
           final evalResult = await runEvalSimple(eval(irTree), env);
 

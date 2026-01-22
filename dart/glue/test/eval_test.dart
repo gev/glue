@@ -19,12 +19,12 @@ Future<Either<GlueError, Ir>> runCode(String input) async {
   return parseResult.match((parseError) => Left(parseError), (ast) async {
     final irTree = compile(ast);
     final env = envFromModules([
-      builtin,
-      bool,
-      const_,
-      arithmetic,
+      builtinModule,
+      boolModule,
+      constModule,
+      arithmeticModule,
       trigonometric,
-      utility,
+      utilityModule,
     ]); // All math submodules loaded
     final runtime = Runtime.initial(env);
     final evalResult = await runEval(eval(irTree), runtime);

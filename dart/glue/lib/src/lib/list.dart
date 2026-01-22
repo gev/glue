@@ -26,7 +26,7 @@ import 'package:glue/src/lib/list/zip.dart';
 
 /// The list module containing all list functions
 /// Mirrors Haskell Glue.Lib.List.list exactly
-final ModuleInfo list = nativeModule('ffi.list', [
+final ModuleInfo listModule = nativeModule('ffi.list', [
   // Core list operations
   ('append', append),
   ('butlast', butlast),
