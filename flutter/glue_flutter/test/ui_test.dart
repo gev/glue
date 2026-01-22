@@ -44,7 +44,7 @@ void main() {
   group('UI Module', () {
     test('module is properly defined', () {
       expect(ui, isA<ModuleInfo>());
-      expect(ui.moduleName, 'ffi.ui');
+      expect(ui.moduleName, 'ui');
       expect(ui.exports, contains('text'));
       expect(ui.exports, contains('button'));
       expect(ui.exports, contains('container'));
