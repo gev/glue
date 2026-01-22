@@ -50,6 +50,45 @@ These rules apply to all specification development activities:
 - Quality assurance and review
 - Version control practices
 
+## Coding Preferences
+
+### Module Organization
+
+Organize classes/types/functions in modules in the following order from top to bottom:
+
+- Type declarations
+- Instances
+- Main API module functions
+- All other API functions
+- Private functions
+
+### Haskell Code
+
+- Use GHC 2024 features
+- Actively use the following coding features enabled by the configured extensions:
+  - **Block arguments**: Use do-blocks and lambda blocks as function arguments for cleaner syntax
+  - **Default signatures**: Provide default type signatures for type class methods
+  - **Duplicate record fields**: Define records with overlapping field names across modules
+  - **Overloaded record dot**: Access record fields using dot notation with overloading
+  - **Overloaded strings**: Work with string literals that can be polymorphic
+  - **Record wildcards**: Use wildcards in record patterns and updates for conciseness
+  - **Lambda case**: Pattern match directly in lambda expressions
+  - **Multi-path if**: Use if expressions with multiple conditional branches
+
+### Dart Code
+
+- Use package style imports
+- Prefer pattern matching in most cases
+
+### Cross-Language Consistency
+
+Same code and tests in different languages should have the same structure:
+
+- Same number of sense items
+- Same documentation
+- Order in modules
+- Naming (with adjustments for language features)
+
 ## Rationale
 
 These rules ensure:
