@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'widgets/code_editor_pane.dart';
 import 'widgets/ui_preview_pane.dart';
 import 'services/glue_evaluator.dart';
-import 'models/evaluation_result.dart';
 
 void main() {
   runApp(const GlueDemoApp());
@@ -103,17 +102,10 @@ class _GlueDemoHomePageState extends State<GlueDemoHomePage> {
     setState(() {
       isEvaluating = false;
       if (result.isSuccess && result.widgets != null) {
-        // Compose the list of widgets into a Column layout
+        // Compose the flattened list of widgets without individual padding for a flat display
         renderedWidget = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: result.widgets!
-              .map(
-                (widget) => Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 2),
-                  child: widget,
-                ),
-              )
-              .toList(),
+          children: result.widgets!, // No padding - flat continuous display
         );
         errorMessage = null;
       } else {
