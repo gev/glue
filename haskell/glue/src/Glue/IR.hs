@@ -107,7 +107,7 @@ instance Show (IR m) where
         Symbol s -> T.unpack s
         DottedSymbol parts -> T.unpack (T.intercalate "." parts)
         List xs -> "(" <> unwords (map show xs) <> ")"
-        Object _ -> "{object}"
+        Object props -> "(" <> unwords (map (\(k, v) -> ":" <> T.unpack k <> " " <> show v) (Map.toList props)) <> ")"
         Void -> "#<void>"
         NativeValue hv -> "<host:" <> show hv <> ">"
         NativeFunc _ -> "<native-func>"

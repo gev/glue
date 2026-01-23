@@ -8,7 +8,7 @@ import 'package:glue/src/lib/math/power/sqrt.dart';
 
 /// The power module containing exponential and power operations
 /// Mirrors Haskell Glue.Lib.Math.Power.power exactly
-final ModuleInfo power = nativeModule('ffi.math.power', [
+final ModuleInfo powerModule = nativeModule('ffi.math.power', [
   // Exponential function
   ('exp', exp),
 

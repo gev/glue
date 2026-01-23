@@ -7,7 +7,9 @@ import 'package:glue_flutter/src/utils/value_extractors.dart';
 class Properties {
   final Map<String, Ir> _props;
 
-  Properties(Map<String, Ir> props) : _props = props;
+  Properties(Map<String, Ir> props) : _props = props {
+    print('Created Properties: ${props}');
+  }
 
   /// Creates empty properties with all defaults
   Properties.empty() : _props = {};
@@ -18,6 +20,7 @@ class Properties {
   bool get disabled => extractBool(_props['disabled']) ?? false;
 
   // Text properties
+  String? get content => extractString(_props['content']);
   Color? get color => extractColor(_props['color']);
   double? get size => extractDouble(_props['size']);
   FontWeight? get weight => extractFontWeight(_props['weight']);
@@ -25,7 +28,7 @@ class Properties {
 
   // Layout properties
   List<Widget> get children => extractChildren(_props['children']) ?? [];
-  Widget? get child => children.isNotEmpty ? children.first : null;
+  Widget? get child => extractChild(_props['child']);
   MainAxisAlignment get mainAlign =>
       extractMainAxisAlignment(_props['main-axis-align']) ??
       MainAxisAlignment.start;

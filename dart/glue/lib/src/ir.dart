@@ -164,7 +164,12 @@ class IrObject extends Ir {
   IrObject(Map<String, Ir> properties) : properties = IMap(properties);
 
   @override
-  String toString() => '{object}';
+  String toString() {
+    final entries = properties.entries
+        .map((entry) => ':${entry.key} ${entry.value}')
+        .join(' ');
+    return '($entries)';
+  }
 
   @override
   bool operator ==(Object other) =>

@@ -80,10 +80,10 @@ Material Design color constants:
   :cross-axis-alignment cross-axis-alignment.center
   :main-axis-alignment main-axis-alignment.spaceEvenly
   :children
-    (text "Hello World"
-      (:color colors.blue
-       :weight font-weight.bold
-       :align text-align.center)))
+    (text :content "Hello World"
+          :color colors.blue
+          :weight font-weight.bold
+          :align text-align.center))
 ```
 
 ```clojure

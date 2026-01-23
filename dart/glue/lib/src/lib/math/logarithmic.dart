@@ -8,7 +8,7 @@ import 'package:glue/src/lib/math/logarithmic/log.dart';
 
 /// The logarithmic module containing logarithm functions
 /// Mirrors Haskell Glue.Lib.Math.Logarithmic.logarithmic exactly
-final ModuleInfo logarithmic = nativeModule('ffi.math.logarithmic', [
+final ModuleInfo logarithmicModule = nativeModule('ffi.math.logarithmic', [
   // Logarithm with arbitrary base (value, base)
   ('log', log),
 

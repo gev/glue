@@ -10,7 +10,7 @@ import 'package:glue/src/lib/math/arithmetic/sub.dart';
 
 /// The arithmetic module containing all basic math operations
 /// Mirrors Haskell Glue.Lib.Math.Arithmetic.arithmetic exactly
-final ModuleInfo arithmetic = nativeModule('ffi.math.arithmetic', [
+final ModuleInfo arithmeticModule = nativeModule('ffi.math.arithmetic', [
   // Addition
   ('+', add),
   ('add', add),

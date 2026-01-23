@@ -1,9 +1,12 @@
 import 'package:glue/ir.dart';
+import 'package:glue/lib/builtin.dart';
 import 'package:glue/parser.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/module.dart';
 import 'package:glue_flutter/glue_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:glue/lib/bool.dart';
+import '../models/evaluation_result.dart';
 
 /// Service for evaluating Glue code and converting results to Flutter widgets
 class GlueEvaluator {
@@ -23,8 +26,8 @@ class GlueEvaluator {
           print('✅ Compilation successful: $irTree');
 
           // Create environment with UI module (following stdlib pattern)
-          final env = envFromModules([ui]);
-          print('✅ Environment created with UI module: $ui');
+          final env = envFromModules([builtinModule, boolModule, uiModule]);
+          print('✅ Environment created with UI module: $uiModule');
 
           final evalResult = await runEvalSimple(eval(irTree), env);
 
@@ -41,13 +44,13 @@ class GlueEvaluator {
 
       final resultIr = await result;
 
-      // Extract Flutter widget from evaluation result
-      print('🎨 Extracting widget from result...');
-      final widget = _extractWidgetFromIr(resultIr);
-      print('✅ Widget extraction complete: ${widget.runtimeType}');
+      // Extract Flutter widgets from evaluation result
+      print('🎨 Extracting widgets from result...');
+      final widgets = _extractWidgetsFromIr(resultIr, <Widget>[]);
+      print('✅ Widget extraction complete: ${widgets.length} widgets');
 
       print('🎉 Glue evaluation completed successfully!');
-      return EvaluationResult.success(widget);
+      return EvaluationResult.success(widgets);
     } catch (e, stackTrace) {
       print('💥 Glue evaluation failed: $e');
       print('📚 Stack trace: $stackTrace');
@@ -55,51 +58,43 @@ class GlueEvaluator {
     }
   }
 
-  /// Extract Flutter widget from Glue IR evaluation result
-  static Widget _extractWidgetFromIr(Ir ir) {
-    return switch (ir) {
-      IrNativeValue(value: final hostValue) => switch (hostValue.value) {
-        Widget widget => widget,
-        _ => Container(
-          padding: const EdgeInsets.all(16),
-          child: Text('Result: ${hostValue.value}'),
-        ),
-      },
-      IrString(value: final value) => Text(value),
-      IrInteger(value: final value) => Text(value.toString()),
-      IrFloat(value: final value) => Text(value.toString()),
-      IrBool(value: final value) => Text(value.toString()),
-      _ => Container(
-        padding: const EdgeInsets.all(16),
-        child: Text('Glue Result: ${ir.toString()}'),
-      ),
-    };
-  }
-}
-
-/// Result of Glue code evaluation
-class EvaluationResult {
-  final Widget? widget;
-  final String? errorMessage;
-  final String? stackTrace;
-  final bool isSuccess;
-
-  EvaluationResult._({
-    this.widget,
-    this.errorMessage,
-    this.stackTrace,
-    required this.isSuccess,
-  });
-
-  factory EvaluationResult.success(Widget widget) {
-    return EvaluationResult._(widget: widget, isSuccess: true);
-  }
-
-  factory EvaluationResult.error(String errorMessage, String stackTrace) {
-    return EvaluationResult._(
-      errorMessage: errorMessage,
-      stackTrace: stackTrace,
-      isSuccess: false,
-    );
+  /// Extract flattened list of Flutter widgets from Glue IR evaluation result
+  static List<Widget> _extractWidgetsFromIr(Ir ir, List<Widget> accum) {
+    switch (ir) {
+      case IrNativeValue(value: final hostValue):
+        switch (hostValue.value) {
+          case Widget widget:
+            accum.add(widget);
+          default:
+            accum.add(
+              Container(
+                padding: const EdgeInsets.all(16),
+                child: Text('Result: ${hostValue.value}'),
+              ),
+            );
+        }
+      case IrString(value: final value):
+        accum.add(Text(value));
+      case IrInteger(value: final value):
+        accum.add(Text(value.toString()));
+      case IrFloat(value: final value):
+        accum.add(Text(value.toString()));
+      case IrBool(value: final value):
+        accum.add(Text(value.toString()));
+      case IrList(:final elements):
+        for (final element in elements) {
+          _extractWidgetsFromIr(element, accum); // Recursive flattening
+        }
+      case IrVoid():
+        break; // Ignore void values - don't add anything
+      default:
+        accum.add(
+          Container(
+            padding: const EdgeInsets.all(16),
+            child: Text('Glue Result: ${ir.toString()}'),
+          ),
+        );
+    }
+    return accum;
   }
 }

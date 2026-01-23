@@ -12,7 +12,7 @@ import 'package:glue/src/lib/math/utility/trunc.dart';
 
 /// The utility module containing mathematical utility functions
 /// Mirrors Haskell Glue.Lib.Math.Utility.utility exactly
-final ModuleInfo utility = nativeModule('ffi.math.utility', [
+final ModuleInfo utilityModule = nativeModule('ffi.math.utility', [
   // Absolute value
   ('abs', abs),
 

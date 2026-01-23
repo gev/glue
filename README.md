@@ -9,11 +9,13 @@
 **Not just another data format** - Glue is a **formal, evaluatable language** that solves the JSON maintenance nightmare:
 
 ### 🎯 **Formal Syntax, Strong Semantics**
-```clojure
-;; JSON becomes unmaintainable mess
+JSON becomes unmaintainable mess
+```json
 {"type": "table", "columns": [...], "filters": [...]}
+```
 
-;; Glue provides formal structure + execution
+Glue provides formal structure + execution
+```clojure
 (table
   :columns (name age email)
   :data (fetch-users)

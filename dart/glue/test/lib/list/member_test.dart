@@ -13,7 +13,9 @@ Future<Either<GlueError, Ir>> runCode(String input) async {
   final parseResult = parseGlue(input);
   return parseResult.match((parseError) => Left(parseError), (ast) async {
     final irTree = compile(ast);
-    final env = envFromModules([list]); // Load only list module for testing
+    final env = envFromModules([
+      listModule,
+    ]); // Load only list module for testing
     final runtime = Runtime.initial(env);
 
     final evalResult = await runEval(eval(irTree), runtime);

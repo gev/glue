@@ -11,7 +11,7 @@ import 'package:glue/src/lib/math/trigonometric/tan.dart';
 
 /// The trigonometric module containing trigonometric functions
 /// Mirrors Haskell Glue.Lib.Math.Trigonometric.trigonometric exactly
-final ModuleInfo trigonometric = nativeModule('ffi.math.trigonometric', [
+final ModuleInfo trigonometricModule = nativeModule('ffi.math.trigonometric', [
   // Direct trigonometric functions
   ('sin', sin),
   ('cos', cos),

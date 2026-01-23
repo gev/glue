@@ -61,7 +61,7 @@ Eval<Ir> _createText(String content, Properties properties) {
 #### Content Widgets (Text, Button)
 - Pattern: `(widget content props?)`
 - Content is required, properties optional
-- Example: `(text "Hello" (:color colors.blue :size 18))`
+- Example: `(text :content "Hello" :color colors.blue :size 18)`
 
 #### Container Widgets (Column, Row, Center)
 - Pattern: `(widget props)`
@@ -175,16 +175,16 @@ final textAlign = IrObject({
 
 ```clojure
 ;; Direct enum access (type-safe, preferred)
-(text "Hello World"
-  (:color colors.blue)           ;; Direct Color object
-  (:weight font-weight.bold)     ;; Direct FontWeight object
-  (:align text-align.center))    ;; Direct TextAlign object
+(text :content "Hello World"
+      :color colors.blue           ;; Direct Color object
+      :weight font-weight.bold     ;; Direct FontWeight object
+      :align text-align.center)    ;; Direct TextAlign object
 
 ;; Layout with enum objects
 (column
-  (:cross-axis-alignment cross-axis-alignment.center)
-  (:main-axis-alignment main-axis-alignment.spaceEvenly)
-  (children [...]))
+  :cross-axis-alignment cross-axis-alignment.center
+  :main-axis-alignment main-axis-alignment.spaceEvenly
+  children (...))
 ```
 
 ## 4. Module Registration

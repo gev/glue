@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:code_forge/code_forge.dart';
-import 'package:re_highlight/languages/dart.dart';
 
 /// Left pane widget containing the Glue code editor
 class CodeEditorPane extends StatefulWidget {
@@ -41,36 +40,12 @@ class _CodeEditorPaneState extends State<CodeEditorPane> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Container(
-        color: Theme.of(context).colorScheme.surface,
-        child: Column(
-          children: [
-            if (widget.isEvaluating)
-              Container(
-                padding: const EdgeInsets.all(8),
-                color: Theme.of(context).colorScheme.primaryContainer,
-                child: Row(
-                  children: [
-                    const Spacer(),
-                    const SizedBox(
-                      width: 16,
-                      height: 16,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    ),
-                  ],
-                ),
-              ),
-            Expanded(
-              child: CodeForge(
-                controller: _controller,
-                language: langDart,
-                textStyle: const TextStyle(
-                  fontSize: 20,
-                  fontFamily: 'monospace',
-                ),
-              ),
-            ),
-          ],
+      child: CodeForge(
+        controller: _controller,
+        textStyle: const TextStyle(
+          fontSize: 24,
+          fontFamily: 'Courier',
+          height: 1.5,
         ),
       ),
     );

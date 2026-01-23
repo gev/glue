@@ -19,12 +19,12 @@ Future<Either<GlueError, Ir>> runCode(String input) async {
   return parseResult.match((parseError) => Left(parseError), (ast) async {
     final irTree = compile(ast);
     final env = envFromModules([
-      builtin,
-      bool,
-      const_,
-      arithmetic,
-      trigonometric,
-      utility,
+      builtinModule,
+      boolModule,
+      constModule,
+      arithmeticModule,
+      trigonometricModule,
+      utilityModule,
     ]); // All math submodules loaded
     final runtime = Runtime.initial(env);
     final evalResult = await runEval(eval(irTree), runtime);
@@ -269,6 +269,15 @@ void main() {
 
     test('user-defined function', () async {
       final code = '((def id (lambda (x) x)) (id 42))';
+      final result = await runCode(code);
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrList([IrVoid(), IrInteger(42)]))),
+      );
+    });
+
+    test('function definition sugar syntax', () async {
+      final code = '((def (foo x) x) (foo 42))';
       final result = await runCode(code);
       result.match(
         (error) => fail('Should not be left: $error'),

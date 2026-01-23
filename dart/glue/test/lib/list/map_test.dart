@@ -17,10 +17,10 @@ Future<Either<GlueError, Ir>> runCode(String input) async {
   return parseResult.match((parseError) => Left(parseError), (ast) async {
     final irTree = compile(ast);
     final env = envFromModules([
-      builtin,
-      bool,
-      arithmetic,
-      list,
+      builtinModule,
+      boolModule,
+      arithmeticModule,
+      listModule,
     ]); // Load all necessary modules for testing
     final runtime = Runtime.initial(env);
 

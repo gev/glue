@@ -63,16 +63,23 @@ CrossAxisAlignment? extractCrossAxisAlignment(Ir? value) => switch (value) {
   _ => null,
 };
 
+/// Extract child list from Glue IR value
+Widget? extractChild(Ir? value) => switch (value) {
+  IrNativeValue(value: HostValue(value: Widget widget)) => widget,
+  _ => null,
+};
+
 /// Extract children list from Glue IR value
 List<Widget>? extractChildren(Ir? value) => switch (value) {
-  List list =>
-    list
+  IrList(:final elements) =>
+    elements
         .map(
           (child) => switch (child) {
             IrNativeValue(value: HostValue(value: Widget widget)) => widget,
-            _ => const SizedBox.shrink(),
+            _ => null,
           },
         )
+        .whereType<Widget>()
         .toList(),
   _ => null,
 };

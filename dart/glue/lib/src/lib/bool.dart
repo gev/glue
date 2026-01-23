@@ -17,7 +17,7 @@ import 'package:glue/src/lib/bool/while.dart';
 
 /// The bool module containing all boolean functions and special forms
 /// Mirrors Haskell Glue.Lib.Bool.bool exactly
-final ModuleInfo bool = nativeModule('ffi.bool', [
+final ModuleInfo boolModule = nativeModule('ffi.bool', [
   // Constants
   ('true', IrBool(true)),
   ('false', IrBool(false)),

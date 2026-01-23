@@ -33,7 +33,7 @@ Implement the Flutter-specific version of the `ui` module for the Glue programmi
 - [x] Create GlueCenter widget class extending GlueWidget
 
 ### Core Native Functions
-- [x] Implement `text` native function: (text content props) → IrNativeValue
+- [x] Implement `text` native function: (text props) → IrNativeValue
 - [x] Implement `button` native function: (button props) → IrNativeValue
 - [x] Implement `container` native function: (container props) → IrNativeValue
 - [x] Implement `column` native function: (column props) → IrNativeValue
@@ -86,7 +86,7 @@ Implement the Flutter-specific version of the `ui` module for the Glue programmi
 
 ## Syntax Requirements
 Widget functions follow pattern: (function content? props?)
-- Text: (text "content" (:color "blue" :size 18 :weight "bold"))
+- Text: (text :content "content" :color "blue" :size 18 :weight "bold")
 - Button: (button :label "Click" :on-tap callback)
 - Container: (container (:children [child1 child2] :direction "vertical"))
 

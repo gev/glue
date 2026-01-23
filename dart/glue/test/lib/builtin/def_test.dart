@@ -12,7 +12,7 @@ void main() {
     late Runtime runtime;
 
     setUp(() {
-      final env = envFromModules([builtin]);
+      final env = envFromModules([builtinModule]);
       runtime = Runtime.initial(env);
     });
 
@@ -49,10 +49,8 @@ void main() {
         final result = await runEval(apply(def, args), runtime);
         result.match((error) => fail('Def failed: $error'), (value) {
           final (res, runtime) = value;
-          // Should return the closure
-          expect(res, isA<IrClosure>());
-          final closure = res as IrClosure;
-          expect(closure.params, equals(['x']));
+          // Should return IrVoid like variable definitions
+          expect(res, equals(IrVoid()));
 
           // Check that square function was also defined
           final lookupResult = lookupVar('square', runtime.env);
@@ -73,10 +71,8 @@ void main() {
         final result = await runEval(apply(def, args), runtime);
         result.match((error) => fail('Def failed: $error'), (value) {
           final (res, runtime) = value;
-          // Should return the closure
-          expect(res, isA<IrClosure>());
-          final closure = res as IrClosure;
-          expect(closure.params, equals(['x', 'y']));
+          // Should return IrVoid like variable definitions
+          expect(res, equals(IrVoid()));
 
           // Check that add function was also defined
           final lookupResult = lookupVar('add', runtime.env);
@@ -98,10 +94,8 @@ void main() {
         final result = await runEval(apply(def, args), runtime);
         result.match((error) => fail('Def failed: $error'), (value) {
           final (res, runtime) = value;
-          // Should return the closure
-          expect(res, isA<IrClosure>());
-          final closure = res as IrClosure;
-          expect(closure.params, equals(['x']));
+          // Should return IrVoid like variable definitions
+          expect(res, equals(IrVoid()));
 
           // Check that test function was also defined
           final lookupResult = lookupVar('test', runtime.env);

@@ -22,7 +22,7 @@ The `ui` module provides a framework-agnostic API for creating user interfaces i
 (import "ui")
 
 (container :children (
-  (text "Hello World" :color colors.blue :size 24)
+  (text :content "Hello World" :color colors.blue :size 24)
   (button :label "Click Me" :on-tap handle-click)
 ))
 ```
@@ -41,14 +41,14 @@ Creates text display elements with optional styling.
 
 ```clojure
 ;; Basic usage
-(text "Hello World")
+(text :content "Hello World")
 
 ;; With styling
-(text "Styled Text"
-  (:color colors.blue
-   :size 18
-   :weight font-weight.bold
-   :align text-align.center))
+(text :content "Styled Text"
+      :color colors.blue
+      :size 18
+      :weight font-weight.bold
+      :align text-align.center)
 ```
 
 **Parameters:**
@@ -84,10 +84,10 @@ Creates layout containers for organizing child components.
 
 ```clojure
 ;; Vertical layout (default)
-(container :children [
-  (text "Item 1")
-  (text "Item 2")
-])
+(container :children (
+  (text :content "Item 1")
+  (text :content "Item 2")
+))
 
 ;; Horizontal layout
 (container :direction "horizontal"
@@ -137,16 +137,16 @@ Framework implementations provide **enum union objects** for type-safe access to
 
 ```clojure
 ;; Direct enum access (type-safe, preferred)
-(text "Hello World"
-  (:color colors.blue)           ;; Enum object
-  (:weight font-weight.bold)     ;; Enum object
-  (:align text-align.center))    ;; Enum object
+(text :content "Hello World"
+      :color colors.blue           ;; Enum object
+      :weight font-weight.bold     ;; Enum object
+      :align text-align.center)    ;; Enum object
 
 ;; Layout with enum objects
 (column
-  (:cross-axis-alignment cross-axis-alignment.center)
-  (:main-axis-alignment main-axis-alignment.spaceEvenly)
-  (children [...]))
+  :cross-axis-alignment cross-axis-alignment.center
+  :main-axis-alignment main-axis-alignment.spaceEvenly
+  children (...))
 ```
 
 ### Unified Parameter System
