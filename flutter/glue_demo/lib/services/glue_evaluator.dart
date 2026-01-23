@@ -80,6 +80,7 @@ class GlueEvaluator {
               (item) => _extractWidgetsFromIr(item),
             ) // Flatten recursively
             .toList(),
+      IrVoid() => [], // Ignore void values - don't create widgets for them
       _ => [
         Container(
           padding: const EdgeInsets.all(16),
