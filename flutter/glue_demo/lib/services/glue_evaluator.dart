@@ -48,20 +48,18 @@ class GlueEvaluator {
       final widgets = _extractWidgetsFromIr(resultIr);
       print('✅ Widget extraction complete: ${widgets.length} widgets');
 
-      // Create a simple container if we have widgets, otherwise show the raw result
-      final widget = widgets.isNotEmpty
-          ? Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: widgets
-                  .map(
-                    (w) => Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 2),
-                      child: w,
-                    ),
-                  )
-                  .toList(),
+      // Always return widgets in a column layout
+      final widget = Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: widgets
+            .map(
+              (w) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2),
+                child: w,
+              ),
             )
-          : _extractWidgetFromIr(resultIr);
+            .toList(),
+      );
 
       print('🎉 Glue evaluation completed successfully!');
       return EvaluationResult.success(widget);
