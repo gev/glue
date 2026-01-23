@@ -276,6 +276,15 @@ void main() {
       );
     });
 
+    test('function definition sugar syntax', () async {
+      final code = '((def (foo x) x) (foo 42))';
+      final result = await runCode(code);
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrList([IrVoid(), IrInteger(42)]))),
+      );
+    });
+
     test('user-defined function partial application (currying)', () async {
       final code = '((def add (lambda (x y) (+ x y))) ((add 5) 3))';
       final result = await runCode(code);

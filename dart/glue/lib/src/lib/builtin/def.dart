@@ -15,37 +15,33 @@ final Ir def = IrSpecial(defImpl);
 /// Mirrors Haskell Glue.Lib.Builtin.Def.defImpl exactly
 Eval<Ir> defImpl(List<Ir> args) {
   return switch (args) {
-    // Variable definition: (def symbol value)
-    [IrSymbol(:final value), final rawVal] => eval(rawVal).flatMap((evaluated) {
-      return defineVarEval(value, evaluated).map((_) => IrVoid());
-    }),
+    [IrSymbol(value: final name), final value] => eval(value).flatMap(
+      (evaluated) => defineVarEval(name, evaluated).map((_) => IrVoid()),
+    ),
 
-    // Function definition sugar: (def (symbol params...) body...)
-    [IrList(:final elements), ...final body] when elements.isNotEmpty =>
-      switch (elements[0]) {
-        IrSymbol(:final value) =>
-          extractSymbols(elements.sublist(1).unlock).match(
-            (_) => throwError(
-              wrongArgumentType(['symbols in function parameters']),
-            ),
-            (paramSymbols) {
-              // Create body expression - mirrors Haskell exactly
-              final bodyExpr = switch (body) {
-                [] => IrVoid(),
-                [final single] => single,
-                final multiple => IrList(multiple),
-              };
+    [IrList(elements: final elements), ...final body] => switch (elements
+        .unlock) {
+      [IrSymbol(value: final name), ...final params] =>
+        extractSymbols(params).match(
+          (_) =>
+              throwError(wrongArgumentType(['symbols in function parameters'])),
+          (paramNames) {
+            // Create body expression
+            final bodyExpr = body.isEmpty
+                ? IrVoid()
+                : body.length == 1
+                ? body[0]
+                : IrList(body);
 
-              // Create closure and define it
-              return makeClosure(paramSymbols, bodyExpr).flatMap((closure) {
-                return defineVarEval(value, closure).map((_) => IrVoid());
-              });
-            },
-          ),
-        _ => throwError(wrongArgumentType(['function name symbol'])),
-      },
+            // Create closure and define it
+            return makeClosure(paramNames, bodyExpr).flatMap(
+              (closure) => defineVarEval(name, closure).map((_) => IrVoid()),
+            );
+          },
+        ),
+      _ => throwError(wrongArgumentType(['function name symbol'])),
+    },
 
-    // Invalid arguments
     _ => throwError(
       wrongArgumentType(['symbol or function signature', 'value']),
     ),
