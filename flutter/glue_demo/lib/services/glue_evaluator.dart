@@ -71,6 +71,17 @@ class GlueEvaluator {
       IrInteger(value: final value) => Text(value.toString()),
       IrFloat(value: final value) => Text(value.toString()),
       IrBool(value: final value) => Text(value.toString()),
+      IrList(:final elements) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: elements
+            .map(
+              (item) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2),
+                child: _extractWidgetFromIr(item), // Recursive processing
+              ),
+            )
+            .toList(),
+      ),
       _ => Container(
         padding: const EdgeInsets.all(16),
         child: Text('Glue Result: ${ir.toString()}'),
