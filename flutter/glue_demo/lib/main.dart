@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'widgets/code_editor_pane.dart';
 import 'widgets/ui_preview_pane.dart';
 import 'services/glue_evaluator.dart';
+import 'models/evaluation_result.dart';
 
 void main() {
   runApp(const GlueDemoApp());

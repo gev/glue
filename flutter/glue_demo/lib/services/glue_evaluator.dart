@@ -6,6 +6,7 @@ import 'package:glue/module.dart';
 import 'package:glue_flutter/glue_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:glue/lib/bool.dart';
+import '../models/evaluation_result.dart';
 
 /// Service for evaluating Glue code and converting results to Flutter widgets
 class GlueEvaluator {
@@ -86,32 +87,5 @@ class GlueEvaluator {
         ),
       ],
     };
-  }
-}
-
-/// Result of Glue code evaluation
-class EvaluationResult {
-  final List<Widget>? widgets;
-  final String? errorMessage;
-  final String? stackTrace;
-  final bool isSuccess;
-
-  EvaluationResult._({
-    this.widgets,
-    this.errorMessage,
-    this.stackTrace,
-    required this.isSuccess,
-  });
-
-  factory EvaluationResult.success(List<Widget> widgets) {
-    return EvaluationResult._(widgets: widgets, isSuccess: true);
-  }
-
-  factory EvaluationResult.error(String errorMessage, String stackTrace) {
-    return EvaluationResult._(
-      errorMessage: errorMessage,
-      stackTrace: stackTrace,
-      isSuccess: false,
-    );
   }
 }
