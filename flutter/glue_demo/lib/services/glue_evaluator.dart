@@ -48,21 +48,8 @@ class GlueEvaluator {
       final widgets = _extractWidgetsFromIr(resultIr);
       print('✅ Widget extraction complete: ${widgets.length} widgets');
 
-      // Always return widgets in a column layout
-      final widget = Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: widgets
-            .map(
-              (w) => Padding(
-                padding: const EdgeInsets.symmetric(vertical: 2),
-                child: w,
-              ),
-            )
-            .toList(),
-      );
-
       print('🎉 Glue evaluation completed successfully!');
-      return EvaluationResult.success(widget);
+      return EvaluationResult.success(widgets);
     } catch (e, stackTrace) {
       print('💥 Glue evaluation failed: $e');
       print('📚 Stack trace: $stackTrace');
@@ -100,56 +87,24 @@ class GlueEvaluator {
       ],
     };
   }
-
-  /// Extract Flutter widget from Glue IR evaluation result (fallback for non-list results)
-  static Widget _extractWidgetFromIr(Ir ir) {
-    return switch (ir) {
-      IrNativeValue(value: final hostValue) => switch (hostValue.value) {
-        Widget widget => widget,
-        _ => Container(
-          padding: const EdgeInsets.all(16),
-          child: Text('Result: ${hostValue.value}'),
-        ),
-      },
-      IrString(value: final value) => Text(value),
-      IrInteger(value: final value) => Text(value.toString()),
-      IrFloat(value: final value) => Text(value.toString()),
-      IrBool(value: final value) => Text(value.toString()),
-      IrList(:final elements) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: elements
-            .map(
-              (item) => Padding(
-                padding: const EdgeInsets.symmetric(vertical: 2),
-                child: _extractWidgetFromIr(item), // Recursive processing
-              ),
-            )
-            .toList(),
-      ),
-      _ => Container(
-        padding: const EdgeInsets.all(16),
-        child: Text('Glue Result: ${ir.toString()}'),
-      ),
-    };
-  }
 }
 
 /// Result of Glue code evaluation
 class EvaluationResult {
-  final Widget? widget;
+  final List<Widget>? widgets;
   final String? errorMessage;
   final String? stackTrace;
   final bool isSuccess;
 
   EvaluationResult._({
-    this.widget,
+    this.widgets,
     this.errorMessage,
     this.stackTrace,
     required this.isSuccess,
   });
 
-  factory EvaluationResult.success(Widget widget) {
-    return EvaluationResult._(widget: widget, isSuccess: true);
+  factory EvaluationResult.success(List<Widget> widgets) {
+    return EvaluationResult._(widgets: widgets, isSuccess: true);
   }
 
   factory EvaluationResult.error(String errorMessage, String stackTrace) {

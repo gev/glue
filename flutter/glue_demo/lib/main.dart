@@ -101,8 +101,19 @@ class _GlueDemoHomePageState extends State<GlueDemoHomePage> {
 
     setState(() {
       isEvaluating = false;
-      if (result.isSuccess) {
-        renderedWidget = result.widget;
+      if (result.isSuccess && result.widgets != null) {
+        // Compose the list of widgets into a Column layout
+        renderedWidget = Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: result.widgets!
+              .map(
+                (widget) => Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 2),
+                  child: widget,
+                ),
+              )
+              .toList(),
+        );
         errorMessage = null;
       } else {
         renderedWidget = null;
