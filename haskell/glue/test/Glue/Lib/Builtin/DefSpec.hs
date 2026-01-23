@@ -36,12 +36,8 @@ spec = describe "Glue.Lib.Builtin.Def (Test def special form)" do
             case result of
                 Left err -> expectationFailure $ "Def failed: " <> show err
                 Right (res, runtime) -> do
-                    -- Should return the closure
-                    res
-                        `shouldSatisfy` ( \case
-                                            Closure ["x"] _ _ -> True
-                                            _ -> False
-                                        )
+                    -- Should return Void like variable definitions
+                    res `shouldBe` Void
                     -- Check that square function was also defined
                     E.lookupLocal "square" runtime.env
                         `shouldSatisfy` ( \case
@@ -56,12 +52,8 @@ spec = describe "Glue.Lib.Builtin.Def (Test def special form)" do
             case result of
                 Left err -> expectationFailure $ "Def failed: " <> show err
                 Right (res, runtime) -> do
-                    -- Should return the closure
-                    res
-                        `shouldSatisfy` ( \case
-                                            Closure ["x", "y"] _ _ -> True
-                                            _ -> False
-                                        )
+                    -- Should return Void like variable definitions
+                    res `shouldBe` Void
                     E.lookupLocal "add" runtime.env
                         `shouldSatisfy` ( \case
                                             Just (Closure ["x", "y"] _ _) -> True
@@ -79,12 +71,8 @@ spec = describe "Glue.Lib.Builtin.Def (Test def special form)" do
             case result of
                 Left err -> expectationFailure $ "Def failed: " <> show err
                 Right (res, runtime) -> do
-                    -- Should return the closure
-                    res
-                        `shouldSatisfy` ( \case
-                                            Closure ["x"] _ _ -> True
-                                            _ -> False
-                                        )
+                    -- Should return Void like variable definitions
+                    res `shouldBe` Void
                     E.lookupLocal "test" runtime.env
                         `shouldSatisfy` ( \case
                                             Just (Closure ["x"] _ _) -> True
