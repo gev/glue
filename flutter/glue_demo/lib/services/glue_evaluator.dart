@@ -1,13 +1,11 @@
 import 'package:glue/either.dart';
 import 'package:glue/error.dart';
 import 'package:glue/ir.dart';
-import 'package:glue/lib/builtin.dart';
 import 'package:glue/parser.dart';
 import 'package:glue/eval.dart';
-import 'package:glue/module.dart';
+import 'package:glue_demo/services/env.dart';
 import 'package:glue_flutter/glue_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:glue/lib/bool.dart';
 
 typedef GlueEvalResult = Either<GlueError, List<Widget>>;
 
@@ -27,7 +25,7 @@ class GlueEvaluator {
         print('✅ Parse successful: $ast');
         final irTree = compile(ast);
         print('✅ Compilation successful: $irTree');
-        final env = envFromModules([builtinModule, boolModule, uiModule]);
+
         print('✅ Environment created with UI module: $uiModule');
         final evalResult = await runEvalSimple(eval(irTree), env);
         return evalResult.match(
@@ -38,7 +36,7 @@ class GlueEvaluator {
           (value) {
             final (resultIr, _) = value;
             print('✅ Evaluation successful: $resultIr');
-            final widgets = _extractWidgetsFromIr(resultIr, <Widget>[]);
+            final widgets = _extractWidgetsFromIr(resultIr, []);
             print('✅ Widget extraction complete: ${widgets.length} widgets');
             return Right(widgets);
           },

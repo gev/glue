@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:glue_demo/code.dart';
 import 'package:glue_demo/services/glue_evaluator.dart';
 import 'package:glue_demo/widgets/code_editor_pane.dart';
 import 'package:glue_demo/widgets/ui_preview_pane.dart';
@@ -11,42 +12,16 @@ class GlueDemo extends StatefulWidget {
 }
 
 class _GlueDemoState extends State<GlueDemo> {
-  // Code editor content
   late final TextEditingController codeController;
 
-  // UI rendering state
-  Widget? renderedWidget;
+  List<Widget> renderedWidgets = [];
   String? errorMessage;
-  bool isEvaluating = false;
-
-  // Default demo code
-  static const String defaultCode = '''
-;; Welcome to Glue Demo!
-;; Edit this code and see the UI update in real-time
-(
-  (def 
-    (hello message) 
-    (text :content message
-          :color colors.blue
-          :size 24
-          :weight font-weight.bold))
-  (column 
-    :children (
-        (hello "Hello World!")
-        (hello "Hello Glue!")
-    ))
-)
-''';
 
   @override
   void initState() {
     super.initState();
     codeController = TextEditingController(text: defaultCode);
-
-    // Auto-evaluate on code changes
     codeController.addListener(_onCodeChanged);
-
-    // Initial evaluation
     _evaluateCode(defaultCode);
   }
 
@@ -64,27 +39,15 @@ class _GlueDemoState extends State<GlueDemo> {
   }
 
   Future<void> _evaluateCode(String code) async {
-    setState(() {
-      isEvaluating = true;
-      errorMessage = null;
-    });
-
     final result = await GlueEvaluator.evaluateCode(code);
-
     setState(() {
-      isEvaluating = false;
       result.match(
         (error) {
-          // Handle Glue errors with meaningful messages
-          renderedWidget = null;
-          errorMessage = error.pretty(); // Meaningful Glue error message
+          renderedWidgets = [];
+          errorMessage = error.pretty();
         },
         (widgets) {
-          // Success - compose the flattened list of widgets
-          renderedWidget = Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: widgets, // No padding - flat continuous display
-          );
+          renderedWidgets = widgets;
           errorMessage = null;
         },
       );
@@ -100,20 +63,14 @@ class _GlueDemoState extends State<GlueDemo> {
           // Left panel: Code editor
           Expanded(
             flex: 1,
-            child: CodeEditorPane(
-              codeController: codeController,
-              isEvaluating: isEvaluating,
-            ),
+            child: CodeEditorPane(codeController: codeController),
           ),
-
-          // Divider
-          Container(width: 1),
 
           // Right panel: UI renderer
           Expanded(
             flex: 1,
             child: UiPreviewPane(
-              renderedWidget: renderedWidget,
+              renderedWidgets: renderedWidgets,
               errorMessage: errorMessage,
             ),
           ),

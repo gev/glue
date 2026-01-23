@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 
 /// Widget for displaying rendered Glue widgets
 class WidgetRendererWidget extends StatelessWidget {
-  final Widget? renderedWidget;
+  final List<Widget> renderedWidgets;
 
-  const WidgetRendererWidget({super.key, this.renderedWidget});
+  const WidgetRendererWidget({super.key, required this.renderedWidgets});
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: renderedWidget ?? Text('No UI to display'));
+    return renderedWidgets.isNotEmpty
+        ? Column(children: renderedWidgets)
+        : Center(child: Text('No UI to display'));
   }
 }

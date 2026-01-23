@@ -12,6 +12,7 @@ class ErrorDisplayWidget extends StatelessWidget {
 
     return Container(
       color: Theme.of(context).colorScheme.errorContainer,
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
           Text(
