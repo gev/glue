@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:glue/either.dart';
+import 'package:glue/error.dart';
 import 'widgets/code_editor_pane.dart';
 import 'widgets/ui_preview_pane.dart';
 import 'services/glue_evaluator.dart';
@@ -101,17 +103,21 @@ class _GlueDemoHomePageState extends State<GlueDemoHomePage> {
 
     setState(() {
       isEvaluating = false;
-      if (result.isSuccess && result.widgets != null) {
-        // Compose the flattened list of widgets without individual padding for a flat display
-        renderedWidget = Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: result.widgets!, // No padding - flat continuous display
-        );
-        errorMessage = null;
-      } else {
-        renderedWidget = null;
-        errorMessage = '${result.errorMessage}\n\n${result.stackTrace}';
-      }
+      result.match(
+        (error) {
+          // Handle Glue errors with meaningful messages
+          renderedWidget = null;
+          errorMessage = error.pretty(); // Meaningful Glue error message
+        },
+        (widgets) {
+          // Success - compose the flattened list of widgets
+          renderedWidget = Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: widgets, // No padding - flat continuous display
+          );
+          errorMessage = null;
+        },
+      );
     });
   }
 
