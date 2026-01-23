@@ -8,7 +8,7 @@ Modern development suffers from duplicated logic across 4+ platforms, slow relea
 
 ## The Solution
 
-Glue provides a single source of truth that compiles into executable code for any environment—from backend services to mobile applications and IoT devices.
+Glue provides a single source of truth that runs as an embedded interpreter library in any environment—from backend services to mobile applications and IoT devices.
 
 ## ✨ Key Advantages and Technological Innovations
 
