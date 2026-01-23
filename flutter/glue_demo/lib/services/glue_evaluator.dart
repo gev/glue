@@ -46,7 +46,7 @@ class GlueEvaluator {
 
       // Extract Flutter widgets from evaluation result
       print('🎨 Extracting widgets from result...');
-      final widgets = _extractWidgetsFromIr(resultIr);
+      final widgets = _extractWidgetsFromIr(resultIr, <Widget>[]);
       print('✅ Widget extraction complete: ${widgets.length} widgets');
 
       print('🎉 Glue evaluation completed successfully!');
@@ -59,34 +59,42 @@ class GlueEvaluator {
   }
 
   /// Extract flattened list of Flutter widgets from Glue IR evaluation result
-  static List<Widget> _extractWidgetsFromIr(Ir ir) {
-    return switch (ir) {
-      IrNativeValue(value: final hostValue) => switch (hostValue.value) {
-        Widget widget => [widget],
-        _ => [
+  static List<Widget> _extractWidgetsFromIr(Ir ir, List<Widget> accum) {
+    switch (ir) {
+      case IrNativeValue(value: final hostValue):
+        switch (hostValue.value) {
+          case Widget widget:
+            accum.add(widget);
+          default:
+            accum.add(
+              Container(
+                padding: const EdgeInsets.all(16),
+                child: Text('Result: ${hostValue.value}'),
+              ),
+            );
+        }
+      case IrString(value: final value):
+        accum.add(Text(value));
+      case IrInteger(value: final value):
+        accum.add(Text(value.toString()));
+      case IrFloat(value: final value):
+        accum.add(Text(value.toString()));
+      case IrBool(value: final value):
+        accum.add(Text(value.toString()));
+      case IrList(:final elements):
+        for (final element in elements) {
+          _extractWidgetsFromIr(element, accum); // Recursive flattening
+        }
+      case IrVoid():
+      // Ignore void values - don't add anything
+      default:
+        accum.add(
           Container(
             padding: const EdgeInsets.all(16),
-            child: Text('Result: ${hostValue.value}'),
+            child: Text('Glue Result: ${ir.toString()}'),
           ),
-        ],
-      },
-      IrString(value: final value) => [Text(value)],
-      IrInteger(value: final value) => [Text(value.toString())],
-      IrFloat(value: final value) => [Text(value.toString())],
-      IrBool(value: final value) => [Text(value.toString())],
-      IrList(:final elements) =>
-        elements
-            .expand(
-              (item) => _extractWidgetsFromIr(item),
-            ) // Flatten recursively
-            .toList(),
-      IrVoid() => [], // Ignore void values - don't create widgets for them
-      _ => [
-        Container(
-          padding: const EdgeInsets.all(16),
-          child: Text('Glue Result: ${ir.toString()}'),
-        ),
-      ],
-    };
+        );
+    }
+    return accum;
   }
 }
