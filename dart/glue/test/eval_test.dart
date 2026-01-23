@@ -23,7 +23,7 @@ Future<Either<GlueError, Ir>> runCode(String input) async {
       boolModule,
       constModule,
       arithmeticModule,
-      trigonometric,
+      trigonometricModule,
       utilityModule,
     ]); // All math submodules loaded
     final runtime = Runtime.initial(env);
