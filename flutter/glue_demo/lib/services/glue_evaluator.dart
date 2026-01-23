@@ -9,15 +9,14 @@ import 'package:glue_flutter/glue_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:glue/lib/bool.dart';
 
+typedef GlueEvalResult = Either<GlueError, List<Widget>>;
+
 /// Service for evaluating Glue code and converting results to Flutter widgets
 class GlueEvaluator {
   /// Evaluate Glue code and return either widgets or a Glue error
-  static Future<Either<GlueError, List<Widget>>> evaluateCode(
-    String code,
-  ) async {
+  static Future<GlueEvalResult> evaluateCode(String code) async {
     print('🔄 Starting Glue evaluation for code: "${code.trim()}"');
 
-    // Follow runCode pattern from dart/glue/test/eval_test.dart
     final parseResult = parseGlue(code.trim());
     return parseResult.match(
       (parseError) {
@@ -26,16 +25,11 @@ class GlueEvaluator {
       },
       (ast) async {
         print('✅ Parse successful: $ast');
-
         final irTree = compile(ast);
         print('✅ Compilation successful: $irTree');
-
-        // Create environment with UI module (following stdlib pattern)
         final env = envFromModules([builtinModule, boolModule, uiModule]);
         print('✅ Environment created with UI module: $uiModule');
-
         final evalResult = await runEvalSimple(eval(irTree), env);
-
         return evalResult.match(
           (error) {
             print('💥 Evaluation failed: $error');
@@ -44,13 +38,8 @@ class GlueEvaluator {
           (value) {
             final (resultIr, _) = value;
             print('✅ Evaluation successful: $resultIr');
-
-            // Extract Flutter widgets from evaluation result
-            print('🎨 Extracting widgets from result...');
             final widgets = _extractWidgetsFromIr(resultIr, <Widget>[]);
             print('✅ Widget extraction complete: ${widgets.length} widgets');
-
-            print('🎉 Glue evaluation completed successfully!');
             return Right(widgets);
           },
         );
