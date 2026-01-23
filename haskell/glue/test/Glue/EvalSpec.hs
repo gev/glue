@@ -101,6 +101,10 @@ spec = describe "Glue.Eval (System Integration)" do
         runCode "((def id (lambda (x) x)) (id 42))"
             `shouldReturn` Right (List [Void, Integer 42])
 
+    it "function definition sugar syntax" do
+        runCode "((def (foo x) x) (foo 42))"
+            `shouldReturn` Right (List [Void, Integer 42])
+
     it "user-defined function partial application (currying)" do
         result <- runCode "((def add (lambda (x y) (+ x y))) ((add 5) 3))"
         result `shouldBe` Right (List [Void, Integer 8])
