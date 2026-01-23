@@ -24,5 +24,5 @@ defImpl (List (Symbol name : params) : body) = do
     closure <- makeClosure paramSymbols bodyExpr
 
     defineVarEval name closure
-    pure closure
+    pure Void
 defImpl _ = throwError $ wrongArgumentType ["symbol", "value"]
