@@ -5,17 +5,19 @@ import 'widget_renderer_widget.dart';
 /// Right pane widget containing the UI preview and error display
 /// Coordinates between ErrorDisplayWidget and WidgetRendererWidget
 class UiPreviewPane extends StatelessWidget {
-  final Widget? renderedWidget;
+  final List<Widget> renderedWidgets;
   final String? errorMessage;
 
-  const UiPreviewPane({super.key, this.renderedWidget, this.errorMessage});
+  const UiPreviewPane({
+    required this.renderedWidgets,
+    this.errorMessage,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: errorMessage != null
-          ? ErrorDisplayWidget(errorMessage: errorMessage)
-          : WidgetRendererWidget(renderedWidget: renderedWidget),
-    );
+    return errorMessage != null
+        ? ErrorDisplayWidget(errorMessage: errorMessage)
+        : WidgetRendererWidget(renderedWidgets: renderedWidgets);
   }
 }

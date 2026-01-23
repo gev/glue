@@ -4,13 +4,8 @@ import 'package:code_forge/code_forge.dart';
 /// Left pane widget containing the Glue code editor
 class CodeEditorPane extends StatefulWidget {
   final TextEditingController codeController;
-  final bool isEvaluating;
 
-  const CodeEditorPane({
-    super.key,
-    required this.codeController,
-    required this.isEvaluating,
-  });
+  const CodeEditorPane({super.key, required this.codeController});
 
   @override
   State<CodeEditorPane> createState() => _CodeEditorPaneState();
