@@ -43,10 +43,25 @@ class GlueEvaluator {
 
       final resultIr = await result;
 
-      // Extract Flutter widget from evaluation result
-      print('🎨 Extracting widget from result...');
-      final widget = _extractWidgetFromIr(resultIr);
-      print('✅ Widget extraction complete: ${widget.runtimeType}');
+      // Extract Flutter widgets from evaluation result
+      print('🎨 Extracting widgets from result...');
+      final widgets = _extractWidgetsFromIr(resultIr);
+      print('✅ Widget extraction complete: ${widgets.length} widgets');
+
+      // Create a simple container if we have widgets, otherwise show the raw result
+      final widget = widgets.isNotEmpty
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: widgets
+                  .map(
+                    (w) => Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2),
+                      child: w,
+                    ),
+                  )
+                  .toList(),
+            )
+          : _extractWidgetFromIr(resultIr);
 
       print('🎉 Glue evaluation completed successfully!');
       return EvaluationResult.success(widget);
@@ -57,7 +72,38 @@ class GlueEvaluator {
     }
   }
 
-  /// Extract Flutter widget from Glue IR evaluation result
+  /// Extract flattened list of Flutter widgets from Glue IR evaluation result
+  static List<Widget> _extractWidgetsFromIr(Ir ir) {
+    return switch (ir) {
+      IrNativeValue(value: final hostValue) => switch (hostValue.value) {
+        Widget widget => [widget],
+        _ => [
+          Container(
+            padding: const EdgeInsets.all(16),
+            child: Text('Result: ${hostValue.value}'),
+          ),
+        ],
+      },
+      IrString(value: final value) => [Text(value)],
+      IrInteger(value: final value) => [Text(value.toString())],
+      IrFloat(value: final value) => [Text(value.toString())],
+      IrBool(value: final value) => [Text(value.toString())],
+      IrList(:final elements) =>
+        elements
+            .expand(
+              (item) => _extractWidgetsFromIr(item),
+            ) // Flatten recursively
+            .toList(),
+      _ => [
+        Container(
+          padding: const EdgeInsets.all(16),
+          child: Text('Glue Result: ${ir.toString()}'),
+        ),
+      ],
+    };
+  }
+
+  /// Extract Flutter widget from Glue IR evaluation result (fallback for non-list results)
   static Widget _extractWidgetFromIr(Ir ir) {
     return switch (ir) {
       IrNativeValue(value: final hostValue) => switch (hostValue.value) {
