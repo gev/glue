@@ -86,7 +86,7 @@ class GlueEvaluator {
           _extractWidgetsFromIr(element, accum); // Recursive flattening
         }
       case IrVoid():
-      // Ignore void values - don't add anything
+        break; // Ignore void values - don't add anything
       default:
         accum.add(
           Container(
