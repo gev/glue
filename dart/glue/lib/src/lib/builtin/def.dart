@@ -14,56 +14,40 @@ final Ir def = IrSpecial(defImpl);
 /// Def special form implementation
 /// Mirrors Haskell Glue.Lib.Builtin.Def.defImpl exactly
 Eval<Ir> defImpl(List<Ir> args) {
-  if (args.length < 2) {
-    return throwError(wrongArgumentType(['symbol', 'value']));
-  }
+  return switch (args) {
+    // Variable definition: (def symbol value)
+    [IrSymbol(:final value), final rawVal] => eval(rawVal).flatMap((evaluated) {
+      return defineVarEval(value, evaluated).map((_) => IrVoid());
+    }),
 
-  final first = args[0];
-  final rest = args.sublist(1);
+    // Function definition sugar: (def (symbol params...) body...)
+    [IrList(:final elements), ...final body] when elements.isNotEmpty =>
+      switch (elements[0]) {
+        IrSymbol(:final value) =>
+          extractSymbols(elements.sublist(1).unlock).match(
+            (_) => throwError(
+              wrongArgumentType(['symbols in function parameters']),
+            ),
+            (paramSymbols) {
+              // Create body expression - mirrors Haskell exactly
+              final bodyExpr = switch (body) {
+                [] => IrVoid(),
+                [final single] => single,
+                final multiple => IrList(multiple),
+              };
 
-  if (first is IrSymbol) {
-    // Simple variable definition: (def symbol value)
-    if (rest.length != 1) {
-      return throwError(wrongArgumentType(['symbol', 'value']));
-    }
-    final value = rest[0];
-    return eval(value).flatMap((evaluated) {
-      return defineVarEval(first.value, evaluated).map((_) => IrVoid());
-    });
-  } else if (first is IrList) {
-    // Function definition shorthand: (def (symbol params...) body...)
-    if (first.elements.isEmpty) {
-      return throwError(wrongArgumentType(['function signature', 'body']));
-    }
-
-    final funcName = first.elements[0];
-    final params = first.elements.sublist(1);
-
-    if (funcName is! IrSymbol) {
-      return throwError(wrongArgumentType(['function name symbol']));
-    }
-
-    // Extract parameter symbols
-    final paramSymbols = extractSymbols(params.unlock);
-    return paramSymbols.match(
-      (_) => throwError(wrongArgumentType(['symbols in function parameters'])),
-      (value) {
-        // Create body expression
-        final body = rest.isEmpty
-            ? IrVoid()
-            : rest.length == 1
-            ? rest[0]
-            : IrList(rest);
-
-        // Create closure and define it
-        return makeClosure(value, body).flatMap((closure) {
-          return defineVarEval(funcName.value, closure).map((_) => closure);
-        });
+              // Create closure and define it
+              return makeClosure(paramSymbols, bodyExpr).flatMap((closure) {
+                return defineVarEval(value, closure).map((_) => IrVoid());
+              });
+            },
+          ),
+        _ => throwError(wrongArgumentType(['function name symbol'])),
       },
-    );
-  } else {
-    return throwError(
+
+    // Invalid arguments
+    _ => throwError(
       wrongArgumentType(['symbol or function signature', 'value']),
-    );
-  }
+    ),
+  };
 }
