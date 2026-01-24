@@ -2,19 +2,34 @@ String defaultCode = '''
 ;; Welcome to Glue Demo!
 ;; Edit this code and see the UI update in real-time
 
-((def 
-   (hello message color) 
-   (text :content message
-         :color color
-         :size 32
-   ))
-       
-   (hello "Hello World!" colors.blue)
-   (hello "Glue Demo. Live UI editor" colors.grey)
-   (row 
-      :main-axis-align main-axis-alignment.center
-      :children (
-         (button :label "Press me")
-         (button :label "Tap me")
-   )))
+(
+    (def my-counter (reactive-counter 0))
+
+    (def (demo counter)
+        (
+            (reactive-widget counter 
+                (text 
+                    :content counter.value 
+                    :color colors.blue 
+                    :font-size 48
+                )
+            )
+            (button 
+                :label "Increment" 
+                :on-press (\\ () (counter.increment 1))
+            )
+            (button 
+                :label "Decrement" 
+                :on-press (\\ () (counter.decrement 1))
+            )
+        )
+    )   
+    
+    (text 
+        :content "Hello Glue!" 
+        :color colors.grey 
+        :font-size 24
+    )
+    (demo my-counter)
+)
 ''';
