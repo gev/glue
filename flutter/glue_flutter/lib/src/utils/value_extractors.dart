@@ -99,10 +99,10 @@ Axis? extractAxis(Ir? value) => switch (value) {
 VoidCallback? extractVoidCallback(Ir? value) => switch (value) {
   IrClosure(:final params, :final body, :final env) =>
     params.isEmpty
-        ? () {
+        ? () async {
             final evalAction = eval(body);
             final runtime = Runtime.initial(env);
-            final result = runEval(evalAction, runtime);
+            final result = await runEval(evalAction, runtime);
 
             switch (result) {
               case Either<EvalError, (Ir, Runtime)> r:
@@ -110,8 +110,6 @@ VoidCallback? extractVoidCallback(Ir? value) => switch (value) {
                   (error) => print('Callback execution error: $error'),
                   (_) {}, // Success, do nothing
                 );
-              case _:
-                print('Async callback not fully supported yet');
             }
           }
         : null, // Only support parameterless closures for VoidCallback
