@@ -1,13 +1,14 @@
 module Glue.Lib.Builtin.ImportSpec where
 
 import Glue.Env qualified as E
-import Glue.Eval (Runtime (..), eval, runEval)
+import Glue.Eval (Eval (..), eval)
 import Glue.IR (IR (..))
 import Glue.Lib.Builtin (builtin)
 import Glue.Lib.Math.Arithmetic (arithmetic)
 import Glue.Module (envFromModule, envFromModules)
 import Glue.Module.Cache qualified as Cache
 import Glue.Module.Registration (buildRegistry)
+import Glue.Runtime (Runtime (..))
 import Test.Hspec
 
 spec :: Spec

@@ -3,12 +3,13 @@ module Glue.Lib.Builtin.Import where
 import Data.Map.Strict qualified as Map
 import Data.Text qualified as T
 import Glue.Env qualified as E
-import Glue.Eval (Eval, Runtime (..), eval, getCache, getEnv, getRegistry, getRootEnv, getRuntime, liftIO, putCache, putEnv, runEval, throwError)
+import Glue.Eval (Eval, eval, getCache, getEnv, getRegistry, getRootEnv, getRuntime, liftIO, putCache, putEnv, runEval, throwError)
 import Glue.Eval.Error (EvalError (..))
 import Glue.Eval.Exception (moduleNotFound, undefinedExport, wrongArgumentType)
 import Glue.IR (IR (..))
 import Glue.Module (ImportedModule (..), RegisteredModule (..))
 import Glue.Module.Cache qualified as Cache
+import Glue.Runtime qualified as GR
 
 import Glue.Module.Registry qualified as Registry
 import Prelude hiding (mod)
@@ -47,7 +48,7 @@ importModule modulePath = do
                     currentState <- Glue.Eval.getRuntime
 
                     -- Create isolated runtime for module evaluation
-                    let isolatedRuntime = currentState{env = rootEnv}
+                    let isolatedRuntime = currentState{GR.env = rootEnv}
 
                     -- Evaluate module in complete isolation (doesn't affect current runtime)
                     moduleEvalResult <- liftIO $ runEval (mapM eval mod.body) isolatedRuntime
@@ -56,7 +57,7 @@ importModule modulePath = do
                     exportedValues <- case moduleEvalResult of
                         Left (EvalError _ innerErr) -> throwError innerErr
                         Right (_, finalIsolatedRuntime) -> do
-                            let moduleEnv = env finalIsolatedRuntime
+                            let moduleEnv = GR.env finalIsolatedRuntime
                             exportPairs <-
                                 mapM
                                     ( \exportName ->

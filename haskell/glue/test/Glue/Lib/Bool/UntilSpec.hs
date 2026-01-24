@@ -1,11 +1,12 @@
 module Glue.Lib.Bool.UntilSpec (spec) where
 
 import Glue.Env qualified as E
-import Glue.Eval (Runtime (..), apply, runEvalSimple)
+import Glue.Eval (apply, runEvalSimple)
 import Glue.IR (IR (..))
 import Glue.Lib.Bool.Until (until_)
 import Glue.Lib.Builtin (builtin)
 import Glue.Module (envFromModule)
+import Glue.Runtime (Runtime (..))
 import Test.Hspec
 
 spec :: Spec
