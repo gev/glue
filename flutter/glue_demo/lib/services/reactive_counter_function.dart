@@ -6,7 +6,10 @@ import 'reactive_counter.dart';
 /// Creates a reactive counter with HostValue getters and setters
 /// Returns IrNativeValue(HostValue(ReactiveCounter))
 final reactiveCounter = IrNativeFunc((Ir initialValue) {
-  final initial = initialValue is IrInteger ? initialValue.value : 0;
+  final initial = switch (initialValue) {
+    IrInteger(value: final value) => value,
+    _ => 0,
+  };
   final counter = ReactiveCounter(initial);
 
   return Eval.pure(
@@ -20,7 +23,10 @@ final reactiveCounter = IrNativeFunc((Ir initialValue) {
           'increment': Eval(
             (runtime) => Right((
               IrNativeFunc((Ir amount) {
-                final amt = amount is IrInteger ? amount.value : 1;
+                final amt = switch (amount) {
+                  IrInteger(value: final value) => value,
+                  _ => 1,
+                };
                 counter.increment(amt);
                 return Eval.pure(IrVoid());
               }),
@@ -30,7 +36,10 @@ final reactiveCounter = IrNativeFunc((Ir initialValue) {
           'decrement': Eval(
             (runtime) => Right((
               IrNativeFunc((Ir amount) {
-                final amt = amount is IrInteger ? amount.value : 1;
+                final amt = switch (amount) {
+                  IrInteger(value: final value) => value,
+                  _ => 1,
+                };
                 counter.decrement(amt);
                 return Eval.pure(IrVoid());
               }),
