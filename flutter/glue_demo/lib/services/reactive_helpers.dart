@@ -3,24 +3,18 @@ import 'package:glue/ir.dart';
 
 /// Helper function to extract ChangeNotifier from IrNativeValue
 ChangeNotifier? extractChangeNotifier(Ir ir) {
-  if (ir is IrNativeValue) {
-    final hostValue = ir.value;
-    final actualValue = hostValue.value;
-    return actualValue is ChangeNotifier ? actualValue : null;
-  }
-  return null;
+  return switch (ir) {
+    IrNativeValue(value: HostValue(value: ChangeNotifier notifier)) => notifier,
+    _ => null,
+  };
 }
 
 /// Helper function to extract a single widget from Ir
 Widget extractWidget(Ir ir) {
-  if (ir is IrNativeValue) {
-    final hostValue = ir.value;
-    final actualValue = hostValue.value;
-    if (actualValue is Widget) {
-      return actualValue;
-    }
-  }
-  return const Text('Invalid widget');
+  return switch (ir) {
+    IrNativeValue(value: HostValue(value: Widget widget)) => widget,
+    _ => const Text('Invalid widget'),
+  };
 }
 
 /// Helper function to extract list of widgets from Ir
