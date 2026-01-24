@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:glue/ir.dart';
 import 'package:glue/eval.dart';
-import 'package:glue/src/eval/exception.dart';
+import 'package:glue/error.dart';
 import 'reactive_helpers.dart';
 
 /// Creates a reactive widget that rebuilds when dependencies change
