@@ -16,12 +16,3 @@ Widget extractWidget(Ir ir) {
     _ => const Text('Invalid widget'),
   };
 }
-
-/// Helper function to extract list of widgets from Ir
-/// This needs to evaluate each widget expression first
-List<Widget> extractWidgetList(Ir ir) {
-  return switch (ir) {
-    IrList() => [const Text('Widgets not implemented yet')],
-    _ => [],
-  };
-}
