@@ -104,13 +104,14 @@ VoidCallback? extractVoidCallback(Ir? value) => switch (value) {
             final runtime = Runtime.initial(env);
             final result = runEval(evalAction, runtime);
 
-            if (result is Either<EvalError, (Ir, Runtime)>) {
-              result.match(
-                (error) => print('Callback execution error: $error'),
-                (_) {}, // Success, do nothing
-              );
-            } else {
-              print('Async callback not fully supported yet');
+            switch (result) {
+              case Either<EvalError, (Ir, Runtime)> r:
+                r.match(
+                  (error) => print('Callback execution error: $error'),
+                  (_) {}, // Success, do nothing
+                );
+              case _:
+                print('Async callback not fully supported yet');
             }
           }
         : null, // Only support parameterless closures for VoidCallback
