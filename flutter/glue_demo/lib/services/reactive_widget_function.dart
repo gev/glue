@@ -5,13 +5,13 @@ import 'package:glue/error.dart';
 import 'package:glue/runtime.dart';
 import 'reactive_helpers.dart';
 
-/// Dynamic reactive widget that re-evaluates child expression on each build
-class DynamicReactiveWidget extends StatelessWidget {
+/// Reactive widget that re-evaluates child expression on each build
+class ReactiveWidget extends StatelessWidget {
   final ChangeNotifier notifier;
   final Ir childExpr;
   final Runtime runtime;
 
-  const DynamicReactiveWidget({
+  const ReactiveWidget({
     required this.notifier,
     required this.childExpr,
     required this.runtime,
@@ -94,8 +94,8 @@ Eval<Ir> reactiveWidgetImpl(List<Ir> args) {
 
     // Get current runtime for dynamic evaluation
     return getRuntime().map((runtime) {
-      // Create dynamic reactive widget that re-evaluates child on each build
-      final reactiveContainer = DynamicReactiveWidget(
+      // Create reactive widget that re-evaluates child on each build
+      final reactiveContainer = ReactiveWidget(
         notifier: notifier,
         childExpr: childExpr,
         runtime: runtime,
