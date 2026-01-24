@@ -51,7 +51,7 @@ class _ReactiveWidgetState extends State<ReactiveWidget> {
     final result = await runEval(eval(widget.childExpr), widget.runtime);
     final newWidget = result.match(
       (error) => _cachedWidget ?? const SizedBox(), // Keep old on error
-      (value) => extractWidget(value.$1) ?? _cachedWidget ?? const SizedBox(),
+      (value) => extractWidget(value.$1),
     );
     if (mounted) {
       setState(() => _cachedWidget = newWidget);
