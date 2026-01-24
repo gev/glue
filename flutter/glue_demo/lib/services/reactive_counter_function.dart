@@ -18,7 +18,7 @@ final reactiveCounter = IrNativeFunc((Ir initialValue) {
         counter,
         getters: {
           'value': Eval(
-            (runtime) => Right((IrInteger(counter.value), runtime)),
+            (runtime) => Right((IrString(counter.value.toString()), runtime)),
           ),
           'increment': Eval(
             (runtime) => Right((
