@@ -1,14 +1,12 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:glue/ir.dart';
-import 'package:glue_flutter/src/utils/value_extractors.dart';
 
 /// Helper function to extract ChangeNotifier from IrNativeValue
 ChangeNotifier? extractChangeNotifier(Ir ir) {
   if (ir is IrNativeValue) {
     final hostValue = ir.value;
     final actualValue = hostValue.value;
-    return actualValue is ChangeNotifier ? actualValue as ChangeNotifier : null;
+    return actualValue is ChangeNotifier ? actualValue : null;
   }
   return null;
 }
