@@ -100,25 +100,17 @@ VoidCallback? extractVoidCallback(Ir? value) => switch (value) {
   IrClosure(:final params, :final body, :final env) =>
     params.isEmpty
         ? () {
-            // Evaluate the closure body when called
-            // For now, try synchronous evaluation if possible
-            try {
-              final evalAction = eval(body);
-              final runtime = Runtime.initial(env);
-              final result = runEval(evalAction, runtime);
+            final evalAction = eval(body);
+            final runtime = Runtime.initial(env);
+            final result = runEval(evalAction, runtime);
 
-              // If result is synchronous, handle it
-              if (result is Either<EvalError, (Ir, Runtime)>) {
-                result.match(
-                  (error) => print('Callback execution error: $error'),
-                  (_) {}, // Success, do nothing
-                );
-              } else {
-                // Async result - for now, just ignore in callback
-                print('Async callback not fully supported yet');
-              }
-            } catch (e) {
-              print('Callback execution error: $e');
+            if (result is Either<EvalError, (Ir, Runtime)>) {
+              result.match(
+                (error) => print('Callback execution error: $error'),
+                (_) {}, // Success, do nothing
+              );
+            } else {
+              print('Async callback not fully supported yet');
             }
           }
         : null, // Only support parameterless closures for VoidCallback
