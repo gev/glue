@@ -22,7 +22,7 @@ class ReactiveWidget extends StatefulWidget {
 }
 
 class _ReactiveWidgetState extends State<ReactiveWidget> {
-  Widget? _cachedWidget;
+  Widget _cachedWidget = CircularProgressIndicator();
 
   @override
   void initState() {
@@ -50,7 +50,7 @@ class _ReactiveWidgetState extends State<ReactiveWidget> {
     // Keep showing old widget while calculating new one
     final result = await runEval(eval(widget.childExpr), widget.runtime);
     final newWidget = result.match(
-      (error) => _cachedWidget ?? const SizedBox(), // Keep old on error
+      (error) => _cachedWidget,
       (value) => extractWidget(value.$1),
     );
     if (mounted) {
@@ -60,7 +60,6 @@ class _ReactiveWidgetState extends State<ReactiveWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return _cachedWidget ??
-        const CircularProgressIndicator(); // Only on first load
+    return _cachedWidget;
   }
 }
