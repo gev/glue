@@ -12,6 +12,8 @@ import 'package:glue_flutter/src/utils/color_parser.dart';
 /// Extract string from Glue IR value
 String? extractString(Ir? value) => switch (value) {
   IrString(:final value) => value,
+  IrInteger(:final value) => value.toString(),
+  IrFloat(:final value) => value.toString(),
   _ => null,
 };
 
@@ -95,26 +97,27 @@ Axis? extractAxis(Ir? value) => switch (value) {
   _ => null,
 };
 
-/// Extract VoidCallback from Glue IR value
-VoidCallback? extractVoidCallback(Ir? value) => switch (value) {
-  IrClosure(:final params, :final body, :final env) =>
-    params.isEmpty
-        ? () async {
-            final evalAction = eval(body);
-            final runtime = Runtime.initial(env);
-            final result = await runEval(evalAction, runtime);
+/// Extract VoidCallback from Glue IR value with provided runtime
+VoidCallback? extractVoidCallback(Ir? value, Runtime runtime) =>
+    switch (value) {
+      IrClosure(:final params, :final body) =>
+        params.isEmpty
+            ? () async {
+                final evalAction = eval(body);
+                // Use provided runtime instead of creating from env
+                final result = await runEval(evalAction, runtime);
 
-            switch (result) {
-              case Either<EvalError, (Ir, Runtime)> r:
-                r.match(
-                  (error) => print('Callback execution error: $error'),
-                  (_) {}, // Success, do nothing
-                );
-            }
-          }
-        : null, // Only support parameterless closures for VoidCallback
-  _ => null,
-};
+                switch (result) {
+                  case Either<EvalError, (Ir, Runtime)> r:
+                    r.match(
+                      (error) => print('Callback execution error: $error'),
+                      (_) {}, // Success, do nothing
+                    );
+                }
+              }
+            : null, // Only support parameterless closures for VoidCallback
+      _ => null,
+    };
 
 /// Extract EdgeInsetsGeometry from Glue IR value
 EdgeInsetsGeometry? extractEdgeInsets(Ir? value) => switch (value) {

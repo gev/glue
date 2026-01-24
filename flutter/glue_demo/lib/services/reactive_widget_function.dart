@@ -1,8 +1,8 @@
-import 'package:flutter/widgets.dart';
 import 'package:glue/ir.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/error.dart';
 import 'reactive_helpers.dart';
+import 'reactive_widget.dart';
 
 /// Creates a reactive widget that rebuilds when dependencies change
 /// Takes a notifier (ChangeNotifier) and a single child widget, returns ListenableBuilder
@@ -15,14 +15,14 @@ Eval<Ir> reactiveWidgetImpl(List<Ir> args) {
       RuntimeException(
         'wrong-number-of-arguments',
         IrString(
-          'reactive-widget expects 2 arguments: notifier and child-widget',
+          'reactive-widget expects 2 arguments: notifier and child-expression',
         ),
       ),
     );
   }
 
   final notifierIr = args[0];
-  final childWidgetIr = args[1];
+  final childExpr = args[1]; // Store expression, don't evaluate yet
 
   // Evaluate the notifier argument to get the actual counter object
   return eval(notifierIr).flatMap((evaluatedNotifier) {
@@ -37,18 +37,16 @@ Eval<Ir> reactiveWidgetImpl(List<Ir> args) {
       );
     }
 
-    // Evaluate the child widget
-    return eval(childWidgetIr).flatMap((evaluatedChild) {
-      // Extract the widget from the evaluated result
-      final childWidget = extractWidget(evaluatedChild);
-
-      // Create ListenableBuilder that wraps the child
-      final reactiveContainer = ListenableBuilder(
-        listenable: notifier,
-        builder: (context, _) => childWidget,
+    // Get current runtime for dynamic evaluation
+    return getRuntime().map((runtime) {
+      // Create reactive widget that re-evaluates child on each build
+      final reactiveContainer = ReactiveWidget(
+        notifier: notifier,
+        childExpr: childExpr,
+        runtime: runtime,
       );
 
-      return Eval.pure(IrNativeValue(HostValue(reactiveContainer)));
+      return IrNativeValue(HostValue(reactiveContainer));
     });
   });
 }

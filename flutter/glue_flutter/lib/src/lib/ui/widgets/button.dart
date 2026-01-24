@@ -17,9 +17,19 @@ Eval<Ir> buttonImpl(Ir props) => switch (props) {
 /// Create Button widget from properties object
 Eval<Ir> _createButton(Properties properties) {
   final label = properties.label ?? 'Button'; // Extract label from properties
-  final buttonWidget = ElevatedButton(
-    onPressed: properties.disabled ? null : properties.onTap,
-    child: Text(label),
-  );
-  return Eval.pure(IrNativeValue(HostValue(buttonWidget)));
+
+  if (properties.disabled) {
+    final buttonWidget = ElevatedButton(onPressed: null, child: Text(label));
+    return Eval.pure(IrNativeValue(HostValue(buttonWidget)));
+  }
+
+  // Get runtime and create callback
+  return getRuntime().map((runtime) {
+    final callback = properties.onTap(runtime);
+    final buttonWidget = ElevatedButton(
+      onPressed: callback,
+      child: Text(label),
+    );
+    return IrNativeValue(HostValue(buttonWidget));
+  });
 }

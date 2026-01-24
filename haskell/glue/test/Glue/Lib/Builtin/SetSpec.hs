@@ -6,6 +6,7 @@ import Glue.Env qualified as E
 import Glue.Eval (Runtime (..), apply, runEvalSimple)
 import Glue.IR (IR (..))
 import Glue.Lib.Builtin.Set (set)
+import Glue.Runtime (Runtime (..))
 import Test.Hspec
 
 spec :: Spec

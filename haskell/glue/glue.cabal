@@ -104,6 +104,7 @@ library
     Glue.Module.Registry
     Glue.Parser
     Glue.Parser.Error
+    Glue.Runtime
     Spec.Device
 
   build-depends:

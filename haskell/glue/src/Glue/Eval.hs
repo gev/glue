@@ -1,6 +1,6 @@
 module Glue.Eval (
     Eval,
-    Runtime (..),
+    Runtime,
     eval,
     runEval,
     runEvalSimple,
@@ -26,26 +26,18 @@ import Data.Map (Map)
 import Data.Map.Strict qualified as Map
 import Data.Text (Text)
 import Glue.Env qualified as E
-import Glue.Eval.Error (Context, EvalError (EvalError))
+import Glue.Eval.Error (EvalError (EvalError))
 import Glue.Eval.Exception
 import Glue.IR qualified as IR
 import Glue.Module.Cache (ImportedModuleCache)
 import Glue.Module.Registry (ModuleRegistry, emptyRegistry)
+import Glue.Runtime qualified as GR
 
 type IR = IR.IR Eval
 type Env = IR.Env Eval
 type Error = EvalError Eval
 type Exception = RuntimeException Eval
-
--- | Complete evaluation runtime
-data Runtime = Runtime
-    { env :: Env
-    , context :: Context
-    , registry :: ModuleRegistry Eval
-    , importCache :: ImportedModuleCache Eval
-    , rootEnv :: Env
-    }
-    deriving (Show, Eq)
+type Runtime = GR.Runtime Eval
 
 newtype Eval a = Eval
     { runEval :: Runtime -> IO (Either Error (a, Runtime))
@@ -69,17 +61,17 @@ instance Monad Eval where
 runEvalSimple :: Eval a -> Env -> IO (Either Error (a, Runtime))
 runEvalSimple evalAction initialEnv = do
     let initialState =
-            Runtime
-                { env = initialEnv
-                , context = []
-                , registry = emptyRegistry
-                , importCache = Map.empty
-                , rootEnv = initialEnv
+            GR.Runtime
+                { GR.env = initialEnv
+                , GR.context = []
+                , GR.registry = emptyRegistry
+                , GR.importCache = Map.empty
+                , GR.rootEnv = initialEnv
                 }
     runEval evalAction initialState
 
 throwError :: Exception -> Eval a
-throwError err = Eval $ \runtime -> pure $ Left (EvalError runtime.context err)
+throwError err = Eval $ \runtime -> pure $ Left (EvalError (GR.context runtime) err)
 
 liftIO :: IO a -> Eval a
 liftIO action = Eval $ \runtime -> do
@@ -240,16 +232,16 @@ updateVarEval name val = do
         Left err -> throwError err
 
 getEnv :: Eval Env
-getEnv = Eval $ \runtime -> pure $ Right (runtime.env, runtime)
+getEnv = Eval $ \runtime -> pure $ Right (GR.env runtime, runtime)
 
 putEnv :: Env -> Eval ()
-putEnv newEnv = Eval $ \runtime -> pure $ Right ((), runtime{env = newEnv})
+putEnv newEnv = Eval $ \runtime -> pure $ Right ((), runtime{GR.env = newEnv})
 
 getRootEnv :: Eval Env
-getRootEnv = Eval $ \runtime -> pure $ Right (runtime.rootEnv, runtime)
+getRootEnv = Eval $ \runtime -> pure $ Right (GR.rootEnv runtime, runtime)
 
 putRootEnv :: Env -> Eval ()
-putRootEnv newRootEnv = Eval $ \runtime -> pure $ Right ((), runtime{rootEnv = newRootEnv})
+putRootEnv newRootEnv = Eval $ \runtime -> pure $ Right ((), runtime{GR.rootEnv = newRootEnv})
 
 getRuntime :: Eval Runtime
 getRuntime = Eval $ \runtime -> pure $ Right (runtime, runtime)
@@ -258,20 +250,20 @@ putRuntime :: Runtime -> Eval ()
 putRuntime runtime = Eval $ \_ -> pure $ Right ((), runtime)
 
 getRegistry :: Eval (ModuleRegistry Eval)
-getRegistry = Eval $ \runtime -> pure $ Right (runtime.registry, runtime)
+getRegistry = Eval $ \runtime -> pure $ Right (GR.registry runtime, runtime)
 
 getCache :: Eval (ImportedModuleCache Eval)
-getCache = Eval $ \runtime -> pure $ Right (runtime.importCache, runtime)
+getCache = Eval $ \runtime -> pure $ Right (GR.importCache runtime, runtime)
 
 putCache :: ImportedModuleCache Eval -> Eval ()
-putCache newCache = Eval $ \runtime -> pure $ Right ((), runtime{importCache = newCache})
+putCache newCache = Eval $ \runtime -> pure $ Right ((), runtime{GR.importCache = newCache})
 
 pushContext :: Text -> Eval ()
-pushContext name = Eval $ \runtime -> pure $ Right ((), runtime{context = name : runtime.context})
+pushContext name = Eval $ \runtime -> pure $ Right ((), runtime{GR.context = name : GR.context runtime})
 
 popContext :: Eval ()
-popContext = Eval $ \runtime -> case runtime.context of
-    (_ : rest) -> pure $ Right ((), runtime{context = rest})
+popContext = Eval $ \runtime -> case GR.context runtime of
+    (_ : rest) -> pure $ Right ((), runtime{GR.context = rest})
     [] -> pure $ Right ((), runtime) -- shouldn't happen, but safe
 
 -- Helper for managing environment frames during function calls

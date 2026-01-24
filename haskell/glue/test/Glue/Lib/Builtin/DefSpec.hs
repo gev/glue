@@ -2,11 +2,12 @@ module Glue.Lib.Builtin.DefSpec (spec) where
 
 import Data.Either (isLeft)
 import Glue.Env qualified as E
-import Glue.Eval (Runtime (..), apply, runEvalSimple)
+import Glue.Eval (apply, runEvalSimple)
 import Glue.IR (IR (..))
 import Glue.Lib.Builtin (builtin)
 import Glue.Lib.Builtin.Def (def)
 import Glue.Module (envFromModules)
+import Glue.Runtime (Runtime (..))
 import Test.Hspec
 
 spec :: Spec

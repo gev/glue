@@ -38,7 +38,7 @@ class _CodeEditorPaneState extends State<CodeEditorPane> {
       child: CodeForge(
         controller: _controller,
         textStyle: const TextStyle(
-          fontSize: 24,
+          fontSize: 20,
           fontFamily: 'Courier',
           height: 1.5,
         ),
