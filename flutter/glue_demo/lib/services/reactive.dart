@@ -42,6 +42,26 @@ final reactiveCounter = IrNativeFunc((Ir initialValue) {
           'value': Eval(
             (runtime) => Right((IrInteger(counter.value), runtime)),
           ),
+          'increment': Eval(
+            (runtime) => Right((
+              IrNativeFunc((Ir amount) {
+                final amt = amount is IrInteger ? amount.value : 1;
+                counter.increment(amt);
+                return Eval.pure(IrVoid());
+              }),
+              runtime,
+            )),
+          ),
+          'decrement': Eval(
+            (runtime) => Right((
+              IrNativeFunc((Ir amount) {
+                final amt = amount is IrInteger ? amount.value : 1;
+                counter.decrement(amt);
+                return Eval.pure(IrVoid());
+              }),
+              runtime,
+            )),
+          ),
         },
         setters: {
           'value': (Ir newValue) => Eval((runtime) {
@@ -55,7 +75,7 @@ final reactiveCounter = IrNativeFunc((Ir initialValue) {
 });
 
 /// Creates a reactive widget that rebuilds when dependencies change
-/// Takes a notifier (ChangeNotifier) and child widgets, returns ListenableBuilder
+/// Takes a notifier (ChangeNotifier) and a single child widget, returns ListenableBuilder
 final reactiveWidget = IrSpecial(reactiveWidgetImpl);
 
 /// Reactive widget special form implementation
@@ -65,14 +85,14 @@ Eval<Ir> reactiveWidgetImpl(List<Ir> args) {
       RuntimeException(
         'wrong-number-of-arguments',
         IrString(
-          'reactive-widget expects 2 arguments: notifier and child-widgets',
+          'reactive-widget expects 2 arguments: notifier and child-widget',
         ),
       ),
     );
   }
 
   final notifierIr = args[0];
-  final childWidgetsIr = args[1];
+  final childWidgetIr = args[1];
 
   // Evaluate the notifier argument to get the actual counter object
   return eval(notifierIr).flatMap((evaluatedNotifier) {
@@ -87,19 +107,19 @@ Eval<Ir> reactiveWidgetImpl(List<Ir> args) {
       );
     }
 
-    // Extract child widgets from Ir
-    final childWidgets = _extractWidgetList(childWidgetsIr);
+    // Evaluate the child widget
+    return eval(childWidgetIr).flatMap((evaluatedChild) {
+      // Extract the widget from the evaluated result
+      final childWidget = _extractWidget(evaluatedChild);
 
-    // Create ListenableBuilder that wraps the children
-    final reactiveContainer = ListenableBuilder(
-      listenable: notifier,
-      builder: (context, _) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: childWidgets,
-      ),
-    );
+      // Create ListenableBuilder that wraps the child
+      final reactiveContainer = ListenableBuilder(
+        listenable: notifier,
+        builder: (context, _) => childWidget,
+      );
 
-    return Eval.pure(IrNativeValue(HostValue(reactiveContainer)));
+      return Eval.pure(IrNativeValue(HostValue(reactiveContainer)));
+    });
   });
 }
 
@@ -113,12 +133,27 @@ ChangeNotifier? _extractChangeNotifier(Ir ir) {
   return null;
 }
 
+/// Helper function to extract a single widget from Ir
+Widget _extractWidget(Ir ir) {
+  if (ir is IrNativeValue) {
+    final hostValue = ir.value;
+    final actualValue = hostValue.value;
+    if (actualValue is Widget) {
+      return actualValue;
+    }
+  }
+  return const Text('Invalid widget');
+}
+
 /// Helper function to extract list of widgets from Ir
+/// This needs to evaluate each widget expression first
 List<Widget> _extractWidgetList(Ir ir) {
   if (ir is! IrList) return [];
 
-  return ir.elements.map((element) {
-    final widget = extractChild(element);
-    return widget ?? const SizedBox(); // Default empty widget
-  }).toList();
+  // For now, return empty list - we need to evaluate widget expressions
+  // The child widgets need to be evaluated in the context where they can access variables
+  print(
+    'Widget list extraction not implemented yet - need to evaluate widget expressions',
+  );
+  return [const Text('Widgets not implemented yet')];
 }
