@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:glue/ir.dart';
-import 'package:glue/src/eval.dart';
-import 'package:glue/src/either.dart';
+import 'package:glue/eval.dart';
+import 'package:glue/either.dart';
 import 'package:glue/src/eval/exception.dart';
 import 'reactive_counter.dart';
 import 'reactive_helpers.dart';
