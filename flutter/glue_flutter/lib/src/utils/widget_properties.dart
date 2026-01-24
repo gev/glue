@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:glue/ir.dart';
+import 'package:glue/runtime.dart';
 import 'package:glue_flutter/src/utils/value_extractors.dart';
 
 /// Properties wrapper with lazy getters
@@ -16,7 +17,8 @@ class Properties {
 
   // Button properties
   String? get label => extractString(_props['label']);
-  VoidCallback? get onTap => extractVoidCallback(_props['on-tap']);
+  VoidCallback? onTap(Runtime runtime) =>
+      extractVoidCallback(_props['on-tap'], runtime);
   bool get disabled => extractBool(_props['disabled']) ?? false;
 
   // Text properties
