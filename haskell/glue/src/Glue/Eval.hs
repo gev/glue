@@ -26,7 +26,7 @@ import Data.Map (Map)
 import Data.Map.Strict qualified as Map
 import Data.Text (Text)
 import Glue.Env qualified as E
-import Glue.Eval.Error (Context, EvalError (EvalError))
+import Glue.Eval.Error (EvalError (EvalError))
 import Glue.Eval.Exception
 import Glue.IR qualified as IR
 import Glue.Module.Cache (ImportedModuleCache)
