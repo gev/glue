@@ -20,9 +20,9 @@ String defaultCode = '''
       :children (
          (button
             :label "Increment"
-            :on-tap (\\ () (counter.increment 1)))
+            :on-tap (\\ () (set my-counter.value (+ my-counter.value 1))))
          (button
             :label "Decrement"
-            :on-tap (\\ () (counter.decrement 1)))))
+            :on-tap (\\ () (set my-counter.value (- my-counter.value 1))))))
 )
 ''';
