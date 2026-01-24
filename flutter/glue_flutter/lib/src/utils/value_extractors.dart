@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:glue/src/ir.dart';
+import 'package:glue/src/eval.dart';
+import 'package:glue/src/either.dart';
+import 'package:glue/src/runtime.dart';
+import 'package:glue/src/eval/error.dart';
 import 'package:glue_flutter/src/utils/color_parser.dart';
 
 /// Utility functions for extracting values from Glue IR
@@ -93,7 +97,31 @@ Axis? extractAxis(Ir? value) => switch (value) {
 
 /// Extract VoidCallback from Glue IR value
 VoidCallback? extractVoidCallback(Ir? value) => switch (value) {
-  // TODO: Implement callback extraction from IrClosure
+  IrClosure(:final params, :final body, :final env) =>
+    params.isEmpty
+        ? () {
+            // Evaluate the closure body when called
+            // For now, try synchronous evaluation if possible
+            try {
+              final evalAction = eval(body);
+              final runtime = Runtime.initial(env);
+              final result = runEval(evalAction, runtime);
+
+              // If result is synchronous, handle it
+              if (result is Either<EvalError, (Ir, Runtime)>) {
+                result.match(
+                  (error) => print('Callback execution error: $error'),
+                  (_) {}, // Success, do nothing
+                );
+              } else {
+                // Async result - for now, just ignore in callback
+                print('Async callback not fully supported yet');
+              }
+            } catch (e) {
+              print('Callback execution error: $e');
+            }
+          }
+        : null, // Only support parameterless closures for VoidCallback
   _ => null,
 };
 
