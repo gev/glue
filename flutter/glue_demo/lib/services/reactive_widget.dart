@@ -1,9 +1,10 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:glue/ir.dart';
+import 'package:glue/eval.dart';
 import 'package:glue/runtime.dart';
 import 'reactive_helpers.dart';
 
-/// Reactive widget that re-evaluates child expression on each build
+/// Reactive widget that re-evaluates child expression on each reactive update
 class ReactiveWidget extends StatelessWidget {
   final ChangeNotifier notifier;
   final Ir childExpr;
@@ -16,43 +17,31 @@ class ReactiveWidget extends StatelessWidget {
     super.key,
   });
 
+  Future<Ir> _evaluate() async {
+    final result = await runEval(eval(childExpr), runtime);
+    return result.match(
+      (error) => IrString('Error: $error'),
+      (value) => value.$1,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Re-evaluate child expression on each reactive update
-    final result = evalSync(childExpr, runtime);
-    return extractWidget(result) ?? const SizedBox();
-  }
-}
+    return ListenableBuilder(
+      listenable: notifier,
+      builder: (context, _) => FutureBuilder<Ir>(
+        future: _evaluate(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          }
 
-/// Synchronous evaluation helper for reactive widgets
-/// This is a simplified version - in practice, we'd need async evaluation
-/// For now, we'll evaluate simple expressions synchronously
-Ir evalSync(Ir expression, Runtime runtime) {
-  // For widget creation expressions, try to evaluate synchronously
-  // This is a placeholder - real implementation would need proper sync evaluation
-  switch (expression) {
-    case IrList(elements: [IrSymbol(value: 'text'), ...]):
-      // For text widgets, we could evaluate synchronously
-      // But for now, return a placeholder
-      return IrNativeValue(
-        HostValue(
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: const Text('Reactive Text - TODO: Implement sync eval'),
-          ),
-        ),
-      );
-    case IrNativeValue(value: HostValue(value: Widget _)):
-      return expression;
-    default:
-      // For complex expressions, return placeholder
-      return IrNativeValue(
-        HostValue(
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: Text('Reactive Widget: ${expression.toString()}'),
-          ),
-        ),
-      );
+          final result = snapshot.data;
+          if (result == null) return const Text('No result');
+
+          return extractWidget(result) ?? Text('Result: ${result.toString()}');
+        },
+      ),
+    );
   }
 }
