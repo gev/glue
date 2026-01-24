@@ -5,3 +5,4 @@ library;
 export 'package:glue/src/error.dart'; // GlueError interface
 export 'package:glue/src/parser/error.dart'; // ParserError, SyntaxError, etc.
 export 'package:glue/src/eval/error.dart'; // EvalError
+export 'package:glue/src/eval/exception.dart'; // RuntimeException and subclasses
