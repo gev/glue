@@ -273,3 +273,7 @@ spec = describe "Glue.Eval (System Integration)" do
     it "supports recursion" do
         let code = "((def factorial (lambda (n) (if (== n 0) 1 (* n (factorial (- n 1)))))) (factorial 5))"
         runCode code `shouldReturn` Right (List [Void, Integer 120])
+
+    it "supports recursion with self-passing" do
+        let code = "((def fact (lambda (self n) (if (== n 0) 1 (* n (self self (- n 1)))))) (fact fact 5))"
+        runCode code `shouldReturn` Right (Integer 120)
