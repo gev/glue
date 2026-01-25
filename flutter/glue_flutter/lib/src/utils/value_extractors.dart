@@ -103,7 +103,7 @@ VoidCallback? extractVoidCallback(Ir? value, Runtime runtime) =>
       IrClosure(:final params, :final body) =>
         params.isEmpty
             ? () async {
-                final evalAction = eval(body);
+                final evalAction = eval(IrList([value]));
                 // Use provided runtime instead of creating from env
                 final result = await runEval(evalAction, runtime);
 
