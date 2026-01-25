@@ -116,6 +116,19 @@ VoidCallback? extractVoidCallback(Ir? value, Runtime runtime) =>
                 }
               }
             : null, // Only support parameterless closures for VoidCallback
+      IrNativeFunc() => () async {
+        final evalAction = eval(IrList([value, IrVoid()]));
+        // Use provided runtime instead of creating from env
+        final result = await runEval(evalAction, runtime);
+
+        switch (result) {
+          case Either<EvalError, (Ir, Runtime)> r:
+            r.match(
+              (error) => print('Callback execution error: $error'),
+              (_) {}, // Success, do nothing
+            );
+        }
+      },
       _ => null,
     };
 
