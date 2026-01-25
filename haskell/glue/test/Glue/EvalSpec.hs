@@ -265,3 +265,11 @@ spec = describe "Glue.Eval (System Integration)" do
             runCode "(((+) 5) 3)" `shouldReturn` Right (Integer 8)
             runCode "(((+) ((-) 10 2)) 3)" `shouldReturn` Right (Integer 11)
             runCode "(((*) ((+) 2 3)) 4)" `shouldReturn` Right (Integer 20)
+
+    it "closure captures environment for callback execution" do
+        let code = "((def counter 0) (def make-inc (lambda () (lambda () (set counter (+ counter 1))))) (def inc (make-inc)) (inc) counter)"
+        runCode code `shouldReturn` Right (List [Void, Void, Void, Void, Integer 1])
+
+    it "supports recursion" do
+        let code = "((def factorial (lambda (n) (if (== n 0) 1 (* n (factorial (- n 1)))))) (factorial 5))"
+        runCode code `shouldReturn` Right (List [Void, Integer 120])
