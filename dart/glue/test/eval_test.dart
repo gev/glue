@@ -191,16 +191,6 @@ void main() {
       );
     });
 
-    test('executes (def) and (set) chain', () async {
-      final code = '((def x 1) (set x 2) x)';
-      final result = await runCode(code);
-      result.match(
-        (error) => fail('Should not be left: $error'),
-        (value) =>
-            expect(value, equals(IrList([IrVoid(), IrVoid(), IrInteger(2)]))),
-      );
-    });
-
     test('implements full closures (Lexical Shadowing)', () async {
       final code = '(((lambda (x) (lambda (y) x)) 100) 1)';
       final result = await runCode(code);

@@ -42,7 +42,7 @@ void main() {
           (runtime) => Right((IrString('Alice'), runtime)),
         );
         final getters = <String, Eval<Ir>>{'name': nameGetter};
-        final hostVal = hostValueWithProps(person, getters, {});
+        final hostVal = hostValueWithProps(person, getters);
         final hostIr = IrNativeValue(hostVal);
         final env = defineVar('person', hostIr, emptyEnv());
         final dottedIr = IrDottedSymbol(['person', 'name']);
@@ -62,7 +62,7 @@ void main() {
         final person = Person('Bob', 25);
         final ageGetter = Eval((runtime) => Right((IrInteger(25), runtime)));
         final getters = <String, Eval<Ir>>{'age': ageGetter};
-        final hostVal = hostValueWithProps(person, getters, {});
+        final hostVal = hostValueWithProps(person, getters);
         final hostIr = IrNativeValue(hostVal);
         final env = defineVar('person', hostIr, emptyEnv());
         final dottedIr = IrDottedSymbol(['person', 'age']);
@@ -86,7 +86,7 @@ void main() {
           (runtime) => Right((IrInteger(42), runtime)),
         ); // Always returns 42
         final getters = <String, Eval<Ir>>{'compute': computeGetter};
-        final hostVal = hostValueWithProps(calc, getters, {});
+        final hostVal = hostValueWithProps(calc, getters);
         final hostIr = IrNativeValue(hostVal);
         final env = defineVar('calc', hostIr, emptyEnv());
         final dottedIr = IrDottedSymbol(['calc', 'compute']);
@@ -107,7 +107,7 @@ void main() {
           (runtime) => Right((IrInteger(30), runtime)),
         ); // 15 * 2
         final getters = <String, Eval<Ir>>{'double': doubleGetter};
-        final hostVal = hostValueWithProps(calc, getters, {});
+        final hostVal = hostValueWithProps(calc, getters);
         final hostIr = IrNativeValue(hostVal);
         final env = defineVar('calc', hostIr, emptyEnv());
         final dottedIr = IrDottedSymbol(['calc', 'double']);
@@ -133,7 +133,7 @@ void main() {
           'name': nameGetter,
           'age': ageGetter,
         };
-        final hostVal = hostValueWithProps(person, getters, {});
+        final hostVal = hostValueWithProps(person, getters);
         final hostIr = IrNativeValue(hostVal);
         final env = defineVar('person', hostIr, emptyEnv());
 
@@ -167,7 +167,7 @@ void main() {
         final getters = <String, Eval<Ir>>{
           'name': Eval((runtime) => Right((IrString('David'), runtime))),
         };
-        final hostVal = hostValueWithProps(person, getters, {});
+        final hostVal = hostValueWithProps(person, getters);
         final hostIr = IrNativeValue(hostVal);
         final env = defineVar('person', hostIr, emptyEnv());
         final dottedIr = IrDottedSymbol(['person', 'nonexistent']);
