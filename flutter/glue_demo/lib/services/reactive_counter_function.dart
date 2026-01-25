@@ -9,7 +9,7 @@ Eval<Ir> throwError(RuntimeException exception) {
   return Eval((runtime) => Left(EvalError([], exception)));
 }
 
-/// Creates a reactive counter with HostValue getters and setters
+/// Creates a reactive counter with HostValue getters
 /// Returns IrNativeValue(HostValue(ReactiveCounter))
 final reactiveCounter = IrNativeFunc((Ir initialValue) {
   final initial = switch (initialValue) {

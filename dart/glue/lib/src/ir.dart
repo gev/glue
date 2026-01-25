@@ -20,7 +20,7 @@ class HostValue {
 /// Mirrors Haskell hostValue exactly
 HostValue hostValue(dynamic value) => HostValue(value);
 
-/// Create a host value with properties (getters and setters)
+/// Create a host value with properties getters
 /// Mirrors Haskell hostValueWithProps exactly
 HostValue hostValueWithProps(dynamic value, Map<String, Eval<Ir>> getters) =>
     HostValue(value, getters: getters);
