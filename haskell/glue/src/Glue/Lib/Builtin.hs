@@ -6,7 +6,6 @@ import Glue.Lib.Builtin.Error (errorFunc)
 import Glue.Lib.Builtin.Import (importForm)
 import Glue.Lib.Builtin.Lambda (lambda)
 import Glue.Lib.Builtin.Let (let')
-import Glue.Lib.Builtin.Set (set)
 import Glue.Lib.Builtin.Try (tryFunc)
 import Glue.Module (ModuleInfo, nativeModule)
 
@@ -15,7 +14,6 @@ builtin =
     nativeModule
         "ffi.builtin"
         [ ("def", def)
-        , ("set", set)
         , ("lambda", lambda)
         , ("\\", lambda)
         , ("let", let')

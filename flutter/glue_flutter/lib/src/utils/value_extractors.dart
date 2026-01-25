@@ -100,13 +100,12 @@ Axis? extractAxis(Ir? value) => switch (value) {
 /// Extract VoidCallback from Glue IR value with provided runtime
 VoidCallback? extractVoidCallback(Ir? value, Runtime runtime) =>
     switch (value) {
-      IrClosure(:final params, :final body) =>
+      IrClosure(:final params) =>
         params.isEmpty
             ? () async {
-                final evalAction = eval(IrList([value]));
+                final evalAction = apply(value, []);
                 // Use provided runtime instead of creating from env
                 final result = await runEval(evalAction, runtime);
-
                 switch (result) {
                   case Either<EvalError, (Ir, Runtime)> r:
                     r.match(
@@ -116,19 +115,6 @@ VoidCallback? extractVoidCallback(Ir? value, Runtime runtime) =>
                 }
               }
             : null, // Only support parameterless closures for VoidCallback
-      IrNativeFunc() => () async {
-        final evalAction = eval(IrList([value, IrVoid()]));
-        // Use provided runtime instead of creating from env
-        final result = await runEval(evalAction, runtime);
-
-        switch (result) {
-          case Either<EvalError, (Ir, Runtime)> r:
-            r.match(
-              (error) => print('Callback execution error: $error'),
-              (_) {}, // Success, do nothing
-            );
-        }
-      },
       _ => null,
     };
 

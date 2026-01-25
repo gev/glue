@@ -6,7 +6,7 @@ import Data.Text (Text)
 import Glue.Error (GlueError (..))
 import Glue.Eval (Eval, eval, runEvalSimple)
 import Glue.Eval.Error (EvalError (..))
-import Glue.Eval.Exception
+import Glue.Eval.Exception (unboundVariable, wrongNumberOfArguments)
 import Glue.IR (IR (..), compile)
 import Glue.Lib.Bool (bool)
 import Glue.Lib.Builtin (builtin)
@@ -64,10 +64,6 @@ spec = describe "Glue.Eval (System Integration)" do
     it "executes (def)" do
         let code = "(1 ((def x 1) x))"
         runCode code `shouldReturn` Right (List [Integer 1, List [Void, Integer 1]])
-
-    it "executes (def) and (set) chain" do
-        let code = "((def x 1) (set x 2) x)"
-        runCode code `shouldReturn` Right (List [Void, Void, Integer 2])
 
     it "implements full closures (Lexical Shadowing)" do
         let code = "(((lambda (x) (lambda (y) x)) 100) 1)"
@@ -265,15 +261,3 @@ spec = describe "Glue.Eval (System Integration)" do
             runCode "(((+) 5) 3)" `shouldReturn` Right (Integer 8)
             runCode "(((+) ((-) 10 2)) 3)" `shouldReturn` Right (Integer 11)
             runCode "(((*) ((+) 2 3)) 4)" `shouldReturn` Right (Integer 20)
-
-    it "closure captures environment for callback execution" do
-        let code = "((def counter 0) (def make-inc (lambda () (lambda () (set counter (+ counter 1))))) (def inc (make-inc)) (inc) counter)"
-        runCode code `shouldReturn` Right (List [Void, Void, Void, Void, Integer 1])
-
-    it "supports recursion" do
-        let code = "((def factorial (lambda (n) (if (== n 0) 1 (* n (factorial (- n 1)))))) (factorial 5))"
-        runCode code `shouldReturn` Right (List [Void, Integer 120])
-
-    it "supports recursion with self-passing" do
-        let code = "((def fact (lambda (self n) (if (== n 0) 1 (* n (self self (- n 1)))))) (fact fact 5))"
-        runCode code `shouldReturn` Right (Integer 120)

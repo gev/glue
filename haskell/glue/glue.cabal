@@ -39,7 +39,6 @@ library
     Glue.Lib.Builtin.Import
     Glue.Lib.Builtin.Lambda
     Glue.Lib.Builtin.Let
-    Glue.Lib.Builtin.Set
     Glue.Lib.Builtin.Try
     Glue.Lib.IO
     Glue.Lib.IO.Print
@@ -136,7 +135,6 @@ test-suite glue-test
     Glue.EvalSpec
     Glue.IR.NativeFuncSpec
     Glue.IR.NativeValue.GettersSpec
-    Glue.IR.NativeValue.SettersSpec
     Glue.IR.NativeValueSpec
     Glue.IR.SpecialSpec
     Glue.Lib.Bool.EqSpec
@@ -153,7 +151,6 @@ test-suite glue-test
     Glue.Lib.Builtin.DefSpec
     Glue.Lib.Builtin.ImportSpec
     Glue.Lib.Builtin.LambdaSpec
-    Glue.Lib.Builtin.SetSpec
     Glue.Lib.Builtin.TrySpec
     Glue.Lib.IO.PrintSpec
     Glue.Lib.List.AppendSpec

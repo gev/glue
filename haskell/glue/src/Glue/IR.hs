@@ -40,15 +40,12 @@ type Env m = [Frame m]
 data HostValue m = HostValue
     { getHostValue :: Dynamic
     , getters :: Map Text (m (IR m))
-    , setters :: Map Text (IR m -> m (IR m))
     }
 
 instance Show (HostValue m) where
-    show (HostValue _ getters setters) =
+    show (HostValue _ getters) =
         "<host-value getters:"
             <> show (Map.size getters)
-            <> " setters:"
-            <> show (Map.size setters)
             <> ">"
 
 instance Eq (HostValue m) where
@@ -58,10 +55,10 @@ instance Eq (HostValue m) where
 
 -- Create a host value from any typeable value
 hostValue :: (Typeable a) => a -> HostValue m
-hostValue x = HostValue (toDyn x) Map.empty Map.empty
+hostValue x = HostValue (toDyn x) Map.empty
 
 -- Create a host value with properties
-hostValueWithProps :: (Typeable a) => a -> Map Text (m (IR m)) -> Map Text (IR m -> m (IR m)) -> HostValue m
+hostValueWithProps :: (Typeable a) => a -> Map Text (m (IR m)) -> HostValue m
 hostValueWithProps x = HostValue (toDyn x)
 
 -- Extract a host value with type safety

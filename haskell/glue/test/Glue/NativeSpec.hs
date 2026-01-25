@@ -1,6 +1,6 @@
 module Glue.NativeSpec (spec) where
 
-import Data.IORef (IORef, newIORef, readIORef, writeIORef)
+import Data.IORef (IORef, newIORef, readIORef)
 import Data.Map.Strict qualified as Map
 import Data.Text (Text)
 import Data.Text qualified as T
@@ -10,7 +10,6 @@ import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (Env, IR (..), extractHostValue, hostValueWithProps)
 import Glue.IR qualified
 import Glue.Lib.Builtin.Def (def)
-import Glue.Lib.Builtin.Set qualified as Set
 import Glue.Parser qualified
 import Test.Hspec
 
@@ -53,7 +52,6 @@ person (Object props) = do
 
     let personObj = Person nameRef ageRef addressRef
 
-    -- Create getters and setters
     let nameGetter = do
             currentName <- liftIO $ readIORef nameRef
             pure (String currentName)
@@ -65,18 +63,6 @@ person (Object props) = do
             case currentAddr of
                 Just addrNativeValue -> pure addrNativeValue
                 Nothing -> pure (String "no address")
-        nameSetter = \case
-            String newName -> liftIO $ writeIORef nameRef newName >> pure Void
-            _ -> throwError $ wrongArgumentType ["string"]
-        ageSetter = \case
-            Integer newAge -> liftIO $ writeIORef ageRef (fromIntegral newAge) >> pure Void
-            _ -> throwError $ wrongArgumentType ["integer"]
-        addressSetter = \case
-            NativeValue addrHostValue ->
-                case extractHostValue addrHostValue :: Maybe Address of
-                    Just _ -> liftIO $ writeIORef addressRef (Just (NativeValue addrHostValue)) >> pure Void
-                    Nothing -> throwError $ wrongArgumentType ["address: Address"]
-            _ -> throwError $ wrongArgumentType ["NativeValue"]
 
     let getters =
             Map.fromList
@@ -84,14 +70,8 @@ person (Object props) = do
                 , ("age", ageGetter)
                 , ("address", addressGetter)
                 ]
-        setters =
-            Map.fromList
-                [ ("name", nameSetter)
-                , ("age", ageSetter)
-                , ("address", addressSetter)
-                ]
 
-    pure (NativeValue $ hostValueWithProps personObj getters setters)
+    pure (NativeValue $ hostValueWithProps personObj getters)
 person _ = throwError $ wrongArgumentType ["object"]
 
 address :: IR Eval -> Eval (IR Eval)
@@ -105,38 +85,25 @@ address (Object props) = do
         Just (String c) -> pure c
         _ -> throwError $ wrongArgumentType ["city: string"]
 
-    -- Create mutable Address object
     streetRef <- liftIO $ newIORef street
     cityRef <- liftIO $ newIORef city
 
     let addrObj = Address streetRef cityRef
 
-    -- Create getters and setters
     let streetGetter = do
             currentStreet <- liftIO $ readIORef streetRef
             pure (String currentStreet)
         cityGetter = do
             currentCity <- liftIO $ readIORef cityRef
             pure (String currentCity)
-        streetSetter = \case
-            String newStreet -> liftIO $ writeIORef streetRef newStreet >> pure Void
-            _ -> throwError $ wrongArgumentType ["string"]
-        citySetter = \case
-            String newCity -> liftIO $ writeIORef cityRef newCity >> pure Void
-            _ -> throwError $ wrongArgumentType ["string"]
 
     let getters =
             Map.fromList
                 [ ("street", streetGetter)
                 , ("city", cityGetter)
                 ]
-        setters =
-            Map.fromList
-                [ ("street", streetSetter)
-                , ("city", citySetter)
-                ]
 
-    pure (NativeValue $ hostValueWithProps addrObj getters setters)
+    pure (NativeValue $ hostValueWithProps addrObj getters)
 address _ = throwError $ wrongArgumentType ["object"]
 
 -- Test environment with constructors
@@ -146,7 +113,6 @@ testEnv =
         (\env (name, val) -> E.defineVar name val env)
         E.emptyEnv
         [ ("def", def)
-        , ("set", Set.set)
         , ("person", NativeFunc person)
         , ("address", NativeFunc address)
         ]
@@ -190,31 +156,6 @@ spec = describe "Full FFI Integration Tests" do
                         ]
             result `shouldBe` Right (String "123 Main St")
 
-    describe "Property Modification" do
-        it "modifies person properties" $ do
-            result <-
-                runGlueCode $
-                    T.unlines
-                        [ "("
-                        , "  (def bob (person :name \"Bob\" :age 25))"
-                        , "  (set bob.age 26)"
-                        , "  bob.age"
-                        , ")"
-                        ]
-            result `shouldBe` Right (Integer 26)
-
-        it "modifies address properties" $ do
-            result <-
-                runGlueCode $
-                    T.unlines
-                        [ "("
-                        , "  (def addr (address :street \"123 Main St\" :city \"Springfield\"))"
-                        , "  (set addr.city \"Boston\")"
-                        , "  addr.city"
-                        , ")"
-                        ]
-            result `shouldBe` Right (String "Boston")
-
     describe "Complex Object Relationships" do
         it "creates person with address" $ do
             result <-
@@ -227,64 +168,6 @@ spec = describe "Full FFI Integration Tests" do
                         , ")"
                         ]
             result `shouldBe` Right (String "Springfield")
-
-        it "modifies nested properties" $ do
-            result <-
-                runGlueCode $
-                    T.unlines
-                        [ "("
-                        , "  (def addr (address :street \"123 Main St\" :city \"Springfield\"))"
-                        , "  (def bob (person :name \"Bob\" :age 25 :address addr))"
-                        , "  (set bob.address.city \"Boston\")"
-                        , "  bob.address.city"
-                        , ")"
-                        ]
-            result `shouldBe` Right (String "Boston")
-
-    describe "Multiple Operations in Sequence" do
-        it "performs complex object manipulation" $ do
-            result <-
-                runGlueCode $
-                    T.unlines
-                        [ "("
-                        , "  (def addr (address :street \"123 Main St\" :city \"Springfield\"))"
-                        , "  (def bob (person :name \"Bob\" :age 25 :address addr))"
-                        , "  (set bob.age 26)"
-                        , "  (set bob.name \"Robert\")"
-                        , "  (set bob.address.city \"Boston\")"
-                        , "  (set bob.address.street \"456 Oak Ave\")"
-                        , "  bob.name"
-                        , ")"
-                        ]
-            result `shouldBe` Right (String "Robert")
-
-        it "verifies all modifications persist" $ do
-            result <-
-                runGlueCode $
-                    T.unlines
-                        [ "("
-                        , "  (def addr (address :street \"123 Main St\" :city \"Springfield\"))"
-                        , "  (def bob (person :name \"Bob\" :age 25 :address addr))"
-                        , "  (set bob.age 26)"
-                        , "  (set bob.address.city \"Boston\")"
-                        , "  bob.age"
-                        , ")"
-                        ]
-            result `shouldBe` Right (Integer 26)
-
-        it "sets new address on person" $ do
-            result <-
-                runGlueCode $
-                    T.unlines
-                        [ "("
-                        , "  (def addr1 (address :street \"123 Main St\" :city \"Springfield\"))"
-                        , "  (def addr2 (address :street \"456 Oak Ave\" :city \"Boston\"))"
-                        , "  (def bob (person :name \"Bob\" :age 25 :address addr1))"
-                        , "  (set bob.address addr2)"
-                        , "  bob.address.city"
-                        , ")"
-                        ]
-            result `shouldBe` Right (String "Boston")
 
     describe "Error Handling" do
         it "fails with wrong constructor arguments" $ do
@@ -374,21 +257,6 @@ spec = describe "Full FFI Integration Tests" do
                         [ "("
                         , "  (def bob (person :name \"Bob\" :age 25))"
                         , "  bob.nonexistent"
-                        , ")"
-                        ]
-            result
-                `shouldSatisfy` ( \case
-                                    Left _ -> True
-                                    _ -> False
-                                )
-
-        it "fails setting wrong types" $ do
-            result <-
-                runGlueCode $
-                    T.unlines
-                        [ "("
-                        , "  (def bob (person :name \"Bob\" :age 25))"
-                        , "  (set bob.age \"not-a-number\")"
                         , ")"
                         ]
             result

@@ -18,16 +18,3 @@ spec = describe "Glue.Lib.Bool.While (Test while special form)" do
             case result of
                 Left err -> expectationFailure $ "While failed: " <> show err
                 Right (res, _) -> res `shouldBe` Void
-
-        it "executes body and modifies environment flag" do
-            -- Set up environment with flag = true
-            let initialEnv = E.defineVar "flag" (Bool True) (envFromModule builtin)
-            -- while flag: set flag to false
-            let args = [Symbol "flag", List [Symbol "set", Symbol "flag", Bool False]]
-            result <- runEvalSimple (apply while_ args) initialEnv
-            case result of
-                Left err -> expectationFailure $ "While failed: " <> show err
-                Right (res, runtime) -> do
-                    res `shouldBe` Void
-                    -- Check that flag was changed to false
-                    E.lookupLocal "flag" runtime.env `shouldBe` Just (Bool False)
