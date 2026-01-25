@@ -1,8 +1,7 @@
 import 'package:glue/ir.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/either.dart';
-import 'package:glue/src/eval/exception.dart';
-import 'package:glue/src/eval/error.dart';
+import 'package:glue/error.dart';
 import 'reactive_counter.dart';
 
 // Helper function for throwing runtime errors
@@ -27,17 +26,6 @@ final reactiveCounter = IrNativeFunc((Ir initialValue) {
           'value': Eval(
             (runtime) => Right((IrInteger(counter.value), runtime)),
           ),
-        },
-        setters: {
-          'value': (Ir value) => switch (value) {
-            IrInteger(value: final newValue) => Eval<Ir>((runtime) {
-              counter.value = newValue;
-              return Right((IrVoid(), runtime));
-            }),
-            _ => throwError(
-              RuntimeException('wrong-argument-type', IrString('integer')),
-            ),
-          },
         },
       ),
     ),
