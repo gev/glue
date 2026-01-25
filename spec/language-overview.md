@@ -46,9 +46,8 @@ Designed to embed seamlessly in existing applications with minimal runtime footp
 user.name      ;; → "Alice"
 user.age       ;; → 30
 
-;; Dynamic updates
-(set user.age 31)
-(set user.location (:city "New York" :country "USA"))
+;; Objects are immutable - create new versions with updated properties
+(def updated-user (:name user.name :age 31 :email user.email))
 ```
 
 ### Module System

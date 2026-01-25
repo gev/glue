@@ -45,7 +45,6 @@ Implement partial application (currying) support for native functions to make Gl
 |-------------|-----------|----------|
 | `Glue.Lib.Builtin.hs` | - | - |
 | `Glue.Lib.Builtin.Def.hs` | `Glue.Lib.Builtin.DefSpec.hs` | def |
-| `Glue.Lib.Builtin.Set.hs` | `Glue.Lib.Builtin.SetSpec.hs` | set |
 | `Glue.Lib.Builtin.Lambda.hs` | `Glue.Lib.Builtin.LambdaSpec.hs` | lambda |
 | `Glue.Lib.Builtin.Let.hs` | - | let |
 | `Glue.Lib.Builtin.Import.hs` | `Glue.Lib.Builtin.ImportSpec.hs` | import |
@@ -152,7 +151,6 @@ Implement partial application (currying) support for native functions to make Gl
 |-------------|-----------|----------|
 | `lib/src/lib/builtin.dart` | - | - |
 | `lib/src/lib/builtin/def.dart` | `test/lib/builtin/def_test.dart` | def |
-| `lib/src/lib/builtin/set.dart` | `test/lib/builtin/set_test.dart` | set |
 | `lib/src/lib/builtin/lambda.dart` | `test/lib/builtin/lambda_test.dart` | lambda |
 | `lib/src/lib/builtin/let.dart` | - | let |
 | `lib/src/lib/builtin/import.dart` | - | import |
