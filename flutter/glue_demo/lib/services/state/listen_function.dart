@@ -26,13 +26,13 @@ Eval<Ir> listenFunctionImpl(List<Ir> args) {
 
   // Evaluate the notifier argument to get the actual counter object
   return eval(notifierIr).flatMap((evaluatedNotifier) {
-    // Extract the StateNotifier from the evaluated IrNativeValue
-    final notifier = extractStateNotifier(evaluatedNotifier);
+    // Extract the ChangeNotifier from the evaluated IrNativeValue
+    final notifier = extractChangeNotifier(evaluatedNotifier);
     if (notifier == null) {
       return throwError(
         RuntimeException(
           'wrong-argument-type',
-          IrString('first argument must be a StateNotifier'),
+          IrString('first argument must be a ChangeNotifier'),
         ),
       );
     }
