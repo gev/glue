@@ -2,16 +2,16 @@ String defaultCode = '''
 ;; Welcome to Glue Demo!
 ;; Edit this code and see the UI update in real-time
 (
-    (def my-counter (reactive-counter 0))
+    (def counter (state 0))
 
     (text
         :content "Hello Glue!"
         :color colors.grey
         :size 32)
-   
-    (reactive-widget my-counter
+
+    (listen counter
         (text
-            :content my-counter.value
+            :content counter.value
             :color colors.blue
             :size 128))
    
@@ -20,9 +20,9 @@ String defaultCode = '''
         :children (
             (button
                 :label "Increment"
-                :on-tap (\\ () (inc my-counter 1)))
+                :on-tap (\\ () (set counter (+ counter.value 1))))
             (button
                 :label "Decrement"
-                :on-tap (\\ () (dec my-counter 1)))))
+                :on-tap (\\ () (set counter (- counter.value 1))))))
 )
 ''';

@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:glue/ir.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/runtime.dart';
-import '../../reactive_helpers.dart';
+import 'package:glue_demo/services/state/state_helpers.dart';
 
 /// Reactive widget that caches previous result and shows it while updating
-class ReactiveWidget extends StatefulWidget {
+class ListenableWidget extends StatefulWidget {
   final ChangeNotifier notifier;
   final Ir childExpr;
   final Runtime runtime;
 
-  const ReactiveWidget({
+  const ListenableWidget({
     required this.notifier,
     required this.childExpr,
     required this.runtime,
@@ -18,10 +18,10 @@ class ReactiveWidget extends StatefulWidget {
   });
 
   @override
-  State<ReactiveWidget> createState() => _ReactiveWidgetState();
+  State<ListenableWidget> createState() => _ListenableWidgetState();
 }
 
-class _ReactiveWidgetState extends State<ReactiveWidget> {
+class _ListenableWidgetState extends State<ListenableWidget> {
   Widget _cachedWidget = CircularProgressIndicator();
 
   @override
@@ -32,7 +32,7 @@ class _ReactiveWidgetState extends State<ReactiveWidget> {
   }
 
   @override
-  void didUpdateWidget(ReactiveWidget oldWidget) {
+  void didUpdateWidget(ListenableWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.notifier != widget.notifier) {
       oldWidget.notifier.removeListener(_updateWidget);
