@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:glue/ir.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/runtime.dart';
-import 'reactive_helpers.dart';
+import '../../reactive_helpers.dart';
 
 /// Reactive widget that caches previous result and shows it while updating
 class ReactiveWidget extends StatefulWidget {

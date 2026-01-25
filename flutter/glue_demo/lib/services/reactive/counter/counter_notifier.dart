@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 
 /// Reactive counter that extends ChangeNotifier for Flutter reactivity
-class ReactiveCounter extends ChangeNotifier {
+class CounterNotifier extends ChangeNotifier {
   int _value;
 
-  ReactiveCounter(this._value);
+  CounterNotifier(this._value);
 
   int get value => _value;
 
