@@ -3,16 +3,17 @@ import 'package:glue/ir.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/runtime.dart';
 import 'package:glue_demo/services/state/state_helpers.dart';
+import 'package:glue_demo/services/state/state_notifier.dart';
 
 /// Reactive widget that caches previous result and shows it while updating
 class ListenableWidget extends StatefulWidget {
   final ChangeNotifier notifier;
-  final Ir childExpr;
+  final Ir lambda;
   final Runtime runtime;
 
   const ListenableWidget({
     required this.notifier,
-    required this.childExpr,
+    required this.lambda,
     required this.runtime,
     super.key,
   });
@@ -47,8 +48,15 @@ class _ListenableWidgetState extends State<ListenableWidget> {
   }
 
   void _updateWidget() async {
-    // Keep showing old widget while calculating new one
-    final result = await runEval(eval(widget.childExpr), widget.runtime);
+    // Get current value from StateNotifier
+    final stateNotifier = widget.notifier as StateNotifier;
+    final currentValue = stateNotifier.value;
+
+    // Call lambda with current value
+    final result = await runEval(
+      apply(widget.lambda, [currentValue]),
+      widget.runtime,
+    );
     final newWidget = result.match(
       (error) => _cachedWidget,
       (value) => extractWidget(value.$1),
