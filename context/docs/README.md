@@ -1,4 +1,4 @@
-# Glue Documentation Hub
+d so# Glue Documentation Hub
 
 This directory contains local documentation for external packages and tools used in Glue development, extracted for offline access.
 
@@ -8,6 +8,29 @@ This directory contains local documentation for external packages and tools used
 
 #### [code_forge/](code_forge/README.md)
 Complete documentation for the `code_forge` package (v5.2.0):
+
+Source documentation:
+- https://pub.dev/packages/code_forge
+- https://pub.dev/documentation/code_forge/latest/
+
+#### [flutter_widgets/](flutter_widgets/README.md)
+Constructor information and parameter details for Flutter widgets:
+- Basic widget constructors and parameters
+- Focused on Glue UI specification development
+- Constructor signatures for essential Flutter widgets
+
+Source documentation:
+- https://docs.flutter.dev/ui/widgets
+- https://docs.flutter.dev/ui/widgets/material
+- https://api.flutter.dev/flutter/widgets/widgets-library.html
+- https://api.flutter.dev/flutter/material/material-library.html
+
+**Key Widgets Covered:**
+- AppBar, Column, Container, ElevatedButton
+- FlutterLogo, Icon, Image, Placeholder
+- Row, Scaffold, Text
+
+**Integration Status:** ✅ Ready for Glue UI specification development
 - API reference and usage examples
 - Integration guide for Glue development
 - Constructor signatures and parameters
