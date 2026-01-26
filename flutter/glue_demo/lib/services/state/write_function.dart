@@ -4,10 +4,10 @@ import 'package:glue/either.dart';
 import 'package:glue/error.dart';
 import 'package:glue_demo/services/state/state_notifier.dart';
 
-/// Sets the value of a reactive state
+/// Writes the value of a reactive state
 /// Takes: state (IrNativeValue), returns function that takes newValue
 /// Returns: IrVoid
-final setFunction = IrNativeFunc((Ir stateIr) {
+final writeFunction = IrNativeFunc((Ir stateIr) {
   return Eval.pure(
     IrNativeFunc((Ir newValueIr) {
       return Eval((runtime) {

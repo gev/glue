@@ -11,7 +11,7 @@ String defaultCode = '''
 
     (listen counter
         (text
-            :content counter.value
+            :content (read counter)
             :color colors.blue
             :size 128))
    
@@ -20,9 +20,9 @@ String defaultCode = '''
         :children (
             (button
                 :label "Increment"
-                :on-tap (\\ () (set counter (+ counter.value 1))))
+                :on-tap (\\ () (write counter (+ (read counter) 1))))
             (button
                 :label "Decrement"
-                :on-tap (\\ () (set counter (- counter.value 1))))))
+                :on-tap (\\ () (write counter (- (read counter) 1))))))
 )
 ''';
