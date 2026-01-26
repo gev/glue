@@ -2,10 +2,8 @@ String defaultCode = '''
 ;; Welcome to Glue Demo!
 ;; Edit this code and see the UI update in real-time
 (
-    (def (modify state f) (\\ () (write state (f (read state)))))
-
-    (def (inc counter n) (modify counter (\\ (x) (+ x n))))
-    (def (dec counter n) (modify counter (\\ (x) (- x n))))
+    (def (inc counter n) (\\ () (modify counter (\\ (x) (+ x n)))))
+    (def (dec counter n) (\\ () (modify counter (\\ (x) (- x n)))))
 
     (def (counter-display current-value) (
         (def size (+ current-value 100))

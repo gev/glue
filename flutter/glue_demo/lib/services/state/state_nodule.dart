@@ -1,5 +1,6 @@
 import 'package:glue/module.dart';
 import 'package:glue_demo/services/state/listen_function.dart';
+import 'package:glue_demo/services/state/modify_function.dart';
 import 'package:glue_demo/services/state/read_function.dart';
 import 'package:glue_demo/services/state/state_function.dart';
 import 'package:glue_demo/services/state/write_function.dart';
@@ -10,4 +11,5 @@ final stateModule = nativeModule('state', [
   ('listen', listenFunction),
   ('read', readFunction),
   ('write', writeFunction),
+  ('modify', modifyFunction),
 ]);
