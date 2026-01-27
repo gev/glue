@@ -50,8 +50,11 @@ Eliminate frontend boilerplate - backend defines UI structure, frontend renders 
                                 (button :label i18n.cancel :type cancel)))))
           :on-submit props.submit
           :on-cancel props.cancel)))
-          
-```
+          ```
+
+![Glue UI Demo Screenshot](flutter/assets/screenshot_demo_01.png)
+
+*See the [Flutter implementation](flutter/README.md) for live UI development tools.*
 
 ### 🤖 **IoT Device Orchestration**
 Device specs and automation logic in one formal language:
@@ -92,6 +95,7 @@ Glue Interpreter
 - **[`haskell/`](haskell/)**: Reference implementation
 - **[`glue-ext/`](glue-ext/)**: VS Code syntax highlighting
 - **[`context/`](context/)**: Development guidelines
+- **[`flutter/`](flutter/README.md)**: Flutter UI implementation with live development tools
 
 ## 🚀 Why Choose Glue?
 

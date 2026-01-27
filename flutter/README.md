@@ -17,6 +17,10 @@ The Flutter components enable developers to:
 - **Build complex interfaces** through functional composition
 - **Integrate with existing Flutter apps** via bindings
 
+![Glue UI Demo Screenshot](assets/screenshot_demo_01.png)
+
+*Glue UI Editor showing live code editing and real-time rendering*
+
 ## Packages
 
 ### [glue_demo/](./glue_demo/README.md)

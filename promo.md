@@ -18,6 +18,10 @@ Glue provides a single source of truth that runs as an embedded interpreter libr
 
 **Metadata-Driven UI/BL (MDUI/BDI)**: Describe logic and UI declaratively. The same Glue code handles data validation on the backend and UI rendering on the frontend, ensuring 100% consistency.
 
+![Glue UI Demo Screenshot](flutter/assets/screenshot_demo_01.png)
+
+*See the [Flutter implementation](flutter/README.md) for live UI development tools.*
+
 **Seamless FFI (Foreign Function Interface)**: Through the NativeValue mechanism, Glue integrates with host language services (databases, APIs, UI components), turning them into "domain objects" for logic execution.
 
 ## 🎯 Business Value

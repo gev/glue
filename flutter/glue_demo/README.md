@@ -6,6 +6,10 @@ A Flutter desktop application that demonstrates dynamic UI creation using the Gl
 
 Glue Demo showcases the capabilities of the Glue programming language's UI module (`ffi.ui`) through an interactive desktop application. Users can write Glue code in the left panel and see the resulting Flutter UI components rendered in real-time on the right panel.
 
+![Glue UI Demo Screenshot](../assets/screenshot_demo_01.png)
+
+*The Glue Demo application interface showing live code editing and UI preview*
+
 ## Features
 
 - **Live Code Editing**: Write Glue code with real-time evaluation

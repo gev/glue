@@ -6,6 +6,10 @@ Flutter bindings for the Glue programming language - enabling Glue code to creat
 
 Glue Flutter provides a framework-agnostic UI module implementation for Flutter, allowing you to write UI code once and run it across different platforms. The same Glue code can produce Flutter widgets for mobile, desktop, and web applications.
 
+![Glue UI Demo Screenshot](../assets/screenshot_demo_01.png)
+
+*Glue Flutter bindings in action - showing the UI framework capabilities*
+
 ## Features
 
 - **Framework-Agnostic API**: Write UI code once, run everywhere
