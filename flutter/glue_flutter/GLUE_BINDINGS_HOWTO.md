@@ -52,7 +52,7 @@ Eval<Ir> _createText(String content, Properties properties) {
     ),
     textAlign: properties.align,
   );
-  return Eval.pure(IrNativeValue(HostValue(textWidget)));
+  return Eval.pure(IrNativeValue(Value(textWidget)));
 }
 ```
 
@@ -113,14 +113,14 @@ String? extractString(Ir value) => switch (value) {
 
 /// Extract color from Glue IR value
 Color? extractColor(Ir value) => switch (value) {
-  IrNativeValue(value: HostValue(value: Color color)) => color,
+  IrNativeValue(value: Value(value: Color color)) => color,
   IrString() => parseColor(value), // Fallback for strings
   _ => null,
 };
 
 /// Extract FontWeight from Glue IR value
 FontWeight? extractFontWeight(Ir value) => switch (value) {
-  IrNativeValue(value: HostValue(value: FontWeight weight)) => weight,
+  IrNativeValue(value: Value(value: FontWeight weight)) => weight,
   _ => null,
 };
 
@@ -128,7 +128,7 @@ FontWeight? extractFontWeight(Ir value) => switch (value) {
 List<Widget>? extractChildren(dynamic value) => switch (value) {
   List list => list
       .map((child) => switch (child) {
-        IrNativeValue(value: HostValue(value: Widget widget)) => widget,
+        IrNativeValue(value: Value(value: Widget widget)) => widget,
         _ => const SizedBox.shrink(), // Fallback for invalid children
       })
       .toList(),
@@ -145,28 +145,28 @@ Enum union objects provide direct access to Flutter enum values without string p
 ```dart
 /// Colors object - Material Design colors as Glue object properties
 final colors = IrObject({
-  'red': IrNativeValue(HostValue(Colors.red)),
-  'blue': IrNativeValue(HostValue(Colors.blue)),
-  'green': IrNativeValue(HostValue(Colors.green)),
-  'black': IrNativeValue(HostValue(Colors.black)),
-  'white': IrNativeValue(HostValue(Colors.white)),
+  'red': IrNativeValue(Value(Colors.red)),
+  'blue': IrNativeValue(Value(Colors.blue)),
+  'green': IrNativeValue(Value(Colors.green)),
+  'black': IrNativeValue(Value(Colors.black)),
+  'white': IrNativeValue(Value(Colors.white)),
   // ... all Material Design colors
 });
 
 /// Font weight enum object
 final fontWeight = IrObject({
-  'normal': IrNativeValue(HostValue(FontWeight.normal)),
-  'bold': IrNativeValue(HostValue(FontWeight.bold)),
-  'w100': IrNativeValue(HostValue(FontWeight.w100)),
-  'w200': IrNativeValue(HostValue(FontWeight.w200)),
+  'normal': IrNativeValue(Value(FontWeight.normal)),
+  'bold': IrNativeValue(Value(FontWeight.bold)),
+  'w100': IrNativeValue(Value(FontWeight.w100)),
+  'w200': IrNativeValue(Value(FontWeight.w200)),
   // ... all weights
 });
 
 /// Text alignment enum object
 final textAlign = IrObject({
-  'left': IrNativeValue(HostValue(TextAlign.left)),
-  'center': IrNativeValue(HostValue(TextAlign.center)),
-  'right': IrNativeValue(HostValue(TextAlign.right)),
+  'left': IrNativeValue(Value(TextAlign.left)),
+  'center': IrNativeValue(Value(TextAlign.center)),
+  'right': IrNativeValue(Value(TextAlign.right)),
   // ... all alignments
 });
 ```
@@ -238,7 +238,7 @@ Eval<Ir> paddingAllImpl(Ir value) {
 }
 
 Eval<Ir> createPadding(EdgeInsetsGeometry insets) {
-  return Eval.pure(IrNativeValue(HostValue(insets)));
+  return Eval.pure(IrNativeValue(Value(insets)));
 }
 ```
 
@@ -301,11 +301,11 @@ lib/src/utils/
 
 ## 7. Key Patterns
 
-### Always Use HostValue Wrapping
+### Always Use Value Wrapping
 ```dart
-// Correct: Wrap Flutter objects in HostValue
-IrNativeValue(HostValue(Colors.red))
-IrNativeValue(HostValue(textWidget))
+// Correct: Wrap Flutter objects in Value
+IrNativeValue(Value(Colors.red))
+IrNativeValue(Value(textWidget))
 
 // Incorrect: Direct object wrapping
 IrNativeValue(Colors.red)
@@ -324,7 +324,7 @@ IrNativeValue(Colors.red)
 ```dart
 // Preferred: Exhaustive pattern matching
 Color? extractColor(Ir value) => switch (value) {
-  IrNativeValue(value: HostValue(value: Color color)) => color,
+  IrNativeValue(value: Value(value: Color color)) => color,
   IrString() => parseColor(value),
   _ => null,
 };
@@ -359,7 +359,7 @@ CrossAxisAlignment get crossAlign => extractCrossAxisAlignment(_props['cross-axi
 ### Adding a New Enum Object
 
 1. **Create enum file**: Add to `lib/src/lib/ui/styles/`
-2. **Use IrObject**: Wrap all enum values in `IrNativeValue(HostValue(enumValue))`
+2. **Use IrObject**: Wrap all enum values in `IrNativeValue(Value(enumValue))`
 3. **Register in module**: Add to `ui.dart` exports
 4. **Add tests**: Test all enum values are accessible
 5. **Update README**: Document the new enum object

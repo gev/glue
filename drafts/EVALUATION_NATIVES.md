@@ -11,7 +11,7 @@ Native function evaluation executes host language functions integrated into the 
 ### Native Types
 - **NativeFunc:** `([IR] -> m IR)` - Functions that return evaluated results
 - **Special:** `([IR] -> m IR)` - Special forms with custom evaluation rules
-- **NativeValue:** `HostValue` - Host objects that don't need evaluation
+- **NativeValue:** `Value` - Host objects that don't need evaluation
 
 ## Evaluation Process
 

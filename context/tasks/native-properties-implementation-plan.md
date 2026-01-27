@@ -1,14 +1,14 @@
 # Native Properties Implementation Plan
 
 ## Overview
-Implement property access for native values in Glue, enabling object-oriented programming with getters only. This extends `HostValue` with functional property descriptors that support computed properties, validation, and FRP capabilities. Mutable state is handled by the host platform, not Glue.
+Implement property access for native values in Glue, enabling object-oriented programming with getters only. This extends `Value` with functional property descriptors that support computed properties, validation, and FRP capabilities. Mutable state is handled by the host platform, not Glue.
 
 ## Design Specification
 
-### HostValue Extension
+### Value Extension
 ```haskell
-data HostValue = HostValue {
-    getHostValue :: Dynamic,      -- Opaque host object
+data Value = Value {
+    getValue :: Dynamic,      -- Opaque host object
     getters :: Map Text (IR m)    -- Property getter functions only
 }
 ```
@@ -25,7 +25,7 @@ To be modified in: `haskell/glue/src/Glue/`
 
 | Haskell Module | Changes Required |
 |----------------|------------------|
-| `IR.hs` | Update HostValue definition, add property evaluation logic |
+| `IR.hs` | Update Value definition, add property evaluation logic |
 | `Eval.hs` | Modify DottedSymbol evaluation for property access/setting |
 
 ### Haskell Test Updates
@@ -42,7 +42,7 @@ To be modified in: `dart/glue/lib/src/`
 
 | Dart Module | Changes Required |
 |----------------|------------------|
-| `ir.dart` | Update HostValue class, add property evaluation logic |
+| `ir.dart` | Update Value class, add property evaluation logic |
 | `eval.dart` | Modify DottedSymbol evaluation for property access/setting |
 
 ### Dart Test Updates
@@ -57,10 +57,10 @@ To be modified in: `dart/glue/test/`
 ### Phase 1: Core Property System
 **Priority: High** - Basic property access (read-only)
 
-1. **HostValue Extension** (2 modules)
-   - [ ] Update `HostValue` definition in Haskell and Dart (getters only)
+1. **Value Extension** (2 modules)
+   - [ ] Update `Value` definition in Haskell and Dart (getters only)
    - [ ] Modify constructors to accept getters map only
-   - [ ] Update utility functions (`hostValue`, `extractHostValue`, etc.)
+   - [ ] Update utility functions (`hostValue`, `extractValue`, etc.)
 
 2. **Property Access** (2 modules)
    - [ ] Modify `DottedSymbol` evaluation for getter calls
@@ -88,14 +88,14 @@ To be modified in: `dart/glue/test/`
 
 | Feature | Haskell Implementation | Dart Implementation | Status |
 |---------|------------------------|---------------------|--------|
-| **HostValue Extension** | Update IR.hs | Update ir.dart | ⏳ PENDING |
+| **Value Extension** | Update IR.hs | Update ir.dart | ⏳ PENDING |
 | **Property Access** | Modify Eval.hs | Modify eval.dart | ⏳ PENDING |
 | **Tests** | Update EvalTest.hs | Update native_test.dart | ⏳ PENDING |
 
 ## Implementation Requirements
 
 ### Structural Compliance
-- **Type Definitions**: HostValue must be identical in both implementations
+- **Type Definitions**: Value must be identical in both implementations
 - **Evaluation Logic**: Property access behavior must match
 - **Error Handling**: Same error conditions in both implementations
 
@@ -111,7 +111,7 @@ To be modified in: `dart/glue/test/`
 
 ## Success Criteria
 
-- [ ] **HostValue extended** with getters in both implementations
+- [ ] **Value extended** with getters in both implementations
 - [ ] **Property access works**: `obj.prop` calls getter function
 - [ ] **Error handling**: Proper errors for missing/invalid properties
 - [ ] **Tests pass**: Comprehensive test coverage for property operations
@@ -119,7 +119,7 @@ To be modified in: `dart/glue/test/`
 
 ## Timeline Estimate
 
-- **Phase 1**: 1 week (HostValue extension + property access)
+- **Phase 1**: 1 week (Value extension + property access)
 - **Phase 2**: 1 week (testing + integration)
 
 **Total: 2 weeks for complete native properties implementation**
@@ -133,7 +133,7 @@ To be modified in: `dart/glue/test/`
 ## Dependencies
 
 - **Core Evaluation**: Must support function application for getters
-- **IR System**: HostValue integration with IR types
+- **IR System**: Value integration with IR types
 - **Test Framework**: Comprehensive testing of property operations
 
 ## Property Operations Summary

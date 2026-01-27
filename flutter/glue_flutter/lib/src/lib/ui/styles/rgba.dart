@@ -23,5 +23,5 @@ Eval<Ir> createRgbaColor(Ir r, Ir g, Ir b, Ir a) {
   final blue = extractInt(b)?.clamp(0, 255) ?? 0;
   final alpha = extractInt(a)?.clamp(0, 255) ?? 255;
   final color = Color.fromARGB(alpha, red, green, blue);
-  return Eval.pure(IrNativeValue(HostValue(color)));
+  return Eval.pure(IrNativeValue(Value(color)));
 }

@@ -13,7 +13,7 @@ final listenFunction = IrNativeFunc((Ir notifierIr) {
       return Eval((runtime) {
         // Evaluate the notifier argument to get the actual StateNotifier object
         final notifier = switch (notifierIr) {
-          IrNativeValue(value: final hv) => extractHostValue<StateNotifier>(hv),
+          IrNativeValue(value: final hv) => extractValue<StateNotifier>(hv),
           _ => null,
         };
 
@@ -36,7 +36,7 @@ final listenFunction = IrNativeFunc((Ir notifierIr) {
           runtime: runtime,
         );
 
-        return Right((IrNativeValue(HostValue(reactiveContainer)), runtime));
+        return Right((IrNativeValue(Value(reactiveContainer)), runtime));
       });
     }),
   );

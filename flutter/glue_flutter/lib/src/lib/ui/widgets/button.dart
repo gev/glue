@@ -20,7 +20,7 @@ Eval<Ir> _createButton(Properties properties) {
 
   if (properties.disabled) {
     final buttonWidget = ElevatedButton(onPressed: null, child: Text(label));
-    return Eval.pure(IrNativeValue(HostValue(buttonWidget)));
+    return Eval.pure(IrNativeValue(Value(buttonWidget)));
   }
 
   // Get runtime and create callback
@@ -30,6 +30,6 @@ Eval<Ir> _createButton(Properties properties) {
       onPressed: callback,
       child: Text(label),
     );
-    return IrNativeValue(HostValue(buttonWidget));
+    return IrNativeValue(Value(buttonWidget));
   });
 }

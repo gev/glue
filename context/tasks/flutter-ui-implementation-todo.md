@@ -102,7 +102,7 @@ Widget functions follow pattern: (function content? props?)
 - glue: Core Glue interpreter
 
 ## Implementation Notes
-- All widgets return IrNativeValue(HostValue(FlutterWidget)) without getters/setters
+- All widgets return IrNativeValue(Value(FlutterWidget)) without getters/setters
 - Property objects parsed from IrObject with key-value pairs
 - Functions are native (IrNativeFunc) taking single Ir argument (universal currying)
 - Module name is "ui" (not "ffi.ui" as originally planned)

@@ -16,7 +16,7 @@ Eval<Ir> paddingImpl(Ir child) {
 /// Padding with child - takes properties object
 Eval<Ir> Function(Ir) paddingWithChild(Ir child) =>
     (Ir props) => switch (child) {
-      IrNativeValue(value: HostValue(value: Widget childWidget))
+      IrNativeValue(value: Value(value: Widget childWidget))
           when props is IrObject =>
         () {
           final properties = props.properties.unlock as Map<String, dynamic>;
@@ -24,7 +24,7 @@ Eval<Ir> Function(Ir) paddingWithChild(Ir child) =>
               extractEdgeInsets(properties['padding']) ?? EdgeInsets.zero;
 
           final paddingWidget = Padding(padding: padding, child: childWidget);
-          return Eval.pure(IrNativeValue(HostValue(paddingWidget)));
+          return Eval.pure(IrNativeValue(Value(paddingWidget)));
         }(),
       _ => throwError(wrongArgumentType(['widget', 'object'])),
     };

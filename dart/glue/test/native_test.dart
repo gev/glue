@@ -11,22 +11,22 @@ import 'package:test/test.dart';
 class Person {
   String name;
   int age;
-  HostValue? addressHostValue;
+  Value? addressValue;
 
-  Person(this.name, this.age, this.addressHostValue);
+  Person(this.name, this.age, this.addressValue);
 
   @override
-  String toString() => 'Person($name, $age, $addressHostValue)';
+  String toString() => 'Person($name, $age, $addressValue)';
 
   @override
   bool operator ==(Object other) =>
       other is Person &&
       other.name == name &&
       other.age == age &&
-      other.addressHostValue == addressHostValue;
+      other.addressValue == addressValue;
 
   @override
-  int get hashCode => Object.hash(name, age, addressHostValue);
+  int get hashCode => Object.hash(name, age, addressValue);
 }
 
 class Address {
@@ -84,13 +84,13 @@ Eval<Ir> _createPerson(Map<String, Ir> props) {
   final age = ageIr.value;
 
   final addressIr = props['address'];
-  final HostValue? addressHostValue;
+  final Value? addressValue;
   if (addressIr == null) {
-    addressHostValue = null;
+    addressValue = null;
   } else if (addressIr is IrNativeValue) {
-    final extracted = extractHostValue<Address>(addressIr.value);
+    final extracted = extractValue<Address>(addressIr.value);
     if (extracted != null) {
-      addressHostValue = addressIr.value;
+      addressValue = addressIr.value;
     } else {
       return throwError(
         RuntimeException('wrong-argument-type', IrString('address: Address')),
@@ -102,14 +102,14 @@ Eval<Ir> _createPerson(Map<String, Ir> props) {
     );
   }
 
-  final personObj = Person(name, age, addressHostValue);
+  final personObj = Person(name, age, addressValue);
 
   final getters = <String, Eval<Ir>>{
     'name': Eval((runtime) => Right((IrString(personObj.name), runtime))),
     'age': Eval((runtime) => Right((IrInteger(personObj.age), runtime))),
     'address': Eval(
-      (runtime) => switch (personObj.addressHostValue) {
-        final addrHostValue? => Right((IrNativeValue(addrHostValue), runtime)),
+      (runtime) => switch (personObj.addressValue) {
+        final addrValue? => Right((IrNativeValue(addrValue), runtime)),
         null => Right((IrString('no address'), runtime)),
       },
     ),

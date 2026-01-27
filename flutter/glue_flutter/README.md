@@ -129,7 +129,7 @@ Glue Flutter implements the `ffi.ui` module, providing a consistent API across d
 Widgets are created through native functions that:
 1. Take Glue property objects
 2. Parse properties into appropriate types
-3. Return `IrNativeValue` containing `HostValue` with Flutter widgets
+3. Return `IrNativeValue` containing `Value` with Flutter widgets
 
 ## Development
 

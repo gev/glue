@@ -33,7 +33,7 @@ class Calculator {
 }
 
 void main() {
-  group('HostValue property getters', () {
+  group('Value property getters', () {
     group('Property access returning values', () {
       test('accesses simple property returning a string', () async {
         // Create a person with a name property

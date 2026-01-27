@@ -16,5 +16,5 @@ Eval<Ir> paddingAllImpl(Ir value) {
 }
 
 Eval<Ir> createPadding(EdgeInsetsGeometry insets) {
-  return Eval.pure(IrNativeValue(HostValue(insets)));
+  return Eval.pure(IrNativeValue(Value(insets)));
 }

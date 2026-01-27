@@ -4,9 +4,9 @@ import 'package:glue/src/ir.dart';
 /// Cross-axis alignment enum object - represents all CrossAxisAlignment values as Glue object properties
 /// Each property is a NativeValue wrapping the Flutter CrossAxisAlignment enum value
 final crossAxisAlignment = IrObject({
-  'start': IrNativeValue(HostValue(CrossAxisAlignment.start)),
-  'end': IrNativeValue(HostValue(CrossAxisAlignment.end)),
-  'center': IrNativeValue(HostValue(CrossAxisAlignment.center)),
-  'stretch': IrNativeValue(HostValue(CrossAxisAlignment.stretch)),
-  'baseline': IrNativeValue(HostValue(CrossAxisAlignment.baseline)),
+  'start': IrNativeValue(Value(CrossAxisAlignment.start)),
+  'end': IrNativeValue(Value(CrossAxisAlignment.end)),
+  'center': IrNativeValue(Value(CrossAxisAlignment.center)),
+  'stretch': IrNativeValue(Value(CrossAxisAlignment.stretch)),
+  'baseline': IrNativeValue(Value(CrossAxisAlignment.baseline)),
 });

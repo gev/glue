@@ -9,7 +9,7 @@ import 'package:glue_flutter/src/lib/ui/styles/text_align.dart';
 import 'package:glue_flutter/src/lib/ui/styles/font_weight.dart';
 import 'package:glue_flutter/src/lib/ui/styles/colors.dart';
 
-/// Helper function to extract enum value from HostValue only (no parsing)
+/// Helper function to extract enum value from Value only (no parsing)
 T? extractEnumValue<T>(Ir? ir) {
   if (ir == null) return null;
 
@@ -223,12 +223,12 @@ void main() {
 
   group('Enum Value Extraction', () {
     test('extractEnumValue extracts FontWeight correctly', () {
-      final ir = IrNativeValue(HostValue(FontWeight.bold));
+      final ir = IrNativeValue(Value(FontWeight.bold));
       expect(extractEnumValue<FontWeight>(ir), FontWeight.bold);
     });
 
     test('extractEnumValue extracts CrossAxisAlignment correctly', () {
-      final ir = IrNativeValue(HostValue(CrossAxisAlignment.center));
+      final ir = IrNativeValue(Value(CrossAxisAlignment.center));
       expect(
         extractEnumValue<CrossAxisAlignment>(ir),
         CrossAxisAlignment.center,
@@ -236,11 +236,11 @@ void main() {
     });
 
     test('extractEnumValue returns null for wrong type', () {
-      final ir = IrNativeValue(HostValue(FontWeight.bold));
+      final ir = IrNativeValue(Value(FontWeight.bold));
       expect(extractEnumValue<CrossAxisAlignment>(ir), null);
     });
 
-    test('extractEnumValue returns null for non-HostValue', () {
+    test('extractEnumValue returns null for non-Value', () {
       final ir = IrString('bold');
       expect(extractEnumValue<FontWeight>(ir), null);
     });
@@ -248,16 +248,16 @@ void main() {
 
   group('Color Value Extraction', () {
     test('extractColorValue extracts Color correctly', () {
-      final ir = IrNativeValue(HostValue(Colors.blue));
+      final ir = IrNativeValue(Value(Colors.blue));
       expect(extractColorValue(ir), Colors.blue);
     });
 
     test('extractColorValue returns null for non-Color', () {
-      final ir = IrNativeValue(HostValue(FontWeight.bold));
+      final ir = IrNativeValue(Value(FontWeight.bold));
       expect(extractColorValue(ir), null);
     });
 
-    test('extractColorValue returns null for non-HostValue', () {
+    test('extractColorValue returns null for non-Value', () {
       final ir = IrString('#FF0000');
       expect(extractColorValue(ir), null);
     });

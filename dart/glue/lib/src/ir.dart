@@ -5,29 +5,29 @@ import 'package:glue/src/eval.dart';
 import 'package:glue/src/ast.dart';
 
 /// Host value wrapper for any host language object
-/// Mirrors Haskell HostValue exactly with getters
-class HostValue {
+/// Mirrors Haskell Value exactly with getters
+class Value {
   final dynamic value;
   final Map<String, Eval<Ir>> getters;
 
-  const HostValue(this.value, {this.getters = const {}});
+  const Value(this.value, {this.getters = const {}});
 
   @override
-  String toString() => 'HostValue($value, getters: ${getters.length})';
+  String toString() => 'Value($value, getters: ${getters.length})';
 }
 
 /// Create a host value from any value
 /// Mirrors Haskell hostValue exactly
-HostValue hostValue(dynamic value) => HostValue(value);
+Value hostValue(dynamic value) => Value(value);
 
 /// Create a host value with properties getters
 /// Mirrors Haskell hostValueWithProps exactly
-HostValue hostValueWithProps(dynamic value, Map<String, Eval<Ir>> getters) =>
-    HostValue(value, getters: getters);
+Value hostValueWithProps(dynamic value, Map<String, Eval<Ir>> getters) =>
+    Value(value, getters: getters);
 
 /// Extract a host value with type safety
-/// Mirrors Haskell extractHostValue exactly
-T? extractHostValue<T>(HostValue hostValue) {
+/// Mirrors Haskell extractValue exactly
+T? extractValue<T>(Value hostValue) {
   if (hostValue.value is T) {
     return hostValue.value as T;
   }
@@ -185,7 +185,7 @@ class IrVoid extends Ir {
 }
 
 class IrNativeValue extends Ir {
-  final HostValue value; // Host language value wrapped in HostValue
+  final Value value; // Host language value wrapped in Value
   const IrNativeValue(this.value);
 
   @override
@@ -280,8 +280,8 @@ String getSymbol(Ir ir) => switch (ir) {
 };
 
 /// Host value utilities
-/// Mirrors Haskell isHostValue and getHostValueFromIR exactly
+/// Mirrors Haskell isValue and getValueFromIR exactly
 
-bool isHostValue(Ir ir) => ir is IrNativeValue;
+bool isValue(Ir ir) => ir is IrNativeValue;
 
-HostValue? getHostValueFromIR(Ir ir) => ir is IrNativeValue ? ir.value : null;
+Value? getValueFromIR(Ir ir) => ir is IrNativeValue ? ir.value : null;

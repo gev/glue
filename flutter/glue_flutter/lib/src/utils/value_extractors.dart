@@ -38,40 +38,38 @@ double? extractDouble(Ir? value) => switch (value) {
 
 /// Extract color from Glue IR value
 Color? extractColor(Ir? value) => switch (value) {
-  IrNativeValue(value: HostValue(value: Color color)) => color,
+  IrNativeValue(value: Value(value: Color color)) => color,
   IrString() => parseColor(value),
   _ => null,
 };
 
 /// Extract FontWeight from Glue IR value
 FontWeight? extractFontWeight(Ir? value) => switch (value) {
-  IrNativeValue(value: HostValue(value: FontWeight weight)) => weight,
+  IrNativeValue(value: Value(value: FontWeight weight)) => weight,
   _ => null,
 };
 
 /// Extract TextAlign from Glue IR value
 TextAlign? extractTextAlign(Ir? value) => switch (value) {
-  IrNativeValue(value: HostValue(value: TextAlign align)) => align,
+  IrNativeValue(value: Value(value: TextAlign align)) => align,
   _ => null,
 };
 
 /// Extract MainAxisAlignment from Glue IR value
 MainAxisAlignment? extractMainAxisAlignment(Ir? value) => switch (value) {
-  IrNativeValue(value: HostValue(value: MainAxisAlignment alignment)) =>
-    alignment,
+  IrNativeValue(value: Value(value: MainAxisAlignment alignment)) => alignment,
   _ => null,
 };
 
 /// Extract CrossAxisAlignment from Glue IR value
 CrossAxisAlignment? extractCrossAxisAlignment(Ir? value) => switch (value) {
-  IrNativeValue(value: HostValue(value: CrossAxisAlignment alignment)) =>
-    alignment,
+  IrNativeValue(value: Value(value: CrossAxisAlignment alignment)) => alignment,
   _ => null,
 };
 
 /// Extract child list from Glue IR value
 Widget? extractChild(Ir? value) => switch (value) {
-  IrNativeValue(value: HostValue(value: Widget widget)) => widget,
+  IrNativeValue(value: Value(value: Widget widget)) => widget,
   _ => null,
 };
 
@@ -81,7 +79,7 @@ List<Widget>? extractChildren(Ir? value) => switch (value) {
     elements
         .map(
           (child) => switch (child) {
-            IrNativeValue(value: HostValue(value: Widget widget)) => widget,
+            IrNativeValue(value: Value(value: Widget widget)) => widget,
             _ => null,
           },
         )
@@ -120,6 +118,6 @@ VoidCallback? extractVoidCallback(Ir? value, Runtime runtime) =>
 
 /// Extract EdgeInsetsGeometry from Glue IR value
 EdgeInsetsGeometry? extractEdgeInsets(Ir? value) => switch (value) {
-  IrNativeValue(value: HostValue(value: EdgeInsetsGeometry insets)) => insets,
+  IrNativeValue(value: Value(value: EdgeInsetsGeometry insets)) => insets,
   _ => null,
 };

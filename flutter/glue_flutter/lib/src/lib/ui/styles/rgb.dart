@@ -17,5 +17,5 @@ Eval<Ir> createRgbColor(Ir r, Ir g, Ir b) {
   final green = extractInt(g)?.clamp(0, 255) ?? 0;
   final blue = extractInt(b)?.clamp(0, 255) ?? 0;
   final color = Color.fromARGB(255, red, green, blue);
-  return Eval.pure(IrNativeValue(HostValue(color)));
+  return Eval.pure(IrNativeValue(Value(color)));
 }

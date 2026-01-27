@@ -1,16 +1,16 @@
 module Glue.IR (
     -- Main types
     IR (..),
-    HostValue (..),
+    Value (..),
     -- Environment types
     Frame,
     Env,
     -- Utility functions
     hostValue,
     hostValueWithProps,
-    extractHostValue,
-    isHostValue,
-    getHostValueFromIR,
+    extractValue,
+    isValue,
+    getValueFromIR,
     -- Compilation
     compile,
     -- Accessor functions
@@ -37,33 +37,33 @@ type Frame m = Map.Map Text (IR m)
 type Env m = [Frame m]
 
 -- Host value wrapper for any host language object
-data HostValue m = HostValue
-    { getHostValue :: Dynamic
+data Value m = Value
+    { getValue :: Dynamic
     , getters :: Map Text (m (IR m))
     }
 
-instance Show (HostValue m) where
-    show (HostValue _ getters) =
+instance Show (Value m) where
+    show (Value _ getters) =
         "<host-value getters:"
             <> show (Map.size getters)
             <> ">"
 
-instance Eq (HostValue m) where
+instance Eq (Value m) where
     -- Host values are opaque, so we can't meaningfully compare them
     -- For now, consider them never equal (could be improved with identity comparison)
     _ == _ = False
 
 -- Create a host value from any typeable value
-hostValue :: (Typeable a) => a -> HostValue m
-hostValue x = HostValue (toDyn x) Map.empty
+hostValue :: (Typeable a) => a -> Value m
+hostValue x = Value (toDyn x) Map.empty
 
 -- Create a host value with properties
-hostValueWithProps :: (Typeable a) => a -> Map Text (m (IR m)) -> HostValue m
-hostValueWithProps x = HostValue (toDyn x)
+hostValueWithProps :: (Typeable a) => a -> Map Text (m (IR m)) -> Value m
+hostValueWithProps x = Value (toDyn x)
 
 -- Extract a host value with type safety
-extractHostValue :: (Typeable a) => HostValue m -> Maybe a
-extractHostValue = fromDynamic . getHostValue
+extractValue :: (Typeable a) => Value m -> Maybe a
+extractValue = fromDynamic . getValue
 
 data IR m
     = Integer Int
@@ -75,7 +75,7 @@ data IR m
     | List [IR m]
     | Object (Map Text (IR m))
     | Void
-    | NativeValue (HostValue m) -- Host language values (literals)
+    | NativeValue (Value m) -- Host language values (literals)
     | NativeFunc (IR m -> m (IR m)) -- Functions
     | Special ([IR m] -> m (IR m)) -- Special forms
     | Closure [Text] (IR m) (Env m)
@@ -158,10 +158,10 @@ getSymbol (DottedSymbol parts) = T.intercalate "." parts
 getSymbol _ = ""
 
 -- Host value utilities
-isHostValue :: IR m -> Bool
-isHostValue (NativeValue _) = True
-isHostValue _ = False
+isValue :: IR m -> Bool
+isValue (NativeValue _) = True
+isValue _ = False
 
-getHostValueFromIR :: IR m -> Maybe (HostValue m)
-getHostValueFromIR (NativeValue hv) = Just hv
-getHostValueFromIR _ = Nothing
+getValueFromIR :: IR m -> Maybe (Value m)
+getValueFromIR (NativeValue hv) = Just hv
+getValueFromIR _ = Nothing

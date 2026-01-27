@@ -23,5 +23,5 @@ Eval<Ir> _createContainer(Properties properties) {
     color: properties.color,
     child: properties.child,
   );
-  return Eval.pure(IrNativeValue(HostValue(containerWidget)));
+  return Eval.pure(IrNativeValue(Value(containerWidget)));
 }

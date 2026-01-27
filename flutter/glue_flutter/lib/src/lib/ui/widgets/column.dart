@@ -21,5 +21,5 @@ Eval<Ir> _createColumn(Properties properties) {
     mainAxisAlignment: properties.mainAlign,
     crossAxisAlignment: properties.crossAlign,
   );
-  return Eval.pure(IrNativeValue(HostValue(columnWidget)));
+  return Eval.pure(IrNativeValue(Value(columnWidget)));
 }

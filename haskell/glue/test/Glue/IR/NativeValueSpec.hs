@@ -7,7 +7,7 @@ import Data.Maybe (isNothing)
 import Data.Text (Text)
 import Glue.Env qualified as E
 import Glue.Eval (eval, runEvalSimple)
-import Glue.IR (IR (..), extractHostValue, getHostValueFromIR, hostValue, isHostValue)
+import Glue.IR (IR (..), extractValue, getValueFromIR, hostValue, isValue)
 import Test.Hspec
 import Test.Hspec.QuickCheck
 import Test.QuickCheck
@@ -27,8 +27,8 @@ instance Arbitrary TestConnection where
     arbitrary = TestConnection <$> arbitrary <*> arbitrary
 
 spec :: Spec
-spec = describe "HostValue system for native object integration" do
-    describe "HostValue creation and extraction" do
+spec = describe "Value system for native object integration" do
+    describe "Value creation and extraction" do
         it "creates host value from any typeable value" do
             let widget = TestWidget "button" True
                 hv = hostValue widget
@@ -36,23 +36,23 @@ spec = describe "HostValue system for native object integration" do
         it "extracts host value with correct type" do
             let widget = TestWidget "submit" False
                 hv = hostValue widget
-            extractHostValue hv `shouldBe` Just widget
+            extractValue hv `shouldBe` Just widget
 
         it "fails to extract with wrong type" do
             let widget = TestWidget "test" True
                 hv = hostValue widget
-            extractHostValue hv `shouldNotBe` Just @Text "not a widget"
+            extractValue hv `shouldNotBe` Just @Text "not a widget"
 
         it "handles different host value types" do
             let conn = TestConnection "localhost" 5432
                 hv = hostValue conn
-            extractHostValue hv `shouldBe` Just conn
+            extractValue hv `shouldBe` Just conn
 
         prop "round-trip: any typeable value can be stored and retrieved" $ \(w :: TestWidget) ->
             let hv = hostValue w
-             in extractHostValue hv == Just w
+             in extractValue hv == Just w
 
-    describe "HostValue equality" do
+    describe "Value equality" do
         it "host values are never equal (opaque comparison)" do
             let hv1 = hostValue (TestWidget "a" True)
                 hv2 = hostValue (TestWidget "a" True)
@@ -63,7 +63,7 @@ spec = describe "HostValue system for native object integration" do
                 hv2 = hostValue (TestWidget "b" False)
             hv1 == hv2 `shouldBe` False
 
-    describe "HostValue in IR system" do
+    describe "Value in IR system" do
         it "creates IR with host value" do
             let widget = TestWidget "test" True
                 hv = hostValue widget
@@ -73,23 +73,23 @@ spec = describe "HostValue system for native object integration" do
         it "identifies host value IR" do
             let hv = hostValue (TestWidget "test" True)
                 ir = NativeValue hv :: IR Identity
-            isHostValue ir `shouldBe` True
+            isValue ir `shouldBe` True
 
         it "non-host IR is not identified as host value" do
             let ir = Integer 42 :: IR Identity
-            isHostValue ir `shouldBe` False
+            isValue ir `shouldBe` False
 
         it "extracts host value from IR" do
             let widget = TestWidget "extract" False
                 hv = hostValue widget
                 ir = NativeValue hv :: IR Identity
-            case getHostValueFromIR ir of
-                Just extracted -> extractHostValue extracted `shouldBe` Just widget
+            case getValueFromIR ir of
+                Just extracted -> extractValue extracted `shouldBe` Just widget
                 Nothing -> expectationFailure "Should extract host value"
 
         it "returns Nothing for non-host IR" do
             let ir = String "not host" :: IR Identity
-            getHostValueFromIR ir `shouldBe` Nothing
+            getValueFromIR ir `shouldBe` Nothing
 
     describe "IR with NativeValue" do
         it "IR equality handles NativeValue (host values are never equal)" do
@@ -108,32 +108,32 @@ spec = describe "HostValue system for native object integration" do
             let widget = TestWidget "type" True
                 hv = hostValue widget
             -- This should fail at runtime, not compile time
-            extractHostValue hv `shouldNotBe` (Just "not a widget" :: Maybe String)
+            extractValue hv `shouldNotBe` (Just "not a widget" :: Maybe String)
 
         prop "type safety: extraction succeeds only for correct types" $ \(w :: TestWidget) ->
             let hv = hostValue w
-                widgetResult = extractHostValue hv :: Maybe TestWidget
-                stringResult = extractHostValue hv :: Maybe String
+                widgetResult = extractValue hv :: Maybe TestWidget
+                stringResult = extractValue hv :: Maybe String
              in widgetResult == Just w && isNothing stringResult
 
     describe "Host value lifecycle" do
         it "host values can be created from complex types" do
             let complex = [TestWidget "a" True, TestWidget "b" False]
                 hv = hostValue complex
-            extractHostValue hv `shouldBe` Just complex
+            extractValue hv `shouldBe` Just complex
 
         it "host values preserve nested structures" do
             let nested = ("tuple" :: Text, TestConnection "host" 8080, 42 :: Int)
                 hv = hostValue nested
-            extractHostValue hv `shouldBe` Just nested
+            extractValue hv `shouldBe` Just nested
 
     describe "Integration with IR system" do
         prop "host values integrate seamlessly with IR" $ \(w :: TestWidget) ->
             let hv = hostValue w
                 ir = NativeValue hv :: IR Identity
-             in isHostValue ir
-                    && case getHostValueFromIR ir of
-                        Just extracted -> extractHostValue extracted == Just w
+             in isValue ir
+                    && case getValueFromIR ir of
+                        Just extracted -> extractValue extracted == Just w
                         Nothing -> False
 
         it "host values work in complex IR structures" $
@@ -145,7 +145,7 @@ spec = describe "HostValue system for native object integration" do
                     _ -> False
                     `shouldBe` True
 
-    describe "HostValue evaluation behavior" do
+    describe "Value evaluation behavior" do
         it "host values evaluate to themselves (no change)" do
             let hv = hostValue (TestWidget "eval" True)
                 ir = NativeValue hv
@@ -154,12 +154,12 @@ spec = describe "HostValue system for native object integration" do
             case result of
                 Right (evaluated, _) -> do
                     -- Check that it's still a host value
-                    isHostValue evaluated `shouldBe` True
+                    isValue evaluated `shouldBe` True
                     -- Extract and compare the contents with explicit types
-                    case (getHostValueFromIR ir, getHostValueFromIR evaluated) of
+                    case (getValueFromIR ir, getValueFromIR evaluated) of
                         (Just orig, Just evaluated') -> do
-                            let origWidget = extractHostValue orig :: Maybe TestWidget
-                                evaluatedWidget = extractHostValue evaluated' :: Maybe TestWidget
+                            let origWidget = extractValue orig :: Maybe TestWidget
+                                evaluatedWidget = extractValue evaluated' :: Maybe TestWidget
                             origWidget `shouldBe` evaluatedWidget
                         _ -> expectationFailure "Both should be host values"
                 Left _ -> expectationFailure "Host value evaluation should not fail"
@@ -189,11 +189,11 @@ spec = describe "HostValue system for native object integration" do
             case result of
                 Right (resultIr, _) -> do
                     -- Check that result is a host value with the same content
-                    isHostValue resultIr `shouldBe` True
-                    case (getHostValueFromIR hostIr, getHostValueFromIR resultIr) of
+                    isValue resultIr `shouldBe` True
+                    case (getValueFromIR hostIr, getValueFromIR resultIr) of
                         (Just orig, Just res) -> do
-                            let origWidget = extractHostValue orig :: Maybe TestWidget
-                                resWidget = extractHostValue res :: Maybe TestWidget
+                            let origWidget = extractValue orig :: Maybe TestWidget
+                                resWidget = extractValue res :: Maybe TestWidget
                             origWidget `shouldBe` resWidget
                         _ -> expectationFailure "Both should be host values"
                 Left err -> expectationFailure $ "Function call should succeed: " ++ show err
@@ -209,9 +209,9 @@ spec = describe "HostValue system for native object integration" do
             case result of
                 Right (resultIr, _) -> do
                     -- Check that result is a host value with the expected content
-                    isHostValue resultIr `shouldBe` True
-                    case getHostValueFromIR resultIr of
-                        Just extracted -> extractHostValue extracted `shouldBe` Just widget
+                    isValue resultIr `shouldBe` True
+                    case getValueFromIR resultIr of
+                        Just extracted -> extractValue extracted `shouldBe` Just widget
                         Nothing -> expectationFailure "Result should be a host value"
                 Left err -> expectationFailure $ "Function should return host value: " ++ show err
 
@@ -225,9 +225,9 @@ spec = describe "HostValue system for native object integration" do
             result <- runEvalSimple (eval nestedCall) env
             case result of
                 Right (resultIr, _) -> do
-                    isHostValue resultIr `shouldBe` True
-                    case getHostValueFromIR resultIr of
-                        Just extracted -> extractHostValue extracted `shouldBe` Just (TestWidget "nested" True)
+                    isValue resultIr `shouldBe` True
+                    case getValueFromIR resultIr of
+                        Just extracted -> extractValue extracted `shouldBe` Just (TestWidget "nested" True)
                         Nothing -> expectationFailure "Should contain host value"
                 Left err -> expectationFailure $ "Nested call should work: " ++ show err
 
@@ -240,11 +240,11 @@ spec = describe "HostValue system for native object integration" do
             case result of
                 Right (resultIr, _) -> do
                     -- Check that result is a host value with the same content
-                    isHostValue resultIr `shouldBe` True
-                    case (getHostValueFromIR hostIr, getHostValueFromIR resultIr) of
+                    isValue resultIr `shouldBe` True
+                    case (getValueFromIR hostIr, getValueFromIR resultIr) of
                         (Just orig, Just res) -> do
-                            let origWidget = extractHostValue orig :: Maybe TestWidget
-                                resWidget = extractHostValue res :: Maybe TestWidget
+                            let origWidget = extractValue orig :: Maybe TestWidget
+                                resWidget = extractValue res :: Maybe TestWidget
                             origWidget `shouldBe` resWidget
                         _ -> expectationFailure "Both should be host values"
                 Left err -> expectationFailure $ "Environment lookup should work: " ++ show err

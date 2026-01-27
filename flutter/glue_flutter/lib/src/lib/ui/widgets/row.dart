@@ -21,5 +21,5 @@ Eval<Ir> _createRow(Properties properties) {
     mainAxisAlignment: properties.mainAlign,
     crossAxisAlignment: properties.crossAlign,
   );
-  return Eval.pure(IrNativeValue(HostValue(rowWidget)));
+  return Eval.pure(IrNativeValue(Value(rowWidget)));
 }

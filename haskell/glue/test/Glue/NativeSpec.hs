@@ -7,7 +7,7 @@ import Data.Text qualified as T
 import Glue.Env qualified as E
 import Glue.Eval (Eval, eval, liftIO, runEvalSimple, throwError)
 import Glue.Eval.Exception (wrongArgumentType)
-import Glue.IR (Env, IR (..), extractHostValue, hostValueWithProps)
+import Glue.IR (Env, IR (..), extractValue, hostValueWithProps)
 import Glue.IR qualified
 import Glue.Lib.Builtin.Def (def)
 import Glue.Parser qualified
@@ -38,9 +38,9 @@ person (Object props) = do
         _ -> throwError $ wrongArgumentType ["age: integer"]
 
     address <- case Map.lookup "address" props of
-        Just (NativeValue addrHostValue) ->
-            case extractHostValue addrHostValue :: Maybe Address of
-                Just _ -> pure $ Just (NativeValue addrHostValue) -- Store the NativeValue
+        Just (NativeValue addrValue) ->
+            case extractValue addrValue :: Maybe Address of
+                Just _ -> pure $ Just (NativeValue addrValue) -- Store the NativeValue
                 Nothing -> throwError $ wrongArgumentType ["address: Address"]
         Just _ -> throwError $ wrongArgumentType ["address: Address"]
         Nothing -> pure Nothing -- Address is optional

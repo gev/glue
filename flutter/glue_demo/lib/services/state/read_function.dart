@@ -10,7 +10,7 @@ import 'package:glue_demo/services/state/state_notifier.dart';
 final readFunction = IrNativeFunc((Ir stateIr) {
   return Eval((runtime) {
     final state = switch (stateIr) {
-      IrNativeValue(value: final hv) => extractHostValue<StateNotifier>(hv),
+      IrNativeValue(value: final hv) => extractValue<StateNotifier>(hv),
       _ => null,
     };
     if (state == null) {

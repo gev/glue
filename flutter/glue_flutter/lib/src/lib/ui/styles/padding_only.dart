@@ -25,5 +25,5 @@ Eval<Ir> createPaddingOnly(dynamic properties) {
 }
 
 Eval<Ir> createPadding(EdgeInsetsGeometry insets) {
-  return Eval.pure(IrNativeValue(HostValue(insets)));
+  return Eval.pure(IrNativeValue(Value(insets)));
 }

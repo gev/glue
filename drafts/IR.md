@@ -17,7 +17,7 @@ data IR m
     | List [IR m]
     | Object (Map Text (IR m))
     | Module (Map Text (IR m))
-    | NativeValue HostValue
+    | NativeValue Value
     | NativeFunc ([IR m] -> m (IR m))
     | Special ([IR m] -> m (IR m))
     | Closure [Text] (IR m) (Env m)
@@ -95,7 +95,7 @@ Represents collections of exported values and functions.
 #### `NativeValue`
 Represents host language objects and literals.
 
-**Structure:** `NativeValue HostValue`
+**Structure:** `NativeValue Value`
 **Purpose:** Store host language values that don't need evaluation
 
 #### `NativeFunc`

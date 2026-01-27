@@ -31,8 +31,8 @@ class TestConnection {
 }
 
 void main() {
-  group('HostValue system for native object integration', () {
-    group('HostValue creation and extraction', () {
+  group('Value system for native object integration', () {
+    group('Value creation and extraction', () {
       test('creates host value from any typeable value', () {
         final widget = TestWidget('button', true);
         final hv = hostValue(widget);
@@ -42,29 +42,29 @@ void main() {
       test('extracts host value with correct type', () {
         final widget = TestWidget('submit', false);
         final hv = hostValue(widget);
-        expect(extractHostValue<TestWidget>(hv), equals(widget));
+        expect(extractValue<TestWidget>(hv), equals(widget));
       });
 
       test('fails to extract with wrong type', () {
         final widget = TestWidget('test', true);
         final hv = hostValue(widget);
-        expect(extractHostValue<String>(hv), isNull);
+        expect(extractValue<String>(hv), isNull);
       });
 
       test('handles different host value types', () {
         final conn = TestConnection('localhost', 5432);
         final hv = hostValue(conn);
-        expect(extractHostValue<TestConnection>(hv), equals(conn));
+        expect(extractValue<TestConnection>(hv), equals(conn));
       });
 
       test('round-trip: any typeable value can be stored and retrieved', () {
         final widget = TestWidget('test', false);
         final hv = hostValue(widget);
-        expect(extractHostValue<TestWidget>(hv), equals(widget));
+        expect(extractValue<TestWidget>(hv), equals(widget));
       });
     });
 
-    group('HostValue equality', () {
+    group('Value equality', () {
       test('host values are never equal (opaque comparison)', () {
         final hv1 = hostValue(TestWidget('a', true));
         final hv2 = hostValue(TestWidget('a', true));
@@ -78,7 +78,7 @@ void main() {
       });
     });
 
-    group('HostValue in IR system', () {
+    group('Value in IR system', () {
       test('creates IR with host value', () {
         final widget = TestWidget('test', true);
         final hv = hostValue(widget);
@@ -89,26 +89,26 @@ void main() {
       test('identifies host value IR', () {
         final hv = hostValue(TestWidget('test', true));
         final ir = IrNativeValue(hv);
-        expect(isHostValue(ir), isTrue);
+        expect(isValue(ir), isTrue);
       });
 
       test('non-host IR is not identified as host value', () {
         final ir = IrInteger(42);
-        expect(isHostValue(ir), isFalse);
+        expect(isValue(ir), isFalse);
       });
 
       test('extracts host value from IR', () {
         final widget = TestWidget('extract', false);
         final hv = hostValue(widget);
         final ir = IrNativeValue(hv);
-        final extracted = getHostValueFromIR(ir);
+        final extracted = getValueFromIR(ir);
         expect(extracted, isNotNull);
-        expect(extractHostValue<TestWidget>(extracted!), equals(widget));
+        expect(extractValue<TestWidget>(extracted!), equals(widget));
       });
 
       test('returns null for non-host IR', () {
         final ir = IrString('not host');
-        expect(getHostValueFromIR(ir), isNull);
+        expect(getValueFromIR(ir), isNull);
       });
     });
 
@@ -135,14 +135,14 @@ void main() {
         final widget = TestWidget('type', true);
         final hv = hostValue(widget);
         // This should fail at runtime, not compile time
-        expect(extractHostValue<String>(hv), isNull);
+        expect(extractValue<String>(hv), isNull);
       });
 
       test('type safety: extraction succeeds only for correct types', () {
         final widget = TestWidget('test', true);
         final hv = hostValue(widget);
-        final widgetResult = extractHostValue<TestWidget>(hv);
-        final stringResult = extractHostValue<String>(hv);
+        final widgetResult = extractValue<TestWidget>(hv);
+        final stringResult = extractValue<String>(hv);
         expect(widgetResult, equals(widget));
         expect(stringResult, isNull);
       });
@@ -152,16 +152,13 @@ void main() {
       test('host values can be created from complex types', () {
         final complex = [TestWidget('a', true), TestWidget('b', false)];
         final hv = hostValue(complex);
-        expect(extractHostValue<List<TestWidget>>(hv), equals(complex));
+        expect(extractValue<List<TestWidget>>(hv), equals(complex));
       });
 
       test('host values preserve nested structures', () {
         final nested = ('tuple', TestConnection('host', 8080), 42);
         final hv = hostValue(nested);
-        expect(
-          extractHostValue<(String, TestConnection, int)>(hv),
-          equals(nested),
-        );
+        expect(extractValue<(String, TestConnection, int)>(hv), equals(nested));
       });
     });
   });

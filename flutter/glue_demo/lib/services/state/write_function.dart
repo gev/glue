@@ -12,7 +12,7 @@ final writeFunction = IrNativeFunc((Ir stateIr) {
     IrNativeFunc((Ir newValueIr) {
       return Eval((runtime) {
         final state = switch (stateIr) {
-          IrNativeValue(value: final hv) => extractHostValue<StateNotifier>(hv),
+          IrNativeValue(value: final hv) => extractValue<StateNotifier>(hv),
           _ => null,
         };
         if (state == null) {

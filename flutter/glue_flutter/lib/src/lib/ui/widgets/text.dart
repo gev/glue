@@ -26,5 +26,5 @@ Eval<Ir> _createText(Properties properties) {
     ),
     textAlign: properties.align,
   );
-  return Eval.pure(IrNativeValue(HostValue(textWidget)));
+  return Eval.pure(IrNativeValue(Value(textWidget)));
 }

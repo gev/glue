@@ -14,7 +14,7 @@ newtype Calculator = Calculator {baseValue :: Int}
     deriving (Show, Eq)
 
 spec :: Spec
-spec = describe "HostValue property getters" do
+spec = describe "Value property getters" do
     describe "Property access returning values" do
         it "accesses simple property returning a string" do
             -- Create a person with a name property
