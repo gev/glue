@@ -2007,11 +2007,43 @@ class Properties {
       ) ??
       Curves.decelerate;
 
-  // CupertinoApp properties
-  CupertinoThemeData? get cupertinoAppTheme =>
-      extractNativeValue<CupertinoThemeData>(_props['theme']);
+  // Generic scroll properties
+  ScrollController? get scrollController =>
+      extractNativeValue<ScrollController>(_props['scroll-controller']);
+  ScrollNotificationPredicate get scrollNotificationPredicate =>
+      extractNativeValue<ScrollNotificationPredicate>(
+        _props['notification-predicate'],
+      ) ??
+      defaultScrollNotificationPredicate;
+
+  // Generic alert dialog properties
+  Widget? get alertDialogTitle => extractChild(_props['title']);
+  Widget? get alertDialogContent => extractChild(_props['content']);
+
+  // CupertinoScrollbar properties
+  bool get cupertinoScrollbarThumbVisibility =>
+      extractBool(_props['thumb-visibility']) ?? true;
+  double get cupertinoScrollbarThickness =>
+      extractDouble(_props['thickness']) ?? 3.0;
+  double get cupertinoScrollbarThicknessWhileDragging =>
+      extractDouble(_props['thickness-while-dragging']) ?? 8.0;
+  Radius get cupertinoScrollbarRadius =>
+      extractNativeValue<Radius>(_props['radius']) ??
+      const Radius.circular(1.5);
+  Radius get cupertinoScrollbarRadiusWhileDragging =>
+      extractNativeValue<Radius>(_props['radius-while-dragging']) ??
+      const Radius.circular(4.0);
+
+  // CupertinoSlider properties
+  ValueChanged<double>? get cupertinoSliderOnChanged =>
+      extractNativeValue<ValueChanged<double>>(_props['on-changed']);
+  ValueChanged<double>? get cupertinoSliderOnChangeStart =>
+      extractNativeValue<ValueChanged<double>>(_props['on-change-start']);
+  ValueChanged<double>? get cupertinoSliderOnChangeEnd =>
+      extractNativeValue<ValueChanged<double>>(_props['on-change-end']);
 
   // CupertinoPageScaffold properties
+  Widget? get cupertinoPageScaffoldChild => extractChild(_props['child']);
   ObstructingPreferredSizeWidget? get cupertinoPageScaffoldNavigationBar =>
       extractNativeValue<ObstructingPreferredSizeWidget>(
         _props['navigation-bar'],
