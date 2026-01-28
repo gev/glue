@@ -54,6 +54,8 @@ class Properties {
   Locale? get locale => extractNativeValue<Locale>(_props['locale']);
   StrutStyle? get strutStyle =>
       extractNativeValue<StrutStyle>(_props['strut-style']);
+  TextStyle? get textStyle =>
+      extractNativeValue<TextStyle>(_props['text-style']);
 
   // Layout properties
   List<Widget> get children => extractChildren(_props['children']) ?? [];
@@ -229,6 +231,89 @@ class Properties {
   double? get minTileHeight => extractDouble(_props['min-tile-height']);
   ListTileTitleAlignment? get titleAlignment =>
       extractNativeValue<ListTileTitleAlignment>(_props['title-alignment']);
+
+  // SnackBar properties
+  Widget? get snackBarContent => extractChild(_props['content']);
+  SnackBarBehavior? get snackBarBehavior =>
+      extractNativeValue<SnackBarBehavior>(_props['behavior']);
+  SnackBarAction? get snackBarAction =>
+      extractNativeValue<SnackBarAction>(_props['action']);
+  Duration? get snackBarDuration =>
+      extractNativeValue<Duration>(_props['duration']);
+  Animation<double>? get snackBarAnimation =>
+      extractNativeValue<Animation<double>>(_props['animation']);
+  VoidCallback? get onVisible =>
+      extractNativeValue<VoidCallback>(_props['on-visible']);
+  DismissDirection? get dismissDirection =>
+      extractNativeValue<DismissDirection>(_props['dismiss-direction']);
+
+  // TextField properties
+  TextEditingController? get textEditingController =>
+      extractNativeValue<TextEditingController>(_props['controller']);
+  InputDecoration? get inputDecoration =>
+      extractNativeValue<InputDecoration>(_props['decoration']);
+  TextInputType? get keyboardType =>
+      extractNativeValue<TextInputType>(_props['keyboard-type']);
+  TextInputAction? get textInputAction =>
+      extractNativeValue<TextInputAction>(_props['text-input-action']);
+  TextCapitalization get textCapitalization =>
+      extractNativeValue<TextCapitalization>(_props['text-capitalization']) ??
+      TextCapitalization.none;
+  TextAlignVertical? get textAlignVertical =>
+      extractNativeValue<TextAlignVertical>(_props['text-align-vertical']);
+  bool get readOnly => extractBool(_props['read-only']) ?? false;
+  bool get textFieldAutofocus => extractBool(_props['autofocus']) ?? false;
+  String get obscuringCharacter =>
+      extractString(_props['obscuring-character']) ?? '•';
+  bool get obscureText => extractBool(_props['obscure-text']) ?? false;
+  bool get enableSuggestions =>
+      extractBool(_props['enable-suggestions']) ?? true;
+  int? get textFieldMaxLines => extractInt(_props['max-lines']);
+  int? get minLines => extractInt(_props['min-lines']);
+  bool get expands => extractBool(_props['expands']) ?? false;
+  int? get maxLength => extractInt(_props['max-length']);
+  MaxLengthEnforcement? get maxLengthEnforcement =>
+      extractNativeValue<MaxLengthEnforcement>(
+        _props['max-length-enforcement'],
+      );
+  ValueChanged<String>? get onTextChanged =>
+      extractNativeValue<ValueChanged<String>>(_props['on-changed']);
+  VoidCallback? get onEditingComplete =>
+      extractNativeValue<VoidCallback>(_props['on-editing-complete']);
+  ValueChanged<String>? get onSubmitted =>
+      extractNativeValue<ValueChanged<String>>(_props['on-submitted']);
+  List<TextInputFormatter>? get inputFormatters =>
+      extractNativeValue<List<TextInputFormatter>>(_props['input-formatters']);
+  bool? get textFieldEnabled => extractBool(_props['enabled']);
+  double get cursorWidth => extractDouble(_props['cursor-width']) ?? 2.0;
+  double? get cursorHeight => extractDouble(_props['cursor-height']);
+  Radius? get cursorRadius =>
+      extractNativeValue<Radius>(_props['cursor-radius']);
+  Color? get cursorColor => extractColor(_props['cursor-color']);
+  Color? get cursorErrorColor => extractColor(_props['cursor-error-color']);
+  Brightness? get keyboardAppearance =>
+      extractNativeValue<Brightness>(_props['keyboard-appearance']);
+  EdgeInsets get textFieldScrollPadding =>
+      extractNativeValue<EdgeInsets>(_props['scroll-padding']) ??
+      const EdgeInsets.all(20.0);
+  bool? get enableInteractiveSelection =>
+      extractBool(_props['enable-interactive-selection']);
+  bool? get selectAllOnFocus => extractBool(_props['select-all-on-focus']);
+  TextSelectionControls? get selectionControls =>
+      extractNativeValue<TextSelectionControls>(_props['selection-controls']);
+  GestureTapCallback? get onTextFieldTap =>
+      extractNativeValue<GestureTapCallback>(_props['on-tap']);
+  bool get onTapAlwaysCalled =>
+      extractBool(_props['on-tap-always-called']) ?? false;
+  MouseCursor? get textFieldMouseCursor =>
+      extractNativeValue<MouseCursor>(_props['mouse-cursor']);
+  ScrollController? get textFieldScrollController =>
+      extractNativeValue<ScrollController>(_props['scroll-controller']);
+  ScrollPhysics? get scrollPhysics =>
+      extractNativeValue<ScrollPhysics>(_props['scroll-physics']);
+  Iterable<String>? get autofillHints =>
+      extractNativeValue<Iterable<String>>(_props['autofill-hints']);
+  String? get textFieldRestorationId => extractString(_props['restoration-id']);
   DragStartBehavior? get drawerDragStartBehavior =>
       extractDragStartBehavior(_props['drawer-drag-start-behavior']);
   FloatingActionButtonAnimator? get floatingActionButtonAnimatorProper =>
