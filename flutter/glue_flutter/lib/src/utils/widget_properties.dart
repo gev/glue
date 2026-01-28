@@ -805,4 +805,120 @@ class Properties {
       extractChildren(_props['menu-children']);
   MenuAnchorChildBuilder? get menuAnchorBuilder =>
       extractNativeValue<MenuAnchorChildBuilder>(_props['builder']);
+
+  // ExpansionTile properties
+  Widget? get expansionTileLeading => extractChild(_props['leading']);
+  Widget? get expansionTileTitle => extractChild(_props['title']);
+  Widget? get expansionTileSubtitle => extractChild(_props['subtitle']);
+  Widget? get expansionTileTrailing => extractChild(_props['trailing']);
+  List<Widget>? get expansionTileChildren =>
+      extractChildren(_props['children']);
+  bool get expansionTileInitiallyExpanded =>
+      extractBool(_props['initially-expanded']) ?? false;
+  bool get expansionTileMaintainState =>
+      extractBool(_props['maintain-state']) ?? false;
+  EdgeInsetsGeometry get expansionTileTilePadding =>
+      extractEdgeInsets(_props['tile-padding']) ??
+      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0);
+  Alignment get expansionTileExpandedAlignment =>
+      extractNativeValue<Alignment>(_props['expanded-alignment']) ??
+      Alignment.centerLeft;
+  CrossAxisAlignment get expansionTileExpandedCrossAxisAlignment =>
+      extractCrossAxisAlignment(_props['expanded-cross-axis-align']) ??
+      CrossAxisAlignment.center;
+  EdgeInsetsGeometry get expansionTileChildrenPadding =>
+      extractEdgeInsets(_props['children-padding']) ??
+      const EdgeInsets.symmetric(vertical: 8.0);
+  Color? get expansionTileBackgroundColor =>
+      extractColor(_props['background-color']);
+  Color? get expansionTileCollapsedBackgroundColor =>
+      extractColor(_props['collapsed-background-color']);
+  Color? get expansionTileTextColor => extractColor(_props['text-color']);
+  Color? get expansionTileCollapsedTextColor =>
+      extractColor(_props['collapsed-text-color']);
+  Color? get expansionTileIconColor => extractColor(_props['icon-color']);
+  Color? get expansionTileCollapsedIconColor =>
+      extractColor(_props['collapsed-icon-color']);
+  ListTileControlAffinity get expansionTileControlAffinity =>
+      extractNativeValue<ListTileControlAffinity>(_props['control-affinity']) ??
+      ListTileControlAffinity.platform;
+  ExpansionTileController? get expansionTileController =>
+      extractNativeValue<ExpansionTileController>(_props['controller']);
+  ValueChanged<bool>? get expansionTileOnExpansionChanged =>
+      extractNativeValue<ValueChanged<bool>>(_props['on-expansion-changed']);
+
+  // DataTable properties
+  List<DataColumn>? get dataTableColumns =>
+      extractNativeValue<List<DataColumn>>(_props['columns']);
+  List<DataRow>? get dataTableRows =>
+      extractNativeValue<List<DataRow>>(_props['rows']);
+  int? get dataTableSortColumnIndex => extractInt(_props['sort-column-index']);
+  bool get dataTableSortAscending =>
+      extractBool(_props['sort-ascending']) ?? true;
+  ValueSetter<bool?>? get dataTableOnSelectAll =>
+      extractNativeValue<ValueSetter<bool?>>(_props['on-select-all']);
+  WidgetStateProperty<Color?>? get dataTableDataRowColor =>
+      extractNativeValue<WidgetStateProperty<Color?>>(_props['data-row-color']);
+  double get dataTableDataRowHeight =>
+      extractDouble(_props['data-row-height']) ?? 48.0;
+  TextStyle? get dataTableDataTextStyle =>
+      extractNativeValue<TextStyle>(_props['data-text-style']);
+  WidgetStateProperty<Color?>? get dataTableHeadingRowColor =>
+      extractNativeValue<WidgetStateProperty<Color?>>(
+        _props['heading-row-color'],
+      );
+  double get dataTableHeadingRowHeight =>
+      extractDouble(_props['heading-row-height']) ?? 56.0;
+  TextStyle? get dataTableHeadingTextStyle =>
+      extractNativeValue<TextStyle>(_props['heading-text-style']);
+  double get dataTableHorizontalMargin =>
+      extractDouble(_props['horizontal-margin']) ?? 24.0;
+  double get dataTableColumnSpacing =>
+      extractDouble(_props['column-spacing']) ?? 56.0;
+  bool get dataTableShowCheckboxColumn =>
+      extractBool(_props['show-checkbox-column']) ?? true;
+  bool get dataTableShowBottomBorder =>
+      extractBool(_props['show-bottom-border']) ?? true;
+  double get dataTableDividerThickness =>
+      extractDouble(_props['divider-thickness']) ?? 1.0;
+  double get dataTableCheckboxHorizontalMargin =>
+      extractDouble(_props['checkbox-horizontal-margin']) ?? 24.0;
+  TableBorder? get dataTableBorder =>
+      extractNativeValue<TableBorder>(_props['border']);
+  Clip get dataTableClipBehavior =>
+      extractClip(_props['clip-behavior']) ?? Clip.none;
+
+  // Tooltip properties
+  String get tooltipMessage => extractString(_props['message']) ?? '';
+  double get tooltipHeight => extractDouble(_props['height']) ?? 32.0;
+  EdgeInsetsGeometry get tooltipPadding =>
+      extractEdgeInsets(_props['padding']) ??
+      const EdgeInsets.symmetric(horizontal: 16.0);
+  EdgeInsetsGeometry? get tooltipMargin => extractEdgeInsets(_props['margin']);
+  double get tooltipVerticalOffset =>
+      extractDouble(_props['vertical-offset']) ?? 24.0;
+  bool get tooltipPreferBelow => extractBool(_props['prefer-below']) ?? true;
+  bool get tooltipExcludeFromSemantics =>
+      extractBool(_props['exclude-from-semantics']) ?? false;
+  Decoration? get tooltipDecoration =>
+      extractNativeValue<Decoration>(_props['decoration']);
+  TextStyle? get tooltipTextStyle =>
+      extractNativeValue<TextStyle>(_props['text-style']);
+  TextAlign get tooltipTextAlign =>
+      extractTextAlign(_props['text-align']) ?? TextAlign.start;
+  Duration get tooltipWaitDuration =>
+      extractNativeValue<Duration>(_props['wait-duration']) ??
+      const Duration(milliseconds: 0);
+  Duration get tooltipShowDuration =>
+      extractNativeValue<Duration>(_props['show-duration']) ??
+      const Duration(milliseconds: 1500);
+  TooltipTriggerMode get tooltipTriggerMode =>
+      extractNativeValue<TooltipTriggerMode>(_props['trigger-mode']) ??
+      TooltipTriggerMode.longPress;
+  bool get tooltipEnableFeedback =>
+      extractBool(_props['enable-feedback']) ?? true;
+  TooltipTriggeredCallback? get tooltipOnTriggered =>
+      extractNativeValue<TooltipTriggeredCallback>(_props['on-triggered']);
+  InlineSpan? get tooltipRichMessage =>
+      extractNativeValue<InlineSpan>(_props['rich-message']);
 }
