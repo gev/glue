@@ -41,6 +41,9 @@ import 'package:glue_flutter/src/lib/ui/widgets/material/menu_anchor.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/material/expansion_tile.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/material/data_table.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/material/tooltip.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/popup_menu_button.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/dropdown_button.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/refresh_indicator.dart';
 import 'package:glue_flutter/src/lib/ui/styles/cross_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/styles/main_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/styles/main_axis_size.dart';
@@ -121,6 +124,9 @@ final ModuleInfo uiModule = nativeModule('ffi.ui', [
   ('expansion-tile', expansionTile),
   ('data-table', dataTable),
   ('tooltip', tooltip),
+  ('popup-menu-button', popupMenuButton),
+  ('dropdown-button', dropdownButton),
+  ('refresh-indicator', refreshIndicator),
 
   // Color creation functions
   ('rgb', rgb),

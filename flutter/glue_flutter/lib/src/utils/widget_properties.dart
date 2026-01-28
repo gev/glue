@@ -921,4 +921,98 @@ class Properties {
       extractNativeValue<TooltipTriggeredCallback>(_props['on-triggered']);
   InlineSpan? get tooltipRichMessage =>
       extractNativeValue<InlineSpan>(_props['rich-message']);
+
+  // PopupMenuButton properties
+  PopupMenuItemBuilder<Object>? get popupMenuItemBuilder =>
+      extractNativeValue<PopupMenuItemBuilder<Object>>(_props['item-builder']);
+  Object? get popupMenuInitialValue =>
+      extractNativeValue<Object>(_props['initial-value']);
+  PopupMenuItemSelected<Object>? get popupMenuOnSelected =>
+      extractNativeValue<PopupMenuItemSelected<Object>>(_props['on-selected']);
+  PopupMenuCanceled? get popupMenuOnCanceled =>
+      extractNativeValue<PopupMenuCanceled>(_props['on-canceled']);
+  String? get popupMenuTooltip => extractString(_props['tooltip']);
+  double get popupMenuElevation => extractDouble(_props['elevation']) ?? 8.0;
+  EdgeInsetsGeometry get popupMenuPadding =>
+      extractEdgeInsets(_props['padding']) ?? const EdgeInsets.all(8.0);
+  Widget? get popupMenuChild => extractChild(_props['child']);
+  double? get popupMenuSplashRadius => extractDouble(_props['splash-radius']);
+  Widget? get popupMenuIcon => extractChild(_props['icon']);
+  double get popupMenuIconSize => extractDouble(_props['icon-size']) ?? 24.0;
+  Offset get popupMenuOffset =>
+      extractNativeValue<Offset>(_props['offset']) ?? Offset.zero;
+  bool get popupMenuEnabled => extractBool(_props['enabled']) ?? true;
+  ShapeBorder? get popupMenuShape =>
+      extractNativeValue<ShapeBorder>(_props['shape']);
+  Color? get popupMenuColor => extractColor(_props['color']);
+  bool get popupMenuEnableFeedback =>
+      extractBool(_props['enable-feedback']) ?? true;
+  BoxConstraints? get popupMenuConstraints =>
+      extractNativeValue<BoxConstraints>(_props['constraints']);
+  PopupMenuPosition get popupMenuPosition =>
+      extractNativeValue<PopupMenuPosition>(_props['position']) ??
+      PopupMenuPosition.over;
+
+  // DropdownButton properties
+  List<DropdownMenuItem<Object>>? get dropdownItems =>
+      extractNativeValue<List<DropdownMenuItem<Object>>>(_props['items']);
+  DropdownButtonBuilder? get dropdownSelectedItemBuilder =>
+      extractNativeValue<DropdownButtonBuilder>(
+        _props['selected-item-builder'],
+      );
+  Object? get dropdownValue => extractNativeValue<Object>(_props['value']);
+  Widget? get dropdownHint => extractChild(_props['hint']);
+  Widget? get dropdownDisabledHint => extractChild(_props['disabled-hint']);
+  ValueChanged<Object?>? get dropdownOnChanged =>
+      extractNativeValue<ValueChanged<Object?>>(_props['on-changed']);
+  GestureTapCallback? get dropdownOnTap =>
+      extractNativeValue<GestureTapCallback>(_props['on-tap']);
+  int get dropdownElevation => extractInt(_props['elevation']) ?? 8;
+  TextStyle? get dropdownStyle =>
+      extractNativeValue<TextStyle>(_props['style']);
+  Widget? get dropdownUnderline => extractChild(_props['underline']);
+  Widget? get dropdownIcon => extractChild(_props['icon']);
+  Color? get dropdownIconDisabledColor =>
+      extractColor(_props['icon-disabled-color']);
+  Color? get dropdownIconEnabledColor =>
+      extractColor(_props['icon-enabled-color']);
+  double get dropdownIconSize => extractDouble(_props['icon-size']) ?? 24.0;
+  bool get dropdownIsDense => extractBool(_props['is-dense']) ?? false;
+  bool get dropdownIsExpanded => extractBool(_props['is-expanded']) ?? false;
+  double? get dropdownItemHeight => extractDouble(_props['item-height']);
+  Color? get dropdownFocusColor => extractColor(_props['focus-color']);
+  FocusNode? get dropdownFocusNode =>
+      extractNativeValue<FocusNode>(_props['focus-node']);
+  bool get dropdownAutofocus => extractBool(_props['autofocus']) ?? false;
+  Color? get dropdownDropdownColor => extractColor(_props['dropdown-color']);
+  double? get dropdownMenuMaxHeight => extractDouble(_props['menu-max-height']);
+  bool get dropdownEnableFeedback =>
+      extractBool(_props['enable-feedback']) ?? true;
+  AlignmentGeometry get dropdownAlignment =>
+      extractNativeValue<AlignmentGeometry>(_props['alignment']) ??
+      Alignment.centerLeft;
+  BorderRadius? get dropdownBorderRadius =>
+      extractNativeValue<BorderRadius>(_props['border-radius']);
+  EdgeInsetsGeometry? get dropdownPadding =>
+      extractEdgeInsets(_props['padding']);
+
+  // RefreshIndicator properties
+  double get refreshDisplacement =>
+      extractDouble(_props['displacement']) ?? 40.0;
+  double get refreshEdgeOffset => extractDouble(_props['edge-offset']) ?? 0.0;
+  RefreshCallback? get refreshOnRefresh =>
+      extractNativeValue<RefreshCallback>(_props['on-refresh']);
+  Color? get refreshColor => extractColor(_props['color']);
+  Color? get refreshBackgroundColor => extractColor(_props['background-color']);
+  ScrollNotificationPredicate get refreshNotificationPredicate =>
+      extractNativeValue<ScrollNotificationPredicate>(
+        _props['notification-predicate'],
+      ) ??
+      defaultScrollNotificationPredicate;
+  String? get refreshSemanticsLabel => extractString(_props['semantics-label']);
+  String? get refreshSemanticsValue => extractString(_props['semantics-value']);
+  double get refreshStrokeWidth => extractDouble(_props['stroke-width']) ?? 2.0;
+  RefreshIndicatorTriggerMode get refreshTriggerMode =>
+      extractNativeValue<RefreshIndicatorTriggerMode>(_props['trigger-mode']) ??
+      RefreshIndicatorTriggerMode.onEdge;
 }
