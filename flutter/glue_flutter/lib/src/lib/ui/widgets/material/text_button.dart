@@ -20,18 +20,11 @@ Eval<Ir> textButtonImpl(Ir props) => switch (props) {
 Eval<Ir> _createTextButton(Properties properties) {
   final label = properties.label ?? 'Button'; // Extract label from properties
 
-  if (properties.disabled) {
-    final buttonWidget = TextButton(onPressed: null, child: Text(label));
-    return Eval.pure(IrNativeValue(Value(buttonWidget)));
-  }
-
   // Get runtime and create callback
   return getRuntime().map((runtime) {
-    final callback = properties.onPress(runtime);
-    final longPressCallback = properties.onLongPress(runtime);
     final buttonWidget = TextButton(
-      onPressed: callback,
-      onLongPress: longPressCallback,
+      onPressed: properties.onPress(runtime),
+      onLongPress: properties.onLongPress(runtime),
       onHover: properties.onHover,
       onFocusChange: properties.onFocusChange,
       style: properties.buttonStyle,

@@ -40,7 +40,6 @@ class Properties {
   bool get autofocus => extractBool(_props['autofocus']) ?? false;
   Clip get buttonClipBehavior =>
       extractClip(_props['clip-behavior']) ?? Clip.none;
-  bool get disabled => extractBool(_props['disabled']) ?? false;
 
   // Text properties
   String? get content => extractString(_props['content']);

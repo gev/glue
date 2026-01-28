@@ -20,11 +20,6 @@ Eval<Ir> filledButtonImpl(Ir props) => switch (props) {
 Eval<Ir> _createFilledButton(Properties properties) {
   final label = properties.label ?? 'Button'; // Extract label from properties
 
-  if (properties.disabled) {
-    final buttonWidget = FilledButton(onPressed: null, child: Text(label));
-    return Eval.pure(IrNativeValue(Value(buttonWidget)));
-  }
-
   // Get runtime and create widget
   return getRuntime().map((runtime) {
     final buttonWidget = FilledButton(

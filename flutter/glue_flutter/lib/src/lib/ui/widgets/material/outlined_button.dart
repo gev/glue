@@ -20,11 +20,6 @@ Eval<Ir> outlinedButtonImpl(Ir props) => switch (props) {
 Eval<Ir> _createOutlinedButton(Properties properties) {
   final label = properties.label ?? 'Button'; // Extract label from properties
 
-  if (properties.disabled) {
-    final buttonWidget = OutlinedButton(onPressed: null, child: Text(label));
-    return Eval.pure(IrNativeValue(Value(buttonWidget)));
-  }
-
   // Get runtime and create widget
   return getRuntime().map((runtime) {
     final buttonWidget = OutlinedButton(
