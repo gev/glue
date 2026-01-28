@@ -66,6 +66,13 @@ import 'package:glue_flutter/src/lib/ui/widgets/custom_scroll_view.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/sliver_list.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/sliver_grid.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/navigation_rail.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/cupertino/cupertino_button.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/cupertino/cupertino_activity_indicator.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/cupertino/cupertino_navigation_bar.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/cupertino/cupertino_switch.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/cupertino/cupertino_picker.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/cupertino/cupertino_date_picker.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/cupertino/cupertino_text_field.dart';
 import 'package:glue_flutter/src/lib/ui/styles/cross_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/styles/main_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/styles/main_axis_size.dart';
@@ -171,6 +178,15 @@ final ModuleInfo uiModule = nativeModule('ffi.ui', [
   ('sliver-list', sliverList),
   ('sliver-grid', sliverGrid),
   ('navigation-rail', navigationRail),
+
+  // Cupertino widgets
+  ('cupertino-button', cupertinoButton),
+  ('cupertino-activity-indicator', cupertinoActivityIndicator),
+  ('cupertino-navigation-bar', cupertinoNavigationBar),
+  ('cupertino-switch', cupertinoSwitch),
+  ('cupertino-picker', cupertinoPicker),
+  ('cupertino-date-picker', cupertinoDatePicker),
+  ('cupertino-text-field', cupertinoTextField),
 
   // Color creation functions
   ('rgb', rgb),

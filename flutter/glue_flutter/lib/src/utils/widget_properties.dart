@@ -1,3 +1,7 @@
+/// Default hero tag for navigation bars
+const _defaultHeroTag = '<default-hero-tag>';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -1646,4 +1650,349 @@ class Properties {
       extractBool(_props['trailing-at-bottom']) ?? false;
   bool get navigationRailScrollable =>
       extractBool(_props['scrollable']) ?? false;
+
+  // CupertinoButton properties
+  CupertinoButtonSize get cupertinoButtonSizeStyle =>
+      extractNativeValue<CupertinoButtonSize>(_props['size-style']) ??
+      CupertinoButtonSize.large;
+  EdgeInsetsGeometry get cupertinoButtonPadding =>
+      extractEdgeInsets(_props['padding']) ??
+      const EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0);
+  Color get cupertinoButtonDisabledColor =>
+      extractColor(_props['disabled-color']) ??
+      CupertinoColors.quaternarySystemFill;
+  double get cupertinoButtonPressedOpacity =>
+      extractDouble(_props['pressed-opacity']) ?? 0.4;
+  BorderRadius get cupertinoButtonBorderRadius =>
+      extractNativeValue<BorderRadius>(_props['border-radius']) ??
+      const BorderRadius.all(Radius.circular(8.0));
+
+  // CupertinoActivityIndicator properties
+  bool get cupertinoActivityIndicatorAnimating =>
+      extractBool(_props['animating']) ?? true;
+  double get cupertinoActivityIndicatorRadius =>
+      extractDouble(_props['radius']) ?? 10.0;
+
+  // CupertinoNavigationBar properties
+  Widget? get cupertinoNavigationBarLeading => extractChild(_props['leading']);
+  bool get cupertinoNavigationBarAutomaticallyImplyLeading =>
+      extractBool(_props['automatically-imply-leading']) ?? true;
+  bool get cupertinoNavigationBarAutomaticallyImplyMiddle =>
+      extractBool(_props['automatically-imply-middle']) ?? true;
+  String? get cupertinoNavigationBarPreviousPageTitle =>
+      extractString(_props['previous-page-title']);
+  Widget get cupertinoNavigationBarMiddle => extractChild(_props['middle'])!;
+  Widget? get cupertinoNavigationBarTrailing =>
+      extractChild(_props['trailing']);
+  Border get cupertinoNavigationBarBorder =>
+      extractNativeValue<Border>(_props['border']) ??
+      const Border(bottom: BorderSide(color: Color(0x4D000000), width: 0.0));
+  Color? get cupertinoNavigationBarBackgroundColor =>
+      extractColor(_props['background-color']);
+  Brightness? get cupertinoNavigationBarBrightness =>
+      extractNativeValue<Brightness>(_props['brightness']);
+  EdgeInsetsDirectional get cupertinoNavigationBarPadding =>
+      extractNativeValue<EdgeInsetsDirectional>(_props['padding']) ??
+      EdgeInsetsDirectional.zero;
+  bool get cupertinoNavigationBarTransitionBetweenRoutes =>
+      extractBool(_props['transition-between-routes']) ?? true;
+  Object get cupertinoNavigationBarHeroTag =>
+      extractNativeValue<Object>(_props['hero-tag']) ?? _defaultHeroTag;
+
+  // CupertinoPageScaffold properties
+  Color? get cupertinoPageScaffoldBackgroundColor =>
+      extractColor(_props['background-color']);
+  bool get cupertinoPageScaffoldResizeToAvoidBottomInset =>
+      extractBool(_props['resize-to-avoid-bottom-inset']) ?? true;
+
+  // CupertinoTextField properties
+  TextEditingController? get cupertinoTextFieldController =>
+      extractNativeValue<TextEditingController>(_props['controller']);
+  String? get cupertinoTextFieldPlaceholder =>
+      extractString(_props['placeholder']);
+  TextStyle get cupertinoTextFieldPlaceholderStyle =>
+      extractNativeValue<TextStyle>(_props['placeholder-style']) ??
+      const TextStyle(
+        fontWeight: FontWeight.w400,
+        color: CupertinoColors.placeholderText,
+      );
+  Widget? get cupertinoTextFieldPrefix => extractChild(_props['prefix']);
+  OverlayVisibilityMode get cupertinoTextFieldPrefixMode =>
+      extractNativeValue<OverlayVisibilityMode>(_props['prefix-mode']) ??
+      OverlayVisibilityMode.always;
+  Widget? get cupertinoTextFieldSuffix => extractChild(_props['suffix']);
+  OverlayVisibilityMode get cupertinoTextFieldSuffixMode =>
+      extractNativeValue<OverlayVisibilityMode>(_props['suffix-mode']) ??
+      OverlayVisibilityMode.always;
+  OverlayVisibilityMode get cupertinoTextFieldClearButtonMode =>
+      extractNativeValue<OverlayVisibilityMode>(_props['clear-button-mode']) ??
+      OverlayVisibilityMode.never;
+  Color get cupertinoTextFieldDecorationBorderColor =>
+      extractColor(_props['decoration-border-color']) ??
+      CupertinoColors.inactiveGray;
+  BoxDecoration? get cupertinoTextFieldDecoration =>
+      extractNativeValue<BoxDecoration>(_props['decoration']) ??
+      const BoxDecoration(
+        border: Border.fromBorderSide(
+          BorderSide(width: 0.0, color: CupertinoColors.inactiveGray),
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+      );
+  EdgeInsetsGeometry get cupertinoTextFieldPadding =>
+      extractEdgeInsets(_props['padding']) ?? const EdgeInsets.all(6.0);
+
+  // CupertinoSwitch properties
+  bool get cupertinoSwitchValue => extractBool(_props['value']) ?? false;
+
+  // CupertinoDatePicker properties
+  CupertinoDatePickerMode get cupertinoDatePickerMode =>
+      extractNativeValue<CupertinoDatePickerMode>(_props['mode']) ??
+      CupertinoDatePickerMode.dateAndTime;
+  ValueChanged<DateTime> get cupertinoDatePickerOnDateTimeChanged =>
+      extractNativeValue<ValueChanged<DateTime>>(
+        _props['on-date-time-changed'],
+      )!;
+  DateTime? get cupertinoDatePickerInitialDateTime =>
+      extractNativeValue<DateTime>(_props['initial-date-time']);
+  DateTime? get cupertinoDatePickerMinimumDate =>
+      extractNativeValue<DateTime>(_props['minimum-date']);
+  DateTime? get cupertinoDatePickerMaximumDate =>
+      extractNativeValue<DateTime>(_props['maximum-date']);
+  int get cupertinoDatePickerMinimumYear =>
+      extractInt(_props['minimum-year']) ?? 1;
+  int? get cupertinoDatePickerMaximumYear => extractInt(_props['maximum-year']);
+  int get cupertinoDatePickerMinuteInterval =>
+      extractInt(_props['minute-interval']) ?? 1;
+  bool get cupertinoDatePickerUse24hFormat =>
+      extractBool(_props['use-24h-format']) ?? false;
+  DatePickerDateOrder? get cupertinoDatePickerDateOrder =>
+      extractNativeValue<DatePickerDateOrder>(_props['date-order']);
+  Color? get cupertinoDatePickerBackgroundColor =>
+      extractColor(_props['background-color']);
+  bool get cupertinoDatePickerShowDayOfWeek =>
+      extractBool(_props['show-day-of-week']) ?? false;
+  double get cupertinoDatePickerItemExtent =>
+      extractDouble(_props['item-extent']) ?? 32.0;
+
+  // CupertinoPicker properties
+  double get cupertinoPickerDiameterRatio =>
+      extractDouble(_props['diameter-ratio']) ?? 1.07;
+  Color? get cupertinoPickerBackgroundColor =>
+      extractColor(_props['background-color']);
+  double get cupertinoPickerOffAxisFraction =>
+      extractDouble(_props['off-axis-fraction']) ?? 0.0;
+  bool get cupertinoPickerUseMagnifier =>
+      extractBool(_props['use-magnifier']) ?? false;
+  double get cupertinoPickerMagnification =>
+      extractDouble(_props['magnification']) ?? 1.0;
+  FixedExtentScrollController? get cupertinoPickerScrollController =>
+      extractNativeValue<FixedExtentScrollController>(
+        _props['scroll-controller'],
+      );
+  double get cupertinoPickerSqueeze => extractDouble(_props['squeeze']) ?? 1.45;
+  double get cupertinoPickerItemExtent =>
+      extractDouble(_props['item-extent']) ?? 32.0;
+  ValueChanged<int>? get cupertinoPickerOnSelectedItemChanged =>
+      extractNativeValue<ValueChanged<int>>(_props['on-selected-item-changed']);
+  CupertinoPickerDefaultSelectionOverlay? get cupertinoPickerSelectionOverlay =>
+      extractNativeValue<CupertinoPickerDefaultSelectionOverlay>(
+        _props['selection-overlay'],
+      );
+
+  // CupertinoScrollable properties
+  ScrollController? get cupertinoScrollableController =>
+      extractNativeValue<ScrollController>(_props['controller']);
+  double get cupertinoScrollableThickness =>
+      extractDouble(_props['thickness']) ?? 3.0;
+  double get cupertinoScrollableThicknessWhileDragging =>
+      extractDouble(_props['thickness-while-dragging']) ?? 8.0;
+  Radius get cupertinoScrollableRadius =>
+      extractNativeValue<Radius>(_props['radius']) ??
+      const Radius.circular(1.5);
+  Radius get cupertinoScrollableRadiusWhileDragging =>
+      extractNativeValue<Radius>(_props['radius-while-dragging']) ??
+      const Radius.circular(4.0);
+  ScrollNotificationPredicate? get cupertinoScrollableNotificationPredicate =>
+      extractNativeValue<ScrollNotificationPredicate>(
+        _props['notification-predicate'],
+      );
+
+  // CupertinoSearchTextField properties
+  SearchController? get cupertinoSearchTextFieldController =>
+      extractNativeValue<SearchController>(_props['controller']);
+  ValueChanged<String>? get cupertinoSearchTextFieldOnChanged =>
+      extractNativeValue<ValueChanged<String>>(_props['on-changed']);
+  ValueChanged<String>? get cupertinoSearchTextFieldOnSubmitted =>
+      extractNativeValue<ValueChanged<String>>(_props['on-submitted']);
+  TextStyle? get cupertinoSearchTextFieldStyle =>
+      extractNativeValue<TextStyle>(_props['style']);
+  String? get cupertinoSearchTextFieldHintText =>
+      extractString(_props['hint-text']);
+  Widget? get cupertinoSearchTextFieldPrefixIcon =>
+      extractChild(_props['prefix-icon']);
+  Widget? get cupertinoSearchTextFieldSuffixIcon =>
+      extractChild(_props['suffix-icon']);
+  OverlayVisibilityMode get cupertinoSearchTextFieldPrefixMode =>
+      extractNativeValue<OverlayVisibilityMode>(_props['prefix-mode']) ??
+      OverlayVisibilityMode.always;
+  OverlayVisibilityMode get cupertinoSearchTextFieldSuffixMode =>
+      extractNativeValue<OverlayVisibilityMode>(_props['suffix-mode']) ??
+      OverlayVisibilityMode.always;
+  VoidCallback? get cupertinoSearchTextFieldOnSuffixTap =>
+      extractNativeValue<VoidCallback>(_props['on-suffix-tap']);
+  BoxDecoration? get cupertinoSearchTextFieldDecoration =>
+      extractNativeValue<BoxDecoration>(_props['decoration']);
+  Color? get cupertinoSearchTextFieldBackgroundColor =>
+      extractColor(_props['background-color']);
+  BorderRadius? get cupertinoSearchTextFieldBorderRadius =>
+      extractNativeValue<BorderRadius>(_props['border-radius']);
+  EdgeInsetsGeometry get cupertinoSearchTextFieldPadding =>
+      extractEdgeInsets(_props['padding']) ??
+      const EdgeInsetsDirectional.fromSTEB(5.5, 8, 5.5, 8);
+  Color? get cupertinoSearchTextFieldItemColor =>
+      extractColor(_props['item-color']);
+  double? get cupertinoSearchTextFieldItemSize =>
+      extractDouble(_props['item-size']);
+
+  // CupertinoSegmentedControl properties
+  Map<dynamic, Widget> get cupertinoSegmentedControlChildren =>
+      extractNativeValue<Map<dynamic, Widget>>(_props['children']) ?? {};
+  ValueChanged<dynamic>? get cupertinoSegmentedControlOnValueChanged =>
+      extractNativeValue<ValueChanged<dynamic>>(_props['on-value-changed']);
+  dynamic get cupertinoSegmentedControlGroupValue =>
+      extractNativeValue<dynamic>(_props['group-value']);
+  Color get cupertinoSegmentedControlUnselectedColor =>
+      extractColor(_props['unselected-color']) ??
+      CupertinoColors.tertiarySystemFill;
+  Color get cupertinoSegmentedControlSelectedColor =>
+      extractColor(_props['selected-color']) ?? CupertinoColors.systemBlue;
+  Color get cupertinoSegmentedControlBorderColor =>
+      extractColor(_props['border-color']) ?? CupertinoColors.systemGrey4;
+  Color? get cupertinoSegmentedControlPressedColor =>
+      extractColor(_props['pressed-color']);
+  EdgeInsetsGeometry get cupertinoSegmentedControlPadding =>
+      extractEdgeInsets(_props['padding']) ??
+      const EdgeInsets.symmetric(vertical: 2, horizontal: 3);
+
+  // CupertinoSlider properties
+  double get cupertinoSliderValue => extractDouble(_props['value']) ?? 0.0;
+  double get cupertinoSliderMin => extractDouble(_props['min']) ?? 0.0;
+  double get cupertinoSliderMax => extractDouble(_props['max']) ?? 1.0;
+  int? get cupertinoSliderDivisions => extractInt(_props['divisions']);
+  Color? get cupertinoSliderActiveColor => extractColor(_props['active-color']);
+  Color get cupertinoSliderThumbColor =>
+      extractColor(_props['thumb-color']) ?? CupertinoColors.white;
+  // CupertinoSlidingSegmentedControl properties
+  Map<dynamic, Widget> get cupertinoSlidingSegmentedControlChildren =>
+      extractNativeValue<Map<dynamic, Widget>>(_props['children']) ?? {};
+  ValueChanged<dynamic>? get cupertinoSlidingSegmentedControlOnValueChanged =>
+      extractNativeValue<ValueChanged<dynamic>>(_props['on-value-changed']);
+  dynamic get cupertinoSlidingSegmentedControlGroupValue =>
+      extractNativeValue<dynamic>(_props['group-value']);
+  Color get cupertinoSlidingSegmentedControlThumbColor =>
+      extractColor(_props['thumb-color']) ?? const Color(0xFFFFFFFF);
+  Color? get cupertinoSlidingSegmentedControlBackgroundColor =>
+      extractColor(_props['background-color']);
+  EdgeInsetsGeometry get cupertinoSlidingSegmentedControlPadding =>
+      extractEdgeInsets(_props['padding']) ??
+      const EdgeInsets.symmetric(vertical: 2, horizontal: 3);
+
+  // CupertinoTimerPicker properties
+  CupertinoTimerPickerMode get cupertinoTimerPickerMode =>
+      extractNativeValue<CupertinoTimerPickerMode>(_props['mode']) ??
+      CupertinoTimerPickerMode.hms;
+  Duration get cupertinoTimerPickerInitialTimerDuration =>
+      extractNativeValue<Duration>(_props['initial-timer-duration']) ??
+      Duration.zero;
+  int get cupertinoTimerPickerMinuteInterval =>
+      extractInt(_props['minute-interval']) ?? 1;
+  int get cupertinoTimerPickerSecondInterval =>
+      extractInt(_props['second-interval']) ?? 1;
+  AlignmentGeometry get cupertinoTimerPickerAlignment =>
+      extractNativeValue<AlignmentGeometry>(_props['alignment']) ??
+      Alignment.center;
+  Color? get cupertinoTimerPickerBackgroundColor =>
+      extractColor(_props['background-color']);
+  double get cupertinoTimerPickerItemExtent =>
+      extractDouble(_props['item-extent']) ?? 32.0;
+  ValueChanged<Duration> get cupertinoTimerPickerOnTimerDurationChanged =>
+      extractNativeValue<ValueChanged<Duration>>(
+        _props['on-timer-duration-changed'],
+      )!;
+
+  // CupertinoTabBar properties
+  List<BottomNavigationBarItem> get cupertinoTabBarItems =>
+      extractNativeValue<List<BottomNavigationBarItem>>(_props['items']) ?? [];
+  ValueChanged<int>? get cupertinoTabBarOnTap =>
+      extractNativeValue<ValueChanged<int>>(_props['on-tap']);
+  int get cupertinoTabBarCurrentIndex =>
+      extractInt(_props['current-index']) ?? 0;
+  Color? get cupertinoTabBarBackgroundColor =>
+      extractColor(_props['background-color']);
+  Color get cupertinoTabBarActiveColor =>
+      extractColor(_props['active-color']) ?? CupertinoColors.activeBlue;
+  Color get cupertinoTabBarInactiveColor =>
+      extractColor(_props['inactive-color']) ?? CupertinoColors.inactiveGray;
+  double get cupertinoTabBarIconSize =>
+      extractDouble(_props['icon-size']) ?? 30.0;
+  Border get cupertinoTabBarBorder =>
+      extractNativeValue<Border>(_props['border']) ??
+      const Border(top: BorderSide(color: Color(0x4D000000), width: 0.0));
+
+  // CupertinoTabScaffold properties
+  CupertinoTabBar get cupertinoTabScaffoldTabBar =>
+      extractNativeValue<CupertinoTabBar>(_props['tab-bar'])!;
+  IndexedWidgetBuilder get cupertinoTabScaffoldTabBuilder =>
+      extractNativeValue<IndexedWidgetBuilder>(_props['tab-builder'])!;
+  CupertinoTabController? get cupertinoTabScaffoldController =>
+      extractNativeValue<CupertinoTabController>(_props['controller']);
+  Color? get cupertinoTabScaffoldBackgroundColor =>
+      extractColor(_props['background-color']);
+  bool get cupertinoTabScaffoldResizeToAvoidBottomInset =>
+      extractBool(_props['resize-to-avoid-bottom-inset']) ?? true;
+  String? get cupertinoTabScaffoldRestorationId =>
+      extractString(_props['restoration-id']);
+
+  // CupertinoContextMenu properties
+  List<Widget> get cupertinoContextMenuActions =>
+      extractChildren(_props['actions']) ?? [];
+  Widget? get cupertinoContextMenuPreviewBuilder =>
+      extractChild(_props['preview-builder']);
+
+  // CupertinoAlertDialog properties
+  List<Widget> get cupertinoAlertDialogActions =>
+      extractChildren(_props['actions']) ?? [];
+  ScrollController? get cupertinoAlertDialogScrollController =>
+      extractNativeValue<ScrollController>(_props['scroll-controller']);
+  ScrollController? get cupertinoAlertDialogActionScrollController =>
+      extractNativeValue<ScrollController>(_props['action-scroll-controller']);
+  Duration get cupertinoAlertDialogInsetAnimationDuration =>
+      extractNativeValue<Duration>(_props['inset-animation-duration']) ??
+      const Duration(milliseconds: 100);
+  Curve get cupertinoAlertDialogInsetAnimationCurve =>
+      extractNativeValue<Curve>(_props['inset-animation-curve']) ??
+      Curves.decelerate;
+
+  // CupertinoApp properties
+  CupertinoThemeData? get cupertinoAppTheme =>
+      extractNativeValue<CupertinoThemeData>(_props['theme']);
+
+  // CupertinoCheckbox properties
+  bool? get cupertinoCheckboxValue => extractBool(_props['value']);
+  bool get cupertinoCheckboxTristate =>
+      extractBool(_props['tristate']) ?? false;
+  ValueChanged<bool?>? get cupertinoCheckboxOnChanged =>
+      extractNativeValue<ValueChanged<bool?>>(_props['on-changed']);
+  Color? get cupertinoCheckboxActiveColor =>
+      extractColor(_props['active-color']);
+  Color? get cupertinoCheckboxInactiveColor =>
+      extractColor(_props['inactive-color']);
+  Color? get cupertinoCheckboxCheckColor => extractColor(_props['check-color']);
+  Color? get cupertinoCheckboxFocusColor => extractColor(_props['focus-color']);
+
+  // CupertinoActionSheet properties
+  ScrollController? get cupertinoActionSheetMessageScrollController =>
+      extractNativeValue<ScrollController>(_props['message-scroll-controller']);
+  ScrollController? get cupertinoActionSheetActionScrollController =>
+      extractNativeValue<ScrollController>(_props['action-scroll-controller']);
 }
