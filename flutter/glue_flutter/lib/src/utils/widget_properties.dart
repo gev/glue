@@ -461,6 +461,51 @@ class Properties {
       extractNativeValue<EdgeInsets>(_props['inset-padding']);
   bool get alertDialogScrollable => extractBool(_props['scrollable']) ?? false;
 
+  // Chip properties
+  Widget? get chipAvatar => extractChild(_props['avatar']);
+  TextStyle? get chipLabelStyle =>
+      extractNativeValue<TextStyle>(_props['label-style']);
+  EdgeInsetsGeometry? get chipLabelPadding =>
+      extractEdgeInsets(_props['label-padding']);
+  Widget? get chipDeleteIcon => extractChild(_props['delete-icon']);
+  VoidCallback? get chipOnDeleted =>
+      extractNativeValue<VoidCallback>(_props['on-deleted']);
+  Color? get chipDeleteIconColor => extractColor(_props['delete-icon-color']);
+  String? get chipDeleteButtonTooltipMessage =>
+      extractString(_props['delete-button-tooltip-message']);
+  BorderSide? get chipSide => extractNativeValue<BorderSide>(_props['side']);
+  OutlinedBorder? get chipShape =>
+      extractNativeValue<OutlinedBorder>(_props['shape']);
+  WidgetStateProperty<Color?>? get chipColor =>
+      extractNativeValue<WidgetStateProperty<Color?>>(_props['color']);
+  EdgeInsetsGeometry? get chipPadding => extractEdgeInsets(_props['padding']);
+  BoxConstraints? get chipAvatarBoxConstraints =>
+      extractNativeValue<BoxConstraints>(_props['avatar-box-constraints']);
+  BoxConstraints? get chipDeleteIconBoxConstraints =>
+      extractNativeValue<BoxConstraints>(_props['delete-icon-box-constraints']);
+
+  // SegmentedButton properties
+  Set<dynamic>? get segmentedSelected =>
+      extractNativeValue<Set<dynamic>>(_props['selected']);
+  List<Widget>? get segmentedSegments => extractChildren(_props['segments']);
+  ValueChanged<Set<dynamic>>? get onSegmentedSelectionChanged =>
+      extractNativeValue<ValueChanged<Set<dynamic>>>(
+        _props['on-selection-changed'],
+      );
+  Set<dynamic>? get multiSelectionEnabledFor =>
+      extractNativeValue<Set<dynamic>>(_props['multi-selection-enabled-for']);
+  bool? get showSelectedIcon => extractBool(_props['show-selected-icon']);
+  Color? get segmentedBackgroundColor =>
+      extractColor(_props['background-color']);
+  Color? get segmentedUnselectedColor =>
+      extractColor(_props['unselected-color']);
+  Color? get segmentedSelectedColor => extractColor(_props['selected-color']);
+  Color? get segmentedDisabledColor => extractColor(_props['disabled-color']);
+  Color? get segmentedShadowColor => extractColor(_props['shadow-color']);
+  Color? get segmentedSurfaceTintColor =>
+      extractColor(_props['surface-tint-color']);
+  double? get segmentedElevation => extractDouble(_props['elevation']);
+
   // Radio properties
   dynamic get radioValue => extractNativeValue<dynamic>(_props['value']);
   dynamic get radioGroupValue =>

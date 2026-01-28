@@ -28,6 +28,9 @@ import 'package:glue_flutter/src/lib/ui/widgets/material/divider.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/material/radio.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/material/slider.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/material/alert_dialog.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/elevated_button.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/chip.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/segmented_button.dart';
 import 'package:glue_flutter/src/lib/ui/styles/cross_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/styles/main_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/styles/main_axis_size.dart';
@@ -95,6 +98,9 @@ final ModuleInfo uiModule = nativeModule('ffi.ui', [
   ('radio', radio),
   ('slider', slider),
   ('alert-dialog', alertDialog),
+  ('elevated-button', elevatedButton),
+  ('chip', chip),
+  ('segmented-button', segmentedButton),
 
   // Color creation functions
   ('rgb', rgb),
