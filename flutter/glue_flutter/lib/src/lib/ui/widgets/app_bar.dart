@@ -18,22 +18,38 @@ Eval<Ir> appBarImpl(Ir props) => switch (props) {
 Eval<Ir> _createAppBar(Properties properties) {
   final appBarWidget = AppBar(
     leading: properties.child, // leading widget
+    automaticallyImplyLeading: properties.automaticallyImplyLeading ?? true,
     title: properties.title,
     actions: properties.actions,
+    automaticallyImplyActions: properties.automaticallyImplyActions ?? true,
+    flexibleSpace: properties.flexibleSpace,
+    bottom: properties.bottomAppBar,
     elevation: properties.size, // using size for elevation
-    backgroundColor: properties.color,
-    foregroundColor: properties.foregroundColor,
+    scrolledUnderElevation: properties.scrolledUnderElevation,
+    notificationPredicate:
+        properties.notificationPredicate ?? defaultScrollNotificationPredicate,
     shadowColor: properties.shadowColor,
     surfaceTintColor: properties.surfaceTintColor,
+    shape: properties.shape,
+    backgroundColor: properties.color,
+    foregroundColor: properties.foregroundColor,
+    iconTheme: properties.iconTheme,
+    actionsIconTheme: properties.actionsIconTheme,
+    primary: properties.primary ?? true,
     centerTitle: properties.centerTitle,
+    excludeHeaderSemantics: properties.excludeHeaderSemantics ?? false,
     titleSpacing: properties.titleSpacing,
     toolbarOpacity: properties.toolbarOpacity ?? 1.0,
     bottomOpacity: properties.bottomOpacity ?? 1.0,
     toolbarHeight: properties.toolbarHeight,
     leadingWidth: properties.leadingWidth,
-    primary: properties.primary ?? true,
-    excludeHeaderSemantics: properties.excludeHeaderSemantics ?? false,
+    toolbarTextStyle: properties.toolbarTextStyle,
+    titleTextStyle: properties.titleTextStyle,
+    systemOverlayStyle: properties.systemOverlayStyle,
+    forceMaterialTransparency: properties.forceMaterialTransparency ?? false,
     clipBehavior: properties.clipBehavior,
+    actionsPadding: properties.actionsPadding,
+    animateColor: properties.animateColor ?? false,
   );
   return Eval.pure(IrNativeValue(Value(appBarWidget)));
 }

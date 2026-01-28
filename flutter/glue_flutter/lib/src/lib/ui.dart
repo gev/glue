@@ -11,6 +11,11 @@ import 'package:glue_flutter/src/lib/ui/widgets/placeholder.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/image.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/app_bar.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/scaffold.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/filled_button.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/outlined_button.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/text_button.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/card.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/list_tile.dart';
 import 'package:glue_flutter/src/lib/ui/styles/cross_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/styles/main_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/styles/main_axis_size.dart';
@@ -59,6 +64,13 @@ final ModuleInfo uiModule = nativeModule('ffi.ui', [
   ('image', image),
   ('app-bar', appBar),
   ('scaffold', scaffold),
+
+  // Material widgets
+  ('filled-button', filledButton),
+  ('outlined-button', outlinedButton),
+  ('text-button', textButton),
+  ('card', card),
+  ('list-tile', listTile),
 
   // Color creation functions
   ('rgb', rgb),

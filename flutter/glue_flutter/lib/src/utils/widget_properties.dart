@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:glue/ir.dart';
 import 'package:glue/runtime.dart';
 import 'package:glue_flutter/src/utils/value_extractors.dart';
@@ -116,6 +117,39 @@ class Properties {
   bool? get excludeHeaderSemantics =>
       extractBool(_props['exclude-header-semantics']);
 
+  // Advanced AppBar properties
+  bool? get automaticallyImplyLeading =>
+      extractBool(_props['automatically-imply-leading']);
+  bool? get automaticallyImplyActions =>
+      extractBool(_props['automatically-imply-actions']);
+  Widget? get flexibleSpace => extractChild(_props['flexible-space']);
+  PreferredSizeWidget? get bottomAppBar =>
+      extractNativeValue<PreferredSizeWidget>(_props['bottom']);
+  double? get scrolledUnderElevation =>
+      extractDouble(_props['scrolled-under-elevation']);
+  ScrollNotificationPredicate? get notificationPredicate =>
+      extractNativeValue<ScrollNotificationPredicate>(
+        _props['notification-predicate'],
+      );
+  ShapeBorder? get shape => extractNativeValue<ShapeBorder>(_props['shape']);
+  IconThemeData? get iconTheme =>
+      extractNativeValue<IconThemeData>(_props['icon-theme']);
+  IconThemeData? get actionsIconTheme =>
+      extractNativeValue<IconThemeData>(_props['actions-icon-theme']);
+  TextStyle? get titleTextStyle =>
+      extractNativeValue<TextStyle>(_props['title-text-style']);
+  TextStyle? get toolbarTextStyle =>
+      extractNativeValue<TextStyle>(_props['toolbar-text-style']);
+  SystemUiOverlayStyle? get systemOverlayStyle =>
+      extractNativeValue<SystemUiOverlayStyle>(_props['system-overlay-style']);
+  bool? get forceMaterialTransparency =>
+      extractBool(_props['force-material-transparency']);
+  bool? get useDefaultSemanticsOrder =>
+      extractBool(_props['use-default-semantics-order']);
+  EdgeInsetsGeometry? get actionsPadding =>
+      extractEdgeInsets(_props['actions-padding']);
+  bool? get animateColor => extractBool(_props['animate-color']);
+
   // Scaffold properties
   PreferredSizeWidget? get appBar =>
       extractNativeValue<PreferredSizeWidget>(_props['app-bar']);
@@ -148,6 +182,53 @@ class Properties {
   bool? get endDrawerEnableOpenDragGesture =>
       extractBool(_props['end-drawer-enable-open-drag-gesture']);
   String? get restorationId => extractString(_props['restoration-id']);
+
+  // Card properties
+  bool? get borderOnForeground => extractBool(_props['border-on-foreground']);
+  bool? get semanticContainer => extractBool(_props['semantic-container']);
+
+  // ListTile properties
+  Widget? get subtitle => extractChild(_props['subtitle']);
+  Widget? get trailing => extractChild(_props['trailing']);
+  bool? get isThreeLine => extractBool(_props['is-three-line']);
+  bool? get dense => extractBool(_props['dense']);
+  VisualDensity? get visualDensity =>
+      extractNativeValue<VisualDensity>(_props['visual-density']);
+  ListTileStyle? get listTileStyle =>
+      extractNativeValue<ListTileStyle>(_props['style']);
+  Color? get selectedColor => extractColor(_props['selected-color']);
+  Color? get iconColor => extractColor(_props['icon-color']);
+  Color? get textColor => extractColor(_props['text-color']);
+  TextStyle? get listTileTitleTextStyle =>
+      extractNativeValue<TextStyle>(_props['title-text-style']);
+  TextStyle? get subtitleTextStyle =>
+      extractNativeValue<TextStyle>(_props['subtitle-text-style']);
+  TextStyle? get leadingAndTrailingTextStyle =>
+      extractNativeValue<TextStyle>(_props['leading-and-trailing-text-style']);
+  EdgeInsetsGeometry? get contentPadding =>
+      extractEdgeInsets(_props['content-padding']);
+  bool? get enabled => extractBool(_props['enabled']);
+  GestureTapCallback? get onTileTap =>
+      extractNativeValue<GestureTapCallback>(_props['on-tap']);
+  GestureLongPressCallback? get onTileLongPress =>
+      extractNativeValue<GestureLongPressCallback>(_props['on-long-press']);
+  MouseCursor? get mouseCursor =>
+      extractNativeValue<MouseCursor>(_props['mouse-cursor']);
+  bool? get selected => extractBool(_props['selected']);
+  Color? get focusColor => extractColor(_props['focus-color']);
+  Color? get hoverColor => extractColor(_props['hover-color']);
+  Color? get splashColor => extractColor(_props['splash-color']);
+  Color? get tileColor => extractColor(_props['tile-color']);
+  Color? get selectedTileColor => extractColor(_props['selected-tile-color']);
+  bool? get enableFeedback => extractBool(_props['enable-feedback']);
+  double? get horizontalTitleGap =>
+      extractDouble(_props['horizontal-title-gap']);
+  double? get minVerticalPadding =>
+      extractDouble(_props['min-vertical-padding']);
+  double? get minLeadingWidth => extractDouble(_props['min-leading-width']);
+  double? get minTileHeight => extractDouble(_props['min-tile-height']);
+  ListTileTitleAlignment? get titleAlignment =>
+      extractNativeValue<ListTileTitleAlignment>(_props['title-alignment']);
   DragStartBehavior? get drawerDragStartBehavior =>
       extractDragStartBehavior(_props['drawer-drag-start-behavior']);
   FloatingActionButtonAnimator? get floatingActionButtonAnimatorProper =>
