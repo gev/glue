@@ -31,6 +31,8 @@ import 'package:glue_flutter/src/lib/ui/widgets/material/alert_dialog.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/material/elevated_button.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/material/chip.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/material/segmented_button.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/bottom_navigation_bar.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/drawer.dart';
 import 'package:glue_flutter/src/lib/ui/styles/cross_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/styles/main_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/styles/main_axis_size.dart';
@@ -101,6 +103,8 @@ final ModuleInfo uiModule = nativeModule('ffi.ui', [
   ('elevated-button', elevatedButton),
   ('chip', chip),
   ('segmented-button', segmentedButton),
+  ('bottom-navigation-bar', bottomNavigationBar),
+  ('drawer', drawer),
 
   // Color creation functions
   ('rgb', rgb),

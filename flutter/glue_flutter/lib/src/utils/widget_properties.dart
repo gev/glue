@@ -506,6 +506,66 @@ class Properties {
       extractColor(_props['surface-tint-color']);
   double? get segmentedElevation => extractDouble(_props['elevation']);
 
+  // BottomNavigationBar properties
+  List<BottomNavigationBarItem>? get bottomNavigationBarItems =>
+      extractNativeValue<List<BottomNavigationBarItem>>(_props['items']);
+  ValueChanged<int>? get onBottomNavigationBarTap =>
+      extractNativeValue<ValueChanged<int>>(_props['on-tap']);
+  int get bottomNavigationBarCurrentIndex =>
+      extractInt(_props['current-index']) ?? 0;
+  double get bottomNavigationBarElevation =>
+      extractDouble(_props['elevation']) ?? 8.0;
+  BottomNavigationBarType get bottomNavigationBarType =>
+      extractNativeValue<BottomNavigationBarType>(_props['type']) ??
+      BottomNavigationBarType.fixed;
+  Color? get bottomNavigationBarFixedColor =>
+      extractColor(_props['fixed-color']);
+  Color? get bottomNavigationBarBackgroundColor =>
+      extractColor(_props['background-color']);
+  double get bottomNavigationBarIconSize =>
+      extractDouble(_props['icon-size']) ?? 24.0;
+  Color? get bottomNavigationBarSelectedItemColor =>
+      extractColor(_props['selected-item-color']);
+  Color? get bottomNavigationBarUnselectedItemColor =>
+      extractColor(_props['unselected-item-color']);
+  IconThemeData? get bottomNavigationBarSelectedIconTheme =>
+      extractNativeValue<IconThemeData>(_props['selected-icon-theme']);
+  IconThemeData? get bottomNavigationBarUnselectedIconTheme =>
+      extractNativeValue<IconThemeData>(_props['unselected-icon-theme']);
+  TextStyle? get bottomNavigationBarSelectedLabelStyle =>
+      extractNativeValue<TextStyle>(_props['selected-label-style']);
+  TextStyle? get bottomNavigationBarUnselectedLabelStyle =>
+      extractNativeValue<TextStyle>(_props['unselected-label-style']);
+  double get bottomNavigationBarSelectedFontSize =>
+      extractDouble(_props['selected-font-size']) ?? 14.0;
+  double get bottomNavigationBarUnselectedFontSize =>
+      extractDouble(_props['unselected-font-size']) ?? 12.0;
+  bool get bottomNavigationBarShowSelectedLabels =>
+      extractBool(_props['show-selected-labels']) ?? true;
+  bool get bottomNavigationBarShowUnselectedLabels =>
+      extractBool(_props['show-unselected-labels']) ?? true;
+  bool get bottomNavigationBarEnableFeedback =>
+      extractBool(_props['enable-feedback']) ?? true;
+  BottomNavigationBarLandscapeLayout? get bottomNavigationBarLandscapeLayout =>
+      extractNativeValue<BottomNavigationBarLandscapeLayout>(
+        _props['landscape-layout'],
+      );
+
+  // Drawer properties
+  double get drawerWidth => extractDouble(_props['width']) ?? 304.0;
+  Color? get drawerBackgroundColor => extractColor(_props['background-color']);
+  Color? get drawerScrimColorProperty => extractColor(_props['scrim-color']);
+  double get drawerElevation => extractDouble(_props['elevation']) ?? 16.0;
+  Color? get drawerShadowColor => extractColor(_props['shadow-color']);
+  Color? get drawerSurfaceTintColor =>
+      extractColor(_props['surface-tint-color']);
+  ShapeBorder? get drawerShape =>
+      extractNativeValue<ShapeBorder>(_props['shape']);
+  double get drawerSemanticLabel =>
+      extractDouble(_props['semantic-label']) ?? 0.0;
+  Clip get drawerClipBehavior =>
+      extractClip(_props['clip-behavior']) ?? Clip.hardEdge;
+
   // Radio properties
   dynamic get radioValue => extractNativeValue<dynamic>(_props['value']);
   dynamic get radioGroupValue =>
