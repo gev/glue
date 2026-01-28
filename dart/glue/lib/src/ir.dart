@@ -27,12 +27,10 @@ Value hostValueWithProps(dynamic value, Map<String, Eval<Ir>> getters) =>
 
 /// Extract a host value with type safety
 /// Mirrors Haskell extractValue exactly
-T? extractValue<T>(Value hostValue) {
-  if (hostValue.value is T) {
-    return hostValue.value as T;
-  }
-  return null;
-}
+T? extractValue<T>(Value hostValue) => switch (hostValue) {
+  Value(value: T v) => v,
+  _ => null,
+};
 
 /// Intermediate Representation for Glue language execution
 /// Mirrors Haskell IR but simplified for Dart (no type parameter m)

@@ -19,15 +19,33 @@ Eval<Ir> _createButton(Properties properties) {
   final label = properties.label ?? 'Button'; // Extract label from properties
 
   if (properties.disabled) {
-    final buttonWidget = ElevatedButton(onPressed: null, child: Text(label));
+    final buttonWidget = ElevatedButton(
+      onPressed: null,
+      onLongPress: null,
+      onHover: null,
+      onFocusChange: null,
+      style: properties.buttonStyle,
+      focusNode: properties.focusNode,
+      autofocus: properties.autofocus,
+      clipBehavior: properties.buttonClipBehavior,
+      child: Text(label),
+    );
     return Eval.pure(IrNativeValue(Value(buttonWidget)));
   }
 
   // Get runtime and create callback
   return getRuntime().map((runtime) {
     final callback = properties.onTap(runtime);
+    final longPressCallback = properties.onLongPress(runtime);
     final buttonWidget = ElevatedButton(
       onPressed: callback,
+      onLongPress: longPressCallback,
+      onHover: properties.onHover,
+      onFocusChange: properties.onFocusChange,
+      style: properties.buttonStyle,
+      focusNode: properties.focusNode,
+      autofocus: properties.autofocus,
+      clipBehavior: properties.buttonClipBehavior,
       child: Text(label),
     );
     return IrNativeValue(Value(buttonWidget));

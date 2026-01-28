@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval.dart';
@@ -33,6 +34,11 @@ int? extractInt(Ir? value) => switch (value) {
 double? extractDouble(Ir? value) => switch (value) {
   IrInteger(:final value) => value.toDouble(),
   IrFloat(:final value) => value,
+  _ => null,
+};
+
+T? extractNativeValue<T>(Ir? value) => switch (value) {
+  IrNativeValue(value: Value(value: T v)) => v,
   _ => null,
 };
 
@@ -90,8 +96,7 @@ List<Widget>? extractChildren(Ir? value) => switch (value) {
 
 /// Extract Axis from Glue IR value
 Axis? extractAxis(Ir? value) => switch (value) {
-  IrString(value: 'horizontal') => Axis.horizontal,
-  IrString(value: 'vertical') => Axis.vertical,
+  IrNativeValue(value: Value(value: Axis axis)) => axis,
   _ => null,
 };
 
@@ -119,5 +124,83 @@ VoidCallback? extractVoidCallback(Ir? value, Runtime runtime) =>
 /// Extract EdgeInsetsGeometry from Glue IR value
 EdgeInsetsGeometry? extractEdgeInsets(Ir? value) => switch (value) {
   IrNativeValue(value: Value(value: EdgeInsetsGeometry insets)) => insets,
+  _ => null,
+};
+
+/// Extract MainAxisSize from Glue IR value
+MainAxisSize? extractMainAxisSize(Ir? value) => switch (value) {
+  IrNativeValue(value: Value(value: MainAxisSize size)) => size,
+  _ => null,
+};
+
+/// Extract TextDirection from Glue IR value
+TextDirection? extractTextDirection(Ir? value) => switch (value) {
+  IrNativeValue(value: Value(value: TextDirection direction)) => direction,
+  _ => null,
+};
+
+/// Extract VerticalDirection from Glue IR value
+VerticalDirection? extractVerticalDirection(Ir? value) => switch (value) {
+  IrNativeValue(value: Value(value: VerticalDirection direction)) => direction,
+  _ => null,
+};
+
+/// Extract TextBaseline from Glue IR value
+TextBaseline? extractTextBaseline(Ir? value) => switch (value) {
+  IrNativeValue(value: Value(value: TextBaseline baseline)) => baseline,
+  _ => null,
+};
+
+/// Extract Clip from Glue IR value
+Clip? extractClip(Ir? value) => switch (value) {
+  IrNativeValue(value: Value(value: Clip clip)) => clip,
+  _ => null,
+};
+
+/// Extract FlutterLogoStyle from Glue IR value
+FlutterLogoStyle? extractFlutterLogoStyle(Ir? value) => switch (value) {
+  IrNativeValue(value: Value(value: FlutterLogoStyle style)) => style,
+  _ => null,
+};
+
+/// Extract BoxFit from Glue IR value
+BoxFit? extractBoxFit(Ir? value) => switch (value) {
+  IrNativeValue(value: Value(value: BoxFit fit)) => fit,
+  _ => null,
+};
+
+/// Extract ImageRepeat from Glue IR value
+ImageRepeat? extractImageRepeat(Ir? value) => switch (value) {
+  IrNativeValue(value: Value(value: ImageRepeat repeat)) => repeat,
+  _ => null,
+};
+
+// /// Extract StrokeAlign from Glue IR value
+// StrokeAlign? extractStrokeAlign(Ir? value) => switch (value) {
+//   IrNativeValue(value: Value(value: StrokeAlign align)) => align,
+//   _ => null,
+// };
+
+/// Extract TextOverflow from Glue IR value
+TextOverflow? extractTextOverflow(Ir? value) => switch (value) {
+  IrNativeValue(value: Value(value: TextOverflow overflow)) => overflow,
+  _ => null,
+};
+
+/// Extract TextWidthBasis from Glue IR value
+TextWidthBasis? extractTextWidthBasis(Ir? value) => switch (value) {
+  IrNativeValue(value: Value(value: TextWidthBasis basis)) => basis,
+  _ => null,
+};
+
+/// Extract DragStartBehavior from Glue IR value
+DragStartBehavior? extractDragStartBehavior(Ir? value) => switch (value) {
+  IrNativeValue(value: Value(value: DragStartBehavior behavior)) => behavior,
+  _ => null,
+};
+
+/// Extract FilterQuality from Glue IR value
+FilterQuality? extractFilterQuality(Ir? value) => switch (value) {
+  IrNativeValue(value: Value(value: FilterQuality quality)) => quality,
   _ => null,
 };

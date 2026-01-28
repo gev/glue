@@ -19,9 +19,19 @@ Eval<Ir> containerImpl(Ir props) => switch (props) {
 /// Create Container widget from properties
 Eval<Ir> _createContainer(Properties properties) {
   final containerWidget = Container(
+    alignment: properties.alignment,
     padding: properties.padding,
     color: properties.color,
+    decoration: properties.decoration,
+    foregroundDecoration: properties.foregroundDecoration,
+    width: properties.width,
+    height: properties.height,
+    constraints: properties.constraints,
+    margin: properties.margin,
+    transform: properties.transform,
+    transformAlignment: properties.transformAlignment,
     child: properties.child,
+    clipBehavior: properties.clipBehavior,
   );
   return Eval.pure(IrNativeValue(Value(containerWidget)));
 }

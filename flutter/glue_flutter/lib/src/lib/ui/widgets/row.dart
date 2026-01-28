@@ -19,7 +19,11 @@ Eval<Ir> _createRow(Properties properties) {
   final rowWidget = Row(
     children: properties.children,
     mainAxisAlignment: properties.mainAlign,
+    mainAxisSize: properties.mainAxisSize,
     crossAxisAlignment: properties.crossAlign,
+    textDirection: properties.textDirection,
+    verticalDirection: properties.verticalDirection,
+    textBaseline: properties.textBaseline,
   );
   return Eval.pure(IrNativeValue(Value(rowWidget)));
 }

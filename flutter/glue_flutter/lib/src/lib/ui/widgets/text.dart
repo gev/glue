@@ -24,7 +24,17 @@ Eval<Ir> _createText(Properties properties) {
       fontSize: properties.size,
       fontWeight: properties.weight,
     ),
+    strutStyle: properties.strutStyle,
     textAlign: properties.align,
+    textDirection: properties.textDirection,
+    locale: properties.locale,
+    softWrap: properties.softWrap,
+    overflow: properties.overflow,
+    textScaleFactor: properties.textScaleFactor,
+    maxLines: properties.maxLines,
+    semanticsLabel: properties.semanticsLabel,
+    textWidthBasis: properties.textWidthBasis,
+    textHeightBehavior: properties.textHeightBehavior,
   );
   return Eval.pure(IrNativeValue(Value(textWidget)));
 }
