@@ -20,6 +20,8 @@ import 'package:glue_flutter/src/lib/ui/widgets/material/snack_bar.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/material/text_field.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/material/floating_action_button.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/material/icon_button.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/checkbox.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/switch.dart';
 import 'package:glue_flutter/src/lib/ui/styles/cross_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/styles/main_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/styles/main_axis_size.dart';
@@ -79,6 +81,8 @@ final ModuleInfo uiModule = nativeModule('ffi.ui', [
   ('text-field', textField),
   ('floating-action-button', floatingActionButton),
   ('icon-button', iconButton),
+  ('checkbox', checkbox),
+  ('switch', switchWidget),
 
   // Color creation functions
   ('rgb', rgb),

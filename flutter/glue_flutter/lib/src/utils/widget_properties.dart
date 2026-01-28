@@ -347,6 +347,60 @@ class Properties {
   bool? get iconButtonMini => extractBool(_props['mini']);
   Color? get highlightColor => extractColor(_props['highlight-color']);
   Color? get disabledColor => extractColor(_props['disabled-color']);
+
+  // Checkbox properties
+  bool? get checkboxValue => extractBool(_props['value']);
+  bool get tristate => extractBool(_props['tristate']) ?? false;
+  ValueChanged<bool?>? get onCheckboxChanged =>
+      extractNativeValue<ValueChanged<bool?>>(_props['on-changed']);
+  Color? get activeColor => extractColor(_props['active-color']);
+  WidgetStateProperty<Color?>? get fillColor =>
+      extractNativeValue<WidgetStateProperty<Color?>>(_props['fill-color']);
+  Color? get checkColor => extractColor(_props['check-color']);
+  OutlinedBorder? get checkboxShape =>
+      extractNativeValue<OutlinedBorder>(_props['shape']);
+  BorderSide? get checkboxSide =>
+      extractNativeValue<BorderSide>(_props['side']);
+  bool get isError => extractBool(_props['is-error']) ?? false;
+  String? get checkboxSemanticLabel => extractString(_props['semantic-label']);
+  WidgetStateProperty<Color?>? get overlayColor =>
+      extractNativeValue<WidgetStateProperty<Color?>>(_props['overlay-color']);
+
+  // Switch properties
+  bool get switchValue => extractBool(_props['value']) ?? false;
+  ValueChanged<bool>? get onSwitchChanged =>
+      extractNativeValue<ValueChanged<bool>>(_props['on-changed']);
+  Color? get activeThumbColor => extractColor(_props['active-thumb-color']);
+  Color? get activeTrackColor => extractColor(_props['active-track-color']);
+  Color? get inactiveThumbColor => extractColor(_props['inactive-thumb-color']);
+  Color? get inactiveTrackColor => extractColor(_props['inactive-track-color']);
+  ImageProvider<Object>? get activeThumbImage =>
+      extractNativeValue<ImageProvider<Object>>(_props['active-thumb-image']);
+  ImageErrorListener? get onActiveThumbImageError =>
+      extractNativeValue<ImageErrorListener>(
+        _props['on-active-thumb-image-error'],
+      );
+  ImageProvider<Object>? get inactiveThumbImage =>
+      extractNativeValue<ImageProvider<Object>>(_props['inactive-thumb-image']);
+  ImageErrorListener? get onInactiveThumbImageError =>
+      extractNativeValue<ImageErrorListener>(
+        _props['on-inactive-thumb-image-error'],
+      );
+  WidgetStateProperty<Color?>? get thumbColor =>
+      extractNativeValue<WidgetStateProperty<Color?>>(_props['thumb-color']);
+  WidgetStateProperty<Color?>? get trackColor =>
+      extractNativeValue<WidgetStateProperty<Color?>>(_props['track-color']);
+  WidgetStateProperty<Color?>? get trackOutlineColor =>
+      extractNativeValue<WidgetStateProperty<Color?>>(
+        _props['track-outline-color'],
+      );
+  WidgetStateProperty<double?>? get trackOutlineWidth =>
+      extractNativeValue<WidgetStateProperty<double?>>(
+        _props['track-outline-width'],
+      );
+  WidgetStateProperty<Icon?>? get thumbIcon =>
+      extractNativeValue<WidgetStateProperty<Icon?>>(_props['thumb-icon']);
+  EdgeInsetsGeometry? get switchPadding => extractEdgeInsets(_props['padding']);
   DragStartBehavior? get drawerDragStartBehavior =>
       extractDragStartBehavior(_props['drawer-drag-start-behavior']);
   FloatingActionButtonAnimator? get floatingActionButtonAnimatorProper =>
