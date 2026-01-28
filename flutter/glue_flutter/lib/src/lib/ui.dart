@@ -73,6 +73,17 @@ import 'package:glue_flutter/src/lib/ui/widgets/cupertino/cupertino_switch.dart'
 import 'package:glue_flutter/src/lib/ui/widgets/cupertino/cupertino_picker.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/cupertino/cupertino_date_picker.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/cupertino/cupertino_text_field.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/cupertino/cupertino_action_sheet.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/cupertino/cupertino_alert_dialog.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/cupertino/cupertino_context_menu.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/cupertino/cupertino_scrollbar.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/cupertino/cupertino_checkbox.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/cupertino/cupertino_slider.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/cupertino/cupertino_search_text_field.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/cupertino/cupertino_timer_picker.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/cupertino/cupertino_app.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/cupertino/cupertino_segmented_control.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/cupertino/cupertino_tab_bar.dart';
 import 'package:glue_flutter/src/lib/ui/styles/cross_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/styles/main_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/styles/main_axis_size.dart';
@@ -187,6 +198,17 @@ final ModuleInfo uiModule = nativeModule('ffi.ui', [
   ('cupertino-picker', cupertinoPicker),
   ('cupertino-date-picker', cupertinoDatePicker),
   ('cupertino-text-field', cupertinoTextField),
+  ('cupertino-action-sheet', cupertinoActionSheet),
+  ('cupertino-alert-dialog', cupertinoAlertDialog),
+  ('cupertino-context-menu', cupertinoContextMenu),
+  ('cupertino-scrollbar', cupertinoScrollbar),
+  ('cupertino-checkbox', cupertinoCheckbox),
+  ('cupertino-slider', cupertinoSlider),
+  ('cupertino-search-text-field', cupertinoSearchTextField),
+  ('cupertino-timer-picker', cupertinoTimerPicker),
+  ('cupertino-app', cupertinoApp),
+  ('cupertino-segmented-control', cupertinoSegmentedControl),
+  ('cupertino-tab-bar', cupertinoTabBar),
 
   // Color creation functions
   ('rgb', rgb),

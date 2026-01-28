@@ -21,7 +21,7 @@ Eval<Ir> _createRefreshIndicator(Properties properties) {
     child: properties.child ?? const SizedBox(),
     displacement: properties.refreshDisplacement,
     edgeOffset: properties.refreshEdgeOffset,
-    onRefresh: properties.refreshOnRefresh ?? () async {},
+    onRefresh: properties.materialRefreshOnRefresh ?? () async {},
     color: properties.refreshColor,
     backgroundColor: properties.refreshBackgroundColor,
     notificationPredicate: properties.refreshNotificationPredicate,

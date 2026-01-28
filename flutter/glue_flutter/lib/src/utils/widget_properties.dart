@@ -1,13 +1,15 @@
-/// Default hero tag for navigation bars
-const _defaultHeroTag = '<default-hero-tag>';
-
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/cupertino.dart' as cupertino;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as material;
 import 'package:flutter/services.dart';
 import 'package:glue/ir.dart';
 import 'package:glue/runtime.dart';
 import 'package:glue_flutter/src/utils/value_extractors.dart';
+
+/// Default hero tag for navigation bars
+const _defaultHeroTag = '<default-hero-tag>';
 
 /// Properties wrapper with lazy getters
 /// Provides clean API for accessing widget properties without pre-computing everything
@@ -246,8 +248,8 @@ class Properties {
       extractNativeValue<Duration>(_props['duration']);
   Animation<double>? get snackBarAnimation =>
       extractNativeValue<Animation<double>>(_props['animation']);
-  VoidCallback? get onVisible =>
-      extractNativeValue<VoidCallback>(_props['on-visible']);
+  VoidCallback? onVisible(Runtime runtime) =>
+      extractVoidCallback(_props['on-visible'], runtime);
   DismissDirection? get dismissDirection =>
       extractNativeValue<DismissDirection>(_props['dismiss-direction']);
 
@@ -282,8 +284,8 @@ class Properties {
       );
   ValueChanged<String>? get onTextChanged =>
       extractNativeValue<ValueChanged<String>>(_props['on-changed']);
-  VoidCallback? get onEditingComplete =>
-      extractNativeValue<VoidCallback>(_props['on-editing-complete']);
+  VoidCallback? onEditingComplete(Runtime runtime) =>
+      extractVoidCallback(_props['on-editing-complete'], runtime);
   ValueChanged<String>? get onSubmitted =>
       extractNativeValue<ValueChanged<String>>(_props['on-submitted']);
   List<TextInputFormatter>? get inputFormatters =>
@@ -472,8 +474,8 @@ class Properties {
   EdgeInsetsGeometry? get chipLabelPadding =>
       extractEdgeInsets(_props['label-padding']);
   Widget? get chipDeleteIcon => extractChild(_props['delete-icon']);
-  VoidCallback? get chipOnDeleted =>
-      extractNativeValue<VoidCallback>(_props['on-deleted']);
+  VoidCallback? chipOnDeleted(Runtime runtime) =>
+      extractVoidCallback(_props['on-deleted'], runtime);
   Color? get chipDeleteIconColor => extractColor(_props['delete-icon-color']);
   String? get chipDeleteButtonTooltipMessage =>
       extractString(_props['delete-button-tooltip-message']);
@@ -1004,8 +1006,10 @@ class Properties {
   double get refreshDisplacement =>
       extractDouble(_props['displacement']) ?? 40.0;
   double get refreshEdgeOffset => extractDouble(_props['edge-offset']) ?? 0.0;
-  RefreshCallback? get refreshOnRefresh =>
-      extractNativeValue<RefreshCallback>(_props['on-refresh']);
+  cupertino.RefreshCallback? get cupertinoRefreshOnRefresh =>
+      extractNativeValue<cupertino.RefreshCallback>(_props['on-refresh']);
+  material.RefreshCallback? get materialRefreshOnRefresh =>
+      extractNativeValue<material.RefreshCallback>(_props['on-refresh']);
   Color? get refreshColor => extractColor(_props['color']);
   Color? get refreshBackgroundColor => extractColor(_props['background-color']);
   ScrollNotificationPredicate get refreshNotificationPredicate =>
@@ -1228,16 +1232,16 @@ class Properties {
   EdgeInsetsGeometry? get inputChipLabelPadding =>
       extractEdgeInsets(_props['label-padding']);
   Widget? get inputChipDeleteIcon => extractChild(_props['delete-icon']);
-  VoidCallback? get inputChipOnDeleted =>
-      extractNativeValue<VoidCallback>(_props['on-deleted']);
+  VoidCallback? inputChipOnDeleted(Runtime runtime) =>
+      extractVoidCallback(_props['on-deleted'], runtime);
   Color? get inputChipDeleteIconColor =>
       extractColor(_props['delete-icon-color']);
   String? get inputChipDeleteButtonTooltipMessage =>
       extractString(_props['delete-button-tooltip-message']);
   ValueChanged<bool>? get inputChipOnSelected =>
       extractNativeValue<ValueChanged<bool>>(_props['on-selected']);
-  VoidCallback? get inputChipOnPressed =>
-      extractNativeValue<VoidCallback>(_props['on-pressed']);
+  VoidCallback? inputChipOnPressed(Runtime runtime) =>
+      extractVoidCallback(_props['on-pressed'], runtime);
   double? get inputChipPressElevation =>
       extractDouble(_props['press-elevation']);
   Widget? get inputChipAvatar => extractChild(_props['avatar']);
@@ -1855,12 +1859,12 @@ class Properties {
       extractDouble(_props['item-size']);
 
   // CupertinoSegmentedControl properties
-  Map<dynamic, Widget> get cupertinoSegmentedControlChildren =>
-      extractNativeValue<Map<dynamic, Widget>>(_props['children']) ?? {};
-  ValueChanged<dynamic>? get cupertinoSegmentedControlOnValueChanged =>
-      extractNativeValue<ValueChanged<dynamic>>(_props['on-value-changed']);
-  dynamic get cupertinoSegmentedControlGroupValue =>
-      extractNativeValue<dynamic>(_props['group-value']);
+  Map<Object, Widget> get cupertinoSegmentedControlChildren =>
+      extractNativeValue<Map<Object, Widget>>(_props['children']) ?? {};
+  ValueChanged<Object>? get cupertinoSegmentedControlOnValueChanged =>
+      extractNativeValue<ValueChanged<Object>>(_props['on-value-changed']);
+  Object? get cupertinoSegmentedControlGroupValue =>
+      extractNativeValue<Object>(_props['group-value']);
   Color get cupertinoSegmentedControlUnselectedColor =>
       extractColor(_props['unselected-color']) ??
       CupertinoColors.tertiarySystemFill;
@@ -1959,23 +1963,62 @@ class Properties {
   Widget? get cupertinoContextMenuPreviewBuilder =>
       extractChild(_props['preview-builder']);
 
+  // CupertinoActionSheet properties
+  Widget? get cupertinoActionSheetTitle =>
+      extractChild(_props['cupertino-action-sheet-title']);
+  Widget? get cupertinoActionSheetMessage =>
+      extractChild(_props['cupertino-action-sheet-message']);
+  List<Widget>? get cupertinoActionSheetActions =>
+      extractChildren(_props['cupertino-action-sheet-actions']);
+  ScrollController? get cupertinoActionSheetMessageScrollController =>
+      extractNativeValue<ScrollController>(
+        _props['cupertino-action-sheet-message-scroll-controller'],
+      );
+  ScrollController? get cupertinoActionSheetActionScrollController =>
+      extractNativeValue<ScrollController>(
+        _props['cupertino-action-sheet-action-scroll-controller'],
+      );
+  Widget? get cupertinoActionSheetCancelButton =>
+      extractChild(_props['cupertino-action-sheet-cancel-button']);
+
   // CupertinoAlertDialog properties
+  Widget? get cupertinoAlertDialogTitle =>
+      extractChild(_props['cupertino-alert-dialog-title']);
+  Widget? get cupertinoAlertDialogContent =>
+      extractChild(_props['cupertino-alert-dialog-content']);
   List<Widget> get cupertinoAlertDialogActions =>
-      extractChildren(_props['actions']) ?? [];
+      extractChildren(_props['cupertino-alert-dialog-actions']) ?? [];
   ScrollController? get cupertinoAlertDialogScrollController =>
-      extractNativeValue<ScrollController>(_props['scroll-controller']);
+      extractNativeValue<ScrollController>(
+        _props['cupertino-alert-dialog-scroll-controller'],
+      );
   ScrollController? get cupertinoAlertDialogActionScrollController =>
-      extractNativeValue<ScrollController>(_props['action-scroll-controller']);
+      extractNativeValue<ScrollController>(
+        _props['cupertino-alert-dialog-action-scroll-controller'],
+      );
   Duration get cupertinoAlertDialogInsetAnimationDuration =>
-      extractNativeValue<Duration>(_props['inset-animation-duration']) ??
+      extractNativeValue<Duration>(
+        _props['cupertino-alert-dialog-inset-animation-duration'],
+      ) ??
       const Duration(milliseconds: 100);
   Curve get cupertinoAlertDialogInsetAnimationCurve =>
-      extractNativeValue<Curve>(_props['inset-animation-curve']) ??
+      extractNativeValue<Curve>(
+        _props['cupertino-alert-dialog-inset-animation-curve'],
+      ) ??
       Curves.decelerate;
 
   // CupertinoApp properties
   CupertinoThemeData? get cupertinoAppTheme =>
       extractNativeValue<CupertinoThemeData>(_props['theme']);
+
+  // CupertinoPageScaffold properties
+  ObstructingPreferredSizeWidget? get cupertinoPageScaffoldNavigationBar =>
+      extractNativeValue<ObstructingPreferredSizeWidget>(
+        _props['navigation-bar'],
+      );
+  // bool? get cupertinoPageScaffoldResizeToAvoidBottomInset =>
+  //     extractBool(_props['resize-to-avoid-bottom-inset']);
+  // Widget? get cupertinoPageScaffoldChild => extractChild(_props['child']);
 
   // CupertinoCheckbox properties
   bool? get cupertinoCheckboxValue => extractBool(_props['value']);
@@ -1989,10 +2032,4 @@ class Properties {
       extractColor(_props['inactive-color']);
   Color? get cupertinoCheckboxCheckColor => extractColor(_props['check-color']);
   Color? get cupertinoCheckboxFocusColor => extractColor(_props['focus-color']);
-
-  // CupertinoActionSheet properties
-  ScrollController? get cupertinoActionSheetMessageScrollController =>
-      extractNativeValue<ScrollController>(_props['message-scroll-controller']);
-  ScrollController? get cupertinoActionSheetActionScrollController =>
-      extractNativeValue<ScrollController>(_props['action-scroll-controller']);
 }
