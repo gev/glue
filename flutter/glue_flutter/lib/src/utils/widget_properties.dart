@@ -427,6 +427,40 @@ class Properties {
   BorderRadiusGeometry? get dividerRadius =>
       extractNativeValue<BorderRadiusGeometry>(_props['radius']);
 
+  // AlertDialog properties
+  Widget? get alertDialogIcon => extractChild(_props['icon']);
+  EdgeInsetsGeometry? get alertDialogIconPadding =>
+      extractEdgeInsets(_props['icon-padding']);
+  Color? get alertDialogIconColor => extractColor(_props['icon-color']);
+  EdgeInsetsGeometry? get alertDialogTitlePadding =>
+      extractEdgeInsets(_props['title-padding']);
+  TextStyle? get alertDialogTitleTextStyle =>
+      extractNativeValue<TextStyle>(_props['title-text-style']);
+  EdgeInsetsGeometry? get alertDialogContentPadding =>
+      extractEdgeInsets(_props['content-padding']);
+  TextStyle? get alertDialogContentTextStyle =>
+      extractNativeValue<TextStyle>(_props['content-text-style']);
+  List<Widget>? get alertDialogActions => extractChildren(_props['actions']);
+  EdgeInsetsGeometry? get alertDialogActionsPadding =>
+      extractEdgeInsets(_props['actions-padding']);
+  MainAxisAlignment? get alertDialogActionsAlignment =>
+      extractMainAxisAlignment(_props['actions-alignment']);
+  OverflowBarAlignment? get alertDialogActionsOverflowAlignment =>
+      extractNativeValue<OverflowBarAlignment>(
+        _props['actions-overflow-alignment'],
+      );
+  VerticalDirection? get alertDialogActionsOverflowDirection =>
+      extractVerticalDirection(_props['actions-overflow-direction']);
+  double? get alertDialogActionsOverflowButtonSpacing =>
+      extractDouble(_props['actions-overflow-button-spacing']);
+  EdgeInsetsGeometry? get alertDialogButtonPadding =>
+      extractEdgeInsets(_props['button-padding']);
+  String? get alertDialogSemanticLabel =>
+      extractString(_props['semantic-label']);
+  EdgeInsets? get alertDialogInsetPadding =>
+      extractNativeValue<EdgeInsets>(_props['inset-padding']);
+  bool get alertDialogScrollable => extractBool(_props['scrollable']) ?? false;
+
   // Radio properties
   dynamic get radioValue => extractNativeValue<dynamic>(_props['value']);
   dynamic get radioGroupValue =>
