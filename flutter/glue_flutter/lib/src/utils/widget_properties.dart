@@ -401,6 +401,62 @@ class Properties {
   WidgetStateProperty<Icon?>? get thumbIcon =>
       extractNativeValue<WidgetStateProperty<Icon?>>(_props['thumb-icon']);
   EdgeInsetsGeometry? get switchPadding => extractEdgeInsets(_props['padding']);
+
+  // LinearProgressIndicator properties
+  double? get progressValue => extractDouble(_props['value']);
+  double? get progressMinHeight => extractDouble(_props['min-height']);
+  String? get progressSemanticsLabel =>
+      extractString(_props['semantics-label']);
+  String? get progressSemanticsValue =>
+      extractString(_props['semantics-value']);
+  Animation<Color>? get valueColor =>
+      extractNativeValue<Animation<Color>>(_props['value-color']);
+
+  // Badge properties
+  Widget? get badgeLabel => extractChild(_props['label']);
+  bool? get isLabelVisible => extractBool(_props['is-label-visible']);
+  bool? get largeSize => extractBool(_props['large-size']);
+  Offset? get badgeOffset => extractNativeValue<Offset>(_props['offset']);
+  bool? get showBadge => extractBool(_props['show-badge']);
+
+  // Divider properties
+  double? get dividerHeight => extractDouble(_props['height']);
+  double? get dividerThickness => extractDouble(_props['thickness']);
+  double? get dividerIndent => extractDouble(_props['indent']);
+  double? get dividerEndIndent => extractDouble(_props['end-indent']);
+  BorderRadiusGeometry? get dividerRadius =>
+      extractNativeValue<BorderRadiusGeometry>(_props['radius']);
+
+  // Radio properties
+  dynamic get radioValue => extractNativeValue<dynamic>(_props['value']);
+  dynamic get radioGroupValue =>
+      extractNativeValue<dynamic>(_props['group-value']);
+  ValueChanged<dynamic>? get onRadioChanged =>
+      extractNativeValue<ValueChanged<dynamic>>(_props['on-changed']);
+  bool get toggleable => extractBool(_props['toggleable']) ?? false;
+  WidgetStateProperty<Color?>? get radioFillColor =>
+      extractNativeValue<WidgetStateProperty<Color?>>(_props['fill-color']);
+
+  // Slider properties
+  double get sliderValue => extractDouble(_props['value']) ?? 0.0;
+  double? get sliderSecondaryTrackValue =>
+      extractDouble(_props['secondary-track-value']);
+  ValueChanged<double>? get onSliderChanged =>
+      extractNativeValue<ValueChanged<double>>(_props['on-changed']);
+  ValueChanged<double>? get onSliderChangeStart =>
+      extractNativeValue<ValueChanged<double>>(_props['on-change-start']);
+  ValueChanged<double>? get onSliderChangeEnd =>
+      extractNativeValue<ValueChanged<double>>(_props['on-change-end']);
+  double get sliderMin => extractDouble(_props['min']) ?? 0.0;
+  double get sliderMax => extractDouble(_props['max']) ?? 1.0;
+  int? get sliderDivisions => extractInt(_props['divisions']);
+  String? get sliderLabel => extractString(_props['label']);
+  SemanticFormatterCallback? get semanticFormatterCallback =>
+      extractNativeValue<SemanticFormatterCallback>(
+        _props['semantic-formatter-callback'],
+      );
+  SliderInteraction? get allowedInteraction =>
+      extractNativeValue<SliderInteraction>(_props['allowed-interaction']);
   DragStartBehavior? get drawerDragStartBehavior =>
       extractDragStartBehavior(_props['drawer-drag-start-behavior']);
   FloatingActionButtonAnimator? get floatingActionButtonAnimatorProper =>

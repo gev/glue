@@ -22,6 +22,11 @@ import 'package:glue_flutter/src/lib/ui/widgets/material/floating_action_button.
 import 'package:glue_flutter/src/lib/ui/widgets/material/icon_button.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/material/checkbox.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/material/switch.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/linear_progress_indicator.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/badge.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/divider.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/radio.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/slider.dart';
 import 'package:glue_flutter/src/lib/ui/styles/cross_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/styles/main_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/styles/main_axis_size.dart';
@@ -83,6 +88,11 @@ final ModuleInfo uiModule = nativeModule('ffi.ui', [
   ('icon-button', iconButton),
   ('checkbox', checkbox),
   ('switch', switchWidget),
+  ('linear-progress-indicator', linearProgressIndicator),
+  ('badge', badge),
+  ('divider', divider),
+  ('radio', radio),
+  ('slider', slider),
 
   // Color creation functions
   ('rgb', rgb),
