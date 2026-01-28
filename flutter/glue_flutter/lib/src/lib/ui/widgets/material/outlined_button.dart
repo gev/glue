@@ -28,7 +28,7 @@ Eval<Ir> _createOutlinedButton(Properties properties) {
   // Get runtime and create widget
   return getRuntime().map((runtime) {
     final buttonWidget = OutlinedButton(
-      onPressed: properties.onTap(runtime),
+      onPressed: properties.onPress(runtime),
       onLongPress: properties.onLongPress(runtime),
       onHover: properties.onHover,
       onFocusChange: properties.onFocusChange,
