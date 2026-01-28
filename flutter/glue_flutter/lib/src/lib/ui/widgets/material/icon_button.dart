@@ -17,10 +17,8 @@ Eval<Ir> iconButtonImpl(Ir props) => switch (props) {
 
 /// Create IconButton widget from properties
 Eval<Ir> _createIconButton(Properties properties) {
-  // Get runtime and create callback
+  // Get runtime and create widget
   return getRuntime().map((runtime) {
-    final callback = properties.onPress(runtime);
-    final longPressCallback = properties.onLongPress(runtime);
     final iconButtonWidget = IconButton(
       icon: properties.child ?? const Icon(Icons.add),
       color: properties.color,
@@ -38,8 +36,8 @@ Eval<Ir> _createIconButton(Properties properties) {
       autofocus: properties.autofocus,
       mouseCursor: properties.mouseCursor,
       focusNode: properties.focusNode,
-      onPressed: callback,
-      onLongPress: longPressCallback,
+      onPressed: properties.onPress(runtime),
+      onLongPress: properties.onLongPress(runtime),
     );
     return IrNativeValue(Value(iconButtonWidget));
   });

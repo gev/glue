@@ -17,10 +17,8 @@ Eval<Ir> floatingActionButtonImpl(Ir props) => switch (props) {
 
 /// Create FloatingActionButton widget from properties
 Eval<Ir> _createFloatingActionButton(Properties properties) {
-  // Get runtime and create callback
+  // Get runtime and create widget
   return getRuntime().map((runtime) {
-    final callback = properties.onPress(runtime);
-    properties.onLongPress(runtime);
     final fabWidget = FloatingActionButton(
       child: properties.child,
       tooltip: properties.tooltip,
@@ -42,7 +40,7 @@ Eval<Ir> _createFloatingActionButton(Properties properties) {
       autofocus: properties.autofocus,
       materialTapTargetSize: properties.materialTapTargetSize,
       enableFeedback: properties.fabEnableFeedback,
-      onPressed: callback,
+      onPressed: properties.onPress(runtime),
       mouseCursor: properties.mouseCursor,
       focusNode: properties.focusNode,
     );

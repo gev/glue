@@ -19,11 +19,9 @@ Eval<Ir> cupertinoButtonImpl(Ir props) => switch (props) {
 /// Create CupertinoButton widget from properties object
 Eval<Ir> _createCupertinoButton(Properties properties) {
   return getRuntime().map((runtime) {
-    final callback = properties.onPress(runtime);
-    final longPressCallback = properties.onLongPress(runtime);
     final buttonWidget = CupertinoButton(
-      onPressed: callback,
-      onLongPress: longPressCallback,
+      onPressed: properties.onPress(runtime),
+      onLongPress: properties.onLongPress(runtime),
       disabledColor: properties.cupertinoButtonDisabledColor,
       padding: properties.cupertinoButtonPadding,
       pressedOpacity: properties.cupertinoButtonPressedOpacity,
