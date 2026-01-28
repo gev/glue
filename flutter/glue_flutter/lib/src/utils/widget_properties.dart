@@ -621,4 +621,84 @@ class Properties {
   AlignmentGeometry? get transformAlignment =>
       extractNativeValue<AlignmentGeometry>(_props['transform-alignment']);
   Clip get clipBehavior => extractClip(_props['clip-behavior']) ?? Clip.none;
+
+  // DatePickerDialog properties
+  DateTime? get datePickerInitialDate =>
+      extractNativeValue<DateTime>(_props['initial-date']);
+  DateTime? get datePickerFirstDate =>
+      extractNativeValue<DateTime>(_props['first-date']);
+  DateTime? get datePickerLastDate =>
+      extractNativeValue<DateTime>(_props['last-date']);
+  DateTime? get datePickerCurrentDate =>
+      extractNativeValue<DateTime>(_props['current-date']);
+  DatePickerEntryMode get datePickerInitialEntryMode =>
+      extractNativeValue<DatePickerEntryMode>(_props['initial-entry-mode']) ??
+      DatePickerEntryMode.calendar;
+  SelectableDayPredicate? get datePickerSelectableDayPredicate =>
+      extractNativeValue<SelectableDayPredicate>(
+        _props['selectable-day-predicate'],
+      );
+  String? get datePickerCancelText => extractString(_props['cancel-text']);
+  String? get datePickerConfirmText => extractString(_props['confirm-text']);
+  String? get datePickerHelpText => extractString(_props['help-text']);
+  DatePickerMode get datePickerInitialCalendarMode =>
+      extractNativeValue<DatePickerMode>(_props['initial-calendar-mode']) ??
+      DatePickerMode.day;
+  String? get datePickerErrorFormatText =>
+      extractString(_props['error-format-text']);
+  String? get datePickerErrorInvalidText =>
+      extractString(_props['error-invalid-text']);
+  String? get datePickerFieldHintText =>
+      extractString(_props['field-hint-text']);
+  String? get datePickerFieldLabelText =>
+      extractString(_props['field-label-text']);
+  TextInputType? get datePickerKeyboardType =>
+      extractNativeValue<TextInputType>(_props['keyboard-type']);
+  String? get datePickerRestorationId =>
+      extractString(_props['restoration-id']);
+  ValueChanged<DatePickerEntryMode>? get datePickerOnDatePickerModeChange =>
+      extractNativeValue<ValueChanged<DatePickerEntryMode>>(
+        _props['on-date-picker-mode-change'],
+      );
+  Icon? get datePickerSwitchToInputEntryModeIcon =>
+      extractNativeValue<Icon>(_props['switch-to-input-entry-mode-icon']);
+  Icon? get datePickerSwitchToCalendarEntryModeIcon =>
+      extractNativeValue<Icon>(_props['switch-to-calendar-entry-mode-icon']);
+  EdgeInsets get datePickerInsetPadding =>
+      extractNativeValue<EdgeInsets>(_props['inset-padding']) ??
+      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0);
+  CalendarDelegate<DateTime>? get datePickerCalendarDelegate =>
+      extractNativeValue<CalendarDelegate<DateTime>>(
+        _props['calendar-delegate'],
+      );
+
+  // TimePickerDialog properties
+  TimeOfDay get timePickerInitialTime =>
+      extractNativeValue<TimeOfDay>(_props['initial-time']) ?? TimeOfDay.now();
+  String? get timePickerCancelText => extractString(_props['cancel-text']);
+  String? get timePickerConfirmText => extractString(_props['confirm-text']);
+  String? get timePickerHelpText => extractString(_props['help-text']);
+  String? get timePickerErrorInvalidText =>
+      extractString(_props['error-invalid-text']);
+  String? get timePickerHourLabelText =>
+      extractString(_props['hour-label-text']);
+  String? get timePickerMinuteLabelText =>
+      extractString(_props['minute-label-text']);
+  String? get timePickerRestorationId =>
+      extractString(_props['restoration-id']);
+  TimePickerEntryMode get timePickerInitialEntryMode =>
+      extractNativeValue<TimePickerEntryMode>(_props['initial-entry-mode']) ??
+      TimePickerEntryMode.dial;
+  Orientation? get timePickerOrientation =>
+      extractNativeValue<Orientation>(_props['orientation']);
+  EntryModeChangeCallback? get timePickerOnEntryModeChanged =>
+      extractNativeValue<EntryModeChangeCallback>(
+        _props['on-entry-mode-changed'],
+      );
+  Icon? get timePickerSwitchToInputEntryModeIcon =>
+      extractNativeValue<Icon>(_props['switch-to-input-entry-mode-icon']);
+  Icon? get timePickerSwitchToTimerEntryModeIcon =>
+      extractNativeValue<Icon>(_props['switch-to-timer-entry-mode-icon']);
+  bool get timePickerEmptyInitialInput =>
+      extractBool(_props['empty-initial-input']) ?? false;
 }

@@ -33,6 +33,8 @@ import 'package:glue_flutter/src/lib/ui/widgets/material/chip.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/material/segmented_button.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/material/bottom_navigation_bar.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/material/drawer.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/date_picker_dialog.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/time_picker_dialog.dart';
 import 'package:glue_flutter/src/lib/ui/styles/cross_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/styles/main_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/styles/main_axis_size.dart';
@@ -105,6 +107,8 @@ final ModuleInfo uiModule = nativeModule('ffi.ui', [
   ('segmented-button', segmentedButton),
   ('bottom-navigation-bar', bottomNavigationBar),
   ('drawer', drawer),
+  ('date-picker-dialog', datePickerDialog),
+  ('time-picker-dialog', timePickerDialog),
 
   // Color creation functions
   ('rgb', rgb),
