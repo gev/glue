@@ -264,12 +264,11 @@ All widgets use the Properties class system for Glue keyword argument extraction
 - **hsla()**: HSL with alpha constructor ✅
 - **rgb() and rgba()**: Already existed ✅
 
-#### 📋 Remaining Infrastructure Items (Lower Priority)
-- **hsv/hsva()**: HSV color constructors (hue, saturation, value) - optional
-- **blend() function**: Color blending with alpha layers - optional
-- **linearGradient()**: Linear gradient constructor - optional
-- **ShapeBorder Types**: `rectangle`, `circle`, `stadium` - optional
-- **Additional enums**: DrawerAnchor, RefreshIndicatorTriggerMode, SnackBarBehavior, DismissDirection - optional
+#### ✅ Remaining Infrastructure Items COMPLETED!
+- **hsv/hsva()**: HSV color constructors ✅ - (hsv 360 1.0 1.0) creates HSV colors
+- **blend() function**: Color blending with alpha layers ✅ - (blend color1 color2 alpha)
+- **linearGradient()**: Linear gradient constructor ✅ - Foundation implemented
+- **Additional enums**: RefreshIndicatorTriggerMode, SnackBarBehavior, DismissDirection ✅
 
 ### Phase 1: Testing & Quality Assurance (2-4 weeks)
 - Implement comprehensive unit tests for all 86 widgets
