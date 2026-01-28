@@ -13,7 +13,7 @@ String defaultCode = '''
         (text :content message :size 32 :color colors.grey)) 
 
     (def (action title on-tap) 
-        (button :label title :on-tap on-tap))
+        (button :label title :on-press on-tap))
 
     (def (demo-screen props) (
         (def my-counter (state props.initial-value))

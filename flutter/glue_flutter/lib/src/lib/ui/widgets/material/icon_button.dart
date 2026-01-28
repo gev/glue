@@ -19,7 +19,7 @@ Eval<Ir> iconButtonImpl(Ir props) => switch (props) {
 Eval<Ir> _createIconButton(Properties properties) {
   // Get runtime and create callback
   return getRuntime().map((runtime) {
-    final callback = properties.onTap(runtime);
+    final callback = properties.onPress(runtime);
     final longPressCallback = properties.onLongPress(runtime);
     final iconButtonWidget = IconButton(
       icon: properties.child ?? const Icon(Icons.add),

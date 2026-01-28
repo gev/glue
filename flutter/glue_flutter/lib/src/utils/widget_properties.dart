@@ -25,8 +25,8 @@ class Properties {
 
   // Button properties
   String? get label => extractString(_props['label']);
-  VoidCallback? onTap(Runtime runtime) =>
-      extractVoidCallback(_props['on-tap'], runtime);
+  VoidCallback? onPress(Runtime runtime) =>
+      extractVoidCallback(_props['on-press'], runtime);
   VoidCallback? onLongPress(Runtime runtime) =>
       extractVoidCallback(_props['on-long-press'], runtime);
   ValueChanged<bool>? get onHover =>
@@ -217,7 +217,7 @@ class Properties {
       extractEdgeInsets(_props['content-padding']);
   bool? get enabled => extractBool(_props['enabled']);
   GestureTapCallback? get onTileTap =>
-      extractNativeValue<GestureTapCallback>(_props['on-tap']);
+      extractNativeValue<GestureTapCallback>(_props['on-press']);
   GestureLongPressCallback? get onTileLongPress =>
       extractNativeValue<GestureLongPressCallback>(_props['on-long-press']);
   MouseCursor? get mouseCursor =>
@@ -308,7 +308,7 @@ class Properties {
   TextSelectionControls? get selectionControls =>
       extractNativeValue<TextSelectionControls>(_props['selection-controls']);
   GestureTapCallback? get onTextFieldTap =>
-      extractNativeValue<GestureTapCallback>(_props['on-tap']);
+      extractNativeValue<GestureTapCallback>(_props['on-press']);
   bool get onTapAlwaysCalled =>
       extractBool(_props['on-tap-always-called']) ?? false;
   MouseCursor? get textFieldMouseCursor =>
@@ -516,7 +516,7 @@ class Properties {
   List<BottomNavigationBarItem>? get bottomNavigationBarItems =>
       extractNativeValue<List<BottomNavigationBarItem>>(_props['items']);
   ValueChanged<int>? get onBottomNavigationBarTap =>
-      extractNativeValue<ValueChanged<int>>(_props['on-tap']);
+      extractNativeValue<ValueChanged<int>>(_props['on-press']);
   int get bottomNavigationBarCurrentIndex =>
       extractInt(_props['current-index']) ?? 0;
   double get bottomNavigationBarElevation =>
@@ -780,7 +780,7 @@ class Properties {
       extractNativeValue<MouseCursor>(_props['mouse-cursor']);
   bool? get tabBarEnableFeedback => extractBool(_props['enable-feedback']);
   ValueChanged<int>? get tabBarOnTap =>
-      extractNativeValue<ValueChanged<int>>(_props['on-tap']);
+      extractNativeValue<ValueChanged<int>>(_props['on-press']);
   ScrollPhysics? get tabBarPhysics =>
       extractNativeValue<ScrollPhysics>(_props['physics']);
 
@@ -972,7 +972,7 @@ class Properties {
   ValueChanged<Object?>? get dropdownOnChanged =>
       extractNativeValue<ValueChanged<Object?>>(_props['on-changed']);
   GestureTapCallback? get dropdownOnTap =>
-      extractNativeValue<GestureTapCallback>(_props['on-tap']);
+      extractNativeValue<GestureTapCallback>(_props['on-press']);
   int get dropdownElevation => extractInt(_props['elevation']) ?? 8;
   TextStyle? get dropdownStyle =>
       extractNativeValue<TextStyle>(_props['style']);
@@ -1125,7 +1125,7 @@ class Properties {
   Iterable<Widget>? get searchBarTrailing =>
       extractChildren(_props['trailing']);
   VoidCallback? get searchBarOnTap =>
-      extractNativeValue<VoidCallback>(_props['on-tap']);
+      extractNativeValue<VoidCallback>(_props['on-press']);
   ValueChanged<String>? get searchBarOnChanged =>
       extractNativeValue<ValueChanged<String>>(_props['on-changed']);
   ValueChanged<String>? get searchBarOnSubmitted =>
@@ -1928,7 +1928,7 @@ class Properties {
   List<BottomNavigationBarItem> get cupertinoTabBarItems =>
       extractNativeValue<List<BottomNavigationBarItem>>(_props['items']) ?? [];
   ValueChanged<int>? get cupertinoTabBarOnTap =>
-      extractNativeValue<ValueChanged<int>>(_props['on-tap']);
+      extractNativeValue<ValueChanged<int>>(_props['on-press']);
   int get cupertinoTabBarCurrentIndex =>
       extractInt(_props['current-index']) ?? 0;
   Color? get cupertinoTabBarBackgroundColor =>

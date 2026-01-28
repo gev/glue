@@ -5,7 +5,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// TextButton widget function
 /// Creates Flutter TextButton from Glue (text-button props) expressions
-/// Expects keyword arguments: :label, :on-tap, :disabled, etc.
+/// Expects keyword arguments: :label, :on-press, :disabled, etc.
 final Ir textButton = IrNativeFunc(textButtonImpl);
 
 /// TextButton implementation - takes properties object with keyword arguments
@@ -27,7 +27,7 @@ Eval<Ir> _createTextButton(Properties properties) {
 
   // Get runtime and create callback
   return getRuntime().map((runtime) {
-    final callback = properties.onTap(runtime);
+    final callback = properties.onPress(runtime);
     final longPressCallback = properties.onLongPress(runtime);
     final buttonWidget = TextButton(
       onPressed: callback,

@@ -19,7 +19,7 @@ Eval<Ir> floatingActionButtonImpl(Ir props) => switch (props) {
 Eval<Ir> _createFloatingActionButton(Properties properties) {
   // Get runtime and create callback
   return getRuntime().map((runtime) {
-    final callback = properties.onTap(runtime);
+    final callback = properties.onPress(runtime);
     properties.onLongPress(runtime);
     final fabWidget = FloatingActionButton(
       child: properties.child,

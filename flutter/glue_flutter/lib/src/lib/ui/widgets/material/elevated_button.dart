@@ -26,7 +26,7 @@ Eval<Ir> _createElevatedButton(Properties properties) {
 
   // Get runtime and create callback
   return getRuntime().map((runtime) {
-    final callback = properties.onTap(runtime);
+    final callback = properties.onPress(runtime);
     final longPressCallback = properties.onLongPress(runtime);
     final buttonWidget = ElevatedButton(
       onPressed: callback,

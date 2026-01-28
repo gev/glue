@@ -5,7 +5,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// CupertinoTabBar widget function
 /// Creates Flutter CupertinoTabBar from Glue expressions
-/// Expects keyword arguments: :items, :on-tap, :current-index, :active-color, :inactive-color, :icon-size, :border
+/// Expects keyword arguments: :items, :on-press, :current-index, :active-color, :inactive-color, :icon-size, :border
 final Ir cupertinoTabBar = IrNativeFunc(cupertinoTabBarImpl);
 
 /// CupertinoTabBar implementation - takes properties object with keyword arguments

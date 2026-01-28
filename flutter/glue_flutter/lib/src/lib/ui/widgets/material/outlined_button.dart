@@ -5,7 +5,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// OutlinedButton widget function
 /// Creates Flutter OutlinedButton from Glue (outlined-button props) expressions
-/// Expects keyword arguments: :label, :on-tap, :disabled, etc.
+/// Expects keyword arguments: :label, :on-press, :disabled, etc.
 final Ir outlinedButton = IrNativeFunc(outlinedButtonImpl);
 
 /// OutlinedButton implementation - takes properties object with keyword arguments
@@ -25,13 +25,11 @@ Eval<Ir> _createOutlinedButton(Properties properties) {
     return Eval.pure(IrNativeValue(Value(buttonWidget)));
   }
 
-  // Get runtime and create callback
+  // Get runtime and create widget
   return getRuntime().map((runtime) {
-    final callback = properties.onTap(runtime);
-    final longPressCallback = properties.onLongPress(runtime);
     final buttonWidget = OutlinedButton(
-      onPressed: callback,
-      onLongPress: longPressCallback,
+      onPressed: properties.onTap(runtime),
+      onLongPress: properties.onLongPress(runtime),
       onHover: properties.onHover,
       onFocusChange: properties.onFocusChange,
       style: properties.buttonStyle,
