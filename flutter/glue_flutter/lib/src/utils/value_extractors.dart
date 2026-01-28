@@ -214,3 +214,59 @@ FloatingActionButtonLocation? extractFloatingActionButtonLocation(Ir? value) =>
         location,
       _ => null,
     };
+
+/// Extract TextCapitalization from Glue IR value
+TextCapitalization? extractTextCapitalization(Ir? value) => switch (value) {
+  IrNativeValue(value: Value(value: TextCapitalization capitalization)) =>
+    capitalization,
+  _ => null,
+};
+
+/// Extract TextInputType from Glue IR value
+TextInputType? extractTextInputType(Ir? value) => switch (value) {
+  IrNativeValue(value: Value(value: TextInputType inputType)) => inputType,
+  _ => null,
+};
+
+/// Extract Brightness from Glue IR value
+Brightness? extractBrightness(Ir? value) => switch (value) {
+  IrNativeValue(value: Value(value: Brightness brightness)) => brightness,
+  _ => null,
+};
+
+/// Extract Duration from Glue IR value
+Duration? extractDuration(Ir? value) => switch (value) {
+  IrNativeValue(value: Value(value: Duration duration)) => duration,
+  _ => null,
+};
+
+/// Extract Curve from Glue IR value
+Curve? extractCurve(Ir? value) => switch (value) {
+  IrNativeValue(value: Value(value: Curve curve)) => curve,
+  _ => null,
+};
+
+/// Extract DateTime from Glue IR value
+DateTime? extractDateTime(Ir? value) => switch (value) {
+  IrNativeValue(value: Value(value: DateTime dateTime)) => dateTime,
+  _ => null,
+};
+
+/// Extract TimeOfDay from Glue IR value
+TimeOfDay? extractTimeOfDay(Ir? value) => switch (value) {
+  IrNativeValue(value: Value(value: TimeOfDay timeOfDay)) => timeOfDay,
+  _ => null,
+};
+
+/// Extract BoxShape from Glue IR value
+BoxShape? extractBoxShape(Ir? value) => switch (value) {
+  IrNativeValue(value: Value(value: BoxShape boxShape)) => boxShape,
+  _ => null,
+};
+
+/// Extract VisualDensity from Glue IR value
+VisualDensity? extractVisualDensity(Ir? value) => switch (value) {
+  IrNativeValue(value: Value(value: VisualDensity visualDensity)) =>
+    visualDensity,
+  _ => null,
+};
