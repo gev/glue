@@ -314,6 +314,39 @@ class Properties {
   Iterable<String>? get autofillHints =>
       extractNativeValue<Iterable<String>>(_props['autofill-hints']);
   String? get textFieldRestorationId => extractString(_props['restoration-id']);
+
+  // FloatingActionButton properties
+  String? get tooltip => extractString(_props['tooltip']);
+  Object? get heroTag => extractNativeValue<Object>(_props['hero-tag']);
+  double? get focusElevation => extractDouble(_props['focus-elevation']);
+  double? get hoverElevation => extractDouble(_props['hover-elevation']);
+  double? get highlightElevation =>
+      extractDouble(_props['highlight-elevation']);
+  double? get disabledElevation => extractDouble(_props['disabled-elevation']);
+  bool? get mini => extractBool(_props['mini']);
+  bool get isExtended => extractBool(_props['is-extended']) ?? false;
+  MaterialTapTargetSize? get materialTapTargetSize =>
+      extractNativeValue<MaterialTapTargetSize>(
+        _props['material-tap-target-size'],
+      );
+  bool? get fabEnableFeedback => extractBool(_props['enable-feedback']);
+  Alignment? get fabAlignment =>
+      extractNativeValue<Alignment>(_props['alignment']);
+  Offset? get fabOffset => extractNativeValue<Offset>(_props['offset']);
+
+  // IconButton properties
+  double get iconButtonIconSize => extractDouble(_props['icon-size']) ?? 24.0;
+  VisualDensity? get iconButtonVisualDensity =>
+      extractNativeValue<VisualDensity>(_props['visual-density']);
+  EdgeInsetsGeometry get iconButtonPadding =>
+      extractEdgeInsets(_props['padding']) ?? const EdgeInsets.all(8.0);
+  AlignmentGeometry get iconButtonAlignment =>
+      extractNativeValue<AlignmentGeometry>(_props['alignment']) ??
+      Alignment.center;
+  double? get splashRadius => extractDouble(_props['splash-radius']);
+  bool? get iconButtonMini => extractBool(_props['mini']);
+  Color? get highlightColor => extractColor(_props['highlight-color']);
+  Color? get disabledColor => extractColor(_props['disabled-color']);
   DragStartBehavior? get drawerDragStartBehavior =>
       extractDragStartBehavior(_props['drawer-drag-start-behavior']);
   FloatingActionButtonAnimator? get floatingActionButtonAnimatorProper =>

@@ -1,0 +1,51 @@
+import 'package:flutter/material.dart';
+import 'package:glue/src/eval.dart';
+import 'package:glue/src/ir.dart';
+import 'package:glue_flutter/src/utils/widget_properties.dart';
+
+/// FloatingActionButton widget function
+/// Creates Flutter FloatingActionButton from Glue (floating-action-button props) expressions
+final Ir floatingActionButton = IrNativeFunc(floatingActionButtonImpl);
+
+/// FloatingActionButton implementation - takes properties object
+Eval<Ir> floatingActionButtonImpl(Ir props) => switch (props) {
+  IrObject(:final properties) => _createFloatingActionButton(
+    Properties(properties.unlock),
+  ),
+  _ => _createFloatingActionButton(Properties.empty()),
+};
+
+/// Create FloatingActionButton widget from properties
+Eval<Ir> _createFloatingActionButton(Properties properties) {
+  // Get runtime and create callback
+  return getRuntime().map((runtime) {
+    final callback = properties.onTap(runtime);
+    final longPressCallback = properties.onLongPress(runtime);
+    final fabWidget = FloatingActionButton(
+      child: properties.child,
+      tooltip: properties.tooltip,
+      foregroundColor: properties.foregroundColor,
+      backgroundColor: properties.color,
+      focusColor: properties.focusColor,
+      hoverColor: properties.hoverColor,
+      splashColor: properties.splashColor,
+      heroTag: properties.heroTag ?? const Object(),
+      elevation: properties.size, // using size for elevation
+      focusElevation: properties.focusElevation,
+      hoverElevation: properties.hoverElevation,
+      highlightElevation: properties.highlightElevation,
+      disabledElevation: properties.disabledElevation,
+      mini: properties.mini ?? false,
+      shape: properties.shape,
+      clipBehavior: properties.clipBehavior,
+      isExtended: properties.isExtended,
+      autofocus: properties.autofocus,
+      materialTapTargetSize: properties.materialTapTargetSize,
+      enableFeedback: properties.fabEnableFeedback,
+      onPressed: callback,
+      mouseCursor: properties.mouseCursor,
+      focusNode: properties.focusNode,
+    );
+    return IrNativeValue(Value(fabWidget));
+  });
+}

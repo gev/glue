@@ -18,6 +18,8 @@ import 'package:glue_flutter/src/lib/ui/widgets/material/card.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/material/list_tile.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/material/snack_bar.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/material/text_field.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/floating_action_button.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/icon_button.dart';
 import 'package:glue_flutter/src/lib/ui/styles/cross_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/styles/main_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/styles/main_axis_size.dart';
@@ -75,6 +77,8 @@ final ModuleInfo uiModule = nativeModule('ffi.ui', [
   ('list-tile', listTile),
   ('snack-bar', snackBar),
   ('text-field', textField),
+  ('floating-action-button', floatingActionButton),
+  ('icon-button', iconButton),
 
   // Color creation functions
   ('rgb', rgb),
