@@ -5,9 +5,20 @@ import 'package:glue_flutter/src/lib/ui/widgets/container.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/column.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/row.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/center.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/icon.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/flutter_logo.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/placeholder.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/image.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/app_bar.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/scaffold.dart';
 import 'package:glue_flutter/src/lib/ui/styles/cross_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/styles/main_axis_alignment.dart';
+import 'package:glue_flutter/src/lib/ui/styles/main_axis_size.dart';
 import 'package:glue_flutter/src/lib/ui/styles/text_align.dart';
+import 'package:glue_flutter/src/lib/ui/styles/text_direction.dart';
+import 'package:glue_flutter/src/lib/ui/styles/vertical_direction.dart';
+import 'package:glue_flutter/src/lib/ui/styles/text_baseline.dart';
+import 'package:glue_flutter/src/lib/ui/styles/clip.dart';
 import 'package:glue_flutter/src/lib/ui/styles/font_weight.dart';
 import 'package:glue_flutter/src/lib/ui/styles/colors.dart'; // Named colors object
 import 'package:glue_flutter/src/lib/ui/styles/rgb.dart'; // RGB function
@@ -16,6 +27,15 @@ import 'package:glue_flutter/src/lib/ui/styles/padding_all.dart'; // padding-all
 import 'package:glue_flutter/src/lib/ui/styles/padding_symmetric.dart'; // padding-symmetric function
 import 'package:glue_flutter/src/lib/ui/styles/padding_only.dart'; // padding-only function
 import 'package:glue_flutter/src/lib/ui/styles/padding_directional.dart'; // padding-directional function
+import 'package:glue_flutter/src/lib/ui/styles/flutter_logo_style.dart';
+import 'package:glue_flutter/src/lib/ui/styles/box_fit.dart';
+import 'package:glue_flutter/src/lib/ui/styles/image_repeat.dart';
+import 'package:glue_flutter/src/lib/ui/styles/text_overflow.dart';
+import 'package:glue_flutter/src/lib/ui/styles/text_width_basis.dart';
+import 'package:glue_flutter/src/lib/ui/styles/filter_quality.dart';
+import 'package:glue_flutter/src/lib/ui/styles/drag_start_behavior.dart';
+import 'package:glue_flutter/src/lib/ui/styles/axis.dart';
+import 'package:glue_flutter/src/lib/ui/styles/floating_action_button_location.dart';
 
 // Note: All exports are handled through the Glue ModuleInfo below.
 // No Dart re-exports to keep the module boundary clean.
@@ -33,6 +53,12 @@ final ModuleInfo uiModule = nativeModule('ffi.ui', [
   ('column', column),
   ('row', row),
   ('center', center),
+  ('icon', icon),
+  ('flutter-logo', flutterLogo),
+  ('placeholder', placeholder),
+  ('image', image),
+  ('app-bar', appBar),
+  ('scaffold', scaffold),
 
   // Color creation functions
   ('rgb', rgb),
@@ -47,7 +73,21 @@ final ModuleInfo uiModule = nativeModule('ffi.ui', [
   // Enum union objects
   ('cross-axis-alignment', crossAxisAlignment),
   ('main-axis-alignment', mainAxisAlignment),
+  ('main-axis-size', mainAxisSize),
   ('text-align', textAlign),
+  ('text-direction', textDirection),
+  ('vertical-direction', verticalDirection),
+  ('text-baseline', textBaseline),
+  ('clip', clip),
   ('font-weight', fontWeight),
   ('colors', colors),
+  ('flutter-logo-style', flutterLogoStyle),
+  ('box-fit', boxFit),
+  ('image-repeat', imageRepeat),
+  ('text-overflow', textOverflow),
+  ('text-width-basis', textWidthBasis),
+  ('filter-quality', filterQuality),
+  ('drag-start-behavior', dragStartBehavior),
+  ('axis', axis),
+  ('floating-action-button-location', floatingActionButtonLocation),
 ]);

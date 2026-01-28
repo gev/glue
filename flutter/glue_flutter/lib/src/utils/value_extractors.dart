@@ -204,3 +204,13 @@ FilterQuality? extractFilterQuality(Ir? value) => switch (value) {
   IrNativeValue(value: Value(value: FilterQuality quality)) => quality,
   _ => null,
 };
+
+/// Extract FloatingActionButtonLocation from Glue IR value
+FloatingActionButtonLocation? extractFloatingActionButtonLocation(Ir? value) =>
+    switch (value) {
+      IrNativeValue(
+        value: Value(value: FloatingActionButtonLocation location),
+      ) =>
+        location,
+      _ => null,
+    };
