@@ -701,4 +701,108 @@ class Properties {
       extractNativeValue<Icon>(_props['switch-to-timer-entry-mode-icon']);
   bool get timePickerEmptyInitialInput =>
       extractBool(_props['empty-initial-input']) ?? false;
+
+  // NavigationBar properties
+  Duration? get navigationBarAnimationDuration =>
+      extractNativeValue<Duration>(_props['animation-duration']);
+  int get navigationBarSelectedIndex =>
+      extractInt(_props['selected-index']) ?? 0;
+  List<Widget>? get navigationBarDestinations =>
+      extractChildren(_props['destinations']);
+  ValueChanged<int>? get navigationBarOnDestinationSelected =>
+      extractNativeValue<ValueChanged<int>>(_props['on-destination-selected']);
+  Color? get navigationBarBackgroundColor =>
+      extractColor(_props['background-color']);
+  double? get navigationBarElevation => extractDouble(_props['elevation']);
+  Color? get navigationBarShadowColor => extractColor(_props['shadow-color']);
+  Color? get navigationBarSurfaceTintColor =>
+      extractColor(_props['surface-tint-color']);
+  Color? get navigationBarIndicatorColor =>
+      extractColor(_props['indicator-color']);
+  ShapeBorder? get navigationBarIndicatorShape =>
+      extractNativeValue<ShapeBorder>(_props['indicator-shape']);
+  double? get navigationBarHeight => extractDouble(_props['height']);
+  NavigationDestinationLabelBehavior? get navigationBarLabelBehavior =>
+      extractNativeValue<NavigationDestinationLabelBehavior>(
+        _props['label-behavior'],
+      );
+  WidgetStateProperty<Color?>? get navigationBarOverlayColor =>
+      extractNativeValue<WidgetStateProperty<Color?>>(_props['overlay-color']);
+  WidgetStateProperty<TextStyle?>? get navigationBarLabelTextStyle =>
+      extractNativeValue<WidgetStateProperty<TextStyle?>>(
+        _props['label-text-style'],
+      );
+  EdgeInsetsGeometry? get navigationBarLabelPadding =>
+      extractEdgeInsets(_props['label-padding']);
+  bool get navigationBarMaintainBottomViewPadding =>
+      extractBool(_props['maintain-bottom-view-padding']) ?? false;
+
+  // TabBar properties
+  List<Widget>? get tabBarTabs => extractChildren(_props['tabs']);
+  TabController? get tabBarController =>
+      extractNativeValue<TabController>(_props['controller']);
+  bool get tabBarIsScrollable => extractBool(_props['is-scrollable']) ?? false;
+  EdgeInsetsGeometry? get tabBarPadding => extractEdgeInsets(_props['padding']);
+  Color? get tabBarIndicatorColor => extractColor(_props['indicator-color']);
+  bool get tabBarAutomaticIndicatorColorAdjustment =>
+      extractBool(_props['automatic-indicator-color-adjustment']) ?? true;
+  double get tabBarIndicatorWeight =>
+      extractDouble(_props['indicator-weight']) ?? 2.0;
+  EdgeInsetsGeometry get tabBarIndicatorPadding =>
+      extractEdgeInsets(_props['indicator-padding']) ?? EdgeInsets.zero;
+  Decoration? get tabBarIndicator =>
+      extractNativeValue<Decoration>(_props['indicator']);
+  TabBarIndicatorSize? get tabBarIndicatorSize =>
+      extractNativeValue<TabBarIndicatorSize>(_props['indicator-size']);
+  Color? get tabBarDividerColor => extractColor(_props['divider-color']);
+  double? get tabBarDividerHeight => extractDouble(_props['divider-height']);
+  Color? get tabBarLabelColor => extractColor(_props['label-color']);
+  TextStyle? get tabBarLabelStyle =>
+      extractNativeValue<TextStyle>(_props['label-style']);
+  EdgeInsetsGeometry? get tabBarLabelPadding =>
+      extractEdgeInsets(_props['label-padding']);
+  Color? get tabBarUnselectedLabelColor =>
+      extractColor(_props['unselected-label-color']);
+  TextStyle? get tabBarUnselectedLabelStyle =>
+      extractNativeValue<TextStyle>(_props['unselected-label-style']);
+  DragStartBehavior get tabBarDragStartBehavior =>
+      extractDragStartBehavior(_props['drag-start-behavior']) ??
+      DragStartBehavior.start;
+  WidgetStateProperty<Color?>? get tabBarOverlayColor =>
+      extractNativeValue<WidgetStateProperty<Color?>>(_props['overlay-color']);
+  MouseCursor? get tabBarMouseCursor =>
+      extractNativeValue<MouseCursor>(_props['mouse-cursor']);
+  bool? get tabBarEnableFeedback => extractBool(_props['enable-feedback']);
+  ValueChanged<int>? get tabBarOnTap =>
+      extractNativeValue<ValueChanged<int>>(_props['on-tap']);
+  ScrollPhysics? get tabBarPhysics =>
+      extractNativeValue<ScrollPhysics>(_props['physics']);
+
+  // MenuAnchor properties
+  MenuController? get menuAnchorController =>
+      extractNativeValue<MenuController>(_props['controller']);
+  MenuStyle? get menuAnchorStyle =>
+      extractNativeValue<MenuStyle>(_props['style']);
+  Offset get menuAnchorAlignmentOffset =>
+      extractNativeValue<Offset>(_props['alignment-offset']) ?? Offset.zero;
+  EdgeInsetsGeometry? get menuAnchorReservedPadding =>
+      extractEdgeInsets(_props['reserved-padding']);
+  LayerLink? get menuAnchorLayerLink =>
+      extractNativeValue<LayerLink>(_props['layer-link']);
+  Clip get menuAnchorClipBehavior =>
+      extractClip(_props['clip-behavior']) ?? Clip.hardEdge;
+  bool get menuAnchorConsumeOutsideTap =>
+      extractBool(_props['consume-outside-tap']) ?? false;
+  VoidCallback? get menuAnchorOnOpen =>
+      extractNativeValue<VoidCallback>(_props['on-open']);
+  VoidCallback? get menuAnchorOnClose =>
+      extractNativeValue<VoidCallback>(_props['on-close']);
+  bool get menuAnchorCrossAxisUnconstrained =>
+      extractBool(_props['cross-axis-unconstrained']) ?? true;
+  bool get menuAnchorUseRootOverlay =>
+      extractBool(_props['use-root-overlay']) ?? false;
+  List<Widget>? get menuAnchorMenuChildren =>
+      extractChildren(_props['menu-children']);
+  MenuAnchorChildBuilder? get menuAnchorBuilder =>
+      extractNativeValue<MenuAnchorChildBuilder>(_props['builder']);
 }

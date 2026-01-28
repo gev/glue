@@ -35,6 +35,9 @@ import 'package:glue_flutter/src/lib/ui/widgets/material/bottom_navigation_bar.d
 import 'package:glue_flutter/src/lib/ui/widgets/material/drawer.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/material/date_picker_dialog.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/material/time_picker_dialog.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/navigation_bar.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/tab_bar.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/menu_anchor.dart';
 import 'package:glue_flutter/src/lib/ui/styles/cross_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/styles/main_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/styles/main_axis_size.dart';
@@ -109,6 +112,9 @@ final ModuleInfo uiModule = nativeModule('ffi.ui', [
   ('drawer', drawer),
   ('date-picker-dialog', datePickerDialog),
   ('time-picker-dialog', timePickerDialog),
+  ('navigation-bar', navigationBar),
+  ('tab-bar', tabBar),
+  ('menu-anchor', menuAnchor),
 
   // Color creation functions
   ('rgb', rgb),
