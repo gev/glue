@@ -44,6 +44,28 @@ import 'package:glue_flutter/src/lib/ui/widgets/material/tooltip.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/material/popup_menu_button.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/material/dropdown_button.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/material/refresh_indicator.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/circular_progress_indicator.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/stepper.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/expansion_panel_list.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/tab_bar_view.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/bottom_sheet.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/search_bar.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/search_anchor.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/input_chip.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/filter_chip.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/choice_chip.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/action_chip.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/bottom_app_bar.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/navigation_drawer.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/drawer_header.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/user_accounts_drawer_header.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/list_view.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/grid_view.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/single_child_scroll_view.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/custom_scroll_view.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/sliver_list.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/sliver_grid.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/navigation_rail.dart';
 import 'package:glue_flutter/src/lib/ui/styles/cross_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/styles/main_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/styles/main_axis_size.dart';
@@ -127,6 +149,28 @@ final ModuleInfo uiModule = nativeModule('ffi.ui', [
   ('popup-menu-button', popupMenuButton),
   ('dropdown-button', dropdownButton),
   ('refresh-indicator', refreshIndicator),
+  ('circular-progress-indicator', circularProgressIndicator),
+  ('stepper', stepper),
+  ('expansion-panel-list', expansionPanelList),
+  ('tab-bar-view', tabBarView),
+  ('bottom-sheet', bottomSheet),
+  ('search-bar', searchBar),
+  ('search-anchor', searchAnchor),
+  ('input-chip', inputChip),
+  ('filter-chip', filterChip),
+  ('choice-chip', choiceChip),
+  ('action-chip', actionChip),
+  ('bottom-app-bar', bottomAppBar),
+  ('navigation-drawer', navigationDrawer),
+  ('drawer-header', drawerHeader),
+  ('user-accounts-drawer-header', userAccountsDrawerHeader),
+  ('list-view', listView),
+  ('grid-view', gridView),
+  ('single-child-scroll-view', singleChildScrollView),
+  ('custom-scroll-view', customScrollView),
+  ('sliver-list', sliverList),
+  ('sliver-grid', sliverGrid),
+  ('navigation-rail', navigationRail),
 
   // Color creation functions
   ('rgb', rgb),
