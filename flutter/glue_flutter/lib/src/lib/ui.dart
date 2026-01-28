@@ -109,6 +109,12 @@ import 'package:glue_flutter/src/lib/ui/styles/filter_quality.dart';
 import 'package:glue_flutter/src/lib/ui/styles/drag_start_behavior.dart';
 import 'package:glue_flutter/src/lib/ui/styles/axis.dart';
 import 'package:glue_flutter/src/lib/ui/styles/floating_action_button_location.dart';
+import 'package:glue_flutter/src/lib/ui/styles/theme_dark.dart';
+import 'package:glue_flutter/src/lib/ui/styles/theme_light.dart';
+import 'package:glue_flutter/src/lib/ui/styles/theme.dart';
+import 'package:glue_flutter/src/lib/ui/styles/color_scheme_light.dart';
+import 'package:glue_flutter/src/lib/ui/styles/color_scheme_dark.dart';
+import 'package:glue_flutter/src/lib/ui/styles/text_theme.dart';
 
 // Note: All exports are handled through the Glue ModuleInfo below.
 // No Dart re-exports to keep the module boundary clean.
@@ -240,4 +246,12 @@ final ModuleInfo uiModule = nativeModule('ffi.ui', [
   ('drag-start-behavior', dragStartBehavior),
   ('axis', axis),
   ('floating-action-button-location', floatingActionButtonLocation),
+
+  // Theme functions and objects
+  ('theme-dark', themeDark),
+  ('theme-light', themeLight),
+  ('theme', theme),
+  ('color-scheme-light', colorSchemeLight),
+  ('color-scheme-dark', colorSchemeDark),
+  ('text-theme', textTheme),
 ]);

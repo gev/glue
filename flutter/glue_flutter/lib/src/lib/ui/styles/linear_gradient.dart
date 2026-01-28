@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue_flutter/src/utils/value_extractors.dart';
 
 /// LinearGradient function - (linearGradient colors stops begin end)
 /// Creates a linear gradient (simplified version)
