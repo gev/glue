@@ -20,7 +20,7 @@ Eval<Ir> _createFloatingActionButton(Properties properties) {
   // Get runtime and create callback
   return getRuntime().map((runtime) {
     final callback = properties.onTap(runtime);
-    final longPressCallback = properties.onLongPress(runtime);
+    properties.onLongPress(runtime);
     final fabWidget = FloatingActionButton(
       child: properties.child,
       tooltip: properties.tooltip,

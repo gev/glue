@@ -39,6 +39,7 @@ Eval<Ir> _createIconButton(Properties properties) {
       mouseCursor: properties.mouseCursor,
       focusNode: properties.focusNode,
       onPressed: callback,
+      onLongPress: longPressCallback,
     );
     return IrNativeValue(Value(iconButtonWidget));
   });

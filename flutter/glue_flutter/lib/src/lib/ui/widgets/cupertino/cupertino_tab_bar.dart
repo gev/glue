@@ -22,16 +22,11 @@ Eval<Ir> _createCupertinoTabBar(Properties properties) {
     final widget = CupertinoTabBar(
       items: properties.cupertinoTabBarItems,
       onTap: properties.cupertinoTabBarOnTap,
-      currentIndex: properties.cupertinoTabBarCurrentIndex ?? 0,
-      activeColor:
-          properties.cupertinoTabBarActiveColor ?? CupertinoColors.activeBlue,
-      inactiveColor:
-          properties.cupertinoTabBarInactiveColor ??
-          CupertinoColors.inactiveGray,
-      iconSize: properties.cupertinoTabBarIconSize ?? 30.0,
-      border:
-          properties.cupertinoTabBarBorder ??
-          const Border(top: BorderSide(color: Color(0x4D000000), width: 0.0)),
+      currentIndex: properties.cupertinoTabBarCurrentIndex,
+      activeColor: properties.cupertinoTabBarActiveColor,
+      inactiveColor: properties.cupertinoTabBarInactiveColor,
+      iconSize: properties.cupertinoTabBarIconSize,
+      border: properties.cupertinoTabBarBorder,
     );
     return IrNativeValue(Value(widget));
   });

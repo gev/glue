@@ -23,7 +23,7 @@ Eval<Ir> _createCupertinoPageScaffold(Properties properties) {
       navigationBar: properties.cupertinoPageScaffoldNavigationBar,
       backgroundColor: properties.cupertinoPageScaffoldBackgroundColor,
       resizeToAvoidBottomInset:
-          properties.cupertinoPageScaffoldResizeToAvoidBottomInset ?? true,
+          properties.cupertinoPageScaffoldResizeToAvoidBottomInset,
       child: properties.cupertinoPageScaffoldChild ?? const SizedBox(),
     );
     return IrNativeValue(Value(widget));

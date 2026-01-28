@@ -22,13 +22,11 @@ Eval<Ir> _createCupertinoScrollbar(Properties properties) {
     final scrollbarWidget = CupertinoScrollbar(
       controller: properties.scrollController,
       thumbVisibility: properties.cupertinoScrollbarThumbVisibility,
-      thickness: properties.cupertinoScrollbarThickness ?? 3.0,
+      thickness: properties.cupertinoScrollbarThickness,
       thicknessWhileDragging:
-          properties.cupertinoScrollbarThicknessWhileDragging ?? 8.0,
-      radius: properties.cupertinoScrollbarRadius ?? const Radius.circular(1.5),
-      radiusWhileDragging:
-          properties.cupertinoScrollbarRadiusWhileDragging ??
-          const Radius.circular(4.0),
+          properties.cupertinoScrollbarThicknessWhileDragging,
+      radius: properties.cupertinoScrollbarRadius,
+      radiusWhileDragging: properties.cupertinoScrollbarRadiusWhileDragging,
       notificationPredicate: properties.scrollNotificationPredicate,
       child: properties.child ?? const Text('No child provided'),
     );

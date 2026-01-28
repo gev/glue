@@ -19,15 +19,8 @@ Eval<Ir> cupertinoDatePickerImpl(Ir props) => switch (props) {
 /// Create CupertinoDatePicker widget from properties object
 Eval<Ir> _createCupertinoDatePicker(Properties properties) {
   return getRuntime().map((runtime) {
-    if (properties.cupertinoDatePickerOnDateTimeChanged == null) {
-      // CupertinoDatePicker requires a callback
-      throw ArgumentError(
-        'CupertinoDatePicker requires :on-date-time-changed callback',
-      );
-    }
-
     final callback = (DateTime value) =>
-        properties.cupertinoDatePickerOnDateTimeChanged!(value);
+        properties.cupertinoDatePickerOnDateTimeChanged(value);
 
     final initialDateTime =
         properties.cupertinoDatePickerInitialDateTime ?? DateTime.now();

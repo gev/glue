@@ -20,12 +20,11 @@ Eval<Ir> cupertinoSegmentedControlImpl(Ir props) => switch (props) {
 
 /// Create CupertinoSegmentedControl widget from properties object
 Eval<Ir> _createCupertinoSegmentedControl(Properties properties) {
-  return getRuntime().map((runtime) {
-    final widget = CupertinoSegmentedControl(
-      children: properties.cupertinoSegmentedControlChildren,
-      onValueChanged: properties.cupertinoSegmentedControlOnValueChanged,
-      groupValue: properties.cupertinoSegmentedControlGroupValue,
-    );
-    return IrNativeValue(Value(widget));
-  });
+  final widget = CupertinoSegmentedControl(
+    children: properties.cupertinoSegmentedControlChildren,
+    onValueChanged:
+        properties.cupertinoSegmentedControlOnValueChanged ?? (_) {},
+    groupValue: properties.cupertinoSegmentedControlGroupValue,
+  );
+  return Eval.pure(IrNativeValue(Value(widget)));
 }

@@ -15,33 +15,35 @@ Eval<Ir> chipImpl(Ir props) => switch (props) {
 
 /// Create Chip widget from properties
 Eval<Ir> _createChip(Properties properties) {
-  final chipWidget = Chip(
-    avatar: properties.chipAvatar,
-    label:
-        properties.child ??
-        const Text('Chip'), // Use child as label, fallback to 'Chip'
-    labelStyle: properties.chipLabelStyle,
-    labelPadding: properties.chipLabelPadding,
-    deleteIcon: properties.chipDeleteIcon,
-    onDeleted: properties.chipOnDeleted,
-    deleteIconColor: properties.chipDeleteIconColor,
-    deleteButtonTooltipMessage: properties.chipDeleteButtonTooltipMessage,
-    side: properties.chipSide,
-    shape: properties.chipShape,
-    clipBehavior: properties.clipBehavior,
-    focusNode: properties.focusNode,
-    autofocus: properties.autofocus,
-    color: properties.chipColor,
-    backgroundColor: properties.color, // using color for background
-    padding: properties.chipPadding,
-    visualDensity: properties.visualDensity,
-    materialTapTargetSize: properties.materialTapTargetSize,
-    elevation: properties.dividerThickness, // using thickness for elevation
-    shadowColor: properties.shadowColor,
-    surfaceTintColor: properties.surfaceTintColor,
-    iconTheme: properties.iconTheme,
-    avatarBoxConstraints: properties.chipAvatarBoxConstraints,
-    deleteIconBoxConstraints: properties.chipDeleteIconBoxConstraints,
-  );
-  return Eval.pure(IrNativeValue(Value(chipWidget)));
+  return getRuntime().map((runtime) {
+    final chipWidget = Chip(
+      avatar: properties.chipAvatar,
+      label:
+          properties.child ??
+          const Text('Chip'), // Use child as label, fallback to 'Chip'
+      labelStyle: properties.chipLabelStyle,
+      labelPadding: properties.chipLabelPadding,
+      deleteIcon: properties.chipDeleteIcon,
+      onDeleted: properties.chipOnDeleted(runtime),
+      deleteIconColor: properties.chipDeleteIconColor,
+      deleteButtonTooltipMessage: properties.chipDeleteButtonTooltipMessage,
+      side: properties.chipSide,
+      shape: properties.chipShape,
+      clipBehavior: properties.clipBehavior,
+      focusNode: properties.focusNode,
+      autofocus: properties.autofocus,
+      color: properties.chipColor,
+      backgroundColor: properties.color, // using color for background
+      padding: properties.chipPadding,
+      visualDensity: properties.visualDensity,
+      materialTapTargetSize: properties.materialTapTargetSize,
+      elevation: properties.dividerThickness, // using thickness for elevation
+      shadowColor: properties.shadowColor,
+      surfaceTintColor: properties.surfaceTintColor,
+      iconTheme: properties.iconTheme,
+      avatarBoxConstraints: properties.chipAvatarBoxConstraints,
+      deleteIconBoxConstraints: properties.chipDeleteIconBoxConstraints,
+    );
+    return IrNativeValue(Value(chipWidget));
+  });
 }

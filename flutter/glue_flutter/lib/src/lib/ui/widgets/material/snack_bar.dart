@@ -20,21 +20,23 @@ Eval<Ir> _createSnackBar(Properties properties) {
     throwError(wrongArgumentType(['content property required']));
   }
 
-  final snackBarWidget = SnackBar(
-    content: properties.snackBarContent!,
-    backgroundColor: properties.color,
-    elevation: properties.size, // using size for elevation
-    margin: properties.margin,
-    padding: properties.padding,
-    width: properties.width,
-    shape: properties.shape,
-    behavior: properties.snackBarBehavior,
-    action: properties.snackBarAction,
-    duration: properties.snackBarDuration ?? const Duration(seconds: 4),
-    animation: properties.snackBarAnimation,
-    onVisible: properties.onVisible,
-    dismissDirection: properties.dismissDirection ?? DismissDirection.down,
-    clipBehavior: properties.clipBehavior,
-  );
-  return Eval.pure(IrNativeValue(Value(snackBarWidget)));
+  return getRuntime().map((runtime) {
+    final snackBarWidget = SnackBar(
+      content: properties.snackBarContent!,
+      backgroundColor: properties.color,
+      elevation: properties.size, // using size for elevation
+      margin: properties.margin,
+      padding: properties.padding,
+      width: properties.width,
+      shape: properties.shape,
+      behavior: properties.snackBarBehavior,
+      action: properties.snackBarAction,
+      duration: properties.snackBarDuration ?? const Duration(seconds: 4),
+      animation: properties.snackBarAnimation,
+      onVisible: properties.onVisible(runtime),
+      dismissDirection: properties.dismissDirection ?? DismissDirection.down,
+      clipBehavior: properties.clipBehavior,
+    );
+    return IrNativeValue(Value(snackBarWidget));
+  });
 }
