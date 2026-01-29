@@ -19,39 +19,45 @@ Eval<Ir> appBarImpl(Ir props) => switch (props) {
 /// Create AppBar widget from properties
 Eval<Ir> _createAppBar(WidgetProperties properties) {
   final appBarWidget = AppBar(
-    leading: properties.child, // leading widget
-    automaticallyImplyLeading: properties.automaticallyImplyLeading ?? true,
-    title: properties.title,
-    actions: properties.actions,
-    automaticallyImplyActions: properties.automaticallyImplyActions ?? true,
-    flexibleSpace: properties.flexibleSpace,
-    bottom: properties.bottomAppBar,
-    elevation: properties.size, // using size for elevation
-    scrolledUnderElevation: properties.scrolledUnderElevation,
+    key: properties.key,
+    leading: properties.getWidget('leading'),
+    automaticallyImplyLeading:
+        properties.getBool('automatically-imply-leading') ?? true,
+    title: properties.getWidget('title'),
+    actions: properties.getWidgets('actions'),
+    automaticallyImplyActions:
+        properties.getBool('automatically-imply-actions') ?? true,
+    flexibleSpace: properties.getWidget('flexible-space'),
+    bottom: properties.getValue('bottom') as PreferredSizeWidget?,
+    elevation: properties.getDouble('elevation'),
+    scrolledUnderElevation: properties.getDouble('scrolled-under-elevation'),
     notificationPredicate:
-        properties.notificationPredicate ?? defaultScrollNotificationPredicate,
-    shadowColor: properties.shadowColor,
-    surfaceTintColor: properties.surfaceTintColor,
-    shape: properties.shape,
-    backgroundColor: properties.color,
-    foregroundColor: properties.foregroundColor,
-    iconTheme: properties.iconTheme,
-    actionsIconTheme: properties.actionsIconTheme,
-    primary: properties.primary ?? true,
-    centerTitle: properties.centerTitle,
-    excludeHeaderSemantics: properties.excludeHeaderSemantics ?? false,
-    titleSpacing: properties.titleSpacing,
-    toolbarOpacity: properties.toolbarOpacity ?? 1.0,
-    bottomOpacity: properties.bottomOpacity ?? 1.0,
-    toolbarHeight: properties.toolbarHeight,
-    leadingWidth: properties.leadingWidth,
-    toolbarTextStyle: properties.toolbarTextStyle,
-    titleTextStyle: properties.titleTextStyle,
-    systemOverlayStyle: properties.systemOverlayStyle,
-    forceMaterialTransparency: properties.forceMaterialTransparency ?? false,
-    clipBehavior: properties.clipBehavior,
-    actionsPadding: properties.actionsPadding,
-    animateColor: properties.animateColor ?? false,
+        properties.getValue('notification-predicate') ??
+        defaultScrollNotificationPredicate,
+    shadowColor: properties.getColor('shadow-color'),
+    surfaceTintColor: properties.getColor('surface-tint-color'),
+    shape: properties.getValue('shape'),
+    backgroundColor: properties.getColor('color'),
+    foregroundColor: properties.getColor('foreground-color'),
+    iconTheme: properties.getValue('icon-theme'),
+    actionsIconTheme: properties.getValue('actions-icon-theme'),
+    primary: properties.getBool('primary') ?? true,
+    centerTitle: properties.getBool('center-title'),
+    excludeHeaderSemantics:
+        properties.getBool('exclude-header-semantics') ?? false,
+    titleSpacing: properties.getDouble('title-spacing'),
+    toolbarOpacity: properties.getDouble('toolbar-opacity') ?? 1.0,
+    bottomOpacity: properties.getDouble('bottom-opacity') ?? 1.0,
+    toolbarHeight: properties.getDouble('toolbar-height'),
+    leadingWidth: properties.getDouble('leading-width'),
+    toolbarTextStyle: properties.getValue('toolbar-text-style'),
+    titleTextStyle: properties.getValue('title-text-style'),
+    systemOverlayStyle: properties.getValue('system-overlay-style'),
+    forceMaterialTransparency:
+        properties.getBool('force-material-transparency') ?? false,
+    clipBehavior: properties.getValue('clip-behavior'),
+    actionsPadding: properties.getValue('actions-padding'),
+    animateColor: properties.getBool('animate-color') ?? false,
   );
   return Eval.pure(IrNativeValue(Value(appBarWidget)));
 }
