@@ -17,25 +17,28 @@ Eval<Ir> popupMenuButtonImpl(Ir props) => switch (props) {
 
 /// Create PopupMenuButton widget from properties
 Eval<Ir> _createPopupMenuButton(WidgetProperties properties) {
-  final popupMenuButtonWidget = PopupMenuButton<Object>(
-    itemBuilder: properties.popupMenuItemBuilder ?? (context) => [],
-    initialValue: properties.popupMenuInitialValue,
-    onSelected: properties.popupMenuOnSelected,
-    onCanceled: properties.popupMenuOnCanceled,
-    tooltip: properties.popupMenuTooltip,
-    elevation: properties.popupMenuElevation,
-    padding: properties.popupMenuPadding,
-    child: properties.popupMenuChild,
-    splashRadius: properties.popupMenuSplashRadius,
-    icon: properties.popupMenuIcon,
-    iconSize: properties.popupMenuIconSize,
-    offset: properties.popupMenuOffset,
-    enabled: properties.popupMenuEnabled,
-    shape: properties.popupMenuShape,
-    color: properties.popupMenuColor,
-    enableFeedback: properties.popupMenuEnableFeedback,
-    constraints: properties.popupMenuConstraints,
-    position: properties.popupMenuPosition,
-  );
-  return Eval.pure(IrNativeValue(Value(popupMenuButtonWidget)));
+  return getRuntime().map((runtime) {
+    final popupMenuButtonWidget = PopupMenuButton<dynamic>(
+      key: properties.key,
+      itemBuilder: properties.getValue('item-builder') ?? (context) => [],
+      initialValue: properties.getValue('initial-value'),
+      onSelected: properties.getValue('on-selected'),
+      onCanceled: properties.getVoidCallback('on-canceled', runtime),
+      tooltip: properties.getString('tooltip'),
+      elevation: properties.getDouble('elevation'),
+      padding: properties.getValue('padding'),
+      splashRadius: properties.getDouble('splash-radius'),
+      icon: properties.getWidget('icon'),
+      iconSize: properties.getDouble('icon-size'),
+      offset: properties.getValue('offset') ?? Offset.zero,
+      enabled: properties.getBool('enabled') ?? true,
+      shape: properties.getValue('shape'),
+      color: properties.getColor('color'),
+      enableFeedback: properties.getBool('enable-feedback'),
+      constraints: properties.getValue('constraints'),
+      position: properties.getValue('position'),
+      child: properties.child,
+    );
+    return IrNativeValue(Value(popupMenuButtonWidget));
+  });
 }

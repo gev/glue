@@ -17,20 +17,23 @@ Eval<Ir> stepperImpl(Ir props) => switch (props) {
 
 /// Create Stepper widget from properties
 Eval<Ir> _createStepper(WidgetProperties properties) {
-  final stepperWidget = Stepper(
-    steps: properties.stepperSteps ?? [],
-    currentStep: properties.stepperCurrentStep,
-    onStepTapped: properties.stepperOnStepTapped,
-    onStepContinue: properties.stepperOnStepContinue,
-    onStepCancel: properties.stepperOnStepCancel,
-    controlsBuilder: properties.stepperControlsBuilder,
-    type: properties.stepperType,
-    physics: properties.stepperPhysics,
-    elevation: properties.stepperElevation,
-    margin: properties.stepperMargin,
-    connectorColor: properties.stepperConnectorColor,
-    connectorThickness: properties.stepperConnectorThickness,
-    stepIconBuilder: properties.stepperStepIconBuilder,
-  );
-  return Eval.pure(IrNativeValue(Value(stepperWidget)));
+  return getRuntime().map((runtime) {
+    final stepperWidget = Stepper(
+      key: properties.key,
+      steps: properties.getValue('steps') ?? [],
+      currentStep: properties.getInt('current-step') ?? 0,
+      onStepTapped: properties.getValue('on-step-tapped'),
+      onStepContinue: properties.getVoidCallback('on-step-continue', runtime),
+      onStepCancel: properties.getVoidCallback('on-step-cancel', runtime),
+      controlsBuilder: properties.getValue('controls-builder'),
+      type: properties.getValue('type') ?? StepperType.vertical,
+      physics: properties.getValue('physics'),
+      elevation: properties.getDouble('elevation'),
+      margin: properties.getValue('margin'),
+      connectorColor: properties.getValue('connector-color'),
+      connectorThickness: properties.getDouble('connector-thickness'),
+      stepIconBuilder: properties.getValue('step-icon-builder'),
+    );
+    return IrNativeValue(Value(stepperWidget));
+  });
 }
