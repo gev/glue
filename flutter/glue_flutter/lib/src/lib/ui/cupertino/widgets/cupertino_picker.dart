@@ -19,23 +19,20 @@ Eval<Ir> cupertinoPickerImpl(Ir props) => switch (props) {
 /// Create CupertinoPicker widget from properties object
 Eval<Ir> _createCupertinoPicker(WidgetProperties properties) {
   return getRuntime().map((runtime) {
-    final callback = properties.cupertinoPickerOnSelectedItemChanged != null
-        ? (int value) => properties.cupertinoPickerOnSelectedItemChanged!(value)
-        : null;
     final pickerWidget = CupertinoPicker(
       key: GlobalKey(),
-      diameterRatio: properties.cupertinoPickerDiameterRatio,
-      backgroundColor: properties.cupertinoPickerBackgroundColor,
-      offAxisFraction: properties.cupertinoPickerOffAxisFraction,
-      useMagnifier: properties.cupertinoPickerUseMagnifier,
-      magnification: properties.cupertinoPickerMagnification,
-      scrollController: properties.cupertinoPickerScrollController,
-      squeeze: properties.cupertinoPickerSqueeze,
-      itemExtent: properties.cupertinoPickerItemExtent,
-      onSelectedItemChanged: callback,
+      diameterRatio: properties.getValue('diameter-ratio'),
+      backgroundColor: properties.getValue('background-color'),
+      offAxisFraction: properties.getValue('off-axis-fraction'),
+      useMagnifier: properties.getValue('use-magnifier'),
+      magnification: properties.getValue('magnification'),
+      scrollController: properties.getValue('scroll-controller'),
+      squeeze: properties.getValue('squeeze'),
+      itemExtent: properties.getValue('item-extent'),
+      onSelectedItemChanged: properties.getValue('on-selected-item-changed'),
       children: properties.children,
       selectionOverlay:
-          properties.cupertinoPickerSelectionOverlay ??
+          properties.getValue('selection-overlay') ??
           const CupertinoPickerDefaultSelectionOverlay(),
     );
     return IrNativeValue(Value(pickerWidget));
