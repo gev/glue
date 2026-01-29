@@ -18,14 +18,12 @@ Eval<Ir> cupertinoSearchTextFieldImpl(Ir props) => switch (props) {
 
 /// Create CupertinoSearchTextField widget from properties object
 Eval<Ir> _createCupertinoSearchTextField(WidgetProperties properties) {
-  return getRuntime().map((runtime) {
-    final widget = CupertinoSearchTextField(
-      controller: properties.cupertinoSearchTextFieldController,
-      onChanged: properties.cupertinoSearchTextFieldOnChanged,
-      onSubmitted: properties.cupertinoSearchTextFieldOnSubmitted,
-      style: properties.cupertinoSearchTextFieldStyle,
-      placeholder: properties.cupertinoSearchTextFieldHintText,
-    );
-    return IrNativeValue(Value(widget));
-  });
+  final widget = CupertinoSearchTextField(
+    controller: properties.getValue('controller'),
+    onChanged: properties.getValue('on-changed'),
+    onSubmitted: properties.getValue('on-submitted'),
+    placeholder: properties.getString('placeholder'),
+    placeholderStyle: properties.getValue('placeholder-style'),
+  );
+  return Eval.pure(IrNativeValue(Value(widget)));
 }

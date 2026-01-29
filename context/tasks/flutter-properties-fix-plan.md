@@ -214,6 +214,7 @@ width: properties.getDouble('width-value'),
 - cupertino_navigation_bar.dart
 - cupertino_page_scaffold.dart
 - cupertino_picker.dart
+- cupertino_scrollbar.dart
 
 #### **Material Widgets Fixed:**
 - material/widgets/checkbox.dart
@@ -232,8 +233,8 @@ lib/src/lib/ui/core/widgets/sliver_grid.dart
 lib/src/lib/ui/core/widgets/sliver_list.dart  
 lib/src/lib/ui/core/widgets/text.dart  
 
-### ⚠️ **Remaining Cupertino Widgets To Fix** (11 files)  
-cupertino_scrollbar.dart, cupertino_search_text_field.dart, cupertino_segmented_control.dart, cupertino_slider.dart, cupertino_tab_bar.dart, cupertino_text_field.dart, cupertino_timer_picker.dart, cupertino_switch.dart  
+### ⚠️ **Remaining Cupertino Widgets To Fix** (7 files)
+cupertino_search_text_field.dart, cupertino_segmented_control.dart, cupertino_slider.dart, cupertino_tab_bar.dart, cupertino_text_field.dart, cupertino_timer_picker.dart, cupertino_switch.dart
 
 ### ⚠️ **Remaining Material Widgets To Fix** (37 files)
 action_chip.dart, badge.dart, bottom_app_bar.dart, bottom_navigation_bar.dart, bottom_sheet.dart, chip.dart, choice_chip.dart, circular_progress_indicator.dart, data_table.dart, drawer_header.dart, drawer.dart, elevated_button.dart, expansion_tile.dart, filled_button.dart, filter_chip.dart, icon_button.dart, input_chip.dart, linear_progress_indicator.dart, menu_anchor.dart, navigation_bar.dart, navigation_drawer.dart, navigation_rail.dart, outlined_button.dart, popup_menu_button.dart, radio.dart, refresh_indicator.dart, scaffold.dart, search_anchor.dart, search_bar.dart, segmented_button.dart, slider.dart, snack_bar.dart, stepper.dart, switch.dart, tab_bar_view.dart, tab_bar.dart, text_button.dart  
