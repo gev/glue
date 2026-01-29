@@ -13,8 +13,12 @@ Fix all 752 undefined getter/method errors in flutter/glue_flutter/lib/src/lib/u
 
 ## Rules and Guidelines
 ### Property Naming
-- Use kebab-case for property names: `camelCase` → `'camel-case'`
+- Use Flutter constructor parameter names converted to kebab-case: `someProperty` → `'some-property'`
+- Make names directly from the Flutter widget's property names, NOT widget-specific prefixes
 - Examples:
+  - `navigationBar` → `'navigation-bar'` (NOT `cupertino-page-scaffold-navigation-bar`)
+  - `backgroundColor` → `'background-color'`
+  - `resizeToAvoidBottomInset` → `'resize-to-avoid-bottom-inset'`
   - `onChanged` → `'on-changed'`
   - `activeThumbColor` → `'active-thumb-color'`
   - `mainAxisAlignment` → `'main-axis-alignment'`
