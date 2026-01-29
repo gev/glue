@@ -215,6 +215,7 @@ width: properties.getDouble('width-value'),
 - cupertino_page_scaffold.dart
 - cupertino_picker.dart
 - cupertino_scrollbar.dart
+- cupertino_search_text_field.dart
 
 #### **Material Widgets Fixed:**
 - material/widgets/checkbox.dart
