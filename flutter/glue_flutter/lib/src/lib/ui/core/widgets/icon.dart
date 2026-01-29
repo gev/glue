@@ -18,17 +18,18 @@ Eval<Ir> iconImpl(Ir props) => switch (props) {
 
 /// Create Icon widget from properties
 Eval<Ir> _createIcon(WidgetProperties properties) {
-  final iconData = properties.icon;
+  final iconData = properties.getValue('icon');
   if (iconData == null) {
     throwError(wrongArgumentType(['icon property required']));
   }
 
   final iconWidget = Icon(
     iconData,
-    size: properties.size,
-    color: properties.color,
-    semanticLabel: properties.semanticsLabel,
-    textDirection: properties.textDirection,
+    key: properties.key,
+    size: properties.getDouble('size'),
+    color: properties.getColor('color'),
+    semanticLabel: properties.getString('semantic-label'),
+    textDirection: properties.getValue('text-direction'),
   );
   return Eval.pure(IrNativeValue(Value(iconWidget)));
 }

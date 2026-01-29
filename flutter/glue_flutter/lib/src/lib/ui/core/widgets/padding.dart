@@ -25,7 +25,8 @@ Eval<Ir> Function(Ir) paddingWithChild(Ir child) =>
 /// Create Padding widget from properties and child
 Eval<Ir> _createPadding(WidgetProperties properties) {
   final paddingWidget = Padding(
-    padding: properties.padding,
+    key: properties.key,
+    padding: properties.getValue('padding'),
     child: properties.child,
   );
   return Eval.pure(IrNativeValue(Value(paddingWidget)));

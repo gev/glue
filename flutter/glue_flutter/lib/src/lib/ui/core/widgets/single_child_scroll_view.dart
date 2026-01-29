@@ -18,18 +18,18 @@ Eval<Ir> singleChildScrollViewImpl(Ir props) => switch (props) {
 /// Create SingleChildScrollView widget from properties
 Eval<Ir> _createSingleChildScrollView(WidgetProperties properties) {
   final singleChildScrollViewWidget = SingleChildScrollView(
-    scrollDirection: properties.singleChildScrollViewScrollDirection,
-    reverse: properties.singleChildScrollViewReverse,
-    padding: properties.singleChildScrollViewPadding,
-    primary: properties.singleChildScrollViewPrimary,
-    physics: properties.singleChildScrollViewPhysics,
-    controller: properties.singleChildScrollViewController,
-    dragStartBehavior: properties.singleChildScrollViewDragStartBehavior,
-    clipBehavior: properties.singleChildScrollViewClipBehavior,
-    restorationId: properties.singleChildScrollViewRestorationId,
-    keyboardDismissBehavior:
-        properties.singleChildScrollViewKeyboardDismissBehavior,
-    child: properties.singleChildScrollViewChild,
+    key: properties.key,
+    scrollDirection: properties.getValue('scroll-direction'),
+    reverse: properties.getValue('reverse'),
+    padding: properties.getValue('padding'),
+    primary: properties.getValue('primary'),
+    physics: properties.getValue('physics'),
+    controller: properties.getValue('controller'),
+    dragStartBehavior: properties.getValue('drag-start-behavior'),
+    clipBehavior: properties.getValue('clip-behavior'),
+    restorationId: properties.getString('restoration-id'),
+    keyboardDismissBehavior: properties.getValue('keyboard-dismiss-behavior'),
+    child: properties.child,
   );
   return Eval.pure(IrNativeValue(Value(singleChildScrollViewWidget)));
 }

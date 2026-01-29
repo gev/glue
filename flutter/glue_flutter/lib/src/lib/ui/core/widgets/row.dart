@@ -19,13 +19,14 @@ Eval<Ir> rowImpl(Ir props) => switch (props) {
 /// Create Row widget from properties
 Eval<Ir> _createRow(WidgetProperties properties) {
   final rowWidget = Row(
+    key: properties.key,
     children: properties.children,
-    mainAxisAlignment: properties.mainAlign,
-    mainAxisSize: properties.mainAxisSize,
-    crossAxisAlignment: properties.crossAlign,
-    textDirection: properties.textDirection,
-    verticalDirection: properties.verticalDirection,
-    textBaseline: properties.textBaseline,
+    mainAxisAlignment: properties.getValue('main-axis-alignment'),
+    mainAxisSize: properties.getValue('main-axis-size'),
+    crossAxisAlignment: properties.getValue('cross-axis-alignment'),
+    textDirection: properties.getValue('text-direction'),
+    verticalDirection: properties.getValue('vertical-direction'),
+    textBaseline: properties.getValue('text-baseline'),
   );
   return Eval.pure(IrNativeValue(Value(rowWidget)));
 }

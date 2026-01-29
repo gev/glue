@@ -19,8 +19,9 @@ Eval<Ir> placeholderImpl(Ir props) => switch (props) {
 /// Create Placeholder widget from properties
 Eval<Ir> _createPlaceholder(WidgetProperties properties) {
   final placeholderWidget = Placeholder(
-    color: properties.color ?? const Color(0xFF455A64),
-    strokeWidth: properties.size ?? 2.0,
+    key: properties.key,
+    color: properties.getColor('color') ?? const Color(0xFF455A64),
+    strokeWidth: properties.getDouble('size') ?? 2.0,
     fallbackWidth: properties.width ?? 400.0,
     fallbackHeight: properties.height ?? 400.0,
   );
