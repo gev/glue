@@ -38,7 +38,7 @@ import 'package:glue_flutter/src/lib/ui/core/styles/axis.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/brightness.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/system_brightness.dart';
 
-final ModuleInfo uiCoreModule = nativeModule('ffi.ui', [
+final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   // Core widget functions
   ('text', text),
   ('container', container),

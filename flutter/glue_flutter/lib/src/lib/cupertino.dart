@@ -18,7 +18,7 @@ import 'package:glue_flutter/src/lib/ui/cupertino/widgets/cupertino_app.dart';
 import 'package:glue_flutter/src/lib/ui/cupertino/widgets/cupertino_segmented_control.dart';
 import 'package:glue_flutter/src/lib/ui/cupertino/widgets/cupertino_tab_bar.dart';
 
-final ModuleInfo uiCupertinoModule = nativeModule('ffi.ui', [
+final ModuleInfo uiCupertinoModule = nativeModule('ffi.ui.cupertino', [
   // Cupertino widget functions
   ('cupertino-button', cupertinoButton),
   ('cupertino-activity-indicator', cupertinoActivityIndicator),

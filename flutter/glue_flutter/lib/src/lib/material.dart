@@ -60,7 +60,7 @@ import 'package:glue_flutter/src/lib/ui/material/styles/color_scheme_light.dart'
 import 'package:glue_flutter/src/lib/ui/material/styles/color_scheme_dark.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/text_theme.dart';
 
-final ModuleInfo uiMaterialModule = nativeModule('ffi.ui', [
+final ModuleInfo uiMaterialModule = nativeModule('ffi.ui.material', [
   // Material widgets
   ('app-bar', appBar),
   ('scaffold', scaffold),
