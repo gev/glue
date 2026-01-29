@@ -20,13 +20,14 @@ Eval<Ir> cupertinoTabBarImpl(Ir props) => switch (props) {
 Eval<Ir> _createCupertinoTabBar(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final widget = CupertinoTabBar(
-      items: properties.cupertinoTabBarItems,
-      onTap: properties.cupertinoTabBarOnTap,
-      currentIndex: properties.cupertinoTabBarCurrentIndex,
-      activeColor: properties.cupertinoTabBarActiveColor,
-      inactiveColor: properties.cupertinoTabBarInactiveColor,
-      iconSize: properties.cupertinoTabBarIconSize,
-      border: properties.cupertinoTabBarBorder,
+      items: properties.getValue('items'),
+      onTap: properties.getValue('on-tap'),
+      currentIndex: properties.getInt('current-index') ?? 0,
+      activeColor: properties.getColor('active-color'),
+      inactiveColor:
+          properties.getColor('inactive-color') ?? CupertinoColors.inactiveGray,
+      iconSize: properties.getDouble('icon-size') ?? 30.0,
+      border: properties.getValue('border'),
     );
     return IrNativeValue(Value(widget));
   });
