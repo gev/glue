@@ -1,4 +1,4 @@
-# Flutter UI Widget Properties Fix Plan
+o # Flutter UI Widget Properties Fix Plan
 
 Based on [development rules](../development-rules.md#dart-code) and [Flutter guidelines](../development-rules.md#flutter-code), this plan implements type-safe widget property extraction using direct getters for common properties (key, child, children, width, height, etc.) and typed getter methods for others.
 
@@ -23,20 +23,21 @@ Fix all 752 undefined getter/method errors in flutter/glue_flutter/lib/src/lib/u
   - `activeThumbColor` → `'active-thumb-color'`
   - `mainAxisAlignment` → `'main-axis-alignment'`
 
-### Direct Getters (use as-is)
-Use these getters directly without modification:
-- `key`, `child`, `children`, `width`, `height`, `top`, `bottom`, `left`, `right`, `start`, `end`, `horizontal`, `vertical`
-
-### Type-based Getter/Method Usage
-Based on Flutter Widget property types:
+### Property Types & Correct Getter Methods
+- Pay attention to Flutter widget property types and use the correct getter method for type safety
+- **bool**: `properties.getBool('property-name')`
 - **Color**: `properties.getColor('property-name')`
-- **double**: `properties.getDouble('property-name')` or direct getter if in the list above
+- **double**: `properties.getDouble('property-name')`
 - **int**: `properties.getInt('property-name')`
 - **String**: `properties.getString('property-name')`
 - **Widget**: `properties.getWidget('property-name')`
 - **List<Widget>**: `properties.getWidgets('property-name')`
 - **VoidCallback**: `properties.getVoidCallback('property-name', runtime)`
-- **Other types**: `properties.getValue('property-name')`
+- **Complex/Custom types**: `properties.getValue('property-name')`
+
+### Direct Getters (use as-is)
+Use these getters directly without modification:
+- `key`, `child`, `children`, `width`, `height`, `top`, `bottom`, `left`, `right`, `start`, `end`, `horizontal`, `vertical`
 
 ### Key Property
 - Add `key: properties.key` as the first parameter to all widget constructors
