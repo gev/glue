@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:glue/ir.dart';
 import 'package:glue/eval.dart';
+import 'package:glue/ir.dart';
 import 'package:glue/runtime.dart';
 import 'package:glue_demo/services/state/state_helpers.dart';
 import 'package:glue_demo/services/state/state_notifier.dart';

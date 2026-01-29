@@ -1,7 +1,7 @@
 import 'package:glue/src/either.dart';
 import 'package:glue/src/eval.dart';
-import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval/exception.dart';
+import 'package:glue/src/ir.dart';
 
 /// Lambda special form implementation
 /// Mirrors Haskell Glue.Lib.Builtin.Lambda exactly

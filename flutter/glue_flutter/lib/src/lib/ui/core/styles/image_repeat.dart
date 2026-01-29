@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:glue/src/ir.dart';
+import 'package:glue/ir.dart';
 
 /// Image repeat enum object - represents all ImageRepeat values as Glue object properties
 /// Each property is a NativeValue wrapping the Flutter ImageRepeat enum value

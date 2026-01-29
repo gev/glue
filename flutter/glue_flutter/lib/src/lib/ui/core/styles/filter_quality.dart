@@ -1,6 +1,7 @@
 import 'dart:ui';
+
 import 'package:flutter/widgets.dart';
-import 'package:glue/src/ir.dart';
+import 'package:glue/ir.dart';
 
 /// Filter quality enum object - represents all FilterQuality values as Glue object properties
 /// Each property is a NativeValue wrapping the Flutter FilterQuality enum value

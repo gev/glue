@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:glue/src/ir.dart';
+import 'package:glue/ir.dart';
 
 /// Text alignment enum object - represents all TextAlign values as Glue object properties
 /// Each property is a NativeValue wrapping the Flutter TextAlign enum value

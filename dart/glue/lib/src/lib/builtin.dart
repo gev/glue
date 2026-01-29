@@ -1,10 +1,10 @@
-import 'package:glue/src/module.dart';
 import 'package:glue/src/lib/builtin/def.dart';
 import 'package:glue/src/lib/builtin/error.dart';
 import 'package:glue/src/lib/builtin/import.dart';
 import 'package:glue/src/lib/builtin/lambda.dart';
 import 'package:glue/src/lib/builtin/let.dart';
 import 'package:glue/src/lib/builtin/try.dart';
+import 'package:glue/src/module.dart';
 
 /// Builtin module - special forms and core language constructs
 /// Mirrors Haskell Glue.Lib.Builtin exactly

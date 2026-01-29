@@ -1,11 +1,11 @@
 import 'package:glue/src/either.dart';
+import 'package:glue/src/error.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue/src/runtime.dart';
-import 'package:glue/src/parser.dart';
-import 'package:glue/src/module.dart';
-import 'package:glue/src/error.dart';
 import 'package:glue/src/lib/math/trigonometric.dart';
+import 'package:glue/src/module.dart';
+import 'package:glue/src/parser.dart';
+import 'package:glue/src/runtime.dart';
 import 'package:test/test.dart';
 
 /// Helper to run full Glue code like Haskell tests
@@ -27,7 +27,7 @@ Future<Either<GlueError, Ir>> runCode(String input) async {
 }
 
 void main() {
-  group('Glue.Lib.Math.Trigonometric.Aacos (acos)', () {
+  group('Glue.Lib.Math.Trigonometric.Acos (acos)', () {
     test('acos with common angles', () async {
       final result = await runCode('(acos 0)');
       result.match(

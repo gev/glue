@@ -1,8 +1,7 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:glue/env.dart';
-import 'package:glue/src/eval.dart';
-
 import 'package:glue/src/ast.dart';
+import 'package:glue/src/eval.dart';
 
 /// Host value wrapper for any host language object
 /// Mirrors Haskell Value exactly with getters

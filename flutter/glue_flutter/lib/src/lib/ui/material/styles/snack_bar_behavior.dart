@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:glue/src/ir.dart';
+import 'package:glue/ir.dart';
 
 /// SnackBarBehavior enum object
 /// Represents all SnackBarBehavior values as Glue object properties

@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:glue/src/ir.dart';
+import 'package:glue/ir.dart';
 
 /// Cross-axis alignment enum object - represents all CrossAxisAlignment values as Glue object properties
 /// Each property is a NativeValue wrapping the Flutter CrossAxisAlignment enum value

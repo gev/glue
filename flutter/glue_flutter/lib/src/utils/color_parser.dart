@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:glue/src/ir.dart';
+import 'package:glue/ir.dart';
 
 /// Parse color from Glue IR value
 /// Supports named colors, hex codes, and rgb() notation

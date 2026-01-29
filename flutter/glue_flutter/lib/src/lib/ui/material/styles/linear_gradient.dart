@@ -1,5 +1,5 @@
-import 'package:glue/src/eval.dart';
-import 'package:glue/src/ir.dart';
+import 'package:glue/eval.dart';
+import 'package:glue/ir.dart';
 
 /// LinearGradient function - (linearGradient colors stops begin end)
 /// Creates a linear gradient (simplified version)

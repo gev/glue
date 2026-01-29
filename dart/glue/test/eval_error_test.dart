@@ -1,6 +1,6 @@
 import 'package:glue/src/eval/error.dart';
-import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval/exception.dart';
+import 'package:glue/src/ir.dart';
 import 'package:test/test.dart';
 
 void main() {

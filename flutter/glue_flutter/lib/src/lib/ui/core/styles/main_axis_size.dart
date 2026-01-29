@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:glue/src/ir.dart';
+import 'package:glue/ir.dart';
 
 /// Main-axis size enum object - represents all MainAxisSize values as Glue object properties
 /// Each property is a NativeValue wrapping the Flutter MainAxisSize enum value

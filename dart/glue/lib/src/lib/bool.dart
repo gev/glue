@@ -1,5 +1,4 @@
 import 'package:glue/src/ir.dart';
-import 'package:glue/src/module.dart';
 import 'package:glue/src/lib/bool/eq.dart';
 import 'package:glue/src/lib/bool/ge.dart';
 import 'package:glue/src/lib/bool/gt.dart';
@@ -11,6 +10,7 @@ import 'package:glue/src/lib/bool/not.dart';
 import 'package:glue/src/lib/bool/until.dart';
 import 'package:glue/src/lib/bool/when.dart';
 import 'package:glue/src/lib/bool/while.dart';
+import 'package:glue/src/module.dart';
 
 /// Bool module - boolean operations, comparisons, and control flow
 /// Mirrors Haskell Glue.Lib.Bool exactly

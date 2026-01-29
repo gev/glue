@@ -3,8 +3,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart' show SearchController;
 import 'package:flutter/services.dart';
 import 'package:glue/runtime.dart';
-import 'package:glue_flutter/src/utils/value_extractors.dart';
 import 'package:glue_flutter/src/utils/core_properties.dart';
+import 'package:glue_flutter/src/utils/value_extractors.dart';
 
 /// Default hero tag for navigation bars
 const _defaultHeroTag = '<default-hero-tag>';

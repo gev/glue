@@ -1,10 +1,10 @@
-import 'package:glue/src/module.dart';
 import 'package:glue/src/lib/math/trigonometric/acos.dart';
 import 'package:glue/src/lib/math/trigonometric/asin.dart';
 import 'package:glue/src/lib/math/trigonometric/atan.dart';
 import 'package:glue/src/lib/math/trigonometric/cos.dart';
 import 'package:glue/src/lib/math/trigonometric/sin.dart';
 import 'package:glue/src/lib/math/trigonometric/tan.dart';
+import 'package:glue/src/module.dart';
 
 /// Trigonometric module - trigonometric functions (radians)
 /// Mirrors Haskell Glue.Lib.Math.Trigonometric exactly

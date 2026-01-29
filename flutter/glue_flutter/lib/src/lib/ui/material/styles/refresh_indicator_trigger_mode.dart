@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:glue/src/ir.dart';
+import 'package:glue/ir.dart';
 
 /// RefreshIndicatorTriggerMode enum object
 /// Represents all RefreshIndicatorTriggerMode values as Glue object properties

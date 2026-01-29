@@ -1,7 +1,7 @@
-import 'package:glue/ir.dart';
-import 'package:glue/eval.dart';
 import 'package:glue/either.dart';
 import 'package:glue/error.dart';
+import 'package:glue/eval.dart';
+import 'package:glue/ir.dart';
 import 'package:glue_demo/services/state/state_notifier.dart';
 
 /// Reads the value of a reactive state

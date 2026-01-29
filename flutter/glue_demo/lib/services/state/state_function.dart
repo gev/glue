@@ -1,5 +1,6 @@
-import 'package:glue/ir.dart';
 import 'package:glue/eval.dart';
+import 'package:glue/ir.dart';
+
 import 'state_notifier.dart';
 
 /// Creates a reactive state with Value getters

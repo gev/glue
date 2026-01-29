@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:glue/src/ir.dart';
+import 'package:glue/ir.dart';
 
 /// Clip enum object - represents all Clip values as Glue object properties
 /// Each property is a NativeValue wrapping the Flutter Clip enum value

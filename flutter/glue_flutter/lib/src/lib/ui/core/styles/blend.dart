@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:glue/src/eval.dart';
-import 'package:glue/src/ir.dart';
+import 'package:glue/eval.dart';
+import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/value_extractors.dart';
 
 /// Blend function - (blend color1 color2 alphaBlend)

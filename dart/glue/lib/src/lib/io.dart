@@ -1,6 +1,6 @@
-import 'package:glue/src/module.dart';
 import 'package:glue/src/lib/io/print.dart';
 import 'package:glue/src/lib/io/read.dart';
+import 'package:glue/src/module.dart';
 
 /// IO module - input/output functions
 /// Mirrors Haskell Glue.Lib.IO exactly

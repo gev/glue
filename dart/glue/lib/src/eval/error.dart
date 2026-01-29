@@ -1,5 +1,5 @@
-import 'package:glue/src/eval/exception.dart';
 import 'package:glue/src/error.dart';
+import 'package:glue/src/eval/exception.dart';
 
 /// Evaluation error handling system
 /// Mirrors Haskell Glue.Eval.Error exactly

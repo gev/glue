@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
-import 'package:glue/src/eval.dart';
-import 'package:glue/src/ir.dart';
-import 'package:glue/src/eval/exception.dart';
+import 'package:glue/error.dart';
+import 'package:glue/eval.dart';
+import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/core_properties.dart';
 
 /// Row widget function

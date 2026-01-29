@@ -3,8 +3,8 @@ import 'package:glue/src/env.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/eval/error.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue/src/runtime.dart';
 import 'package:glue/src/lib/bool/gt.dart';
+import 'package:glue/src/runtime.dart';
 import 'package:test/test.dart';
 
 /// Helper to run full Glue code like Haskell tests

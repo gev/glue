@@ -1,8 +1,7 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
-
 import 'package:glue/src/either.dart';
-import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval/exception.dart';
+import 'package:glue/src/ir.dart';
 
 /// Environment types for Glue evaluation
 /// Mirrors Haskell Glue.Env exactly

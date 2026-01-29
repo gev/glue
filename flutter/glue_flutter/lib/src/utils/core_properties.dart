@@ -12,10 +12,18 @@ class CoreProperties {
 
   Ir? prop(String key) => _props[key];
 
-  CoreProperties(Map<String, Ir> props) : _props = props {
-    print('Created Properties: ${props}');
-  }
+  CoreProperties(Map<String, Ir> props) : _props = props;
   CoreProperties.empty() : _props = {};
+
+  // Padding properties
+  double? get top => extractDouble(prop('top'));
+  double? get bottom => extractDouble(prop('bottom'));
+  double? get start => extractDouble(prop('start'));
+  double? get end => extractDouble(prop('end'));
+  double? get left => extractDouble(prop('left'));
+  double? get right => extractDouble(prop('right'));
+  double? get vertical => extractDouble(prop('vertical'));
+  double? get horizontal => extractDouble(prop('horizontal'));
 
   // Button properties
   String? get label => extractString(prop('label'));

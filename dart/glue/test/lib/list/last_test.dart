@@ -1,5 +1,5 @@
-import 'package:glue/src/eval.dart';
 import 'package:glue/src/env.dart';
+import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/lib/list/last.dart';
 import 'package:test/test.dart';

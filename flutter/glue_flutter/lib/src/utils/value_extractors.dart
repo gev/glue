@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
-import 'package:glue/src/ir.dart';
-import 'package:glue/src/eval.dart';
-import 'package:glue/src/either.dart';
-import 'package:glue/src/runtime.dart';
-import 'package:glue/src/eval/error.dart';
+import 'package:glue/either.dart';
+import 'package:glue/error.dart';
+import 'package:glue/eval.dart';
+import 'package:glue/ir.dart';
+import 'package:glue/runtime.dart';
 import 'package:glue_flutter/src/utils/color_parser.dart';
 
 /// Utility functions for extracting values from Glue IR

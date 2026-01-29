@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:glue/src/ir.dart';
+import 'package:glue/ir.dart';
 
 /// FloatingActionButtonLocation enum object - represents all FloatingActionButtonLocation values as Glue object properties
 /// Each property is a NativeValue wrapping the Flutter FloatingActionButtonLocation enum value

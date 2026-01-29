@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:glue/src/eval.dart';
-import 'package:glue/src/ir.dart';
+import 'package:glue/eval.dart';
+import 'package:glue/ir.dart';
 
 /// System brightness detection functions
 /// Allow accessing the device's current system brightness setting

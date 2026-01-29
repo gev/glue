@@ -1,9 +1,9 @@
-import 'package:glue/src/module.dart';
 import 'package:glue/src/lib/math/arithmetic/add.dart';
 import 'package:glue/src/lib/math/arithmetic/div.dart';
 import 'package:glue/src/lib/math/arithmetic/mod.dart';
 import 'package:glue/src/lib/math/arithmetic/mul.dart';
 import 'package:glue/src/lib/math/arithmetic/sub.dart';
+import 'package:glue/src/module.dart';
 
 /// Arithmetic module - basic mathematical operations
 /// Mirrors Haskell Glue.Lib.Math.Arithmetic exactly

@@ -1,42 +1,42 @@
-import 'package:glue/src/module.dart';
-import 'package:glue_flutter/src/lib/ui/core/widgets/text.dart';
-import 'package:glue_flutter/src/lib/ui/core/widgets/container.dart';
-import 'package:glue_flutter/src/lib/ui/core/widgets/column.dart';
-import 'package:glue_flutter/src/lib/ui/core/widgets/row.dart';
-import 'package:glue_flutter/src/lib/ui/core/widgets/center.dart';
-import 'package:glue_flutter/src/lib/ui/core/widgets/icon.dart';
-import 'package:glue_flutter/src/lib/ui/core/widgets/placeholder.dart';
-import 'package:glue_flutter/src/lib/ui/core/widgets/image.dart';
-import 'package:glue_flutter/src/lib/ui/core/widgets/list_view.dart';
-import 'package:glue_flutter/src/lib/ui/core/widgets/grid_view.dart';
-import 'package:glue_flutter/src/lib/ui/core/widgets/single_child_scroll_view.dart';
-import 'package:glue_flutter/src/lib/ui/core/widgets/custom_scroll_view.dart';
-import 'package:glue_flutter/src/lib/ui/core/widgets/sliver_list.dart';
-import 'package:glue_flutter/src/lib/ui/core/widgets/sliver_grid.dart';
+import 'package:glue/module.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/axis.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/box_fit.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/brightness.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/clip.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/cross_axis_alignment.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/filter_quality.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/flutter_logo_style.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/font_weight.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/image_repeat.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/main_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/main_axis_size.dart';
-import 'package:glue_flutter/src/lib/ui/core/styles/text_align.dart';
-import 'package:glue_flutter/src/lib/ui/core/styles/text_direction.dart';
-import 'package:glue_flutter/src/lib/ui/core/styles/vertical_direction.dart';
-import 'package:glue_flutter/src/lib/ui/core/styles/text_baseline.dart';
-import 'package:glue_flutter/src/lib/ui/core/styles/clip.dart';
-import 'package:glue_flutter/src/lib/ui/core/styles/font_weight.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/padding_all.dart'; // padding-all function
+import 'package:glue_flutter/src/lib/ui/core/styles/padding_directional.dart'; // padding-directional function
+import 'package:glue_flutter/src/lib/ui/core/styles/padding_only.dart'; // padding-only function
+import 'package:glue_flutter/src/lib/ui/core/styles/padding_symmetric.dart'; // padding-symmetric function
 import 'package:glue_flutter/src/lib/ui/core/styles/rgb.dart'; // RGB function
 import 'package:glue_flutter/src/lib/ui/core/styles/rgba.dart'; // RGBA function
-import 'package:glue_flutter/src/lib/ui/core/styles/padding_all.dart'; // padding-all function
-import 'package:glue_flutter/src/lib/ui/core/styles/padding_symmetric.dart'; // padding-symmetric function
-import 'package:glue_flutter/src/lib/ui/core/styles/padding_only.dart'; // padding-only function
-import 'package:glue_flutter/src/lib/ui/core/styles/padding_directional.dart'; // padding-directional function
-import 'package:glue_flutter/src/lib/ui/core/styles/flutter_logo_style.dart';
-import 'package:glue_flutter/src/lib/ui/core/styles/box_fit.dart';
-import 'package:glue_flutter/src/lib/ui/core/styles/image_repeat.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/system_brightness.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/text_align.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/text_baseline.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/text_direction.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/text_overflow.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/text_width_basis.dart';
-import 'package:glue_flutter/src/lib/ui/core/styles/filter_quality.dart';
-import 'package:glue_flutter/src/lib/ui/core/styles/axis.dart';
-import 'package:glue_flutter/src/lib/ui/core/styles/brightness.dart';
-import 'package:glue_flutter/src/lib/ui/core/styles/system_brightness.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/vertical_direction.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/center.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/column.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/container.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/custom_scroll_view.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/grid_view.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/icon.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/image.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/list_view.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/placeholder.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/row.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/single_child_scroll_view.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/sliver_grid.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/sliver_list.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/text.dart';
 
 final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   // Core widget functions

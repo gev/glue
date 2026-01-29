@@ -1,4 +1,3 @@
-import 'package:glue/src/module.dart';
 import 'package:glue/src/lib/list/append.dart';
 import 'package:glue/src/lib/list/butlast.dart';
 import 'package:glue/src/lib/list/car.dart';
@@ -20,6 +19,7 @@ import 'package:glue/src/lib/list/reverse.dart';
 import 'package:glue/src/lib/list/sort.dart';
 import 'package:glue/src/lib/list/take.dart';
 import 'package:glue/src/lib/list/zip.dart';
+import 'package:glue/src/module.dart';
 
 /// List module - list manipulation functions
 /// Mirrors Haskell Glue.Lib.List exactly

@@ -1,12 +1,12 @@
-import 'package:test/test.dart';
-import 'package:glue/src/ir.dart';
-import 'package:glue/src/module.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:glue/ir.dart';
+import 'package:glue/module.dart';
 import 'package:glue_flutter/src/lib/core.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/cross_axis_alignment.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/font_weight.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/main_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/text_align.dart';
-import 'package:glue_flutter/src/lib/ui/core/styles/font_weight.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/colors.dart';
 
 /// Helper function to extract enum value from Value only (no parsing)

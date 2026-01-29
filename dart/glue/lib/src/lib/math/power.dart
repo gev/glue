@@ -1,7 +1,7 @@
-import 'package:glue/src/module.dart';
 import 'package:glue/src/lib/math/power/exp.dart';
 import 'package:glue/src/lib/math/power/pow.dart';
 import 'package:glue/src/lib/math/power/sqrt.dart';
+import 'package:glue/src/module.dart';
 
 /// Power module - exponential and power functions
 /// Mirrors Haskell Glue.Lib.Math.Power exactly

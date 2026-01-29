@@ -1,5 +1,5 @@
-import 'package:glue/src/ir.dart';
 import 'package:glue/src/env.dart';
+import 'package:glue/src/ir.dart';
 
 /// Module system data structures
 /// Mirrors Haskell Glue.Module exactly

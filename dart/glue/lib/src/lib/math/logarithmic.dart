@@ -1,7 +1,7 @@
-import 'package:glue/src/module.dart';
 import 'package:glue/src/lib/math/logarithmic/lg.dart';
 import 'package:glue/src/lib/math/logarithmic/ln.dart';
 import 'package:glue/src/lib/math/logarithmic/log.dart';
+import 'package:glue/src/module.dart';
 
 /// Logarithmic module - logarithm functions with various bases
 /// Mirrors Haskell Glue.Lib.Math.Logarithmic exactly
