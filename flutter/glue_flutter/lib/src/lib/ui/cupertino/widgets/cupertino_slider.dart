@@ -18,18 +18,16 @@ Eval<Ir> cupertinoSliderImpl(Ir props) => switch (props) {
 
 /// Create CupertinoSlider widget from properties object
 Eval<Ir> _createCupertinoSlider(WidgetProperties properties) {
-  return getRuntime().map((runtime) {
-    final widget = CupertinoSlider(
-      value: properties.cupertinoSliderValue,
-      onChanged: properties.cupertinoSliderOnChanged,
-      onChangeStart: properties.cupertinoSliderOnChangeStart,
-      onChangeEnd: properties.cupertinoSliderOnChangeEnd,
-      min: properties.cupertinoSliderMin,
-      max: properties.cupertinoSliderMax,
-      divisions: properties.cupertinoSliderDivisions,
-      activeColor: properties.cupertinoSliderActiveColor,
-      thumbColor: properties.cupertinoSliderThumbColor,
-    );
-    return IrNativeValue(Value(widget));
-  });
+  final widget = CupertinoSlider(
+    value: properties.getDouble('value') ?? 0.5,
+    onChanged: properties.getValue('on-changed'),
+    onChangeStart: properties.getValue('on-change-start'),
+    onChangeEnd: properties.getValue('on-change-end'),
+    min: properties.getDouble('min') ?? 0.0,
+    max: properties.getDouble('max') ?? 1.0,
+    divisions: properties.getInt('divisions'),
+    activeColor: properties.getColor('active-color'),
+    thumbColor: properties.getColor('thumb-color') ?? const Color(0xFFFFFFFF),
+  );
+  return Eval.pure(IrNativeValue(Value(widget)));
 }
