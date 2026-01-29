@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
-import 'package:glue_flutter/src/utils/core_properties.dart';
+import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// GridView widget function
 /// Creates Flutter GridView from Glue (grid-view props) expressions
@@ -10,13 +10,13 @@ final Ir gridView = IrNativeFunc(gridViewImpl);
 /// GridView implementation - takes properties object
 Eval<Ir> gridViewImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createGridView(
-    CoreProperties(properties.unlock),
+    WidgetProperties(properties.unlock),
   ),
-  _ => _createGridView(CoreProperties.empty()),
+  _ => _createGridView(WidgetProperties.empty()),
 };
 
 /// Create GridView widget from properties
-Eval<Ir> _createGridView(CoreProperties properties) {
+Eval<Ir> _createGridView(WidgetProperties properties) {
   final gridViewWidget = GridView(
     scrollDirection: properties.gridViewScrollDirection,
     reverse: properties.gridViewReverse,

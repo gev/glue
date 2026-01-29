@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
-import 'package:glue_flutter/src/utils/material_properties.dart';
+import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// ExpansionTile widget function
 /// Creates Flutter ExpansionTile from Glue (expansion-tile props) expressions
@@ -10,13 +10,13 @@ final Ir expansionTile = IrNativeFunc(expansionTileImpl);
 /// ExpansionTile implementation - takes properties object
 Eval<Ir> expansionTileImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createExpansionTile(
-    MaterialProperties(properties.unlock),
+    WidgetProperties(properties.unlock),
   ),
-  _ => _createExpansionTile(MaterialProperties.empty()),
+  _ => _createExpansionTile(WidgetProperties.empty()),
 };
 
 /// Create ExpansionTile widget from properties
-Eval<Ir> _createExpansionTile(MaterialProperties properties) {
+Eval<Ir> _createExpansionTile(WidgetProperties properties) {
   final expansionTileWidget = ExpansionTile(
     leading: properties.expansionTileLeading,
     title: properties.expansionTileTitle ?? const SizedBox(),

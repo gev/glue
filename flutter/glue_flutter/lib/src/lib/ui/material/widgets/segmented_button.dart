@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
-import 'package:glue_flutter/src/utils/material_properties.dart';
+import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// SegmentedButton widget function
 /// Creates Flutter SegmentedButton from Glue (segmented-button props) expressions
@@ -10,13 +10,13 @@ final Ir segmentedButton = IrNativeFunc(segmentedButtonImpl);
 /// SegmentedButton implementation - takes properties object
 Eval<Ir> segmentedButtonImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createSegmentedButton(
-    MaterialProperties(properties.unlock),
+    WidgetProperties(properties.unlock),
   ),
-  _ => _createSegmentedButton(MaterialProperties.empty()),
+  _ => _createSegmentedButton(WidgetProperties.empty()),
 };
 
 /// Create SegmentedButton widget from properties
-Eval<Ir> _createSegmentedButton(MaterialProperties properties) {
+Eval<Ir> _createSegmentedButton(WidgetProperties properties) {
   // Convert widgets to ButtonSegment objects
   final segments = (properties.segmentedSegments ?? []).map((widget) {
     return ButtonSegment(

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
-import 'package:glue_flutter/src/utils/cupertino_properties.dart';
+import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// CupertinoPicker widget function
 /// Creates Flutter CupertinoPicker from Glue expressions
@@ -11,13 +11,13 @@ final Ir cupertinoPicker = IrNativeFunc(cupertinoPickerImpl);
 /// CupertinoPicker implementation - takes properties object with keyword arguments
 Eval<Ir> cupertinoPickerImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createCupertinoPicker(
-    CupertinoProperties(properties.unlock),
+    WidgetProperties(properties.unlock),
   ),
-  _ => _createCupertinoPicker(CupertinoProperties.empty()),
+  _ => _createCupertinoPicker(WidgetProperties.empty()),
 };
 
 /// Create CupertinoPicker widget from properties object
-Eval<Ir> _createCupertinoPicker(CupertinoProperties properties) {
+Eval<Ir> _createCupertinoPicker(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final callback = properties.cupertinoPickerOnSelectedItemChanged != null
         ? (int value) => properties.cupertinoPickerOnSelectedItemChanged!(value)

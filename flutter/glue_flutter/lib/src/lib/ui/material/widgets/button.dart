@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
-import 'package:glue_flutter/src/utils/material_properties.dart';
+import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// Button widget function
 /// Creates Flutter ElevatedButton from Glue (button props) expressions
@@ -11,13 +11,13 @@ final Ir button = IrNativeFunc(buttonImpl);
 /// Button implementation - takes properties object with keyword arguments
 Eval<Ir> buttonImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createButton(
-    MaterialProperties(properties.unlock),
+    WidgetProperties(properties.unlock),
   ),
-  _ => _createButton(MaterialProperties.empty()),
+  _ => _createButton(WidgetProperties.empty()),
 };
 
 /// Create Button widget from properties object
-Eval<Ir> _createButton(MaterialProperties properties) {
+Eval<Ir> _createButton(WidgetProperties properties) {
   final label = properties.label ?? 'Button'; // Extract label from properties
 
   // Get runtime and create widget

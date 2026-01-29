@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
-import 'package:glue_flutter/src/utils/material_properties.dart';
+import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// CircularProgressIndicator widget function
 /// Creates Flutter CircularProgressIndicator from Glue (circular-progress-indicator props) expressions
@@ -12,13 +12,13 @@ final Ir circularProgressIndicator = IrNativeFunc(
 /// CircularProgressIndicator implementation - takes properties object
 Eval<Ir> circularProgressIndicatorImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createCircularProgressIndicator(
-    MaterialProperties(properties.unlock),
+    WidgetProperties(properties.unlock),
   ),
-  _ => _createCircularProgressIndicator(MaterialProperties.empty()),
+  _ => _createCircularProgressIndicator(WidgetProperties.empty()),
 };
 
 /// Create CircularProgressIndicator widget from properties
-Eval<Ir> _createCircularProgressIndicator(MaterialProperties properties) {
+Eval<Ir> _createCircularProgressIndicator(WidgetProperties properties) {
   final circularProgressIndicatorWidget = CircularProgressIndicator(
     value: properties.circularProgressValue,
     backgroundColor: properties.circularProgressBackgroundColor,

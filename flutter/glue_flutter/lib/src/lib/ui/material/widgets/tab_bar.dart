@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
-import 'package:glue_flutter/src/utils/material_properties.dart';
+import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// TabBar widget function
 /// Creates Flutter TabBar from Glue (tab-bar props) expressions
@@ -10,13 +10,13 @@ final Ir tabBar = IrNativeFunc(tabBarImpl);
 /// TabBar implementation - takes properties object
 Eval<Ir> tabBarImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createTabBar(
-    MaterialProperties(properties.unlock),
+    WidgetProperties(properties.unlock),
   ),
-  _ => _createTabBar(MaterialProperties.empty()),
+  _ => _createTabBar(WidgetProperties.empty()),
 };
 
 /// Create TabBar widget from properties
-Eval<Ir> _createTabBar(MaterialProperties properties) {
+Eval<Ir> _createTabBar(WidgetProperties properties) {
   final tabBarWidget = TabBar(
     tabs: properties.tabBarTabs ?? [],
     controller: properties.tabBarController,

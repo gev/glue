@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
-import 'package:glue_flutter/src/utils/material_properties.dart';
+import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// Slider widget function
 /// Creates Flutter Slider from Glue (slider props) expressions
@@ -10,13 +10,13 @@ final Ir slider = IrNativeFunc(sliderImpl);
 /// Slider implementation - takes properties object
 Eval<Ir> sliderImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createSlider(
-    MaterialProperties(properties.unlock),
+    WidgetProperties(properties.unlock),
   ),
-  _ => _createSlider(MaterialProperties.empty()),
+  _ => _createSlider(WidgetProperties.empty()),
 };
 
 /// Create Slider widget from properties
-Eval<Ir> _createSlider(MaterialProperties properties) {
+Eval<Ir> _createSlider(WidgetProperties properties) {
   final sliderWidget = Slider(
     value: properties.sliderValue,
     secondaryTrackValue: properties.sliderSecondaryTrackValue,

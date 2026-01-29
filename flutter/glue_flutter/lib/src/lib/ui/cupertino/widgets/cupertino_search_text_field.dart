@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
-import 'package:glue_flutter/src/utils/cupertino_properties.dart';
+import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// CupertinoSearchTextField widget function
 /// Creates Flutter CupertinoSearchTextField from Glue expressions
@@ -11,13 +11,13 @@ final Ir cupertinoSearchTextField = IrNativeFunc(cupertinoSearchTextFieldImpl);
 /// CupertinoSearchTextField implementation - takes properties object with keyword arguments
 Eval<Ir> cupertinoSearchTextFieldImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createCupertinoSearchTextField(
-    CupertinoProperties(properties.unlock),
+    WidgetProperties(properties.unlock),
   ),
-  _ => _createCupertinoSearchTextField(CupertinoProperties.empty()),
+  _ => _createCupertinoSearchTextField(WidgetProperties.empty()),
 };
 
 /// Create CupertinoSearchTextField widget from properties object
-Eval<Ir> _createCupertinoSearchTextField(CupertinoProperties properties) {
+Eval<Ir> _createCupertinoSearchTextField(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final widget = CupertinoSearchTextField(
       controller: properties.cupertinoSearchTextFieldController,

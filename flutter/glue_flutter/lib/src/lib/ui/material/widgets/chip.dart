@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
-import 'package:glue_flutter/src/utils/material_properties.dart';
+import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// Chip widget function
 /// Creates Flutter Chip from Glue (chip props) expressions
@@ -10,13 +10,13 @@ final Ir chip = IrNativeFunc(chipImpl);
 /// Chip implementation - takes properties object
 Eval<Ir> chipImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createChip(
-    MaterialProperties(properties.unlock),
+    WidgetProperties(properties.unlock),
   ),
-  _ => _createChip(MaterialProperties.empty()),
+  _ => _createChip(WidgetProperties.empty()),
 };
 
 /// Create Chip widget from properties
-Eval<Ir> _createChip(MaterialProperties properties) {
+Eval<Ir> _createChip(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final chipWidget = Chip(
       avatar: properties.chipAvatar,

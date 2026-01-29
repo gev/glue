@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
-import 'package:glue_flutter/src/utils/cupertino_properties.dart';
+import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// CupertinoSegmentedControl widget function
 /// Creates Flutter CupertinoSegmentedControl from Glue expressions
@@ -13,13 +13,13 @@ final Ir cupertinoSegmentedControl = IrNativeFunc(
 /// CupertinoSegmentedControl implementation - takes properties object with keyword arguments
 Eval<Ir> cupertinoSegmentedControlImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createCupertinoSegmentedControl(
-    CupertinoProperties(properties.unlock),
+    WidgetProperties(properties.unlock),
   ),
-  _ => _createCupertinoSegmentedControl(CupertinoProperties.empty()),
+  _ => _createCupertinoSegmentedControl(WidgetProperties.empty()),
 };
 
 /// Create CupertinoSegmentedControl widget from properties object
-Eval<Ir> _createCupertinoSegmentedControl(CupertinoProperties properties) {
+Eval<Ir> _createCupertinoSegmentedControl(WidgetProperties properties) {
   final widget = CupertinoSegmentedControl(
     children: properties.cupertinoSegmentedControlChildren,
     onValueChanged:

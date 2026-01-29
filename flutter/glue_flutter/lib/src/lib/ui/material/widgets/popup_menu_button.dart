@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
-import 'package:glue_flutter/src/utils/material_properties.dart';
+import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// PopupMenuButton widget function
 /// Creates Flutter PopupMenuButton from Glue (popup-menu-button props) expressions
@@ -10,13 +10,13 @@ final Ir popupMenuButton = IrNativeFunc(popupMenuButtonImpl);
 /// PopupMenuButton implementation - takes properties object
 Eval<Ir> popupMenuButtonImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createPopupMenuButton(
-    MaterialProperties(properties.unlock),
+    WidgetProperties(properties.unlock),
   ),
-  _ => _createPopupMenuButton(MaterialProperties.empty()),
+  _ => _createPopupMenuButton(WidgetProperties.empty()),
 };
 
 /// Create PopupMenuButton widget from properties
-Eval<Ir> _createPopupMenuButton(MaterialProperties properties) {
+Eval<Ir> _createPopupMenuButton(WidgetProperties properties) {
   final popupMenuButtonWidget = PopupMenuButton<Object>(
     itemBuilder: properties.popupMenuItemBuilder ?? (context) => [],
     initialValue: properties.popupMenuInitialValue,

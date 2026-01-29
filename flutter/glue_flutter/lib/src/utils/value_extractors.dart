@@ -49,7 +49,7 @@ Color? extractColor(Ir? value) => switch (value) {
 };
 
 /// Extract children list from Glue IR value
-List<Widget>? extractChildren(Ir? value) => switch (value) {
+List<Widget> extractChildren(Ir? value) => switch (value) {
   IrList(:final elements) =>
     elements
         .map(
@@ -60,7 +60,7 @@ List<Widget>? extractChildren(Ir? value) => switch (value) {
         )
         .whereType<Widget>()
         .toList(),
-  _ => null,
+  _ => [],
 };
 
 /// Extract VoidCallback from Glue IR value with provided runtime

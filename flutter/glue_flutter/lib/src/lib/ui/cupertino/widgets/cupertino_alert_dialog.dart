@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
-import 'package:glue_flutter/src/utils/cupertino_properties.dart';
+import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// CupertinoAlertDialog widget function
 /// Creates Flutter CupertinoAlertDialog from Glue expressions
@@ -11,13 +11,13 @@ final Ir cupertinoAlertDialog = IrNativeFunc(cupertinoAlertDialogImpl);
 /// CupertinoAlertDialog implementation - takes properties object with keyword arguments
 Eval<Ir> cupertinoAlertDialogImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createCupertinoAlertDialog(
-    CupertinoProperties(properties.unlock),
+    WidgetProperties(properties.unlock),
   ),
-  _ => _createCupertinoAlertDialog(CupertinoProperties.empty()),
+  _ => _createCupertinoAlertDialog(WidgetProperties.empty()),
 };
 
 /// Create CupertinoAlertDialog widget from properties object
-Eval<Ir> _createCupertinoAlertDialog(CupertinoProperties properties) {
+Eval<Ir> _createCupertinoAlertDialog(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final alertDialogWidget = CupertinoAlertDialog(
       title: properties.alertDialogTitle,

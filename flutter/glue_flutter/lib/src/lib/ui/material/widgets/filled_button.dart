@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
-import 'package:glue_flutter/src/utils/material_properties.dart';
+import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// FilledButton widget function
 /// Creates Flutter FilledButton from Glue (filled-button props) expressions
@@ -11,13 +11,13 @@ final Ir filledButton = IrNativeFunc(filledButtonImpl);
 /// FilledButton implementation - takes properties object with keyword arguments
 Eval<Ir> filledButtonImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createFilledButton(
-    MaterialProperties(properties.unlock),
+    WidgetProperties(properties.unlock),
   ),
-  _ => _createFilledButton(MaterialProperties.empty()),
+  _ => _createFilledButton(WidgetProperties.empty()),
 };
 
 /// Create FilledButton widget from properties object
-Eval<Ir> _createFilledButton(MaterialProperties properties) {
+Eval<Ir> _createFilledButton(WidgetProperties properties) {
   final label = properties.label ?? 'Button'; // Extract label from properties
 
   // Get runtime and create widget

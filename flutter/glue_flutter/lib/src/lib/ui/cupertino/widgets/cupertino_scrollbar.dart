@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
-import 'package:glue_flutter/src/utils/cupertino_properties.dart';
+import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// CupertinoScrollbar widget function
 /// Creates Flutter CupertinoScrollbar from Glue (scrollbar props) expressions
@@ -11,13 +11,13 @@ final Ir cupertinoScrollbar = IrNativeFunc(cupertinoScrollbarImpl);
 /// CupertinoScrollbar implementation - takes properties object with keyword arguments
 Eval<Ir> cupertinoScrollbarImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createCupertinoScrollbar(
-    CupertinoProperties(properties.unlock),
+    WidgetProperties(properties.unlock),
   ),
-  _ => _createCupertinoScrollbar(CupertinoProperties.empty()),
+  _ => _createCupertinoScrollbar(WidgetProperties.empty()),
 };
 
 /// Create CupertinoScrollbar widget from properties object
-Eval<Ir> _createCupertinoScrollbar(CupertinoProperties properties) {
+Eval<Ir> _createCupertinoScrollbar(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final scrollbarWidget = CupertinoScrollbar(
       controller: properties.scrollController,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
-import 'package:glue_flutter/src/utils/material_properties.dart';
+import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// BottomNavigationBar widget function
 /// Creates Flutter BottomNavigationBar from Glue (bottom-navigation-bar props) expressions
@@ -10,13 +10,13 @@ final Ir bottomNavigationBar = IrNativeFunc(bottomNavigationBarImpl);
 /// BottomNavigationBar implementation - takes properties object
 Eval<Ir> bottomNavigationBarImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createBottomNavigationBar(
-    MaterialProperties(properties.unlock),
+    WidgetProperties(properties.unlock),
   ),
-  _ => _createBottomNavigationBar(MaterialProperties.empty()),
+  _ => _createBottomNavigationBar(WidgetProperties.empty()),
 };
 
 /// Create BottomNavigationBar widget from properties
-Eval<Ir> _createBottomNavigationBar(MaterialProperties properties) {
+Eval<Ir> _createBottomNavigationBar(WidgetProperties properties) {
   final bottomNavigationBarWidget = BottomNavigationBar(
     items: properties.bottomNavigationBarItems ?? [],
     onTap: properties.onBottomNavigationBarTap,

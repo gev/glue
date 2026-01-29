@@ -2,7 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
-import 'package:glue_flutter/src/utils/material_properties.dart';
+import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// Switch widget function
 /// Creates Flutter Switch from Glue (switch props) expressions
@@ -11,13 +11,13 @@ final Ir switchWidget = IrNativeFunc(switchImpl);
 /// Switch implementation - takes properties object
 Eval<Ir> switchImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createSwitch(
-    MaterialProperties(properties.unlock),
+    WidgetProperties(properties.unlock),
   ),
-  _ => _createSwitch(MaterialProperties.empty()),
+  _ => _createSwitch(WidgetProperties.empty()),
 };
 
 /// Create Switch widget from properties
-Eval<Ir> _createSwitch(MaterialProperties properties) {
+Eval<Ir> _createSwitch(WidgetProperties properties) {
   final switchWidget = Switch(
     value: properties.switchValue,
     onChanged: properties.onSwitchChanged,

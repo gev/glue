@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
-import 'package:glue_flutter/src/utils/core_properties.dart';
+import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// Placeholder widget function
 /// Creates Flutter Placeholder from Glue (placeholder props) expressions
@@ -11,13 +11,13 @@ final Ir placeholder = IrNativeFunc(placeholderImpl);
 /// Placeholder implementation - takes properties object
 Eval<Ir> placeholderImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createPlaceholder(
-    CoreProperties(properties.unlock),
+    WidgetProperties(properties.unlock),
   ),
   _ => throwError(wrongArgumentType(['object'])),
 };
 
 /// Create Placeholder widget from properties
-Eval<Ir> _createPlaceholder(CoreProperties properties) {
+Eval<Ir> _createPlaceholder(WidgetProperties properties) {
   final placeholderWidget = Placeholder(
     color: properties.color ?? const Color(0xFF455A64),
     strokeWidth: properties.size ?? 2.0,

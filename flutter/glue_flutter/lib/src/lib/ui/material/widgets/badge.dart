@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
-import 'package:glue_flutter/src/utils/material_properties.dart';
+import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// Badge widget function
 /// Creates Flutter Badge from Glue (badge props) expressions
@@ -11,13 +11,13 @@ final Ir badge = IrNativeFunc(badgeImpl);
 /// Badge implementation - takes properties object
 Eval<Ir> badgeImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createBadge(
-    MaterialProperties(properties.unlock),
+    WidgetProperties(properties.unlock),
   ),
   _ => throwError(wrongArgumentType(['object'])),
 };
 
 /// Create Badge widget from properties
-Eval<Ir> _createBadge(MaterialProperties properties) {
+Eval<Ir> _createBadge(WidgetProperties properties) {
   if (properties.child == null) {
     throwError(wrongArgumentType(['child property required']));
   }

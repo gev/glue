@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
-import 'package:glue_flutter/src/utils/cupertino_properties.dart';
+import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// CupertinoNavigationBar widget function
 /// Creates Flutter CupertinoNavigationBar from Glue expressions
@@ -11,13 +11,13 @@ final Ir cupertinoNavigationBar = IrNativeFunc(cupertinoNavigationBarImpl);
 /// CupertinoNavigationBar implementation - takes properties object with keyword arguments
 Eval<Ir> cupertinoNavigationBarImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createCupertinoNavigationBar(
-    CupertinoProperties(properties.unlock),
+    WidgetProperties(properties.unlock),
   ),
-  _ => _createCupertinoNavigationBar(CupertinoProperties.empty()),
+  _ => _createCupertinoNavigationBar(WidgetProperties.empty()),
 };
 
 /// Create CupertinoNavigationBar widget from properties object
-Eval<Ir> _createCupertinoNavigationBar(CupertinoProperties properties) {
+Eval<Ir> _createCupertinoNavigationBar(WidgetProperties properties) {
   final navigationBarWidget = CupertinoNavigationBar(
     leading: properties.cupertinoNavigationBarLeading,
     automaticallyImplyLeading:

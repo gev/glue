@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
-import 'package:glue_flutter/src/utils/material_properties.dart';
+import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// IconButton widget function
 /// Creates Flutter IconButton from Glue (icon-button props) expressions
@@ -10,13 +10,13 @@ final Ir iconButton = IrNativeFunc(iconButtonImpl);
 /// IconButton implementation - takes properties object
 Eval<Ir> iconButtonImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createIconButton(
-    MaterialProperties(properties.unlock),
+    WidgetProperties(properties.unlock),
   ),
-  _ => _createIconButton(MaterialProperties.empty()),
+  _ => _createIconButton(WidgetProperties.empty()),
 };
 
 /// Create IconButton widget from properties
-Eval<Ir> _createIconButton(MaterialProperties properties) {
+Eval<Ir> _createIconButton(WidgetProperties properties) {
   // Get runtime and create widget
   return getRuntime().map((runtime) {
     final iconButtonWidget = IconButton(

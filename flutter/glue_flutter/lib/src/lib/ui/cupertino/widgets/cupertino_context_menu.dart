@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
-import 'package:glue_flutter/src/utils/cupertino_properties.dart';
+import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// CupertinoContextMenu widget function
 /// Creates Flutter CupertinoContextMenu from Glue expressions
@@ -11,13 +11,13 @@ final Ir cupertinoContextMenu = IrNativeFunc(cupertinoContextMenuImpl);
 /// CupertinoContextMenu implementation - takes properties object with keyword arguments
 Eval<Ir> cupertinoContextMenuImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createCupertinoContextMenu(
-    CupertinoProperties(properties.unlock),
+    WidgetProperties(properties.unlock),
   ),
-  _ => _createCupertinoContextMenu(CupertinoProperties.empty()),
+  _ => _createCupertinoContextMenu(WidgetProperties.empty()),
 };
 
 /// Create CupertinoContextMenu widget from properties object
-Eval<Ir> _createCupertinoContextMenu(CupertinoProperties properties) {
+Eval<Ir> _createCupertinoContextMenu(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final contextMenuWidget = CupertinoContextMenu(
       actions: properties.cupertinoContextMenuActions,

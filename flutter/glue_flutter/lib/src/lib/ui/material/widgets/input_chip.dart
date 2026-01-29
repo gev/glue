@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
-import 'package:glue_flutter/src/utils/material_properties.dart';
+import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// InputChip widget function
 /// Creates Flutter InputChip from Glue (input-chip props) expressions
@@ -10,13 +10,13 @@ final Ir inputChip = IrNativeFunc(inputChipImpl);
 /// InputChip implementation - takes properties object
 Eval<Ir> inputChipImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createInputChip(
-    MaterialProperties(properties.unlock),
+    WidgetProperties(properties.unlock),
   ),
-  _ => _createInputChip(MaterialProperties.empty()),
+  _ => _createInputChip(WidgetProperties.empty()),
 };
 
 /// Create InputChip widget from properties
-Eval<Ir> _createInputChip(MaterialProperties properties) {
+Eval<Ir> _createInputChip(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final inputChipWidget = InputChip(
       selected: properties.inputChipSelected,
