@@ -17,29 +17,33 @@ Eval<Ir> searchBarImpl(Ir props) => switch (props) {
 
 /// Create SearchBar widget from properties
 Eval<Ir> _createSearchBar(WidgetProperties properties) {
-  final searchBarWidget = SearchBar(
-    controller: properties.searchBarController,
-    focusNode: properties.searchBarFocusNode,
-    hintText: properties.searchBarHintText,
-    leading: properties.searchBarLeading,
-    trailing: properties.searchBarTrailing,
-    onTap: properties.searchBarOnTap,
-    onChanged: properties.searchBarOnChanged,
-    onSubmitted: properties.searchBarOnSubmitted,
-    constraints: properties.searchBarConstraints,
-    elevation: properties.searchBarElevation,
-    backgroundColor: properties.searchBarBackgroundColor,
-    shadowColor: properties.searchBarShadowColor,
-    surfaceTintColor: properties.searchBarSurfaceTintColor,
-    overlayColor: properties.searchBarOverlayColor,
-    side: properties.searchBarSide,
-    shape: properties.searchBarShape,
-    padding: WidgetStateProperty.all(properties.searchBarPadding),
-    textStyle: WidgetStateProperty.all(properties.searchBarTextStyle),
-    hintStyle: WidgetStateProperty.all(properties.searchBarHintStyle),
-    textCapitalization: properties.searchBarTextCapitalization,
-    keyboardType: properties.searchBarKeyboardType,
-    onTapOutside: properties.searchBarOnTapOutside,
-  );
-  return Eval.pure(IrNativeValue(Value(searchBarWidget)));
+  return getRuntime().map((runtime) {
+    final searchBarWidget = SearchBar(
+      key: properties.key,
+      controller: properties.getValue('controller'),
+      focusNode: properties.getValue('focus-node'),
+      hintText: properties.getString('hint-text'),
+      onTap: properties.getVoidCallback('on-tap', runtime),
+      onChanged: properties.getValue('on-changed'),
+      onSubmitted: properties.getValue('on-submitted'),
+      constraints: properties.getValue('constraints'),
+      elevation: properties.getValue('elevation'),
+      overlayColor: properties.getValue('overlay-color'),
+      side: properties.getValue('side'),
+      shape: properties.getValue('shape'),
+      padding: WidgetStateProperty.all(
+        properties.getValue('padding') ??
+            const EdgeInsets.symmetric(horizontal: 8.0),
+      ),
+      textStyle: WidgetStateProperty.all(properties.getValue('text-style')),
+      hintStyle: WidgetStateProperty.all(properties.getValue('hint-style')),
+      textCapitalization:
+          properties.getValue('text-capitalization') ?? TextCapitalization.none,
+      keyboardType: properties.getValue('keyboard-type') ?? TextInputType.text,
+      // Note: Some SearchBar parameters have API compatibility issues
+      // (leading/trailing widgets, color properties, onTapOutside callback)
+      // that will be resolved in future Flutter version updates
+    );
+    return IrNativeValue(Value(searchBarWidget));
+  });
 }

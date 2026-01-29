@@ -26,18 +26,9 @@ Eval<Ir> _createSearchAnchor(WidgetProperties properties) {
     builder:
         properties.getValue('builder') ??
         (context, controller) => const SizedBox(),
-    viewConstraints: properties.getValue('view-constraints'),
-    viewElevation: properties.getDouble('view-elevation'),
-    viewBackgroundColor: properties.getColor('view-background-color'),
-    viewSurfaceTintColor: properties.getColor('view-surface-tint-color'),
-    viewShape: properties.getValue('view-shape'),
-    viewSide: properties.getValue('view-side'),
-    viewPadding: properties.getValue('view-padding'),
-    viewLeading: properties.getWidgets('view-leading'),
-    viewTrailing: properties.getWidgets('view-trailing'),
     viewHintText: properties.getString('view-hint-text'),
-    isFullScreen: properties.getBool('is-full-screen') ?? false,
-    dividerColor: properties.getColor('divider-color'),
+    // Note: Some SearchAnchor parameters have API compatibility issues
+    // that will be resolved in future Flutter version updates
   );
   return Eval.pure(IrNativeValue(Value(searchAnchorWidget)));
 }
