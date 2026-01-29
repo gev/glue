@@ -27,8 +27,15 @@ Fix all 752 undefined getter/method errors in flutter/glue_flutter/lib/src/lib/u
 - **🌟 CRITICAL**: Use [`context/docs/flutter_widgets/*`](#https://github.com/gev/glue/tree/main/context/docs/flutter_widgets) documentation to get **exact Flutter property types** before implementing
 - Each widget doc contains complete constructor signatures with parameter types (see [README](context/docs/flutter_widgets/README.md) for organization)
 - **Examples of authorative type information:**
-  - [`cupertino_widgets.md`](context/docs/flutter_widgets/cupertino_widgets.md) - All Cupertiono constructors
-  - [`material/`](context/docs/flutter_widgets/material/) - Material widget constructors
+  - [`cupertino_widgets.md`](context/docs/flutter_widgets/cupertino_widgets.md) - All Cupertino constructors
+  - **Material Widget Docs:**
+    - [`material/README.md`](context/docs/flutter_widgets/material/README.md) - Material overview and organization
+    - [`material/actions.md`](context/docs/flutter_widgets/material/actions.md) - Action buttons and FABs
+    - [`material/communication.md`](context/docs/flutter_widgets/material/communication.md) - Communication widgets
+    - [`material/containment.md`](context/docs/flutter_widgets/material/containment.md) - Cards, lists, sheets
+    - [`material/navigation.md`](context/docs/flutter_widgets/material/navigation.md) - AppBar, BottomNav, Drawers
+    - [`material/selection.md`](context/docs/flutter_widgets/material/selection.md) - Checkboxes, switches, chips
+    - [`material/text_inputs.md`](context/docs/flutter_widgets/material/text_inputs.md) - TextFields, Autocomplete
   - [`input_widgets.md`](context/docs/flutter_widgets/input_widgets.md) - Form/input widget types
   - [`layout_widgets.md`](context/docs/flutter_widgets/layout_widgets.md) - Layout widget types
 
