@@ -26,7 +26,8 @@ Fix all 752 undefined getter/method errors in flutter/glue_flutter/lib/src/lib/u
 ### Property Types & Correct Getter Methods
 - **🌟 CRITICAL**: Use [`context/docs/flutter_widgets/*`](#https://github.com/gev/glue/tree/main/context/docs/flutter_widgets) documentation to get **exact Flutter property types** before implementing
 - Each widget doc contains complete constructor signatures with parameter types (see [README](context/docs/flutter_widgets/README.md) for organization)
-- **Examples of authorative type information:**
+- **Examples of authoritative type information:**
+  - [`basic_widgets.md`](context/docs/flutter_widgets/basic_widgets.md) - Core layout widgets (Container, Row, Column, etc.)
   - [`cupertino_widgets.md`](context/docs/flutter_widgets/cupertino_widgets.md) - All Cupertino constructors
   - **Material Widget Docs:**
     - [`material/README.md`](context/docs/flutter_widgets/material/README.md) - Material overview and organization
@@ -38,6 +39,8 @@ Fix all 752 undefined getter/method errors in flutter/glue_flutter/lib/src/lib/u
     - [`material/text_inputs.md`](context/docs/flutter_widgets/material/text_inputs.md) - TextFields, Autocomplete
   - [`input_widgets.md`](context/docs/flutter_widgets/input_widgets.md) - Form/input widget types
   - [`layout_widgets.md`](context/docs/flutter_widgets/layout_widgets.md) - Layout widget types
+  - [`asset_widgets.md`](context/docs/flutter_widgets/asset_widgets.md) - Image/Icon loading widget types
+  - [`themes.md`](context/docs/flutter_widgets/themes.md) - Theme system functionality
 
 **Getter Method Mapping (based on exact types from widget_docs):**
 - **bool**: `properties.getBool('property-name')` *(e.g., thumbVisibility, animating)*
