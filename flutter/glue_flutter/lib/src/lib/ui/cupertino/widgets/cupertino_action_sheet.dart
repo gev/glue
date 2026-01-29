@@ -18,17 +18,17 @@ Eval<Ir> cupertinoActionSheetImpl(Ir props) => switch (props) {
 
 /// Create CupertinoActionSheet widget from properties object
 Eval<Ir> _createCupertinoActionSheet(WidgetProperties properties) {
-  return getRuntime().map((runtime) {
-    final actionSheetWidget = CupertinoActionSheet(
-      title: properties.cupertinoActionSheetTitle,
-      message: properties.cupertinoActionSheetMessage,
-      actions: properties.cupertinoActionSheetActions ?? [],
-      messageScrollController:
-          properties.cupertinoActionSheetMessageScrollController,
-      actionScrollController:
-          properties.cupertinoActionSheetActionScrollController,
-      cancelButton: properties.cupertinoActionSheetCancelButton,
-    );
-    return IrNativeValue(Value(actionSheetWidget));
-  });
+  final actionSheetWidget = CupertinoActionSheet(
+    title: properties.getWidget('cupertino-action-sheet-title'),
+    message: properties.getWidget('cupertino-action-sheet-message'),
+    actions: properties.getWidgets('cupertino-action-sheet-actions') ?? [],
+    messageScrollController: properties.getValue(
+      'cupertino-action-sheet-message-scroll-controller',
+    ),
+    actionScrollController: properties.getValue(
+      'cupertino-action-sheet-action-scroll-controller',
+    ),
+    cancelButton: properties.getWidget('cupertino-action-sheet-cancel-button'),
+  );
+  return Eval.pure(IrNativeValue(Value(actionSheetWidget)));
 }

@@ -24,8 +24,12 @@ Eval<Ir> _createCupertinoActivityIndicator(WidgetProperties properties) {
     IrNativeValue(
       Value(
         CupertinoActivityIndicator(
-          animating: properties.cupertinoActivityIndicatorAnimating,
-          radius: properties.cupertinoActivityIndicatorRadius,
+          animating:
+              properties.getBool('cupertino-activity-indicator-animating') ??
+              true,
+          radius:
+              properties.getDouble('cupertino-activity-indicator-radius') ??
+              10.0,
         ),
       ),
     ),
