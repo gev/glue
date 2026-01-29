@@ -16,6 +16,8 @@ Review the local Flutter widgets documentation:
   - [Selection](../docs/flutter_widgets/material/selection.md)
   - [Text Inputs](../docs/flutter_widgets/material/text_inputs.md)
 
+### IMPORTANT!!! This document should contains every widget and every widget property presence in the documentation above!
+
 ### Property Access Methods by Type
 - **Direct Property Access**: `key`, `child`, `children`, `width`, `height`, `top`, `bottom`, `left`, `right`, `start`, `end`, `horizontal`, `vertical`
   - Access as: `properties.key`, `properties.child`, `properties.children`, etc.
@@ -25,7 +27,7 @@ Review the local Flutter widgets documentation:
 - **int**: `properties.getInt('property-name')`
 - **String**: `properties.getString('property-name')`
 - **Widget**: `properties.getWidget('property-name')`
-- **List<Widget>**: `properties.getWidgets('property-name')`
+- **List\<Widge\>**: `properties.getWidgets('property-name')`
 - **Complex/Custom/ScrollController/ValueChanged<T>**: `properties.getValue('property-name')`
 - **VoidCallback**: `properties.getVoidCallback('property-name', runtime)` *(requires runtime wrapper)*
 
@@ -668,4 +670,578 @@ Review the local Flutter widgets documentation:
 | [ ] | onPressed | VoidCallback? | getVoidCallback | on-pressed |
 | [ ] | onLongPress | VoidCallback? | getVoidCallback | on-long-press |
 | [ ] | mouseCursor | MouseCursor? | getValue | mouse-cursor |
-| [ ] | focusNode | FocusNode? |
+| [ ] | focusNode | FocusNode? | getValue | focus-node |
+| [ ] | restorationId | String? | getString | restoration-id |
+
+#### [ ] | OutlinedButton | material/widgets/outlined_button.dart
+| todo check | flutter property name | flutter type | property getter/method without parameters | property name |
+|------------|----------------------|--------------|------------------------------------------|---------------|
+| [ ] | key | Key? | properties.key | - |
+| [ ] | onPressed | VoidCallback? | getVoidCallback | on-pressed |
+| [ ] | onLongPress | VoidCallback? | getVoidCallback | on-long-press |
+| [ ] | onHover | ValueChanged<bool>? | getValue | on-hover |
+| [ ] | onFocusChange | ValueChanged<bool>? | getValue | on-focus-change |
+| [ ] | style | ButtonStyle? | getValue | style |
+| [ ] | focusNode | FocusNode? | getValue | focus-node |
+| [ ] | autofocus | bool | getBool | autofocus |
+| [ ] | clipBehavior | Clip | getValue | clip-behavior |
+| [ ] | child | Widget | properties.child | - |
+
+#### [ ] | SegmentedButton | material/widgets/segmented_button.dart
+| todo check | flutter property name | flutter type | property getter/method without parameters | property name |
+|------------|----------------------|--------------|------------------------------------------|---------------|
+| [ ] | key | Key? | properties.key | - |
+| [ ] | selected | Set<T> | getValue | selected |
+| [ ] | segments | List<Widget> | getWidgets | segments |
+| [ ] | onSelectionChanged | ValueChanged<Set<T>> | getValue | on-selection-changed |
+| [ ] | multiSelectionEnabledFor | Set<T>? | getValue | multi-selection-enabled-for |
+| [ ] | showSelectedIcon | bool? | getBool | show-selected-icon |
+| [ ] | backgroundColor | Color? | getColor | background-color |
+| [ ] | unselectedColor | Color? | getColor | unselected-color |
+| [ ] | selectedColor | Color? | getColor | selected-color |
+| [ ] | disabledColor | Color? | getColor | disabled-color |
+| [ ] | shadowColor | Color? | getColor | shadow-color |
+| [ ] | surfaceTintColor | Color? | getColor | surface-tint-color |
+| [ ] | elevation | double? | getDouble | elevation |
+| [ ] | padding | EdgeInsetsGeometry? | getValue | padding |
+| [ ] | visualDensity | VisualDensity? | getValue | visual-density |
+| [ ] | materialTapTargetSize | MaterialTapTargetSize? | getValue | material-tap-target-size |
+
+#### [ ] | TextButton | material/widgets/text_button.dart
+| todo check | flutter property name | flutter type | property getter/method without parameters | property name |
+|------------|----------------------|--------------|------------------------------------------|---------------|
+| [ ] | key | Key? | properties.key | - |
+| [ ] | onPressed | VoidCallback? | getVoidCallback | on-pressed |
+| [ ] | onLongPress | VoidCallback? | getVoidCallback | on-long-press |
+| [ ] | onHover | ValueChanged<bool>? | getValue | on-hover |
+| [ ] | onFocusChange | ValueChanged<bool>? | getValue | on-focus-change |
+| [ ] | style | ButtonStyle? | getValue | style |
+| [ ] | focusNode | FocusNode? | getValue | focus-node |
+| [ ] | autofocus | bool | getBool | autofocus |
+| [ ] | clipBehavior | Clip | getValue | clip-behavior |
+| [ ] | child | Widget | properties.child | - |
+
+#### [ ] | Badge | material/widgets/badge.dart
+| todo check | flutter property name | flutter type | property getter/method without parameters | property name |
+|------------|----------------------|--------------|------------------------------------------|---------------|
+| [ ] | key | Key? | properties.key | - |
+| [ ] | child | Widget | properties.child | - |
+| [ ] | label | Widget? | getWidget | label |
+| [ ] | backgroundColor | Color? | getColor | background-color |
+| [ ] | textColor | Color? | getColor | text-color |
+| [ ] | textStyle | TextStyle? | getValue | text-style |
+| [ ] | padding | EdgeInsetsGeometry? | getValue | padding |
+| [ ] | alignment | AlignmentGeometry? | getValue | alignment |
+| [ ] | isLabelVisible | bool? | getBool | is-label-visible |
+| [ ] | largeSize | bool? | getBool | large-size |
+| [ ] | offset | Offset? | getValue | offset |
+| [ ] | showBadge | bool? | getBool | show-badge |
+
+#### [ ] | LinearProgressIndicator | material/widgets/linear_progress_indicator.dart
+| todo check | flutter property name | flutter type | property getter/method without parameters | property name |
+|------------|----------------------|--------------|------------------------------------------|---------------|
+| [ ] | key | Key? | properties.key | - |
+| [ ] | value | double? | getDouble | value |
+| [ ] | backgroundColor | Color? | getColor | background-color |
+| [ ] | color | Color? | getColor | color |
+| [ ] | valueColor | Animation<Color>? | getValue | value-color |
+| [ ] | minHeight | double? | getDouble | min-height |
+| [ ] | semanticsLabel | String? | getString | semantics-label |
+| [ ] | semanticsValue | String? | getString | semantics-value |
+
+#### [ ] | SnackBar | material/widgets/snack_bar.dart
+| todo check | flutter property name | flutter type | property getter/method without parameters | property name |
+|------------|----------------------|--------------|------------------------------------------|---------------|
+| [ ] | key | Key? | properties.key | - |
+| [ ] | content | Widget | properties.child | - |
+| [ ] | backgroundColor | Color? | getColor | background-color |
+| [ ] | elevation | double? | getDouble | elevation |
+| [ ] | margin | EdgeInsetsGeometry? | getValue | margin |
+| [ ] | padding | EdgeInsetsGeometry? | getValue | padding |
+| [ ] | width | double? | properties.width | - |
+| [ ] | shape | ShapeBorder? | getValue | shape |
+| [ ] | behavior | SnackBarBehavior? | getValue | behavior |
+| [ ] | action | SnackBarAction? | getValue | action |
+| [ ] | duration | Duration? | getValue | duration |
+| [ ] | animation | Animation<double>? | getValue | animation |
+| [ ] | onVisible | VoidCallback? | getVoidCallback | on-visible |
+| [ ] | dismissDirection | DismissDirection? | getValue | dismiss-direction |
+| [ ] | clipBehavior | Clip | getValue | clip-behavior |
+
+#### [ ] | AlertDialog | material/widgets/alert_dialog.dart
+| todo check | flutter property name | flutter type | property getter/method without parameters | property name |
+|------------|----------------------|--------------|------------------------------------------|---------------|
+| [ ] | key | Key? | properties.key | - |
+| [ ] | icon | Widget? | getWidget | icon |
+| [ ] | iconPadding | EdgeInsetsGeometry? | getValue | icon-padding |
+| [ ] | iconColor | Color? | getColor | icon-color |
+| [ ] | title | Widget? | getWidget | title |
+| [ ] | titlePadding | EdgeInsetsGeometry? | getValue | title-padding |
+| [ ] | titleTextStyle | TextStyle? | getValue | title-text-style |
+| [ ] | content | Widget? | getWidget | content |
+| [ ] | contentPadding | EdgeInsetsGeometry? | getValue | content-padding |
+| [ ] | contentTextStyle | TextStyle? | getValue | content-text-style |
+| [ ] | actions | List<Widget>? | getWidgets | actions |
+| [ ] | actionsPadding | EdgeInsetsGeometry? | getValue | actions-padding |
+| [ ] | actionsAlignment | MainAxisAlignment? | getValue | actions-alignment |
+| [ ] | actionsOverflowAlignment | OverflowBarAlignment? | getValue | actions-overflow-alignment |
+| [ ] | actionsOverflowDirection | VerticalDirection? | getValue | actions-overflow-direction |
+| [ ] | actionsOverflowButtonSpacing | double? | getDouble | actions-overflow-button-spacing |
+| [ ] | buttonPadding | EdgeInsetsGeometry? | getValue | button-padding |
+| [ ] | backgroundColor | Color? | getColor | background-color |
+| [ ] | elevation | double? | getDouble | elevation |
+| [ ] | shadowColor | Color? | getColor | shadow-color |
+| [ ] | surfaceTintColor | Color? | getColor | surface-tint-color |
+| [ ] | semanticLabel | String? | getString | semantic-label |
+| [ ] | insetPadding | EdgeInsets? | getValue | inset-padding |
+| [ ] | clipBehavior | Clip? | getValue | clip-behavior |
+| [ ] | shape | ShapeBorder? | getValue | shape |
+| [ ] | alignment | AlignmentGeometry? | getValue | alignment |
+| [ ] | constraints | BoxConstraints? | getValue | constraints |
+| [ ] | scrollable | bool | getBool | scrollable |
+
+#### [ ] | BottomSheet | material/widgets/bottom_sheet.dart
+| todo check | flutter property name | flutter type | property getter/method without parameters | property name |
+|------------|----------------------|--------------|------------------------------------------|---------------|
+| [ ] | key | Key? | properties.key | - |
+| [ ] | animationController | AnimationController? | getValue | animation-controller |
+| [ ] | enableDrag | bool | getBool | enable-drag |
+| [ ] | showDragHandle | bool? | getBool | show-drag-handle |
+| [ ] | dragHandleColor | Color? | getColor | drag-handle-color |
+| [ ] | dragHandleSize | Size? | getValue | drag-handle-size |
+| [ ] | onDragStart | BottomSheetDragStartHandler? | getValue | on-drag-start |
+| [ ] | onDragEnd | BottomSheetDragEndHandler? | getValue | on-drag-end |
+| [ ] | backgroundColor | Color? | getColor | background-color |
+| [ ] | shadowColor | Color? | getColor | shadow-color |
+| [ ] | elevation | double? | getDouble | elevation |
+| [ ] | shape | ShapeBorder? | getValue | shape |
+| [ ] | clipBehavior | Clip? | getValue | clip-behavior |
+| [ ] | constraints | BoxConstraints? | getValue | constraints |
+| [ ] | onClosing | VoidCallback | getVoidCallback | on-closing |
+| [ ] | builder | WidgetBuilder | getValue | builder |
+
+#### [ ] | Card | material/widgets/card.dart
+| todo check | flutter property name | flutter type | property getter/method without parameters | property name |
+|------------|----------------------|--------------|------------------------------------------|---------------|
+| [ ] | key | Key? | properties.key | - |
+| [ ] | color | Color? | getColor | color |
+| [ ] | shadowColor | Color? | getColor | shadow-color |
+| [ ] | surfaceTintColor | Color? | getColor | surface-tint-color |
+| [ ] | elevation | double? | getDouble | elevation |
+| [ ] | shape | ShapeBorder? | getValue | shape |
+| [ ] | borderOnForeground | bool | getBool | border-on-foreground |
+| [ ] | margin | EdgeInsetsGeometry? | getValue | margin |
+| [ ] | clipBehavior | Clip? | getValue | clip-behavior |
+| [ ] | child | Widget? | properties.child | - |
+| [ ] | semanticContainer | bool | getBool | semantic-container |
+
+#### [ ] | Divider | material/widgets/divider.dart
+| todo check | flutter property name | flutter type | property getter/method without parameters | property name |
+|------------|----------------------|--------------|------------------------------------------|---------------|
+| [ ] | key | Key? | properties.key | - |
+| [ ] | height | double? | getDouble | height |
+| [ ] | thickness | double? | getDouble | thickness |
+| [ ] | indent | double? | getDouble | indent |
+| [ ] | endIndent | double? | getDouble | end-indent |
+| [ ] | color | Color? | getColor | color |
+| [ ] | radius | BorderRadiusGeometry? | getValue | radius |
+
+#### [ ] | ListTile | material/widgets/list_tile.dart
+| todo check | flutter property name | flutter type | property getter/method without parameters | property name |
+|------------|----------------------|--------------|------------------------------------------|---------------|
+| [ ] | key | Key? | properties.key | - |
+| [ ] | leading | Widget? | getWidget | leading |
+| [ ] | title | Widget? | getWidget | title |
+| [ ] | subtitle | Widget? | getWidget | subtitle |
+| [ ] | trailing | Widget? | getWidget | trailing |
+| [ ] | isThreeLine | bool? | getBool | is-three-line |
+| [ ] | dense | bool? | getBool | dense |
+| [ ] | visualDensity | VisualDensity? | getValue | visual-density |
+| [ ] | shape | ShapeBorder? | getValue | shape |
+| [ ] | style | ListTileStyle? | getValue | style |
+| [ ] | selectedColor | Color? | getColor | selected-color |
+| [ ] | iconColor | Color? | getColor | icon-color |
+| [ ] | textColor | Color? | getColor | text-color |
+| [ ] | titleTextStyle | TextStyle? | getValue | title-text-style |
+| [ ] | subtitleTextStyle | TextStyle? | getValue | subtitle-text-style |
+| [ ] | leadingAndTrailingTextStyle | TextStyle? | getValue | leading-and-trailing-text-style |
+| [ ] | contentPadding | EdgeInsetsGeometry? | getValue | content-padding |
+| [ ] | enabled | bool | getBool | enabled |
+| [ ] | onTap | GestureTapCallback? | getVoidCallback | on-tap |
+| [ ] | onLongPress | GestureLongPressCallback? | getValue | on-long-press |
+| [ ] | onFocusChange | ValueChanged<bool>? | getValue | on-focus-change |
+| [ ] | mouseCursor | MouseCursor? | getValue | mouse-cursor |
+| [ ] | selected | bool | getBool | selected |
+| [ ] | focusColor | Color? | getColor | focus-color |
+| [ ] | hoverColor | Color? | getColor | hover-color |
+| [ ] | splashColor | Color? | getColor | splash-color |
+| [ ] | focusNode | FocusNode? | getValue | focus-node |
+| [ ] | autofocus | bool | getBool | autofocus |
+| [ ] | tileColor | Color? | getColor | tile-color |
+| [ ] | selectedTileColor | Color? | getColor | selected-tile-color |
+| [ ] | enableFeedback | bool? | getBool | enable-feedback |
+| [ ] | horizontalTitleGap | double? | getDouble | horizontal-title-gap |
+| [ ] | minVerticalPadding | double? | getDouble | min-vertical-padding |
+| [ ] | minLeadingWidth | double? | getDouble | min-leading-width |
+| [ ] | minTileHeight | double? | getDouble | min-tile-height |
+| [ ] | titleAlignment | ListTileTitleAlignment? | getValue | title-alignment |
+| [ ] | internalAddSemanticForOnTap | bool | getBool | internal-add-semantic-for-on-tap |
+| [ ] | statesController | MaterialStatesController? | getValue | states-controller |
+
+#### [ ] | BottomAppBar | material/widgets/bottom_app_bar.dart
+| todo check | flutter property name | flutter type | property getter/method without parameters | property name |
+|------------|----------------------|--------------|------------------------------------------|---------------|
+| [ ] | key | Key? | properties.key | - |
+| [ ] | color | Color? | getColor | color |
+| [ ] | elevation | double? | getDouble | elevation |
+| [ ] | shape | NotchedShape? | getValue | shape |
+| [ ] | clipBehavior | Clip | getValue | clip-behavior |
+| [ ] | notchMargin | double | getDouble | notch-margin |
+| [ ] | child | Widget? | properties.child | - |
+| [ ] | padding | EdgeInsetsGeometry? | getValue | padding |
+| [ ] | surfaceTintColor | Color? | getColor | surface-tint-color |
+| [ ] | shadowColor | Color? | getColor | shadow-color |
+| [ ] | height | double? | getDouble | height |
+
+#### [ ] | NavigationBar | material/widgets/navigation_bar.dart
+| todo check | flutter property name | flutter type | property getter/method without parameters | property name |
+|------------|----------------------|--------------|------------------------------------------|---------------|
+| [ ] | key | Key? | properties.key | - |
+| [ ] | animationDuration | Duration? | getValue | animation-duration |
+| [ ] | selectedIndex | int | getInt | selected-index |
+| [ ] | destinations | List<Widget> | getWidgets | destinations |
+| [ ] | onDestinationSelected | ValueChanged<int>? | getValue | on-destination-selected |
+| [ ] | backgroundColor | Color? | getColor | background-color |
+| [ ] | elevation | double? | getDouble | elevation |
+| [ ] | shadowColor | Color? | getColor | shadow-color |
+| [ ] | surfaceTintColor | Color? | getColor | surface-tint-color |
+| [ ] | indicatorColor | Color? | getColor | indicator-color |
+| [ ] | indicatorShape | ShapeBorder? | getValue | indicator-shape |
+| [ ] | height | double? | getDouble | height |
+| [ ] | labelBehavior | NavigationDestinationLabelBehavior? | getValue | label-behavior |
+| [ ] | overlayColor | WidgetStateProperty<Color?>? | getValue | overlay-color |
+| [ ] | labelTextStyle | WidgetStateProperty<TextStyle?>? | getValue | label-text-style |
+| [ ] | labelPadding | EdgeInsetsGeometry? | getValue | label-padding |
+| [ ] | maintainBottomViewPadding | bool | getBool | maintain-bottom-view-padding |
+
+#### [ ] | NavigationDrawer | material/widgets/navigation_drawer.dart
+| todo check | flutter property name | flutter type | property getter/method without parameters | property name |
+|------------|----------------------|--------------|------------------------------------------|---------------|
+| [ ] | key | Key? | properties.key | - |
+| [ ] | children | List<Widget> | properties.children | - |
+| [ ] | header | Widget? | getWidget | header |
+| [ ] | footer | Widget? | getWidget | footer |
+| [ ] | backgroundColor | Color? | getColor | background-color |
+| [ ] | shadowColor | Color? | getColor | shadow-color |
+| [ ] | surfaceTintColor | Color? | getColor | surface-tint-color |
+| [ ] | elevation | double? | getDouble | elevation |
+| [ ] | indicatorColor | Color? | getColor | indicator-color |
+| [ ] | indicatorShape | ShapeBorder? | getValue | indicator-shape |
+| [ ] | onDestinationSelected | ValueChanged<int>? | getValue | on-destination-selected |
+| [ ] | selectedIndex | int? | getInt | selected-index |
+| [ ] | tilePadding | EdgeInsetsGeometry | getValue | tile-padding |
+
+#### [ ] | NavigationRail | material/widgets/navigation_rail.dart
+| todo check | flutter property name | flutter type | property getter/method without parameters | property name |
+|------------|----------------------|--------------|------------------------------------------|---------------|
+| [ ] | key | Key? | properties.key | - |
+| [ ] | backgroundColor | Color? | getColor | background-color |
+| [ ] | extended | bool | getBool | extended |
+| [ ] | leading | Widget? | getWidget | leading |
+| [ ] | trailing | Widget? | getWidget | trailing |
+| [ ] | destinations | List<NavigationRailDestination> | getValue | destinations |
+| [ ] | selectedIndex | int? | getInt | selected-index |
+| [ ] | onDestinationSelected | ValueChanged<int>? | getValue | on-destination-selected |
+| [ ] | elevation | double? | getDouble | elevation |
+| [ ] | groupAlignment | double? | getDouble | group-alignment |
+| [ ] | labelType | NavigationRailLabelType? | getValue | label-type |
+| [ ] | unselectedLabelTextStyle | TextStyle? | getValue | unselected-label-text-style |
+| [ ] | selectedLabelTextStyle | TextStyle? | getValue | selected-label-text-style |
+| [ ] | unselectedIconTheme | IconThemeData? | getValue | unselected-icon-theme |
+| [ ] | selectedIconTheme | IconThemeData? | getValue | selected-icon-theme |
+| [ ] | minWidth | double? | getDouble | min-width |
+| [ ] | minExtendedWidth | double? | getDouble | min-extended-width |
+| [ ] | useIndicator | bool? | getBool | use-indicator |
+| [ ] | indicatorColor | Color? | getColor | indicator-color |
+| [ ] | indicatorShape | ShapeBorder? | getValue | indicator-shape |
+| [ ] | leadingAtTop | bool | getBool | leading-at-top |
+| [ ] | trailingAtBottom | bool | getBool | trailing-at-bottom |
+| [ ] | scrollable | bool | getBool | scrollable |
+
+#### [ ] | TextField | material/widgets/text_field.dart
+| todo check | flutter property name | flutter type | property getter/method without parameters | property name |
+|------------|----------------------|--------------|------------------------------------------|---------------|
+| [ ] | key | Key? | properties.key | - |
+| [ ] | groupId | Object | getValue | group-id |
+| [ ] | controller | TextEditingController? | getValue | controller |
+| [ ] | focusNode | FocusNode? | getValue | focus-node |
+| [ ] | undoController | UndoHistoryController? | getValue | undo-controller |
+| [ ] | decoration | InputDecoration? | getValue | decoration |
+| [ ] | keyboardType | TextInputType? | getValue | keyboard-type |
+| [ ] | textInputAction | TextInputAction? | getValue | text-input-action |
+| [ ] | textCapitalization | TextCapitalization | getValue | text-capitalization |
+| [ ] | style | TextStyle? | getValue | style |
+| [ ] | strutStyle | StrutStyle? | getValue | strut-style |
+| [ ] | textAlign | TextAlign | getValue | text-align |
+| [ ] | textAlignVertical | TextAlignVertical? | getValue | text-align-vertical |
+| [ ] | textDirection | TextDirection? | getValue | text-direction |
+| [ ] | readOnly | bool | getBool | read-only |
+| [ ] | toolbarOptions | ToolbarOptions? | getValue | toolbar-options |
+| [ ] | showCursor | bool? | getBool | show-cursor |
+| [ ] | autofocus | bool | getBool | autofocus |
+| [ ] | statesController | MaterialStatesController? | getValue | states-controller |
+| [ ] | obscuringCharacter | String | getString | obscuring-character |
+| [ ] | obscureText | bool | getBool | obscure-text |
+| [ ] | autocorrect | bool? | getBool | autocorrect |
+| [ ] | smartDashesType | SmartDashesType? | getValue | smart-dashes-type |
+| [ ] | smartQuotesType | SmartQuotesType? | getValue | smart-quotes-type |
+| [ ] | enableSuggestions | bool | getBool | enable-suggestions |
+| [ ] | maxLines | int? | getInt | max-lines |
+| [ ] | minLines | int? | getInt | min-lines |
+| [ ] | expands | bool | getBool | expands |
+| [ ] | maxLength | int? | getInt | max-length |
+| [ ] | maxLengthEnforcement | MaxLengthEnforcement? | getValue | max-length-enforcement |
+| [ ] | onChanged | ValueChanged<String>? | getValue | on-changed |
+| [ ] | onEditingComplete | VoidCallback? | getVoidCallback | on-editing-complete |
+| [ ] | onSubmitted | ValueChanged<String>? | getValue | on-submitted |
+| [ ] | onAppPrivateCommand | AppPrivateCommandCallback? | getVoidCallback | on-app-private-command |
+| [ ] | inputFormatters | List<TextInputFormatter>? | getValue | input-formatters |
+| [ ] | enabled | bool? | getBool | enabled |
+| [ ] | ignorePointers | bool? | getBool | ignore-pointers |
+| [ ] | cursorWidth | double | getDouble | cursor-width |
+| [ ] | cursorHeight | double? | getDouble | cursor-height |
+| [ ] | cursorRadius | Radius? | getValue | cursor-radius |
+| [ ] | cursorOpacityAnimates | bool? | getBool | cursor-opacity-animates |
+| [ ] | cursorColor | Color? | getColor | cursor-color |
+| [ ] | cursorErrorColor | Color? | getColor | cursor-error-color |
+| [ ] | selectionHeightStyle | BoxHeightStyle? | getValue | selection-height-style |
+| [ ] | selectionWidthStyle | BoxWidthStyle? | getValue | selection-width-style |
+| [ ] | keyboardAppearance | Brightness? | getValue | keyboard-appearance |
+| [ ] | scrollPadding | EdgeInsets | getValue | scroll-padding |
+| [ ] | dragStartBehavior | DragStartBehavior | getValue | drag-start-behavior |
+| [ ] | enableInteractiveSelection | bool? | getBool | enable-interactive-selection |
+| [ ] | selectAllOnFocus | bool? | getBool | select-all-on-focus |
+| [ ] | selectionControls | TextSelectionControls? | getValue | selection-controls |
+| [ ] | onTap | GestureTapCallback? | getVoidCallback | on-tap |
+| [ ] | onTapAlwaysCalled | bool | getBool | on-tap-always-called |
+| [ ] | onTapOutside | TapRegionCallback? | getVoidCallback | on-tap-outside |
+| [ ] | onTapUpOutside | TapRegionUpCallback? | getVoidCallback | on-tap-up-outside |
+| [ ] | mouseCursor | MouseCursor? | getValue | mouse-cursor |
+| [ ] | buildCounter | InputCounterWidgetBuilder? | getValue | build-counter |
+| [ ] | scrollController | ScrollController? | getValue | scroll-controller |
+| [ ] | scrollPhysics | ScrollPhysics? | getValue | scroll-physics |
+| [ ] | autofillHints | Iterable<String>? | getValue | autofill-hints |
+| [ ] | contentInsertionConfiguration | ContentInsertionConfiguration? | getValue | content-insertion-configuration |
+| [ ] | clipBehavior | Clip | getValue | clip-behavior |
+| [ ] | restorationId | String? | getString | restoration-id |
+| [ ] | scribbleEnabled | bool | getBool | scribble-enabled |
+| [ ] | stylusHandwritingEnabled | bool | getBool | stylus-handwriting-enabled |
+| [ ] | enableIMEPersonalizedLearning | bool | getBool | enable-ime-personalized-learning |
+| [ ] | contextMenuBuilder | EditableTextContextMenuBuilder? | getValue | context-menu-builder |
+| [ ] | canRequestFocus | bool | getBool | can-request-focus |
+| [ ] | spellCheckConfiguration | SpellCheckConfiguration? | getValue | spell-check-configuration |
+| [ ] | magnifierConfiguration | TextMagnifierConfiguration? | getValue | magnifier-configuration |
+| [ ] | hintLocales | List<Locale>? | getValue | hint-locales |
+
+#### [ ] | Checkbox | material/widgets/checkbox.dart
+| todo check | flutter property name | flutter type | property getter/method without parameters | property name |
+|------------|----------------------|--------------|------------------------------------------|---------------|
+| [ ] | key | Key? | properties.key | - |
+| [ ] | value | bool? | getBool | value |
+| [ ] | tristate | bool | getBool | tristate |
+| [ ] | onChanged | ValueChanged<bool?>? | getValue | on-changed |
+| [ ] | mouseCursor | MouseCursor? | getValue | mouse-cursor |
+| [ ] | activeColor | Color? | getColor | active-color |
+| [ ] | fillColor | WidgetStateProperty<Color?>? | getValue | fill-color |
+| [ ] | checkColor | Color? | getColor | check-color |
+| [ ] | focusColor | Color? | getColor | focus-color |
+| [ ] | hoverColor | Color? | getColor | hover-color |
+| [ ] | overlayColor | WidgetStateProperty<Color?>? | getValue | overlay-color |
+| [ ] | splashRadius | double? | getDouble | splash-radius |
+| [ ] | materialTapTargetSize | MaterialTapTargetSize? | getValue | material-tap-target-size |
+| [ ] | visualDensity | VisualDensity? | getValue | visual-density |
+| [ ] | focusNode | FocusNode? | getValue | focus-node |
+| [ ] | autofocus | bool | getBool | autofocus |
+| [ ] | shape | OutlinedBorder? | getValue | shape |
+| [ ] | side | BorderSide? | getValue | side |
+| [ ] | isError | bool | getBool | is-error |
+| [ ] | semanticLabel | String? | getString | semantic-label |
+
+#### [ ] | Chip | material/widgets/chip.dart
+| todo check | flutter property name | flutter type | property getter/method without parameters | property name |
+|------------|----------------------|--------------|------------------------------------------|---------------|
+| [ ] | key | Key? | properties.key | - |
+| [ ] | avatar | Widget? | getWidget | avatar |
+| [ ] | label | Widget | properties.child | - |
+| [ ] | labelStyle | TextStyle? | getValue | label-style |
+| [ ] | labelPadding | EdgeInsetsGeometry? | getValue | label-padding |
+| [ ] | deleteIcon | Widget? | getWidget | delete-icon |
+| [ ] | onDeleted | VoidCallback? | getVoidCallback | on-deleted |
+| [ ] | deleteIconColor | Color? | getColor | delete-icon-color |
+| [ ] | deleteButtonTooltipMessage | String? | getString | delete-button-tooltip-message |
+| [ ] | side | BorderSide? | getValue | side |
+| [ ] | shape | OutlinedBorder? | getValue | shape |
+| [ ] | clipBehavior | Clip | getValue | clip-behavior |
+| [ ] | focusNode | FocusNode? | getValue | focus-node |
+| [ ] | autofocus | bool | getBool | autofocus |
+| [ ] | color | WidgetStateProperty<Color?>? | getValue | color |
+| [ ] | backgroundColor | Color? | getColor | background-color |
+| [ ] | padding | EdgeInsetsGeometry? | getValue | padding |
+| [ ] | visualDensity | VisualDensity? | getValue | visual-density |
+| [ ] | materialTapTargetSize | MaterialTapTargetSize? | getValue | material-tap-target-size |
+| [ ] | elevation | double? | getDouble | elevation |
+| [ ] | shadowColor | Color? | getColor | shadow-color |
+| [ ] | surfaceTintColor | Color? | getColor | surface-tint-color |
+| [ ] | iconTheme | IconThemeData? | getValue | icon-theme |
+| [ ] | avatarBoxConstraints | BoxConstraints? | getValue | avatar-box-constraints |
+| [ ] | deleteIconBoxConstraints | BoxConstraints? | getValue | delete-icon-box-constraints |
+| [ ] | chipAnimationStyle | ChipAnimationStyle? | getValue | chip-animation-style |
+| [ ] | mouseCursor | MouseCursor? | getValue | mouse-cursor |
+
+#### [ ] | DatePickerDialog | material/widgets/date_picker_dialog.dart
+| todo check | flutter property name | flutter type | property getter/method without parameters | property name |
+|------------|----------------------|--------------|------------------------------------------|---------------|
+| [ ] | key | Key? | properties.key | - |
+| [ ] | initialDate | DateTime? | getValue | initial-date |
+| [ ] | firstDate | DateTime | getValue | first-date |
+| [ ] | lastDate | DateTime | getValue | last-date |
+| [ ] | currentDate | DateTime? | getValue | current-date |
+| [ ] | initialEntryMode | DatePickerEntryMode | getValue | initial-entry-mode |
+| [ ] | selectableDayPredicate | SelectableDayPredicate? | getValue | selectable-day-predicate |
+| [ ] | cancelText | String? | getString | cancel-text |
+| [ ] | confirmText | String? | getString | confirm-text |
+| [ ] | helpText | String? | getString | help-text |
+| [ ] | errorFormatText | String? | getString | error-format-text |
+| [ ] | errorInvalidText | String? | getString | error-invalid-text |
+| [ ] | fieldHintText | String? | getString | field-hint-text |
+| [ ] | fieldLabelText | String? | getString | field-label-text |
+| [ ] | keyboardType | TextInputType? | getValue | keyboard-type |
+| [ ] | restorationId | String? | getString | restoration-id |
+| [ ] | onDatePickerModeChange | ValueChanged<DatePickerEntryMode>? | getValue | on-date-picker-mode-change |
+| [ ] | switchToInputEntryModeIcon | Icon? | getValue | switch-to-input-entry-mode-icon |
+| [ ] | switchToCalendarEntryModeIcon | Icon? | getValue | switch-to-calendar-entry-mode-icon |
+| [ ] | insetPadding | EdgeInsets | getValue | inset-padding |
+| [ ] | calendarDelegate | CalendarDelegate<DateTime> | getValue | calendar-delegate |
+
+#### [ ] | MenuAnchor | material/widgets/menu_anchor.dart
+| todo check | flutter property name | flutter type | property getter/method without parameters | property name |
+|------------|----------------------|--------------|------------------------------------------|---------------|
+| [ ] | key | Key? | properties.key | - |
+| [ ] | controller | MenuController? | getValue | controller |
+| [ ] | childFocusNode | FocusNode? | getValue | child-focus-node |
+| [ ] | style | MenuStyle? | getValue | style |
+| [ ] | alignmentOffset | Offset | getValue | alignment-offset |
+| [ ] | reservedPadding | EdgeInsetsGeometry? | getValue | reserved-padding |
+| [ ] | layerLink | LayerLink? | getValue | layer-link |
+| [ ] | clipBehavior | Clip | getValue | clip-behavior |
+| [ ] | anchorTapClosesMenu | bool | getBool | anchor-tap-closes-menu |
+| [ ] | consumeOutsideTap | bool | getBool | consume-outside-tap |
+| [ ] | onOpen | VoidCallback? | getVoidCallback | on-open |
+| [ ] | onClose | VoidCallback? | getVoidCallback | on-close |
+| [ ] | crossAxisUnconstrained | bool | getBool | cross-axis-unconstrained |
+| [ ] | useRootOverlay | bool | getBool | use-root-overlay |
+| [ ] | menuChildren | List<Widget> | getWidgets | menu-children |
+| [ ] | builder | MenuAnchorChildBuilder? | getValue | builder |
+| [ ] | child | Widget? | properties.child | - |
+
+#### [ ] | Radio | material/widgets/radio.dart
+| todo check | flutter property name | flutter type | property getter/method without parameters | property name |
+|------------|----------------------|--------------|------------------------------------------|---------------|
+| [ ] | key | Key? | properties.key | - |
+| [ ] | value | T | getValue | value |
+| [ ] | groupValue | T? | getValue | group-value |
+| [ ] | onChanged | ValueChanged<T?>? | getValue | on-changed |
+| [ ] | mouseCursor | MouseCursor? | getValue | mouse-cursor |
+| [ ] | toggleable | bool | getBool | toggleable |
+| [ ] | activeColor | Color? | getColor | active-color |
+| [ ] | fillColor | WidgetStateProperty<Color?>? | getValue | fill-color |
+| [ ] | focusColor | Color? | getColor | focus-color |
+| [ ] | hoverColor | Color? | getColor | hover-color |
+| [ ] | overlayColor | WidgetStateProperty<Color?>? | getValue | overlay-color |
+| [ ] | splashRadius | double? | getDouble | splash-radius |
+| [ ] | materialTapTargetSize | MaterialTapTargetSize? | getValue | material-tap-target-size |
+| [ ] | visualDensity | VisualDensity? | getValue | visual-density |
+| [ ] | focusNode | FocusNode? | getValue | focus-node |
+| [ ] | autofocus | bool | getBool | autofocus |
+| [ ] | enabled | bool? | getBool | enabled |
+| [ ] | groupRegistry | RadioGroupRegistry<T>? | getValue | group-registry |
+| [ ] | backgroundColor | WidgetStateProperty<Color?>? | getValue | background-color |
+| [ ] | side | BorderSide? | getValue | side |
+| [ ] | innerRadius | WidgetStateProperty<double?>? | getValue | inner-radius |
+
+#### [ ] | Slider | material/widgets/slider.dart
+| todo check | flutter property name | flutter type | property getter/method without parameters | property name |
+|------------|----------------------|--------------|------------------------------------------|---------------|
+| [ ] | key | Key? | properties.key | - |
+| [ ] | value | double | getDouble | value |
+| [ ] | secondaryTrackValue | double? | getDouble | secondary-track-value |
+| [ ] | onChanged | ValueChanged<double>? | getValue | on-changed |
+| [ ] | onChangeStart | ValueChanged<double>? | getValue | on-change-start |
+| [ ] | onChangeEnd | ValueChanged<double>? | getValue | on-change-end |
+| [ ] | min | double | getDouble | min |
+| [ ] | max | double | getDouble | max |
+| [ ] | divisions | int? | getInt | divisions |
+| [ ] | label | String? | getString | label |
+| [ ] | activeColor | Color? | getColor | active-color |
+| [ ] | inactiveColor | Color? | getColor | inactive-color |
+| [ ] | secondaryActiveColor | Color? | getColor | secondary-active-color |
+| [ ] | thumbColor | Color? | getColor | thumb-color |
+| [ ] | overlayColor | WidgetStateProperty<Color?>? | getValue | overlay-color |
+| [ ] | mouseCursor | MouseCursor? | getValue | mouse-cursor |
+| [ ] | semanticFormatterCallback | SemanticFormatterCallback? | getValue | semantic-formatter-callback |
+| [ ] | focusNode | FocusNode? | getValue | focus-node |
+| [ ] | autofocus | bool | getBool | autofocus |
+| [ ] | allowedInteraction | SliderInteraction? | getValue | allowed-interaction |
+| [ ] | padding | EdgeInsetsGeometry? | getValue | padding |
+| [ ] | year2023 | bool? | getBool | year2023 |
+
+#### [ ] | Switch | material/widgets/switch.dart
+| todo check | flutter property name | flutter type | property getter/method without parameters | property name |
+|------------|----------------------|--------------|------------------------------------------|---------------|
+| [ ] | key | Key? | properties.key | - |
+| [ ] | value | bool | getBool | value |
+| [ ] | onChanged | ValueChanged<bool>? | getValue | on-changed |
+| [ ] | activeColor | Color? | getColor | active-color |
+| [ ] | activeThumbColor | Color? | getColor | active-thumb-color |
+| [ ] | activeTrackColor | Color? | getColor | active-track-color |
+| [ ] | inactiveThumbColor | Color? | getColor | inactive-thumb-color |
+| [ ] | inactiveTrackColor | Color? | getColor | inactive-track-color |
+| [ ] | activeThumbImage | ImageProvider<Object>? | getValue | active-thumb-image |
+| [ ] | onActiveThumbImageError | ImageErrorListener? | getValue | on-active-thumb-image-error |
+| [ ] | inactiveThumbImage | ImageProvider<Object>? | getValue | inactive-thumb-image |
+| [ ] | onInactiveThumbImageError | ImageErrorListener? | getValue | getValue | on-inactive-thumb-image-error |
+| [ ] | thumbColor | WidgetStateProperty<Color?>? | getValue | thumb-color |
+| [ ] | trackColor | WidgetStateProperty<Color?>? | getValue | track-color |
+| [ ] | trackOutlineColor | WidgetStateProperty<Color?>? | getValue | track-outline-color |
+| [ ] | trackOutlineWidth | WidgetStateProperty<double?>? | getValue | track-outline-width |
+| [ ] | thumbIcon | WidgetStateProperty<Icon?>? | getValue | thumb-icon |
+| [ ] | materialTapTargetSize | MaterialTapTargetSize? | getValue | material-tap-target-size |
+| [ ] | dragStartBehavior | DragStartBehavior | getValue | drag-start-behavior |
+| [ ] | mouseCursor | MouseCursor? | getValue | mouse-cursor |
+| [ ] | focusColor | Color? | getColor | focus-color |
+| [ ] | hoverColor | Color? | getColor | hover-color |
+| [ ] | overlayColor | WidgetStateProperty<Color?>? | getValue | overlay-color |
+| [ ] | splashRadius | double? | getDouble | splash-radius |
+| [ ] | focusNode | FocusNode? | getValue | focus-node |
+| [ ] | onFocusChange | ValueChanged<bool>? | getValue | on-focus-change |
+| [ ] | autofocus | bool | getBool | autofocus |
+| [ ] | padding | EdgeInsetsGeometry? | getValue | padding |
+
+#### [ ] | TimePickerDialog | material/widgets/time_picker_dialog.dart
+| todo check | flutter property name | flutter type | property getter/method without parameters | property name |
+|------------|----------------------|--------------|------------------------------------------|---------------|
+| [ ] | key | Key? | properties.key | - |
+| [ ] | initialTime | TimeOfDay | getValue | initial-time |
+| [ ] | cancelText | String? | getString | cancel-text |
+| [ ] | confirmText | String? | getString | confirm-text |
+| [ ] | helpText | String? | getString | help-text |
+| [ ] | errorInvalidText | String? | getString | error-invalid-text |
+| [ ] | hourLabelText | String? | getString | hour-label-text |
+| [ ] | minuteLabelText | String? | getString | minute-label-text |
+| [ ] | restorationId | String? | getString | restoration-id |
+| [ ] | initialEntryMode | TimePickerEntryMode | getValue | initial-entry-mode |
+| [ ] | orientation | Orientation? | getValue | orientation |
+| [ ] | onEntryModeChanged | EntryModeChangeCallback? | getValue | on-entry-mode-changed |
+| [ ] | switchToInputEntryModeIcon | Icon? | getValue | switch-to-input-entry-mode-icon |
+| [ ] | switchToTimerEntryModeIcon | Icon? | getValue | switch-to-timer-entry-mode-icon |
+| [ ] | emptyInitialInput | bool | getBool | empty-initial-input |
