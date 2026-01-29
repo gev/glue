@@ -17,17 +17,21 @@ Eval<Ir> userAccountsDrawerHeaderImpl(Ir props) => switch (props) {
 
 /// Create UserAccountsDrawerHeader widget from properties
 Eval<Ir> _createUserAccountsDrawerHeader(WidgetProperties properties) {
-  final userAccountsDrawerHeaderWidget = UserAccountsDrawerHeader(
-    decoration: properties.userAccountsDrawerHeaderDecoration,
-    margin: properties.userAccountsDrawerHeaderMargin,
-    currentAccountPicture:
-        properties.userAccountsDrawerHeaderCurrentAccountPicture,
-    otherAccountsPictures:
-        properties.userAccountsDrawerHeaderOtherAccountsPictures,
-    accountName: properties.userAccountsDrawerHeaderAccountName,
-    accountEmail: properties.userAccountsDrawerHeaderAccountEmail,
-    onDetailsPressed: properties.userAccountsDrawerHeaderOnDetailsPressed,
-    arrowColor: properties.userAccountsDrawerHeaderArrowColor ?? Colors.white,
-  );
-  return Eval.pure(IrNativeValue(Value(userAccountsDrawerHeaderWidget)));
+  return getRuntime().map((runtime) {
+    final userAccountsDrawerHeaderWidget = UserAccountsDrawerHeader(
+      key: properties.key,
+      decoration: properties.getValue('decoration'),
+      margin: properties.getValue('margin'),
+      currentAccountPicture: properties.getWidget('current-account-picture'),
+      otherAccountsPictures: properties.getWidgets('other-accounts-pictures'),
+      accountName: properties.getWidget('account-name'),
+      accountEmail: properties.getWidget('account-email'),
+      onDetailsPressed: properties.getVoidCallback(
+        'on-details-pressed',
+        runtime,
+      ),
+      arrowColor: properties.getColor('arrow-color') ?? Colors.white,
+    );
+    return IrNativeValue(Value(userAccountsDrawerHeaderWidget));
+  });
 }

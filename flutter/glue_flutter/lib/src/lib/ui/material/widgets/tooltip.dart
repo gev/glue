@@ -17,24 +17,28 @@ Eval<Ir> tooltipImpl(Ir props) => switch (props) {
 
 /// Create Tooltip widget from properties
 Eval<Ir> _createTooltip(WidgetProperties properties) {
-  final tooltipWidget = Tooltip(
-    message: properties.tooltipMessage,
-    height: properties.tooltipHeight,
-    padding: properties.tooltipPadding,
-    margin: properties.tooltipMargin,
-    verticalOffset: properties.tooltipVerticalOffset,
-    preferBelow: properties.tooltipPreferBelow,
-    excludeFromSemantics: properties.tooltipExcludeFromSemantics,
-    decoration: properties.tooltipDecoration,
-    textStyle: properties.tooltipTextStyle,
-    textAlign: properties.tooltipTextAlign,
-    waitDuration: properties.tooltipWaitDuration,
-    showDuration: properties.tooltipShowDuration,
-    triggerMode: properties.tooltipTriggerMode,
-    enableFeedback: properties.tooltipEnableFeedback,
-    onTriggered: properties.tooltipOnTriggered,
-    richMessage: properties.tooltipRichMessage,
-    child: properties.child,
-  );
-  return Eval.pure(IrNativeValue(Value(tooltipWidget)));
+  return getRuntime().map((runtime) {
+    final tooltipWidget = Tooltip(
+      key: properties.key,
+      message: properties.getString('tooltip-message'),
+      padding: properties.getValue('tooltip-padding'),
+      margin: properties.getValue('tooltip-margin'),
+      verticalOffset: properties.getDouble('tooltip-vertical-offset'),
+      preferBelow: properties.getBool('tooltip-prefer-below'),
+      excludeFromSemantics: properties.getBool(
+        'tooltip-exclude-from-semantics',
+      ),
+      decoration: properties.getValue('tooltip-decoration'),
+      textStyle: properties.getValue('tooltip-text-style'),
+      textAlign: properties.getValue('tooltip-text-align'),
+      waitDuration: properties.getValue('tooltip-wait-duration'),
+      showDuration: properties.getValue('tooltip-show-duration'),
+      triggerMode: properties.getValue('tooltip-trigger-mode'),
+      enableFeedback: properties.getBool('tooltip-enable-feedback'),
+      onTriggered: properties.getVoidCallback('tooltip-on-triggered', runtime),
+      richMessage: properties.getValue('tooltip-rich-message'),
+      child: properties.child,
+    );
+    return IrNativeValue(Value(tooltipWidget));
+  });
 }

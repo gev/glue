@@ -17,21 +17,28 @@ Eval<Ir> timePickerDialogImpl(Ir props) => switch (props) {
 
 /// Create TimePickerDialog widget from properties
 Eval<Ir> _createTimePickerDialog(WidgetProperties properties) {
-  final timePickerDialogWidget = TimePickerDialog(
-    initialTime: properties.timePickerInitialTime,
-    cancelText: properties.timePickerCancelText,
-    confirmText: properties.timePickerConfirmText,
-    helpText: properties.timePickerHelpText,
-    errorInvalidText: properties.timePickerErrorInvalidText,
-    hourLabelText: properties.timePickerHourLabelText,
-    minuteLabelText: properties.timePickerMinuteLabelText,
-    restorationId: properties.timePickerRestorationId,
-    initialEntryMode: properties.timePickerInitialEntryMode,
-    orientation: properties.timePickerOrientation,
-    onEntryModeChanged: properties.timePickerOnEntryModeChanged,
-    switchToInputEntryModeIcon: properties.timePickerSwitchToInputEntryModeIcon,
-    switchToTimerEntryModeIcon: properties.timePickerSwitchToTimerEntryModeIcon,
-    emptyInitialInput: properties.timePickerEmptyInitialInput,
-  );
-  return Eval.pure(IrNativeValue(Value(timePickerDialogWidget)));
+  return getRuntime().map((runtime) {
+    final timePickerDialogWidget = TimePickerDialog(
+      key: properties.key,
+      initialTime: properties.getValue('initial-time'),
+      cancelText: properties.getString('cancel-text'),
+      confirmText: properties.getString('confirm-text'),
+      helpText: properties.getString('help-text'),
+      errorInvalidText: properties.getString('error-invalid-text'),
+      hourLabelText: properties.getString('hour-label-text'),
+      minuteLabelText: properties.getString('minute-label-text'),
+      restorationId: properties.getString('restoration-id'),
+      initialEntryMode: properties.getValue('initial-entry-mode'),
+      orientation: properties.getValue('orientation'),
+      onEntryModeChanged: properties.getValue('on-entry-mode-changed'),
+      switchToInputEntryModeIcon: properties.getValue(
+        'switch-to-input-entry-mode-icon',
+      ),
+      switchToTimerEntryModeIcon: properties.getValue(
+        'switch-to-timer-entry-mode-icon',
+      ),
+      emptyInitialInput: properties.getValue('empty-initial-input'),
+    );
+    return IrNativeValue(Value(timePickerDialogWidget));
+  });
 }
