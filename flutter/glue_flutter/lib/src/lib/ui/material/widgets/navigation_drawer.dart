@@ -17,19 +17,22 @@ Eval<Ir> navigationDrawerImpl(Ir props) => switch (props) {
 
 /// Create NavigationDrawer widget from properties
 Eval<Ir> _createNavigationDrawer(WidgetProperties properties) {
-  final navigationDrawerWidget = NavigationDrawer(
-    backgroundColor: properties.navigationDrawerBackgroundColor,
-    elevation: properties.navigationDrawerElevation,
-    shadowColor: properties.navigationDrawerShadowColor,
-    surfaceTintColor: properties.navigationDrawerSurfaceTintColor,
-    indicatorColor: properties.navigationDrawerIndicatorColor,
-    indicatorShape: properties.navigationDrawerIndicatorShape,
-    selectedIndex: properties.navigationDrawerSelectedIndex,
-    onDestinationSelected: properties.navigationDrawerOnDestinationSelected,
-    tilePadding:
-        properties.navigationDrawerTilePadding ??
-        const EdgeInsets.symmetric(horizontal: 12.0),
-    children: properties.navigationDrawerChildren ?? [],
-  );
-  return Eval.pure(IrNativeValue(Value(navigationDrawerWidget)));
+  return getRuntime().map((runtime) {
+    final navigationDrawerWidget = NavigationDrawer(
+      key: properties.key,
+      backgroundColor: properties.getColor('background-color'),
+      elevation: properties.getDouble('elevation'),
+      shadowColor: properties.getColor('shadow-color'),
+      surfaceTintColor: properties.getColor('surface-tint-color'),
+      indicatorColor: properties.getColor('indicator-color'),
+      indicatorShape: properties.getValue('indicator-shape'),
+      selectedIndex: properties.getInt('selected-index'),
+      onDestinationSelected: properties.getValue('on-destination-selected'),
+      tilePadding:
+          properties.getValue('tile-padding') ??
+          const EdgeInsets.symmetric(horizontal: 12.0),
+      children: properties.getWidgets('children') ?? [],
+    );
+    return IrNativeValue(Value(navigationDrawerWidget));
+  });
 }
