@@ -18,7 +18,10 @@ Eval<Ir> sliverListImpl(Ir props) => switch (props) {
 /// Create SliverList widget from properties
 Eval<Ir> _createSliverList(WidgetProperties properties) {
   final sliverListWidget = SliverList(
-    delegate: properties.sliverListDelegate ?? SliverChildListDelegate([]),
+    key: properties.key,
+    delegate:
+        properties.getValue('sliver-list-delegate') ??
+        SliverChildListDelegate([]),
   );
   return Eval.pure(IrNativeValue(Value(sliverListWidget)));
 }

@@ -18,9 +18,12 @@ Eval<Ir> sliverGridImpl(Ir props) => switch (props) {
 /// Create SliverGrid widget from properties
 Eval<Ir> _createSliverGrid(WidgetProperties properties) {
   final sliverGridWidget = SliverGrid(
-    delegate: properties.sliverGridDelegate ?? SliverChildListDelegate([]),
+    key: properties.key,
+    delegate:
+        properties.getValue('sliver-grid-delegate') ??
+        SliverChildListDelegate([]),
     gridDelegate:
-        properties.sliverGridGridDelegate ??
+        properties.getValue('sliver-grid-grid-delegate') ??
         const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
   );
   return Eval.pure(IrNativeValue(Value(sliverGridWidget)));

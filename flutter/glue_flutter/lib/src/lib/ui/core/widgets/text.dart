@@ -18,25 +18,26 @@ Eval<Ir> textImpl(Ir props) => switch (props) {
 
 /// Create Text widget from properties (extracts :content, :color, etc.)
 Eval<Ir> _createText(WidgetProperties properties) {
-  final content = properties.content ?? '';
+  final content = properties.getString('content') ?? '';
   final textWidget = Text(
     content,
+    key: properties.key,
     style: TextStyle(
-      color: properties.color,
-      fontSize: properties.size,
-      fontWeight: properties.weight,
+      color: properties.getColor('color'),
+      fontSize: properties.getDouble('size'),
+      fontWeight: properties.getValue('weight'),
     ),
-    strutStyle: properties.strutStyle,
-    textAlign: properties.align,
-    textDirection: properties.textDirection,
-    locale: properties.locale,
-    softWrap: properties.softWrap,
-    overflow: properties.overflow,
-    textScaleFactor: properties.textScaleFactor,
-    maxLines: properties.maxLines,
-    semanticsLabel: properties.semanticsLabel,
-    textWidthBasis: properties.textWidthBasis,
-    textHeightBehavior: properties.textHeightBehavior,
+    strutStyle: properties.getValue('strut-style'),
+    textAlign: properties.getValue('align'),
+    textDirection: properties.getValue('text-direction'),
+    locale: properties.getValue('locale'),
+    softWrap: properties.getValue('soft-wrap'),
+    overflow: properties.getValue('overflow'),
+    textScaleFactor: properties.getValue('text-scale-factor'),
+    maxLines: properties.getInt('max-lines'),
+    semanticsLabel: properties.getString('semantics-label'),
+    textWidthBasis: properties.getValue('text-width-basis'),
+    textHeightBehavior: properties.getValue('text-height-behavior'),
   );
   return Eval.pure(IrNativeValue(Value(textWidget)));
 }
