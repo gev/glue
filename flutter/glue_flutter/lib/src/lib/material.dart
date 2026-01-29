@@ -1,4 +1,5 @@
 import 'package:glue/src/module.dart';
+import 'package:glue_flutter/src/lib/ui/material/styles/colors.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/button.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/app_bar.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/scaffold.dart';
@@ -116,6 +117,7 @@ final ModuleInfo uiMaterialModule = nativeModule('ffi.ui.material', [
   ('navigation-rail', navigationRail),
 
   // Material enum union objects
+  ('colors', colors),
   ('drag-start-behavior', dragStartBehavior),
   ('floating-action-button-location', floatingActionButtonLocation),
 
