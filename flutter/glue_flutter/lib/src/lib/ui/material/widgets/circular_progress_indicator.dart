@@ -20,14 +20,15 @@ Eval<Ir> circularProgressIndicatorImpl(Ir props) => switch (props) {
 /// Create CircularProgressIndicator widget from properties
 Eval<Ir> _createCircularProgressIndicator(WidgetProperties properties) {
   final circularProgressIndicatorWidget = CircularProgressIndicator(
-    value: properties.circularProgressValue,
-    backgroundColor: properties.circularProgressBackgroundColor,
-    color: properties.refreshColor,
-    strokeWidth: properties.circularProgressStrokeWidth,
-    strokeAlign: properties.circularProgressStrokeAlign,
-    strokeCap: properties.circularProgressStrokeCap,
-    semanticsLabel: properties.circularProgressSemanticsLabel,
-    semanticsValue: properties.circularProgressSemanticsValue,
+    key: properties.key,
+    value: properties.getDouble('value'),
+    backgroundColor: properties.getColor('background-color'),
+    color: properties.getColor('color'),
+    strokeWidth: properties.getDouble('stroke-width'),
+    strokeAlign: properties.getDouble('stroke-align'),
+    strokeCap: properties.getValue('stroke-cap'),
+    semanticsLabel: properties.getString('semantics-label'),
+    semanticsValue: properties.getString('semantics-value'),
   );
   return Eval.pure(IrNativeValue(Value(circularProgressIndicatorWidget)));
 }

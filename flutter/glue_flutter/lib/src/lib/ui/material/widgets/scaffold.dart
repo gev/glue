@@ -20,29 +20,39 @@ Eval<Ir> scaffoldImpl(Ir props) => switch (props) {
 /// Create Scaffold widget from properties
 Eval<Ir> _createScaffold(WidgetProperties properties) {
   final scaffoldWidget = Scaffold(
-    appBar: properties.appBar,
-    body: properties.body,
-    floatingActionButton: properties.floatingActionButton,
-    floatingActionButtonLocation: properties.floatingActionButtonLocation,
-    floatingActionButtonAnimator: properties.floatingActionButtonAnimatorProper,
-    persistentFooterButtons: properties.persistentFooterButtons,
-    drawer: properties.drawer,
-    endDrawer: properties.endDrawer,
-    bottomNavigationBar: properties.bottomNavigationBar,
-    bottomSheet: properties.bottomSheet,
-    backgroundColor: properties.color,
-    resizeToAvoidBottomInset: properties.resizeToAvoidBottomInset,
-    primary: properties.primary ?? true,
+    key: properties.key,
+    appBar: properties.getValue('app-bar'),
+    body: properties.getWidget('body'),
+    floatingActionButton: properties.getWidget('floating-action-button'),
+    floatingActionButtonLocation: properties.getValue(
+      'floating-action-button-location',
+    ),
+    floatingActionButtonAnimator: properties.getValue(
+      'floating-action-button-animator',
+    ),
+    persistentFooterButtons: properties.getWidgets('persistent-footer-buttons'),
+    drawer: properties.getWidget('drawer'),
+    endDrawer: properties.getWidget('end-drawer'),
+    bottomNavigationBar: properties.getWidget('bottom-navigation-bar'),
+    bottomSheet: properties.getWidget('bottom-sheet'),
+    backgroundColor: properties.getColor('background-color'),
+    resizeToAvoidBottomInset: properties.getBool(
+      'resize-to-avoid-bottom-inset',
+    ),
+    primary: properties.getBool('primary') ?? true,
     drawerDragStartBehavior:
-        properties.drawerDragStartBehavior ?? DragStartBehavior.start,
-    extendBody: properties.extendBody ?? false,
-    extendBodyBehindAppBar: properties.extendBodyBehindAppBar ?? false,
-    drawerScrimColor: properties.drawerScrimColor,
-    drawerEdgeDragWidth: properties.drawerEdgeDragWidth,
-    drawerEnableOpenDragGesture: properties.drawerEnableOpenDragGesture ?? true,
+        properties.getValue('drawer-drag-start-behavior') ??
+        DragStartBehavior.start,
+    extendBody: properties.getBool('extend-body') ?? false,
+    extendBodyBehindAppBar:
+        properties.getBool('extend-body-behind-app-bar') ?? false,
+    drawerScrimColor: properties.getColor('drawer-scrim-color'),
+    drawerEdgeDragWidth: properties.getDouble('drawer-edge-drag-width'),
+    drawerEnableOpenDragGesture:
+        properties.getBool('drawer-enable-open-drag-gesture') ?? true,
     endDrawerEnableOpenDragGesture:
-        properties.endDrawerEnableOpenDragGesture ?? true,
-    restorationId: properties.restorationId,
+        properties.getBool('end-drawer-enable-open-drag-gesture') ?? true,
+    restorationId: properties.getString('restoration-id'),
   );
   return Eval.pure(IrNativeValue(Value(scaffoldWidget)));
 }
