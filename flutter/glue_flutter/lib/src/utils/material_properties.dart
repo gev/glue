@@ -26,12 +26,6 @@ class MaterialProperties extends CoreProperties {
   InputDecoration? get inputDecoration =>
       extractNativeValue<InputDecoration>(prop('decoration'));
 
-  // FlutterLogo properties
-  FlutterLogoStyle? get flutterLogoStyle =>
-      extractNativeValue<FlutterLogoStyle>(prop('style'));
-  Duration? get duration => extractNativeValue<Duration>(prop('duration'));
-  Curve? get curve => extractNativeValue<Curve>(prop('curve'));
-
   // AppBar properties
   Widget? get title => extractNativeValue<Widget>(prop('title'));
   List<Widget>? get actions => extractChildren(prop('actions'));
