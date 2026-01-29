@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue_flutter/src/utils/widget_properties.dart';
+import 'package:glue_flutter/src/utils/widget_properties_core.dart';
 
 /// SegmentedButton widget function
 /// Creates Flutter SegmentedButton from Glue (segmented-button props) expressions

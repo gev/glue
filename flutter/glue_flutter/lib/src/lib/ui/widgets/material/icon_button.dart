@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue_flutter/src/utils/widget_properties.dart';
+import 'package:glue_flutter/src/utils/widget_properties_core.dart';
 
 /// IconButton widget function
 /// Creates Flutter IconButton from Glue (icon-button props) expressions

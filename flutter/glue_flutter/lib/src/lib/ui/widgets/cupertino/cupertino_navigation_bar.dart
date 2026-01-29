@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue_flutter/src/utils/widget_properties.dart';
+import 'package:glue_flutter/src/utils/widget_properties_core.dart';
 
 /// CupertinoNavigationBar widget function
 /// Creates Flutter CupertinoNavigationBar from Glue expressions
