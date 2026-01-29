@@ -19,15 +19,16 @@ Eval<Ir> cardImpl(Ir props) => switch (props) {
 /// Create Card widget from properties
 Eval<Ir> _createCard(WidgetProperties properties) {
   final cardWidget = Card(
-    color: properties.color,
-    shadowColor: properties.shadowColor,
-    surfaceTintColor: properties.surfaceTintColor,
-    elevation: properties.size, // using size for elevation
-    shape: properties.shape,
-    borderOnForeground: properties.borderOnForeground ?? true,
-    margin: properties.margin,
-    clipBehavior: properties.clipBehavior,
-    semanticContainer: properties.semanticContainer ?? true,
+    key: properties.key,
+    color: properties.getColor('color'),
+    shadowColor: properties.getColor('shadow-color'),
+    surfaceTintColor: properties.getColor('surface-tint-color'),
+    elevation: properties.getDouble('elevation'),
+    shape: properties.getValue('shape'),
+    borderOnForeground: properties.getBool('border-on-foreground') ?? true,
+    margin: properties.getValue('margin'),
+    clipBehavior: properties.getValue('clip-behavior'),
+    semanticContainer: properties.getBool('semantic-container') ?? true,
     child: properties.child,
   );
   return Eval.pure(IrNativeValue(Value(cardWidget)));

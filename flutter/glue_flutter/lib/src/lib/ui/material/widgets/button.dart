@@ -18,19 +18,22 @@ Eval<Ir> buttonImpl(Ir props) => switch (props) {
 
 /// Create Button widget from properties object
 Eval<Ir> _createButton(WidgetProperties properties) {
-  final label = properties.label ?? 'Button'; // Extract label from properties
+  final label =
+      properties.getString('label') ??
+      'Button'; // Extract label from properties
 
   // Get runtime and create widget
   return getRuntime().map((runtime) {
     final buttonWidget = ElevatedButton(
-      onPressed: properties.onPress(runtime),
-      onLongPress: properties.onLongPress(runtime),
-      onHover: properties.onHover,
-      onFocusChange: properties.onFocusChange,
-      style: properties.buttonStyle,
-      focusNode: properties.focusNode,
-      autofocus: properties.autofocus,
-      clipBehavior: properties.buttonClipBehavior,
+      key: properties.key,
+      onPressed: properties.getVoidCallback('on-pressed', runtime),
+      onLongPress: properties.getVoidCallback('on-long-press', runtime),
+      onHover: properties.getValue('on-hover'),
+      onFocusChange: properties.getValue('on-focus-change'),
+      style: properties.getValue('style'),
+      focusNode: properties.getValue('focus-node'),
+      autofocus: properties.getBool('autofocus') ?? false,
+      clipBehavior: properties.getValue('clip-behavior'),
       child: Text(label),
     );
     return IrNativeValue(Value(buttonWidget));
