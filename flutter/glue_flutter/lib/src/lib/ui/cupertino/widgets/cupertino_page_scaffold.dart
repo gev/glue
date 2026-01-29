@@ -18,14 +18,19 @@ Eval<Ir> cupertinoPageScaffoldImpl(Ir props) => switch (props) {
 
 /// Create CupertinoPageScaffold widget from properties object
 Eval<Ir> _createCupertinoPageScaffold(WidgetProperties properties) {
-  return getRuntime().map((runtime) {
-    final widget = CupertinoPageScaffold(
-      navigationBar: properties.cupertinoPageScaffoldNavigationBar,
-      backgroundColor: properties.cupertinoPageScaffoldBackgroundColor,
-      resizeToAvoidBottomInset:
-          properties.cupertinoPageScaffoldResizeToAvoidBottomInset,
-      child: properties.cupertinoPageScaffoldChild ?? const SizedBox(),
-    );
-    return IrNativeValue(Value(widget));
-  });
+  final widget = CupertinoPageScaffold(
+    navigationBar: properties.getValue(
+      'cupertino-page-scaffold-navigation-bar',
+    ),
+    backgroundColor: properties.getValue(
+      'cupertino-page-scaffold-background-color',
+    ),
+    resizeToAvoidBottomInset:
+        properties.getBool(
+          'cupertino-page-scaffold-resize-to-avoid-bottom-inset',
+        ) ??
+        true,
+    child: properties.child ?? const SizedBox(),
+  );
+  return Eval.pure(IrNativeValue(Value(widget)));
 }
