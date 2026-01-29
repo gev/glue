@@ -18,19 +18,13 @@ Eval<Ir> cupertinoTextFieldImpl(Ir props) => switch (props) {
 
 /// Create CupertinoTextField widget from properties object
 Eval<Ir> _createCupertinoTextField(WidgetProperties properties) {
-  return getRuntime().map((runtime) {
-    final onChangedCallback = properties.onTextChanged != null
-        ? (String value) => properties.onTextChanged!(value)
-        : null;
-
-    final textFieldWidget = CupertinoTextField(
-      key: GlobalKey(),
-      controller: properties.textEditingController,
-      placeholder: properties.cupertinoTextFieldPlaceholder,
-      onChanged: onChangedCallback,
-      focusNode: properties.dropdownFocusNode,
-      autofocus: properties.dropdownAutofocus,
-    );
-    return IrNativeValue(Value(textFieldWidget));
-  });
+  final textFieldWidget = CupertinoTextField(
+    key: GlobalKey(),
+    controller: properties.getValue('controller'),
+    placeholder: properties.getString('placeholder'),
+    onChanged: properties.getValue('on-changed'),
+    focusNode: properties.getValue('focus-node'),
+    autofocus: properties.getBool('autofocus') ?? false,
+  );
+  return Eval.pure(IrNativeValue(Value(textFieldWidget)));
 }
