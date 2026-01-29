@@ -9,6 +9,6 @@ final env = envFromModules([
   builtinModule,
   boolModule,
   arithmeticModule,
-  uiModule,
+  uiCoreModule,
   stateModule,
 ]);

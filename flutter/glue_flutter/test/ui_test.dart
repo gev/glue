@@ -2,12 +2,12 @@ import 'package:test/test.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/module.dart';
 import 'package:flutter/material.dart';
-import 'package:glue_flutter/src/lib/ui.dart';
-import 'package:glue_flutter/src/lib/ui/styles/cross_axis_alignment.dart';
-import 'package:glue_flutter/src/lib/ui/styles/main_axis_alignment.dart';
-import 'package:glue_flutter/src/lib/ui/styles/text_align.dart';
-import 'package:glue_flutter/src/lib/ui/styles/font_weight.dart';
-import 'package:glue_flutter/src/lib/ui/styles/colors.dart';
+import 'package:glue_flutter/src/lib/core.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/cross_axis_alignment.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/main_axis_alignment.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/text_align.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/font_weight.dart';
+import 'package:glue_flutter/src/lib/ui/material/styles/colors.dart';
 
 /// Helper function to extract enum value from Value only (no parsing)
 T? extractEnumValue<T>(Ir? ir) {
@@ -43,60 +43,60 @@ Color? extractColorValue(Ir? ir) {
 void main() {
   group('UI Module', () {
     test('module is properly defined', () {
-      expect(uiModule, isA<ModuleInfo>());
-      expect(uiModule.moduleName, 'ffi.ui');
-      expect(uiModule.exports, contains('text'));
-      expect(uiModule.exports, contains('button'));
-      expect(uiModule.exports, contains('container'));
-      expect(uiModule.exports, contains('column'));
-      expect(uiModule.exports, contains('row'));
-      expect(uiModule.exports, contains('center'));
-      expect(uiModule.exports, contains('cross-axis-alignment'));
-      expect(uiModule.exports, contains('main-axis-alignment'));
-      expect(uiModule.exports, contains('text-align'));
-      expect(uiModule.exports, contains('font-weight'));
-      expect(uiModule.exports, contains('colors'));
+      expect(uiCoreModule, isA<ModuleInfo>());
+      expect(uiCoreModule.moduleName, 'ffi.ui');
+      expect(uiCoreModule.exports, contains('text'));
+      expect(uiCoreModule.exports, contains('button'));
+      expect(uiCoreModule.exports, contains('container'));
+      expect(uiCoreModule.exports, contains('column'));
+      expect(uiCoreModule.exports, contains('row'));
+      expect(uiCoreModule.exports, contains('center'));
+      expect(uiCoreModule.exports, contains('cross-axis-alignment'));
+      expect(uiCoreModule.exports, contains('main-axis-alignment'));
+      expect(uiCoreModule.exports, contains('text-align'));
+      expect(uiCoreModule.exports, contains('font-weight'));
+      expect(uiCoreModule.exports, contains('colors'));
     });
 
     test('core functions return IrNativeFunc', () {
-      final textDef = uiModule.definitions.firstWhere(
+      final textDef = uiCoreModule.definitions.firstWhere(
         (def) => def.$1 == 'text',
       );
       expect(textDef.$2, isA<IrNativeFunc>());
 
-      final buttonDef = uiModule.definitions.firstWhere(
+      final buttonDef = uiCoreModule.definitions.firstWhere(
         (def) => def.$1 == 'button',
       );
       expect(buttonDef.$2, isA<IrNativeFunc>());
 
-      final columnDef = uiModule.definitions.firstWhere(
+      final columnDef = uiCoreModule.definitions.firstWhere(
         (def) => def.$1 == 'column',
       );
       expect(columnDef.$2, isA<IrNativeFunc>());
     });
 
     test('enum objects are exported', () {
-      final crossAxisDef = uiModule.definitions.firstWhere(
+      final crossAxisDef = uiCoreModule.definitions.firstWhere(
         (def) => def.$1 == 'cross-axis-alignment',
       );
       expect(crossAxisDef.$2, isA<IrObject>());
 
-      final mainAxisDef = uiModule.definitions.firstWhere(
+      final mainAxisDef = uiCoreModule.definitions.firstWhere(
         (def) => def.$1 == 'main-axis-alignment',
       );
       expect(mainAxisDef.$2, isA<IrObject>());
 
-      final textAlignDef = uiModule.definitions.firstWhere(
+      final textAlignDef = uiCoreModule.definitions.firstWhere(
         (def) => def.$1 == 'text-align',
       );
       expect(textAlignDef.$2, isA<IrObject>());
 
-      final fontWeightDef = uiModule.definitions.firstWhere(
+      final fontWeightDef = uiCoreModule.definitions.firstWhere(
         (def) => def.$1 == 'font-weight',
       );
       expect(fontWeightDef.$2, isA<IrObject>());
 
-      final colorsDef = uiModule.definitions.firstWhere(
+      final colorsDef = uiCoreModule.definitions.firstWhere(
         (def) => def.$1 == 'colors',
       );
       expect(colorsDef.$2, isA<IrObject>());

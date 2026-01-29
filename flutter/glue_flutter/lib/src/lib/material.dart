@@ -1,0 +1,129 @@
+import 'package:glue/src/module.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/button.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/app_bar.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/scaffold.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/filled_button.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/outlined_button.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/text_button.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/card.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/list_tile.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/snack_bar.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/text_field.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/floating_action_button.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/icon_button.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/checkbox.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/switch.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/linear_progress_indicator.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/badge.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/divider.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/radio.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/slider.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/alert_dialog.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/elevated_button.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/chip.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/segmented_button.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/bottom_navigation_bar.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/drawer.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/date_picker_dialog.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/time_picker_dialog.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/navigation_bar.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/tab_bar.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/menu_anchor.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/expansion_tile.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/data_table.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/tooltip.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/popup_menu_button.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/dropdown_button.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/refresh_indicator.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/circular_progress_indicator.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/stepper.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/expansion_panel_list.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/tab_bar_view.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/bottom_sheet.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/search_bar.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/search_anchor.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/input_chip.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/filter_chip.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/choice_chip.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/action_chip.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/bottom_app_bar.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/navigation_drawer.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/drawer_header.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/user_accounts_drawer_header.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/navigation_rail.dart';
+import 'package:glue_flutter/src/lib/ui/material/styles/drag_start_behavior.dart';
+import 'package:glue_flutter/src/lib/ui/material/styles/floating_action_button_location.dart';
+import 'package:glue_flutter/src/lib/ui/material/styles/theme_dark.dart';
+import 'package:glue_flutter/src/lib/ui/material/styles/theme_light.dart';
+import 'package:glue_flutter/src/lib/ui/material/styles/theme.dart';
+import 'package:glue_flutter/src/lib/ui/material/styles/color_scheme_light.dart';
+import 'package:glue_flutter/src/lib/ui/material/styles/color_scheme_dark.dart';
+import 'package:glue_flutter/src/lib/ui/material/styles/text_theme.dart';
+
+final ModuleInfo uiMaterialModule = nativeModule('ffi.ui', [
+  // Material widgets
+  ('app-bar', appBar),
+  ('scaffold', scaffold),
+  ('button', button),
+  ('filled-button', filledButton),
+  ('outlined-button', outlinedButton),
+  ('text-button', textButton),
+  ('card', card),
+  ('list-tile', listTile),
+  ('snack-bar', snackBar),
+  ('text-field', textField),
+  ('floating-action-button', floatingActionButton),
+  ('icon-button', iconButton),
+  ('checkbox', checkbox),
+  ('switch', switchWidget),
+  ('linear-progress-indicator', linearProgressIndicator),
+  ('badge', badge),
+  ('divider', divider),
+  ('radio', radio),
+  ('slider', slider),
+  ('alert-dialog', alertDialog),
+  ('elevated-button', elevatedButton),
+  ('chip', chip),
+  ('segmented-button', segmentedButton),
+  ('bottom-navigation-bar', bottomNavigationBar),
+  ('drawer', drawer),
+  ('date-picker-dialog', datePickerDialog),
+  ('time-picker-dialog', timePickerDialog),
+  ('navigation-bar', navigationBar),
+  ('tab-bar', tabBar),
+  ('menu-anchor', menuAnchor),
+  ('expansion-tile', expansionTile),
+  ('data-table', dataTable),
+  ('tooltip', tooltip),
+  ('popup-menu-button', popupMenuButton),
+  ('dropdown-button', dropdownButton),
+  ('refresh-indicator', refreshIndicator),
+  ('circular-progress-indicator', circularProgressIndicator),
+  ('stepper', stepper),
+  ('expansion-panel-list', expansionPanelList),
+  ('tab-bar-view', tabBarView),
+  ('bottom-sheet', bottomSheet),
+  ('search-bar', searchBar),
+  ('search-anchor', searchAnchor),
+  ('input-chip', inputChip),
+  ('filter-chip', filterChip),
+  ('choice-chip', choiceChip),
+  ('action-chip', actionChip),
+  ('bottom-app-bar', bottomAppBar),
+  ('navigation-drawer', navigationDrawer),
+  ('drawer-header', drawerHeader),
+  ('user-accounts-drawer-header', userAccountsDrawerHeader),
+  ('navigation-rail', navigationRail),
+
+  // Material enum union objects
+  ('drag-start-behavior', dragStartBehavior),
+  ('floating-action-button-location', floatingActionButtonLocation),
+
+  // Material theme functions and objects
+  ('theme-dark', themeDark),
+  ('theme-light', themeLight),
+  ('theme', theme),
+  ('color-scheme-light', colorSchemeLight),
+  ('color-scheme-dark', colorSchemeDark),
+  ('text-theme', textTheme),
+]);

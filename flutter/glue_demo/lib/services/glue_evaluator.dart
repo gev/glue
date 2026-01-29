@@ -26,7 +26,7 @@ class GlueEvaluator {
         final irTree = compile(ast);
         print('✅ Compilation successful: $irTree');
 
-        print('✅ Environment created with UI module: $uiModule');
+        print('✅ Environment created with UI module: $uiCoreModule');
         final evalResult = await runEvalSimple(eval(irTree), env);
         return evalResult.match(
           (error) {
