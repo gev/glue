@@ -17,22 +17,24 @@ Eval<Ir> radioImpl(Ir props) => switch (props) {
 
 /// Create Radio widget from properties
 Eval<Ir> _createRadio(WidgetProperties properties) {
-  final radioWidget = Radio(
-    value: properties.radioValue,
-    groupValue: properties.radioGroupValue,
-    onChanged: properties.onRadioChanged,
-    mouseCursor: properties.mouseCursor,
-    toggleable: properties.toggleable,
-    activeColor: properties.activeColor,
-    fillColor: properties.radioFillColor,
-    focusColor: properties.focusColor,
-    hoverColor: properties.hoverColor,
-    overlayColor: properties.overlayColor,
-    splashRadius: properties.splashRadius,
-    materialTapTargetSize: properties.materialTapTargetSize,
-    visualDensity: properties.visualDensity,
-    focusNode: properties.focusNode,
-    autofocus: properties.autofocus,
-  );
-  return Eval.pure(IrNativeValue(Value(radioWidget)));
+  return getRuntime().map((runtime) {
+    final radioWidget = Radio(
+      value: properties.getValue('value'),
+      groupValue: properties.getValue('group-value'),
+      onChanged: properties.getValue('on-changed') as ValueChanged<dynamic>?,
+      mouseCursor: properties.getValue('mouse-cursor'),
+      toggleable: properties.getBool('toggleable') ?? false,
+      activeColor: properties.getColor('active-color'),
+      fillColor: properties.getValue('fill-color'),
+      focusColor: properties.getColor('focus-color'),
+      hoverColor: properties.getColor('hover-color'),
+      overlayColor: properties.getValue('overlay-color'),
+      splashRadius: properties.getDouble('splash-radius'),
+      materialTapTargetSize: properties.getValue('material-tap-target-size'),
+      visualDensity: properties.getValue('visual-density'),
+      focusNode: properties.getValue('focus-node'),
+      autofocus: properties.getBool('autofocus') ?? false,
+    );
+    return IrNativeValue(Value(radioWidget));
+  });
 }
