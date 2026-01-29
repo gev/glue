@@ -29,30 +29,28 @@ class Properties {
       extractVoidCallback(_props['on-press'], runtime);
   VoidCallback? onLongPress(Runtime runtime) =>
       extractVoidCallback(_props['on-long-press'], runtime);
-  ValueChanged<bool>? get onHover =>
-      extractNativeValue<ValueChanged<bool>>(_props['on-hover']);
+  ValueChanged<bool>? get onHover => extractNativeValue(_props['on-hover']);
   ValueChanged<bool>? get onFocusChange =>
-      extractNativeValue<ValueChanged<bool>>(_props['on-focus-change']);
-  ButtonStyle? get buttonStyle =>
-      extractNativeValue<ButtonStyle>(_props['style']);
-  FocusNode? get focusNode =>
-      extractNativeValue<FocusNode>(_props['focus-node']);
+      extractNativeValue(_props['on-focus-change']);
+  ButtonStyle? get buttonStyle => extractNativeValue(_props['style']);
+  FocusNode? get focusNode => extractNativeValue(_props['focus-node']);
   bool get autofocus => extractBool(_props['autofocus']) ?? false;
   Clip get buttonClipBehavior =>
-      extractClip(_props['clip-behavior']) ?? Clip.none;
+      extractNativeValue(_props['clip-behavior']) ?? Clip.none;
 
   // Text properties
   String? get content => extractString(_props['content']);
   Color? get color => extractColor(_props['color']);
   double? get size => extractDouble(_props['size']);
-  FontWeight? get weight => extractFontWeight(_props['weight']);
-  TextAlign? get align => extractTextAlign(_props['align']);
-  TextOverflow? get overflow => extractTextOverflow(_props['overflow']);
+  FontWeight? get weight => extractNativeValue<FontWeight>(_props['weight']);
+  TextAlign? get align => extractNativeValue<TextAlign>(_props['align']);
+  TextOverflow? get overflow =>
+      extractNativeValue<TextOverflow>(_props['overflow']);
   double? get textScaleFactor => extractDouble(_props['text-scale-factor']);
   int? get maxLines => extractInt(_props['max-lines']);
   String? get semanticsLabel => extractString(_props['semantics-label']);
   TextWidthBasis? get textWidthBasis =>
-      extractTextWidthBasis(_props['text-width-basis']);
+      extractNativeValue<TextWidthBasis>(_props['text-width-basis']);
   TextHeightBehavior? get textHeightBehavior =>
       extractNativeValue<TextHeightBehavior>(_props['text-height-behavior']);
   bool? get softWrap => extractBool(_props['soft-wrap']);
@@ -64,47 +62,50 @@ class Properties {
 
   // Layout properties
   List<Widget> get children => extractChildren(_props['children']) ?? [];
-  Widget? get child => extractChild(_props['child']);
+  Widget? get child => extractNativeValue<Widget>(_props['child']);
   MainAxisAlignment get mainAlign =>
-      extractMainAxisAlignment(_props['main-axis-align']) ??
+      extractNativeValue<MainAxisAlignment>(_props['main-axis-align']) ??
       MainAxisAlignment.start;
   CrossAxisAlignment get crossAlign =>
-      extractCrossAxisAlignment(_props['cross-axis-align']) ??
+      extractNativeValue<CrossAxisAlignment>(_props['cross-axis-align']) ??
       CrossAxisAlignment.start;
-  Axis get direction => extractAxis(_props['direction']) ?? Axis.vertical;
+  Axis get direction =>
+      extractNativeValue<Axis>(_props['direction']) ?? Axis.vertical;
   double? get spacing => extractDouble(_props['spacing']);
   MainAxisSize get mainAxisSize =>
-      extractMainAxisSize(_props['main-axis-size']) ?? MainAxisSize.max;
+      extractNativeValue<MainAxisSize>(_props['main-axis-size']) ??
+      MainAxisSize.max;
   TextDirection? get textDirection =>
-      extractTextDirection(_props['text-direction']);
+      extractNativeValue<TextDirection>(_props['text-direction']);
   VerticalDirection get verticalDirection =>
-      extractVerticalDirection(_props['vertical-direction']) ??
+      extractNativeValue<VerticalDirection>(_props['vertical-direction']) ??
       VerticalDirection.down;
   TextBaseline? get textBaseline =>
-      extractTextBaseline(_props['text-baseline']);
+      extractNativeValue<TextBaseline>(_props['text-baseline']);
 
   // Icon properties
   IconData? get icon => extractNativeValue<IconData>(_props['icon']);
 
   // FlutterLogo properties
   FlutterLogoStyle? get flutterLogoStyle =>
-      extractFlutterLogoStyle(_props['style']);
+      extractNativeValue<FlutterLogoStyle>(_props['style']);
   Duration? get duration => extractNativeValue<Duration>(_props['duration']);
   Curve? get curve => extractNativeValue<Curve>(_props['curve']);
 
   // Image properties
   ImageProvider? get imageProvider =>
       extractNativeValue<ImageProvider>(_props['image']);
-  BoxFit? get boxFit => extractBoxFit(_props['fit']);
+  BoxFit? get boxFit => extractNativeValue<BoxFit>(_props['fit']);
   BlendMode? get blendMode =>
       extractNativeValue<BlendMode>(_props['color-blend-mode']);
-  ImageRepeat? get imageRepeat => extractImageRepeat(_props['repeat']);
+  ImageRepeat? get imageRepeat =>
+      extractNativeValue<ImageRepeat>(_props['repeat']);
   bool? get matchTextDirection => extractBool(_props['match-text-direction']);
   bool? get gaplessPlayback => extractBool(_props['gapless-playback']);
   bool? get excludeFromSemantics =>
       extractBool(_props['exclude-from-semantics']);
   FilterQuality? get filterQuality =>
-      extractFilterQuality(_props['filter-quality']);
+      extractNativeValue<FilterQuality>(_props['filter-quality']);
   int? get cacheWidth => extractInt(_props['cache-width']);
   int? get cacheHeight => extractInt(_props['cache-height']);
 
@@ -129,7 +130,8 @@ class Properties {
       extractBool(_props['automatically-imply-leading']);
   bool? get automaticallyImplyActions =>
       extractBool(_props['automatically-imply-actions']);
-  Widget? get flexibleSpace => extractChild(_props['flexible-space']);
+  Widget? get flexibleSpace =>
+      extractNativeValue<Widget>(_props['flexible-space']);
   PreferredSizeWidget? get bottomAppBar =>
       extractNativeValue<PreferredSizeWidget>(_props['bottom']);
   double? get scrolledUnderElevation =>
@@ -154,28 +156,28 @@ class Properties {
   bool? get useDefaultSemanticsOrder =>
       extractBool(_props['use-default-semantics-order']);
   EdgeInsetsGeometry? get actionsPadding =>
-      extractEdgeInsets(_props['actions-padding']);
+      extractNativeValue<EdgeInsetsGeometry>(_props['actions-padding']);
   bool? get animateColor => extractBool(_props['animate-color']);
 
   // Scaffold properties
   PreferredSizeWidget? get appBar =>
       extractNativeValue<PreferredSizeWidget>(_props['app-bar']);
-  Widget? get body => extractChild(_props['body']);
+  Widget? get body => extractNativeValue<Widget>(_props['body']);
   Widget? get floatingActionButton =>
-      extractChild(_props['floating-action-button']);
+      extractNativeValue<Widget>(_props['floating-action-button']);
   FloatingActionButtonLocation? get floatingActionButtonLocation =>
-      extractFloatingActionButtonLocation(
+      extractNativeValue<FloatingActionButtonLocation>(
         _props['floating-action-button-location'],
       );
   Widget? get floatingActionButtonAnimator =>
-      extractChild(_props['floating-action-button-animator']);
+      extractNativeValue<Widget>(_props['floating-action-button-animator']);
   List<Widget>? get persistentFooterButtons =>
       extractChildren(_props['persistent-footer-buttons']);
-  Widget? get drawer => extractChild(_props['drawer']);
-  Widget? get endDrawer => extractChild(_props['end-drawer']);
+  Widget? get drawer => extractNativeValue<Widget>(_props['drawer']);
+  Widget? get endDrawer => extractNativeValue<Widget>(_props['end-drawer']);
   Widget? get bottomNavigationBar =>
-      extractChild(_props['bottom-navigation-bar']);
-  Widget? get bottomSheet => extractChild(_props['bottom-sheet']);
+      extractNativeValue<Widget>(_props['bottom-navigation-bar']);
+  Widget? get bottomSheet => extractNativeValue<Widget>(_props['bottom-sheet']);
   bool? get resizeToAvoidBottomInset =>
       extractBool(_props['resize-to-avoid-bottom-inset']);
   bool? get extendBody => extractBool(_props['extend-body']);
@@ -195,8 +197,8 @@ class Properties {
   bool? get semanticContainer => extractBool(_props['semantic-container']);
 
   // ListTile properties
-  Widget? get subtitle => extractChild(_props['subtitle']);
-  Widget? get trailing => extractChild(_props['trailing']);
+  Widget? get subtitle => extractNativeValue<Widget>(_props['subtitle']);
+  Widget? get trailing => extractNativeValue<Widget>(_props['trailing']);
   bool? get isThreeLine => extractBool(_props['is-three-line']);
   bool? get dense => extractBool(_props['dense']);
   VisualDensity? get visualDensity =>
@@ -213,7 +215,7 @@ class Properties {
   TextStyle? get leadingAndTrailingTextStyle =>
       extractNativeValue<TextStyle>(_props['leading-and-trailing-text-style']);
   EdgeInsetsGeometry? get contentPadding =>
-      extractEdgeInsets(_props['content-padding']);
+      extractNativeValue<EdgeInsetsGeometry>(_props['content-padding']);
   bool? get enabled => extractBool(_props['enabled']);
   GestureTapCallback? get onTileTap =>
       extractNativeValue<GestureTapCallback>(_props['on-press']);
@@ -238,7 +240,7 @@ class Properties {
       extractNativeValue<ListTileTitleAlignment>(_props['title-alignment']);
 
   // SnackBar properties
-  Widget? get snackBarContent => extractChild(_props['content']);
+  Widget? get snackBarContent => extractNativeValue<Widget>(_props['content']);
   SnackBarBehavior? get snackBarBehavior =>
       extractNativeValue<SnackBarBehavior>(_props['behavior']);
   SnackBarAction? get snackBarAction =>
@@ -344,7 +346,8 @@ class Properties {
   VisualDensity? get iconButtonVisualDensity =>
       extractNativeValue<VisualDensity>(_props['visual-density']);
   EdgeInsetsGeometry get iconButtonPadding =>
-      extractEdgeInsets(_props['padding']) ?? const EdgeInsets.all(8.0);
+      extractNativeValue<EdgeInsetsGeometry>(_props['padding']) ??
+      const EdgeInsets.all(8.0);
   AlignmentGeometry get iconButtonAlignment =>
       extractNativeValue<AlignmentGeometry>(_props['alignment']) ??
       Alignment.center;
@@ -396,16 +399,13 @@ class Properties {
   WidgetStateProperty<Color?>? get trackColor =>
       extractNativeValue<WidgetStateProperty<Color?>>(_props['track-color']);
   WidgetStateProperty<Color?>? get trackOutlineColor =>
-      extractNativeValue<WidgetStateProperty<Color?>>(
-        _props['track-outline-color'],
-      );
+      extractNativeValue(_props['track-outline-color']);
   WidgetStateProperty<double?>? get trackOutlineWidth =>
-      extractNativeValue<WidgetStateProperty<double?>>(
-        _props['track-outline-width'],
-      );
+      extractNativeValue(_props['track-outline-width']);
   WidgetStateProperty<Icon?>? get thumbIcon =>
-      extractNativeValue<WidgetStateProperty<Icon?>>(_props['thumb-icon']);
-  EdgeInsetsGeometry? get switchPadding => extractEdgeInsets(_props['padding']);
+      extractNativeValue(_props['thumb-icon']);
+  EdgeInsetsGeometry? get switchPadding =>
+      extractNativeValue(_props['padding']);
 
   // LinearProgressIndicator properties
   double? get progressValue => extractDouble(_props['value']);
@@ -418,7 +418,7 @@ class Properties {
       extractNativeValue<Animation<Color>>(_props['value-color']);
 
   // Badge properties
-  Widget? get badgeLabel => extractChild(_props['label']);
+  Widget? get badgeLabel => extractNativeValue<Widget>(_props['label']);
   bool? get isLabelVisible => extractBool(_props['is-label-visible']);
   bool? get largeSize => extractBool(_props['large-size']);
   Offset? get badgeOffset => extractNativeValue<Offset>(_props['offset']);
@@ -433,33 +433,35 @@ class Properties {
       extractNativeValue<BorderRadiusGeometry>(_props['radius']);
 
   // AlertDialog properties
-  Widget? get alertDialogIcon => extractChild(_props['icon']);
+  Widget? get alertDialogIcon => extractNativeValue<Widget>(_props['icon']);
   EdgeInsetsGeometry? get alertDialogIconPadding =>
-      extractEdgeInsets(_props['icon-padding']);
+      extractNativeValue<EdgeInsetsGeometry>(_props['icon-padding']);
   Color? get alertDialogIconColor => extractColor(_props['icon-color']);
   EdgeInsetsGeometry? get alertDialogTitlePadding =>
-      extractEdgeInsets(_props['title-padding']);
+      extractNativeValue<EdgeInsetsGeometry>(_props['title-padding']);
   TextStyle? get alertDialogTitleTextStyle =>
       extractNativeValue<TextStyle>(_props['title-text-style']);
   EdgeInsetsGeometry? get alertDialogContentPadding =>
-      extractEdgeInsets(_props['content-padding']);
+      extractNativeValue<EdgeInsetsGeometry>(_props['content-padding']);
   TextStyle? get alertDialogContentTextStyle =>
       extractNativeValue<TextStyle>(_props['content-text-style']);
   List<Widget>? get alertDialogActions => extractChildren(_props['actions']);
   EdgeInsetsGeometry? get alertDialogActionsPadding =>
-      extractEdgeInsets(_props['actions-padding']);
+      extractNativeValue<EdgeInsetsGeometry>(_props['actions-padding']);
   MainAxisAlignment? get alertDialogActionsAlignment =>
-      extractMainAxisAlignment(_props['actions-alignment']);
+      extractNativeValue<MainAxisAlignment>(_props['actions-alignment']);
   OverflowBarAlignment? get alertDialogActionsOverflowAlignment =>
       extractNativeValue<OverflowBarAlignment>(
         _props['actions-overflow-alignment'],
       );
   VerticalDirection? get alertDialogActionsOverflowDirection =>
-      extractVerticalDirection(_props['actions-overflow-direction']);
+      extractNativeValue<VerticalDirection>(
+        _props['actions-overflow-direction'],
+      );
   double? get alertDialogActionsOverflowButtonSpacing =>
       extractDouble(_props['actions-overflow-button-spacing']);
   EdgeInsetsGeometry? get alertDialogButtonPadding =>
-      extractEdgeInsets(_props['button-padding']);
+      extractNativeValue<EdgeInsetsGeometry>(_props['button-padding']);
   String? get alertDialogSemanticLabel =>
       extractString(_props['semantic-label']);
   EdgeInsets? get alertDialogInsetPadding =>
@@ -467,12 +469,13 @@ class Properties {
   bool get alertDialogScrollable => extractBool(_props['scrollable']) ?? false;
 
   // Chip properties
-  Widget? get chipAvatar => extractChild(_props['avatar']);
+  Widget? get chipAvatar => extractNativeValue<Widget>(_props['avatar']);
   TextStyle? get chipLabelStyle =>
       extractNativeValue<TextStyle>(_props['label-style']);
   EdgeInsetsGeometry? get chipLabelPadding =>
-      extractEdgeInsets(_props['label-padding']);
-  Widget? get chipDeleteIcon => extractChild(_props['delete-icon']);
+      extractNativeValue<EdgeInsetsGeometry>(_props['label-padding']);
+  Widget? get chipDeleteIcon =>
+      extractNativeValue<Widget>(_props['delete-icon']);
   VoidCallback? chipOnDeleted(Runtime runtime) =>
       extractVoidCallback(_props['on-deleted'], runtime);
   Color? get chipDeleteIconColor => extractColor(_props['delete-icon-color']);
@@ -483,7 +486,8 @@ class Properties {
       extractNativeValue<OutlinedBorder>(_props['shape']);
   WidgetStateProperty<Color?>? get chipColor =>
       extractNativeValue<WidgetStateProperty<Color?>>(_props['color']);
-  EdgeInsetsGeometry? get chipPadding => extractEdgeInsets(_props['padding']);
+  EdgeInsetsGeometry? get chipPadding =>
+      extractNativeValue<EdgeInsetsGeometry>(_props['padding']);
   BoxConstraints? get chipAvatarBoxConstraints =>
       extractNativeValue<BoxConstraints>(_props['avatar-box-constraints']);
   BoxConstraints? get chipDeleteIconBoxConstraints =>
@@ -569,7 +573,7 @@ class Properties {
   double get drawerSemanticLabel =>
       extractDouble(_props['semantic-label']) ?? 0.0;
   Clip get drawerClipBehavior =>
-      extractClip(_props['clip-behavior']) ?? Clip.hardEdge;
+      extractNativeValue<Clip>(_props['clip-behavior']) ?? Clip.hardEdge;
 
   // Radio properties
   dynamic get radioValue => extractNativeValue<dynamic>(_props['value']);
@@ -602,7 +606,9 @@ class Properties {
   SliderInteraction? get allowedInteraction =>
       extractNativeValue<SliderInteraction>(_props['allowed-interaction']);
   DragStartBehavior? get drawerDragStartBehavior =>
-      extractDragStartBehavior(_props['drawer-drag-start-behavior']);
+      extractNativeValue<DragStartBehavior>(
+        _props['drawer-drag-start-behavior'],
+      );
   FloatingActionButtonAnimator? get floatingActionButtonAnimatorProper =>
       extractNativeValue<FloatingActionButtonAnimator>(
         _props['floating-action-button-animator'],
@@ -610,14 +616,16 @@ class Properties {
 
   // Container properties
   EdgeInsetsGeometry get padding =>
-      extractEdgeInsets(_props['padding']) ?? EdgeInsets.zero;
+      extractNativeValue<EdgeInsetsGeometry>(_props['padding']) ??
+      EdgeInsets.zero;
   AlignmentGeometry? get alignment =>
       extractNativeValue<AlignmentGeometry>(_props['alignment']);
   double? get width => extractDouble(_props['width']);
   double? get height => extractDouble(_props['height']);
   BoxConstraints? get constraints =>
       extractNativeValue<BoxConstraints>(_props['constraints']);
-  EdgeInsetsGeometry? get margin => extractEdgeInsets(_props['margin']);
+  EdgeInsetsGeometry? get margin =>
+      extractNativeValue<EdgeInsetsGeometry>(_props['margin']);
   Decoration? get decoration =>
       extractNativeValue<Decoration>(_props['decoration']);
   Decoration? get foregroundDecoration =>
@@ -625,7 +633,8 @@ class Properties {
   Matrix4? get transform => extractNativeValue<Matrix4>(_props['transform']);
   AlignmentGeometry? get transformAlignment =>
       extractNativeValue<AlignmentGeometry>(_props['transform-alignment']);
-  Clip get clipBehavior => extractClip(_props['clip-behavior']) ?? Clip.none;
+  Clip get clipBehavior =>
+      extractNativeValue<Clip>(_props['clip-behavior']) ?? Clip.none;
 
   // DatePickerDialog properties
   DateTime? get datePickerInitialDate =>
@@ -738,7 +747,7 @@ class Properties {
         _props['label-text-style'],
       );
   EdgeInsetsGeometry? get navigationBarLabelPadding =>
-      extractEdgeInsets(_props['label-padding']);
+      extractNativeValue<EdgeInsetsGeometry>(_props['label-padding']);
   bool get navigationBarMaintainBottomViewPadding =>
       extractBool(_props['maintain-bottom-view-padding']) ?? false;
 
@@ -747,14 +756,16 @@ class Properties {
   TabController? get tabBarController =>
       extractNativeValue<TabController>(_props['controller']);
   bool get tabBarIsScrollable => extractBool(_props['is-scrollable']) ?? false;
-  EdgeInsetsGeometry? get tabBarPadding => extractEdgeInsets(_props['padding']);
+  EdgeInsetsGeometry? get tabBarPadding =>
+      extractNativeValue<EdgeInsetsGeometry>(_props['padding']);
   Color? get tabBarIndicatorColor => extractColor(_props['indicator-color']);
   bool get tabBarAutomaticIndicatorColorAdjustment =>
       extractBool(_props['automatic-indicator-color-adjustment']) ?? true;
   double get tabBarIndicatorWeight =>
       extractDouble(_props['indicator-weight']) ?? 2.0;
   EdgeInsetsGeometry get tabBarIndicatorPadding =>
-      extractEdgeInsets(_props['indicator-padding']) ?? EdgeInsets.zero;
+      extractNativeValue<EdgeInsetsGeometry>(_props['indicator-padding']) ??
+      EdgeInsets.zero;
   Decoration? get tabBarIndicator =>
       extractNativeValue<Decoration>(_props['indicator']);
   TabBarIndicatorSize? get tabBarIndicatorSize =>
@@ -765,13 +776,13 @@ class Properties {
   TextStyle? get tabBarLabelStyle =>
       extractNativeValue<TextStyle>(_props['label-style']);
   EdgeInsetsGeometry? get tabBarLabelPadding =>
-      extractEdgeInsets(_props['label-padding']);
+      extractNativeValue<EdgeInsetsGeometry>(_props['label-padding']);
   Color? get tabBarUnselectedLabelColor =>
       extractColor(_props['unselected-label-color']);
   TextStyle? get tabBarUnselectedLabelStyle =>
       extractNativeValue<TextStyle>(_props['unselected-label-style']);
   DragStartBehavior get tabBarDragStartBehavior =>
-      extractDragStartBehavior(_props['drag-start-behavior']) ??
+      extractNativeValue<DragStartBehavior>(_props['drag-start-behavior']) ??
       DragStartBehavior.start;
   WidgetStateProperty<Color?>? get tabBarOverlayColor =>
       extractNativeValue<WidgetStateProperty<Color?>>(_props['overlay-color']);
@@ -791,11 +802,11 @@ class Properties {
   Offset get menuAnchorAlignmentOffset =>
       extractNativeValue<Offset>(_props['alignment-offset']) ?? Offset.zero;
   EdgeInsetsGeometry? get menuAnchorReservedPadding =>
-      extractEdgeInsets(_props['reserved-padding']);
+      extractNativeValue<EdgeInsetsGeometry>(_props['reserved-padding']);
   LayerLink? get menuAnchorLayerLink =>
       extractNativeValue<LayerLink>(_props['layer-link']);
   Clip get menuAnchorClipBehavior =>
-      extractClip(_props['clip-behavior']) ?? Clip.hardEdge;
+      extractNativeValue<Clip>(_props['clip-behavior']) ?? Clip.hardEdge;
   bool get menuAnchorConsumeOutsideTap =>
       extractBool(_props['consume-outside-tap']) ?? false;
   VoidCallback? get menuAnchorOnOpen =>
@@ -812,10 +823,13 @@ class Properties {
       extractNativeValue<MenuAnchorChildBuilder>(_props['builder']);
 
   // ExpansionTile properties
-  Widget? get expansionTileLeading => extractChild(_props['leading']);
-  Widget? get expansionTileTitle => extractChild(_props['title']);
-  Widget? get expansionTileSubtitle => extractChild(_props['subtitle']);
-  Widget? get expansionTileTrailing => extractChild(_props['trailing']);
+  Widget? get expansionTileLeading =>
+      extractNativeValue<Widget>(_props['leading']);
+  Widget? get expansionTileTitle => extractNativeValue<Widget>(_props['title']);
+  Widget? get expansionTileSubtitle =>
+      extractNativeValue<Widget>(_props['subtitle']);
+  Widget? get expansionTileTrailing =>
+      extractNativeValue<Widget>(_props['trailing']);
   List<Widget>? get expansionTileChildren =>
       extractChildren(_props['children']);
   bool get expansionTileInitiallyExpanded =>
@@ -823,16 +837,18 @@ class Properties {
   bool get expansionTileMaintainState =>
       extractBool(_props['maintain-state']) ?? false;
   EdgeInsetsGeometry get expansionTileTilePadding =>
-      extractEdgeInsets(_props['tile-padding']) ??
+      extractNativeValue<EdgeInsetsGeometry>(_props['tile-padding']) ??
       const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0);
   Alignment get expansionTileExpandedAlignment =>
       extractNativeValue<Alignment>(_props['expanded-alignment']) ??
       Alignment.centerLeft;
   CrossAxisAlignment get expansionTileExpandedCrossAxisAlignment =>
-      extractCrossAxisAlignment(_props['expanded-cross-axis-align']) ??
+      extractNativeValue<CrossAxisAlignment>(
+        _props['expanded-cross-axis-align'],
+      ) ??
       CrossAxisAlignment.center;
   EdgeInsetsGeometry get expansionTileChildrenPadding =>
-      extractEdgeInsets(_props['children-padding']) ??
+      extractNativeValue<EdgeInsetsGeometry>(_props['children-padding']) ??
       const EdgeInsets.symmetric(vertical: 8.0);
   Color? get expansionTileBackgroundColor =>
       extractColor(_props['background-color']);
@@ -891,15 +907,16 @@ class Properties {
   TableBorder? get dataTableBorder =>
       extractNativeValue<TableBorder>(_props['border']);
   Clip get dataTableClipBehavior =>
-      extractClip(_props['clip-behavior']) ?? Clip.none;
+      extractNativeValue<Clip>(_props['clip-behavior']) ?? Clip.none;
 
   // Tooltip properties
   String get tooltipMessage => extractString(_props['message']) ?? '';
   double get tooltipHeight => extractDouble(_props['height']) ?? 32.0;
   EdgeInsetsGeometry get tooltipPadding =>
-      extractEdgeInsets(_props['padding']) ??
+      extractNativeValue<EdgeInsetsGeometry>(_props['padding']) ??
       const EdgeInsets.symmetric(horizontal: 16.0);
-  EdgeInsetsGeometry? get tooltipMargin => extractEdgeInsets(_props['margin']);
+  EdgeInsetsGeometry? get tooltipMargin =>
+      extractNativeValue<EdgeInsetsGeometry>(_props['margin']);
   double get tooltipVerticalOffset =>
       extractDouble(_props['vertical-offset']) ?? 24.0;
   bool get tooltipPreferBelow => extractBool(_props['prefer-below']) ?? true;
@@ -910,7 +927,7 @@ class Properties {
   TextStyle? get tooltipTextStyle =>
       extractNativeValue<TextStyle>(_props['text-style']);
   TextAlign get tooltipTextAlign =>
-      extractTextAlign(_props['text-align']) ?? TextAlign.start;
+      extractNativeValue<TextAlign>(_props['text-align']) ?? TextAlign.start;
   Duration get tooltipWaitDuration =>
       extractNativeValue<Duration>(_props['wait-duration']) ??
       const Duration(milliseconds: 0);
@@ -939,10 +956,11 @@ class Properties {
   String? get popupMenuTooltip => extractString(_props['tooltip']);
   double get popupMenuElevation => extractDouble(_props['elevation']) ?? 8.0;
   EdgeInsetsGeometry get popupMenuPadding =>
-      extractEdgeInsets(_props['padding']) ?? const EdgeInsets.all(8.0);
-  Widget? get popupMenuChild => extractChild(_props['child']);
+      extractNativeValue<EdgeInsetsGeometry>(_props['padding']) ??
+      const EdgeInsets.all(8.0);
+  Widget? get popupMenuChild => extractNativeValue<Widget>(_props['child']);
   double? get popupMenuSplashRadius => extractDouble(_props['splash-radius']);
-  Widget? get popupMenuIcon => extractChild(_props['icon']);
+  Widget? get popupMenuIcon => extractNativeValue<Widget>(_props['icon']);
   double get popupMenuIconSize => extractDouble(_props['icon-size']) ?? 24.0;
   Offset get popupMenuOffset =>
       extractNativeValue<Offset>(_props['offset']) ?? Offset.zero;
@@ -966,8 +984,9 @@ class Properties {
         _props['selected-item-builder'],
       );
   Object? get dropdownValue => extractNativeValue<Object>(_props['value']);
-  Widget? get dropdownHint => extractChild(_props['hint']);
-  Widget? get dropdownDisabledHint => extractChild(_props['disabled-hint']);
+  Widget? get dropdownHint => extractNativeValue<Widget>(_props['hint']);
+  Widget? get dropdownDisabledHint =>
+      extractNativeValue<Widget>(_props['disabled-hint']);
   ValueChanged<Object?>? get dropdownOnChanged =>
       extractNativeValue<ValueChanged<Object?>>(_props['on-changed']);
   GestureTapCallback? get dropdownOnTap =>
@@ -975,8 +994,9 @@ class Properties {
   int get dropdownElevation => extractInt(_props['elevation']) ?? 8;
   TextStyle? get dropdownStyle =>
       extractNativeValue<TextStyle>(_props['style']);
-  Widget? get dropdownUnderline => extractChild(_props['underline']);
-  Widget? get dropdownIcon => extractChild(_props['icon']);
+  Widget? get dropdownUnderline =>
+      extractNativeValue<Widget>(_props['underline']);
+  Widget? get dropdownIcon => extractNativeValue<Widget>(_props['icon']);
   Color? get dropdownIconDisabledColor =>
       extractColor(_props['icon-disabled-color']);
   Color? get dropdownIconEnabledColor =>
@@ -999,7 +1019,7 @@ class Properties {
   BorderRadius? get dropdownBorderRadius =>
       extractNativeValue<BorderRadius>(_props['border-radius']);
   EdgeInsetsGeometry? get dropdownPadding =>
-      extractEdgeInsets(_props['padding']);
+      extractNativeValue<EdgeInsetsGeometry>(_props['padding']);
 
   // RefreshIndicator properties
   double get refreshDisplacement =>
@@ -1056,7 +1076,8 @@ class Properties {
       extractNativeValue<ScrollPhysics>(_props['physics']);
   double get stepperElevation => extractDouble(_props['elevation']) ?? 0.0;
   EdgeInsetsGeometry get stepperMargin =>
-      extractEdgeInsets(_props['margin']) ?? EdgeInsets.zero;
+      extractNativeValue<EdgeInsetsGeometry>(_props['margin']) ??
+      EdgeInsets.zero;
   WidgetStateProperty<Color>? get stepperConnectorColor =>
       extractNativeValue<WidgetStateProperty<Color>>(_props['connector-color']);
   double get stepperConnectorThickness =>
@@ -1089,7 +1110,7 @@ class Properties {
   ScrollPhysics? get tabBarViewPhysics =>
       extractNativeValue<ScrollPhysics>(_props['physics']);
   DragStartBehavior get tabBarViewDragStartBehavior =>
-      extractDragStartBehavior(_props['drag-start-behavior']) ??
+      extractNativeValue<DragStartBehavior>(_props['drag-start-behavior']) ??
       DragStartBehavior.start;
   double get tabBarViewViewportFraction =>
       extractDouble(_props['viewport-fraction']) ?? 1.0;
@@ -1120,7 +1141,7 @@ class Properties {
   FocusNode? get searchBarFocusNode =>
       extractNativeValue<FocusNode>(_props['focus-node']);
   String? get searchBarHintText => extractString(_props['hint-text']);
-  Widget? get searchBarLeading => extractChild(_props['leading']);
+  Widget? get searchBarLeading => extractNativeValue<Widget>(_props['leading']);
   Iterable<Widget>? get searchBarTrailing =>
       extractChildren(_props['trailing']);
   VoidCallback? get searchBarOnTap =>
@@ -1150,7 +1171,7 @@ class Properties {
   WidgetStateProperty<OutlinedBorder?>? get searchBarShape =>
       extractNativeValue<WidgetStateProperty<OutlinedBorder?>>(_props['shape']);
   EdgeInsetsGeometry? get searchBarPadding =>
-      extractEdgeInsets(_props['padding']);
+      extractNativeValue<EdgeInsetsGeometry>(_props['padding']);
   TextStyle? get searchBarTextStyle =>
       extractNativeValue<TextStyle>(_props['text-style']);
   TextStyle? get searchBarHintStyle =>
@@ -1178,8 +1199,9 @@ class Properties {
   BorderSide? get searchBarViewSide =>
       extractNativeValue<BorderSide>(_props['view-side']);
   EdgeInsetsGeometry? get searchBarViewPadding =>
-      extractEdgeInsets(_props['view-padding']);
-  Widget? get searchBarViewLeading => extractChild(_props['view-leading']);
+      extractNativeValue<EdgeInsetsGeometry>(_props['view-padding']);
+  Widget? get searchBarViewLeading =>
+      extractNativeValue<Widget>(_props['view-leading']);
   Iterable<Widget>? get searchBarViewTrailing =>
       extractChildren(_props['view-trailing']);
   String? get searchBarViewHintText => extractString(_props['view-hint-text']);
@@ -1210,8 +1232,9 @@ class Properties {
   BorderSide? get searchAnchorViewSide =>
       extractNativeValue<BorderSide>(_props['view-side']);
   EdgeInsetsGeometry? get searchAnchorViewPadding =>
-      extractEdgeInsets(_props['view-padding']);
-  Widget? get searchAnchorViewLeading => extractChild(_props['view-leading']);
+      extractNativeValue<EdgeInsetsGeometry>(_props['view-padding']);
+  Widget? get searchAnchorViewLeading =>
+      extractNativeValue<Widget>(_props['view-leading']);
   Iterable<Widget>? get searchAnchorViewTrailing =>
       extractChildren(_props['view-trailing']);
   String? get searchAnchorViewHintText =>
@@ -1225,12 +1248,13 @@ class Properties {
   // InputChip properties
   bool get inputChipSelected => extractBool(_props['selected']) ?? false;
   bool get inputChipIsEnabled => extractBool(_props['is-enabled']) ?? true;
-  Widget? get inputChipLabel => extractChild(_props['label']);
+  Widget? get inputChipLabel => extractNativeValue<Widget>(_props['label']);
   TextStyle? get inputChipLabelStyle =>
       extractNativeValue<TextStyle>(_props['label-style']);
   EdgeInsetsGeometry? get inputChipLabelPadding =>
-      extractEdgeInsets(_props['label-padding']);
-  Widget? get inputChipDeleteIcon => extractChild(_props['delete-icon']);
+      extractNativeValue<EdgeInsetsGeometry>(_props['label-padding']);
+  Widget? get inputChipDeleteIcon =>
+      extractNativeValue<Widget>(_props['delete-icon']);
   VoidCallback? inputChipOnDeleted(Runtime runtime) =>
       extractVoidCallback(_props['on-deleted'], runtime);
   Color? get inputChipDeleteIconColor =>
@@ -1243,7 +1267,7 @@ class Properties {
       extractVoidCallback(_props['on-pressed'], runtime);
   double? get inputChipPressElevation =>
       extractDouble(_props['press-elevation']);
-  Widget? get inputChipAvatar => extractChild(_props['avatar']);
+  Widget? get inputChipAvatar => extractNativeValue<Widget>(_props['avatar']);
   BoxConstraints? get inputChipAvatarBoxConstraints =>
       extractNativeValue<BoxConstraints>(_props['avatar-box-constraints']);
   ShapeBorder? get inputChipAvatarBorderProperty =>
@@ -1253,7 +1277,7 @@ class Properties {
   OutlinedBorder? get inputChipShape =>
       extractNativeValue<OutlinedBorder>(_props['shape']);
   Clip get inputChipClipBehavior =>
-      extractClip(_props['clip-behavior']) ?? Clip.none;
+      extractNativeValue<Clip>(_props['clip-behavior']) ?? Clip.none;
   FocusNode? get inputChipFocusNode =>
       extractNativeValue<FocusNode>(_props['focus-node']);
   bool get inputChipAutofocus => extractBool(_props['autofocus']) ?? false;
@@ -1279,17 +1303,18 @@ class Properties {
       );
   // FilterChip properties
   bool get filterChipSelected => extractBool(_props['selected']) ?? false;
-  Widget? get filterChipLabel => extractChild(_props['label']);
+  Widget? get filterChipLabel => extractNativeValue<Widget>(_props['label']);
   TextStyle? get filterChipLabelStyle =>
       extractNativeValue<TextStyle>(_props['label-style']);
   EdgeInsetsGeometry? get filterChipLabelPadding =>
-      extractEdgeInsets(_props['label-padding']);
-  Widget? get filterChipAvatar => extractChild(_props['avatar']);
+      extractNativeValue<EdgeInsetsGeometry>(_props['label-padding']);
+  Widget? get filterChipAvatar => extractNativeValue<Widget>(_props['avatar']);
   BoxConstraints? get filterChipAvatarBoxConstraints =>
       extractNativeValue<BoxConstraints>(_props['avatar-box-constraints']);
   ShapeBorder? get filterChipAvatarBorder =>
       extractNativeValue<ShapeBorder>(_props['avatar-border']);
-  Widget? get filterChipDeleteIcon => extractChild(_props['delete-icon']);
+  Widget? get filterChipDeleteIcon =>
+      extractNativeValue<Widget>(_props['delete-icon']);
   VoidCallback? get filterChipOnDeleted =>
       extractNativeValue<VoidCallback>(_props['on-deleted']);
   Color? get filterChipDeleteIconColor =>
@@ -1307,7 +1332,7 @@ class Properties {
   OutlinedBorder? get filterChipShape =>
       extractNativeValue<OutlinedBorder>(_props['shape']);
   Clip get filterChipClipBehavior =>
-      extractClip(_props['clip-behavior']) ?? Clip.none;
+      extractNativeValue<Clip>(_props['clip-behavior']) ?? Clip.none;
   FocusNode? get filterChipFocusNode =>
       extractNativeValue<FocusNode>(_props['focus-node']);
   bool get filterChipAutofocus => extractBool(_props['autofocus']) ?? false;
@@ -1334,12 +1359,12 @@ class Properties {
       );
   // ChoiceChip properties
   bool get choiceChipSelected => extractBool(_props['selected']) ?? false;
-  Widget? get choiceChipLabel => extractChild(_props['label']);
+  Widget? get choiceChipLabel => extractNativeValue<Widget>(_props['label']);
   TextStyle? get choiceChipLabelStyle =>
       extractNativeValue<TextStyle>(_props['label-style']);
   EdgeInsetsGeometry? get choiceChipLabelPadding =>
-      extractEdgeInsets(_props['label-padding']);
-  Widget? get choiceChipAvatar => extractChild(_props['avatar']);
+      extractNativeValue<EdgeInsetsGeometry>(_props['label-padding']);
+  Widget? get choiceChipAvatar => extractNativeValue<Widget>(_props['avatar']);
   BoxConstraints? get choiceChipAvatarBoxConstraints =>
       extractNativeValue<BoxConstraints>(_props['avatar-box-constraints']);
   ShapeBorder? get choiceChipAvatarBorder =>
@@ -1353,7 +1378,7 @@ class Properties {
   OutlinedBorder? get choiceChipShape =>
       extractNativeValue<OutlinedBorder>(_props['shape']);
   Clip get choiceChipClipBehavior =>
-      extractClip(_props['clip-behavior']) ?? Clip.none;
+      extractNativeValue<Clip>(_props['clip-behavior']) ?? Clip.none;
   FocusNode? get choiceChipFocusNode =>
       extractNativeValue<FocusNode>(_props['focus-node']);
   bool get choiceChipAutofocus => extractBool(_props['autofocus']) ?? false;
@@ -1379,12 +1404,12 @@ class Properties {
         _props['selected-shadow-color'],
       );
   // ActionChip properties
-  Widget? get actionChipLabel => extractChild(_props['label']);
+  Widget? get actionChipLabel => extractNativeValue<Widget>(_props['label']);
   TextStyle? get actionChipLabelStyle =>
       extractNativeValue<TextStyle>(_props['label-style']);
   EdgeInsetsGeometry? get actionChipLabelPadding =>
-      extractEdgeInsets(_props['label-padding']);
-  Widget? get actionChipAvatar => extractChild(_props['avatar']);
+      extractNativeValue<EdgeInsetsGeometry>(_props['label-padding']);
+  Widget? get actionChipAvatar => extractNativeValue<Widget>(_props['avatar']);
   BoxConstraints? get actionChipAvatarBoxConstraints =>
       extractNativeValue<BoxConstraints>(_props['avatar-box-constraints']);
   ShapeBorder? get actionChipAvatarBorder =>
@@ -1398,7 +1423,7 @@ class Properties {
   OutlinedBorder? get actionChipShape =>
       extractNativeValue<OutlinedBorder>(_props['shape']);
   Clip get actionChipClipBehavior =>
-      extractClip(_props['clip-behavior']) ?? Clip.none;
+      extractNativeValue<Clip>(_props['clip-behavior']) ?? Clip.none;
   FocusNode? get actionChipFocusNode =>
       extractNativeValue<FocusNode>(_props['focus-node']);
   bool get actionChipAutofocus => extractBool(_props['autofocus']) ?? false;
@@ -1420,16 +1445,16 @@ class Properties {
   ShapeBorder? get bottomAppBarShape =>
       extractNativeValue<ShapeBorder>(_props['shape']);
   Clip get bottomAppBarClipBehavior =>
-      extractClip(_props['clip-behavior']) ?? Clip.none;
+      extractNativeValue<Clip>(_props['clip-behavior']) ?? Clip.none;
   double get bottomAppBarNotchMargin =>
       extractDouble(_props['notch-margin']) ?? 4.0;
   double? get bottomAppBarHeight => extractDouble(_props['height']);
   EdgeInsetsGeometry? get bottomAppBarPadding =>
-      extractEdgeInsets(_props['padding']);
+      extractNativeValue<EdgeInsetsGeometry>(_props['padding']);
   Color? get bottomAppBarSurfaceTintColor =>
       extractColor(_props['surface-tint-color']);
   Color? get bottomAppBarShadowColor => extractColor(_props['shadow-color']);
-  Widget? get bottomAppBarChild => extractChild(_props['child']);
+  Widget? get bottomAppBarChild => extractNativeValue<Widget>(_props['child']);
 
   // NavigationDrawer properties
   Color? get navigationDrawerBackgroundColor =>
@@ -1451,35 +1476,35 @@ class Properties {
   List<Widget>? get navigationDrawerChildren =>
       extractChildren(_props['children']);
   EdgeInsetsGeometry? get navigationDrawerTilePadding =>
-      extractEdgeInsets(_props['tile-padding']);
+      extractNativeValue<EdgeInsetsGeometry>(_props['tile-padding']);
 
   // DrawerHeader properties
   Decoration? get drawerHeaderDecoration =>
       extractNativeValue<Decoration>(_props['decoration']);
   EdgeInsetsGeometry? get drawerHeaderMargin =>
-      extractEdgeInsets(_props['margin']);
+      extractNativeValue<EdgeInsetsGeometry>(_props['margin']);
   EdgeInsetsGeometry? get drawerHeaderPadding =>
-      extractEdgeInsets(_props['padding']);
+      extractNativeValue<EdgeInsetsGeometry>(_props['padding']);
   Duration? get drawerHeaderDuration =>
       extractNativeValue<Duration>(_props['duration']);
   Curve? get drawerHeaderCurve => extractNativeValue<Curve>(_props['curve']);
-  Widget? get drawerHeaderChild => extractChild(_props['child']);
+  Widget? get drawerHeaderChild => extractNativeValue<Widget>(_props['child']);
 
   // UserAccountsDrawerHeader properties
   Decoration? get userAccountsDrawerHeaderDecoration =>
       extractNativeValue<Decoration>(_props['decoration']);
   EdgeInsetsGeometry? get userAccountsDrawerHeaderMargin =>
-      extractEdgeInsets(_props['margin']);
+      extractNativeValue<EdgeInsetsGeometry>(_props['margin']);
   EdgeInsetsGeometry? get userAccountsDrawerHeaderPadding =>
-      extractEdgeInsets(_props['padding']);
+      extractNativeValue<EdgeInsetsGeometry>(_props['padding']);
   Widget? get userAccountsDrawerHeaderCurrentAccountPicture =>
-      extractChild(_props['current-account-picture']);
+      extractNativeValue<Widget>(_props['current-account-picture']);
   List<Widget>? get userAccountsDrawerHeaderOtherAccountsPictures =>
       extractChildren(_props['other-accounts-pictures']);
   Widget? get userAccountsDrawerHeaderAccountName =>
-      extractChild(_props['account-name']);
+      extractNativeValue<Widget>(_props['account-name']);
   Widget? get userAccountsDrawerHeaderAccountEmail =>
-      extractChild(_props['account-email']);
+      extractNativeValue<Widget>(_props['account-email']);
   VoidCallback? get userAccountsDrawerHeaderOnDetailsPressed =>
       extractNativeValue<VoidCallback>(_props['on-details-pressed']);
   Color? get userAccountsDrawerHeaderArrowColor =>
@@ -1487,7 +1512,7 @@ class Properties {
 
   // ListView properties
   Axis get listViewScrollDirection =>
-      extractAxis(_props['scroll-direction']) ?? Axis.vertical;
+      extractNativeValue<Axis>(_props['scroll-direction']) ?? Axis.vertical;
   bool get listViewReverse => extractBool(_props['reverse']) ?? false;
   ScrollController? get listViewController =>
       extractNativeValue<ScrollController>(_props['controller']);
@@ -1496,9 +1521,10 @@ class Properties {
       extractNativeValue<ScrollPhysics>(_props['physics']);
   bool get listViewShrinkWrap => extractBool(_props['shrink-wrap']) ?? false;
   EdgeInsetsGeometry? get listViewPadding =>
-      extractEdgeInsets(_props['padding']);
+      extractNativeValue<EdgeInsetsGeometry>(_props['padding']);
   double? get listViewItemExtent => extractDouble(_props['item-extent']);
-  Widget? get listViewPrototypeItem => extractChild(_props['prototype-item']);
+  Widget? get listViewPrototypeItem =>
+      extractNativeValue<Widget>(_props['prototype-item']);
   bool get listViewAddAutomaticKeepAlives =>
       extractBool(_props['add-automatic-keep-alives']) ?? true;
   bool get listViewAddRepaintBoundaries =>
@@ -1510,11 +1536,11 @@ class Properties {
   int? get listViewSemanticChildCount =>
       extractInt(_props['semantic-child-count']);
   Clip get listViewClipBehavior =>
-      extractClip(_props['clip-behavior']) ?? Clip.hardEdge;
+      extractNativeValue<Clip>(_props['clip-behavior']) ?? Clip.hardEdge;
 
   // GridView properties
   Axis get gridViewScrollDirection =>
-      extractAxis(_props['scroll-direction']) ?? Axis.vertical;
+      extractNativeValue<Axis>(_props['scroll-direction']) ?? Axis.vertical;
   bool get gridViewReverse => extractBool(_props['reverse']) ?? false;
   ScrollController? get gridViewController =>
       extractNativeValue<ScrollController>(_props['controller']);
@@ -1523,7 +1549,7 @@ class Properties {
       extractNativeValue<ScrollPhysics>(_props['physics']);
   bool get gridViewShrinkWrap => extractBool(_props['shrink-wrap']) ?? false;
   EdgeInsetsGeometry? get gridViewPadding =>
-      extractEdgeInsets(_props['padding']);
+      extractNativeValue<EdgeInsetsGeometry>(_props['padding']);
   SliverGridDelegate? get gridViewGridDelegate =>
       extractNativeValue<SliverGridDelegate>(_props['grid-delegate']);
   bool get gridViewAddAutomaticKeepAlives =>
@@ -1537,15 +1563,15 @@ class Properties {
   int? get gridViewSemanticChildCount =>
       extractInt(_props['semantic-child-count']);
   Clip get gridViewClipBehavior =>
-      extractClip(_props['clip-behavior']) ?? Clip.hardEdge;
+      extractNativeValue<Clip>(_props['clip-behavior']) ?? Clip.hardEdge;
 
   // SingleChildScrollView properties
   Axis get singleChildScrollViewScrollDirection =>
-      extractAxis(_props['scroll-direction']) ?? Axis.vertical;
+      extractNativeValue<Axis>(_props['scroll-direction']) ?? Axis.vertical;
   bool get singleChildScrollViewReverse =>
       extractBool(_props['reverse']) ?? false;
   EdgeInsetsGeometry? get singleChildScrollViewPadding =>
-      extractEdgeInsets(_props['padding']);
+      extractNativeValue<EdgeInsetsGeometry>(_props['padding']);
   bool get singleChildScrollViewPrimary =>
       extractBool(_props['primary']) ?? false;
   ScrollPhysics? get singleChildScrollViewPhysics =>
@@ -1553,10 +1579,10 @@ class Properties {
   ScrollController? get singleChildScrollViewController =>
       extractNativeValue<ScrollController>(_props['controller']);
   DragStartBehavior get singleChildScrollViewDragStartBehavior =>
-      extractDragStartBehavior(_props['drag-start-behavior']) ??
+      extractNativeValue<DragStartBehavior>(_props['drag-start-behavior']) ??
       DragStartBehavior.start;
   Clip get singleChildScrollViewClipBehavior =>
-      extractClip(_props['clip-behavior']) ?? Clip.hardEdge;
+      extractNativeValue<Clip>(_props['clip-behavior']) ?? Clip.hardEdge;
   String? get singleChildScrollViewRestorationId =>
       extractString(_props['restoration-id']);
   ScrollViewKeyboardDismissBehavior
@@ -1565,11 +1591,12 @@ class Properties {
         _props['keyboard-dismiss-behavior'],
       ) ??
       ScrollViewKeyboardDismissBehavior.manual;
-  Widget? get singleChildScrollViewChild => extractChild(_props['child']);
+  Widget? get singleChildScrollViewChild =>
+      extractNativeValue<Widget>(_props['child']);
 
   // CustomScrollView properties
   Axis get customScrollViewScrollDirection =>
-      extractAxis(_props['scroll-direction']) ?? Axis.vertical;
+      extractNativeValue<Axis>(_props['scroll-direction']) ?? Axis.vertical;
   bool get customScrollViewReverse => extractBool(_props['reverse']) ?? false;
   ScrollController? get customScrollViewController =>
       extractNativeValue<ScrollController>(_props['controller']);
@@ -1587,7 +1614,7 @@ class Properties {
   int? get customScrollViewSemanticChildCount =>
       extractInt(_props['semantic-child-count']);
   DragStartBehavior get customScrollViewDragStartBehavior =>
-      extractDragStartBehavior(_props['drag-start-behavior']) ??
+      extractNativeValue<DragStartBehavior>(_props['drag-start-behavior']) ??
       DragStartBehavior.start;
   ScrollViewKeyboardDismissBehavior
   get customScrollViewKeyboardDismissBehavior =>
@@ -1598,7 +1625,7 @@ class Properties {
   String? get customScrollViewRestorationId =>
       extractString(_props['restoration-id']);
   Clip get customScrollViewClipBehavior =>
-      extractClip(_props['clip-behavior']) ?? Clip.hardEdge;
+      extractNativeValue<Clip>(_props['clip-behavior']) ?? Clip.hardEdge;
 
   // SliverList properties
   SliverChildDelegate? get sliverListDelegate =>
@@ -1614,8 +1641,10 @@ class Properties {
   Color? get navigationRailBackgroundColor =>
       extractColor(_props['background-color']);
   bool get navigationRailExtended => extractBool(_props['extended']) ?? false;
-  Widget? get navigationRailLeading => extractChild(_props['leading']);
-  Widget? get navigationRailTrailing => extractChild(_props['trailing']);
+  Widget? get navigationRailLeading =>
+      extractNativeValue<Widget>(_props['leading']);
+  Widget? get navigationRailTrailing =>
+      extractNativeValue<Widget>(_props['trailing']);
   List<NavigationRailDestination>? get navigationRailDestinations =>
       extractNativeValue<List<NavigationRailDestination>>(
         _props['destinations'],
@@ -1659,7 +1688,7 @@ class Properties {
       extractNativeValue<CupertinoButtonSize>(_props['size-style']) ??
       CupertinoButtonSize.large;
   EdgeInsetsGeometry get cupertinoButtonPadding =>
-      extractEdgeInsets(_props['padding']) ??
+      extractNativeValue<EdgeInsetsGeometry>(_props['padding']) ??
       const EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0);
   Color get cupertinoButtonDisabledColor =>
       extractColor(_props['disabled-color']) ??
@@ -1677,16 +1706,18 @@ class Properties {
       extractDouble(_props['radius']) ?? 10.0;
 
   // CupertinoNavigationBar properties
-  Widget? get cupertinoNavigationBarLeading => extractChild(_props['leading']);
+  Widget? get cupertinoNavigationBarLeading =>
+      extractNativeValue<Widget>(_props['leading']);
   bool get cupertinoNavigationBarAutomaticallyImplyLeading =>
       extractBool(_props['automatically-imply-leading']) ?? true;
   bool get cupertinoNavigationBarAutomaticallyImplyMiddle =>
       extractBool(_props['automatically-imply-middle']) ?? true;
   String? get cupertinoNavigationBarPreviousPageTitle =>
       extractString(_props['previous-page-title']);
-  Widget get cupertinoNavigationBarMiddle => extractChild(_props['middle'])!;
+  Widget get cupertinoNavigationBarMiddle =>
+      extractNativeValue<Widget>(_props['middle'])!;
   Widget? get cupertinoNavigationBarTrailing =>
-      extractChild(_props['trailing']);
+      extractNativeValue<Widget>(_props['trailing']);
   Border get cupertinoNavigationBarBorder =>
       extractNativeValue<Border>(_props['border']) ??
       const Border(bottom: BorderSide(color: Color(0x4D000000), width: 0.0));
@@ -1719,11 +1750,13 @@ class Properties {
         fontWeight: FontWeight.w400,
         color: CupertinoColors.placeholderText,
       );
-  Widget? get cupertinoTextFieldPrefix => extractChild(_props['prefix']);
+  Widget? get cupertinoTextFieldPrefix =>
+      extractNativeValue<Widget>(_props['prefix']);
   OverlayVisibilityMode get cupertinoTextFieldPrefixMode =>
       extractNativeValue<OverlayVisibilityMode>(_props['prefix-mode']) ??
       OverlayVisibilityMode.always;
-  Widget? get cupertinoTextFieldSuffix => extractChild(_props['suffix']);
+  Widget? get cupertinoTextFieldSuffix =>
+      extractNativeValue<Widget>(_props['suffix']);
   OverlayVisibilityMode get cupertinoTextFieldSuffixMode =>
       extractNativeValue<OverlayVisibilityMode>(_props['suffix-mode']) ??
       OverlayVisibilityMode.always;
@@ -1742,7 +1775,8 @@ class Properties {
         borderRadius: BorderRadius.all(Radius.circular(5.0)),
       );
   EdgeInsetsGeometry get cupertinoTextFieldPadding =>
-      extractEdgeInsets(_props['padding']) ?? const EdgeInsets.all(6.0);
+      extractNativeValue<EdgeInsetsGeometry>(_props['padding']) ??
+      const EdgeInsets.all(6.0);
 
   // CupertinoSwitch properties
   bool get cupertinoSwitchValue => extractBool(_props['value']) ?? false;
@@ -1832,9 +1866,9 @@ class Properties {
   String? get cupertinoSearchTextFieldHintText =>
       extractString(_props['hint-text']);
   Widget? get cupertinoSearchTextFieldPrefixIcon =>
-      extractChild(_props['prefix-icon']);
+      extractNativeValue<Widget>(_props['prefix-icon']);
   Widget? get cupertinoSearchTextFieldSuffixIcon =>
-      extractChild(_props['suffix-icon']);
+      extractNativeValue<Widget>(_props['suffix-icon']);
   OverlayVisibilityMode get cupertinoSearchTextFieldPrefixMode =>
       extractNativeValue<OverlayVisibilityMode>(_props['prefix-mode']) ??
       OverlayVisibilityMode.always;
@@ -1850,7 +1884,7 @@ class Properties {
   BorderRadius? get cupertinoSearchTextFieldBorderRadius =>
       extractNativeValue<BorderRadius>(_props['border-radius']);
   EdgeInsetsGeometry get cupertinoSearchTextFieldPadding =>
-      extractEdgeInsets(_props['padding']) ??
+      extractNativeValue<EdgeInsetsGeometry>(_props['padding']) ??
       const EdgeInsetsDirectional.fromSTEB(5.5, 8, 5.5, 8);
   Color? get cupertinoSearchTextFieldItemColor =>
       extractColor(_props['item-color']);
@@ -1874,7 +1908,7 @@ class Properties {
   Color? get cupertinoSegmentedControlPressedColor =>
       extractColor(_props['pressed-color']);
   EdgeInsetsGeometry get cupertinoSegmentedControlPadding =>
-      extractEdgeInsets(_props['padding']) ??
+      extractNativeValue<EdgeInsetsGeometry>(_props['padding']) ??
       const EdgeInsets.symmetric(vertical: 2, horizontal: 3);
 
   // CupertinoSlider properties
@@ -1897,7 +1931,7 @@ class Properties {
   Color? get cupertinoSlidingSegmentedControlBackgroundColor =>
       extractColor(_props['background-color']);
   EdgeInsetsGeometry get cupertinoSlidingSegmentedControlPadding =>
-      extractEdgeInsets(_props['padding']) ??
+      extractNativeValue<EdgeInsetsGeometry>(_props['padding']) ??
       const EdgeInsets.symmetric(vertical: 2, horizontal: 3);
 
   // CupertinoTimerPicker properties
@@ -1960,13 +1994,13 @@ class Properties {
   List<Widget> get cupertinoContextMenuActions =>
       extractChildren(_props['actions']) ?? [];
   Widget? get cupertinoContextMenuPreviewBuilder =>
-      extractChild(_props['preview-builder']);
+      extractNativeValue<Widget>(_props['preview-builder']);
 
   // CupertinoActionSheet properties
   Widget? get cupertinoActionSheetTitle =>
-      extractChild(_props['cupertino-action-sheet-title']);
+      extractNativeValue<Widget>(_props['cupertino-action-sheet-title']);
   Widget? get cupertinoActionSheetMessage =>
-      extractChild(_props['cupertino-action-sheet-message']);
+      extractNativeValue<Widget>(_props['cupertino-action-sheet-message']);
   List<Widget>? get cupertinoActionSheetActions =>
       extractChildren(_props['cupertino-action-sheet-actions']);
   ScrollController? get cupertinoActionSheetMessageScrollController =>
@@ -1977,14 +2011,15 @@ class Properties {
       extractNativeValue<ScrollController>(
         _props['cupertino-action-sheet-action-scroll-controller'],
       );
-  Widget? get cupertinoActionSheetCancelButton =>
-      extractChild(_props['cupertino-action-sheet-cancel-button']);
+  Widget? get cupertinoActionSheetCancelButton => extractNativeValue<Widget>(
+    _props['cupertino-action-sheet-cancel-button'],
+  );
 
   // CupertinoAlertDialog properties
   Widget? get cupertinoAlertDialogTitle =>
-      extractChild(_props['cupertino-alert-dialog-title']);
+      extractNativeValue<Widget>(_props['cupertino-alert-dialog-title']);
   Widget? get cupertinoAlertDialogContent =>
-      extractChild(_props['cupertino-alert-dialog-content']);
+      extractNativeValue<Widget>(_props['cupertino-alert-dialog-content']);
   List<Widget> get cupertinoAlertDialogActions =>
       extractChildren(_props['cupertino-alert-dialog-actions']) ?? [];
   ScrollController? get cupertinoAlertDialogScrollController =>
@@ -2016,8 +2051,9 @@ class Properties {
       defaultScrollNotificationPredicate;
 
   // Generic alert dialog properties
-  Widget? get alertDialogTitle => extractChild(_props['title']);
-  Widget? get alertDialogContent => extractChild(_props['content']);
+  Widget? get alertDialogTitle => extractNativeValue<Widget>(_props['title']);
+  Widget? get alertDialogContent =>
+      extractNativeValue<Widget>(_props['content']);
 
   // CupertinoScrollbar properties
   bool get cupertinoScrollbarThumbVisibility =>
@@ -2042,14 +2078,15 @@ class Properties {
       extractNativeValue<ValueChanged<double>>(_props['on-change-end']);
 
   // CupertinoPageScaffold properties
-  Widget? get cupertinoPageScaffoldChild => extractChild(_props['child']);
+  Widget? get cupertinoPageScaffoldChild =>
+      extractNativeValue<Widget>(_props['child']);
   ObstructingPreferredSizeWidget? get cupertinoPageScaffoldNavigationBar =>
       extractNativeValue<ObstructingPreferredSizeWidget>(
         _props['navigation-bar'],
       );
   // bool? get cupertinoPageScaffoldResizeToAvoidBottomInset =>
   //     extractBool(_props['resize-to-avoid-bottom-inset']);
-  // Widget? get cupertinoPageScaffoldChild => extractChild(_props['child']);
+  // Widget? get cupertinoPageScaffoldChild => extractNativeValue<Widget>(_props['child']);
 
   // CupertinoCheckbox properties
   bool? get cupertinoCheckboxValue => extractBool(_props['value']);
