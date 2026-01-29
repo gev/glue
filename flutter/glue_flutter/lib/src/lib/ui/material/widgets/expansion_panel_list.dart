@@ -18,13 +18,15 @@ Eval<Ir> expansionPanelListImpl(Ir props) => switch (props) {
 /// Create ExpansionPanelList widget from properties
 Eval<Ir> _createExpansionPanelList(WidgetProperties properties) {
   final expansionPanelListWidget = ExpansionPanelList(
-    children: properties.expansionPanelListChildren ?? [],
-    expansionCallback: properties.expansionPanelListExpansionCallback,
-    animationDuration: properties.expansionPanelListAnimationDuration,
-    elevation: properties.expansionPanelListElevation,
-    materialGapSize: properties.expansionPanelListMaterialGapSize,
-    dividerColor: properties.expansionPanelListDividerColor,
-    expandIconColor: properties.expansionPanelListExpandIconColor,
+    key: properties.key,
+
+    children: (properties.getValue('children') as List<ExpansionPanel>?) ?? [],
+    expansionCallback: properties.getValue('expansion-callback'),
+    animationDuration: properties.getValue('animation-duration'),
+    elevation: properties.getInt('elevation') ?? 2,
+    materialGapSize: properties.getDouble('material-gap-size') ?? 16.0,
+    dividerColor: properties.getColor('divider-color'),
+    expandIconColor: properties.getColor('expand-icon-color'),
   );
   return Eval.pure(IrNativeValue(Value(expansionPanelListWidget)));
 }

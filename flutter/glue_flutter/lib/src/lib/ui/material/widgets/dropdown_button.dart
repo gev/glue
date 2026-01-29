@@ -17,33 +17,36 @@ Eval<Ir> dropdownButtonImpl(Ir props) => switch (props) {
 
 /// Create DropdownButton widget from properties
 Eval<Ir> _createDropdownButton(WidgetProperties properties) {
-  final dropdownButtonWidget = DropdownButton<Object>(
-    items: properties.dropdownItems,
-    selectedItemBuilder: properties.dropdownSelectedItemBuilder,
-    value: properties.dropdownValue,
-    hint: properties.dropdownHint,
-    disabledHint: properties.dropdownDisabledHint,
-    onChanged: properties.dropdownOnChanged,
-    onTap: properties.dropdownOnTap,
-    elevation: properties.dropdownElevation,
-    style: properties.dropdownStyle,
-    underline: properties.dropdownUnderline,
-    icon: properties.dropdownIcon,
-    iconDisabledColor: properties.dropdownIconDisabledColor,
-    iconEnabledColor: properties.dropdownIconEnabledColor,
-    iconSize: properties.dropdownIconSize,
-    isDense: properties.dropdownIsDense,
-    isExpanded: properties.dropdownIsExpanded,
-    itemHeight: properties.dropdownItemHeight,
-    focusColor: properties.dropdownFocusColor,
-    focusNode: properties.dropdownFocusNode,
-    autofocus: properties.dropdownAutofocus,
-    dropdownColor: properties.dropdownDropdownColor,
-    menuMaxHeight: properties.dropdownMenuMaxHeight,
-    enableFeedback: properties.dropdownEnableFeedback,
-    alignment: properties.dropdownAlignment,
-    borderRadius: properties.dropdownBorderRadius,
-    padding: properties.dropdownPadding,
-  );
-  return Eval.pure(IrNativeValue(Value(dropdownButtonWidget)));
+  return getRuntime().map((runtime) {
+    final dropdownButtonWidget = DropdownButton<Object>(
+      key: properties.key,
+      items: properties.getValue('items'),
+      selectedItemBuilder: properties.getValue('selected-item-builder'),
+      value: properties.getValue('value'),
+      hint: properties.getWidget('hint'),
+      disabledHint: properties.getWidget('disabled-hint'),
+      onChanged: properties.getValue('on-changed'),
+      onTap: properties.getVoidCallback('on-tap', runtime),
+      elevation: properties.getInt('elevation') ?? 8,
+      style: properties.getValue('style'),
+      underline: properties.getWidget('underline'),
+      icon: properties.getWidget('icon'),
+      iconDisabledColor: properties.getColor('icon-disabled-color'),
+      iconEnabledColor: properties.getColor('icon-enabled-color'),
+      iconSize: properties.getDouble('icon-size') ?? 24.0,
+      isDense: properties.getBool('is-dense') ?? false,
+      isExpanded: properties.getBool('is-expanded') ?? false,
+      itemHeight: properties.getDouble('item-height'),
+      focusColor: properties.getColor('focus-color'),
+      focusNode: properties.getValue('focus-node'),
+      autofocus: properties.getBool('autofocus') ?? false,
+      dropdownColor: properties.getColor('color'),
+      menuMaxHeight: properties.getDouble('menu-max-height'),
+      enableFeedback: properties.getBool('enable-feedback') ?? true,
+      alignment: properties.getValue('alignment'),
+      borderRadius: properties.getValue('border-radius'),
+      padding: properties.getValue('padding'),
+    );
+    return IrNativeValue(Value(dropdownButtonWidget));
+  });
 }
