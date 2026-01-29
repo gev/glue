@@ -17,18 +17,25 @@ Eval<Ir> refreshIndicatorImpl(Ir props) => switch (props) {
 
 /// Create RefreshIndicator widget from properties
 Eval<Ir> _createRefreshIndicator(WidgetProperties properties) {
-  final refreshIndicatorWidget = RefreshIndicator(
-    child: properties.child ?? const SizedBox(),
-    displacement: properties.refreshDisplacement,
-    edgeOffset: properties.refreshEdgeOffset,
-    onRefresh: properties.materialRefreshOnRefresh ?? () async {},
-    color: properties.refreshColor,
-    backgroundColor: properties.refreshBackgroundColor,
-    notificationPredicate: properties.refreshNotificationPredicate,
-    semanticsLabel: properties.refreshSemanticsLabel,
-    semanticsValue: properties.refreshSemanticsValue,
-    strokeWidth: properties.refreshStrokeWidth,
-    triggerMode: properties.refreshTriggerMode,
-  );
-  return Eval.pure(IrNativeValue(Value(refreshIndicatorWidget)));
+  return getRuntime().map((runtime) {
+    final refreshIndicatorWidget = RefreshIndicator(
+      key: properties.key,
+      child: properties.child ?? const SizedBox(),
+      displacement: properties.getDouble('displacement') ?? 40.0,
+      edgeOffset: properties.getDouble('edge-offset') ?? 0.0,
+      onRefresh: properties.getValue('on-refresh') ?? () async {},
+      color: properties.getColor('color'),
+      backgroundColor: properties.getColor('background-color'),
+      notificationPredicate: properties.getValue('notification-predicate'),
+      semanticsLabel: properties.getString('semantics-label'),
+      semanticsValue: properties.getString('semantics-value'),
+      strokeWidth:
+          properties.getDouble('stroke-width') ??
+          RefreshProgressIndicator.defaultStrokeWidth,
+      triggerMode:
+          properties.getValue('trigger-mode') ??
+          RefreshIndicatorTriggerMode.onEdge,
+    );
+    return IrNativeValue(Value(refreshIndicatorWidget));
+  });
 }

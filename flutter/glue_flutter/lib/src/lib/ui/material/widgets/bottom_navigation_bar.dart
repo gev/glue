@@ -33,10 +33,8 @@ Eval<Ir> _createBottomNavigationBar(WidgetProperties properties) {
     unselectedIconTheme: properties.getValue('unselected-icon-theme'),
     selectedLabelStyle: properties.getValue('selected-label-style'),
     unselectedLabelStyle: properties.getValue('unselected-label-style'),
-    selectedFontSize: (properties.getDouble('selected-font-size') ?? 14.0)
-        .toDouble(),
-    unselectedFontSize: (properties.getDouble('unselected-font-size') ?? 12.0)
-        .toDouble(),
+    selectedFontSize: properties.getDouble('selected-font-size') ?? 14.0,
+    unselectedFontSize: properties.getDouble('unselected-font-size') ?? 12.0,
     showSelectedLabels: properties.getBool('show-selected-labels'),
     showUnselectedLabels: properties.getBool('show-unselected-labels'),
     enableFeedback: properties.getBool('enable-feedback'),
