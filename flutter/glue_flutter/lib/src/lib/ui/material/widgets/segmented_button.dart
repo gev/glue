@@ -17,34 +17,15 @@ Eval<Ir> segmentedButtonImpl(Ir props) => switch (props) {
 
 /// Create SegmentedButton widget from properties
 Eval<Ir> _createSegmentedButton(WidgetProperties properties) {
-  // Convert widgets to ButtonSegment objects
-  final segments = (properties.segmentedSegments ?? []).map((widget) {
-    return ButtonSegment(
-      value: widget, // Use the widget itself as the value
-      label: widget,
+  return getRuntime().map((runtime) {
+    final segmentedButtonWidget = SegmentedButton<dynamic>(
+      key: properties.key,
+      selected: properties.getValue('selected') ?? <dynamic>{},
+      segments: properties.getValue('segments') ?? <ButtonSegment<dynamic>>[],
+      onSelectionChanged: properties.getValue('on-selection-changed'),
+      showSelectedIcon: properties.getBool('show-selected-icon') ?? true,
+      style: properties.getValue('style'),
     );
-  }).toList();
-
-  final segmentedButtonWidget = SegmentedButton(
-    selected: properties.segmentedSelected ?? <dynamic>{},
-    segments: segments,
-    onSelectionChanged: properties.onSegmentedSelectionChanged,
-    multiSelectionEnabled: properties.multiSelectionEnabledFor != null,
-    showSelectedIcon: properties.showSelectedIcon ?? true,
-    style: ButtonStyle(
-      backgroundColor: WidgetStateProperty.all(
-        properties.segmentedBackgroundColor,
-      ),
-      foregroundColor: WidgetStateProperty.all(
-        properties.segmentedUnselectedColor,
-      ),
-      overlayColor: WidgetStateProperty.all(properties.segmentedSelectedColor),
-      shadowColor: WidgetStateProperty.all(properties.segmentedShadowColor),
-      surfaceTintColor: WidgetStateProperty.all(
-        properties.segmentedSurfaceTintColor,
-      ),
-      elevation: WidgetStateProperty.all(properties.segmentedElevation),
-    ),
-  );
-  return Eval.pure(IrNativeValue(Value(segmentedButtonWidget)));
+    return IrNativeValue(Value(segmentedButtonWidget));
+  });
 }
