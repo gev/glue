@@ -17,29 +17,33 @@ Eval<Ir> filterChipImpl(Ir props) => switch (props) {
 
 /// Create FilterChip widget from properties
 Eval<Ir> _createFilterChip(WidgetProperties properties) {
-  final filterChipWidget = FilterChip(
-    selected: properties.filterChipSelected,
-    label: properties.filterChipLabel ?? const Text(''),
-    labelStyle: properties.filterChipLabelStyle,
-    labelPadding: properties.filterChipLabelPadding,
-    avatar: properties.filterChipAvatar,
-    avatarBoxConstraints: properties.filterChipAvatarBoxConstraints,
-    deleteIcon: properties.filterChipDeleteIcon,
-    onDeleted: properties.filterChipOnDeleted,
-    deleteIconColor: properties.filterChipDeleteIconColor,
-    deleteButtonTooltipMessage: properties.filterChipDeleteButtonTooltipMessage,
-    onSelected: properties.filterChipOnSelected,
-    pressElevation: properties.filterChipPressElevation,
-    side: properties.filterChipSide,
-    shape: properties.filterChipShape,
-    clipBehavior: properties.filterChipClipBehavior,
-    focusNode: properties.filterChipFocusNode,
-    autofocus: properties.filterChipAutofocus,
-    backgroundColor: properties.filterChipBackgroundColor,
-    disabledColor: properties.filterChipDisabledColor,
-    selectedColor: properties.filterChipSelectedColor,
-    checkmarkColor: properties.filterChipCheckmarkColor,
-    showCheckmark: properties.filterChipShowCheckmark,
-  );
-  return Eval.pure(IrNativeValue(Value(filterChipWidget)));
+  return getRuntime().map((runtime) {
+    final filterChipWidget = FilterChip(
+      selected: properties.getBool('selected') ?? false,
+      label: properties.child ?? const Text('FilterChip'),
+      labelStyle: properties.getValue('label-style'),
+      labelPadding: properties.getValue('label-padding'),
+      avatar: properties.getWidget('avatar'),
+      avatarBoxConstraints: properties.getValue('avatar-box-constraints'),
+      deleteIcon: properties.getWidget('delete-icon'),
+      onDeleted: properties.getVoidCallback('on-deleted', runtime),
+      deleteIconColor: properties.getColor('delete-icon-color'),
+      deleteButtonTooltipMessage: properties.getString(
+        'delete-button-tooltip-message',
+      ),
+      onSelected: properties.getValue('on-selected'),
+      pressElevation: properties.getDouble('press-elevation'),
+      side: properties.getValue('border-side'),
+      shape: properties.getValue('outlined-border'),
+      clipBehavior: properties.getValue('clip-behavior') ?? Clip.none,
+      focusNode: properties.getValue('focus-node'),
+      autofocus: properties.getBool('autofocus') ?? false,
+      backgroundColor: properties.getColor('background-color'),
+      disabledColor: properties.getColor('disabled-color'),
+      selectedColor: properties.getColor('selected-color'),
+      checkmarkColor: properties.getColor('checkmark-color'),
+      showCheckmark: properties.getBool('show-checkmark'),
+    );
+    return IrNativeValue(Value(filterChipWidget));
+  });
 }

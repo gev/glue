@@ -19,32 +19,33 @@ Eval<Ir> chipImpl(Ir props) => switch (props) {
 Eval<Ir> _createChip(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final chipWidget = Chip(
-      avatar: properties.chipAvatar,
-      label:
-          properties.child ??
-          const Text('Chip'), // Use child as label, fallback to 'Chip'
-      labelStyle: properties.chipLabelStyle,
-      labelPadding: properties.chipLabelPadding,
-      deleteIcon: properties.chipDeleteIcon,
-      onDeleted: properties.chipOnDeleted(runtime),
-      deleteIconColor: properties.chipDeleteIconColor,
-      deleteButtonTooltipMessage: properties.chipDeleteButtonTooltipMessage,
-      side: properties.chipSide,
-      shape: properties.chipShape,
-      clipBehavior: properties.clipBehavior,
-      focusNode: properties.focusNode,
-      autofocus: properties.autofocus,
-      color: properties.chipColor,
-      backgroundColor: properties.color, // using color for background
-      padding: properties.chipPadding,
-      visualDensity: properties.visualDensity,
-      materialTapTargetSize: properties.materialTapTargetSize,
-      elevation: properties.dividerThickness, // using thickness for elevation
-      shadowColor: properties.shadowColor,
-      surfaceTintColor: properties.surfaceTintColor,
-      iconTheme: properties.iconTheme,
-      avatarBoxConstraints: properties.chipAvatarBoxConstraints,
-      deleteIconBoxConstraints: properties.chipDeleteIconBoxConstraints,
+      avatar: properties.getWidget('avatar'),
+      label: properties.child ?? const Text('Chip'),
+      labelStyle: properties.getValue('label-style'),
+      labelPadding: properties.getValue('label-padding'),
+      deleteIcon: properties.getWidget('delete-icon'),
+      onDeleted: properties.getVoidCallback('on-deleted', runtime),
+      deleteIconColor: properties.getColor('delete-icon-color'),
+      deleteButtonTooltipMessage: properties.getString(
+        'delete-button-tooltip-message',
+      ),
+      side: properties.getValue('border-side'),
+      shape: properties.getValue('outlined-border'),
+      clipBehavior: properties.getValue('clip-behavior') ?? Clip.none,
+      focusNode: properties.getValue('focus-node'),
+      autofocus: properties.getBool('autofocus') ?? false,
+      backgroundColor: properties.getColor('background-color'),
+      padding: properties.getValue('padding'),
+      visualDensity: properties.getValue('visual-density'),
+      materialTapTargetSize: properties.getValue('material-tap-target-size'),
+      elevation: properties.getDouble('elevation'),
+      shadowColor: properties.getColor('shadow-color'),
+      surfaceTintColor: properties.getColor('surface-tint-color'),
+      iconTheme: properties.getValue('icon-theme'),
+      avatarBoxConstraints: properties.getValue('avatar-box-constraints'),
+      deleteIconBoxConstraints: properties.getValue(
+        'delete-icon-box-constraints',
+      ),
     );
     return IrNativeValue(Value(chipWidget));
   });

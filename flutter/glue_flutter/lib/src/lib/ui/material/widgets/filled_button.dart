@@ -18,20 +18,19 @@ Eval<Ir> filledButtonImpl(Ir props) => switch (props) {
 
 /// Create FilledButton widget from properties object
 Eval<Ir> _createFilledButton(WidgetProperties properties) {
-  final label = properties.label ?? 'Button'; // Extract label from properties
-
   // Get runtime and create widget
   return getRuntime().map((runtime) {
     final buttonWidget = FilledButton(
-      onPressed: properties.onPress(runtime),
-      onLongPress: properties.onLongPress(runtime),
-      onHover: properties.onHover,
-      onFocusChange: properties.onFocusChange,
-      style: properties.buttonStyle,
-      focusNode: properties.focusNode,
-      autofocus: properties.autofocus,
-      clipBehavior: properties.buttonClipBehavior,
-      child: Text(label),
+      key: properties.key,
+      onPressed: properties.getVoidCallback('on-pressed', runtime),
+      onLongPress: properties.getVoidCallback('on-long-press', runtime),
+      onHover: properties.getValue('on-hover'),
+      onFocusChange: properties.getValue('on-focus-change'),
+      style: properties.getValue('button-style'),
+      focusNode: properties.getValue('focus-node'),
+      autofocus: properties.getBool('autofocus') ?? false,
+      clipBehavior: properties.getValue('clip-behavior') ?? Clip.none,
+      child: properties.child ?? const Text('Button'),
     );
     return IrNativeValue(Value(buttonWidget));
   });
