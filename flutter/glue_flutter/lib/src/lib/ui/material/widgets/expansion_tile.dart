@@ -17,28 +17,34 @@ Eval<Ir> expansionTileImpl(Ir props) => switch (props) {
 
 /// Create ExpansionTile widget from properties
 Eval<Ir> _createExpansionTile(WidgetProperties properties) {
-  final expansionTileWidget = ExpansionTile(
-    leading: properties.expansionTileLeading,
-    title: properties.expansionTileTitle ?? const SizedBox(),
-    subtitle: properties.expansionTileSubtitle,
-    trailing: properties.expansionTileTrailing,
-    children: properties.expansionTileChildren ?? [],
-    initiallyExpanded: properties.expansionTileInitiallyExpanded,
-    maintainState: properties.expansionTileMaintainState,
-    tilePadding: properties.expansionTileTilePadding,
-    expandedAlignment: properties.expansionTileExpandedAlignment,
-    expandedCrossAxisAlignment:
-        properties.expansionTileExpandedCrossAxisAlignment,
-    childrenPadding: properties.expansionTileChildrenPadding,
-    backgroundColor: properties.expansionTileBackgroundColor,
-    collapsedBackgroundColor: properties.expansionTileCollapsedBackgroundColor,
-    textColor: properties.expansionTileTextColor,
-    collapsedTextColor: properties.expansionTileCollapsedTextColor,
-    iconColor: properties.expansionTileIconColor,
-    collapsedIconColor: properties.expansionTileCollapsedIconColor,
-    controlAffinity: properties.expansionTileControlAffinity,
-    controller: properties.expansionTileController,
-    onExpansionChanged: properties.expansionTileOnExpansionChanged,
-  );
-  return Eval.pure(IrNativeValue(Value(expansionTileWidget)));
+  return getRuntime().map((runtime) {
+    final expansionTileWidget = ExpansionTile(
+      key: properties.key,
+      leading: properties.getWidget('leading'),
+      title: properties.child ?? const SizedBox(),
+      subtitle: properties.getWidget('subtitle'),
+      trailing: properties.getWidget('trailing'),
+      children: properties.getWidgets('children') ?? [],
+      initiallyExpanded: properties.getBool('initially-expanded') ?? false,
+      maintainState: properties.getBool('maintain-state') ?? false,
+      tilePadding: properties.getValue('tile-padding'),
+      expandedAlignment: properties.getValue('expanded-alignment'),
+      expandedCrossAxisAlignment: properties.getValue(
+        'expanded-cross-axis-alignment',
+      ),
+      childrenPadding: properties.getValue('children-padding'),
+      backgroundColor: properties.getColor('background-color'),
+      collapsedBackgroundColor: properties.getColor(
+        'collapsed-background-color',
+      ),
+      textColor: properties.getColor('text-color'),
+      collapsedTextColor: properties.getColor('collapsed-text-color'),
+      iconColor: properties.getColor('icon-color'),
+      collapsedIconColor: properties.getColor('collapsed-icon-color'),
+      controlAffinity: properties.getValue('control-affinity'),
+      controller: properties.getValue('controller'),
+      onExpansionChanged: properties.getValue('on-expansion-changed'),
+    );
+    return IrNativeValue(Value(expansionTileWidget));
+  });
 }
