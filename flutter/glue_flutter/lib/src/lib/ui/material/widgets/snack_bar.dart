@@ -18,26 +18,29 @@ Eval<Ir> snackBarImpl(Ir props) => switch (props) {
 
 /// Create SnackBar widget from properties
 Eval<Ir> _createSnackBar(WidgetProperties properties) {
-  if (properties.snackBarContent == null) {
+  final content = properties.getWidget('content');
+  if (content == null) {
     throwError(wrongArgumentType(['content property required']));
   }
 
   return getRuntime().map((runtime) {
     final snackBarWidget = SnackBar(
-      content: properties.snackBarContent!,
-      backgroundColor: properties.color,
-      elevation: properties.size, // using size for elevation
-      margin: properties.margin,
-      padding: properties.padding,
-      width: properties.width,
-      shape: properties.shape,
-      behavior: properties.snackBarBehavior,
-      action: properties.snackBarAction,
-      duration: properties.snackBarDuration ?? const Duration(seconds: 4),
-      animation: properties.snackBarAnimation,
-      onVisible: properties.onVisible(runtime),
-      dismissDirection: properties.dismissDirection ?? DismissDirection.down,
-      clipBehavior: properties.clipBehavior,
+      key: properties.key,
+      content: content!,
+      backgroundColor: properties.getColor('background-color'),
+      elevation: properties.getDouble('elevation'),
+      margin: properties.getValue('margin'),
+      padding: properties.getValue('padding'),
+      width: properties.getDouble('width'),
+      shape: properties.getValue('shape'),
+      behavior: properties.getValue('behavior'),
+      action: properties.getValue('action'),
+      duration: properties.getValue('duration') ?? const Duration(seconds: 4),
+      animation: properties.getValue('animation'),
+      onVisible: properties.getVoidCallback('on-visible', runtime),
+      dismissDirection:
+          properties.getValue('dismiss-direction') ?? DismissDirection.down,
+      clipBehavior: properties.getValue('clip-behavior') ?? Clip.hardEdge,
     );
     return IrNativeValue(Value(snackBarWidget));
   });

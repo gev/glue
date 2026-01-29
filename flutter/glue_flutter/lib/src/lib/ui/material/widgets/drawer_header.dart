@@ -18,15 +18,16 @@ Eval<Ir> drawerHeaderImpl(Ir props) => switch (props) {
 /// Create DrawerHeader widget from properties
 Eval<Ir> _createDrawerHeader(WidgetProperties properties) {
   final drawerHeaderWidget = DrawerHeader(
-    decoration: properties.drawerHeaderDecoration,
-    margin: properties.drawerHeaderMargin ?? const EdgeInsets.only(bottom: 8.0),
+    key: properties.key,
+    decoration: properties.getValue('decoration'),
+    margin: properties.getValue('margin') ?? const EdgeInsets.only(bottom: 8.0),
     padding:
-        properties.drawerHeaderPadding ??
+        properties.getValue('padding') ??
         const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
     duration:
-        properties.drawerHeaderDuration ?? const Duration(milliseconds: 250),
-    curve: properties.drawerHeaderCurve ?? Curves.fastOutSlowIn,
-    child: properties.drawerHeaderChild,
+        properties.getValue('duration') ?? const Duration(milliseconds: 250),
+    curve: properties.getValue('curve') ?? Curves.fastOutSlowIn,
+    child: properties.child,
   );
   return Eval.pure(IrNativeValue(Value(drawerHeaderWidget)));
 }
