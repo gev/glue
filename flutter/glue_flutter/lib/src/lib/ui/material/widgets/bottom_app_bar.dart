@@ -18,16 +18,17 @@ Eval<Ir> bottomAppBarImpl(Ir props) => switch (props) {
 /// Create BottomAppBar widget from properties
 Eval<Ir> _createBottomAppBar(WidgetProperties properties) {
   final bottomAppBarWidget = BottomAppBar(
-    color: properties.bottomAppBarColor,
-    elevation: properties.bottomAppBarElevation,
-    shape: properties.bottomAppBarShape as NotchedShape?,
-    clipBehavior: properties.bottomAppBarClipBehavior,
-    notchMargin: properties.bottomAppBarNotchMargin,
-    height: properties.bottomAppBarHeight,
-    padding: properties.bottomAppBarPadding,
-    surfaceTintColor: properties.bottomAppBarSurfaceTintColor,
-    shadowColor: properties.bottomAppBarShadowColor,
-    child: properties.bottomAppBarChild,
+    key: properties.key,
+    color: properties.getColor('color'),
+    elevation: properties.getDouble('elevation'),
+    shape: properties.getValue('shape'),
+    clipBehavior: properties.getValue('clip-behavior'),
+    notchMargin: properties.getDouble('notch-margin') ?? 4.0,
+    height: properties.getDouble('height'),
+    padding: properties.getValue('padding'),
+    surfaceTintColor: properties.getColor('surface-tint-color'),
+    shadowColor: properties.getColor('shadow-color'),
+    child: properties.child,
   );
   return Eval.pure(IrNativeValue(Value(bottomAppBarWidget)));
 }

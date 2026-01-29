@@ -23,16 +23,16 @@ Eval<Ir> _createBadge(WidgetProperties properties) {
   }
 
   final badgeWidget = Badge(
+    key: properties.key,
     child: properties.child!,
-    label: properties.badgeLabel,
-    backgroundColor: properties.color, // using color for background
-    textColor: properties.foregroundColor, // using foregroundColor for text
-    textStyle: properties.textStyle,
-    padding: properties.padding,
-    alignment:
-        properties.fabAlignment, // using fabAlignment for badge alignment
-    isLabelVisible: properties.isLabelVisible ?? true,
-    offset: properties.badgeOffset ?? Offset.zero,
+    label: properties.getValue('badge-label'),
+    backgroundColor: properties.getColor('color'),
+    textColor: properties.getColor('text-color'),
+    textStyle: properties.getValue('text-style'),
+    padding: properties.getValue('padding'),
+    alignment: properties.getValue('alignment'),
+    isLabelVisible: properties.getBool('is-label-visible') ?? true,
+    offset: properties.getValue('badge-offset') ?? Offset.zero,
   );
   return Eval.pure(IrNativeValue(Value(badgeWidget)));
 }
