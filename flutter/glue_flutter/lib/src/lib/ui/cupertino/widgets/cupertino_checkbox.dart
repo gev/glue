@@ -22,10 +22,7 @@ Eval<Ir> _createCupertinoCheckbox(WidgetProperties properties) {
     final widget = CupertinoCheckbox(
       value: properties.getBool('cupertino-checkbox-value') ?? false,
       tristate: properties.getBool('cupertino-checkbox-tristate') ?? false,
-      onChanged: properties.getVoidCallback(
-        'cupertino-checkbox-on-changed',
-        runtime,
-      ),
+      onChanged: properties.getValue('cupertino-checkbox-on-changed'),
       activeColor: properties.getValue('cupertino-checkbox-active-color'),
       checkColor: properties.getValue('cupertino-checkbox-check-color'),
       focusColor: properties.getValue('cupertino-checkbox-focus-color'),
