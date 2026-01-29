@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue_flutter/src/utils/widget_properties_core.dart';
+import 'package:glue_flutter/src/utils/material_properties.dart';
 
 /// ChoiceChip widget function
 /// Creates Flutter ChoiceChip from Glue (choice-chip props) expressions
@@ -10,13 +10,13 @@ final Ir choiceChip = IrNativeFunc(choiceChipImpl);
 /// ChoiceChip implementation - takes properties object
 Eval<Ir> choiceChipImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createChoiceChip(
-    Properties(properties.unlock),
+    MaterialProperties(properties.unlock),
   ),
-  _ => _createChoiceChip(Properties.empty()),
+  _ => _createChoiceChip(MaterialProperties.empty()),
 };
 
 /// Create ChoiceChip widget from properties
-Eval<Ir> _createChoiceChip(Properties properties) {
+Eval<Ir> _createChoiceChip(MaterialProperties properties) {
   final choiceChipWidget = ChoiceChip(
     selected: properties.choiceChipSelected,
     label: properties.choiceChipLabel ?? const Text(''),

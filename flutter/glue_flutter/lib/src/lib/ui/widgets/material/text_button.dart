@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue_flutter/src/utils/widget_properties_core.dart';
+import 'package:glue_flutter/src/utils/material_properties.dart';
 
 /// TextButton widget function
 /// Creates Flutter TextButton from Glue (text-button props) expressions
@@ -11,13 +11,13 @@ final Ir textButton = IrNativeFunc(textButtonImpl);
 /// TextButton implementation - takes properties object with keyword arguments
 Eval<Ir> textButtonImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createTextButton(
-    Properties(properties.unlock),
+    MaterialProperties(properties.unlock),
   ),
-  _ => _createTextButton(Properties.empty()),
+  _ => _createTextButton(MaterialProperties.empty()),
 };
 
 /// Create TextButton widget from properties object
-Eval<Ir> _createTextButton(Properties properties) {
+Eval<Ir> _createTextButton(MaterialProperties properties) {
   final label = properties.label ?? 'Button'; // Extract label from properties
 
   // Get runtime and create callback

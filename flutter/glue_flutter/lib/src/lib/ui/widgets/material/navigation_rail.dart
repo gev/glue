@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue_flutter/src/utils/widget_properties_core.dart';
+import 'package:glue_flutter/src/utils/material_properties.dart';
 
 /// NavigationRail widget function
 /// Creates Flutter NavigationRail from Glue (navigation-rail props) expressions
@@ -10,13 +10,13 @@ final Ir navigationRail = IrNativeFunc(navigationRailImpl);
 /// NavigationRail implementation - takes properties object
 Eval<Ir> navigationRailImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createNavigationRail(
-    Properties(properties.unlock),
+    MaterialProperties(properties.unlock),
   ),
-  _ => _createNavigationRail(Properties.empty()),
+  _ => _createNavigationRail(MaterialProperties.empty()),
 };
 
 /// Create NavigationRail widget from properties
-Eval<Ir> _createNavigationRail(Properties properties) {
+Eval<Ir> _createNavigationRail(MaterialProperties properties) {
   final navigationRailWidget = NavigationRail(
     backgroundColor: properties.navigationRailBackgroundColor,
     extended: properties.navigationRailExtended,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue_flutter/src/utils/widget_properties_core.dart';
+import 'package:glue_flutter/src/utils/material_properties.dart';
 
 /// TextField widget function
 /// Creates Flutter TextField from Glue (text-field props) expressions
@@ -10,13 +10,13 @@ final Ir textField = IrNativeFunc(textFieldImpl);
 /// TextField implementation - takes properties object
 Eval<Ir> textFieldImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createTextField(
-    Properties(properties.unlock),
+    MaterialProperties(properties.unlock),
   ),
-  _ => _createTextField(Properties.empty()),
+  _ => _createTextField(MaterialProperties.empty()),
 };
 
 /// Create TextField widget from properties
-Eval<Ir> _createTextField(Properties properties) {
+Eval<Ir> _createTextField(MaterialProperties properties) {
   return getRuntime().map((runtime) {
     final textFieldWidget = TextField(
       controller: properties.textEditingController,

@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue_flutter/src/utils/widget_properties_core.dart';
+import 'package:glue_flutter/src/utils/core_properties.dart';
 
 /// ListView widget function
 /// Creates Flutter ListView from Glue (list-view props) expressions
@@ -9,12 +9,14 @@ final Ir listView = IrNativeFunc(listViewImpl);
 
 /// ListView implementation - takes properties object
 Eval<Ir> listViewImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createListView(Properties(properties.unlock)),
-  _ => _createListView(Properties.empty()),
+  IrObject(:final properties) => _createListView(
+    CoreProperties(properties.unlock),
+  ),
+  _ => _createListView(CoreProperties.empty()),
 };
 
 /// Create ListView widget from properties
-Eval<Ir> _createListView(Properties properties) {
+Eval<Ir> _createListView(CoreProperties properties) {
   final listViewWidget = ListView(
     scrollDirection: properties.listViewScrollDirection,
     reverse: properties.listViewReverse,

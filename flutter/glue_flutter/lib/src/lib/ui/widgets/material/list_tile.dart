@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval/exception.dart';
-import 'package:glue_flutter/src/utils/widget_properties_core.dart';
+import 'package:glue_flutter/src/utils/material_properties.dart';
 
 /// ListTile widget function
 /// Creates Flutter ListTile from Glue (list-tile props) expressions
@@ -10,12 +10,14 @@ final Ir listTile = IrNativeFunc(listTileImpl);
 
 /// ListTile implementation - takes properties object
 Eval<Ir> listTileImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createListTile(Properties(properties.unlock)),
+  IrObject(:final properties) => _createListTile(
+    MaterialProperties(properties.unlock),
+  ),
   _ => throwError(wrongArgumentType(['object'])),
 };
 
 /// Create ListTile widget from properties
-Eval<Ir> _createListTile(Properties properties) {
+Eval<Ir> _createListTile(MaterialProperties properties) {
   final listTileWidget = ListTile(
     leading: properties.child, // leading widget
     title: properties.title,

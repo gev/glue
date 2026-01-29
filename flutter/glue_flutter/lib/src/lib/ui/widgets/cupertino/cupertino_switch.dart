@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue_flutter/src/utils/widget_properties_core.dart';
+import 'package:glue_flutter/src/utils/cupertino_properties.dart';
 
 /// CupertinoSwitch widget function
 /// Creates Flutter CupertinoSwitch from Glue expressions
@@ -12,13 +12,13 @@ final Ir cupertinoSwitch = IrNativeFunc(cupertinoSwitchImpl);
 /// CupertinoSwitch implementation - takes properties object with keyword arguments
 Eval<Ir> cupertinoSwitchImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createCupertinoSwitch(
-    Properties(properties.unlock),
+    CupertinoProperties(properties.unlock),
   ),
-  _ => _createCupertinoSwitch(Properties.empty()),
+  _ => _createCupertinoSwitch(CupertinoProperties.empty()),
 };
 
 /// Create CupertinoSwitch widget from properties object
-Eval<Ir> _createCupertinoSwitch(Properties properties) {
+Eval<Ir> _createCupertinoSwitch(CupertinoProperties properties) {
   return getRuntime().map((runtime) {
     final callback = properties.onSwitchChanged != null
         ? (bool value) => properties.onSwitchChanged!(value)

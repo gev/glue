@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue_flutter/src/utils/widget_properties_core.dart';
+import 'package:glue_flutter/src/utils/material_properties.dart';
 
 /// ExpansionPanelList widget function
 /// Creates Flutter ExpansionPanelList from Glue (expansion-panel-list props) expressions
@@ -10,13 +10,13 @@ final Ir expansionPanelList = IrNativeFunc(expansionPanelListImpl);
 /// ExpansionPanelList implementation - takes properties object
 Eval<Ir> expansionPanelListImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createExpansionPanelList(
-    Properties(properties.unlock),
+    MaterialProperties(properties.unlock),
   ),
-  _ => _createExpansionPanelList(Properties.empty()),
+  _ => _createExpansionPanelList(MaterialProperties.empty()),
 };
 
 /// Create ExpansionPanelList widget from properties
-Eval<Ir> _createExpansionPanelList(Properties properties) {
+Eval<Ir> _createExpansionPanelList(MaterialProperties properties) {
   final expansionPanelListWidget = ExpansionPanelList(
     children: properties.expansionPanelListChildren ?? [],
     expansionCallback: properties.expansionPanelListExpansionCallback,

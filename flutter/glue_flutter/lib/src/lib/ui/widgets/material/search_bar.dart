@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue_flutter/src/utils/widget_properties_core.dart';
+import 'package:glue_flutter/src/utils/material_properties.dart';
 
 /// SearchBar widget function
 /// Creates Flutter SearchBar from Glue (search-bar props) expressions
@@ -10,13 +10,13 @@ final Ir searchBar = IrNativeFunc(searchBarImpl);
 /// SearchBar implementation - takes properties object
 Eval<Ir> searchBarImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createSearchBar(
-    Properties(properties.unlock),
+    MaterialProperties(properties.unlock),
   ),
-  _ => _createSearchBar(Properties.empty()),
+  _ => _createSearchBar(MaterialProperties.empty()),
 };
 
 /// Create SearchBar widget from properties
-Eval<Ir> _createSearchBar(Properties properties) {
+Eval<Ir> _createSearchBar(MaterialProperties properties) {
   final searchBarWidget = SearchBar(
     controller: properties.searchBarController,
     focusNode: properties.searchBarFocusNode,

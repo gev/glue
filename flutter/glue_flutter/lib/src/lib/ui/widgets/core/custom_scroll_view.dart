@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue_flutter/src/utils/widget_properties_core.dart';
+import 'package:glue_flutter/src/utils/core_properties.dart';
 
 /// CustomScrollView widget function
 /// Creates Flutter CustomScrollView from Glue (custom-scroll-view props) expressions
@@ -10,13 +10,13 @@ final Ir customScrollView = IrNativeFunc(customScrollViewImpl);
 /// CustomScrollView implementation - takes properties object
 Eval<Ir> customScrollViewImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createCustomScrollView(
-    Properties(properties.unlock),
+    CoreProperties(properties.unlock),
   ),
-  _ => _createCustomScrollView(Properties.empty()),
+  _ => _createCustomScrollView(CoreProperties.empty()),
 };
 
 /// Create CustomScrollView widget from properties
-Eval<Ir> _createCustomScrollView(Properties properties) {
+Eval<Ir> _createCustomScrollView(CoreProperties properties) {
   final customScrollViewWidget = CustomScrollView(
     scrollDirection: properties.customScrollViewScrollDirection,
     reverse: properties.customScrollViewReverse,

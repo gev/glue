@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval/exception.dart';
-import 'package:glue_flutter/src/utils/widget_properties_core.dart';
+import 'package:glue_flutter/src/utils/material_properties.dart';
 
 /// SnackBar widget function
 /// Creates Flutter SnackBar from Glue (snack-bar props) expressions
@@ -10,12 +10,14 @@ final Ir snackBar = IrNativeFunc(snackBarImpl);
 
 /// SnackBar implementation - takes properties object
 Eval<Ir> snackBarImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createSnackBar(Properties(properties.unlock)),
+  IrObject(:final properties) => _createSnackBar(
+    MaterialProperties(properties.unlock),
+  ),
   _ => throwError(wrongArgumentType(['object'])),
 };
 
 /// Create SnackBar widget from properties
-Eval<Ir> _createSnackBar(Properties properties) {
+Eval<Ir> _createSnackBar(MaterialProperties properties) {
   if (properties.snackBarContent == null) {
     throwError(wrongArgumentType(['content property required']));
   }

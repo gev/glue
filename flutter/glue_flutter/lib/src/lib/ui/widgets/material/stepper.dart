@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue_flutter/src/utils/widget_properties_core.dart';
+import 'package:glue_flutter/src/utils/material_properties.dart';
 
 /// Stepper widget function
 /// Creates Flutter Stepper from Glue (stepper props) expressions
@@ -9,12 +9,14 @@ final Ir stepper = IrNativeFunc(stepperImpl);
 
 /// Stepper implementation - takes properties object
 Eval<Ir> stepperImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createStepper(Properties(properties.unlock)),
-  _ => _createStepper(Properties.empty()),
+  IrObject(:final properties) => _createStepper(
+    MaterialProperties(properties.unlock),
+  ),
+  _ => _createStepper(MaterialProperties.empty()),
 };
 
 /// Create Stepper widget from properties
-Eval<Ir> _createStepper(Properties properties) {
+Eval<Ir> _createStepper(MaterialProperties properties) {
   final stepperWidget = Stepper(
     steps: properties.stepperSteps ?? [],
     currentStep: properties.stepperCurrentStep,

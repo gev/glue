@@ -4,7 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue_flutter/src/utils/widget_properties_core.dart';
+import 'package:glue_flutter/src/utils/core_properties.dart';
 
 /// **CUSTOM THEME CREATION FUNCTIONS**
 /// These functions allow Glue code to create custom Flutter themes
@@ -16,14 +16,16 @@ import 'package:glue_flutter/src/utils/widget_properties_core.dart';
 ///   (theme {:colorScheme customColorScheme :useMaterial3 true})
 final theme = IrNativeFunc(
   (props) => switch (props) {
-    IrObject(:final properties) => _createTheme(Properties(properties.unlock)),
+    IrObject(:final properties) => _createTheme(
+      CoreProperties(properties.unlock),
+    ),
     _ => Eval.pure(IrNativeValue(Value(ThemeData(useMaterial3: true)))),
   },
 );
 
 /// Create ThemeData from Glue properties - uses available Properties getters
 /// TODO: Extend Properties class to support seedColor, brightness, useMaterial3
-Eval<Ir> _createTheme(Properties properties) {
+Eval<Ir> _createTheme(CoreProperties properties) {
   // Use Material 3 ThemeData with default ColorScheme
   final themeData = ThemeData(
     useMaterial3: true, // Always use Material 3 as default

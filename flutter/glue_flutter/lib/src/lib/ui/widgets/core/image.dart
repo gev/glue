@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval/exception.dart';
-import 'package:glue_flutter/src/utils/widget_properties_core.dart';
+import 'package:glue_flutter/src/utils/core_properties.dart';
 
 /// Image widget function
 /// Creates Flutter Image from Glue (image props) expressions
@@ -10,12 +10,14 @@ final Ir image = IrNativeFunc(imageImpl);
 
 /// Image implementation - takes properties object
 Eval<Ir> imageImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createImage(Properties(properties.unlock)),
+  IrObject(:final properties) => _createImage(
+    CoreProperties(properties.unlock),
+  ),
   _ => throwError(wrongArgumentType(['object'])),
 };
 
 /// Create Image widget from properties
-Eval<Ir> _createImage(Properties properties) {
+Eval<Ir> _createImage(CoreProperties properties) {
   final imageProvider = properties.imageProvider;
   if (imageProvider == null) {
     throwError(wrongArgumentType(['image property required']));

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue_flutter/src/utils/widget_properties_core.dart';
+import 'package:glue_flutter/src/utils/cupertino_properties.dart';
 
 /// CupertinoTimerPicker widget function
 /// Creates Flutter CupertinoTimerPicker from Glue expressions
@@ -11,13 +11,13 @@ final Ir cupertinoTimerPicker = IrNativeFunc(cupertinoTimerPickerImpl);
 /// CupertinoTimerPicker implementation - takes properties object with keyword arguments
 Eval<Ir> cupertinoTimerPickerImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createCupertinoTimerPicker(
-    Properties(properties.unlock),
+    CupertinoProperties(properties.unlock),
   ),
-  _ => _createCupertinoTimerPicker(Properties.empty()),
+  _ => _createCupertinoTimerPicker(CupertinoProperties.empty()),
 };
 
 /// Create CupertinoTimerPicker widget from properties object
-Eval<Ir> _createCupertinoTimerPicker(Properties properties) {
+Eval<Ir> _createCupertinoTimerPicker(CupertinoProperties properties) {
   return getRuntime().map((runtime) {
     final widget = CupertinoTimerPicker(
       mode: properties.cupertinoTimerPickerMode,

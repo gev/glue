@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue_flutter/src/utils/widget_properties_core.dart';
+import 'package:glue_flutter/src/utils/cupertino_properties.dart';
 
 /// CupertinoApp widget function
 /// Creates Flutter CupertinoApp from Glue expressions
@@ -11,13 +11,13 @@ final Ir cupertinoApp = IrNativeFunc(cupertinoAppImpl);
 /// CupertinoApp implementation - takes properties object with keyword arguments
 Eval<Ir> cupertinoAppImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createCupertinoApp(
-    Properties(properties.unlock),
+    CupertinoProperties(properties.unlock),
   ),
-  _ => _createCupertinoApp(Properties.empty()),
+  _ => _createCupertinoApp(CupertinoProperties.empty()),
 };
 
 /// Create CupertinoApp widget from properties object
-Eval<Ir> _createCupertinoApp(Properties properties) {
+Eval<Ir> _createCupertinoApp(CupertinoProperties properties) {
   return getRuntime().map((runtime) {
     final widget = CupertinoApp(
       home: properties.child,

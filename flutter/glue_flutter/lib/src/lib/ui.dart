@@ -1,16 +1,15 @@
 import 'package:glue/src/module.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/text.dart';
-import 'package:glue_flutter/src/lib/ui/widgets/button.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/button.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/container.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/column.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/row.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/center.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/icon.dart';
-import 'package:glue_flutter/src/lib/ui/widgets/flutter_logo.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/placeholder.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/image.dart';
-import 'package:glue_flutter/src/lib/ui/widgets/app_bar.dart';
-import 'package:glue_flutter/src/lib/ui/widgets/scaffold.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/app_bar.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/scaffold.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/material/filled_button.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/material/outlined_button.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/material/text_button.dart';
@@ -65,7 +64,7 @@ import 'package:glue_flutter/src/lib/ui/widgets/single_child_scroll_view.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/custom_scroll_view.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/sliver_list.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/sliver_grid.dart';
-import 'package:glue_flutter/src/lib/ui/widgets/navigation_rail.dart';
+import 'package:glue_flutter/src/lib/ui/widgets/material/navigation_rail.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/cupertino/cupertino_button.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/cupertino/cupertino_activity_indicator.dart';
 import 'package:glue_flutter/src/lib/ui/widgets/cupertino/cupertino_navigation_bar.dart';
@@ -135,7 +134,6 @@ final ModuleInfo uiModule = nativeModule('ffi.ui', [
   ('row', row),
   ('center', center),
   ('icon', icon),
-  ('flutter-logo', flutterLogo),
   ('placeholder', placeholder),
   ('image', image),
   ('app-bar', appBar),

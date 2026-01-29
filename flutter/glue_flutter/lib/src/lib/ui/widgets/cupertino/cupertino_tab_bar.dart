@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue_flutter/src/utils/widget_properties_core.dart';
+import 'package:glue_flutter/src/utils/cupertino_properties.dart';
 
 /// CupertinoTabBar widget function
 /// Creates Flutter CupertinoTabBar from Glue expressions
@@ -11,13 +11,13 @@ final Ir cupertinoTabBar = IrNativeFunc(cupertinoTabBarImpl);
 /// CupertinoTabBar implementation - takes properties object with keyword arguments
 Eval<Ir> cupertinoTabBarImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createCupertinoTabBar(
-    Properties(properties.unlock),
+    CupertinoProperties(properties.unlock),
   ),
-  _ => _createCupertinoTabBar(Properties.empty()),
+  _ => _createCupertinoTabBar(CupertinoProperties.empty()),
 };
 
 /// Create CupertinoTabBar widget from properties object
-Eval<Ir> _createCupertinoTabBar(Properties properties) {
+Eval<Ir> _createCupertinoTabBar(CupertinoProperties properties) {
   return getRuntime().map((runtime) {
     final widget = CupertinoTabBar(
       items: properties.cupertinoTabBarItems,

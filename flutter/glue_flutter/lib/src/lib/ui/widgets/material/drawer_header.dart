@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue_flutter/src/utils/widget_properties_core.dart';
+import 'package:glue_flutter/src/utils/material_properties.dart';
 
 /// DrawerHeader widget function
 /// Creates Flutter DrawerHeader from Glue (drawer-header props) expressions
@@ -10,13 +10,13 @@ final Ir drawerHeader = IrNativeFunc(drawerHeaderImpl);
 /// DrawerHeader implementation - takes properties object
 Eval<Ir> drawerHeaderImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createDrawerHeader(
-    Properties(properties.unlock),
+    MaterialProperties(properties.unlock),
   ),
-  _ => _createDrawerHeader(Properties.empty()),
+  _ => _createDrawerHeader(MaterialProperties.empty()),
 };
 
 /// Create DrawerHeader widget from properties
-Eval<Ir> _createDrawerHeader(Properties properties) {
+Eval<Ir> _createDrawerHeader(MaterialProperties properties) {
   final drawerHeaderWidget = DrawerHeader(
     decoration: properties.drawerHeaderDecoration,
     margin: properties.drawerHeaderMargin ?? const EdgeInsets.only(bottom: 8.0),

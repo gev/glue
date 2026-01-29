@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue_flutter/src/utils/widget_properties_core.dart';
+import 'package:glue_flutter/src/utils/material_properties.dart';
 
 /// MenuAnchor widget function
 /// Creates Flutter MenuAnchor from Glue (menu-anchor props) expressions
@@ -10,13 +10,13 @@ final Ir menuAnchor = IrNativeFunc(menuAnchorImpl);
 /// MenuAnchor implementation - takes properties object
 Eval<Ir> menuAnchorImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createMenuAnchor(
-    Properties(properties.unlock),
+    MaterialProperties(properties.unlock),
   ),
-  _ => _createMenuAnchor(Properties.empty()),
+  _ => _createMenuAnchor(MaterialProperties.empty()),
 };
 
 /// Create MenuAnchor widget from properties
-Eval<Ir> _createMenuAnchor(Properties properties) {
+Eval<Ir> _createMenuAnchor(MaterialProperties properties) {
   final menuAnchorWidget = MenuAnchor(
     controller: properties.menuAnchorController,
     style: properties.menuAnchorStyle,

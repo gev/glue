@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue_flutter/src/utils/widget_properties_core.dart';
+import 'package:glue_flutter/src/utils/core_properties.dart';
 
 /// SingleChildScrollView widget function
 /// Creates Flutter SingleChildScrollView from Glue (single-child-scroll-view props) expressions
@@ -10,13 +10,13 @@ final Ir singleChildScrollView = IrNativeFunc(singleChildScrollViewImpl);
 /// SingleChildScrollView implementation - takes properties object
 Eval<Ir> singleChildScrollViewImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createSingleChildScrollView(
-    Properties(properties.unlock),
+    CoreProperties(properties.unlock),
   ),
-  _ => _createSingleChildScrollView(Properties.empty()),
+  _ => _createSingleChildScrollView(CoreProperties.empty()),
 };
 
 /// Create SingleChildScrollView widget from properties
-Eval<Ir> _createSingleChildScrollView(Properties properties) {
+Eval<Ir> _createSingleChildScrollView(CoreProperties properties) {
   final singleChildScrollViewWidget = SingleChildScrollView(
     scrollDirection: properties.singleChildScrollViewScrollDirection,
     reverse: properties.singleChildScrollViewReverse,

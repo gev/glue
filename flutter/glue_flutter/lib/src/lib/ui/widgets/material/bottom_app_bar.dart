@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue_flutter/src/utils/widget_properties_core.dart';
+import 'package:glue_flutter/src/utils/material_properties.dart';
 
 /// BottomAppBar widget function
 /// Creates Flutter BottomAppBar from Glue (bottom-app-bar props) expressions
@@ -10,13 +10,13 @@ final Ir bottomAppBar = IrNativeFunc(bottomAppBarImpl);
 /// BottomAppBar implementation - takes properties object
 Eval<Ir> bottomAppBarImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createBottomAppBar(
-    Properties(properties.unlock),
+    MaterialProperties(properties.unlock),
   ),
-  _ => _createBottomAppBar(Properties.empty()),
+  _ => _createBottomAppBar(MaterialProperties.empty()),
 };
 
 /// Create BottomAppBar widget from properties
-Eval<Ir> _createBottomAppBar(Properties properties) {
+Eval<Ir> _createBottomAppBar(MaterialProperties properties) {
   final bottomAppBarWidget = BottomAppBar(
     color: properties.bottomAppBarColor,
     elevation: properties.bottomAppBarElevation,

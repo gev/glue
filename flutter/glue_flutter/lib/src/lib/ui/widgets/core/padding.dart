@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval/exception.dart';
-import 'package:glue_flutter/src/utils/widget_properties_core.dart';
+import 'package:glue_flutter/src/utils/core_properties.dart';
 
 /// Padding widget function
 /// Creates Flutter Padding from Glue (padding child props) expressions
@@ -17,13 +17,13 @@ Eval<Ir> paddingImpl(Ir child) {
 Eval<Ir> Function(Ir) paddingWithChild(Ir child) =>
     (Ir props) => switch (props) {
       IrObject(:final properties) => _createPadding(
-        Properties(properties.unlock),
+        CoreProperties(properties.unlock),
       ),
       _ => throwError(wrongArgumentType(['object'])),
     };
 
 /// Create Padding widget from properties and child
-Eval<Ir> _createPadding(Properties properties) {
+Eval<Ir> _createPadding(CoreProperties properties) {
   final paddingWidget = Padding(
     padding: properties.padding,
     child: properties.child,

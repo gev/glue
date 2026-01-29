@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue_flutter/src/utils/widget_properties_core.dart';
+import 'package:glue_flutter/src/utils/cupertino_properties.dart';
 
 /// CupertinoDatePicker widget function
 /// Creates Flutter CupertinoDatePicker from Glue expressions
@@ -11,13 +11,13 @@ final Ir cupertinoDatePicker = IrNativeFunc(cupertinoDatePickerImpl);
 /// CupertinoDatePicker implementation - takes properties object with keyword arguments
 Eval<Ir> cupertinoDatePickerImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createCupertinoDatePicker(
-    Properties(properties.unlock),
+    CupertinoProperties(properties.unlock),
   ),
-  _ => _createCupertinoDatePicker(Properties.empty()),
+  _ => _createCupertinoDatePicker(CupertinoProperties.empty()),
 };
 
 /// Create CupertinoDatePicker widget from properties object
-Eval<Ir> _createCupertinoDatePicker(Properties properties) {
+Eval<Ir> _createCupertinoDatePicker(CupertinoProperties properties) {
   return getRuntime().map((runtime) {
     final callback = (DateTime value) =>
         properties.cupertinoDatePickerOnDateTimeChanged(value);

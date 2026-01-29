@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/eval/exception.dart';
-import 'package:glue_flutter/src/utils/widget_properties_core.dart';
+import 'package:glue_flutter/src/utils/material_properties.dart';
 
 /// Scaffold widget function
 /// Creates Flutter Scaffold from Glue (scaffold props) expressions
@@ -11,12 +11,14 @@ final Ir scaffold = IrNativeFunc(scaffoldImpl);
 
 /// Scaffold implementation - takes properties object
 Eval<Ir> scaffoldImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createScaffold(Properties(properties.unlock)),
+  IrObject(:final properties) => _createScaffold(
+    MaterialProperties(properties.unlock),
+  ),
   _ => throwError(wrongArgumentType(['object'])),
 };
 
 /// Create Scaffold widget from properties
-Eval<Ir> _createScaffold(Properties properties) {
+Eval<Ir> _createScaffold(MaterialProperties properties) {
   final scaffoldWidget = Scaffold(
     appBar: properties.appBar,
     body: properties.body,

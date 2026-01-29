@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue_flutter/src/utils/widget_properties_core.dart';
+import 'package:glue_flutter/src/utils/cupertino_properties.dart';
 
 /// CupertinoButton widget function
 /// Creates Flutter CupertinoButton from Glue (button props) expressions
@@ -11,13 +11,13 @@ final Ir cupertinoButton = IrNativeFunc(cupertinoButtonImpl);
 /// CupertinoButton implementation - takes properties object with keyword arguments
 Eval<Ir> cupertinoButtonImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createCupertinoButton(
-    Properties(properties.unlock),
+    CupertinoProperties(properties.unlock),
   ),
-  _ => _createCupertinoButton(Properties.empty()),
+  _ => _createCupertinoButton(CupertinoProperties.empty()),
 };
 
 /// Create CupertinoButton widget from properties object
-Eval<Ir> _createCupertinoButton(Properties properties) {
+Eval<Ir> _createCupertinoButton(CupertinoProperties properties) {
   return getRuntime().map((runtime) {
     final buttonWidget = CupertinoButton(
       onPressed: properties.onPress(runtime),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue_flutter/src/utils/widget_properties_core.dart';
+import 'package:glue_flutter/src/utils/material_properties.dart';
 
 /// TimePickerDialog widget function
 /// Creates Flutter TimePickerDialog from Glue (time-picker-dialog props) expressions
@@ -10,13 +10,13 @@ final Ir timePickerDialog = IrNativeFunc(timePickerDialogImpl);
 /// TimePickerDialog implementation - takes properties object
 Eval<Ir> timePickerDialogImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createTimePickerDialog(
-    Properties(properties.unlock),
+    MaterialProperties(properties.unlock),
   ),
-  _ => _createTimePickerDialog(Properties.empty()),
+  _ => _createTimePickerDialog(MaterialProperties.empty()),
 };
 
 /// Create TimePickerDialog widget from properties
-Eval<Ir> _createTimePickerDialog(Properties properties) {
+Eval<Ir> _createTimePickerDialog(MaterialProperties properties) {
   final timePickerDialogWidget = TimePickerDialog(
     initialTime: properties.timePickerInitialTime,
     cancelText: properties.timePickerCancelText,

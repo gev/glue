@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue_flutter/src/utils/widget_properties_core.dart';
+import 'package:glue_flutter/src/utils/cupertino_properties.dart';
 
 /// CupertinoCheckbox widget function
 /// Creates Flutter CupertinoCheckbox from Glue expressions
@@ -11,13 +11,13 @@ final Ir cupertinoCheckbox = IrNativeFunc(cupertinoCheckboxImpl);
 /// CupertinoCheckbox implementation - takes properties object with keyword arguments
 Eval<Ir> cupertinoCheckboxImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createCupertinoCheckbox(
-    Properties(properties.unlock),
+    CupertinoProperties(properties.unlock),
   ),
-  _ => _createCupertinoCheckbox(Properties.empty()),
+  _ => _createCupertinoCheckbox(CupertinoProperties.empty()),
 };
 
 /// Create CupertinoCheckbox widget from properties object
-Eval<Ir> _createCupertinoCheckbox(Properties properties) {
+Eval<Ir> _createCupertinoCheckbox(CupertinoProperties properties) {
   return getRuntime().map((runtime) {
     final widget = CupertinoCheckbox(
       value: properties.cupertinoCheckboxValue,
