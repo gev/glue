@@ -24,16 +24,26 @@ Fix all 752 undefined getter/method errors in flutter/glue_flutter/lib/src/lib/u
   - `mainAxisAlignment` → `'main-axis-alignment'`
 
 ### Property Types & Correct Getter Methods
-- Pay attention to Flutter widget property types and use the correct getter method for type safety
-- **bool**: `properties.getBool('property-name')`
-- **Color**: `properties.getColor('property-name')`
-- **double**: `properties.getDouble('property-name')`
-- **int**: `properties.getInt('property-name')`
-- **String**: `properties.getString('property-name')`
-- **Widget**: `properties.getWidget('property-name')`
-- **List<Widget>**: `properties.getWidgets('property-name')`
-- **VoidCallback**: `properties.getVoidCallback('property-name', runtime)`
-- **Complex/Custom types**: `properties.getValue('property-name')`
+- **🌟 CRITICAL**: Use [`context/docs/flutter_widgets/*`](#https://github.com/gev/glue/tree/main/context/docs/flutter_widgets) documentation to get **exact Flutter property types** before implementing
+- Each widget doc contains complete constructor signatures with parameter types (see [README](context/docs/flutter_widgets/README.md) for organization)
+- **Examples of authorative type information:**
+  - [`cupertino_widgets.md`](context/docs/flutter_widgets/cupertino_widgets.md) - All Cupertiono constructors
+  - [`material/`](context/docs/flutter_widgets/material/) - Material widget constructors
+  - [`input_widgets.md`](context/docs/flutter_widgets/input_widgets.md) - Form/input widget types
+  - [`layout_widgets.md`](context/docs/flutter_widgets/layout_widgets.md) - Layout widget types
+
+**Getter Method Mapping (based on exact types from widget_docs):**
+- **bool**: `properties.getBool('property-name')` *(e.g., thumbVisibility, animating)*
+- **Color**: `properties.getColor('property-name')` *(e.g., backgroundColor, activeColor)*
+- **double**: `properties.getDouble('property-name')` *(e.g., thickness, radius, diameterRatio)*
+- **int**: `properties.getInt('property-name')` *(e.g., minuteInterval, minimumYear)*
+- **String**: `properties.getString('property-name')` *(e.g., placeholder, hintText)*
+- **Widget**: `properties.getWidget('property-name')` *(e.g., child, leading, trailing)*
+- **List<Widget>**: `properties.getWidgets('property-name')` *(e.g., children, actions)*
+- **ScrollController**: `properties.getValue('property-name')` *(complex objects)*
+- **ValueChanged<T>**: `properties.getValue('property-name')` *(parameterized callbacks)*
+- **VoidCallback**: `properties.getVoidCallback('property-name', runtime)` *(simple callbacks)*
+- **Complex/Custom types**: `properties.getValue('property-name')` *(Radius, Border, etc.)*
 
 ### Direct Getters (use as-is)
 Use these getters directly without modification:
@@ -216,6 +226,7 @@ width: properties.getDouble('width-value'),
 - cupertino_picker.dart
 - cupertino_scrollbar.dart
 - cupertino_search_text_field.dart
+- cupertino_segmented_control.dart
 
 #### **Material Widgets Fixed:**
 - material/widgets/checkbox.dart
