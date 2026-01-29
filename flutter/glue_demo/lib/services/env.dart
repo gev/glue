@@ -10,5 +10,7 @@ final env = envFromModules([
   boolModule,
   arithmeticModule,
   uiCoreModule,
+  uiMaterialModule,
+  uiCupertinoModule,
   stateModule,
 ]);
