@@ -18,11 +18,12 @@ Eval<Ir> dividerImpl(Ir props) => switch (props) {
 /// Create Divider widget from properties
 Eval<Ir> _createDivider(WidgetProperties properties) {
   final dividerWidget = Divider(
-    height: properties.dividerHeight,
-    thickness: properties.dividerThickness,
-    indent: properties.dividerIndent,
-    endIndent: properties.dividerEndIndent,
-    color: properties.color,
+    key: properties.key,
+    height: properties.getDouble('height'),
+    thickness: properties.getDouble('thickness'),
+    indent: properties.getDouble('indent'),
+    endIndent: properties.getDouble('end-indent'),
+    color: properties.getColor('color'),
   );
   return Eval.pure(IrNativeValue(Value(dividerWidget)));
 }

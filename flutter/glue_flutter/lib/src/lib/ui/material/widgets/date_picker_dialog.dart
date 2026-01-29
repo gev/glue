@@ -18,27 +18,31 @@ Eval<Ir> datePickerDialogImpl(Ir props) => switch (props) {
 /// Create DatePickerDialog widget from properties
 Eval<Ir> _createDatePickerDialog(WidgetProperties properties) {
   final datePickerDialogWidget = DatePickerDialog(
-    initialDate: properties.datePickerInitialDate,
-    firstDate: properties.datePickerFirstDate!,
-    lastDate: properties.datePickerLastDate!,
-    currentDate: properties.datePickerCurrentDate,
-    initialEntryMode: properties.datePickerInitialEntryMode,
-    selectableDayPredicate: properties.datePickerSelectableDayPredicate,
-    cancelText: properties.datePickerCancelText,
-    confirmText: properties.datePickerConfirmText,
-    helpText: properties.datePickerHelpText,
-    initialCalendarMode: properties.datePickerInitialCalendarMode,
-    errorFormatText: properties.datePickerErrorFormatText,
-    errorInvalidText: properties.datePickerErrorInvalidText,
-    fieldHintText: properties.datePickerFieldHintText,
-    fieldLabelText: properties.datePickerFieldLabelText,
-    keyboardType: properties.datePickerKeyboardType,
-    restorationId: properties.datePickerRestorationId,
-    onDatePickerModeChange: properties.datePickerOnDatePickerModeChange,
-    switchToInputEntryModeIcon: properties.datePickerSwitchToInputEntryModeIcon,
-    switchToCalendarEntryModeIcon:
-        properties.datePickerSwitchToCalendarEntryModeIcon,
-    insetPadding: properties.datePickerInsetPadding,
+    key: properties.key,
+    initialDate: properties.getValue('initial-date') as DateTime,
+    firstDate: properties.getValue('first-date') as DateTime,
+    lastDate: properties.getValue('last-date') as DateTime,
+    currentDate: properties.getValue('current-date') as DateTime?,
+    initialEntryMode: properties.getValue('initial-entry-mode'),
+    selectableDayPredicate: properties.getValue('selectable-day-predicate'),
+    cancelText: properties.getString('cancel-text'),
+    confirmText: properties.getString('confirm-text'),
+    helpText: properties.getString('help-text'),
+    initialCalendarMode: properties.getValue('initial-calendar-mode'),
+    errorFormatText: properties.getString('error-format-text'),
+    errorInvalidText: properties.getString('error-invalid-text'),
+    fieldHintText: properties.getString('field-hint-text'),
+    fieldLabelText: properties.getString('field-label-text'),
+    keyboardType: properties.getValue('keyboard-type'),
+    restorationId: properties.getString('restoration-id'),
+    onDatePickerModeChange: properties.getValue('on-date-picker-mode-change'),
+    switchToInputEntryModeIcon: properties.getValue(
+      'switch-to-input-entry-mode-icon',
+    ),
+    switchToCalendarEntryModeIcon: properties.getValue(
+      'switch-to-calendar-entry-mode-icon',
+    ),
+    insetPadding: properties.getValue('inset-padding') as EdgeInsets,
   );
   return Eval.pure(IrNativeValue(Value(datePickerDialogWidget)));
 }
