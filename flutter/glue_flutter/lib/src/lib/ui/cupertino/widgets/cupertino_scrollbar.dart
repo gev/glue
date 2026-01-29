@@ -18,18 +18,16 @@ Eval<Ir> cupertinoScrollbarImpl(Ir props) => switch (props) {
 
 /// Create CupertinoScrollbar widget from properties object
 Eval<Ir> _createCupertinoScrollbar(WidgetProperties properties) {
-  return getRuntime().map((runtime) {
-    final scrollbarWidget = CupertinoScrollbar(
-      controller: properties.scrollController,
-      thumbVisibility: properties.cupertinoScrollbarThumbVisibility,
-      thickness: properties.cupertinoScrollbarThickness,
-      thicknessWhileDragging:
-          properties.cupertinoScrollbarThicknessWhileDragging,
-      radius: properties.cupertinoScrollbarRadius,
-      radiusWhileDragging: properties.cupertinoScrollbarRadiusWhileDragging,
-      notificationPredicate: properties.scrollNotificationPredicate,
-      child: properties.child ?? const Text('No child provided'),
-    );
-    return IrNativeValue(Value(scrollbarWidget));
-  });
+  final scrollbarWidget = CupertinoScrollbar(
+    controller: properties.getValue('controller'),
+    thumbVisibility: properties.getBool('thumb-visibility') ?? false,
+    thickness: properties.getDouble('thickness') ?? 3.0,
+    thicknessWhileDragging:
+        properties.getDouble('thickness-while-dragging') ?? 8.0,
+    radius: properties.getValue('radius'),
+    radiusWhileDragging: properties.getValue('radius-while-dragging'),
+    notificationPredicate: properties.getValue('notification-predicate'),
+    child: properties.child ?? const Text('No child provided'),
+  );
+  return Eval.pure(IrNativeValue(Value(scrollbarWidget)));
 }
