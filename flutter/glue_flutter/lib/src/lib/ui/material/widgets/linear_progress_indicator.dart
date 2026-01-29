@@ -18,13 +18,14 @@ Eval<Ir> linearProgressIndicatorImpl(Ir props) => switch (props) {
 /// Create LinearProgressIndicator widget from properties
 Eval<Ir> _createLinearProgressIndicator(WidgetProperties properties) {
   final progressIndicatorWidget = LinearProgressIndicator(
-    value: properties.progressValue,
-    backgroundColor: properties.color, // using color for background
-    color: properties.activeColor, // using activeColor for progress color
-    valueColor: properties.valueColor,
-    minHeight: properties.progressMinHeight,
-    semanticsLabel: properties.progressSemanticsLabel,
-    semanticsValue: properties.progressSemanticsValue,
+    key: properties.key,
+    value: properties.getDouble('value'),
+    backgroundColor: properties.getColor('background-color'),
+    color: properties.getColor('color'),
+    valueColor: properties.getValue('value-color'),
+    minHeight: properties.getDouble('min-height'),
+    semanticsLabel: properties.getString('semantics-label'),
+    semanticsValue: properties.getString('semantics-value'),
   );
   return Eval.pure(IrNativeValue(Value(progressIndicatorWidget)));
 }
