@@ -18,17 +18,15 @@ Eval<Ir> drawerImpl(Ir props) => switch (props) {
 /// Create Drawer widget from properties
 Eval<Ir> _createDrawer(WidgetProperties properties) {
   final drawerWidget = Drawer(
-    key: properties.focusNode != null
-        ? Key(properties.focusNode.toString())
-        : null,
-    backgroundColor: properties.drawerBackgroundColor,
-    elevation: properties.drawerElevation,
-    shadowColor: properties.drawerShadowColor,
-    surfaceTintColor: properties.drawerSurfaceTintColor,
-    width: properties.drawerWidth,
-    shape: properties.drawerShape,
-    clipBehavior: properties.drawerClipBehavior,
-    semanticLabel: properties.drawerSemanticLabel.toString(),
+    key: properties.key,
+    backgroundColor: properties.getColor('background-color'),
+    elevation: properties.getDouble('elevation'),
+    shadowColor: properties.getColor('shadow-color'),
+    surfaceTintColor: properties.getColor('surface-tint-color'),
+    width: properties.getDouble('width'),
+    shape: properties.getValue('shape'),
+    clipBehavior: properties.getValue('clip-behavior') ?? Clip.none,
+    semanticLabel: properties.getString('semantic-label'),
     child: properties.child,
   );
   return Eval.pure(IrNativeValue(Value(drawerWidget)));
