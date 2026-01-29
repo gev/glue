@@ -21,7 +21,6 @@ Eval<Ir> _createSwitch(MaterialProperties properties) {
   final switchWidget = Switch(
     value: properties.switchValue,
     onChanged: properties.onSwitchChanged,
-    activeColor: properties.activeColor,
     activeThumbColor: properties.activeThumbColor,
     activeTrackColor: properties.activeTrackColor,
     inactiveThumbColor: properties.inactiveThumbColor,

@@ -26,9 +26,14 @@ Eval<Ir> _createCupertinoSwitch(CupertinoProperties properties) {
     final switchWidget = CupertinoSwitch(
       value: properties.cupertinoSwitchValue,
       onChanged: callback,
-      activeColor: properties.activeColor,
-      trackColor: properties.inactiveTrackColor,
       thumbColor: properties.activeThumbColor,
+      inactiveThumbColor: properties.inactiveThumbColor,
+      activeTrackColor: properties.activeTrackColor,
+      inactiveTrackColor: properties.inactiveTrackColor,
+      activeThumbImage: properties.activeThumbImage,
+      inactiveThumbImage: properties.inactiveThumbImage,
+      onActiveThumbImageError: properties.onActiveThumbImageError,
+      onInactiveThumbImageError: properties.onInactiveThumbImageError,
       dragStartBehavior:
           properties.drawerDragStartBehavior ?? DragStartBehavior.start,
       focusNode: properties.dropdownFocusNode,
