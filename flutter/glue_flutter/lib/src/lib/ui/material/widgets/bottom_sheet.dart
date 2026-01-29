@@ -18,21 +18,21 @@ Eval<Ir> bottomSheetImpl(Ir props) => switch (props) {
 /// Create BottomSheet widget from properties
 Eval<Ir> _createBottomSheet(WidgetProperties properties) {
   final bottomSheetWidget = BottomSheet(
-    animationController: properties.bottomSheetAnimationController,
-    enableDrag: properties.bottomSheetEnableDrag,
-    showDragHandle: properties.bottomSheetShowDragHandle,
-    dragHandleColor: properties.bottomSheetDragHandleColor,
-    dragHandleSize: properties.bottomSheetDragHandleSize,
-    onDragStart: properties.bottomSheetOnDragStart,
-    onDragEnd: properties.bottomSheetOnDragEnd,
-    backgroundColor: properties.refreshBackgroundColor,
-    shadowColor: properties.drawerShadowColor,
-    elevation: properties.drawerElevation,
-    shape: properties.drawerShape,
-    clipBehavior: properties.drawerClipBehavior,
-    constraints: properties.popupMenuConstraints,
-    onClosing: properties.bottomSheetOnClosing,
-    builder: properties.bottomSheetBuilder,
+    animationController: properties.getValue('animation-controller'),
+    enableDrag: properties.getBool('enable-drag') ?? false,
+    showDragHandle: properties.getBool('show-drag-handle') ?? false,
+    dragHandleColor: properties.getColor('drag-handle-color'),
+    dragHandleSize: properties.getValue('drag-handle-size'),
+    onDragStart: properties.getValue('on-drag-start'),
+    onDragEnd: properties.getValue('on-drag-end'),
+    backgroundColor: properties.getColor('background-color'),
+    shadowColor: properties.getColor('shadow-color'),
+    elevation: properties.getDouble('elevation'),
+    shape: properties.getValue('shape'),
+    clipBehavior: properties.getValue('clip-behavior'),
+    constraints: properties.getValue('constraints'),
+    onClosing: properties.getValue('on-closing'),
+    builder: properties.getValue('builder'),
   );
   return Eval.pure(IrNativeValue(Value(bottomSheetWidget)));
 }
