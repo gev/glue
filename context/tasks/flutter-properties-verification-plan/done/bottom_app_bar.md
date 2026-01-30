@@ -29,14 +29,16 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | color | Color? | getColor | color |
-| [ ] | elevation | double? | getDouble | elevation |
-| [ ] | shape | NotchedShape? | getValue | shape |
-| [ ] | clipBehavior | Clip | getValue | clip-behavior |
-| [ ] | notchMargin | double | getDouble | notch-margin |
-| [ ] | child | Widget? | properties.child | - |
-| [ ] | padding | EdgeInsetsGeometry? | getValue | padding |
-| [ ] | surfaceTintColor | Color? | getColor | surface-tint-color |
-| [ ] | shadowColor | Color? | getColor | shadow-color |
-| [ ] | height | double? | getDouble | height |
+| [x] | key | Key? | properties.key | - |
+| [x] | color | Color? | getColor | color |
+| [x] | elevation | double? | getDouble | elevation |
+| [x] | shape | NotchedShape? | getValue | shape |
+| [x] | clipBehavior | Clip | getValue | clip-behavior |
+| [x] | notchMargin | double | getDouble | notch-margin |
+| [x] | child | Widget? | properties.child | - |
+| [x] | padding | EdgeInsetsGeometry? | getValue | padding |
+| [x] | surfaceTintColor | Color? | getColor | surface-tint-color |
+| [x] | shadowColor | Color? | getColor | shadow-color |
+| [x] | height | double? | getDouble | height |
+
+# Widget Done

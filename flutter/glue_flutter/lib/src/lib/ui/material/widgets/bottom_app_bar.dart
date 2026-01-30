@@ -23,7 +23,7 @@ Eval<Ir> _createBottomAppBar(WidgetProperties properties) {
     elevation: properties.getDouble('elevation'),
     shape: properties.getValue('shape'),
     clipBehavior: properties.getValue('clip-behavior'),
-    notchMargin: properties.getDouble('notch-margin') ?? 4.0,
+    notchMargin: properties.getDouble('notch-margin')!,
     height: properties.getDouble('height'),
     padding: properties.getValue('padding'),
     surfaceTintColor: properties.getColor('surface-tint-color'),
