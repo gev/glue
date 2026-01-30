@@ -19,6 +19,7 @@ Eval<Ir> chipImpl(Ir props) => switch (props) {
 Eval<Ir> _createChip(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final chipWidget = Chip(
+      key: properties.key,
       avatar: properties.getWidget('avatar'),
       label: properties.child ?? const Text('Chip'),
       labelStyle: properties.getValue('label-style'),
@@ -29,11 +30,12 @@ Eval<Ir> _createChip(WidgetProperties properties) {
       deleteButtonTooltipMessage: properties.getString(
         'delete-button-tooltip-message',
       ),
-      side: properties.getValue('border-side'),
-      shape: properties.getValue('outlined-border'),
+      side: properties.getValue('side'),
+      shape: properties.getValue('shape'),
       clipBehavior: properties.getValue('clip-behavior') ?? Clip.none,
       focusNode: properties.getValue('focus-node'),
       autofocus: properties.getBool('autofocus') ?? false,
+      color: properties.getValue('color'),
       backgroundColor: properties.getColor('background-color'),
       padding: properties.getValue('padding'),
       visualDensity: properties.getValue('visual-density'),
@@ -46,6 +48,8 @@ Eval<Ir> _createChip(WidgetProperties properties) {
       deleteIconBoxConstraints: properties.getValue(
         'delete-icon-box-constraints',
       ),
+      chipAnimationStyle: properties.getValue('chip-animation-style'),
+      mouseCursor: properties.getValue('mouse-cursor'),
     );
     return IrNativeValue(Value(chipWidget));
   });
