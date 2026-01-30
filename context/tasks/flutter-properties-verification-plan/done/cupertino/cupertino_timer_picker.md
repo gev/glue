@@ -29,14 +29,14 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | mode | CupertinoTimerPickerMode | getValue | mode |
-| [ ] | initialTimerDuration | Duration | getValue | initial-timer-duration |
-| [ ] | minuteInterval | int | getInt | minute-interval |
-| [ ] | secondInterval | int | getInt | second-interval |
-| [ ] | alignment | AlignmentGeometry | getValue | alignment |
-| [ ] | backgroundColor | Color? | getColor | background-color |
-| [ ] | itemExtent | double | getDouble | item-extent |
-| [ ] | onTimerDurationChanged | ValueChanged<Duration> | getValue | on-timer-duration-changed |
+| [x] | key | Key? | properties.key | - |
+| [x] | mode | CupertinoTimerPickerMode | getValue | mode |
+| [x] | initialTimerDuration | Duration | getValue | initial-timer-duration |
+| [x] | minuteInterval | int | getInt | minute-interval |
+| [x] | secondInterval | int | getInt | second-interval |
+| [x] | alignment | AlignmentGeometry | getValue | alignment |
+| [x] | backgroundColor | Color? | getColor | background-color |
+| [x] | itemExtent | double | getDouble | item-extent |
+| [x] | onTimerDurationChanged | ValueChanged<Duration> | getValue | on-timer-duration-changed |
 
-### Material Module: flutter/glue_flutter/lib/src/lib/ui/material/
+### Widget: Done
