@@ -182,6 +182,7 @@ Review the local Flutter widgets documentation:
 | [ ] | fallbackWidth | double | getDouble | fallback-width |
 | [ ] | fallbackHeight | double | getDouble | fallback-height |
 | [ ] | color | Color? | getColor | color |
+| [ ] | strokeAlign | StrokeAlign | getValue | stroke-align |
 | [ ] | strokeWidth | double | getDouble | stroke-width |
 
 #### [ ] | Row | core/widgets/row.dart
@@ -968,6 +969,41 @@ Review the local Flutter widgets documentation:
 | [ ] | trailingAtBottom | bool | getBool | trailing-at-bottom |
 | [ ] | scrollable | bool | getBool | scrollable |
 
+#### [ ] | TabBar | material/widgets/tab_bar.dart
+| todo check | flutter property name | flutter type | property getter/method without parameters | property name |
+|------------|----------------------|--------------|------------------------------------------|---------------|
+| [ ] | key | Key? | properties.key | - |
+| [ ] | tabs | List<Widget> | getWidgets | tabs |
+| [ ] | controller | TabController? | getValue | controller |
+| [ ] | isScrollable | bool | getBool | is-scrollable |
+| [ ] | padding | EdgeInsetsGeometry? | getValue | padding |
+| [ ] | indicatorColor | Color? | getColor | indicator-color |
+| [ ] | automaticIndicatorColorAdjustment | bool | getBool | automatic-indicator-color-adjustment |
+| [ ] | indicatorWeight | double | getDouble | indicator-weight |
+| [ ] | indicatorPadding | EdgeInsetsGeometry | getValue | indicator-padding |
+| [ ] | indicator | Decoration? | getValue | indicator |
+| [ ] | indicatorSize | TabBarIndicatorSize? | getValue | indicator-size |
+| [ ] | dividerColor | Color? | getColor | divider-color |
+| [ ] | dividerHeight | double? | getDouble | divider-height |
+| [ ] | labelColor | Color? | getColor | label-color |
+| [ ] | labelStyle | TextStyle? | getValue | label-style |
+| [ ] | labelPadding | EdgeInsetsGeometry? | getValue | label-padding |
+| [ ] | unselectedLabelColor | Color? | getColor | unselected-label-color |
+| [ ] | unselectedLabelStyle | TextStyle? | getValue | unselected-label-style |
+| [ ] | dragStartBehavior | DragStartBehavior | getValue | drag-start-behavior |
+| [ ] | overlayColor | WidgetStateProperty<Color?>? | getValue | overlay-color |
+| [ ] | mouseCursor | MouseCursor? | getValue | mouse-cursor |
+| [ ] | enableFeedback | bool? | getBool | enable-feedback |
+| [ ] | onTap | ValueChanged<int>? | getValue | on-tap |
+| [ ] | onHover | TabValueChanged<bool>? | getValue | on-hover |
+| [ ] | onFocusChange | TabValueChanged<bool>? | getValue | on-focus-change |
+| [ ] | physics | ScrollPhysics? | getValue | physics |
+| [ ] | splashFactory | InteractiveInkFeatureFactory? | getValue | splash-factory |
+| [ ] | splashBorderRadius | BorderRadius? | getValue | splash-border-radius |
+| [ ] | tabAlignment | TabAlignment? | getValue | tab-alignment |
+| [ ] | textScaler | TextScaler? | getValue | text-scaler |
+| [ ] | indicatorAnimation | TabIndicatorAnimation? | getValue | indicator-animation |
+
 #### [ ] | TextField | material/widgets/text_field.dart
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
@@ -1209,7 +1245,7 @@ Review the local Flutter widgets documentation:
 | [ ] | activeThumbImage | ImageProvider<Object>? | getValue | active-thumb-image |
 | [ ] | onActiveThumbImageError | ImageErrorListener? | getValue | on-active-thumb-image-error |
 | [ ] | inactiveThumbImage | ImageProvider<Object>? | getValue | inactive-thumb-image |
-| [ ] | onInactiveThumbImageError | ImageErrorListener? | getValue | getValue | on-inactive-thumb-image-error |
+| [ ] | onInactiveThumbImageError | ImageErrorListener? | getValue | on-inactive-thumb-image-error |
 | [ ] | thumbColor | WidgetStateProperty<Color?>? | getValue | thumb-color |
 | [ ] | trackColor | WidgetStateProperty<Color?>? | getValue | track-color |
 | [ ] | trackOutlineColor | WidgetStateProperty<Color?>? | getValue | track-outline-color |
