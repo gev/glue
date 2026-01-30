@@ -29,20 +29,20 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | scrollDirection | Axis | getValue | scroll-direction |
-| [ ] | reverse | bool | getValue | reverse |
-| [ ] | controller | ScrollController? | getValue | controller |
-| [ ] | primary | bool? | getValue | primary |
-| [ ] | physics | ScrollPhysics? | getValue | physics |
-| [ ] | shrinkWrap | bool | getValue | shrink-wrap |
-| [ ] | padding | EdgeInsetsGeometry? | getValue | padding |
-| [ ] | itemExtent | double? | getDouble | item-extent |
-| [ ] | prototypeItem | Widget? | getWidget | prototype-item |
-| [ ] | addAutomaticKeepAlives | bool | getValue | add-automatic-keep-alives |
-| [ ] | addRepaintBoundaries | bool | getValue | add-repaint-boundaries |
-| [ ] | addSemanticIndexes | bool | getValue | add-semantic-indexes |
-| [ ] | cacheExtent | double? | getDouble | cache-extent |
-| [ ] | children | List<Widget> | properties.children | - |
-| [ ] | semanticChildCount | int? | getInt | semantic-child-count |
-| [ ] | clipBehavior | Clip | getValue | clip-behavior |
+| [x] | key | Key? | properties.key | - |
+| [x] | scrollDirection | Axis | getValue | scroll-direction |
+| [x] | reverse | bool | getBool | reverse |
+| [x] | controller | ScrollController? | getValue | controller |
+| [x] | primary | bool? | getBool | primary |
+| [x] | physics | ScrollPhysics? | getValue | physics |
+| [x] | shrinkWrap | bool | getBool | shrink-wrap |
+| [x] | padding | EdgeInsetsGeometry? | getValue | padding |
+| [x] | itemExtent | double? | getDouble | item-extent |
+| [x] | prototypeItem | Widget? | getWidget | prototype-item |
+| [x] | addAutomaticKeepAlives | bool | getBool | add-automatic-keep-alives |
+| [x] | addRepaintBoundaries | bool | getBool | add-repaint-boundaries |
+| [x] | addSemanticIndexes | bool | getBool | add-semantic-indexes |
+| [x] | cacheExtent | double? | getDouble | cache-extent |
+| [x] | children | List<Widget> | properties.children | - |
+| [x] | semanticChildCount | int? | getInt | semantic-child-count |
+| [x] | clipBehavior | Clip | getValue | clip-behavior |

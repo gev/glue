@@ -236,7 +236,7 @@
 | [ ] | padding | EdgeInsetsGeometry | getValue | padding |
 | [ ] | child | Widget? | properties.child | - |
 
-#### [ ] | ListView | core/widgets/list_view.dart
+#### [x] | ListView | core/widgets/list_view.dart
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
 | [ ] | key | Key? | properties.key | - |
