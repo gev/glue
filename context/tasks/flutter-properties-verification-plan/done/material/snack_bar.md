@@ -27,20 +27,22 @@
   }
   ```
 
+- [x] SnackBar widget
+
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | content | Widget | properties.child | - |
-| [ ] | backgroundColor | Color? | getColor | background-color |
-| [ ] | elevation | double? | getDouble | elevation |
-| [ ] | margin | EdgeInsetsGeometry? | getValue | margin |
-| [ ] | padding | EdgeInsetsGeometry? | getValue | padding |
-| [ ] | width | double? | properties.width | - |
-| [ ] | shape | ShapeBorder? | getValue | shape |
-| [ ] | behavior | SnackBarBehavior? | getValue | behavior |
-| [ ] | action | SnackBarAction? | getValue | action |
-| [ ] | duration | Duration? | getValue | duration |
-| [ ] | animation | Animation<double>? | getValue | animation |
-| [ ] | onVisible | VoidCallback? | getVoidCallback | on-visible |
-| [ ] | dismissDirection | DismissDirection? | getValue | dismiss-direction |
-| [ ] | clipBehavior | Clip | getValue | clip-behavior |
+| [x] | key | Key? | properties.key | - |
+| [x] | content | Widget | properties.child | - |
+| [x] | backgroundColor | Color? | getColor | background-color |
+| [x] | elevation | double? | getDouble | elevation |
+| [x] | margin | EdgeInsetsGeometry? | getValue | margin |
+| [x] | padding | EdgeInsetsGeometry? | getValue | padding |
+| [x] | width | double? | properties.width | - |
+| [x] | shape | ShapeBorder? | getValue | shape |
+| [x] | behavior | SnackBarBehavior? | getValue | behavior |
+| [x] | action | SnackBarAction? | getValue | action |
+| [x] | duration | Duration? | getValue | duration |
+| [x] | animation | Animation<double>? | getValue | animation |
+| [x] | onVisible | VoidCallback? | getVoidCallback | on-visible |
+| [x] | dismissDirection | DismissDirection? | getValue | dismiss-direction |
+| [x] | clipBehavior | Clip | getValue | clip-behavior |

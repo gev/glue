@@ -18,7 +18,7 @@ Eval<Ir> snackBarImpl(Ir props) => switch (props) {
 
 /// Create SnackBar widget from properties
 Eval<Ir> _createSnackBar(WidgetProperties properties) {
-  final content = properties.getWidget('content');
+  final content = properties.child;
   if (content == null) {
     throwError(wrongArgumentType(['content property required']));
   }
@@ -31,7 +31,7 @@ Eval<Ir> _createSnackBar(WidgetProperties properties) {
       elevation: properties.getDouble('elevation'),
       margin: properties.getValue('margin'),
       padding: properties.getValue('padding'),
-      width: properties.getDouble('width'),
+      width: properties.width,
       shape: properties.getValue('shape'),
       behavior: properties.getValue('behavior'),
       action: properties.getValue('action'),
