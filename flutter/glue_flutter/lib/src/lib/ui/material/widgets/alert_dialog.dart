@@ -25,7 +25,7 @@ Eval<Ir> _createAlertDialog(WidgetProperties properties) {
     title: properties.getWidget('title'),
     titlePadding: properties.getValue('title-padding'),
     titleTextStyle: properties.getValue('title-text-style'),
-    content: properties.child,
+    content: properties.getWidget('content'),
     contentPadding: properties.getValue('content-padding'),
     contentTextStyle: properties.getValue('content-text-style'),
     actions: properties.getWidgets('actions'),
@@ -46,6 +46,7 @@ Eval<Ir> _createAlertDialog(WidgetProperties properties) {
     clipBehavior: properties.getValue('clip-behavior'),
     shape: properties.getValue('shape'),
     alignment: properties.getValue('alignment'),
+    constraints: properties.getValue('constraints'),
     scrollable: properties.getBool('scrollable') ?? false,
   );
   return Eval.pure(IrNativeValue(Value(alertDialogWidget)));
