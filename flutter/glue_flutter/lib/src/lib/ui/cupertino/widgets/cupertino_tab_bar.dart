@@ -24,9 +24,10 @@ Eval<Ir> _createCupertinoTabBar(WidgetProperties properties) {
       items: properties.getValue('items'),
       onTap: properties.getValue('on-tap'),
       currentIndex: properties.getInt('current-index') ?? 0,
+      backgroundColor: properties.getColor('background-color'),
       activeColor: properties.getColor('active-color'),
       inactiveColor:
-          properties.getColor('inactive-color') ?? CupertinoColors.inactiveGray,
+          properties.getColor('inactive-color') ?? CupertinoColors.systemGrey,
       iconSize: properties.getDouble('icon-size') ?? 30.0,
       border: properties.getValue('border'),
     );
