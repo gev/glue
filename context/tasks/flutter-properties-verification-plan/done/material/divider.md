@@ -29,10 +29,10 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | height | double? | getDouble | height |
-| [ ] | thickness | double? | getDouble | thickness |
-| [ ] | indent | double? | getDouble | indent |
-| [ ] | endIndent | double? | getDouble | end-indent |
-| [ ] | color | Color? | getColor | color |
-| [ ] | radius | BorderRadiusGeometry? | getValue | radius |
+| [x] | key | Key? | properties.key | - |
+| [x] | height | double? | getDouble | height |
+| [x] | thickness | double? | getDouble | thickness |
+| [x] | indent | double? | getDouble | indent |
+| [x] | endIndent | double? | getDouble | end-indent |
+| [x] | color | Color? | getColor | color |
+| [x] | radius | BorderRadiusGeometry? | getValue | radius |
