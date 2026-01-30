@@ -27,8 +27,6 @@
   }
   ```
 
-### Widget Status: Done
-
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
 | [x] | key | Key? | properties.key | - |
