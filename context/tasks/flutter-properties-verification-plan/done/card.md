@@ -29,14 +29,14 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | color | Color? | getColor | color |
-| [ ] | shadowColor | Color? | getColor | shadow-color |
-| [ ] | surfaceTintColor | Color? | getColor | surface-tint-color |
-| [ ] | elevation | double? | getDouble | elevation |
-| [ ] | shape | ShapeBorder? | getValue | shape |
-| [ ] | borderOnForeground | bool | getBool | border-on-foreground |
-| [ ] | margin | EdgeInsetsGeometry? | getValue | margin |
-| [ ] | clipBehavior | Clip? | getValue | clip-behavior |
-| [ ] | child | Widget? | properties.child | - |
-| [ ] | semanticContainer | bool | getBool | semantic-container |
+| [x] | key | Key? | properties.key | - |
+| [x] | color | Color? | getColor | color |
+| [x] | shadowColor | Color? | getColor | shadow-color |
+| [x] | surfaceTintColor | Color? | getColor | surface-tint-color |
+| [x] | elevation | double? | getDouble | elevation |
+| [x] | shape | ShapeBorder? | getValue | shape |
+| [x] | borderOnForeground | bool | getBool | border-on-foreground |
+| [x] | margin | EdgeInsetsGeometry? | getValue | margin |
+| [x] | clipBehavior | Clip? | getValue | clip-behavior |
+| [x] | child | Widget? | properties.child | - |
+| [x] | semanticContainer | bool | getBool | semantic-container |

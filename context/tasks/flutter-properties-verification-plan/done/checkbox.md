@@ -29,23 +29,23 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | value | bool? | getBool | value |
-| [ ] | tristate | bool | getBool | tristate |
-| [ ] | onChanged | ValueChanged<bool?>? | getValue | on-changed |
-| [ ] | mouseCursor | MouseCursor? | getValue | mouse-cursor |
-| [ ] | activeColor | Color? | getColor | active-color |
-| [ ] | fillColor | WidgetStateProperty<Color?>? | getValue | fill-color |
-| [ ] | checkColor | Color? | getColor | check-color |
-| [ ] | focusColor | Color? | getColor | focus-color |
-| [ ] | hoverColor | Color? | getColor | hover-color |
-| [ ] | overlayColor | WidgetStateProperty<Color?>? | getValue | overlay-color |
-| [ ] | splashRadius | double? | getDouble | splash-radius |
-| [ ] | materialTapTargetSize | MaterialTapTargetSize? | getValue | material-tap-target-size |
-| [ ] | visualDensity | VisualDensity? | getValue | visual-density |
-| [ ] | focusNode | FocusNode? | getValue | focus-node |
-| [ ] | autofocus | bool | getBool | autofocus |
-| [ ] | shape | OutlinedBorder? | getValue | shape |
-| [ ] | side | BorderSide? | getValue | side |
-| [ ] | isError | bool | getBool | is-error |
-| [ ] | semanticLabel | String? | getString | semantic-label |
+| [x] | key | Key? | properties.key | - |
+| [x] | value | bool? | getBool | value |
+| [x] | tristate | bool | getBool | tristate |
+| [x] | onChanged | ValueChanged<bool?>? | getValue | on-changed |
+| [x] | mouseCursor | MouseCursor? | getValue | mouse-cursor |
+| [x] | activeColor | Color? | getColor | active-color |
+| [x] | fillColor | WidgetStateProperty<Color?>? | getValue | fill-color |
+| [x] | checkColor | Color? | getColor | check-color |
+| [x] | focusColor | Color? | getColor | focus-color |
+| [x] | hoverColor | Color? | getColor | hover-color |
+| [x] | overlayColor | WidgetStateProperty<Color?>? | getValue | overlay-color |
+| [x] | splashRadius | double? | getDouble | splash-radius |
+| [x] | materialTapTargetSize | MaterialTapTargetSize? | getValue | material-tap-target-size |
+| [x] | visualDensity | VisualDensity? | getValue | visual-density |
+| [x] | focusNode | FocusNode? | getValue | focus-node |
+| [x] | autofocus | bool | getBool | autofocus |
+| [x] | shape | OutlinedBorder? | getValue | shape |
+| [x] | side | BorderSide? | getValue | side |
+| [x] | isError | bool | getBool | is-error |
+| [x] | semanticLabel | String? | getString | semantic-label |
