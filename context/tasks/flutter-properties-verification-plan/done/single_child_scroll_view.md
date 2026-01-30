@@ -29,15 +29,15 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | scrollDirection | Axis | getValue | scroll-direction |
-| [ ] | reverse | bool | getValue | reverse |
-| [ ] | padding | EdgeInsetsGeometry? | getValue | padding |
-| [ ] | primary | bool? | getValue | primary |
-| [ ] | physics | ScrollPhysics? | getValue | physics |
-| [ ] | controller | ScrollController? | getValue | controller |
-| [ ] | dragStartBehavior | DragStartBehavior | getValue | drag-start-behavior |
-| [ ] | clipBehavior | Clip | getValue | clip-behavior |
-| [ ] | restorationId | String? | getString | restoration-id |
-| [ ] | keyboardDismissBehavior | ScrollViewKeyboardDismissBehavior | getValue | keyboard-dismiss-behavior |
-| [ ] | child | Widget? | properties.child | - |
+| [x] | key | Key? | properties.key | - |
+| [x] | scrollDirection | Axis | getValue | scroll-direction |
+| [x] | reverse | bool | getValue | reverse |
+| [x] | padding | EdgeInsetsGeometry? | getValue | padding |
+| [x] | primary | bool? | getValue | primary |
+| [x] | physics | ScrollPhysics? | getValue | physics |
+| [x] | controller | ScrollController? | getValue | controller |
+| [x] | dragStartBehavior | DragStartBehavior | getValue | drag-start-behavior |
+| [x] | clipBehavior | Clip | getValue | clip-behavior |
+| [x] | restorationId | String? | getString | restoration-id |
+| [x] | keyboardDismissBehavior | ScrollViewKeyboardDismissBehavior | getValue | keyboard-dismiss-behavior |
+| [x] | child | Widget? | properties.child | - |
