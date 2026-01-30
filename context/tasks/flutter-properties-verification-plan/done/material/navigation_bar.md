@@ -29,20 +29,20 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | animationDuration | Duration? | getValue | animation-duration |
-| [ ] | selectedIndex | int | getInt | selected-index |
-| [ ] | destinations | List<Widget> | getWidgets | destinations |
-| [ ] | onDestinationSelected | ValueChanged<int>? | getValue | on-destination-selected |
-| [ ] | backgroundColor | Color? | getColor | background-color |
-| [ ] | elevation | double? | getDouble | elevation |
-| [ ] | shadowColor | Color? | getColor | shadow-color |
-| [ ] | surfaceTintColor | Color? | getColor | surface-tint-color |
-| [ ] | indicatorColor | Color? | getColor | indicator-color |
-| [ ] | indicatorShape | ShapeBorder? | getValue | indicator-shape |
-| [ ] | height | double? | getDouble | height |
-| [ ] | labelBehavior | NavigationDestinationLabelBehavior? | getValue | label-behavior |
-| [ ] | overlayColor | WidgetStateProperty<Color?>? | getValue | overlay-color |
-| [ ] | labelTextStyle | WidgetStateProperty<TextStyle?>? | getValue | label-text-style |
-| [ ] | labelPadding | EdgeInsetsGeometry? | getValue | label-padding |
-| [ ] | maintainBottomViewPadding | bool | getBool | maintain-bottom-view-padding |
+| [x] | key | Key? | properties.key | - |
+| [x] | animationDuration | Duration? | getValue | animation-duration |
+| [x] | selectedIndex | int | getInt | selected-index |
+| [x] | destinations | List<Widget> | getWidgets | destinations |
+| [x] | onDestinationSelected | ValueChanged<int>? | getValue | on-destination-selected |
+| [x] | backgroundColor | Color? | getColor | background-color |
+| [x] | elevation | double? | getDouble | elevation |
+| [x] | shadowColor | Color? | getColor | shadow-color |
+| [x] | surfaceTintColor | Color? | getColor | surface-tint-color |
+| [x] | indicatorColor | Color? | getColor | indicator-color |
+| [x] | indicatorShape | ShapeBorder? | getValue | indicator-shape |
+| [x] | height | double? | getDouble | height |
+| [x] | labelBehavior | NavigationDestinationLabelBehavior? | getValue | label-behavior |
+| [x] | overlayColor | WidgetStateProperty<Color?>? | getValue | overlay-color |
+| [x] | labelTextStyle | WidgetStateProperty<TextStyle?>? | getValue | label-text-style |
+| [x] | labelPadding | EdgeInsetsGeometry? | getValue | label-padding |
+| [x] | maintainBottomViewPadding | bool | getBool | maintain-bottom-view-padding |
