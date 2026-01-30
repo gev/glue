@@ -1,0 +1,47 @@
+### Property Access Methods by Type
+- **Direct Property Access**: `key`, `child`, `children`, `width`, `height`, `top`, `bottom`, `left`, `right`, `start`, `end`, `horizontal`, `vertical`
+  - Access as: `properties.key`, `properties.child`, `properties.children`, etc.
+- **bool**: `properties.getBool('property-name')`
+- **Color**: `properties.getColor('property-name')`
+- **double**: `properties.getDouble('property-name')`
+- **int**: `properties.getInt('property-name')`
+- **String**: `properties.getString('property-name')`
+- **Widget**: `properties.getWidget('property-name')`
+- **List\<Widge\>**: `properties.getWidgets('property-name')`
+- **Complex/Custom/ScrollController/ValueChanged<T>**: `properties.getValue('property-name')`
+- **VoidCallback**: `properties.getVoidCallback('property-name', runtime)` *(requires runtime wrapper)*
+
+### Implementation Requirements
+- Always include `key: properties.key` as first constructor parameter
+- For widgets with VoidCallback properties, wrap constructor in runtime function:
+  ```dart
+  Eval<Ir> _createWidget(WidgetProperties properties) {
+    return getRuntime().map((runtime) {
+      final widget = Constructor(
+        key: properties.key,
+        onPressed: properties.getVoidCallback('on-pressed', runtime),
+        // ... other properties
+      );
+      return IrNativeValue(Value(widget));
+    });
+  }
+  ```
+
+| todo check | flutter property name | flutter type | property getter/method without parameters | property name |
+|------------|----------------------|--------------|------------------------------------------|---------------|
+| [ ] | key | Key? | properties.key | - |
+| [ ] | selected | Set<T> | getValue | selected |
+| [ ] | segments | List<Widget> | getWidgets | segments |
+| [ ] | onSelectionChanged | ValueChanged<Set<T>> | getValue | on-selection-changed |
+| [ ] | multiSelectionEnabledFor | Set<T>? | getValue | multi-selection-enabled-for |
+| [ ] | showSelectedIcon | bool? | getBool | show-selected-icon |
+| [ ] | backgroundColor | Color? | getColor | background-color |
+| [ ] | unselectedColor | Color? | getColor | unselected-color |
+| [ ] | selectedColor | Color? | getColor | selected-color |
+| [ ] | disabledColor | Color? | getColor | disabled-color |
+| [ ] | shadowColor | Color? | getColor | shadow-color |
+| [ ] | surfaceTintColor | Color? | getColor | surface-tint-color |
+| [ ] | elevation | double? | getDouble | elevation |
+| [ ] | padding | EdgeInsetsGeometry? | getValue | padding |
+| [ ] | visualDensity | VisualDensity? | getValue | visual-density |
+| [ ] | materialTapTargetSize | MaterialTapTargetSize? | getValue | material-tap-target-size |
