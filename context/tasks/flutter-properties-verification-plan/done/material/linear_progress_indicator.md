@@ -29,11 +29,11 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | value | double? | getDouble | value |
-| [ ] | backgroundColor | Color? | getColor | background-color |
-| [ ] | color | Color? | getColor | color |
-| [ ] | valueColor | Animation<Color>? | getValue | value-color |
-| [ ] | minHeight | double? | getDouble | min-height |
-| [ ] | semanticsLabel | String? | getString | semantics-label |
-| [ ] | semanticsValue | String? | getString | semantics-value |
+| [x] | key | Key? | properties.key | - |
+| [x] | value | double? | getDouble | value |
+| [x] | backgroundColor | Color? | getColor | background-color |
+| [x] | color | Color? | getColor | color |
+| [x] | valueColor | Animation<Color>? | getValue | value-color |
+| [x] | minHeight | double? | getDouble | min-height |
+| [x] | semanticsLabel | String? | getString | semantics-label |
+| [x] | semanticsValue | String? | getString | semantics-value |
