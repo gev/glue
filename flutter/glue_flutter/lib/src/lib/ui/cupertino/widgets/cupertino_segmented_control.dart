@@ -21,9 +21,15 @@ Eval<Ir> cupertinoSegmentedControlImpl(Ir props) => switch (props) {
 /// Create CupertinoSegmentedControl widget from properties object
 Eval<Ir> _createCupertinoSegmentedControl(WidgetProperties properties) {
   final widget = CupertinoSegmentedControl(
+    key: properties.key,
     children: properties.getValue('children'),
     onValueChanged: properties.getValue('on-value-changed'),
     groupValue: properties.getValue('group-value'),
+    unselectedColor: properties.getColor('unselected-color'),
+    selectedColor: properties.getColor('selected-color'),
+    borderColor: properties.getColor('border-color'),
+    pressedColor: properties.getColor('pressed-color'),
+    padding: properties.getValue('padding'),
   );
   return Eval.pure(IrNativeValue(Value(widget)));
 }
