@@ -29,7 +29,9 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | actions | List<Widget> | getWidgets | actions |
-| [ ] | child | Widget | properties.child | - |
-| [ ] | previewBuilder | WidgetBuilder? | getValue | preview-builder |
+| [x] | key | Key? | properties.key | - |
+| [x] | actions | List<Widget> | getWidgets | actions |
+| [x] | child | Widget | properties.child | - |
+| [x] | previewBuilder | WidgetBuilder? | getValue | preview-builder |
+
+### Widget Status: Done
