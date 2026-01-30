@@ -29,24 +29,27 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | icon | Widget? | properties.child | - |
-| [ ] | color | Color? | getColor | color |
-| [ ] | focusColor | Color? | getColor | focus-color |
-| [ ] | hoverColor | Color? | getColor | hover-color |
-| [ ] | highlightColor | Color? | getColor | highlight-color |
-| [ ] | splashColor | Color? | getColor | splash-color |
-| [ ] | disabledColor | Color? | getColor | disabled-color |
-| [ ] | iconSize | double | getDouble | icon-size |
-| [ ] | visualDensity | VisualDensity? | getValue | visual-density |
-| [ ] | padding | EdgeInsetsGeometry | getValue | padding |
-| [ ] | alignment | AlignmentGeometry | getValue | alignment |
-| [ ] | splashRadius | double? | getDouble | splash-radius |
-| [ ] | tooltip | String? | getString | tooltip |
-| [ ] | autofocus | bool | getBool | autofocus |
-| [ ] | mini | bool? | getBool | mini |
-| [ ] | onPressed | VoidCallback? | getVoidCallback | on-pressed |
-| [ ] | onLongPress | VoidCallback? | getVoidCallback | on-long-press |
-| [ ] | mouseCursor | MouseCursor? | getValue | mouse-cursor |
-| [ ] | focusNode | FocusNode? | getValue | focus-node |
-| [ ] | restorationId | String? | getString | restoration-id |
+| [x] | key | Key? | properties.key | - |
+| [x] | icon | Widget? | properties.child | - |
+| [x] | color | Color? | getColor | color |
+| [x] | focusColor | Color? | getColor | focus-color |
+| [x] | hoverColor | Color? | getColor | hover-color |
+| [x] | highlightColor | Color? | getColor | highlight-color |
+| [x] | splashColor | Color? | getColor | splash-color |
+| [x] | disabledColor | Color? | getColor | disabled-color |
+| [x] | iconSize | double | getDouble | icon-size |
+| [x] | visualDensity | VisualDensity? | getValue | visual-density |
+| [x] | padding | EdgeInsetsGeometry | getValue | padding |
+| [x] | alignment | AlignmentGeometry | getValue | alignment |
+| [x] | splashRadius | double? | getDouble | splash-radius |
+| [x] | tooltip | String? | getString | tooltip |
+| [x] | autofocus | bool | getBool | autofocus |
+| [x] | mini | bool? | getBool | mini |
+| [x] | onPressed | VoidCallback? | getVoidCallback | on-pressed |
+| [x] | onLongPress | VoidCallback? | getVoidCallback | on-long-press |
+| [x] | mouseCursor | MouseCursor? | getValue | mouse-cursor |
+| [x] | focusNode | FocusNode? | getValue | focus-node |
+| [x] | restorationId | String? | getString | restoration-id |
+
+### Widget Status
+[x] Widget implementation completed and verified

@@ -35,10 +35,12 @@ Eval<Ir> _createIconButton(WidgetProperties properties) {
       splashRadius: properties.getDouble('splash-radius'),
       tooltip: properties.getString('tooltip'),
       autofocus: properties.getBool('autofocus') ?? false,
+      mini: properties.getBool('mini'),
       mouseCursor: properties.getValue('mouse-cursor'),
       focusNode: properties.getValue('focus-node'),
       onPressed: properties.getVoidCallback('on-pressed', runtime),
       onLongPress: properties.getVoidCallback('on-long-press', runtime),
+      restorationId: properties.getString('restoration-id'),
     );
     return IrNativeValue(Value(iconButtonWidget));
   });
