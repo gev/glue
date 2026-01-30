@@ -29,6 +29,8 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | padding | EdgeInsetsGeometry | getValue | padding |
-| [ ] | child | Widget? | properties.child | - |
+| [x] | key | Key? | properties.key | - |
+| [x] | padding | EdgeInsetsGeometry | getValue | padding |
+| [x] | child | Widget? | properties.child | - |
+
+Padding widget: [x] Done
