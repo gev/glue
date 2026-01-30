@@ -1,4 +1,32 @@
-### Property Access Methods by Type
+get the first task in the folder flutter-properties-verification-plan/todo
+
+get every umarked widget/property in the task 
+
+compare and verify widget source code!
+source codes in the folder  @flutter/glue_flutter/lib/src/ui
+
+IMPRTANT:  pay attention to add a `key` property!!!
+fix source code of the incorrect properties!!!
+strictly follow the tables!!! Dont look and dont analize errors in the code!!
+IMPORTANT when task totally ccomplitted move it into folder
+flutter-properties-verification-plan/done
+
+IMPORTANT: mark properties as done!
+IMPORTANT: mark widget as done!
+
+commit!
+dont push!
+
+ADD KEY PROPERTY INTO EVERY WIDGET!!!!!
+IMPORTANT: move task!
+IMPORTANT: mark properties as done!
+IMPORTANT: mark widget as done!
+
+dont run build
+dont run app
+dont run test
+dont run analize
+dont run flutter### Property Access Methods by Type
 - **Direct Property Access**: `key`, `child`, `children`, `width`, `height`, `top`, `bottom`, `left`, `right`, `start`, `end`, `horizontal`, `vertical`
   - Access as: `properties.key`, `properties.child`, `properties.children`, etc.
 - **bool**: `properties.getBool('property-name')`
@@ -27,11 +55,13 @@
   }
   ```
 
+- [x] TabBarView widget
+
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | children | List<Widget> | getWidgets | children |
-| [ ] | controller | TabController? | getValue | controller |
-| [ ] | physics | ScrollPhysics? | getValue | physics |
-| [ ] | dragStartBehavior | DragStartBehavior | getValue | drag-start-behavior |
-| [ ] | viewportFraction | double | getDouble | viewport-fraction |
+| [x] | key | Key? | properties.key | - |
+| [x] | children | List<Widget> | getWidgets | children |
+| [x] | controller | TabController? | getValue | controller |
+| [x] | physics | ScrollPhysics? | getValue | physics |
+| [x] | dragStartBehavior | DragStartBehavior | getValue | drag-start-behavior |
+| [x] | viewportFraction | double | getDouble | viewport-fraction |
