@@ -29,12 +29,12 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | value | double? | getDouble | value |
-| [ ] | backgroundColor | Color? | getColor | background-color |
-| [ ] | color | Color? | getColor | color |
-| [ ] | strokeWidth | double? | getDouble | stroke-width |
-| [ ] | strokeAlign | double? | getDouble | stroke-align |
-| [ ] | strokeCap | StrokeCap? | getValue | stroke-cap |
-| [ ] | semanticsLabel | String? | getString | semantics-label |
-| [ ] | semanticsValue | String? | getString | semantics-value |
+| [x] | key | Key? | properties.key | - |
+| [x] | value | double? | getDouble | value |
+| [x] | backgroundColor | Color? | getColor | background-color |
+| [x] | color | Color? | getColor | color |
+| [x] | strokeWidth | double? | getDouble | stroke-width |
+| [x] | strokeAlign | double? | getDouble | stroke-align |
+| [x] | strokeCap | StrokeCap? | getValue | stroke-cap |
+| [x] | semanticsLabel | String? | getString | semantics-label |
+| [x] | semanticsValue | String? | getString | semantics-value |
