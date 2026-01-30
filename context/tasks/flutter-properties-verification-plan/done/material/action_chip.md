@@ -29,18 +29,18 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | avatar | Widget? | getValue | avatar |
-| [ ] | label | Widget | getValue | label |
-| [ ] | labelStyle | TextStyle? | getValue | label-style |
-| [ ] | labelPadding | EdgeInsetsGeometry? | getValue | label-padding |
-| [ ] | onPressed | VoidCallback? | getVoidCallback | on-pressed |
-| [ ] | pressElevation | double? | getValue | press-elevation |
-| [ ] | side | BorderSide? | getValue | side |
-| [ ] | shape | OutlinedBorder? | getValue | shape |
-| [ ] | clipBehavior | Clip | getValue | clip-behavior |
-| [ ] | focusNode | FocusNode? | getValue | focus-node |
-| [ ] | autofocus | bool | getBool | autofocus |
-| [ ] | backgroundColor | Color? | getColor | background-color |
-| [ ] | disabledColor | Color? | getColor | disabled-color |
-| [ ] | avatarBoxConstraints | BoxConstraints? | getValue | avatar-box-constraints |
+| [x] | key | Key? | properties.key | - |
+| [x] | avatar | Widget? | getValue | avatar |
+| [x] | label | Widget | getValue | label |
+| [x] | labelStyle | TextStyle? | getValue | label-style |
+| [x] | labelPadding | EdgeInsetsGeometry? | getValue | label-padding |
+| [x] | onPressed | VoidCallback? | getVoidCallback | on-pressed |
+| [x] | pressElevation | double? | getValue | press-elevation |
+| [x] | side | BorderSide? | getValue | side |
+| [x] | shape | OutlinedBorder? | getValue | shape |
+| [x] | clipBehavior | Clip | getValue | clip-behavior |
+| [x] | focusNode | FocusNode? | getValue | focus-node |
+| [x] | autofocus | bool | getBool | autofocus |
+| [x] | backgroundColor | Color? | getColor | background-color |
+| [x] | disabledColor | Color? | getColor | disabled-color |
+| [x] | avatarBoxConstraints | BoxConstraints? | getValue | avatar-box-constraints |
