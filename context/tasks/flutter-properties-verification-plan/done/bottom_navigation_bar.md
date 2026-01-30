@@ -29,24 +29,24 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | items | List<BottomNavigationBarItem> | getValue | items |
-| [ ] | onTap | ValueChanged<int>? | getValue | on-tap |
-| [ ] | currentIndex | int | getInt | current-index |
-| [ ] | elevation | double | getDouble | elevation |
-| [ ] | type | BottomNavigationBarType? | getValue | type |
-| [ ] | fixedColor | Color? | getColor | fixed-color |
-| [ ] | backgroundColor | Color? | getColor | background-color |
-| [ ] | iconSize | double | getDouble | icon-size |
-| [ ] | selectedItemColor | Color? | getColor | selected-item-color |
-| [ ] | unselectedItemColor | Color? | getColor | unselected-item-color |
-| [ ] | selectedIconTheme | IconThemeData? | getValue | selected-icon-theme |
-| [ ] | unselectedIconTheme | IconThemeData? | getValue | unselected-icon-theme |
-| [ ] | selectedLabelStyle | TextStyle? | getValue | selected-label-style |
-| [ ] | unselectedLabelStyle | TextStyle? | getValue | unselected-label-style |
-| [ ] | selectedFontSize | double | getDouble | selected-font-size |
-| [ ] | unselectedFontSize | double | getDouble | unselected-font-size |
-| [ ] | showSelectedLabels | bool? | getBool | show-selected-labels |
-| [ ] | showUnselectedLabels | bool? | getBool | show-unselected-labels |
-| [ ] | enableFeedback | bool? | getBool | enable-feedback |
-| [ ] | landscapeLayout | BottomNavigationBarLandscapeLayout? | getValue | landscape-layout |
+| [x] | key | Key? | properties.key | - |
+| [x] | items | List<BottomNavigationBarItem> | getValue | items |
+| [x] | onTap | ValueChanged<int>? | getValue | on-tap |
+| [x] | currentIndex | int | getInt | current-index |
+| [x] | elevation | double | getDouble | elevation |
+| [x] | type | BottomNavigationBarType? | getValue | type |
+| [x] | fixedColor | Color? | getColor | fixed-color |
+| [x] | backgroundColor | Color? | getColor | background-color |
+| [x] | iconSize | double | getDouble | icon-size |
+| [x] | selectedItemColor | Color? | getColor | selected-item-color |
+| [x] | unselectedItemColor | Color? | getColor | unselected-item-color |
+| [x] | selectedIconTheme | IconThemeData? | getValue | selected-icon-theme |
+| [x] | unselectedIconTheme | IconThemeData? | getValue | unselected-icon-theme |
+| [x] | selectedLabelStyle | TextStyle? | getValue | selected-label-style |
+| [x] | unselectedLabelStyle | TextStyle? | getValue | unselected-label-style |
+| [x] | selectedFontSize | double | getDouble | selected-font-size |
+| [x] | unselectedFontSize | double | getDouble | unselected-font-size |
+| [x] | showSelectedLabels | bool? | getBool | show-selected-labels |
+| [x] | showUnselectedLabels | bool? | getBool | show-unselected-labels |
+| [x] | enableFeedback | bool? | getBool | enable-feedback |
+| [x] | landscapeLayout | BottomNavigationBarLandscapeLayout? | getValue | landscape-layout |
