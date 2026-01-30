@@ -40,7 +40,7 @@ Eval<Ir> _createDropdownButton(WidgetProperties properties) {
       focusColor: properties.getColor('focus-color'),
       focusNode: properties.getValue('focus-node'),
       autofocus: properties.getBool('autofocus') ?? false,
-      dropdownColor: properties.getColor('color'),
+      dropdownColor: properties.getColor('dropdown-color'),
       menuMaxHeight: properties.getDouble('menu-max-height'),
       enableFeedback: properties.getBool('enable-feedback') ?? true,
       alignment: properties.getValue('alignment'),

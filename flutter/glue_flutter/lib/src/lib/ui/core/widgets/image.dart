@@ -18,26 +18,26 @@ Eval<Ir> imageImpl(Ir props) => switch (props) {
 
 /// Create Image widget from properties
 Eval<Ir> _createImage(WidgetProperties properties) {
-  final imageProvider = properties.getValue('image-provider');
-  if (imageProvider == null) {
+  final image = properties.getValue('image');
+  if (image == null) {
     throwError(wrongArgumentType(['image property required']));
   }
 
   final imageWidget = Image(
     key: properties.key,
-    image: imageProvider!,
+    image: image,
     width: properties.width,
     height: properties.height,
-    fit: properties.getValue('box-fit'),
+    fit: properties.getValue('fit'),
     color: properties.getColor('color'),
-    colorBlendMode: properties.getValue('blend-mode'),
+    colorBlendMode: properties.getValue('color-blend-mode'),
     alignment: properties.getValue('alignment') ?? Alignment.center,
-    repeat: properties.getValue('image-repeat') ?? ImageRepeat.noRepeat,
-    matchTextDirection: properties.getValue('match-text-direction') ?? false,
-    gaplessPlayback: properties.getValue('gapless-playback') ?? false,
+    repeat: properties.getValue('repeat') ?? ImageRepeat.noRepeat,
+    centerSlice: properties.getValue('center-slice'),
+    matchTextDirection: properties.getBool('match-text-direction') ?? false,
+    gaplessPlayback: properties.getBool('gapless-playback') ?? false,
     semanticLabel: properties.getString('semantic-label'),
-    excludeFromSemantics:
-        properties.getValue('exclude-from-semantics') ?? false,
+    excludeFromSemantics: properties.getBool('exclude-from-semantics') ?? false,
     filterQuality: properties.getValue('filter-quality') ?? FilterQuality.low,
   );
   return Eval.pure(IrNativeValue(Value(imageWidget)));

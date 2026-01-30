@@ -25,14 +25,14 @@ Eval<Ir> _createBadge(WidgetProperties properties) {
   final badgeWidget = Badge(
     key: properties.key,
     child: properties.child!,
-    label: properties.getValue('badge-label'),
-    backgroundColor: properties.getColor('color'),
+    label: properties.getWidget('label'),
+    backgroundColor: properties.getColor('background-color'),
     textColor: properties.getColor('text-color'),
     textStyle: properties.getValue('text-style'),
     padding: properties.getValue('padding'),
     alignment: properties.getValue('alignment'),
     isLabelVisible: properties.getBool('is-label-visible') ?? true,
-    offset: properties.getValue('badge-offset') ?? Offset.zero,
+    offset: properties.getValue('offset'),
   );
   return Eval.pure(IrNativeValue(Value(badgeWidget)));
 }

@@ -20,10 +20,10 @@ Eval<Ir> placeholderImpl(Ir props) => switch (props) {
 Eval<Ir> _createPlaceholder(WidgetProperties properties) {
   final placeholderWidget = Placeholder(
     key: properties.key,
+    fallbackWidth: properties.getDouble('fallback-width') ?? 400.0,
+    fallbackHeight: properties.getDouble('fallback-height') ?? 400.0,
     color: properties.getColor('color') ?? const Color(0xFF455A64),
-    strokeWidth: properties.getDouble('size') ?? 2.0,
-    fallbackWidth: properties.width ?? 400.0,
-    fallbackHeight: properties.height ?? 400.0,
+    strokeWidth: properties.getDouble('stroke-width') ?? 2.0,
   );
   return Eval.pure(IrNativeValue(Value(placeholderWidget)));
 }

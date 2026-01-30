@@ -18,6 +18,6 @@ Eval<Ir> centerImpl(Ir props) => switch (props) {
 
 /// Create Center widget from properties
 Eval<Ir> _createCenter(WidgetProperties properties) {
-  final centerWidget = Center(child: properties.child);
+  final centerWidget = Center(key: properties.key, child: properties.child);
   return Eval.pure(IrNativeValue(Value(centerWidget)));
 }

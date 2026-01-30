@@ -19,6 +19,7 @@ Eval<Ir> containerImpl(Ir props) => switch (props) {
 /// Create Container widget from properties
 Eval<Ir> _createContainer(WidgetProperties properties) {
   final containerWidget = Container(
+    key: properties.key,
     alignment: properties.getValue('alignment'),
     padding: properties.getValue('padding'),
     color: properties.getColor('color'),
@@ -29,9 +30,9 @@ Eval<Ir> _createContainer(WidgetProperties properties) {
     constraints: properties.getValue('constraints'),
     margin: properties.getValue('margin'),
     transform: properties.getValue('transform'),
-    transformAlignment: properties.getValue('transformAlignment'),
-    clipBehavior: properties.getValue('clip-behavior'),
+    transformAlignment: properties.getValue('transform-alignment'),
     child: properties.child,
+    clipBehavior: properties.getValue('clip-behavior'),
   );
   return Eval.pure(IrNativeValue(Value(containerWidget)));
 }

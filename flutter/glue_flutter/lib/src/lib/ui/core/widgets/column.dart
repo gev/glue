@@ -19,13 +19,14 @@ Eval<Ir> columnImpl(Ir props) => switch (props) {
 /// Create Column widget from properties
 Eval<Ir> _createColumn(WidgetProperties properties) {
   final columnWidget = Column(
-    children: properties.children,
+    key: properties.key,
     mainAxisAlignment: properties.getValue('main-axis-alignment'),
     mainAxisSize: properties.getValue('main-axis-size'),
     crossAxisAlignment: properties.getValue('cross-axis-alignment'),
     textDirection: properties.getValue('text-direction'),
     verticalDirection: properties.getValue('vertical-direction'),
     textBaseline: properties.getValue('text-baseline'),
+    children: properties.children,
   );
   return Eval.pure(IrNativeValue(Value(columnWidget)));
 }

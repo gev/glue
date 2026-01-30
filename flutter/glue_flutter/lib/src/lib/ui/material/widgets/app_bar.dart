@@ -37,7 +37,7 @@ Eval<Ir> _createAppBar(WidgetProperties properties) {
     shadowColor: properties.getColor('shadow-color'),
     surfaceTintColor: properties.getColor('surface-tint-color'),
     shape: properties.getValue('shape'),
-    backgroundColor: properties.getColor('color'),
+    backgroundColor: properties.getColor('background-color'),
     foregroundColor: properties.getColor('foreground-color'),
     iconTheme: properties.getValue('icon-theme'),
     actionsIconTheme: properties.getValue('actions-icon-theme'),

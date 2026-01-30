@@ -37,7 +37,7 @@ Eval<Ir> _createAlertDialog(WidgetProperties properties) {
       'actions-overflow-button-spacing',
     ),
     buttonPadding: properties.getValue('button-padding'),
-    backgroundColor: properties.getColor('color'),
+    backgroundColor: properties.getColor('background-color'),
     elevation: properties.getDouble('elevation'),
     shadowColor: properties.getColor('shadow-color'),
     surfaceTintColor: properties.getColor('surface-tint-color'),
