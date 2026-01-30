@@ -18,23 +18,19 @@ Eval<Ir> textButtonImpl(Ir props) => switch (props) {
 
 /// Create TextButton widget from properties object
 Eval<Ir> _createTextButton(WidgetProperties properties) {
-  final label =
-      properties.getString('label') ??
-      'Button'; // Extract label from properties
-
   // Get runtime and create callback
   return getRuntime().map((runtime) {
     final buttonWidget = TextButton(
       key: properties.key,
-      onPressed: properties.getVoidCallback('on-press', runtime),
+      onPressed: properties.getVoidCallback('on-pressed', runtime),
       onLongPress: properties.getVoidCallback('on-long-press', runtime),
       onHover: properties.getValue('on-hover'),
       onFocusChange: properties.getValue('on-focus-change'),
-      style: properties.getValue('button-style'),
+      style: properties.getValue('style'),
       focusNode: properties.getValue('focus-node'),
-      autofocus: properties.getValue('autofocus'),
-      clipBehavior: properties.getValue('button-clip-behavior'),
-      child: Text(label),
+      autofocus: properties.getBool('autofocus') ?? false,
+      clipBehavior: properties.getValue('clip-behavior'),
+      child: properties.child ?? Text('Button'),
     );
     return IrNativeValue(Value(buttonWidget));
   });
