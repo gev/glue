@@ -29,10 +29,12 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | children | Map<T, Widget> | getValue | children |
-| [ ] | onValueChanged | ValueChanged<T?>? | getValue | on-value-changed |
-| [ ] | groupValue | T? | getValue | group-value |
-| [ ] | thumbColor | Color | getColor | thumb-color |
-| [ ] | backgroundColor | Color? | getColor | background-color |
-| [ ] | padding | EdgeInsetsGeometry | getValue | padding |
+| [x] | key | Key? | properties.key | - |
+| [x] | children | Map<T, Widget> | getValue | children |
+| [x] | onValueChanged | ValueChanged<T?>? | getValue | on-value-changed |
+| [x] | groupValue | T? | getValue | group-value |
+| [x] | thumbColor | Color | getColor | thumb-color |
+| [x] | backgroundColor | Color? | getColor | background-color |
+| [x] | padding | EdgeInsetsGeometry | getValue | padding |
+
+[x] CupertinoSlidingSegmentedControl widget done
