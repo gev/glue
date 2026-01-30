@@ -29,13 +29,13 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | value | double | getDouble | value |
-| [ ] | onChanged | ValueChanged<double>? | getValue | on-changed |
-| [ ] | onChangeStart | ValueChanged<double>? | getValue | on-change-start |
-| [ ] | onChangeEnd | ValueChanged<double>? | getValue | on-change-end |
-| [ ] | min | double | getDouble | min |
-| [ ] | max | double | getDouble | max |
-| [ ] | divisions | int? | getInt | divisions |
-| [ ] | activeColor | Color? | getColor | active-color |
-| [ ] | thumbColor | Color | getColor | thumb-color |
+| [x] | key | Key? | properties.key | - |
+| [x] | value | double | getDouble | value |
+| [x] | onChanged | ValueChanged<double>? | getValue | on-changed |
+| [x] | onChangeStart | ValueChanged<double>? | getValue | on-change-start |
+| [x] | onChangeEnd | ValueChanged<double>? | getValue | on-change-end |
+| [x] | min | double | getDouble | min |
+| [x] | max | double | getDouble | max |
+| [x] | divisions | int? | getInt | divisions |
+| [x] | activeColor | Color? | getColor | active-color |
+| [x] | thumbColor | Color | getColor | thumb-color |

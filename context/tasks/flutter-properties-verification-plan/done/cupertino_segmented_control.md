@@ -29,12 +29,14 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | children | Map<T, Widget> | getValue | children |
-| [ ] | onValueChanged | ValueChanged<T>? | getValue | on-value-changed |
-| [ ] | groupValue | T? | getValue | group-value |
-| [ ] | unselectedColor | Color | getColor | unselected-color |
-| [ ] | selectedColor | Color | getColor | selected-color |
-| [ ] | borderColor | Color | getColor | border-color |
-| [ ] | pressedColor | Color? | getColor | pressed-color |
-| [ ] | padding | EdgeInsetsGeometry | getValue | padding |
+| [x] | key | Key? | properties.key | - |
+| [x] | children | Map<T, Widget> | getValue | children |
+| [x] | onValueChanged | ValueChanged<T>? | getValue | on-value-changed |
+| [x] | groupValue | T? | getValue | group-value |
+| [x] | unselectedColor | Color | getColor | unselected-color |
+| [x] | selectedColor | Color | getColor | selected-color |
+| [x] | borderColor | Color | getColor | border-color |
+| [x] | pressedColor | Color? | getColor | pressed-color |
+| [x] | padding | EdgeInsetsGeometry | getValue | padding |
+
+### Widget Status: [x] Done
