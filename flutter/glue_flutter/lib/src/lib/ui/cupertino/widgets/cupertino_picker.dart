@@ -20,15 +20,15 @@ Eval<Ir> cupertinoPickerImpl(Ir props) => switch (props) {
 Eval<Ir> _createCupertinoPicker(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final pickerWidget = CupertinoPicker(
-      key: GlobalKey(),
-      diameterRatio: properties.getValue('diameter-ratio'),
-      backgroundColor: properties.getValue('background-color'),
-      offAxisFraction: properties.getValue('off-axis-fraction'),
-      useMagnifier: properties.getValue('use-magnifier'),
-      magnification: properties.getValue('magnification'),
+      key: properties.key,
+      diameterRatio: properties.getDouble('diameter-ratio') ?? 1.07,
+      backgroundColor: properties.getColor('background-color'),
+      offAxisFraction: properties.getDouble('off-axis-fraction') ?? 0.0,
+      useMagnifier: properties.getBool('use-magnifier') ?? false,
+      magnification: properties.getDouble('magnification') ?? 1.0,
       scrollController: properties.getValue('scroll-controller'),
-      squeeze: properties.getValue('squeeze'),
-      itemExtent: properties.getValue('item-extent'),
+      squeeze: properties.getDouble('squeeze') ?? 1.25,
+      itemExtent: properties.getDouble('item-extent') ?? 44.0,
       onSelectedItemChanged: properties.getValue('on-selected-item-changed'),
       children: properties.children,
       selectionOverlay:
