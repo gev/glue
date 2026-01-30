@@ -27,27 +27,29 @@
   }
   ```
 
+- [x] Slider widget
+
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | value | double | getDouble | value |
-| [ ] | secondaryTrackValue | double? | getDouble | secondary-track-value |
-| [ ] | onChanged | ValueChanged<double>? | getValue | on-changed |
-| [ ] | onChangeStart | ValueChanged<double>? | getValue | on-change-start |
-| [ ] | onChangeEnd | ValueChanged<double>? | getValue | on-change-end |
-| [ ] | min | double | getDouble | min |
-| [ ] | max | double | getDouble | max |
-| [ ] | divisions | int? | getInt | divisions |
-| [ ] | label | String? | getString | label |
-| [ ] | activeColor | Color? | getColor | active-color |
-| [ ] | inactiveColor | Color? | getColor | inactive-color |
-| [ ] | secondaryActiveColor | Color? | getColor | secondary-active-color |
-| [ ] | thumbColor | Color? | getColor | thumb-color |
-| [ ] | overlayColor | WidgetStateProperty<Color?>? | getValue | overlay-color |
-| [ ] | mouseCursor | MouseCursor? | getValue | mouse-cursor |
-| [ ] | semanticFormatterCallback | SemanticFormatterCallback? | getValue | semantic-formatter-callback |
-| [ ] | focusNode | FocusNode? | getValue | focus-node |
-| [ ] | autofocus | bool | getBool | autofocus |
-| [ ] | allowedInteraction | SliderInteraction? | getValue | allowed-interaction |
-| [ ] | padding | EdgeInsetsGeometry? | getValue | padding |
-| [ ] | year2023 | bool? | getBool | year2023 |
+| [x] | key | Key? | properties.key | - |
+| [x] | value | double | getDouble | value |
+| [x] | secondaryTrackValue | double? | getDouble | secondary-track-value |
+| [x] | onChanged | ValueChanged<double>? | getValue | on-changed |
+| [x] | onChangeStart | ValueChanged<double>? | getValue | on-change-start |
+| [x] | onChangeEnd | ValueChanged<double>? | getValue | on-change-end |
+| [x] | min | double | getDouble | min |
+| [x] | max | double | getDouble | max |
+| [x] | divisions | int? | getInt | divisions |
+| [x] | label | String? | getString | label |
+| [x] | activeColor | Color? | getColor | active-color |
+| [x] | inactiveColor | Color? | getColor | inactive-color |
+| [x] | secondaryActiveColor | Color? | getColor | secondary-active-color |
+| [x] | thumbColor | Color? | getColor | thumb-color |
+| [x] | overlayColor | WidgetStateProperty<Color?>? | getValue | overlay-color |
+| [x] | mouseCursor | MouseCursor? | getValue | mouse-cursor |
+| [x] | semanticFormatterCallback | SemanticFormatterCallback? | getValue | semantic-formatter-callback |
+| [x] | focusNode | FocusNode? | getValue | focus-node |
+| [x] | autofocus | bool | getBool | autofocus |
+| [x] | allowedInteraction | SliderInteraction? | getValue | allowed-interaction |
+| [x] | padding | EdgeInsetsGeometry? | getValue | padding |
+| [x] | year2023 | bool? | getBool | year2023 |

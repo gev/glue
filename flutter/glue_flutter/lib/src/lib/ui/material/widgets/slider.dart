@@ -40,6 +40,8 @@ Eval<Ir> _createSlider(WidgetProperties properties) {
     focusNode: properties.getValue('focus-node'),
     autofocus: properties.getBool('autofocus') ?? false,
     allowedInteraction: properties.getValue('allowed-interaction'),
+    padding: properties.getValue('padding'),
+    year2023: properties.getBool('year2023'),
   );
   return Eval.pure(IrNativeValue(Value(sliderWidget)));
 }
