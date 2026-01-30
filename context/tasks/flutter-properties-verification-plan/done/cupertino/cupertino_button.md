@@ -29,13 +29,13 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | child | Widget | properties.child | - |
-| [ ] | padding | EdgeInsetsGeometry? | getValue | padding |
-| [ ] | color | Color? | getColor | color |
-| [ ] | disabledColor | Color | getColor | disabled-color |
-| [ ] | minSize | double | getDouble | min-size |
-| [ ] | pressedOpacity | double | getDouble | pressed-opacity |
-| [ ] | borderRadius | BorderRadius | getValue | border-radius |
-| [ ] | alignment | AlignmentGeometry | getValue | alignment |
-| [ ] | onPressed | VoidCallback? | getVoidCallback | on-pressed |
+| [x] | key | Key? | properties.key | - |
+| [x] | child | Widget | properties.child | - |
+| [x] | padding | EdgeInsetsGeometry? | getValue | padding |
+| [x] | color | Color? | getColor | color |
+| [x] | disabledColor | Color | getColor | disabled-color |
+| [x] | minSize | double | getDouble | min-size |
+| [x] | pressedOpacity | double | getDouble | pressed-opacity |
+| [x] | borderRadius | BorderRadius | getValue | border-radius |
+| [x] | alignment | AlignmentGeometry | getValue | alignment |
+| [x] | onPressed | VoidCallback? | getVoidCallback | on-pressed |

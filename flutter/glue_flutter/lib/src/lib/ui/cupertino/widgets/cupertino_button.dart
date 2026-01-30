@@ -19,15 +19,20 @@ Eval<Ir> cupertinoButtonImpl(Ir props) => switch (props) {
 /// Create CupertinoButton widget from properties object
 Eval<Ir> _createCupertinoButton(WidgetProperties properties) {
   return getRuntime().map((runtime) {
-    final buttonWidget = CupertinoButton(
-      onPressed: properties.getVoidCallback('on-press', runtime),
-      onLongPress: properties.getVoidCallback('on-long-press', runtime),
-      disabledColor: properties.getValue('cupertino-button-disabled-color'),
-      padding: properties.getValue('cupertino-button-padding'),
-      pressedOpacity: properties.getDouble('cupertino-button-pressed-opacity'),
-      borderRadius: properties.getValue('cupertino-button-border-radius'),
+    final widget = CupertinoButton(
+      key: properties.key,
       child: properties.child ?? const Text('Button'),
+      padding: properties.getValue('padding'),
+      color: properties.getColor('color'),
+      disabledColor:
+          properties.getColor('disabled-color') ??
+          CupertinoColors.quaternarySystemFill,
+      minSize: properties.getDouble('min-size'),
+      pressedOpacity: properties.getDouble('pressed-opacity'),
+      borderRadius: properties.getValue('border-radius'),
+      alignment: properties.getValue('alignment'),
+      onPressed: properties.getVoidCallback('on-pressed', runtime),
     );
-    return IrNativeValue(Value(buttonWidget));
+    return IrNativeValue(Value(widget));
   });
 }
