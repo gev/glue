@@ -32,6 +32,7 @@ Eval<Ir> _createBadge(WidgetProperties properties) {
     padding: properties.getValue('padding'),
     alignment: properties.getValue('alignment'),
     isLabelVisible: properties.getBool('is-label-visible') ?? true,
+    largeSize: properties.getDouble('large-size'),
     offset: properties.getValue('offset'),
   );
   return Eval.pure(IrNativeValue(Value(badgeWidget)));

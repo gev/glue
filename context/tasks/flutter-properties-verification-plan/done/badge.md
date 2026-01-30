@@ -29,15 +29,17 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | child | Widget | properties.child | - |
-| [ ] | label | Widget? | getWidget | label |
-| [ ] | backgroundColor | Color? | getColor | background-color |
-| [ ] | textColor | Color? | getColor | text-color |
-| [ ] | textStyle | TextStyle? | getValue | text-style |
-| [ ] | padding | EdgeInsetsGeometry? | getValue | padding |
-| [ ] | alignment | AlignmentGeometry? | getValue | alignment |
-| [ ] | isLabelVisible | bool? | getBool | is-label-visible |
-| [ ] | largeSize | bool? | getBool | large-size |
-| [ ] | offset | Offset? | getValue | offset |
-| [ ] | showBadge | bool? | getBool | show-badge |
+| [x] | key | Key? | properties.key | - |
+| [x] | child | Widget | properties.child | - |
+| [x] | label | Widget? | getWidget | label |
+| [x] | backgroundColor | Color? | getColor | background-color |
+| [x] | textColor | Color? | getColor | text-color |
+| [x] | textStyle | TextStyle? | getValue | text-style |
+| [x] | padding | EdgeInsetsGeometry? | getValue | padding |
+| [x] | alignment | AlignmentGeometry? | getValue | alignment |
+| [x] | isLabelVisible | bool? | getBool | is-label-visible |
+| [x] | largeSize | double? | getDouble | large-size |
+| [x] | offset | Offset? | getValue | offset |
+| [x] | showBadge | bool? | getBool | show-badge |
+
+# Badge Widget: DONE
