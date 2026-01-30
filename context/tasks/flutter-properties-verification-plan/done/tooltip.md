@@ -29,20 +29,20 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | message | String? | getString | tooltip-message |
-| [ ] | richMessage | InlineSpan? | getValue | tooltip-rich-message |
-| [ ] | padding | EdgeInsetsGeometry? | getValue | tooltip-padding |
-| [ ] | margin | EdgeInsetsGeometry? | getValue | tooltip-margin |
-| [ ] | verticalOffset | double? | getDouble | tooltip-vertical-offset |
-| [ ] | preferBelow | bool? | getBool | tooltip-prefer-below |
-| [ ] | excludeFromSemantics | bool? | getBool | tooltip-exclude-from-semantics |
-| [ ] | decoration | Decoration? | getValue | tooltip-decoration |
-| [ ] | textStyle | TextStyle? | getValue | tooltip-text-style |
-| [ ] | textAlign | TextAlign? | getValue | tooltip-text-align |
-| [ ] | waitDuration | Duration? | getValue | tooltip-wait-duration |
-| [ ] | showDuration | Duration? | getValue | tooltip-show-duration |
-| [ ] | triggerMode | TooltipTriggerMode? | getValue | tooltip-trigger-mode |
-| [ ] | enableFeedback | bool? | getBool | tooltip-enable-feedback |
-| [ ] | onTriggered | VoidCallback? | getVoidCallback | tooltip-on-triggered |
-| [ ] | child | Widget? | properties.child | - |
+| [x] | key | Key? | properties.key | - |
+| [x] | message | String? | getString | tooltip-message |
+| [x] | richMessage | InlineSpan? | getValue | tooltip-rich-message |
+| [x] | padding | EdgeInsetsGeometry? | getValue | tooltip-padding |
+| [x] | margin | EdgeInsetsGeometry? | getValue | tooltip-margin |
+| [x] | verticalOffset | double? | getDouble | tooltip-vertical-offset |
+| [x] | preferBelow | bool? | getBool | tooltip-prefer-below |
+| [x] | excludeFromSemantics | bool? | getBool | tooltip-exclude-from-semantics |
+| [x] | decoration | Decoration? | getValue | tooltip-decoration |
+| [x] | textStyle | TextStyle? | getValue | tooltip-text-style |
+| [x] | textAlign | TextAlign? | getValue | tooltip-text-align |
+| [x] | waitDuration | Duration? | getValue | tooltip-wait-duration |
+| [x] | showDuration | Duration? | getValue | tooltip-show-duration |
+| [x] | triggerMode | TooltipTriggerMode? | getValue | tooltip-trigger-mode |
+| [x] | enableFeedback | bool? | getBool | tooltip-enable-feedback |
+| [x] | onTriggered | VoidCallback? | getVoidCallback | tooltip-on-triggered |
+| [x] | child | Widget? | properties.child | - |
