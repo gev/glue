@@ -29,20 +29,20 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | image | ImageProvider<Object> | getValue | image |
-| [ ] | width | double? | properties.width | - |
-| [ ] | height | double? | properties.height | - |
-| [ ] | color | Color? | getColor | color |
-| [ ] | colorBlendMode | BlendMode? | getValue | color-blend-mode |
-| [ ] | fit | BoxFit? | getValue | fit |
-| [ ] | alignment | AlignmentGeometry | getValue | alignment |
-| [ ] | repeat | ImageRepeat | getValue | repeat |
-| [ ] | centerSlice | Rect? | getValue | center-slice |
-| [ ] | matchTextDirection | bool | getBool | match-text-direction |
-| [ ] | gaplessPlayback | bool | getBool | gapless-playback |
-| [ ] | semanticLabel | String? | getString | semantic-label |
-| [ ] | excludeFromSemantics | bool | getBool | exclude-from-semantics |
-| [ ] | filterQuality | FilterQuality | getValue | filter-quality |
+| [x] | key | Key? | properties.key | - |
+| [x] | image | ImageProvider<Object> | getValue | image |
+| [x] | width | double? | properties.width | - |
+| [x] | height | double? | properties.height | - |
+| [x] | color | Color? | getColor | color |
+| [x] | colorBlendMode | BlendMode? | getValue | color-blend-mode |
+| [x] | fit | BoxFit? | getValue | fit |
+| [x] | alignment | AlignmentGeometry | getValue | alignment |
+| [x] | repeat | ImageRepeat | getValue | repeat |
+| [x] | centerSlice | Rect? | getValue | center-slice |
+| [x] | matchTextDirection | bool | getBool | match-text-direction |
+| [x] | gaplessPlayback | bool | getBool | gapless-playback |
+| [x] | semanticLabel | String? | getString | semantic-label |
+| [x] | excludeFromSemantics | bool | getBool | exclude-from-semantics |
+| [x] | filterQuality | FilterQuality | getValue | filter-quality |
 | [ ] | cacheWidth | int? | getInt | cache-width |
 | [ ] | cacheHeight | int? | getInt | cache-height |
