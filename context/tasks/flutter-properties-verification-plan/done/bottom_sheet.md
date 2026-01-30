@@ -29,19 +29,19 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | animationController | AnimationController? | getValue | animation-controller |
-| [ ] | enableDrag | bool | getBool | enable-drag |
-| [ ] | showDragHandle | bool? | getBool | show-drag-handle |
-| [ ] | dragHandleColor | Color? | getColor | drag-handle-color |
-| [ ] | dragHandleSize | Size? | getValue | drag-handle-size |
-| [ ] | onDragStart | BottomSheetDragStartHandler? | getValue | on-drag-start |
-| [ ] | onDragEnd | BottomSheetDragEndHandler? | getValue | on-drag-end |
-| [ ] | backgroundColor | Color? | getColor | background-color |
-| [ ] | shadowColor | Color? | getColor | shadow-color |
-| [ ] | elevation | double? | getDouble | elevation |
-| [ ] | shape | ShapeBorder? | getValue | shape |
-| [ ] | clipBehavior | Clip? | getValue | clip-behavior |
-| [ ] | constraints | BoxConstraints? | getValue | constraints |
-| [ ] | onClosing | VoidCallback | getVoidCallback | on-closing |
-| [ ] | builder | WidgetBuilder | getValue | builder |
+| [x] | key | Key? | properties.key | - |
+| [x] | animationController | AnimationController? | getValue | animation-controller |
+| [x] | enableDrag | bool | getBool | enable-drag |
+| [x] | showDragHandle | bool? | getBool | show-drag-handle |
+| [x] | dragHandleColor | Color? | getColor | drag-handle-color |
+| [x] | dragHandleSize | Size? | getValue | drag-handle-size |
+| [x] | onDragStart | BottomSheetDragStartHandler? | getValue | on-drag-start |
+| [x] | onDragEnd | BottomSheetDragEndHandler? | getValue | on-drag-end |
+| [x] | backgroundColor | Color? | getColor | background-color |
+| [x] | shadowColor | Color? | getColor | shadow-color |
+| [x] | elevation | double? | getDouble | elevation |
+| [x] | shape | ShapeBorder? | getValue | shape |
+| [x] | clipBehavior | Clip? | getValue | clip-behavior |
+| [x] | constraints | BoxConstraints? | getValue | constraints |
+| [x] | onClosing | VoidCallback | getVoidCallback | on-closing |
+| [x] | builder | WidgetBuilder | getValue | builder |
