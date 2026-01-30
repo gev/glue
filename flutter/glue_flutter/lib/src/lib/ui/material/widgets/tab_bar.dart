@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
@@ -29,8 +28,7 @@ Eval<Ir> _createTabBar(WidgetProperties properties) {
       automaticIndicatorColorAdjustment:
           properties.getBool('automatic-indicator-color-adjustment') ?? true,
       indicatorWeight: properties.getDouble('indicator-weight') ?? 2.0,
-      indicatorPadding:
-          properties.getValue('indicator-padding') ?? EdgeInsets.zero,
+      indicatorPadding: properties.getValue('indicator-padding'),
       indicator: properties.getValue('indicator'),
       indicatorSize: properties.getValue('indicator-size'),
       dividerColor: properties.getColor('divider-color'),
@@ -40,13 +38,19 @@ Eval<Ir> _createTabBar(WidgetProperties properties) {
       labelPadding: properties.getValue('label-padding'),
       unselectedLabelColor: properties.getColor('unselected-label-color'),
       unselectedLabelStyle: properties.getValue('unselected-label-style'),
-      dragStartBehavior:
-          properties.getValue('drag-start-behavior') ?? DragStartBehavior.start,
+      dragStartBehavior: properties.getValue('drag-start-behavior'),
       overlayColor: properties.getValue('overlay-color'),
       mouseCursor: properties.getValue('mouse-cursor'),
       enableFeedback: properties.getBool('enable-feedback'),
       onTap: properties.getValue('on-tap'),
+      onHover: properties.getValue('on-hover'),
+      onFocusChange: properties.getValue('on-focus-change'),
       physics: properties.getValue('physics'),
+      splashFactory: properties.getValue('splash-factory'),
+      splashBorderRadius: properties.getValue('splash-border-radius'),
+      tabAlignment: properties.getValue('tab-alignment'),
+      textScaler: properties.getValue('text-scaler'),
+      indicatorAnimation: properties.getValue('indicator-animation'),
     );
     return IrNativeValue(Value(tabBarWidget));
   });
