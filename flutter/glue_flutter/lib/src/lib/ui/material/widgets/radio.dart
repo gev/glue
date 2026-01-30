@@ -19,11 +19,12 @@ Eval<Ir> radioImpl(Ir props) => switch (props) {
 Eval<Ir> _createRadio(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final radioWidget = Radio(
+      key: properties.key,
       value: properties.getValue('value'),
       groupValue: properties.getValue('group-value'),
-      onChanged: properties.getValue('on-changed') as ValueChanged<dynamic>?,
+      onChanged: properties.getValue('on-changed'),
       mouseCursor: properties.getValue('mouse-cursor'),
-      toggleable: properties.getBool('toggleable') ?? false,
+      toggleable: properties.getBool('toggleable'),
       activeColor: properties.getColor('active-color'),
       fillColor: properties.getValue('fill-color'),
       focusColor: properties.getColor('focus-color'),
@@ -33,7 +34,12 @@ Eval<Ir> _createRadio(WidgetProperties properties) {
       materialTapTargetSize: properties.getValue('material-tap-target-size'),
       visualDensity: properties.getValue('visual-density'),
       focusNode: properties.getValue('focus-node'),
-      autofocus: properties.getBool('autofocus') ?? false,
+      autofocus: properties.getBool('autofocus'),
+      enabled: properties.getBool('enabled'),
+      groupRegistry: properties.getValue('group-registry'),
+      backgroundColor: properties.getValue('background-color'),
+      side: properties.getValue('side'),
+      innerRadius: properties.getValue('inner-radius'),
     );
     return IrNativeValue(Value(radioWidget));
   });

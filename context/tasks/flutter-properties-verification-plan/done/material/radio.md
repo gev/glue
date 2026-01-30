@@ -29,24 +29,26 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | value | T | getValue | value |
-| [ ] | groupValue | T? | getValue | group-value |
-| [ ] | onChanged | ValueChanged<T?>? | getValue | on-changed |
-| [ ] | mouseCursor | MouseCursor? | getValue | mouse-cursor |
-| [ ] | toggleable | bool | getBool | toggleable |
-| [ ] | activeColor | Color? | getColor | active-color |
-| [ ] | fillColor | WidgetStateProperty<Color?>? | getValue | fill-color |
-| [ ] | focusColor | Color? | getColor | focus-color |
-| [ ] | hoverColor | Color? | getColor | hover-color |
-| [ ] | overlayColor | WidgetStateProperty<Color?>? | getValue | overlay-color |
-| [ ] | splashRadius | double? | getDouble | splash-radius |
-| [ ] | materialTapTargetSize | MaterialTapTargetSize? | getValue | material-tap-target-size |
-| [ ] | visualDensity | VisualDensity? | getValue | visual-density |
-| [ ] | focusNode | FocusNode? | getValue | focus-node |
-| [ ] | autofocus | bool | getBool | autofocus |
-| [ ] | enabled | bool? | getBool | enabled |
-| [ ] | groupRegistry | RadioGroupRegistry<T>? | getValue | group-registry |
-| [ ] | backgroundColor | WidgetStateProperty<Color?>? | getValue | background-color |
-| [ ] | side | BorderSide? | getValue | side |
-| [ ] | innerRadius | WidgetStateProperty<double?>? | getValue | inner-radius |
+| [x] | key | Key? | properties.key | - |
+| [x] | value | T | getValue | value |
+| [x] | groupValue | T? | getValue | group-value |
+| [x] | onChanged | ValueChanged<T?>? | getValue | on-changed |
+| [x] | mouseCursor | MouseCursor? | getValue | mouse-cursor |
+| [x] | toggleable | bool | getBool | toggleable |
+| [x] | activeColor | Color? | getColor | active-color |
+| [x] | fillColor | WidgetStateProperty<Color?>? | getValue | fill-color |
+| [x] | focusColor | Color? | getColor | focus-color |
+| [x] | hoverColor | Color? | getColor | hover-color |
+| [x] | overlayColor | WidgetStateProperty<Color?>? | getValue | overlay-color |
+| [x] | splashRadius | double? | getDouble | splash-radius |
+| [x] | materialTapTargetSize | MaterialTapTargetSize? | getValue | material-tap-target-size |
+| [x] | visualDensity | VisualDensity? | getValue | visual-density |
+| [x] | focusNode | FocusNode? | getValue | focus-node |
+| [x] | autofocus | bool | getBool | autofocus |
+| [x] | enabled | bool? | getBool | enabled |
+| [x] | groupRegistry | RadioGroupRegistry<T>? | getValue | group-registry |
+| [x] | backgroundColor | WidgetStateProperty<Color?>? | getValue | background-color |
+| [x] | side | BorderSide? | getValue | side |
+| [x] | innerRadius | WidgetStateProperty<double?>? | getValue | inner-radius |
+
+# Radio widget verification completed [x]
