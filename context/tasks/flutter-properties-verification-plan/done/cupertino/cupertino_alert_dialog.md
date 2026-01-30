@@ -29,11 +29,11 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | title | Widget? | getWidget | title |
-| [ ] | content | Widget? | getWidget | content |
-| [ ] | actions | List<Widget> | getWidgets | actions |
-| [ ] | scrollController | ScrollController? | getValue | scroll-controller |
-| [ ] | actionScrollController | ScrollController? | getValue | action-scroll-controller |
-| [ ] | insetAnimationDuration | Duration | getValue | inset-animation-duration |
-| [ ] | insetAnimationCurve | Curve | getValue | inset-animation-curve |
+| [x] | key | Key? | properties.key | - |
+| [x] | title | Widget? | getWidget | title |
+| [x] | content | Widget? | getWidget | content |
+| [x] | actions | List<Widget> | getWidgets | actions |
+| [x] | scrollController | ScrollController? | getValue | scroll-controller |
+| [x] | actionScrollController | ScrollController? | getValue | action-scroll-controller |
+| [x] | insetAnimationDuration | Duration | getValue | inset-animation-duration |
+| [x] | insetAnimationCurve | Curve | getValue | inset-animation-curve |

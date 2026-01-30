@@ -19,21 +19,14 @@ Eval<Ir> cupertinoAlertDialogImpl(Ir props) => switch (props) {
 /// Create CupertinoAlertDialog widget from properties object
 Eval<Ir> _createCupertinoAlertDialog(WidgetProperties properties) {
   final alertDialogWidget = CupertinoAlertDialog(
-    title: properties.getWidget('alert-dialog-title'),
-    content: properties.getWidget('alert-dialog-content'),
-    actions: properties.getWidgets('alert-dialog-actions') ?? [],
-    scrollController: properties.getValue(
-      'cupertino-alert-dialog-scroll-controller',
-    ),
-    actionScrollController: properties.getValue(
-      'cupertino-alert-dialog-action-scroll-controller',
-    ),
-    insetAnimationDuration: properties.getValue(
-      'cupertino-alert-dialog-inset-animation-duration',
-    ),
-    insetAnimationCurve: properties.getValue(
-      'cupertino-alert-dialog-inset-animation-curve',
-    ),
+    key: properties.key,
+    title: properties.getWidget('title'),
+    content: properties.getWidget('content'),
+    actions: properties.getWidgets('actions') ?? [],
+    scrollController: properties.getValue('scroll-controller'),
+    actionScrollController: properties.getValue('action-scroll-controller'),
+    insetAnimationDuration: properties.getValue('inset-animation-duration'),
+    insetAnimationCurve: properties.getValue('inset-animation-curve'),
   );
   return Eval.pure(IrNativeValue(Value(alertDialogWidget)));
 }
