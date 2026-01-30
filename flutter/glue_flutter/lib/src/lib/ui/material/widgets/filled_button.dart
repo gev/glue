@@ -26,7 +26,7 @@ Eval<Ir> _createFilledButton(WidgetProperties properties) {
       onLongPress: properties.getVoidCallback('on-long-press', runtime),
       onHover: properties.getValue('on-hover'),
       onFocusChange: properties.getValue('on-focus-change'),
-      style: properties.getValue('button-style'),
+      style: properties.getValue('style'),
       focusNode: properties.getValue('focus-node'),
       autofocus: properties.getBool('autofocus') ?? false,
       clipBehavior: properties.getValue('clip-behavior') ?? Clip.none,

@@ -29,13 +29,16 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | onPressed | VoidCallback? | getVoidCallback | on-pressed |
-| [ ] | onLongPress | VoidCallback? | getVoidCallback | on-long-press |
-| [ ] | onHover | ValueChanged<bool>? | getValue | on-hover |
-| [ ] | onFocusChange | ValueChanged<bool>? | getValue | on-focus-change |
-| [ ] | style | ButtonStyle? | getValue | style |
-| [ ] | focusNode | FocusNode? | getValue | focus-node |
-| [ ] | autofocus | bool | getBool | autofocus |
-| [ ] | clipBehavior | Clip | getValue | clip-behavior |
-| [ ] | child | Widget | properties.child | - |
+| [x] | key | Key? | properties.key | - |
+| [x] | onPressed | VoidCallback? | getVoidCallback | on-pressed |
+| [x] | onLongPress | VoidCallback? | getVoidCallback | on-long-press |
+| [x] | onHover | ValueChanged<bool>? | getValue | on-hover |
+| [x] | onFocusChange | ValueChanged<bool>? | getValue | on-focus-change |
+| [x] | style | ButtonStyle? | getValue | style |
+| [x] | focusNode | FocusNode? | getValue | focus-node |
+| [x] | autofocus | bool | getBool | autofocus |
+| [x] | clipBehavior | Clip | getValue | clip-behavior |
+| [x] | child | Widget | properties.child | - |
+
+### Widget Status
+[x] Verified and implemented correctly
