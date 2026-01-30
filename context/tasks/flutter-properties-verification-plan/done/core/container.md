@@ -29,17 +29,17 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | alignment | AlignmentGeometry? | getValue | alignment |
-| [ ] | padding | EdgeInsetsGeometry? | getValue | padding |
-| [ ] | color | Color? | getColor | color |
-| [ ] | decoration | Decoration? | getValue | decoration |
-| [ ] | foregroundDecoration | Decoration? | getValue | foreground-decoration |
-| [ ] | width | double? | properties.width | - |
-| [ ] | height | double? | properties.height | - |
-| [ ] | constraints | BoxConstraints? | getValue | constraints |
-| [ ] | margin | EdgeInsetsGeometry? | getValue | margin |
-| [ ] | transform | Matrix4? | getValue | transform |
-| [ ] | transformAlignment | AlignmentGeometry? | getValue | transform-alignment |
-| [ ] | child | Widget? | properties.child | - |
-| [ ] | clipBehavior | Clip | getValue | clip-behavior |
+| [x] | key | Key? | properties.key | - |
+| [x] | alignment | AlignmentGeometry? | getValue | alignment |
+| [x] | padding | EdgeInsetsGeometry? | getValue | padding |
+| [x] | color | Color? | getColor | color |
+| [x] | decoration | Decoration? | getValue | decoration |
+| [x] | foregroundDecoration | Decoration? | getValue | foreground-decoration |
+| [x] | width | double? | properties.width | - |
+| [x] | height | double? | properties.height | - |
+| [x] | constraints | BoxConstraints? | getValue | constraints |
+| [x] | margin | EdgeInsetsGeometry? | getValue | margin |
+| [x] | transform | Matrix4? | getValue | transform |
+| [x] | transformAlignment | AlignmentGeometry? | getValue | transform-alignment |
+| [x] | child | Widget? | properties.child | - |
+| [x] | clipBehavior | Clip | getValue | clip-behavior |
