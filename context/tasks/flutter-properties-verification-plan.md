@@ -1,22 +1,4 @@
-## Prerequisites: Read Flutter Widgets Documentation
 
-Review the local Flutter widgets documentation:
-
-- [Basic Widgets](../docs/flutter_widgets/basic_widgets.md)
-- [Layout Widgets](../docs/flutter_widgets/layout_widgets.md)
-- [Cupertino Widgets](../docs/flutter_widgets/cupertino_widgets.md)
-- [Input Widgets](../docs/flutter_widgets/input_widgets.md)
-- [Asset Widgets](../docs/flutter_widgets/asset_widgets.md)
-- [Themes](../docs/flutter_widgets/themes.md)
-- Material Widgets:
-  - [Actions](../docs/flutter_widgets/material/actions.md)
-  - [Communication](../docs/flutter_widgets/material/communication.md)
-  - [Containment](../docs/flutter_widgets/material/containment.md)
-  - [Navigation](../docs/flutter_widgets/material/navigation.md)
-  - [Selection](../docs/flutter_widgets/material/selection.md)
-  - [Text Inputs](../docs/flutter_widgets/material/text_inputs.md)
-
-### IMPORTANT!!! This document should contains every widget and every widget property presence in the documentation above!
 
 ### Property Access Methods by Type
 - **Direct Property Access**: `key`, `child`, `children`, `width`, `height`, `top`, `bottom`, `left`, `right`, `start`, `end`, `horizontal`, `vertical`
