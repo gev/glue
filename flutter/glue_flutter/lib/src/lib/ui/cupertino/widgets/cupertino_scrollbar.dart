@@ -21,14 +21,13 @@ Eval<Ir> _createCupertinoScrollbar(WidgetProperties properties) {
   final scrollbarWidget = CupertinoScrollbar(
     key: properties.key,
     controller: properties.getValue('controller'),
-    thumbVisibility: properties.getBool('thumb-visibility') ?? false,
-    thickness: properties.getDouble('thickness') ?? 3.0,
-    thicknessWhileDragging:
-        properties.getDouble('thickness-while-dragging') ?? 8.0,
+    thumbVisibility: properties.getBool('thumb-visibility'),
+    thickness: properties.getDouble('thickness'),
+    thicknessWhileDragging: properties.getDouble('thickness-while-dragging'),
     radius: properties.getValue('radius'),
     radiusWhileDragging: properties.getValue('radius-while-dragging'),
     notificationPredicate: properties.getValue('notification-predicate'),
-    child: properties.child ?? const Text('No child provided'),
+    child: properties.child,
   );
   return Eval.pure(IrNativeValue(Value(scrollbarWidget)));
 }
