@@ -27,11 +27,13 @@
   }
   ```
 
+### Widget Icon: DONE
+
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | icon | IconData | getValue | icon |
-| [ ] | size | double? | getDouble | size |
-| [ ] | color | Color? | getColor | color |
-| [ ] | semanticLabel | String? | getString | semantic-label |
-| [ ] | textDirection | TextDirection? | getValue | text-direction |
+| [x] | key | Key? | properties.key | - |
+| [x] | icon | IconData | getValue | icon |
+| [x] | size | double? | getDouble | size |
+| [x] | color | Color? | getColor | color |
+| [x] | semanticLabel | String? | getString | semantic-label |
+| [x] | textDirection | TextDirection? | getValue | text-direction |
