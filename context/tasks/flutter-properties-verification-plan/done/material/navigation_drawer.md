@@ -29,16 +29,16 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | children | List<Widget> | properties.children | - |
-| [ ] | header | Widget? | getWidget | header |
-| [ ] | footer | Widget? | getWidget | footer |
-| [ ] | backgroundColor | Color? | getColor | background-color |
-| [ ] | shadowColor | Color? | getColor | shadow-color |
-| [ ] | surfaceTintColor | Color? | getColor | surface-tint-color |
-| [ ] | elevation | double? | getDouble | elevation |
-| [ ] | indicatorColor | Color? | getColor | indicator-color |
-| [ ] | indicatorShape | ShapeBorder? | getValue | indicator-shape |
-| [ ] | onDestinationSelected | ValueChanged<int>? | getValue | on-destination-selected |
-| [ ] | selectedIndex | int? | getInt | selected-index |
-| [ ] | tilePadding | EdgeInsetsGeometry | getValue | tile-padding |
+| [x] | key | Key? | properties.key | - |
+| [x] | children | List<Widget> | properties.children | - |
+| [x] | header | Widget? | getWidget | header |
+| [x] | footer | Widget? | getWidget | footer |
+| [x] | backgroundColor | Color? | getColor | background-color |
+| [x] | shadowColor | Color? | getColor | shadow-color |
+| [x] | surfaceTintColor | Color? | getColor | surface-tint-color |
+| [x] | elevation | double? | getDouble | elevation |
+| [x] | indicatorColor | Color? | getColor | indicator-color |
+| [x] | indicatorShape | ShapeBorder? | getValue | indicator-shape |
+| [x] | onDestinationSelected | ValueChanged<int>? | getValue | on-destination-selected |
+| [x] | selectedIndex | int? | getInt | selected-index |
+| [x] | tilePadding | EdgeInsetsGeometry | getValue | tile-padding |

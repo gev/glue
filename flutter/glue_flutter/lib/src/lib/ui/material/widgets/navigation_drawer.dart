@@ -28,10 +28,10 @@ Eval<Ir> _createNavigationDrawer(WidgetProperties properties) {
       indicatorShape: properties.getValue('indicator-shape'),
       selectedIndex: properties.getInt('selected-index'),
       onDestinationSelected: properties.getValue('on-destination-selected'),
-      tilePadding:
-          properties.getValue('tile-padding') ??
-          const EdgeInsets.symmetric(horizontal: 12.0),
-      children: properties.getWidgets('children') ?? [],
+      tilePadding: properties.getValue('tile-padding'),
+      header: properties.getWidget('header'),
+      children: properties.children,
+      footer: properties.getWidget('footer'),
     );
     return IrNativeValue(Value(navigationDrawerWidget));
   });
