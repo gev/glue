@@ -37,7 +37,7 @@ Eval<Ir> _createTimePickerDialog(WidgetProperties properties) {
       switchToTimerEntryModeIcon: properties.getValue(
         'switch-to-timer-entry-mode-icon',
       ),
-      emptyInitialInput: properties.getValue('empty-initial-input'),
+      emptyInitialInput: properties.getBool('empty-initial-input') ?? false,
     );
     return IrNativeValue(Value(timePickerDialogWidget));
   });

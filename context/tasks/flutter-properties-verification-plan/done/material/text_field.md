@@ -29,74 +29,74 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | groupId | Object | getValue | group-id |
-| [ ] | controller | TextEditingController? | getValue | controller |
-| [ ] | focusNode | FocusNode? | getValue | focus-node |
-| [ ] | undoController | UndoHistoryController? | getValue | undo-controller |
-| [ ] | decoration | InputDecoration? | getValue | decoration |
-| [ ] | keyboardType | TextInputType? | getValue | keyboard-type |
-| [ ] | textInputAction | TextInputAction? | getValue | text-input-action |
-| [ ] | textCapitalization | TextCapitalization | getValue | text-capitalization |
-| [ ] | style | TextStyle? | getValue | style |
-| [ ] | strutStyle | StrutStyle? | getValue | strut-style |
-| [ ] | textAlign | TextAlign | getValue | text-align |
-| [ ] | textAlignVertical | TextAlignVertical? | getValue | text-align-vertical |
-| [ ] | textDirection | TextDirection? | getValue | text-direction |
-| [ ] | readOnly | bool | getBool | read-only |
-| [ ] | toolbarOptions | ToolbarOptions? | getValue | toolbar-options |
-| [ ] | showCursor | bool? | getBool | show-cursor |
-| [ ] | autofocus | bool | getBool | autofocus |
-| [ ] | statesController | MaterialStatesController? | getValue | states-controller |
-| [ ] | obscuringCharacter | String | getString | obscuring-character |
-| [ ] | obscureText | bool | getBool | obscure-text |
-| [ ] | autocorrect | bool? | getBool | autocorrect |
-| [ ] | smartDashesType | SmartDashesType? | getValue | smart-dashes-type |
-| [ ] | smartQuotesType | SmartQuotesType? | getValue | smart-quotes-type |
-| [ ] | enableSuggestions | bool | getBool | enable-suggestions |
-| [ ] | maxLines | int? | getInt | max-lines |
-| [ ] | minLines | int? | getInt | min-lines |
-| [ ] | expands | bool | getBool | expands |
-| [ ] | maxLength | int? | getInt | max-length |
-| [ ] | maxLengthEnforcement | MaxLengthEnforcement? | getValue | max-length-enforcement |
-| [ ] | onChanged | ValueChanged<String>? | getValue | on-changed |
-| [ ] | onEditingComplete | VoidCallback? | getVoidCallback | on-editing-complete |
-| [ ] | onSubmitted | ValueChanged<String>? | getValue | on-submitted |
-| [ ] | onAppPrivateCommand | AppPrivateCommandCallback? | getVoidCallback | on-app-private-command |
-| [ ] | inputFormatters | List<TextInputFormatter>? | getValue | input-formatters |
-| [ ] | enabled | bool? | getBool | enabled |
-| [ ] | ignorePointers | bool? | getBool | ignore-pointers |
-| [ ] | cursorWidth | double | getDouble | cursor-width |
-| [ ] | cursorHeight | double? | getDouble | cursor-height |
-| [ ] | cursorRadius | Radius? | getValue | cursor-radius |
-| [ ] | cursorOpacityAnimates | bool? | getBool | cursor-opacity-animates |
-| [ ] | cursorColor | Color? | getColor | cursor-color |
-| [ ] | cursorErrorColor | Color? | getColor | cursor-error-color |
-| [ ] | selectionHeightStyle | BoxHeightStyle? | getValue | selection-height-style |
-| [ ] | selectionWidthStyle | BoxWidthStyle? | getValue | selection-width-style |
-| [ ] | keyboardAppearance | Brightness? | getValue | keyboard-appearance |
-| [ ] | scrollPadding | EdgeInsets | getValue | scroll-padding |
-| [ ] | dragStartBehavior | DragStartBehavior | getValue | drag-start-behavior |
-| [ ] | enableInteractiveSelection | bool? | getBool | enable-interactive-selection |
-| [ ] | selectAllOnFocus | bool? | getBool | select-all-on-focus |
-| [ ] | selectionControls | TextSelectionControls? | getValue | selection-controls |
-| [ ] | onTap | GestureTapCallback? | getVoidCallback | on-tap |
-| [ ] | onTapAlwaysCalled | bool | getBool | on-tap-always-called |
-| [ ] | onTapOutside | TapRegionCallback? | getVoidCallback | on-tap-outside |
-| [ ] | onTapUpOutside | TapRegionUpCallback? | getVoidCallback | on-tap-up-outside |
-| [ ] | mouseCursor | MouseCursor? | getValue | mouse-cursor |
-| [ ] | buildCounter | InputCounterWidgetBuilder? | getValue | build-counter |
-| [ ] | scrollController | ScrollController? | getValue | scroll-controller |
-| [ ] | scrollPhysics | ScrollPhysics? | getValue | scroll-physics |
-| [ ] | autofillHints | Iterable<String>? | getValue | autofill-hints |
-| [ ] | contentInsertionConfiguration | ContentInsertionConfiguration? | getValue | content-insertion-configuration |
-| [ ] | clipBehavior | Clip | getValue | clip-behavior |
-| [ ] | restorationId | String? | getString | restoration-id |
-| [ ] | scribbleEnabled | bool | getBool | scribble-enabled |
-| [ ] | stylusHandwritingEnabled | bool | getBool | stylus-handwriting-enabled |
-| [ ] | enableIMEPersonalizedLearning | bool | getBool | enable-ime-personalized-learning |
-| [ ] | contextMenuBuilder | EditableTextContextMenuBuilder? | getValue | context-menu-builder |
-| [ ] | canRequestFocus | bool | getBool | can-request-focus |
-| [ ] | spellCheckConfiguration | SpellCheckConfiguration? | getValue | spell-check-configuration |
-| [ ] | magnifierConfiguration | TextMagnifierConfiguration? | getValue | magnifier-configuration |
-| [ ] | hintLocales | List<Locale>? | getValue | hint-locales |
+| [x] | key | Key? | properties.key | - |
+| [x] | groupId | Object | getValue | group-id |
+| [x] | controller | TextEditingController? | getValue | controller |
+| [x] | focusNode | FocusNode? | getValue | focus-node |
+| [x] | undoController | UndoHistoryController? | getValue | undo-controller |
+| [x] | decoration | InputDecoration? | getValue | decoration |
+| [x] | keyboardType | TextInputType? | getValue | keyboard-type |
+| [x] | textInputAction | TextInputAction? | getValue | text-input-action |
+| [x] | textCapitalization | TextCapitalization | getValue | text-capitalization |
+| [x] | style | TextStyle? | getValue | style |
+| [x] | strutStyle | StrutStyle? | getValue | strut-style |
+| [x] | textAlign | TextAlign | getValue | text-align |
+| [x] | textAlignVertical | TextAlignVertical? | getValue | text-align-vertical |
+| [x] | textDirection | TextDirection? | getValue | text-direction |
+| [x] | readOnly | bool | getBool | read-only |
+| [x] | toolbarOptions | ToolbarOptions? | getValue | toolbar-options |
+| [x] | showCursor | bool? | getBool | show-cursor |
+| [x] | autofocus | bool | getBool | autofocus |
+| [x] | statesController | MaterialStatesController? | getValue | states-controller |
+| [x] | obscuringCharacter | String | getString | obscuring-character |
+| [x] | obscureText | bool | getBool | obscure-text |
+| [x] | autocorrect | bool? | getBool | autocorrect |
+| [x] | smartDashesType | SmartDashesType? | getValue | smart-dashes-type |
+| [x] | smartQuotesType | SmartQuotesType? | getValue | smart-quotes-type |
+| [x] | enableSuggestions | bool | getBool | enable-suggestions |
+| [x] | maxLines | int? | getInt | max-lines |
+| [x] | minLines | int? | getInt | min-lines |
+| [x] | expands | bool | getBool | expands |
+| [x] | maxLength | int? | getInt | max-length |
+| [x] | maxLengthEnforcement | MaxLengthEnforcement? | getValue | max-length-enforcement |
+| [x] | onChanged | ValueChanged<String>? | getValue | on-changed |
+| [x] | onEditingComplete | VoidCallback? | getVoidCallback | on-editing-complete |
+| [x] | onSubmitted | ValueChanged<String>? | getValue | on-submitted |
+| [x] | onAppPrivateCommand | AppPrivateCommandCallback? | getVoidCallback | on-app-private-command |
+| [x] | inputFormatters | List<TextInputFormatter>? | getValue | input-formatters |
+| [x] | enabled | bool? | getBool | enabled |
+| [x] | ignorePointers | bool? | getBool | ignore-pointers |
+| [x] | cursorWidth | double | getDouble | cursor-width |
+| [x] | cursorHeight | double? | getDouble | cursor-height |
+| [x] | cursorRadius | Radius? | getValue | cursor-radius |
+| [x] | cursorOpacityAnimates | bool? | getBool | cursor-opacity-animates |
+| [x] | cursorColor | Color? | getColor | cursor-color |
+| [x] | cursorErrorColor | Color? | getColor | cursor-error-color |
+| [x] | selectionHeightStyle | BoxHeightStyle? | getValue | selection-height-style |
+| [x] | selectionWidthStyle | BoxWidthStyle? | getValue | selection-width-style |
+| [x] | keyboardAppearance | Brightness? | getValue | keyboard-appearance |
+| [x] | scrollPadding | EdgeInsets | getValue | scroll-padding |
+| [x] | dragStartBehavior | DragStartBehavior | getValue | drag-start-behavior |
+| [x] | enableInteractiveSelection | bool? | getBool | enable-interactive-selection |
+| [x] | selectAllOnFocus | bool? | getBool | select-all-on-focus |
+| [x] | selectionControls | TextSelectionControls? | getValue | selection-controls |
+| [x] | onTap | GestureTapCallback? | getVoidCallback | on-tap |
+| [x] | onTapAlwaysCalled | bool | getBool | on-tap-always-called |
+| [x] | onTapOutside | TapRegionCallback? | getVoidCallback | on-tap-outside |
+| [x] | onTapUpOutside | TapRegionUpCallback? | getVoidCallback | on-tap-up-outside |
+| [x] | mouseCursor | MouseCursor? | getValue | mouse-cursor |
+| [x] | buildCounter | InputCounterWidgetBuilder? | getValue | build-counter |
+| [x] | scrollController | ScrollController? | getValue | scroll-controller |
+| [x] | scrollPhysics | ScrollPhysics? | getValue | scroll-physics |
+| [x] | autofillHints | Iterable<String>? | getValue | autofill-hints |
+| [x] | contentInsertionConfiguration | ContentInsertionConfiguration? | getValue | content-insertion-configuration |
+| [x] | clipBehavior | Clip | getValue | clip-behavior |
+| [x] | restorationId | String? | getString | restoration-id |
+| [x] | scribbleEnabled | bool | getBool | scribble-enabled |
+| [x] | stylusHandwritingEnabled | bool | getBool | stylus-handwriting-enabled |
+| [x] | enableIMEPersonalizedLearning | bool | getBool | enable-ime-personalized-learning |
+| [x] | contextMenuBuilder | EditableTextContextMenuBuilder? | getValue | context-menu-builder |
+| [x] | canRequestFocus | bool | getBool | can-request-focus |
+| [x] | spellCheckConfiguration | SpellCheckConfiguration? | getValue | spell-check-configuration |
+| [x] | magnifierConfiguration | TextMagnifierConfiguration? | getValue | magnifier-configuration |
+| [x] | hintLocales | List<Locale>? | getValue | hint-locales |
