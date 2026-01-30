@@ -29,19 +29,19 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | scrollDirection | Axis | getValue | scroll-direction |
-| [ ] | reverse | bool | getBool | reverse |
-| [ ] | controller | ScrollController? | getValue | controller |
-| [ ] | primary | bool? | getBool | primary |
-| [ ] | physics | ScrollPhysics? | getValue | physics |
-| [ ] | shrinkWrap | bool | getBool | shrink-wrap |
-| [ ] | center | Key? | getKey | center |
-| [ ] | anchor | double | getDouble | anchor |
-| [ ] | cacheExtent | double? | getDouble | cache-extent |
-| [ ] | slivers | List<Widget> | getWidgets | slivers |
-| [ ] | semanticChildCount | int? | getInt | semantic-child-count |
-| [ ] | dragStartBehavior | DragStartBehavior | getValue | drag-start-behavior |
-| [ ] | keyboardDismissBehavior | ScrollViewKeyboardDismissBehavior | getValue | keyboard-dismiss-behavior |
-| [ ] | restorationId | String? | getString | restoration-id |
-| [ ] | clipBehavior | Clip | getValue | clip-behavior |
+| [x] | key | Key? | properties.key | - |
+| [x] | scrollDirection | Axis | getValue | scroll-direction |
+| [x] | reverse | bool | getBool | reverse |
+| [x] | controller | ScrollController? | getValue | controller |
+| [x] | primary | bool? | getBool | primary |
+| [x] | physics | ScrollPhysics? | getValue | physics |
+| [x] | shrinkWrap | bool | getBool | shrink-wrap |
+| [x] | center | Key? | getKey | center |
+| [x] | anchor | double | getDouble | anchor |
+| [x] | cacheExtent | double? | getDouble | cache-extent |
+| [x] | slivers | List<Widget> | getWidgets | slivers |
+| [x] | semanticChildCount | int? | getInt | semantic-child-count |
+| [x] | dragStartBehavior | DragStartBehavior | getValue | drag-start-behavior |
+| [x] | keyboardDismissBehavior | ScrollViewKeyboardDismissBehavior | getValue | keyboard-dismiss-behavior |
+| [x] | restorationId | String? | getString | restoration-id |
+| [x] | clipBehavior | Clip | getValue | clip-behavior |
