@@ -29,26 +29,26 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | backgroundColor | Color? | getColor | background-color |
-| [ ] | extended | bool | getBool | extended |
-| [ ] | leading | Widget? | getWidget | leading |
-| [ ] | trailing | Widget? | getWidget | trailing |
-| [ ] | destinations | List<NavigationRailDestination> | getValue | destinations |
-| [ ] | selectedIndex | int? | getInt | selected-index |
-| [ ] | onDestinationSelected | ValueChanged<int>? | getValue | on-destination-selected |
-| [ ] | elevation | double? | getDouble | elevation |
-| [ ] | groupAlignment | double? | getDouble | group-alignment |
-| [ ] | labelType | NavigationRailLabelType? | getValue | label-type |
-| [ ] | unselectedLabelTextStyle | TextStyle? | getValue | unselected-label-text-style |
-| [ ] | selectedLabelTextStyle | TextStyle? | getValue | selected-label-text-style |
-| [ ] | unselectedIconTheme | IconThemeData? | getValue | unselected-icon-theme |
-| [ ] | selectedIconTheme | IconThemeData? | getValue | selected-icon-theme |
-| [ ] | minWidth | double? | getDouble | min-width |
-| [ ] | minExtendedWidth | double? | getDouble | min-extended-width |
-| [ ] | useIndicator | bool? | getBool | use-indicator |
-| [ ] | indicatorColor | Color? | getColor | indicator-color |
-| [ ] | indicatorShape | ShapeBorder? | getValue | indicator-shape |
-| [ ] | leadingAtTop | bool | getBool | leading-at-top |
-| [ ] | trailingAtBottom | bool | getBool | trailing-at-bottom |
-| [ ] | scrollable | bool | getBool | scrollable |
+| [x] | key | Key? | properties.key | - |
+| [x] | backgroundColor | Color? | getColor | background-color |
+| [x] | extended | bool | getBool | extended |
+| [x] | leading | Widget? | getWidget | leading |
+| [x] | trailing | Widget? | getWidget | trailing |
+| [x] | destinations | List<NavigationRailDestination> | getValue | destinations |
+| [x] | selectedIndex | int? | getInt | selected-index |
+| [x] | onDestinationSelected | ValueChanged<int>? | getValue | on-destination-selected |
+| [x] | elevation | double? | getDouble | elevation |
+| [x] | groupAlignment | double? | getDouble | group-alignment |
+| [x] | labelType | NavigationRailLabelType? | getValue | label-type |
+| [x] | unselectedLabelTextStyle | TextStyle? | getValue | unselected-label-text-style |
+| [x] | selectedLabelTextStyle | TextStyle? | getValue | selected-label-text-style |
+| [x] | unselectedIconTheme | IconThemeData? | getValue | unselected-icon-theme |
+| [x] | selectedIconTheme | IconThemeData? | getValue | selected-icon-theme |
+| [x] | minWidth | double? | getDouble | min-width |
+| [x] | minExtendedWidth | double? | getDouble | min-extended-width |
+| [x] | useIndicator | bool? | getBool | use-indicator |
+| [x] | indicatorColor | Color? | getColor | indicator-color |
+| [x] | indicatorShape | ShapeBorder? | getValue | indicator-shape |
+| [x] | leadingAtTop | bool | getBool | leading-at-top |
+| [x] | trailingAtBottom | bool | getBool | trailing-at-bottom |
+| [x] | scrollable | bool | getBool | scrollable |

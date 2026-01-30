@@ -41,6 +41,9 @@ Eval<Ir> _createNavigationRail(WidgetProperties properties) {
       useIndicator: properties.getBool('use-indicator'),
       indicatorColor: properties.getColor('indicator-color'),
       indicatorShape: properties.getValue('indicator-shape'),
+      leadingAtTop: properties.getBool('leading-at-top') ?? false,
+      trailingAtBottom: properties.getBool('trailing-at-bottom') ?? false,
+      scrollable: properties.getBool('scrollable') ?? false,
     );
     return IrNativeValue(Value(navigationRailWidget));
   });
