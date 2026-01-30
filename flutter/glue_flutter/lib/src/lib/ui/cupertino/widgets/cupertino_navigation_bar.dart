@@ -19,34 +19,22 @@ Eval<Ir> cupertinoNavigationBarImpl(Ir props) => switch (props) {
 /// Create CupertinoNavigationBar widget from properties object
 Eval<Ir> _createCupertinoNavigationBar(WidgetProperties properties) {
   final navigationBarWidget = CupertinoNavigationBar(
-    leading: properties.getWidget('cupertino-navigation-bar-leading'),
+    key: properties.key,
+    leading: properties.getWidget('leading'),
     automaticallyImplyLeading:
-        properties.getBool(
-          'cupertino-navigation-bar-automatically-imply-leading',
-        ) ??
-        true,
+        properties.getBool('automatically-imply-leading') ?? true,
     automaticallyImplyMiddle:
-        properties.getBool(
-          'cupertino-navigation-bar-automatically-imply-middle',
-        ) ??
-        true,
-    previousPageTitle: properties.getString(
-      'cupertino-navigation-bar-previous-page-title',
-    ),
-    middle: properties.getWidget('cupertino-navigation-bar-middle'),
-    trailing: properties.getWidget('cupertino-navigation-bar-trailing'),
-    border: properties.getValue('cupertino-navigation-bar-border'),
-    backgroundColor: properties.getValue(
-      'cupertino-navigation-bar-background-color',
-    ),
-    brightness: properties.getValue('cupertino-navigation-bar-brightness'),
-    padding: properties.getValue('cupertino-navigation-bar-padding'),
+        properties.getBool('automatically-imply-middle') ?? true,
+    previousPageTitle: properties.getString('previous-page-title'),
+    middle: properties.getWidget('middle'),
+    trailing: properties.getWidget('trailing'),
+    border: properties.getValue('border'),
+    backgroundColor: properties.getColor('background-color'),
+    brightness: properties.getValue('brightness'),
+    padding: properties.getValue('padding'),
     transitionBetweenRoutes:
-        properties.getBool(
-          'cupertino-navigation-bar-transition-between-routes',
-        ) ??
-        true,
-    heroTag: properties.getValue('cupertino-navigation-bar-hero-tag'),
+        properties.getBool('transition-between-routes') ?? true,
+    heroTag: properties.getValue('hero-tag'),
   );
   return Eval.pure(IrNativeValue(Value(navigationBarWidget)));
 }

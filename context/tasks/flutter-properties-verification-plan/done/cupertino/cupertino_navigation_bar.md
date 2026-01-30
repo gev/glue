@@ -29,16 +29,19 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | leading | Widget? | getWidget | leading |
-| [ ] | automaticallyImplyLeading | bool | getBool | automatically-imply-leading |
-| [ ] | automaticallyImplyMiddle | bool | getBool | automatically-imply-middle |
-| [ ] | previousPageTitle | String? | getString | previous-page-title |
-| [ ] | middle | Widget? | getWidget | middle |
-| [ ] | trailing | Widget? | getWidget | trailing |
-| [ ] | border | Border? | getValue | border |
-| [ ] | backgroundColor | Color? | getColor | background-color |
-| [ ] | brightness | Brightness? | getValue | brightness |
-| [ ] | padding | EdgeInsetsDirectional? | getValue | padding |
-| [ ] | transitionBetweenRoutes | bool | getBool | transition-between-routes |
-| [ ] | heroTag | Object | getValue | hero-tag |
+| [x] | key | Key? | properties.key | - |
+| [x] | leading | Widget? | getWidget | leading |
+| [x] | automaticallyImplyLeading | bool | getBool | automatically-imply-leading |
+| [x] | automaticallyImplyMiddle | bool | getBool | automatically-imply-middle |
+| [x] | previousPageTitle | String? | getString | previous-page-title |
+| [x] | middle | Widget? | getWidget | middle |
+| [x] | trailing | Widget? | getWidget | trailing |
+| [x] | border | Border? | getValue | border |
+| [x] | backgroundColor | Color? | getColor | background-color |
+| [x] | brightness | Brightness? | getValue | brightness |
+| [x] | padding | EdgeInsetsDirectional? | getValue | padding |
+| [x] | transitionBetweenRoutes | bool | getBool | transition-between-routes |
+| [x] | heroTag | Object | getValue | hero-tag |
+
+#### Widget Implementation Status
+- [x] CupertinoNavigationBar widget completed
