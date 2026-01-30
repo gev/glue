@@ -1,3 +1,5 @@
+- [x] Center
+
 ### Property Access Methods by Type
 - **Direct Property Access**: `key`, `child`, `children`, `width`, `height`, `top`, `bottom`, `left`, `right`, `start`, `end`, `horizontal`, `vertical`
   - Access as: `properties.key`, `properties.child`, `properties.children`, etc.
@@ -29,5 +31,5 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | child | Widget? | properties.child | - |
+| [x] | key | Key? | properties.key | - |
+| [x] | child | Widget? | properties.child | - |
