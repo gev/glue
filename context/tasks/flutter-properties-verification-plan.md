@@ -202,7 +202,7 @@ Review the local Flutter widgets documentation:
 |------------|----------------------|--------------|------------------------------------------|---------------|
 | [ ] | key | Key? | properties.key | - |
 | [ ] | appBar | PreferredSizeWidget? | getValue | app-bar |
-| [ ] | body | Widget? | getWidget | body |
+| [ ] | body | Widgeperties ad t? | getWidget | body |
 | [ ] | floatingActionButton | Widget? | getWidget | floating-action-button |
 | [ ] | floatingActionButtonLocation | FloatingActionButtonLocation? | getValue | floating-action-button-location |
 | [ ] | floatingActionButtonAnimator | FloatingActionButtonAnimator? | getValue | floating-action-button-animator |
