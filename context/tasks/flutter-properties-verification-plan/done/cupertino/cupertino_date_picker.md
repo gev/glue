@@ -29,17 +29,19 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | mode | CupertinoDatePickerMode | getValue | mode |
-| [ ] | onDateTimeChanged | ValueChanged<DateTime> | getValue | on-date-time-changed |
-| [ ] | initialDateTime | DateTime? | getValue | initial-date-time |
-| [ ] | minimumDate | DateTime? | getValue | minimum-date |
-| [ ] | maximumDate | DateTime? | getValue | maximum-date |
-| [ ] | minimumYear | int | getInt | minimum-year |
-| [ ] | maximumYear | int? | getInt | maximum-year |
-| [ ] | minuteInterval | int | getInt | minute-interval |
-| [ ] | use24hFormat | bool | getBool | use24h-format |
-| [ ] | dateOrder | DatePickerDateOrder? | getValue | date-order |
-| [ ] | backgroundColor | Color? | getColor | background-color |
-| [ ] | showDayOfWeek | bool | getBool | show-day-of-week |
-| [ ] | itemExtent | double | getDouble | item-extent |
+| [x] | key | Key? | properties.key | - |
+| [x] | mode | CupertinoDatePickerMode | getValue | mode |
+| [x] | onDateTimeChanged | ValueChanged<DateTime> | getValue | on-date-time-changed |
+| [x] | initialDateTime | DateTime? | getValue | initial-date-time |
+| [x] | minimumDate | DateTime? | getValue | minimum-date |
+| [x] | maximumDate | DateTime? | getValue | maximum-date |
+| [x] | minimumYear | int | getInt | minimum-year |
+| [x] | maximumYear | int? | getInt | maximum-year |
+| [x] | minuteInterval | int | getInt | minute-interval |
+| [x] | use24hFormat | bool | getBool | use24h-format |
+| [x] | dateOrder | DatePickerDateOrder? | getValue | date-order |
+| [x] | backgroundColor | Color? | getColor | background-color |
+| [x] | showDayOfWeek | bool | getBool | show-day-of-week |
+| [x] | itemExtent | double | getDouble | item-extent |
+
+### Widget: Done
