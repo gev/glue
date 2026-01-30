@@ -29,13 +29,13 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | backgroundColor | Color? | getColor | background-color |
-| [ ] | elevation | double? | getDouble | elevation |
-| [ ] | shadowColor | Color? | getColor | shadow-color |
-| [ ] | surfaceTintColor | Color? | getColor | surface-tint-color |
-| [ ] | shape | ShapeBorder? | getValue | shape |
-| [ ] | width | double? | getDouble | width |
-| [ ] | clipBehavior | Clip | getValue | clip-behavior |
-| [ ] | semanticLabel | String? | getString | semantic-label |
-| [ ] | child | Widget? | properties.child | - |
+| [x] | key | Key? | properties.key | - |
+| [x] | backgroundColor | Color? | getColor | background-color |
+| [x] | elevation | double? | getDouble | elevation |
+| [x] | shadowColor | Color? | getColor | shadow-color |
+| [x] | surfaceTintColor | Color? | getColor | surface-tint-color |
+| [x] | shape | ShapeBorder? | getValue | shape |
+| [x] | width | double? | getDouble | width |
+| [x] | clipBehavior | Clip | getValue | clip-behavior |
+| [x] | semanticLabel | String? | getString | semantic-label |
+| [x] | child | Widget? | properties.child | - |
