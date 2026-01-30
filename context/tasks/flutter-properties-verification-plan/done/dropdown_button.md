@@ -29,30 +29,30 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | items | List<DropdownMenuItem>? | getValue | items |
-| [ ] | selectedItemBuilder | DropdownButtonBuilder? | getValue | selected-item-builder |
-| [ ] | value | T? | getValue | value |
-| [ ] | hint | Widget? | getWidget | hint |
-| [ ] | disabledHint | Widget? | getWidget | disabled-hint |
-| [ ] | onChanged | ValueChanged? | getValue | on-changed |
-| [ ] | onTap | VoidCallback? | getVoidCallback | on-tap |
-| [ ] | elevation | int | getInt | elevation |
-| [ ] | style | TextStyle? | getValue | style |
-| [ ] | underline | Widget? | getWidget | underline |
-| [ ] | icon | Widget? | getWidget | icon |
-| [ ] | iconDisabledColor | Color? | getColor | icon-disabled-color |
-| [ ] | iconEnabledColor | Color? | getColor | icon-enabled-color |
-| [ ] | iconSize | double | getDouble | icon-size |
-| [ ] | isDense | bool | getBool | is-dense |
-| [ ] | isExpanded | bool | getBool | is-expanded |
-| [ ] | itemHeight | double? | getDouble | item-height |
-| [ ] | focusColor | Color? | getColor | focus-color |
-| [ ] | focusNode | FocusNode? | getValue | focus-node |
-| [ ] | autofocus | bool | getBool | autofocus |
-| [ ] | dropdownColor | Color? | getColor | color |
-| [ ] | menuMaxHeight | double? | getDouble | menu-max-height |
-| [ ] | enableFeedback | bool | getBool | enable-feedback |
-| [ ] | alignment | AlignmentGeometry | getValue | alignment |
-| [ ] | borderRadius | BorderRadius? | getValue | border-radius |
-| [ ] | padding | EdgeInsetsGeometry? | getValue | padding |
+| [x] | key | Key? | properties.key | - |
+| [x] | items | List<DropdownMenuItem>? | getValue | items |
+| [x] | selectedItemBuilder | DropdownButtonBuilder? | getValue | selected-item-builder |
+| [x] | value | T? | getValue | value |
+| [x] | hint | Widget? | getWidget | hint |
+| [x] | disabledHint | Widget? | getWidget | disabled-hint |
+| [x] | onChanged | ValueChanged? | getValue | on-changed |
+| [x] | onTap | VoidCallback? | getVoidCallback | on-tap |
+| [x] | elevation | int | getInt | elevation |
+| [x] | style | TextStyle? | getValue | style |
+| [x] | underline | Widget? | getWidget | underline |
+| [x] | icon | Widget? | getWidget | icon |
+| [x] | iconDisabledColor | Color? | getColor | icon-disabled-color |
+| [x] | iconEnabledColor | Color? | getColor | icon-enabled-color |
+| [x] | iconSize | double | getDouble | icon-size |
+| [x] | isDense | bool | getBool | is-dense |
+| [x] | isExpanded | bool | getBool | is-expanded |
+| [x] | itemHeight | double? | getDouble | item-height |
+| [x] | focusColor | Color? | getColor | focus-color |
+| [x] | focusNode | FocusNode? | getValue | focus-node |
+| [x] | autofocus | bool | getBool | autofocus |
+| [x] | dropdownColor | Color? | getColor | color |
+| [x] | menuMaxHeight | double? | getDouble | menu-max-height |
+| [x] | enableFeedback | bool | getBool | enable-feedback |
+| [x] | alignment | AlignmentGeometry | getValue | alignment |
+| [x] | borderRadius | BorderRadius? | getValue | border-radius |
+| [x] | padding | EdgeInsetsGeometry? | getValue | padding |
