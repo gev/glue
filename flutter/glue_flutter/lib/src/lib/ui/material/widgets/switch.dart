@@ -20,6 +20,7 @@ Eval<Ir> switchImpl(Ir props) => switch (props) {
 Eval<Ir> _createSwitch(WidgetProperties properties) {
   final switchWidget = Switch(
     key: properties.key,
+    activeColor: properties.getColor('active-color'),
     value: properties.getBool('value') ?? false,
     onChanged: properties.getValue('on-changed'),
     activeThumbColor: properties.getColor('active-thumb-color'),
