@@ -31,8 +31,8 @@ Eval<Ir> _createContainer(WidgetProperties properties) {
     margin: properties.getValue('margin'),
     transform: properties.getValue('transform'),
     transformAlignment: properties.getValue('transform-alignment'),
-    child: properties.child,
     clipBehavior: properties.getValue('clip-behavior'),
+    child: properties.child,
   );
   return Eval.pure(IrNativeValue(Value(containerWidget)));
 }
