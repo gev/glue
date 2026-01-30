@@ -29,7 +29,7 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | delegate | SliverChildDelegate | getValue | sliver-list-delegate |
+| [x] | key | Key? | properties.key | - |
+| [x] | delegate | SliverChildDelegate | getValue | sliver-list-delegate |
 
 ### Cupertino Module: flutter/glue_flutter/lib/src/lib/ui/cupertino/
