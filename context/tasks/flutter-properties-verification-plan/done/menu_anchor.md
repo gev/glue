@@ -29,20 +29,20 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | controller | MenuController? | getValue | controller |
-| [ ] | childFocusNode | FocusNode? | getValue | child-focus-node |
-| [ ] | style | MenuStyle? | getValue | style |
-| [ ] | alignmentOffset | Offset | getValue | alignment-offset |
-| [ ] | reservedPadding | EdgeInsetsGeometry? | getValue | reserved-padding |
-| [ ] | layerLink | LayerLink? | getValue | layer-link |
-| [ ] | clipBehavior | Clip | getValue | clip-behavior |
-| [ ] | anchorTapClosesMenu | bool | getBool | anchor-tap-closes-menu |
-| [ ] | consumeOutsideTap | bool | getBool | consume-outside-tap |
-| [ ] | onOpen | VoidCallback? | getVoidCallback | on-open |
-| [ ] | onClose | VoidCallback? | getVoidCallback | on-close |
-| [ ] | crossAxisUnconstrained | bool | getBool | cross-axis-unconstrained |
-| [ ] | useRootOverlay | bool | getBool | use-root-overlay |
-| [ ] | menuChildren | List<Widget> | getWidgets | menu-children |
-| [ ] | builder | MenuAnchorChildBuilder? | getValue | builder |
-| [ ] | child | Widget? | properties.child | - |
+| [x] | key | Key? | properties.key | - |
+| [x] | controller | MenuController? | getValue | controller |
+| [x] | childFocusNode | FocusNode? | getValue | child-focus-node |
+| [x] | style | MenuStyle? | getValue | style |
+| [x] | alignmentOffset | Offset | getValue | alignment-offset |
+| [x] | reservedPadding | EdgeInsetsGeometry? | getValue | reserved-padding |
+| [x] | layerLink | LayerLink? | getValue | layer-link |
+| [x] | clipBehavior | Clip | getValue | clip-behavior |
+| [x] | anchorTapClosesMenu | bool | getBool | anchor-tap-closes-menu |
+| [x] | consumeOutsideTap | bool | getBool | consume-outside-tap |
+| [x] | onOpen | VoidCallback? | getVoidCallback | on-open |
+| [x] | onClose | VoidCallback? | getVoidCallback | on-close |
+| [x] | crossAxisUnconstrained | bool | getBool | cross-axis-unconstrained |
+| [x] | useRootOverlay | bool | getBool | use-root-overlay |
+| [x] | menuChildren | List<Widget> | getWidgets | menu-children |
+| [x] | builder | MenuAnchorChildBuilder? | getValue | builder |
+| [x] | child | Widget? | properties.child | - |

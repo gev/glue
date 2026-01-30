@@ -21,11 +21,13 @@ Eval<Ir> _createMenuAnchor(WidgetProperties properties) {
     final menuAnchorWidget = MenuAnchor(
       key: properties.key,
       controller: properties.getValue('controller'),
+      childFocusNode: properties.getValue('child-focus-node'),
       style: properties.getValue('style'),
       alignmentOffset: properties.getValue('alignment-offset') ?? Offset.zero,
       reservedPadding: properties.getValue('reserved-padding'),
       layerLink: properties.getValue('layer-link'),
       clipBehavior: properties.getValue('clip-behavior') ?? Clip.hardEdge,
+      anchorTapClosesMenu: properties.getBool('anchor-tap-closes-menu') ?? true,
       consumeOutsideTap: properties.getBool('consume-outside-tap') ?? false,
       onOpen: properties.getVoidCallback('on-open', runtime),
       onClose: properties.getVoidCallback('on-close', runtime),
