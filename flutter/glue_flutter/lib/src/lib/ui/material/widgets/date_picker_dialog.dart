@@ -28,7 +28,6 @@ Eval<Ir> _createDatePickerDialog(WidgetProperties properties) {
     cancelText: properties.getString('cancel-text'),
     confirmText: properties.getString('confirm-text'),
     helpText: properties.getString('help-text'),
-    initialCalendarMode: properties.getValue('initial-calendar-mode'),
     errorFormatText: properties.getString('error-format-text'),
     errorInvalidText: properties.getString('error-invalid-text'),
     fieldHintText: properties.getString('field-hint-text'),
@@ -43,6 +42,7 @@ Eval<Ir> _createDatePickerDialog(WidgetProperties properties) {
       'switch-to-calendar-entry-mode-icon',
     ),
     insetPadding: properties.getValue('inset-padding') as EdgeInsets,
+    calendarDelegate: properties.getValue('calendar-delegate'),
   );
   return Eval.pure(IrNativeValue(Value(datePickerDialogWidget)));
 }
