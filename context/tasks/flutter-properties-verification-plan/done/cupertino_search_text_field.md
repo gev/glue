@@ -29,25 +29,25 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | controller | TextEditingController? | getValue | controller |
-| [ ] | onChanged | ValueChanged<String>? | getValue | on-changed |
-| [ ] | onSubmitted | ValueChanged<String>? | getValue | on-submitted |
-| [ ] | style | TextStyle? | getValue | style |
-| [ ] | placeholder | String? | getString | placeholder |
-| [ ] | placeholderStyle | TextStyle? | getValue | placeholder-style |
-| [ ] | decoration | BoxDecoration? | getValue | decoration |
-| [ ] | backgroundColor | Color? | getColor | background-color |
-| [ ] | borderRadius | BorderRadius? | getValue | border-radius |
-| [ ] | padding | EdgeInsetsGeometry | getValue | padding |
-| [ ] | itemColor | Color? | getColor | item-color |
-| [ ] | itemSize | double? | getDouble | item-size |
-| [ ] | prefixIcon | Widget? | getWidget | prefix-icon |
-| [ ] | prefixMode | OverlayVisibilityMode | getValue | prefix-mode |
-| [ ] | suffixIcon | Widget? | getWidget | suffix-icon |
-| [ ] | suffixMode | OverlayVisibilityMode | getValue | suffix-mode |
-| [ ] | onSuffixTap | VoidCallback? | getVoidCallback | on-suffix-tap |
-| [ ] | enabled | bool? | getBool | enabled |
-| [ ] | autocorrect | bool | getBool | autocorrect |
-| [ ] | focusNode | FocusNode? | getValue | focus-node |
-| [ ] | autofocus | bool | getBool | autofocus |
+| [x] | key | Key? | properties.key | - |
+| [x] | controller | TextEditingController? | getValue | controller |
+| [x] | onChanged | ValueChanged<String>? | getValue | on-changed |
+| [x] | onSubmitted | ValueChanged<String>? | getValue | on-submitted |
+| [x] | style | TextStyle? | getValue | style |
+| [x] | placeholder | String? | getString | placeholder |
+| [x] | placeholderStyle | TextStyle? | getValue | placeholder-style |
+| [x] | decoration | BoxDecoration? | getValue | decoration |
+| [x] | backgroundColor | Color? | getColor | background-color |
+| [x] | borderRadius | BorderRadius? | getValue | border-radius |
+| [x] | padding | EdgeInsetsGeometry | getValue | padding |
+| [x] | itemColor | Color? | getColor | item-color |
+| [x] | itemSize | double? | getDouble | item-size |
+| [x] | prefixIcon | Widget? | getWidget | prefix-icon |
+| [x] | prefixMode | OverlayVisibilityMode | getValue | prefix-mode |
+| [x] | suffixIcon | Widget? | getWidget | suffix-icon |
+| [x] | suffixMode | OverlayVisibilityMode | getValue | suffix-mode |
+| [x] | onSuffixTap | VoidCallback? | getVoidCallback | on-suffix-tap |
+| [x] | enabled | bool? | getBool | enabled |
+| [x] | autocorrect | bool | getBool | autocorrect |
+| [x] | focusNode | FocusNode? | getValue | focus-node |
+| [x] | autofocus | bool | getBool | autofocus |

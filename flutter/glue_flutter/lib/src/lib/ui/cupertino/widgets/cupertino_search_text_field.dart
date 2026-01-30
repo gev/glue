@@ -17,13 +17,31 @@ Eval<Ir> cupertinoSearchTextFieldImpl(Ir props) => switch (props) {
 };
 
 /// Create CupertinoSearchTextField widget from properties object
-Eval<Ir> _createCupertinoSearchTextField(WidgetProperties properties) {
-  final widget = CupertinoSearchTextField(
-    controller: properties.getValue('controller'),
-    onChanged: properties.getValue('on-changed'),
-    onSubmitted: properties.getValue('on-submitted'),
-    placeholder: properties.getString('placeholder'),
-    placeholderStyle: properties.getValue('placeholder-style'),
-  );
-  return Eval.pure(IrNativeValue(Value(widget)));
-}
+Eval<Ir> _createCupertinoSearchTextField(WidgetProperties properties) =>
+    getRuntime().map((runtime) {
+      final widget = CupertinoSearchTextField(
+        key: properties.key,
+        controller: properties.getValue('controller'),
+        onChanged: properties.getValue('on-changed'),
+        onSubmitted: properties.getValue('on-submitted'),
+        style: properties.getValue('style'),
+        placeholder: properties.getString('placeholder'),
+        placeholderStyle: properties.getValue('placeholder-style'),
+        decoration: properties.getValue('decoration'),
+        backgroundColor: properties.getColor('background-color'),
+        borderRadius: properties.getValue('border-radius'),
+        padding: properties.getValue('padding'),
+        itemColor: properties.getColor('item-color'),
+        itemSize: properties.getDouble('item-size'),
+        prefixIcon: properties.getWidget('prefix-icon'),
+        prefixMode: properties.getValue('prefix-mode'),
+        suffixIcon: properties.getWidget('suffix-icon'),
+        suffixMode: properties.getValue('suffix-mode'),
+        onSuffixTap: properties.getVoidCallback('on-suffix-tap', runtime),
+        enabled: properties.getBool('enabled'),
+        autocorrect: properties.getBool('autocorrect'),
+        focusNode: properties.getValue('focus-node'),
+        autofocus: properties.getBool('autofocus'),
+      );
+      return IrNativeValue(Value(widget));
+    });
