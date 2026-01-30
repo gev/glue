@@ -58,6 +58,9 @@ Eval<Ir> _createListTile(WidgetProperties properties) {
       minLeadingWidth: properties.getDouble('min-leading-width'),
       minTileHeight: properties.getDouble('min-tile-height'),
       titleAlignment: properties.getValue('title-alignment'),
+      internalAddSemanticForOnTap:
+          properties.getBool('internal-add-semantic-for-on-tap') ?? false,
+      statesController: properties.getValue('states-controller'),
     );
     return IrNativeValue(Value(listTileWidget));
   });
