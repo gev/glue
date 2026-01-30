@@ -29,15 +29,12 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | diameterRatio | double | getDouble | diameter-ratio |
-| [ ] | backgroundColor | Color? | getColor | background-color |
-| [ ] | offAxisFraction | double | getDouble | off-axis-fraction |
-| [ ] | useMagnifier | bool | getBool | use-magnifier |
-| [ ] | magnification | double | getDouble | magnification |
-| [ ] | scrollController | FixedExtentScrollController? | getValue | scroll-controller |
-| [ ] | squeeze | double | getDouble | squeeze |
-| [ ] | itemExtent | double | getDouble | item-extent |
-| [ ] | onSelectedItemChanged | ValueChanged<int>? | getValue | on-selected-item-changed |
-| [ ] | children | List<Widget> | properties.children | - |
-| [ ] | selectionOverlay | Widget | getValue | selection-overlay |
+| [x] | key | Key? | properties.key | - |
+| [x] | child | Widget | properties.child | - |
+| [x] | controller | ScrollController? | getValue | controller |
+| [x] | thumbVisibility | bool? | getBool | thumb-visibility |
+| [x] | thickness | double | getDouble | thickness |
+| [x] | thicknessWhileDragging | double | getDouble | thickness-while-dragging |
+| [x] | radius | Radius | getValue | radius |
+| [x] | radiusWhileDragging | Radius | getValue | radius-while-dragging |
+| [x] | notificationPredicate | ScrollNotificationPredicate? | getValue | notification-predicate |
