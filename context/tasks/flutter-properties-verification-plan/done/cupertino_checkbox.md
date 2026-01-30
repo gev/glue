@@ -29,12 +29,12 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | value | bool? | getBool | value |
-| [ ] | tristate | bool | getBool | tristate |
-| [ ] | onChanged | ValueChanged<bool?>? | getValue | on-changed |
-| [ ] | activeColor | Color? | getColor | active-color |
-| [ ] | inactiveColor | Color? | getColor | inactive-color |
-| [ ] | checkColor | Color? | getColor | check-color |
-| [ ] | focusColor | Color? | getColor | focus-color |
-| [ ] | autofocus | bool | getBool | autofocus |
+| [x] | key | Key? | properties.key | - |
+| [x] | value | bool? | getBool | value |
+| [x] | tristate | bool | getBool | tristate |
+| [x] | onChanged | ValueChanged<bool?>? | getValue | on-changed |
+| [x] | activeColor | Color? | getColor | active-color |
+| [x] | inactiveColor | Color? | getColor | inactive-color |
+| [x] | checkColor | Color? | getColor | check-color |
+| [x] | focusColor | Color? | getColor | focus-color |
+| [x] | autofocus | bool | getBool | autofocus |

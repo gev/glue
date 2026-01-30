@@ -20,12 +20,15 @@ Eval<Ir> cupertinoCheckboxImpl(Ir props) => switch (props) {
 Eval<Ir> _createCupertinoCheckbox(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final widget = CupertinoCheckbox(
-      value: properties.getBool('cupertino-checkbox-value') ?? false,
-      tristate: properties.getBool('cupertino-checkbox-tristate') ?? false,
-      onChanged: properties.getValue('cupertino-checkbox-on-changed'),
-      activeColor: properties.getValue('cupertino-checkbox-active-color'),
-      checkColor: properties.getValue('cupertino-checkbox-check-color'),
-      focusColor: properties.getValue('cupertino-checkbox-focus-color'),
+      key: properties.key,
+      value: properties.getBool('value') ?? false,
+      tristate: properties.getBool('tristate') ?? false,
+      onChanged: properties.getValue('on-changed'),
+      activeColor: properties.getColor('active-color'),
+      inactiveColor: properties.getColor('inactive-color'),
+      checkColor: properties.getColor('check-color'),
+      focusColor: properties.getColor('focus-color'),
+      autofocus: properties.getBool('autofocus') ?? false,
     );
     return IrNativeValue(Value(widget));
   });
