@@ -41,9 +41,13 @@ Eval<Ir> _createFloatingActionButton(WidgetProperties properties) {
       autofocus: properties.getBool('autofocus') ?? false,
       materialTapTargetSize: properties.getValue('material-tap-target-size'),
       enableFeedback: properties.getBool('enable-feedback') ?? true,
+      alignment: properties.getValue('alignment'),
+      offset: properties.getValue('offset'),
       onPressed: properties.getVoidCallback('on-pressed', runtime),
+      onLongPress: properties.getVoidCallback('on-long-press', runtime),
       mouseCursor: properties.getValue('mouse-cursor'),
       focusNode: properties.getValue('focus-node'),
+      restorationId: properties.getString('restoration-id'),
     );
     return IrNativeValue(Value(fabWidget));
   });
