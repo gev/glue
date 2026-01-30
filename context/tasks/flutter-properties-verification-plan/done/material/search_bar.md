@@ -29,15 +29,23 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | child | Widget | properties.child | - |
-| [ ] | displacement | double | getDouble | displacement |
-| [ ] | edgeOffset | double | getDouble | edge-offset |
-| [ ] | onRefresh | RefreshCallback | getValue | on-refresh |
-| [ ] | color | Color? | getColor | color |
-| [ ] | backgroundColor | Color? | getColor | background-color |
-| [ ] | notificationPredicate | ScrollNotificationPredicate | getValue | notification-predicate |
-| [ ] | semanticsLabel | String? | getString | semantics-label |
-| [ ] | semanticsValue | String? | getString | semantics-value |
-| [ ] | strokeWidth | double | getDouble | stroke-width |
-| [ ] | triggerMode | RefreshIndicatorTriggerMode | getValue | trigger-mode |
+| [x] | key | Key? | properties.key | - |
+| [x] | controller | TextEditingController? | getValue | controller |
+| [x] | focusNode | FocusNode? | getValue | focus-node |
+| [x] | hintText | String? | getString | hint-text |
+| [x] | onTap | VoidCallback? | getVoidCallback | on-tap |
+| [x] | onChanged | ValueChanged<String>? | getValue | on-changed |
+| [x] | onSubmitted | ValueChanged<String>? | getValue | on-submitted |
+| [x] | constraints | BoxConstraints? | getValue | constraints |
+| [x] | elevation | WidgetStateProperty? | getValue | elevation |
+| [x] | overlayColor | WidgetStateProperty? | getValue | overlay-color |
+| [x] | side | BorderSide? | getValue | side |
+| [x] | shape | OutlinedBorder? | getValue | shape |
+| [x] | padding | EdgeInsetsGeometry? | getValue | padding |
+| [x] | textStyle | TextStyle? | getValue | text-style |
+| [x] | hintStyle | TextStyle? | getValue | hint-style |
+| [x] | textCapitalization | TextCapitalization | getValue | text-capitalization |
+| [x] | keyboardType | TextInputType | getValue | keyboard-type |
+
+### Widget Status
+- [x] SearchBar
