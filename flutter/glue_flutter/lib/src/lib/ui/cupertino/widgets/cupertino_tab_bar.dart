@@ -20,6 +20,7 @@ Eval<Ir> cupertinoTabBarImpl(Ir props) => switch (props) {
 Eval<Ir> _createCupertinoTabBar(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final widget = CupertinoTabBar(
+      key: properties.key,
       items: properties.getValue('items'),
       onTap: properties.getValue('on-tap'),
       currentIndex: properties.getInt('current-index') ?? 0,

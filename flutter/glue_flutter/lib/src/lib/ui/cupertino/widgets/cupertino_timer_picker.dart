@@ -19,6 +19,7 @@ Eval<Ir> cupertinoTimerPickerImpl(Ir props) => switch (props) {
 /// Create CupertinoTimerPicker widget from properties object
 Eval<Ir> _createCupertinoTimerPicker(WidgetProperties properties) {
   final widget = CupertinoTimerPicker(
+    key: properties.key,
     mode: properties.getValue('mode'),
     initialTimerDuration: properties.getValue('initial-timer-duration'),
     minuteInterval: properties.getInt('minute-interval') ?? 1,

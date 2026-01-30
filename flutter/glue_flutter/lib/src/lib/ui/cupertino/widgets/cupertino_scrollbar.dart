@@ -19,6 +19,7 @@ Eval<Ir> cupertinoScrollbarImpl(Ir props) => switch (props) {
 /// Create CupertinoScrollbar widget from properties object
 Eval<Ir> _createCupertinoScrollbar(WidgetProperties properties) {
   final scrollbarWidget = CupertinoScrollbar(
+    key: properties.key,
     controller: properties.getValue('controller'),
     thumbVisibility: properties.getBool('thumb-visibility') ?? false,
     thickness: properties.getDouble('thickness') ?? 3.0,

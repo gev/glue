@@ -19,6 +19,7 @@ Eval<Ir> cupertinoSliderImpl(Ir props) => switch (props) {
 /// Create CupertinoSlider widget from properties object
 Eval<Ir> _createCupertinoSlider(WidgetProperties properties) {
   final widget = CupertinoSlider(
+    key: properties.key,
     value: properties.getDouble('value') ?? 0.5,
     onChanged: properties.getValue('on-changed'),
     onChangeStart: properties.getValue('on-change-start'),

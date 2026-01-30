@@ -16,24 +16,19 @@ Eval<Ir> textImpl(Ir props) => switch (props) {
   _ => throwError(wrongArgumentType(['object'])),
 };
 
-/// Create Text widget from properties (extracts :content, :color, etc.)
+/// Create Text widget from properties
 Eval<Ir> _createText(WidgetProperties properties) {
-  final content = properties.getString('content') ?? '';
   final textWidget = Text(
-    content,
+    properties.getString('data') ?? '',
     key: properties.key,
-    style: TextStyle(
-      color: properties.getColor('color'),
-      fontSize: properties.getDouble('size'),
-      fontWeight: properties.getValue('weight'),
-    ),
+    style: properties.getValue('style'),
     strutStyle: properties.getValue('strut-style'),
-    textAlign: properties.getValue('align'),
+    textAlign: properties.getValue('text-align'),
     textDirection: properties.getValue('text-direction'),
     locale: properties.getValue('locale'),
-    softWrap: properties.getValue('soft-wrap'),
+    softWrap: properties.getBool('soft-wrap'),
     overflow: properties.getValue('overflow'),
-    textScaleFactor: properties.getValue('text-scale-factor'),
+    textScaleFactor: properties.getDouble('text-scale-factor'),
     maxLines: properties.getInt('max-lines'),
     semanticsLabel: properties.getString('semantics-label'),
     textWidthBasis: properties.getValue('text-width-basis'),

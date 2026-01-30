@@ -18,6 +18,7 @@ Eval<Ir> customScrollViewImpl(Ir props) => switch (props) {
 /// Create CustomScrollView widget from properties
 Eval<Ir> _createCustomScrollView(WidgetProperties properties) {
   final customScrollViewWidget = CustomScrollView(
+    key: properties.key,
     scrollDirection: properties.getValue('scroll-direction'),
     reverse: properties.getBool('reverse') ?? false,
     controller: properties.getValue('controller'),
