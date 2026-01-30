@@ -29,10 +29,10 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | tabBar | CupertinoTabBar | getValue | tab-bar |
-| [ ] | tabBuilder | IndexedWidgetBuilder | getValue | tab-builder |
-| [ ] | controller | CupertinoTabController? | getValue | controller |
-| [ ] | backgroundColor | Color? | getColor | background-color |
-| [ ] | resizeToAvoidBottomInset | bool | getBool | resize-to-avoid-bottom-inset |
-| [ ] | restorationId | String? | getString | restoration-id |
+| [x] | key | Key? | properties.key | - |
+| [x] | tabBar | CupertinoTabBar | getValue | tab-bar |
+| [x] | tabBuilder | IndexedWidgetBuilder | getValue | tab-builder |
+| [x] | controller | CupertinoTabController? | getValue | controller |
+| [x] | backgroundColor | Color? | getColor | background-color |
+| [x] | resizeToAvoidBottomInset | bool | getBool | resize-to-avoid-bottom-inset |
+| [x] | restorationId | String? | getString | restoration-id |
