@@ -22,6 +22,7 @@ Eval<Ir> _createFlutterLogo(WidgetProperties properties) {
     key: properties.key,
     size: properties.getDouble('size'),
     style: properties.getValue('style') ?? FlutterLogoStyle.markOnly,
+    colors: properties.getColor('colors'),
     textColor: properties.getColor('text-color') ?? const Color(0xFF616161),
     duration:
         properties.getValue('duration') ?? const Duration(milliseconds: 750),

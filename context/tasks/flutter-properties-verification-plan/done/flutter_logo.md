@@ -29,10 +29,10 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | size | double | getDouble | size |
-| [ ] | style | FlutterLogoStyle | getValue | style |
-| [ ] | textColor | Color? | getColor | text-color |
-| [ ] | colors | Color? | getColor | colors |
-| [ ] | duration | Duration | getValue | duration |
-| [ ] | curve | Curve | getValue | curve |
+| [x] | key | Key? | properties.key | - |
+| [x] | size | double | getDouble | size |
+| [x] | style | FlutterLogoStyle | getValue | style |
+| [x] | textColor | Color? | getColor | text-color |
+| [x] | colors | Color | getColor | colors |
+| [x] | duration | Duration | getValue | duration |
+| [x] | curve | Curve | getValue | curve |
