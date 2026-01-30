@@ -36,11 +36,9 @@ import 'package:glue_flutter/src/lib/ui/core/widgets/row.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/single_child_scroll_view.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/sliver_grid.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/sliver_list.dart';
-import 'package:glue_flutter/src/lib/ui/core/widgets/text.dart';
 
 final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   // Core widget functions
-  ('text', text),
   ('container', container),
   ('column', column),
   ('row', row),
