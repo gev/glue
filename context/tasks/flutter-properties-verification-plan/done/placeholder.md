@@ -29,9 +29,11 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | fallbackWidth | double | getDouble | fallback-width |
-| [ ] | fallbackHeight | double | getDouble | fallback-height |
-| [ ] | color | Color? | getColor | color |
-| [ ] | strokeAlign | StrokeAlign | getValue | stroke-align |
-| [ ] | strokeWidth | double | getDouble | stroke-width |
+| [x] | key | Key? | properties.key | - |
+| [x] | fallbackWidth | double | getDouble | fallback-width |
+| [x] | fallbackHeight | double | getDouble | fallback-height |
+| [x] | color | Color? | getColor | color |
+| [x] | strokeAlign | StrokeAlign | getValue | stroke-align |
+| [x] | strokeWidth | double | getDouble | stroke-width |
+
+### Widget Placeholder [x] properties verified and fixed
