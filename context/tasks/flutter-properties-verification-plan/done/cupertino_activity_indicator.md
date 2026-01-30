@@ -29,7 +29,9 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | color | Color? | getColor | color |
-| [ ] | animating | bool | getBool | animating |
-| [ ] | radius | double | getDouble | radius |
+| [x] | key | Key? | properties.key | - |
+| [x] | color | Color? | getColor | color |
+| [x] | animating | bool | getBool | animating |
+| [x] | radius | double | getDouble | radius |
+
+### Widget: Done
