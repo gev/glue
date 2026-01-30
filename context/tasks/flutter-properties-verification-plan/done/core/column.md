@@ -1,3 +1,5 @@
+- [x] Column
+
 ### Property Access Methods by Type
 - **Direct Property Access**: `key`, `child`, `children`, `width`, `height`, `top`, `bottom`, `left`, `right`, `start`, `end`, `horizontal`, `vertical`
   - Access as: `properties.key`, `properties.child`, `properties.children`, etc.
@@ -29,11 +31,11 @@
 
 | todo check | flutter property name | flutter type | property getter/method without parameters | property name |
 |------------|----------------------|--------------|------------------------------------------|---------------|
-| [ ] | key | Key? | properties.key | - |
-| [ ] | mainAxisAlignment | MainAxisAlignment | getValue | main-axis-alignment |
-| [ ] | mainAxisSize | MainAxisSize | getValue | main-axis-size |
-| [ ] | crossAxisAlignment | CrossAxisAlignment | getValue | cross-axis-alignment |
-| [ ] | textDirection | TextDirection? | getValue | text-direction |
-| [ ] | verticalDirection | VerticalDirection | getValue | vertical-direction |
-| [ ] | textBaseline | TextBaseline? | getValue | text-baseline |
-| [ ] | children | List<Widget> | properties.children | - |
+| [x] | key | Key? | properties.key | - |
+| [x] | mainAxisAlignment | MainAxisAlignment | getValue | main-axis-alignment |
+| [x] | mainAxisSize | MainAxisSize | getValue | main-axis-size |
+| [x] | crossAxisAlignment | CrossAxisAlignment | getValue | cross-axis-alignment |
+| [x] | textDirection | TextDirection? | getValue | text-direction |
+| [x] | verticalDirection | VerticalDirection | getValue | vertical-direction |
+| [x] | textBaseline | TextBaseline? | getValue | text-baseline |
+| [x] | children | List<Widget> | properties.children | - |
