@@ -49,16 +49,16 @@ Color? extractColor(Ir? value) => switch (value) {
 };
 
 /// Extract children list from Glue IR value
-List<Widget> extractChildren(Ir? value) => switch (value) {
+List<T> extractNativeValues<T>(Ir? value) => switch (value) {
   IrList(:final elements) =>
     elements
         .map(
           (child) => switch (child) {
-            IrNativeValue(value: Value(value: Widget widget)) => widget,
+            IrNativeValue(value: Value(value: T widget)) => widget,
             _ => null,
           },
         )
-        .whereType<Widget>()
+        .whereType<T>()
         .toList(),
   _ => [],
 };

@@ -27,14 +27,13 @@ Eval<Ir> _createMenuAnchor(WidgetProperties properties) {
       reservedPadding: properties.getValue('reserved-padding'),
       layerLink: properties.getValue('layer-link'),
       clipBehavior: properties.getValue('clip-behavior') ?? Clip.hardEdge,
-      anchorTapClosesMenu: properties.getBool('anchor-tap-closes-menu') ?? true,
       consumeOutsideTap: properties.getBool('consume-outside-tap') ?? false,
       onOpen: properties.getVoidCallback('on-open', runtime),
       onClose: properties.getVoidCallback('on-close', runtime),
       crossAxisUnconstrained:
           properties.getBool('cross-axis-unconstrained') ?? false,
       useRootOverlay: properties.getBool('use-root-overlay') ?? false,
-      menuChildren: properties.getWidgets('menu-children') ?? [],
+      menuChildren: properties.getWidgets('menu-children'),
       builder: properties.getValue('builder'),
       child: properties.child,
     );

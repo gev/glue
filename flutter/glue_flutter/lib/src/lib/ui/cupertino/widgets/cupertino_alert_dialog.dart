@@ -22,7 +22,7 @@ Eval<Ir> _createCupertinoAlertDialog(WidgetProperties properties) {
     key: properties.key,
     title: properties.getWidget('title'),
     content: properties.getWidget('content'),
-    actions: properties.getWidgets('actions') ?? [],
+    actions: properties.getWidgets('actions'),
     scrollController: properties.getValue('scroll-controller'),
     actionScrollController: properties.getValue('action-scroll-controller'),
     insetAnimationDuration: properties.getValue('inset-animation-duration'),

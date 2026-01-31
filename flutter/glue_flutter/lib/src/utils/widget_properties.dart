@@ -17,11 +17,12 @@ class WidgetProperties {
   int? getInt(String key) => extractInt(_props[key]);
 
   T? getValue<T>(String key) => extractNativeValue(_props[key]);
+  List<T> getValues<T>(String key) => extractNativeValues(_props[key]);
 
   Key? getKey(String key) => extractNativeValue(_props[key]);
 
   Widget? getWidget(String key) => extractNativeValue(_props[key]);
-  List<Widget> getWidgets(String key) => extractChildren(_props[key]);
+  List<Widget> getWidgets(String key) => extractNativeValues(_props[key]);
 
   Color? getColor(String key) => extractColor(_props[key]);
 
@@ -42,5 +43,5 @@ class WidgetProperties {
   Key? get key => extractNativeValue(_props['key']);
 
   Widget? get child => extractNativeValue(_props['child']);
-  List<Widget> get children => extractChildren(_props['children']);
+  List<Widget> get children => extractNativeValues(_props['children']);
 }

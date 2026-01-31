@@ -21,22 +21,9 @@ Eval<Ir> _createSegmentedButton(WidgetProperties properties) {
     final segmentedButtonWidget = SegmentedButton<dynamic>(
       key: properties.key,
       selected: properties.getValue('selected'),
-      segments: properties.getWidgets('segments'),
+      segments: properties.getValues('segments'),
       onSelectionChanged: properties.getValue('on-selection-changed'),
-      multiSelectionEnabledFor: properties.getValue(
-        'multi-selection-enabled-for',
-      ),
-      showSelectedIcon: properties.getBool('show-selected-icon'),
-      backgroundColor: properties.getColor('background-color'),
-      unselectedColor: properties.getColor('unselected-color'),
-      selectedColor: properties.getColor('selected-color'),
-      disabledColor: properties.getColor('disabled-color'),
-      shadowColor: properties.getColor('shadow-color'),
-      surfaceTintColor: properties.getColor('surface-tint-color'),
-      elevation: properties.getDouble('elevation'),
-      padding: properties.getValue('padding'),
-      visualDensity: properties.getValue('visual-density'),
-      materialTapTargetSize: properties.getValue('material-tap-target-size'),
+      showSelectedIcon: properties.getBool('show-selected-icon') ?? true,
     );
     return IrNativeValue(Value(segmentedButtonWidget));
   });

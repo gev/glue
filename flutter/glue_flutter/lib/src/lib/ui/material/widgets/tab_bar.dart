@@ -20,7 +20,7 @@ Eval<Ir> _createTabBar(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final tabBarWidget = TabBar(
       key: properties.key,
-      tabs: properties.getWidgets('tabs') ?? [],
+      tabs: properties.getWidgets('tabs'),
       controller: properties.getValue('controller'),
       isScrollable: properties.getBool('is-scrollable') ?? false,
       padding: properties.getValue('padding'),

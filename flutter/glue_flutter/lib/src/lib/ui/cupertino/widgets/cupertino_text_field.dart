@@ -61,7 +61,7 @@ Eval<Ir> _createCupertinoTextField(WidgetProperties properties) {
       ),
       onSubmitted: properties.getValue('on-submitted'),
       inputFormatters: properties.getValue('input-formatters'),
-      enabled: properties.getBool('enabled'),
+      enabled: properties.getBool('enabled') ?? true,
       cursorWidth: properties.getDouble('cursor-width') ?? 2.0,
       cursorHeight: properties.getDouble('cursor-height'),
       cursorRadius: properties.getValue('cursor-radius'),
@@ -80,7 +80,6 @@ Eval<Ir> _createCupertinoTextField(WidgetProperties properties) {
       autofillHints: properties.getValue('autofill-hints'),
       clipBehavior: properties.getValue('clip-behavior') ?? Clip.hardEdge,
       restorationId: properties.getString('restoration-id'),
-      scribbleEnabled: properties.getBool('scribble-enabled') ?? true,
       enableIMEPersonalizedLearning:
           properties.getBool('enable-ime-personalized-learning') ?? true,
     );

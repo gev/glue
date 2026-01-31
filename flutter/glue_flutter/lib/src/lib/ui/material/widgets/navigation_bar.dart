@@ -22,7 +22,7 @@ Eval<Ir> _createNavigationBar(WidgetProperties properties) {
       key: properties.key,
       animationDuration: properties.getValue('animation-duration'),
       selectedIndex: properties.getInt('selected-index') ?? 0,
-      destinations: properties.getWidgets('destinations') ?? [],
+      destinations: properties.getWidgets('destinations'),
       onDestinationSelected: properties.getValue('on-destination-selected'),
       backgroundColor: properties.getColor('background-color'),
       elevation: properties.getDouble('elevation'),

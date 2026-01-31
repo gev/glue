@@ -20,7 +20,7 @@ Eval<Ir> tabBarViewImpl(Ir props) => switch (props) {
 Eval<Ir> _createTabBarView(WidgetProperties properties) {
   final tabBarViewWidget = TabBarView(
     key: properties.key,
-    children: properties.getWidgets('children') ?? [],
+    children: properties.getWidgets('children'),
     controller: properties.getValue('controller'),
     physics: properties.getValue('physics'),
     dragStartBehavior:

@@ -20,9 +20,8 @@ Eval<Ir> cupertinoContextMenuImpl(Ir props) => switch (props) {
 Eval<Ir> _createCupertinoContextMenu(WidgetProperties properties) {
   final contextMenuWidget = CupertinoContextMenu(
     key: properties.key,
-    actions: properties.getWidgets('actions') ?? [],
+    actions: properties.getWidgets('actions'),
     child: properties.child ?? const Text('Context Menu'),
-    previewBuilder: properties.getValue('preview-builder'),
   );
   return Eval.pure(IrNativeValue(Value(contextMenuWidget)));
 }

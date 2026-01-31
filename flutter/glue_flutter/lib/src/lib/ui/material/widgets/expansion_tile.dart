@@ -24,7 +24,7 @@ Eval<Ir> _createExpansionTile(WidgetProperties properties) {
       title: properties.child ?? const SizedBox(),
       subtitle: properties.getWidget('subtitle'),
       trailing: properties.getWidget('trailing'),
-      children: properties.getWidgets('children') ?? [],
+      children: properties.getWidgets('children'),
       initiallyExpanded: properties.getBool('initially-expanded') ?? false,
       maintainState: properties.getBool('maintain-state') ?? false,
       tilePadding: properties.getValue('tile-padding'),

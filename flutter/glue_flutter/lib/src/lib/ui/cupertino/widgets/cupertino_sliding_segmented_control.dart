@@ -26,7 +26,9 @@ Eval<Ir> _createCupertinoSlidingSegmentedControl(WidgetProperties properties) {
     onValueChanged: properties.getValue('on-value-changed'),
     groupValue: properties.getValue('group-value'),
     thumbColor: properties.getColor('thumb-color')!,
-    backgroundColor: properties.getColor('background-color'),
+    backgroundColor:
+        properties.getColor('background-color') ??
+        CupertinoColors.tertiarySystemFill,
     padding: properties.getValue('padding'),
   );
   return Eval.pure(IrNativeValue(Value(widget)));

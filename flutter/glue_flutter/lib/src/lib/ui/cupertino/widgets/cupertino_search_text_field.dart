@@ -31,17 +31,20 @@ Eval<Ir> _createCupertinoSearchTextField(WidgetProperties properties) =>
         backgroundColor: properties.getColor('background-color'),
         borderRadius: properties.getValue('border-radius'),
         padding: properties.getValue('padding'),
-        itemColor: properties.getColor('item-color'),
-        itemSize: properties.getDouble('item-size'),
-        prefixIcon: properties.getWidget('prefix-icon'),
-        prefixMode: properties.getValue('prefix-mode'),
-        suffixIcon: properties.getWidget('suffix-icon'),
+        itemColor:
+            properties.getColor('item-color') ?? CupertinoColors.secondaryLabel,
+        itemSize: properties.getDouble('item-size') ?? 20,
+        prefixIcon:
+            properties.getWidget('prefix-icon') ?? Icon(CupertinoIcons.search),
+        suffixIcon:
+            properties.getValue('suffix-icon') ??
+            Icon(CupertinoIcons.xmark_circle_fill),
         suffixMode: properties.getValue('suffix-mode'),
         onSuffixTap: properties.getVoidCallback('on-suffix-tap', runtime),
         enabled: properties.getBool('enabled'),
-        autocorrect: properties.getBool('autocorrect'),
+        autocorrect: properties.getBool('autocorrect') ?? true,
         focusNode: properties.getValue('focus-node'),
-        autofocus: properties.getBool('autofocus'),
+        autofocus: properties.getBool('autofocus') ?? false,
       );
       return IrNativeValue(Value(widget));
     });

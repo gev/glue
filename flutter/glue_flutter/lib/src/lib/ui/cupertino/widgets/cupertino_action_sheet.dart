@@ -22,7 +22,7 @@ Eval<Ir> _createCupertinoActionSheet(WidgetProperties properties) {
     key: properties.key,
     title: properties.getWidget('title'),
     message: properties.getWidget('message'),
-    actions: properties.getWidgets('actions') ?? [],
+    actions: properties.getWidgets('actions'),
     messageScrollController: properties.getValue('message-scroll-controller'),
     actionScrollController: properties.getValue('action-scroll-controller'),
     cancelButton: properties.getWidget('cancel-button'),
