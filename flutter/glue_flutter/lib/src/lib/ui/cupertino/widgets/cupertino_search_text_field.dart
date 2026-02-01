@@ -21,29 +21,29 @@ Eval<Ir> _createCupertinoSearchTextField(WidgetProperties properties) =>
     getRuntime().map((runtime) {
       final widget = CupertinoSearchTextField(
         key: properties.key,
-        controller: properties.getValue('controller'),
-        onChanged: properties.getValue('on-changed'),
-        onSubmitted: properties.getValue('on-submitted'),
-        style: properties.getValue('style'),
+        controller: properties.getValue<>('controller'),
+        onChanged: properties.getValue<>('on-changed'),
+        onSubmitted: properties.getValue<>('on-submitted'),
+        style: properties.getValue<>('style'),
         placeholder: properties.getString('placeholder'),
-        placeholderStyle: properties.getValue('placeholder-style'),
-        decoration: properties.getValue('decoration'),
+        placeholderStyle: properties.getValue<>('placeholder-style'),
+        decoration: properties.getValue<>('decoration'),
         backgroundColor: properties.getColor('background-color'),
-        borderRadius: properties.getValue('border-radius'),
-        padding: properties.getValue('padding'),
+        borderRadius: properties.getValue<>('border-radius'),
+        padding: properties.getValue<>('padding'),
         itemColor:
             properties.getColor('item-color') ?? CupertinoColors.secondaryLabel,
         itemSize: properties.getDouble('item-size') ?? 20,
         prefixIcon:
             properties.getWidget('prefix-icon') ?? Icon(CupertinoIcons.search),
         suffixIcon:
-            properties.getValue('suffix-icon') ??
+            properties.getValue<>('suffix-icon') ??
             Icon(CupertinoIcons.xmark_circle_fill),
-        suffixMode: properties.getValue('suffix-mode'),
+        suffixMode: properties.getValue<>('suffix-mode'),
         onSuffixTap: properties.getVoidCallback('on-suffix-tap', runtime),
         enabled: properties.getBool('enabled'),
         autocorrect: properties.getBool('autocorrect') ?? true,
-        focusNode: properties.getValue('focus-node'),
+        focusNode: properties.getValue<>('focus-node'),
         autofocus: properties.getBool('autofocus') ?? false,
       );
       return IrNativeValue(Value(widget));

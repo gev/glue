@@ -25,12 +25,12 @@ Eval<Ir> _createCupertinoSwitch(WidgetProperties properties) {
     final switchWidget = CupertinoSwitch(
       key: properties.key,
       value: properties.getBool('value') ?? false,
-      onChanged: properties.getValue('on-changed'),
+      onChanged: properties.getValue<>('on-changed'),
       activeColor: properties.getColor('active-color'),
       trackColor: properties.getColor('track-color'),
       thumbColor: properties.getColor('thumb-color'),
-      dragStartBehavior: properties.getValue('drag-start-behavior'),
-      focusNode: properties.getValue('focus-node'),
+      dragStartBehavior: properties.getValue<>('drag-start-behavior'),
+      focusNode: properties.getValue<>('focus-node'),
       autofocus: properties.getBool('autofocus') ?? false,
     );
     return IrNativeValue(Value(switchWidget));

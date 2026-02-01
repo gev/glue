@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
@@ -18,6 +19,14 @@ Eval<Ir> cupertinoPickerImpl(Ir props) => switch (props) {
 
 /// Create CupertinoPicker widget from properties object
 Eval<Ir> _createCupertinoPicker(WidgetProperties properties) {
+  final onSelectedItemChanged = properties.getCallback<int>(
+    'on-selected-item-changed',
+  );
+  if (onSelectedItemChanged == null) {
+    return throwError(
+      wrongArgumentType(['on-selected-item-changed callback required']),
+    );
+  }
   return getRuntime().map((runtime) {
     final pickerWidget = CupertinoPicker(
       key: properties.key,
@@ -26,14 +35,14 @@ Eval<Ir> _createCupertinoPicker(WidgetProperties properties) {
       offAxisFraction: properties.getDouble('off-axis-fraction') ?? 0.0,
       useMagnifier: properties.getBool('use-magnifier') ?? false,
       magnification: properties.getDouble('magnification') ?? 1.0,
-      scrollController: properties.getValue('scroll-controller'),
+      scrollController: properties.getValue<FixedExtentScrollController>(
+        'scroll-controller',
+      ),
       squeeze: properties.getDouble('squeeze') ?? 1.25,
       itemExtent: properties.getDouble('item-extent') ?? 44.0,
-      onSelectedItemChanged: properties.getValue('on-selected-item-changed'),
+      onSelectedItemChanged: onSelectedItemChanged(runtime),
       children: properties.children,
-      selectionOverlay:
-          properties.getValue('selection-overlay') ??
-          const CupertinoPickerDefaultSelectionOverlay(),
+      selectionOverlay: properties.getWidget('selection-overlay'),
     );
     return IrNativeValue(Value(pickerWidget));
   });

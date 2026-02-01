@@ -20,7 +20,9 @@ Eval<Ir> cupertinoPageScaffoldImpl(Ir props) => switch (props) {
 Eval<Ir> _createCupertinoPageScaffold(WidgetProperties properties) {
   final widget = CupertinoPageScaffold(
     key: properties.key,
-    navigationBar: properties.getValue('navigation-bar'),
+    navigationBar: properties.getValue<CupertinoNavigationBar>(
+      'navigation-bar',
+    ),
     backgroundColor: properties.getColor('background-color'),
     resizeToAvoidBottomInset:
         properties.getBool('resize-to-avoid-bottom-inset') ?? true,

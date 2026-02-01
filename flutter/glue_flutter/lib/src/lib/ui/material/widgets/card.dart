@@ -24,10 +24,10 @@ Eval<Ir> _createCard(WidgetProperties properties) {
     shadowColor: properties.getColor('shadow-color'),
     surfaceTintColor: properties.getColor('surface-tint-color'),
     elevation: properties.getDouble('elevation'),
-    shape: properties.getValue('shape'),
+    shape: properties.getValue<>('shape'),
     borderOnForeground: properties.getBool('border-on-foreground') ?? true,
-    margin: properties.getValue('margin'),
-    clipBehavior: properties.getValue('clip-behavior'),
+    margin: properties.getValue<>('margin'),
+    clipBehavior: properties.getValue<>('clip-behavior'),
     semanticContainer: properties.getBool('semantic-container') ?? true,
     child: properties.child,
   );

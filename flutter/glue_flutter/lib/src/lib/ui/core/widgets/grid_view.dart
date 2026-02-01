@@ -19,23 +19,25 @@ Eval<Ir> gridViewImpl(Ir props) => switch (props) {
 Eval<Ir> _createGridView(WidgetProperties properties) {
   final gridViewWidget = GridView(
     key: properties.key,
-    scrollDirection: properties.getValue('scroll-direction'),
-    reverse: properties.getValue('reverse'),
-    controller: properties.getValue('controller'),
-    primary: properties.getValue('primary'),
-    physics: properties.getValue('physics'),
-    shrinkWrap: properties.getValue('shrink-wrap'),
-    padding: properties.getValue('padding'),
+    scrollDirection:
+        properties.getValue<Axis>('scroll-direction') ?? Axis.vertical,
+    reverse: properties.getBool('reverse') ?? false,
+    controller: properties.getValue<ScrollController>('controller'),
+    primary: properties.getBool('primary'),
+    physics: properties.getValue<ScrollPhysics>('physics'),
+    shrinkWrap: properties.getBool('shrink-wrap') ?? false,
+    padding: properties.getValue<EdgeInsetsGeometry>('padding'),
     gridDelegate:
-        properties.getValue('grid-delegate') ??
+        properties.getValue<SliverGridDelegate>('grid-delegate') ??
         const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-    addAutomaticKeepAlives: properties.getValue('add-automatic-keep-alives'),
-    addRepaintBoundaries: properties.getValue('add-repaint-boundaries'),
-    addSemanticIndexes: properties.getValue('add-semantic-indexes'),
+    addAutomaticKeepAlives:
+        properties.getBool('add-automatic-keep-alives') ?? true,
+    addRepaintBoundaries: properties.getBool('add-repaint-boundaries') ?? true,
+    addSemanticIndexes: properties.getBool('add-semantic-indexes') ?? true,
     cacheExtent: properties.getDouble('cache-extent'),
     children: properties.children,
     semanticChildCount: properties.getInt('semantic-child-count'),
-    clipBehavior: properties.getValue('clip-behavior'),
+    clipBehavior: properties.getValue<Clip>('clip-behavior') ?? Clip.none,
   );
   return Eval.pure(IrNativeValue(Value(gridViewWidget)));
 }

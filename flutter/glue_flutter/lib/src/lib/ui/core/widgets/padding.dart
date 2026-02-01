@@ -24,9 +24,13 @@ Eval<Ir> Function(Ir) paddingWithChild(Ir child) =>
 
 /// Create Padding widget from properties and child
 Eval<Ir> _createPadding(WidgetProperties properties) {
+  final padding = properties.getValue<EdgeInsetsGeometry>('padding');
+  if (padding == null) {
+    return throwError(wrongArgumentType(['padding property required']));
+  }
   final paddingWidget = Padding(
     key: properties.key,
-    padding: properties.getValue('padding'),
+    padding: padding,
     child: properties.child,
   );
   return Eval.pure(IrNativeValue(Value(paddingWidget)));

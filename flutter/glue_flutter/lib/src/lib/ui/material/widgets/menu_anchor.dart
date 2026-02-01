@@ -20,13 +20,13 @@ Eval<Ir> _createMenuAnchor(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final menuAnchorWidget = MenuAnchor(
       key: properties.key,
-      controller: properties.getValue('controller'),
-      childFocusNode: properties.getValue('child-focus-node'),
-      style: properties.getValue('style'),
-      alignmentOffset: properties.getValue('alignment-offset') ?? Offset.zero,
-      reservedPadding: properties.getValue('reserved-padding'),
-      layerLink: properties.getValue('layer-link'),
-      clipBehavior: properties.getValue('clip-behavior') ?? Clip.hardEdge,
+      controller: properties.getValue<>('controller'),
+      childFocusNode: properties.getValue<>('child-focus-node'),
+      style: properties.getValue<>('style'),
+      alignmentOffset: properties.getValue<>('alignment-offset') ?? Offset.zero,
+      reservedPadding: properties.getValue<>('reserved-padding'),
+      layerLink: properties.getValue<>('layer-link'),
+      clipBehavior: properties.getValue<>('clip-behavior') ?? Clip.hardEdge,
       consumeOutsideTap: properties.getBool('consume-outside-tap') ?? false,
       onOpen: properties.getVoidCallback('on-open', runtime),
       onClose: properties.getVoidCallback('on-close', runtime),
@@ -34,7 +34,7 @@ Eval<Ir> _createMenuAnchor(WidgetProperties properties) {
           properties.getBool('cross-axis-unconstrained') ?? false,
       useRootOverlay: properties.getBool('use-root-overlay') ?? false,
       menuChildren: properties.getWidgets('menu-children'),
-      builder: properties.getValue('builder'),
+      builder: properties.getValue<>('builder'),
       child: properties.child,
     );
     return IrNativeValue(Value(menuAnchorWidget));

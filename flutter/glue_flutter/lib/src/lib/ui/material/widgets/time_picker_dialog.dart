@@ -20,7 +20,7 @@ Eval<Ir> _createTimePickerDialog(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final timePickerDialogWidget = TimePickerDialog(
       key: properties.key,
-      initialTime: properties.getValue('initial-time'),
+      initialTime: properties.getValue<>('initial-time'),
       cancelText: properties.getString('cancel-text'),
       confirmText: properties.getString('confirm-text'),
       helpText: properties.getString('help-text'),
@@ -28,13 +28,13 @@ Eval<Ir> _createTimePickerDialog(WidgetProperties properties) {
       hourLabelText: properties.getString('hour-label-text'),
       minuteLabelText: properties.getString('minute-label-text'),
       restorationId: properties.getString('restoration-id'),
-      initialEntryMode: properties.getValue('initial-entry-mode'),
-      orientation: properties.getValue('orientation'),
-      onEntryModeChanged: properties.getValue('on-entry-mode-changed'),
-      switchToInputEntryModeIcon: properties.getValue(
+      initialEntryMode: properties.getValue<>('initial-entry-mode'),
+      orientation: properties.getValue<>('orientation'),
+      onEntryModeChanged: properties.getValue<>('on-entry-mode-changed'),
+      switchToInputEntryModeIcon: properties.getValue<>(
         'switch-to-input-entry-mode-icon',
       ),
-      switchToTimerEntryModeIcon: properties.getValue(
+      switchToTimerEntryModeIcon: properties.getValue<>(
         'switch-to-timer-entry-mode-icon',
       ),
       emptyInitialInput: properties.getBool('empty-initial-input') ?? false,

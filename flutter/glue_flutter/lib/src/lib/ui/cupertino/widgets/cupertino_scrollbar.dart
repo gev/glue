@@ -25,7 +25,7 @@ Eval<Ir> _createCupertinoScrollbar(WidgetProperties properties) {
   }
   final scrollbarWidget = CupertinoScrollbar(
     key: properties.key,
-    controller: properties.getValue('controller'),
+    controller: properties.getValue<ScrollController>('controller'),
     thumbVisibility: properties.getBool('thumb-visibility'),
     thickness:
         properties.getDouble('thickness') ??
@@ -33,9 +33,15 @@ Eval<Ir> _createCupertinoScrollbar(WidgetProperties properties) {
     thicknessWhileDragging:
         properties.getDouble('thickness-while-dragging') ??
         CupertinoScrollbar.defaultThicknessWhileDragging,
-    radius: properties.getValue('radius'),
-    radiusWhileDragging: properties.getValue('radius-while-dragging'),
-    notificationPredicate: properties.getValue('notification-predicate'),
+    radius:
+        properties.getValue<Radius>('radius') ??
+        CupertinoScrollbar.defaultRadius,
+    radiusWhileDragging:
+        properties.getValue<Radius>('radius-while-dragging') ??
+        CupertinoScrollbar.defaultRadiusWhileDragging,
+    notificationPredicate: properties.getValue<bool Function(Notification)>(
+      'notification-predicate',
+    ),
     child: child,
   );
   return Eval.pure(IrNativeValue(Value(scrollbarWidget)));

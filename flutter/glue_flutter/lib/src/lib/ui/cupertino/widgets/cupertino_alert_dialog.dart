@@ -23,10 +23,18 @@ Eval<Ir> _createCupertinoAlertDialog(WidgetProperties properties) {
     title: properties.getWidget('title'),
     content: properties.getWidget('content'),
     actions: properties.getWidgets('actions'),
-    scrollController: properties.getValue('scroll-controller'),
-    actionScrollController: properties.getValue('action-scroll-controller'),
-    insetAnimationDuration: properties.getValue('inset-animation-duration'),
-    insetAnimationCurve: properties.getValue('inset-animation-curve'),
+    scrollController: properties.getValue<ScrollController>(
+      'scroll-controller',
+    ),
+    actionScrollController: properties.getValue<ScrollController>(
+      'action-scroll-controller',
+    ),
+    insetAnimationDuration:
+        properties.getValue<Duration>('inset-animation-duration') ??
+        Duration(milliseconds: 100),
+    insetAnimationCurve:
+        properties.getValue<Curve>('inset-animation-curve') ??
+        Curves.decelerate,
   );
   return Eval.pure(IrNativeValue(Value(alertDialogWidget)));
 }

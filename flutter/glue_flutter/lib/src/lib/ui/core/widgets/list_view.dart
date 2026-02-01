@@ -19,13 +19,14 @@ Eval<Ir> listViewImpl(Ir props) => switch (props) {
 Eval<Ir> _createListView(WidgetProperties properties) {
   final listViewWidget = ListView(
     key: properties.key,
-    scrollDirection: properties.getValue('scroll-direction'),
+    scrollDirection:
+        properties.getValue<Axis>('scroll-direction') ?? Axis.vertical,
     reverse: properties.getBool('reverse') ?? false,
-    controller: properties.getValue('controller'),
+    controller: properties.getValue<ScrollController>('controller'),
     primary: properties.getBool('primary'),
-    physics: properties.getValue('physics'),
+    physics: properties.getValue<ScrollPhysics>('physics'),
     shrinkWrap: properties.getBool('shrink-wrap') ?? false,
-    padding: properties.getValue('padding'),
+    padding: properties.getValue<EdgeInsetsGeometry>('padding'),
     itemExtent: properties.getDouble('item-extent'),
     prototypeItem: properties.getWidget('prototype-item'),
     addAutomaticKeepAlives:
@@ -35,7 +36,7 @@ Eval<Ir> _createListView(WidgetProperties properties) {
     cacheExtent: properties.getDouble('cache-extent'),
     children: properties.children,
     semanticChildCount: properties.getInt('semantic-child-count'),
-    clipBehavior: properties.getValue('clip-behavior'),
+    clipBehavior: properties.getValue<Clip>('clip-behavior') ?? Clip.none,
   );
   return Eval.pure(IrNativeValue(Value(listViewWidget)));
 }

@@ -21,9 +21,9 @@ Eval<Ir> _createCupertinoTabScaffold(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final widget = CupertinoTabScaffold(
       key: properties.key,
-      tabBar: properties.getValue('tab-bar'),
-      tabBuilder: properties.getValue('tab-builder'),
-      controller: properties.getValue('controller'),
+      tabBar: properties.getValue<>('tab-bar'),
+      tabBuilder: properties.getValue<>('tab-builder'),
+      controller: properties.getValue<>('controller'),
       backgroundColor: properties.getColor('background-color'),
       resizeToAvoidBottomInset:
           properties.getBool('resize-to-avoid-bottom-inset') ?? true,

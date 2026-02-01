@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
@@ -19,16 +20,23 @@ Eval<Ir> singleChildScrollViewImpl(Ir props) => switch (props) {
 Eval<Ir> _createSingleChildScrollView(WidgetProperties properties) {
   final singleChildScrollViewWidget = SingleChildScrollView(
     key: properties.key,
-    scrollDirection: properties.getValue('scroll-direction'),
-    reverse: properties.getValue('reverse'),
-    padding: properties.getValue('padding'),
-    primary: properties.getValue('primary'),
-    physics: properties.getValue('physics'),
-    controller: properties.getValue('controller'),
-    dragStartBehavior: properties.getValue('drag-start-behavior'),
-    clipBehavior: properties.getValue('clip-behavior'),
+    scrollDirection:
+        properties.getValue<Axis>('scroll-direction') ?? Axis.vertical,
+    reverse: properties.getBool('reverse') ?? false,
+    padding: properties.getValue<EdgeInsetsGeometry>('padding'),
+    primary: properties.getBool('primary'),
+    physics: properties.getValue<ScrollPhysics>('physics'),
+    controller: properties.getValue<ScrollController>('controller'),
+    dragStartBehavior:
+        properties.getValue<DragStartBehavior>('drag-start-behavior') ??
+        DragStartBehavior.start,
+    clipBehavior: properties.getValue<Clip>('clip-behavior') ?? Clip.none,
     restorationId: properties.getString('restoration-id'),
-    keyboardDismissBehavior: properties.getValue('keyboard-dismiss-behavior'),
+    keyboardDismissBehavior:
+        properties.getValue<ScrollViewKeyboardDismissBehavior>(
+          'keyboard-dismiss-behavior',
+        ) ??
+        ScrollViewKeyboardDismissBehavior.manual,
     child: properties.child,
   );
   return Eval.pure(IrNativeValue(Value(singleChildScrollViewWidget)));

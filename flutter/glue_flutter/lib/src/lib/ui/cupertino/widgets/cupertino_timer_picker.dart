@@ -20,14 +20,14 @@ Eval<Ir> cupertinoTimerPickerImpl(Ir props) => switch (props) {
 Eval<Ir> _createCupertinoTimerPicker(WidgetProperties properties) {
   final widget = CupertinoTimerPicker(
     key: properties.key,
-    mode: properties.getValue('mode'),
-    initialTimerDuration: properties.getValue('initial-timer-duration'),
+    mode: properties.getValue<>('mode'),
+    initialTimerDuration: properties.getValue<>('initial-timer-duration'),
     minuteInterval: properties.getInt('minute-interval') ?? 1,
     secondInterval: properties.getInt('second-interval') ?? 1,
-    alignment: properties.getValue('alignment') ?? Alignment.center,
+    alignment: properties.getValue<>('alignment') ?? Alignment.center,
     backgroundColor: properties.getColor('background-color'),
     itemExtent: properties.getDouble('item-extent') ?? 32.0,
-    onTimerDurationChanged: properties.getValue('on-timer-duration-changed'),
+    onTimerDurationChanged: properties.getValue<>('on-timer-duration-changed'),
   );
   return Eval.pure(IrNativeValue(Value(widget)));
 }

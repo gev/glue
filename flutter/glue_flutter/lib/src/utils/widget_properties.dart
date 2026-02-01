@@ -11,6 +11,8 @@ class WidgetProperties {
   WidgetProperties(Map<String, Ir> props) : _props = props;
   WidgetProperties.empty() : _props = {};
 
+  Ir? get(String key) => _props[key];
+
   String? getString(String key) => extractString(_props[key]);
   bool? getBool(String key) => extractBool(_props[key]);
   double? getDouble(String key) => extractDouble(_props[key]);
@@ -26,8 +28,11 @@ class WidgetProperties {
 
   Color? getColor(String key) => extractColor(_props[key]);
 
-  VoidCallback? getVoidCallback(String key, Runtime runtime) =>
-      extractVoidCallback(_props[key], runtime);
+  Callback<T> Function(Runtime)? getCallback<T>(String key) =>
+      extractCallback<T>(_props[key]);
+
+  VoidCallback Function(Runtime)? getVoidCallback(String key) =>
+      extractVoidCallback(_props[key]);
 
   double? get width => extractDouble(_props['width']);
   double? get height => extractDouble(_props['height']);

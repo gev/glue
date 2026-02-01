@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
@@ -17,11 +18,10 @@ Eval<Ir> sliverListImpl(Ir props) => switch (props) {
 
 /// Create SliverList widget from properties
 Eval<Ir> _createSliverList(WidgetProperties properties) {
-  final sliverListWidget = SliverList(
-    key: properties.key,
-    delegate:
-        properties.getValue('sliver-list-delegate') ??
-        SliverChildListDelegate([]),
-  );
+  final delegate = properties.getValue<SliverChildDelegate>('delegate');
+  if (delegate == null) {
+    return throwError(wrongArgumentType(['delegate property required']));
+  }
+  final sliverListWidget = SliverList(key: properties.key, delegate: delegate);
   return Eval.pure(IrNativeValue(Value(sliverListWidget)));
 }

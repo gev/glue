@@ -23,17 +23,17 @@ Eval<Ir> _createRefreshIndicator(WidgetProperties properties) {
       child: properties.child ?? const SizedBox(),
       displacement: properties.getDouble('displacement') ?? 40.0,
       edgeOffset: properties.getDouble('edge-offset') ?? 0.0,
-      onRefresh: properties.getValue('on-refresh'),
+      onRefresh: properties.getValue<>('on-refresh'),
       color: properties.getColor('color'),
       backgroundColor: properties.getColor('background-color'),
-      notificationPredicate: properties.getValue('notification-predicate'),
+      notificationPredicate: properties.getValue<>('notification-predicate'),
       semanticsLabel: properties.getString('semantics-label'),
       semanticsValue: properties.getString('semantics-value'),
       strokeWidth:
           properties.getDouble('stroke-width') ??
           RefreshProgressIndicator.defaultStrokeWidth,
       triggerMode:
-          properties.getValue('trigger-mode') ??
+          properties.getValue<>('trigger-mode') ??
           RefreshIndicatorTriggerMode.onEdge,
     );
     return IrNativeValue(Value(refreshIndicatorWidget));

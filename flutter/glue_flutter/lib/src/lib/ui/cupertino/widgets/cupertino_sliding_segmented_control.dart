@@ -22,14 +22,14 @@ Eval<Ir> cupertinoSlidingSegmentedControlImpl(Ir props) => switch (props) {
 Eval<Ir> _createCupertinoSlidingSegmentedControl(WidgetProperties properties) {
   final widget = CupertinoSlidingSegmentedControl(
     key: properties.key,
-    children: properties.getValue('children'),
-    onValueChanged: properties.getValue('on-value-changed'),
-    groupValue: properties.getValue('group-value'),
+    children: properties.getValue<>('children'),
+    onValueChanged: properties.getValue<>('on-value-changed'),
+    groupValue: properties.getValue<>('group-value'),
     thumbColor: properties.getColor('thumb-color')!,
     backgroundColor:
         properties.getColor('background-color') ??
         CupertinoColors.tertiarySystemFill,
-    padding: properties.getValue('padding'),
+    padding: properties.getValue<>('padding'),
   );
   return Eval.pure(IrNativeValue(Value(widget)));
 }

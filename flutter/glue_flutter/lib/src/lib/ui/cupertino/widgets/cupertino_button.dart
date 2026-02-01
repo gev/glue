@@ -22,16 +22,17 @@ Eval<Ir> _createCupertinoButton(WidgetProperties properties) {
     final widget = CupertinoButton(
       key: properties.key,
       child: properties.child ?? const Text('Button'),
-      padding: properties.getValue('padding'),
+      padding: properties.getValue<EdgeInsetsGeometry>('padding'),
       color: properties.getColor('color'),
       disabledColor:
           properties.getColor('disabled-color') ??
           CupertinoColors.quaternarySystemFill,
-      minSize: properties.getDouble('min-size'),
       pressedOpacity: properties.getDouble('pressed-opacity'),
-      borderRadius: properties.getValue('border-radius'),
-      alignment: properties.getValue('alignment'),
-      onPressed: properties.getVoidCallback('on-pressed', runtime),
+      borderRadius: properties.getValue<BorderRadius>('border-radius'),
+      alignment:
+          properties.getValue<AlignmentGeometry>('alignment') ??
+          Alignment.center,
+      onPressed: properties.getVoidCallback('on-pressed')?.call(runtime),
     );
     return IrNativeValue(Value(widget));
   });

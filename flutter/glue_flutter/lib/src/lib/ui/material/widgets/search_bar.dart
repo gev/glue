@@ -20,26 +20,26 @@ Eval<Ir> _createSearchBar(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final searchBarWidget = SearchBar(
       key: properties.key,
-      controller: properties.getValue('controller'),
-      focusNode: properties.getValue('focus-node'),
+      controller: properties.getValue<>('controller'),
+      focusNode: properties.getValue<>('focus-node'),
       hintText: properties.getString('hint-text'),
       onTap: properties.getVoidCallback('on-tap', runtime),
-      onChanged: properties.getValue('on-changed'),
-      onSubmitted: properties.getValue('on-submitted'),
-      constraints: properties.getValue('constraints'),
-      elevation: properties.getValue('elevation'),
-      overlayColor: properties.getValue('overlay-color'),
-      side: properties.getValue('side'),
-      shape: properties.getValue('shape'),
+      onChanged: properties.getValue<>('on-changed'),
+      onSubmitted: properties.getValue<>('on-submitted'),
+      constraints: properties.getValue<>('constraints'),
+      elevation: properties.getValue<>('elevation'),
+      overlayColor: properties.getValue<>('overlay-color'),
+      side: properties.getValue<>('side'),
+      shape: properties.getValue<>('shape'),
       padding: WidgetStateProperty.all(
-        properties.getValue('padding') ??
+        properties.getValue<>('padding') ??
             const EdgeInsets.symmetric(horizontal: 8.0),
       ),
-      textStyle: WidgetStateProperty.all(properties.getValue('text-style')),
-      hintStyle: WidgetStateProperty.all(properties.getValue('hint-style')),
+      textStyle: WidgetStateProperty.all(properties.getValue<>('text-style')),
+      hintStyle: WidgetStateProperty.all(properties.getValue<>('hint-style')),
       textCapitalization:
-          properties.getValue('text-capitalization') ?? TextCapitalization.none,
-      keyboardType: properties.getValue('keyboard-type') ?? TextInputType.text,
+          properties.getValue<>('text-capitalization') ?? TextCapitalization.none,
+      keyboardType: properties.getValue<>('keyboard-type') ?? TextInputType.text,
       // Note: Some SearchBar parameters have API compatibility issues
       // (leading/trailing widgets, color properties, onTapOutside callback)
       // that will be resolved in future Flutter version updates

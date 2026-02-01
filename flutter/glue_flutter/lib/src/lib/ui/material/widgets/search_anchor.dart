@@ -19,12 +19,12 @@ Eval<Ir> searchAnchorImpl(Ir props) => switch (props) {
 Eval<Ir> _createSearchAnchor(WidgetProperties properties) {
   final searchAnchorWidget = SearchAnchor(
     key: properties.key,
-    searchController: properties.getValue('search-controller'),
+    searchController: properties.getValue<>('search-controller'),
     suggestionsBuilder:
-        properties.getValue('suggestions-builder') ??
+        properties.getValue<>('suggestions-builder') ??
         (context, controller) => [],
     builder:
-        properties.getValue('builder') ??
+        properties.getValue<>('builder') ??
         (context, controller) => const SizedBox(),
     viewHintText: properties.getString('view-hint-text'),
     // Note: Some SearchAnchor parameters have API compatibility issues

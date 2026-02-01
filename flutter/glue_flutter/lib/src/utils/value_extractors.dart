@@ -64,11 +64,11 @@ List<T> extractNativeValues<T>(Ir? value) => switch (value) {
 };
 
 /// Extract VoidCallback from Glue IR value with provided runtime
-VoidCallback? extractVoidCallback(Ir? value, Runtime runtime) =>
+VoidCallback Function(Runtime)? extractVoidCallback(Ir? value) =>
     switch (value) {
       IrClosure(:final params) =>
         params.isEmpty
-            ? () async {
+            ? (Runtime runtime) => () async {
                 final evalAction = apply(value, []);
                 // Use provided runtime instead of creating from env
                 final result = await runEval(evalAction, runtime);
@@ -83,3 +83,33 @@ VoidCallback? extractVoidCallback(Ir? value, Runtime runtime) =>
             : null, // Only support parameterless closures for VoidCallback
       _ => null,
     };
+
+typedef Callback<T> = void Function(T? value);
+
+/// Extract Callback from Glue IR value with provided runtime
+Callback<T> Function(Runtime)? extractCallback<T>(Ir? value) => switch (value) {
+  IrClosure(:final params) =>
+    params.length == 1
+        ? (Runtime runtime) => (arg) async {
+            final args = switch (arg) {
+              bool v => [IrBool(v)],
+              int v => [IrInteger(v)],
+              double v => [IrFloat(v)],
+              String v => [IrString(v)],
+              T v => [IrNativeValue(Value(v))],
+              _ => <Ir>[],
+            };
+            final evalAction = apply(value, args);
+            // Use provided runtime instead of creating from env
+            final result = await runEval(evalAction, runtime);
+            switch (result) {
+              case Either<EvalError, (Ir, Runtime)> r:
+                r.match(
+                  (error) => print('Callback execution error: $error'),
+                  (_) {}, // Success, do nothing
+                );
+            }
+          }
+        : null, // Only support parameterless closures for VoidCallback
+  _ => null,
+};

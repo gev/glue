@@ -21,9 +21,9 @@ Eval<Ir> _createCupertinoSlider(WidgetProperties properties) {
   final widget = CupertinoSlider(
     key: properties.key,
     value: properties.getDouble('value') ?? 0.5,
-    onChanged: properties.getValue('on-changed'),
-    onChangeStart: properties.getValue('on-change-start'),
-    onChangeEnd: properties.getValue('on-change-end'),
+    onChanged: properties.getValue<>('on-changed'),
+    onChangeStart: properties.getValue<>('on-change-start'),
+    onChangeEnd: properties.getValue<>('on-change-end'),
     min: properties.getDouble('min') ?? 0.0,
     max: properties.getDouble('max') ?? 1.0,
     divisions: properties.getInt('divisions'),

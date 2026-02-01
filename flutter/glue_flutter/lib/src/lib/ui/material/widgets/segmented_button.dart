@@ -20,9 +20,9 @@ Eval<Ir> _createSegmentedButton(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final segmentedButtonWidget = SegmentedButton<dynamic>(
       key: properties.key,
-      selected: properties.getValue('selected'),
+      selected: properties.getValue<>('selected'),
       segments: properties.getValues('segments'),
-      onSelectionChanged: properties.getValue('on-selection-changed'),
+      onSelectionChanged: properties.getValue<>('on-selection-changed'),
       showSelectedIcon: properties.getBool('show-selected-icon') ?? true,
     );
     return IrNativeValue(Value(segmentedButtonWidget));

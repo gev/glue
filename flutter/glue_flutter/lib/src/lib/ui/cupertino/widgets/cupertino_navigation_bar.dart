@@ -28,13 +28,12 @@ Eval<Ir> _createCupertinoNavigationBar(WidgetProperties properties) {
     previousPageTitle: properties.getString('previous-page-title'),
     middle: properties.getWidget('middle'),
     trailing: properties.getWidget('trailing'),
-    border: properties.getValue('border'),
+    border: properties.getValue<Border>('border'),
     backgroundColor: properties.getColor('background-color'),
-    brightness: properties.getValue('brightness'),
-    padding: properties.getValue('padding'),
+    brightness: properties.getValue<Brightness>('brightness'),
+    padding: properties.getValue<EdgeInsetsDirectional>('padding'),
     transitionBetweenRoutes:
         properties.getBool('transition-between-routes') ?? true,
-    heroTag: properties.getValue('hero-tag'),
   );
   return Eval.pure(IrNativeValue(Value(navigationBarWidget)));
 }

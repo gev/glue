@@ -29,18 +29,18 @@ Eval<Ir> _createSnackBar(WidgetProperties properties) {
       content: content!,
       backgroundColor: properties.getColor('background-color'),
       elevation: properties.getDouble('elevation'),
-      margin: properties.getValue('margin'),
-      padding: properties.getValue('padding'),
+      margin: properties.getValue<>('margin'),
+      padding: properties.getValue<>('padding'),
       width: properties.width,
-      shape: properties.getValue('shape'),
-      behavior: properties.getValue('behavior'),
-      action: properties.getValue('action'),
-      duration: properties.getValue('duration') ?? const Duration(seconds: 4),
-      animation: properties.getValue('animation'),
+      shape: properties.getValue<>('shape'),
+      behavior: properties.getValue<>('behavior'),
+      action: properties.getValue<>('action'),
+      duration: properties.getValue<>('duration') ?? const Duration(seconds: 4),
+      animation: properties.getValue<>('animation'),
       onVisible: properties.getVoidCallback('on-visible', runtime),
       dismissDirection:
-          properties.getValue('dismiss-direction') ?? DismissDirection.down,
-      clipBehavior: properties.getValue('clip-behavior') ?? Clip.hardEdge,
+          properties.getValue<>('dismiss-direction') ?? DismissDirection.down,
+      clipBehavior: properties.getValue<>('clip-behavior') ?? Clip.hardEdge,
     );
     return IrNativeValue(Value(snackBarWidget));
   });

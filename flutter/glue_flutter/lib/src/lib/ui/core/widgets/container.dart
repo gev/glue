@@ -20,18 +20,20 @@ Eval<Ir> containerImpl(Ir props) => switch (props) {
 Eval<Ir> _createContainer(WidgetProperties properties) {
   final containerWidget = Container(
     key: properties.key,
-    alignment: properties.getValue('alignment'),
-    padding: properties.getValue('padding'),
+    alignment: properties.getValue<Alignment>('alignment'),
+    padding: properties.getValue<EdgeInsetsGeometry>('padding'),
     color: properties.getColor('color'),
     decoration: properties.getValue('decoration'),
-    foregroundDecoration: properties.getValue('foreground-decoration'),
+    foregroundDecoration: properties.getValue<Decoration>(
+      'foreground-decoration',
+    ),
     width: properties.width,
     height: properties.height,
-    constraints: properties.getValue('constraints'),
-    margin: properties.getValue('margin'),
-    transform: properties.getValue('transform'),
-    transformAlignment: properties.getValue('transform-alignment'),
-    clipBehavior: properties.getValue('clip-behavior'),
+    constraints: properties.getValue<BoxConstraints>('constraints'),
+    margin: properties.getValue<EdgeInsetsGeometry>('margin'),
+    transform: properties.getValue<Matrix4>('transform'),
+    transformAlignment: properties.getValue<Alignment>('transform-alignment'),
+    clipBehavior: properties.getValue<Clip>('clip-behavior') ?? Clip.none,
     child: properties.child,
   );
   return Eval.pure(IrNativeValue(Value(containerWidget)));

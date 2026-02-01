@@ -27,12 +27,12 @@ Eval<Ir> _createExpansionTile(WidgetProperties properties) {
       children: properties.getWidgets('children'),
       initiallyExpanded: properties.getBool('initially-expanded') ?? false,
       maintainState: properties.getBool('maintain-state') ?? false,
-      tilePadding: properties.getValue('tile-padding'),
-      expandedAlignment: properties.getValue('expanded-alignment'),
-      expandedCrossAxisAlignment: properties.getValue(
+      tilePadding: properties.getValue<>('tile-padding'),
+      expandedAlignment: properties.getValue<>('expanded-alignment'),
+      expandedCrossAxisAlignment: properties.getValue<>(
         'expanded-cross-axis-alignment',
       ),
-      childrenPadding: properties.getValue('children-padding'),
+      childrenPadding: properties.getValue<>('children-padding'),
       backgroundColor: properties.getColor('background-color'),
       collapsedBackgroundColor: properties.getColor(
         'collapsed-background-color',
@@ -41,9 +41,9 @@ Eval<Ir> _createExpansionTile(WidgetProperties properties) {
       collapsedTextColor: properties.getColor('collapsed-text-color'),
       iconColor: properties.getColor('icon-color'),
       collapsedIconColor: properties.getColor('collapsed-icon-color'),
-      controlAffinity: properties.getValue('control-affinity'),
-      controller: properties.getValue('controller'),
-      onExpansionChanged: properties.getValue('on-expansion-changed'),
+      controlAffinity: properties.getValue<>('control-affinity'),
+      controller: properties.getValue<>('controller'),
+      onExpansionChanged: properties.getValue<>('on-expansion-changed'),
     );
     return IrNativeValue(Value(expansionTileWidget));
   });

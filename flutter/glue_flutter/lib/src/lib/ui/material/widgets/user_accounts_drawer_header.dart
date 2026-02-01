@@ -20,8 +20,8 @@ Eval<Ir> _createUserAccountsDrawerHeader(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final userAccountsDrawerHeaderWidget = UserAccountsDrawerHeader(
       key: properties.key,
-      decoration: properties.getValue('decoration'),
-      margin: properties.getValue('margin'),
+      decoration: properties.getValue<>('decoration'),
+      margin: properties.getValue<>('margin'),
       currentAccountPicture: properties.getWidget('current-account-picture'),
       otherAccountsPictures: properties.getWidgets('other-accounts-pictures'),
       accountName: properties.getWidget('account-name'),

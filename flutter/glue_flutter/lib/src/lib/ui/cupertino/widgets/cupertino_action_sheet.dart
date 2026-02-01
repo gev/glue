@@ -23,8 +23,12 @@ Eval<Ir> _createCupertinoActionSheet(WidgetProperties properties) {
     title: properties.getWidget('title'),
     message: properties.getWidget('message'),
     actions: properties.getWidgets('actions'),
-    messageScrollController: properties.getValue('message-scroll-controller'),
-    actionScrollController: properties.getValue('action-scroll-controller'),
+    messageScrollController: properties.getValue<ScrollController>(
+      'message-scroll-controller',
+    ),
+    actionScrollController: properties.getValue<ScrollController>(
+      'action-scroll-controller',
+    ),
     cancelButton: properties.getWidget('cancel-button'),
   );
   return Eval.pure(IrNativeValue(Value(actionSheetWidget)));

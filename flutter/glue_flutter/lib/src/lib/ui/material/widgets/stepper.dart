@@ -20,19 +20,19 @@ Eval<Ir> _createStepper(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final stepperWidget = Stepper(
       key: properties.key,
-      steps: properties.getValue('steps') ?? [],
+      steps: properties.getValue<>('steps') ?? [],
       currentStep: properties.getInt('current-step') ?? 0,
-      onStepTapped: properties.getValue('on-step-tapped'),
+      onStepTapped: properties.getValue<>('on-step-tapped'),
       onStepContinue: properties.getVoidCallback('on-step-continue', runtime),
       onStepCancel: properties.getVoidCallback('on-step-cancel', runtime),
-      controlsBuilder: properties.getValue('controls-builder'),
-      type: properties.getValue('type') ?? StepperType.vertical,
-      physics: properties.getValue('physics'),
+      controlsBuilder: properties.getValue<>('controls-builder'),
+      type: properties.getValue<>('type') ?? StepperType.vertical,
+      physics: properties.getValue<>('physics'),
       elevation: properties.getDouble('elevation'),
-      margin: properties.getValue('margin'),
-      connectorColor: properties.getValue('connector-color'),
+      margin: properties.getValue<>('margin'),
+      connectorColor: properties.getValue<>('connector-color'),
       connectorThickness: properties.getDouble('connector-thickness'),
-      stepIconBuilder: properties.getValue('step-icon-builder'),
+      stepIconBuilder: properties.getValue<>('step-icon-builder'),
     );
     return IrNativeValue(Value(stepperWidget));
   });

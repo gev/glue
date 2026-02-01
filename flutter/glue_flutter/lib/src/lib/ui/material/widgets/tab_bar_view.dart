@@ -21,10 +21,10 @@ Eval<Ir> _createTabBarView(WidgetProperties properties) {
   final tabBarViewWidget = TabBarView(
     key: properties.key,
     children: properties.getWidgets('children'),
-    controller: properties.getValue('controller'),
-    physics: properties.getValue('physics'),
+    controller: properties.getValue<>('controller'),
+    physics: properties.getValue<>('physics'),
     dragStartBehavior:
-        properties.getValue('drag-start-behavior') ?? DragStartBehavior.start,
+        properties.getValue<>('drag-start-behavior') ?? DragStartBehavior.start,
     viewportFraction: properties.getDouble('viewport-fraction') ?? 1.0,
   );
   return Eval.pure(IrNativeValue(Value(tabBarViewWidget)));

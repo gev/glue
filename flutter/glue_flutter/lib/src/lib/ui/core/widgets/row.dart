@@ -21,12 +21,19 @@ Eval<Ir> _createRow(WidgetProperties properties) {
   final rowWidget = Row(
     key: properties.key,
     children: properties.children,
-    mainAxisAlignment: properties.getValue('main-axis-alignment'),
-    mainAxisSize: properties.getValue('main-axis-size'),
-    crossAxisAlignment: properties.getValue('cross-axis-alignment'),
-    textDirection: properties.getValue('text-direction'),
-    verticalDirection: properties.getValue('vertical-direction'),
-    textBaseline: properties.getValue('text-baseline'),
+    mainAxisAlignment:
+        properties.getValue<MainAxisAlignment>('main-axis-alignment') ??
+        MainAxisAlignment.start,
+    mainAxisSize:
+        properties.getValue<MainAxisSize>('main-axis-size') ?? MainAxisSize.max,
+    crossAxisAlignment:
+        properties.getValue<CrossAxisAlignment>('cross-axis-alignment') ??
+        CrossAxisAlignment.center,
+    textDirection: properties.getValue<TextDirection>('text-direction'),
+    verticalDirection:
+        properties.getValue<VerticalDirection>('vertical-direction') ??
+        VerticalDirection.down,
+    textBaseline: properties.getValue<TextBaseline>('text-baseline'),
   );
   return Eval.pure(IrNativeValue(Value(rowWidget)));
 }

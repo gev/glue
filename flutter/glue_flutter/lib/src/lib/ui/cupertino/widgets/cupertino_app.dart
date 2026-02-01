@@ -21,30 +21,42 @@ Eval<Ir> _createCupertinoApp(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final widget = CupertinoApp(
       key: properties.key,
-      navigatorKey: properties.getValue('navigator-key'),
+      navigatorKey: properties.getValue<GlobalKey<NavigatorState>>(
+        'navigator-key',
+      ),
       home: properties.getWidget('home'),
-      theme: properties.getValue('theme'),
-      routes: properties.getValue('routes'),
+      theme: properties.getValue<CupertinoThemeData>('theme'),
+      routes: properties.getValue<Map<String, WidgetBuilder>>('routes') ?? {},
       initialRoute: properties.getString('initial-route'),
-      onGenerateRoute: properties.getValue('on-generate-route'),
-      onGenerateInitialRoutes: properties.getValue(
+      onGenerateRoute: properties.getValue<RouteFactory>('on-generate-route'),
+      onGenerateInitialRoutes: properties.getValue<InitialRouteListFactory>(
         'on-generate-initial-routes',
       ),
-      onUnknownRoute: properties.getValue('on-unknown-route'),
-      navigatorObservers: properties.getValue('navigator-observers'),
-      builder: properties.getValue('builder'),
+      onUnknownRoute: properties.getValue<RouteFactory>('on-unknown-route'),
+      navigatorObservers:
+          properties.getValue<List<NavigatorObserver>>('navigator-observers') ??
+          [],
+      builder: properties.getValue<TransitionBuilder>('builder'),
       title: properties.getString('title') ?? 'Glue App',
-      onGenerateTitle: properties.getValue('on-generate-title'),
-      color: properties.getColor('color'),
-      locale: properties.getValue('locale'),
-      localizationsDelegates: properties.getValue('localizations-delegates'),
-      localeListResolutionCallback: properties.getValue(
-        'locale-list-resolution-callback',
+      onGenerateTitle: properties.getValue<GenerateAppTitle>(
+        'on-generate-title',
       ),
-      localeResolutionCallback: properties.getValue(
+      color: properties.getColor('color'),
+      locale: properties.getValue<Locale>('locale'),
+      localizationsDelegates: properties
+          .getValue<List<LocalizationsDelegate<dynamic>>>(
+            'localizations-delegates',
+          ),
+      localeListResolutionCallback: properties
+          .getValue<LocaleListResolutionCallback>(
+            'locale-list-resolution-callback',
+          ),
+      localeResolutionCallback: properties.getValue<LocaleResolutionCallback>(
         'locale-resolution-callback',
       ),
-      supportedLocales: properties.getValue('supported-locales'),
+      supportedLocales:
+          properties.getValue<Iterable<Locale>>('supported-locales') ??
+          const <Locale>[Locale('en', 'US')],
       showPerformanceOverlay:
           properties.getBool('show-performance-overlay') ?? false,
       checkerboardRasterCacheImages:
@@ -55,10 +67,10 @@ Eval<Ir> _createCupertinoApp(WidgetProperties properties) {
           properties.getBool('show-semantics-debugger') ?? false,
       debugShowCheckedModeBanner:
           properties.getBool('debug-show-checked-mode-banner') ?? false,
-      shortcuts: properties.getValue('shortcuts'),
-      actions: properties.getValue('actions'),
+      shortcuts: properties.getValue<Map<LogicalKeySet, Intent>>('shortcuts'),
+      actions: properties.getValue<Map<Type, Action<Intent>>>('actions'),
       restorationScopeId: properties.getString('restoration-scope-id'),
-      scrollBehavior: properties.getValue('scroll-behavior'),
+      scrollBehavior: properties.getValue<ScrollBehavior>('scroll-behavior'),
     );
     return IrNativeValue(Value(widget));
   });

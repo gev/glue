@@ -20,9 +20,9 @@ Eval<Ir> _createExpansionPanelList(WidgetProperties properties) {
   final expansionPanelListWidget = ExpansionPanelList(
     key: properties.key,
 
-    children: (properties.getValue('children') as List<ExpansionPanel>?) ?? [],
-    expansionCallback: properties.getValue('expansion-callback'),
-    animationDuration: properties.getValue('animation-duration'),
+    children: (properties.getValue<>('children') as List<ExpansionPanel>?) ?? [],
+    expansionCallback: properties.getValue<>('expansion-callback'),
+    animationDuration: properties.getValue<>('animation-duration'),
     elevation: properties.getDouble('elevation') ?? 2.0,
     materialGapSize: properties.getDouble('material-gap-size') ?? 16.0,
     dividerColor: properties.getColor('divider-color'),
