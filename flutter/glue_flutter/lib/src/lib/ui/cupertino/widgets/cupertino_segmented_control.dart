@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
@@ -20,16 +21,26 @@ Eval<Ir> cupertinoSegmentedControlImpl(Ir props) => switch (props) {
 
 /// Create CupertinoSegmentedControl widget from properties object
 Eval<Ir> _createCupertinoSegmentedControl(WidgetProperties properties) {
-  final widget = CupertinoSegmentedControl(
-    key: properties.key,
-    children: properties.getValue<>('children'),
-    onValueChanged: properties.getValue<>('on-value-changed'),
-    groupValue: properties.getValue<>('group-value'),
-    unselectedColor: properties.getColor('unselected-color'),
-    selectedColor: properties.getColor('selected-color'),
-    borderColor: properties.getColor('border-color'),
-    pressedColor: properties.getColor('pressed-color'),
-    padding: properties.getValue<>('padding'),
-  );
-  return Eval.pure(IrNativeValue(Value(widget)));
+  final children = properties.getValue<Map<Object, Widget>>('children');
+  if (children == null) {
+    return throwError(wrongArgumentType(['Children required']));
+  }
+  final onValueChanged = properties.getCallback<dynamic>('on-value-changed');
+  if (onValueChanged == null) {
+    return throwError(wrongArgumentType(['on-value-changed required']));
+  }
+  return getRuntime().map((runtime) {
+    final widget = CupertinoSegmentedControl(
+      key: properties.key,
+      children: children,
+      onValueChanged: onValueChanged(runtime),
+      groupValue: properties.getValue<dynamic>('group-value'),
+      unselectedColor: properties.getColor('unselected-color'),
+      selectedColor: properties.getColor('selected-color'),
+      borderColor: properties.getColor('border-color'),
+      pressedColor: properties.getColor('pressed-color'),
+      padding: properties.getValue<EdgeInsetsGeometry>('padding'),
+    );
+    return IrNativeValue(Value(widget));
+  });
 }

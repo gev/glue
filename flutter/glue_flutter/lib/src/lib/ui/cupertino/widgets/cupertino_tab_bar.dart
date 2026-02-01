@@ -21,15 +21,15 @@ Eval<Ir> _createCupertinoTabBar(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final widget = CupertinoTabBar(
       key: properties.key,
-      items: properties.getValue<>('items'),
-      onTap: properties.getValue<>('on-tap'),
+      items: properties.getValues<BottomNavigationBarItem>('items'),
+      onTap: properties.getCallback<int>('on-tap')?.call(runtime),
       currentIndex: properties.getInt('current-index') ?? 0,
       backgroundColor: properties.getColor('background-color'),
       activeColor: properties.getColor('active-color'),
       inactiveColor:
           properties.getColor('inactive-color') ?? CupertinoColors.systemGrey,
       iconSize: properties.getDouble('icon-size') ?? 30.0,
-      border: properties.getValue<>('border'),
+      border: properties.getValue<Border>('border'),
     );
     return IrNativeValue(Value(widget));
   });

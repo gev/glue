@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
@@ -18,16 +19,31 @@ Eval<Ir> cupertinoTimerPickerImpl(Ir props) => switch (props) {
 
 /// Create CupertinoTimerPicker widget from properties object
 Eval<Ir> _createCupertinoTimerPicker(WidgetProperties properties) {
-  final widget = CupertinoTimerPicker(
-    key: properties.key,
-    mode: properties.getValue<>('mode'),
-    initialTimerDuration: properties.getValue<>('initial-timer-duration'),
-    minuteInterval: properties.getInt('minute-interval') ?? 1,
-    secondInterval: properties.getInt('second-interval') ?? 1,
-    alignment: properties.getValue<>('alignment') ?? Alignment.center,
-    backgroundColor: properties.getColor('background-color'),
-    itemExtent: properties.getDouble('item-extent') ?? 32.0,
-    onTimerDurationChanged: properties.getValue<>('on-timer-duration-changed'),
+  final onTimerDurationChanged = properties.getCallback<Duration>(
+    'on-timer-duration-changed',
   );
-  return Eval.pure(IrNativeValue(Value(widget)));
+  if (onTimerDurationChanged == null) {
+    return throwError(
+      wrongArgumentType(['on-timer-duration-changed required']),
+    );
+  }
+  return getRuntime().map((runtime) {
+    final widget = CupertinoTimerPicker(
+      key: properties.key,
+      mode:
+          properties.getValue<CupertinoTimerPickerMode>('mode') ??
+          CupertinoTimerPickerMode.hm,
+      initialTimerDuration:
+          properties.getValue<Duration>('initial-timer-duration') ??
+          Duration.zero,
+      minuteInterval: properties.getInt('minute-interval') ?? 1,
+      secondInterval: properties.getInt('second-interval') ?? 1,
+      alignment:
+          properties.getValue<Alignment>('alignment') ?? Alignment.center,
+      backgroundColor: properties.getColor('background-color'),
+      itemExtent: properties.getDouble('item-extent') ?? 32.0,
+      onTimerDurationChanged: onTimerDurationChanged(runtime),
+    );
+    return IrNativeValue(Value(widget));
+  });
 }

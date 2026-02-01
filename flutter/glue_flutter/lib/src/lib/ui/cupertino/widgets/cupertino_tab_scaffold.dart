@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
@@ -18,17 +19,23 @@ Eval<Ir> cupertinoTabScaffoldImpl(Ir props) => switch (props) {
 
 /// Create CupertinoTabScaffold widget from properties object
 Eval<Ir> _createCupertinoTabScaffold(WidgetProperties properties) {
-  return getRuntime().map((runtime) {
-    final widget = CupertinoTabScaffold(
-      key: properties.key,
-      tabBar: properties.getValue<>('tab-bar'),
-      tabBuilder: properties.getValue<>('tab-builder'),
-      controller: properties.getValue<>('controller'),
-      backgroundColor: properties.getColor('background-color'),
-      resizeToAvoidBottomInset:
-          properties.getBool('resize-to-avoid-bottom-inset') ?? true,
-      restorationId: properties.getString('restoration-id'),
-    );
-    return IrNativeValue(Value(widget));
-  });
+  final tabBar = properties.getValue<CupertinoTabBar>('tab-bar');
+  if (tabBar == null) {
+    return throwError(wrongArgumentType(['tab-bar required']));
+  }
+  final tabBuilder = properties.getValue<IndexedWidgetBuilder>('tab-builder');
+  if (tabBuilder == null) {
+    return throwError(wrongArgumentType(['tab-builder required']));
+  }
+  final widget = CupertinoTabScaffold(
+    key: properties.key,
+    tabBar: tabBar,
+    tabBuilder: tabBuilder,
+    controller: properties.getValue<CupertinoTabController>('controller'),
+    backgroundColor: properties.getColor('background-color'),
+    resizeToAvoidBottomInset:
+        properties.getBool('resize-to-avoid-bottom-inset') ?? true,
+    restorationId: properties.getString('restoration-id'),
+  );
+  return Eval.pure(IrNativeValue(Value(widget)));
 }

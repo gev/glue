@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
@@ -25,12 +26,12 @@ Eval<Ir> _createCupertinoSwitch(WidgetProperties properties) {
     final switchWidget = CupertinoSwitch(
       key: properties.key,
       value: properties.getBool('value') ?? false,
-      onChanged: properties.getValue<>('on-changed'),
-      activeColor: properties.getColor('active-color'),
-      trackColor: properties.getColor('track-color'),
+      onChanged: properties.getCallback<bool>('on-changed')?.call(runtime),
       thumbColor: properties.getColor('thumb-color'),
-      dragStartBehavior: properties.getValue<>('drag-start-behavior'),
-      focusNode: properties.getValue<>('focus-node'),
+      dragStartBehavior:
+          properties.getValue<DragStartBehavior>('drag-start-behavior') ??
+          DragStartBehavior.start,
+      focusNode: properties.getValue<FocusNode>('focus-node'),
       autofocus: properties.getBool('autofocus') ?? false,
     );
     return IrNativeValue(Value(switchWidget));
