@@ -22,14 +22,16 @@ Eval<Ir> _createOutlinedButton(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final buttonWidget = OutlinedButton(
       key: properties.key,
-      onPressed: properties.getVoidCallback('on-pressed', runtime),
-      onLongPress: properties.getVoidCallback('on-long-press', runtime),
-      onHover: properties.getValue<>('on-hover'),
-      onFocusChange: properties.getValue<>('on-focus-change'),
-      style: properties.getValue<>('style'),
-      focusNode: properties.getValue<>('focus-node'),
+      onPressed: properties.getVoidCallback('on-pressed')?.call(runtime),
+      onLongPress: properties.getVoidCallback('on-long-press')?.call(runtime),
+      onHover: properties.getCallback<bool>('on-hover')?.call(runtime),
+      onFocusChange: properties
+          .getCallback<bool>('on-focus-change')
+          ?.call(runtime),
+      style: properties.getValue<ButtonStyle>('style'),
+      focusNode: properties.getValue<FocusNode>('focus-node'),
       autofocus: properties.getBool('autofocus') ?? false,
-      clipBehavior: properties.getValue<>('clip-behavior'),
+      clipBehavior: properties.getValue<Clip>('clip-behavior'),
       child: properties.child,
     );
     return IrNativeValue(Value(buttonWidget));

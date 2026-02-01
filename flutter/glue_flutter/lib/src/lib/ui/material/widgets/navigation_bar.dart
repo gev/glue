@@ -20,21 +20,29 @@ Eval<Ir> _createNavigationBar(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final navigationBarWidget = NavigationBar(
       key: properties.key,
-      animationDuration: properties.getValue<>('animation-duration'),
+      animationDuration: properties.getValue<Duration>('animation-duration'),
       selectedIndex: properties.getInt('selected-index') ?? 0,
       destinations: properties.getWidgets('destinations'),
-      onDestinationSelected: properties.getValue<>('on-destination-selected'),
+      onDestinationSelected: properties
+          .getCallback<int>('on-destination-selected')
+          ?.call(runtime),
       backgroundColor: properties.getColor('background-color'),
       elevation: properties.getDouble('elevation'),
       shadowColor: properties.getColor('shadow-color'),
       surfaceTintColor: properties.getColor('surface-tint-color'),
       indicatorColor: properties.getColor('indicator-color'),
-      indicatorShape: properties.getValue<>('indicator-shape'),
+      indicatorShape: properties.getValue<ShapeBorder>('indicator-shape'),
       height: properties.getDouble('height'),
-      labelBehavior: properties.getValue<>('label-behavior'),
-      overlayColor: properties.getValue<>('overlay-color'),
-      labelTextStyle: properties.getValue<>('label-text-style'),
-      labelPadding: properties.getValue<>('label-padding'),
+      labelBehavior: properties.getValue<NavigationDestinationLabelBehavior>(
+        'label-behavior',
+      ),
+      overlayColor: properties.getValue<WidgetStateProperty<Color?>>(
+        'overlay-color',
+      ),
+      labelTextStyle: properties.getValue<WidgetStateProperty<TextStyle>>(
+        'label-text-style',
+      ),
+      labelPadding: properties.getValue<EdgeInsetsGeometry>('label-padding'),
       maintainBottomViewPadding:
           properties.getBool('maintain-bottom-view-padding') ?? false,
     );

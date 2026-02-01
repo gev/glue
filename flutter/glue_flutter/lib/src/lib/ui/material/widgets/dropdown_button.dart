@@ -20,15 +20,18 @@ Eval<Ir> _createDropdownButton(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final dropdownButtonWidget = DropdownButton<Object>(
       key: properties.key,
-      items: properties.getValue<>('items'),
-      selectedItemBuilder: properties.getValue<>('selected-item-builder'),
-      value: properties.getValue<>('value'),
+      items: properties.getValues<DropdownMenuItem<Object>>('items'),
+      selectedItemBuilder: properties
+          .getValue<List<Widget> Function(BuildContext)>(
+            'selected-item-builder',
+          ),
+      value: properties.getValue<Object>('value'),
       hint: properties.getWidget('hint'),
       disabledHint: properties.getWidget('disabled-hint'),
-      onChanged: properties.getValue<>('on-changed'),
-      onTap: properties.getVoidCallback('on-tap', runtime),
+      onChanged: properties.getCallback<Object>('on-changed')?.call(runtime),
+      onTap: properties.getVoidCallback('on-tap')?.call(runtime),
       elevation: properties.getInt('elevation') ?? 8,
-      style: properties.getValue<>('style'),
+      style: properties.getValue<TextStyle>('style'),
       underline: properties.getWidget('underline'),
       icon: properties.getWidget('icon'),
       iconDisabledColor: properties.getColor('icon-disabled-color'),
@@ -38,14 +41,16 @@ Eval<Ir> _createDropdownButton(WidgetProperties properties) {
       isExpanded: properties.getBool('is-expanded') ?? false,
       itemHeight: properties.getDouble('item-height'),
       focusColor: properties.getColor('focus-color'),
-      focusNode: properties.getValue<>('focus-node'),
+      focusNode: properties.getValue<FocusNode>('focus-node'),
       autofocus: properties.getBool('autofocus') ?? false,
       dropdownColor: properties.getColor('color'),
       menuMaxHeight: properties.getDouble('menu-max-height'),
       enableFeedback: properties.getBool('enable-feedback') ?? true,
-      alignment: properties.getValue<>('alignment'),
-      borderRadius: properties.getValue<>('border-radius'),
-      padding: properties.getValue<>('padding'),
+      alignment:
+          properties.getValue<AlignmentGeometry>('alignment') ??
+          Alignment.centerLeft,
+      borderRadius: properties.getValue<BorderRadius>('border-radius'),
+      padding: properties.getValue<EdgeInsets>('padding'),
     );
     return IrNativeValue(Value(dropdownButtonWidget));
   });

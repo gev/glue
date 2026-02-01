@@ -26,7 +26,7 @@ Eval<Ir> _createCircularProgressIndicator(WidgetProperties properties) {
     color: properties.getColor('color'),
     strokeWidth: properties.getDouble('stroke-width'),
     strokeAlign: properties.getDouble('stroke-align'),
-    strokeCap: properties.getValue<>('stroke-cap'),
+    strokeCap: properties.getValue<StrokeCap>('stroke-cap'),
     semanticsLabel: properties.getString('semantics-label'),
     semanticsValue: properties.getString('semantics-value'),
   );

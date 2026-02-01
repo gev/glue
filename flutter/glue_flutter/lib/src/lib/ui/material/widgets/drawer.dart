@@ -24,8 +24,8 @@ Eval<Ir> _createDrawer(WidgetProperties properties) {
     shadowColor: properties.getColor('shadow-color'),
     surfaceTintColor: properties.getColor('surface-tint-color'),
     width: properties.getDouble('width'),
-    shape: properties.getValue<>('shape'),
-    clipBehavior: properties.getValue<>('clip-behavior') ?? Clip.none,
+    shape: properties.getValue<ShapeBorder>('shape'),
+    clipBehavior: properties.getValue<Clip>('clip-behavior') ?? Clip.none,
     semanticLabel: properties.getString('semantic-label'),
     child: properties.child,
   );

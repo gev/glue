@@ -20,24 +20,34 @@ Eval<Ir> _createRadio(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final radioWidget = Radio(
       key: properties.key,
-      value: properties.getValue<>('value'),
-      mouseCursor: properties.getValue<>('mouse-cursor'),
+      value: properties.getValue<Object>('value'),
+      mouseCursor: properties.getValue<MouseCursor>('mouse-cursor'),
       toggleable: properties.getBool('toggleable') ?? false,
       activeColor: properties.getColor('active-color'),
-      fillColor: properties.getValue<>('fill-color'),
+      fillColor: properties.getValue<WidgetStateProperty<Color?>>('fill-color'),
       focusColor: properties.getColor('focus-color'),
       hoverColor: properties.getColor('hover-color'),
-      overlayColor: properties.getValue<>('overlay-color'),
+      overlayColor: properties.getValue<WidgetStateProperty<Color?>>(
+        'overlay-color',
+      ),
       splashRadius: properties.getDouble('splash-radius'),
-      materialTapTargetSize: properties.getValue<>('material-tap-target-size'),
-      visualDensity: properties.getValue<>('visual-density'),
-      focusNode: properties.getValue<>('focus-node'),
+      materialTapTargetSize: properties.getValue<MaterialTapTargetSize>(
+        'material-tap-target-size',
+      ),
+      visualDensity: properties.getValue<VisualDensity>('visual-density'),
+      focusNode: properties.getValue<FocusNode>('focus-node'),
       autofocus: properties.getBool('autofocus') ?? false,
       enabled: properties.getBool('enabled'),
-      groupRegistry: properties.getValue<>('group-registry'),
-      backgroundColor: properties.getValue<>('background-color'),
-      side: properties.getValue<>('side'),
-      innerRadius: properties.getValue<>('inner-radius'),
+      groupRegistry: properties.getValue<RadioGroupRegistry<Object>>(
+        'group-registry',
+      ),
+      backgroundColor: properties.getValue<WidgetStateProperty<Color?>>(
+        'background-color',
+      ),
+      side: properties.getValue<BorderSide?>('side'),
+      innerRadius: properties.getValue<WidgetStateProperty<double?>>(
+        'inner-radius',
+      ),
     );
     return IrNativeValue(Value(radioWidget));
   });

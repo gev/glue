@@ -19,16 +19,18 @@ Eval<Ir> searchAnchorImpl(Ir props) => switch (props) {
 Eval<Ir> _createSearchAnchor(WidgetProperties properties) {
   final searchAnchorWidget = SearchAnchor(
     key: properties.key,
-    searchController: properties.getValue<>('search-controller'),
+    searchController: properties.getValue<SearchController>(
+      'search-controller',
+    ),
     suggestionsBuilder:
-        properties.getValue<>('suggestions-builder') ??
+        properties.getValue<SuggestionsBuilder>('suggestions-builder') ??
         (context, controller) => [],
     builder:
-        properties.getValue<>('builder') ??
+        properties.getValue<Widget Function(BuildContext, SearchController)>(
+          'builder',
+        ) ??
         (context, controller) => const SizedBox(),
     viewHintText: properties.getString('view-hint-text'),
-    // Note: Some SearchAnchor parameters have API compatibility issues
-    // that will be resolved in future Flutter version updates
   );
   return Eval.pure(IrNativeValue(Value(searchAnchorWidget)));
 }

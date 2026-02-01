@@ -25,10 +25,14 @@ Eval<Ir> _createNavigationDrawer(WidgetProperties properties) {
       shadowColor: properties.getColor('shadow-color'),
       surfaceTintColor: properties.getColor('surface-tint-color'),
       indicatorColor: properties.getColor('indicator-color'),
-      indicatorShape: properties.getValue<>('indicator-shape'),
+      indicatorShape: properties.getValue<ShapeBorder>('indicator-shape'),
       selectedIndex: properties.getInt('selected-index'),
-      onDestinationSelected: properties.getValue<>('on-destination-selected'),
-      tilePadding: properties.getValue<>('tile-padding'),
+      onDestinationSelected: properties
+          .getCallback<int>('on-destination-selected')
+          ?.call(runtime),
+      tilePadding:
+          properties.getValue<EdgeInsetsGeometry>('tile-padding') ??
+          EdgeInsets.symmetric(horizontal: 12.0),
       header: properties.getWidget('header'),
       children: properties.children,
       footer: properties.getWidget('footer'),

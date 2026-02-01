@@ -22,7 +22,7 @@ Eval<Ir> _createLinearProgressIndicator(WidgetProperties properties) {
     value: properties.getDouble('value'),
     backgroundColor: properties.getColor('background-color'),
     color: properties.getColor('color'),
-    valueColor: properties.getValue<>('value-color'),
+    valueColor: properties.getValue<Animation<Color?>>('value-color'),
     minHeight: properties.getDouble('min-height'),
     semanticsLabel: properties.getString('semantics-label'),
     semanticsValue: properties.getString('semantics-value'),

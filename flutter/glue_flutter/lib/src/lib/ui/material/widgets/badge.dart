@@ -28,12 +28,12 @@ Eval<Ir> _createBadge(WidgetProperties properties) {
     label: properties.getWidget('label'),
     backgroundColor: properties.getColor('background-color'),
     textColor: properties.getColor('text-color'),
-    textStyle: properties.getValue<>('text-style'),
-    padding: properties.getValue<>('padding'),
-    alignment: properties.getValue<>('alignment'),
+    textStyle: properties.getValue<TextStyle>('text-style'),
+    padding: properties.getValue<EdgeInsetsGeometry>('padding'),
+    alignment: properties.getValue<AlignmentGeometry>('alignment'),
     isLabelVisible: properties.getBool('is-label-visible') ?? true,
     largeSize: properties.getDouble('large-size'),
-    offset: properties.getValue<>('offset'),
+    offset: properties.getValue<Offset>('offset'),
   );
   return Eval.pure(IrNativeValue(Value(badgeWidget)));
 }

@@ -21,15 +21,17 @@ Eval<Ir> scaffoldImpl(Ir props) => switch (props) {
 Eval<Ir> _createScaffold(WidgetProperties properties) {
   final scaffoldWidget = Scaffold(
     key: properties.key,
-    appBar: properties.getValue<>('app-bar'),
+    appBar: properties.getValue<PreferredSizeWidget>('app-bar'),
     body: properties.getWidget('body'),
     floatingActionButton: properties.getWidget('floating-action-button'),
-    floatingActionButtonLocation: properties.getValue<>(
-      'floating-action-button-location',
-    ),
-    floatingActionButtonAnimator: properties.getValue<>(
-      'floating-action-button-animator',
-    ),
+    floatingActionButtonLocation: properties
+        .getValue<FloatingActionButtonLocation>(
+          'floating-action-button-location',
+        ),
+    floatingActionButtonAnimator: properties
+        .getValue<FloatingActionButtonAnimator>(
+          'floating-action-button-animator',
+        ),
     persistentFooterButtons: properties.getWidgets('persistent-footer-buttons'),
     drawer: properties.getWidget('drawer'),
     endDrawer: properties.getWidget('end-drawer'),
@@ -41,7 +43,7 @@ Eval<Ir> _createScaffold(WidgetProperties properties) {
     ),
     primary: properties.getBool('primary') ?? true,
     drawerDragStartBehavior:
-        properties.getValue<>('drawer-drag-start-behavior') ??
+        properties.getValue<DragStartBehavior>('drawer-drag-start-behavior') ??
         DragStartBehavior.start,
     extendBody: properties.getBool('extend-body') ?? false,
     extendBodyBehindAppBar:

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
@@ -17,32 +18,52 @@ Eval<Ir> datePickerDialogImpl(Ir props) => switch (props) {
 
 /// Create DatePickerDialog widget from properties
 Eval<Ir> _createDatePickerDialog(WidgetProperties properties) {
-  final datePickerDialogWidget = DatePickerDialog(
-    key: properties.key,
-    initialDate: properties.getValue<>('initial-date') as DateTime,
-    firstDate: properties.getValue<>('first-date') as DateTime,
-    lastDate: properties.getValue<>('last-date') as DateTime,
-    currentDate: properties.getValue<>('current-date') as DateTime?,
-    initialEntryMode: properties.getValue<>('initial-entry-mode'),
-    selectableDayPredicate: properties.getValue<>('selectable-day-predicate'),
-    cancelText: properties.getString('cancel-text'),
-    confirmText: properties.getString('confirm-text'),
-    helpText: properties.getString('help-text'),
-    errorFormatText: properties.getString('error-format-text'),
-    errorInvalidText: properties.getString('error-invalid-text'),
-    fieldHintText: properties.getString('field-hint-text'),
-    fieldLabelText: properties.getString('field-label-text'),
-    keyboardType: properties.getValue<>('keyboard-type'),
-    restorationId: properties.getString('restoration-id'),
-    onDatePickerModeChange: properties.getValue<>('on-date-picker-mode-change'),
-    switchToInputEntryModeIcon: properties.getValue<>(
-      'switch-to-input-entry-mode-icon',
-    ),
-    switchToCalendarEntryModeIcon: properties.getValue<>(
-      'switch-to-calendar-entry-mode-icon',
-    ),
-    insetPadding: properties.getValue<>('inset-padding') as EdgeInsets,
-    calendarDelegate: properties.getValue<>('calendar-delegate'),
-  );
-  return Eval.pure(IrNativeValue(Value(datePickerDialogWidget)));
+  final firstDate = properties.getValue<DateTime>('first-date');
+  if (firstDate == null) {
+    return throwError(wrongArgumentType(['first-date']));
+  }
+  final lastDate = properties.getValue<DateTime>('last-date');
+  if (lastDate == null) {
+    return throwError(wrongArgumentType(['last-date']));
+  }
+  return getRuntime().map((runtime) {
+    final datePickerDialogWidget = DatePickerDialog(
+      key: properties.key,
+      initialDate: properties.getValue<DateTime>('initial-date'),
+      firstDate: firstDate,
+      lastDate: lastDate,
+      currentDate: properties.getValue<DateTime>('current-date'),
+      initialEntryMode:
+          properties.getValue<DatePickerEntryMode>('initial-entry-mode') ??
+          DatePickerEntryMode.calendar,
+      selectableDayPredicate: properties.getValue<SelectableDayPredicate>(
+        'selectable-day-predicate',
+      ),
+      cancelText: properties.getString('cancel-text'),
+      confirmText: properties.getString('confirm-text'),
+      helpText: properties.getString('help-text'),
+      errorFormatText: properties.getString('error-format-text'),
+      errorInvalidText: properties.getString('error-invalid-text'),
+      fieldHintText: properties.getString('field-hint-text'),
+      fieldLabelText: properties.getString('field-label-text'),
+      keyboardType: properties.getValue<TextInputType>('keyboard-type'),
+      restorationId: properties.getString('restoration-id'),
+      onDatePickerModeChange: properties
+          .getCallback<DatePickerEntryMode>('on-date-picker-mode-change')
+          ?.call(runtime),
+      switchToInputEntryModeIcon: properties.getValue<Icon>(
+        'switch-to-input-entry-mode-icon',
+      ),
+      switchToCalendarEntryModeIcon: properties.getValue<Icon>(
+        'switch-to-calendar-entry-mode-icon',
+      ),
+      insetPadding:
+          properties.getValue<EdgeInsets>('inset-padding') ??
+          EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+      calendarDelegate:
+          properties.getValue<CalendarDelegate>('calendar-delegate') ??
+          const GregorianCalendarDelegate(),
+    );
+    return IrNativeValue(Value(datePickerDialogWidget));
+  });
 }

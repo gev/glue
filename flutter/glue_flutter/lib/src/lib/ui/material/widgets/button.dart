@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
@@ -18,23 +19,26 @@ Eval<Ir> buttonImpl(Ir props) => switch (props) {
 
 /// Create Button widget from properties object
 Eval<Ir> _createButton(WidgetProperties properties) {
-  final label =
-      properties.getString('label') ??
-      'Button'; // Extract label from properties
-
-  // Get runtime and create widget
+  final label = properties.getValue<Widget>('label');
+  if (label == null) {
+    return throwError(
+      wrongArgumentType(['Expected "label" argument of type Widget']),
+    );
+  }
   return getRuntime().map((runtime) {
     final buttonWidget = ElevatedButton(
       key: properties.key,
-      onPressed: properties.getVoidCallback('on-pressed', runtime),
-      onLongPress: properties.getVoidCallback('on-long-press', runtime),
-      onHover: properties.getValue<>('on-hover'),
-      onFocusChange: properties.getValue<>('on-focus-change'),
-      style: properties.getValue<>('style'),
-      focusNode: properties.getValue<>('focus-node'),
+      onPressed: properties.getVoidCallback('on-pressed')?.call(runtime),
+      onLongPress: properties.getVoidCallback('on-long-press')?.call(runtime),
+      onHover: properties.getCallback<bool>('on-hover')?.call(runtime),
+      onFocusChange: properties
+          .getCallback<bool>('on-focus-change')
+          ?.call(runtime),
+      style: properties.getValue<ButtonStyle>('style'),
+      focusNode: properties.getValue<FocusNode>('focus-node'),
       autofocus: properties.getBool('autofocus') ?? false,
-      clipBehavior: properties.getValue<>('clip-behavior'),
-      child: Text(label),
+      clipBehavior: properties.getValue<Clip>('clip-behavior'),
+      child: label,
     );
     return IrNativeValue(Value(buttonWidget));
   });

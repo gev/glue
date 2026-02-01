@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
@@ -31,14 +32,13 @@ Eval<Ir> _createAppBar(WidgetProperties properties) {
     bottom: properties.getValue<PreferredSizeWidget>('bottom'),
     elevation: properties.getDouble('elevation'),
     scrolledUnderElevation: properties.getDouble('scrolled-under-elevation'),
-    notificationPredicate: properties.getValue<>('notification-predicate'),
     shadowColor: properties.getColor('shadow-color'),
     surfaceTintColor: properties.getColor('surface-tint-color'),
-    shape: properties.getValue<>('shape'),
+    shape: properties.getValue<ShapeBorder>('shape'),
     backgroundColor: properties.getColor('background-color'),
     foregroundColor: properties.getColor('foreground-color'),
-    iconTheme: properties.getValue<>('icon-theme'),
-    actionsIconTheme: properties.getValue<>('actions-icon-theme'),
+    iconTheme: properties.getValue<IconThemeData>('icon-theme'),
+    actionsIconTheme: properties.getValue<IconThemeData>('actions-icon-theme'),
     primary: properties.getBool('primary') ?? true,
     centerTitle: properties.getBool('center-title'),
     excludeHeaderSemantics:
@@ -48,15 +48,17 @@ Eval<Ir> _createAppBar(WidgetProperties properties) {
     bottomOpacity: properties.getDouble('bottom-opacity') ?? 1.0,
     toolbarHeight: properties.getDouble('toolbar-height'),
     leadingWidth: properties.getDouble('leading-width'),
-    toolbarTextStyle: properties.getValue<>('toolbar-text-style'),
-    titleTextStyle: properties.getValue<>('title-text-style'),
-    systemOverlayStyle: properties.getValue<>('system-overlay-style'),
+    toolbarTextStyle: properties.getValue<TextStyle>('toolbar-text-style'),
+    titleTextStyle: properties.getValue<TextStyle>('title-text-style'),
+    systemOverlayStyle: properties.getValue<SystemUiOverlayStyle>(
+      'system-overlay-style',
+    ),
     forceMaterialTransparency:
         properties.getBool('force-material-transparency') ?? false,
     useDefaultSemanticsOrder:
         properties.getBool('use-default-semantics-order') ?? true,
-    clipBehavior: properties.getValue<>('clip-behavior') ?? Clip.none,
-    actionsPadding: properties.getValue<>('actions-padding'),
+    clipBehavior: properties.getValue<Clip>('clip-behavior') ?? Clip.none,
+    actionsPadding: properties.getValue<EdgeInsetsGeometry>('actions-padding'),
     animateColor: properties.getBool('animate-color') ?? true,
   );
   return Eval.pure(IrNativeValue(Value(widget)));

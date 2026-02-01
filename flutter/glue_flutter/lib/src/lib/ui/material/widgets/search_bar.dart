@@ -20,29 +20,34 @@ Eval<Ir> _createSearchBar(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final searchBarWidget = SearchBar(
       key: properties.key,
-      controller: properties.getValue<>('controller'),
-      focusNode: properties.getValue<>('focus-node'),
+      controller: properties.getValue<TextEditingController>('controller'),
+      focusNode: properties.getValue<FocusNode>('focus-node'),
       hintText: properties.getString('hint-text'),
-      onTap: properties.getVoidCallback('on-tap', runtime),
-      onChanged: properties.getValue<>('on-changed'),
-      onSubmitted: properties.getValue<>('on-submitted'),
-      constraints: properties.getValue<>('constraints'),
-      elevation: properties.getValue<>('elevation'),
-      overlayColor: properties.getValue<>('overlay-color'),
-      side: properties.getValue<>('side'),
-      shape: properties.getValue<>('shape'),
-      padding: WidgetStateProperty.all(
-        properties.getValue<>('padding') ??
-            const EdgeInsets.symmetric(horizontal: 8.0),
+      onTap: properties.getVoidCallback('on-tap')?.call(runtime),
+      onChanged: properties.getValue<ValueChanged<String>>('on-changed'),
+      onSubmitted: properties.getValue<ValueChanged<String>>('on-submitted'),
+      constraints: properties.getValue<BoxConstraints>('constraints'),
+      elevation: properties.getValue<WidgetStateProperty<double?>>('elevation'),
+      overlayColor: properties.getValue<WidgetStateProperty<Color?>>(
+        'overlay-color',
       ),
-      textStyle: WidgetStateProperty.all(properties.getValue<>('text-style')),
-      hintStyle: WidgetStateProperty.all(properties.getValue<>('hint-style')),
+      side: properties.getValue<WidgetStateProperty<BorderSide?>>('side'),
+      shape: properties.getValue<WidgetStateProperty<OutlinedBorder?>>('shape'),
+      padding: properties.getValue<WidgetStateProperty<EdgeInsetsGeometry?>>(
+        'padding',
+      ),
+      textStyle: properties.getValue<WidgetStateProperty<TextStyle?>>(
+        'text-style',
+      ),
+      hintStyle: properties.getValue<WidgetStateProperty<TextStyle?>>(
+        'hint-style',
+      ),
       textCapitalization:
-          properties.getValue<>('text-capitalization') ?? TextCapitalization.none,
-      keyboardType: properties.getValue<>('keyboard-type') ?? TextInputType.text,
-      // Note: Some SearchBar parameters have API compatibility issues
-      // (leading/trailing widgets, color properties, onTapOutside callback)
-      // that will be resolved in future Flutter version updates
+          properties.getValue<TextCapitalization>('text-capitalization') ??
+          TextCapitalization.none,
+      keyboardType:
+          properties.getValue<TextInputType>('keyboard-type') ??
+          TextInputType.text,
     );
     return IrNativeValue(Value(searchBarWidget));
   });

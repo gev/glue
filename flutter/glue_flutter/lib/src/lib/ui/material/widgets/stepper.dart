@@ -20,19 +20,28 @@ Eval<Ir> _createStepper(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final stepperWidget = Stepper(
       key: properties.key,
-      steps: properties.getValue<>('steps') ?? [],
+      steps: properties.getValues<Step>('steps'),
       currentStep: properties.getInt('current-step') ?? 0,
-      onStepTapped: properties.getValue<>('on-step-tapped'),
-      onStepContinue: properties.getVoidCallback('on-step-continue', runtime),
-      onStepCancel: properties.getVoidCallback('on-step-cancel', runtime),
-      controlsBuilder: properties.getValue<>('controls-builder'),
-      type: properties.getValue<>('type') ?? StepperType.vertical,
-      physics: properties.getValue<>('physics'),
+      onStepTapped: properties.getValue<Function(int)?>('on-step-tapped'),
+      onStepContinue: properties
+          .getVoidCallback('on-step-continue')
+          ?.call(runtime),
+      onStepCancel: properties.getVoidCallback('on-step-cancel')?.call(runtime),
+      controlsBuilder: properties
+          .getValue<Widget Function(BuildContext, ControlsDetails)>(
+            'controls-builder',
+          ),
+      type: properties.getValue<StepperType>('type') ?? StepperType.vertical,
+      physics: properties.getValue<ScrollPhysics>('physics'),
       elevation: properties.getDouble('elevation'),
-      margin: properties.getValue<>('margin'),
-      connectorColor: properties.getValue<>('connector-color'),
+      margin: properties.getValue<EdgeInsetsGeometry?>('margin'),
+      connectorColor: properties.getValue<WidgetStateProperty<Color>?>(
+        'connector-color',
+      ),
       connectorThickness: properties.getDouble('connector-thickness'),
-      stepIconBuilder: properties.getValue<>('step-icon-builder'),
+      stepIconBuilder: properties.getValue<Widget Function(int, StepState)>(
+        'step-icon-builder',
+      ),
     );
     return IrNativeValue(Value(stepperWidget));
   });

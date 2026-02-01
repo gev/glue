@@ -20,16 +20,15 @@ Eval<Ir> _createUserAccountsDrawerHeader(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final userAccountsDrawerHeaderWidget = UserAccountsDrawerHeader(
       key: properties.key,
-      decoration: properties.getValue<>('decoration'),
-      margin: properties.getValue<>('margin'),
+      decoration: properties.getValue<Decoration>('decoration'),
+      margin: properties.getValue<EdgeInsetsGeometry>('margin'),
       currentAccountPicture: properties.getWidget('current-account-picture'),
       otherAccountsPictures: properties.getWidgets('other-accounts-pictures'),
       accountName: properties.getWidget('account-name'),
       accountEmail: properties.getWidget('account-email'),
-      onDetailsPressed: properties.getVoidCallback(
-        'on-details-pressed',
-        runtime,
-      ),
+      onDetailsPressed: properties
+          .getVoidCallback('on-details-pressed')
+          ?.call(runtime),
       arrowColor: properties.getColor('arrow-color') ?? Colors.white,
     );
     return IrNativeValue(Value(userAccountsDrawerHeaderWidget));

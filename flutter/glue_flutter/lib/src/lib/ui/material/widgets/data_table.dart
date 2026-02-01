@@ -20,16 +20,20 @@ Eval<Ir> _createDataTable(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final dataTableWidget = DataTable(
       key: properties.key,
-      columns: properties.getValue<>('columns') ?? [],
-      rows: properties.getValue<>('rows') ?? [],
+      columns: properties.getValues<DataColumn>('columns'),
+      rows: properties.getValues<DataRow>('rows'),
       sortColumnIndex: properties.getInt('sort-column-index'),
       sortAscending: properties.getBool('sort-ascending') ?? true,
-      onSelectAll: properties.getValue<>('on-select-all'),
-      dataRowColor: properties.getValue<>('data-row-color'),
-      dataTextStyle: properties.getValue<>('data-text-style'),
-      headingRowColor: properties.getValue<>('heading-row-color'),
+      onSelectAll: properties.getCallback<bool>('on-select-all')?.call(runtime),
+      dataRowColor: properties.getValue<WidgetStateProperty<Color>>(
+        'data-row-color',
+      ),
+      dataTextStyle: properties.getValue<TextStyle>('data-text-style'),
+      headingRowColor: properties.getValue<WidgetStateProperty<Color>>(
+        'heading-row-color',
+      ),
       headingRowHeight: properties.getDouble('heading-row-height'),
-      headingTextStyle: properties.getValue<>('heading-text-style'),
+      headingTextStyle: properties.getValue<TextStyle>('heading-text-style'),
       horizontalMargin: properties.getDouble('horizontal-margin'),
       columnSpacing: properties.getDouble('column-spacing'),
       showCheckboxColumn: properties.getBool('show-checkbox-column') ?? false,
@@ -38,8 +42,8 @@ Eval<Ir> _createDataTable(WidgetProperties properties) {
       checkboxHorizontalMargin: properties.getDouble(
         'checkbox-horizontal-margin',
       ),
-      border: properties.getValue<>('border'),
-      clipBehavior: properties.getValue<>('clip-behavior') ?? Clip.none,
+      border: properties.getValue<TableBorder>('border'),
+      clipBehavior: properties.getValue<Clip>('clip-behavior') ?? Clip.none,
     );
     return IrNativeValue(Value(dataTableWidget));
   });

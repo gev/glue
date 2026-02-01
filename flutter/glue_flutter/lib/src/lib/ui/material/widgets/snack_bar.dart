@@ -29,18 +29,18 @@ Eval<Ir> _createSnackBar(WidgetProperties properties) {
       content: content!,
       backgroundColor: properties.getColor('background-color'),
       elevation: properties.getDouble('elevation'),
-      margin: properties.getValue<>('margin'),
-      padding: properties.getValue<>('padding'),
+      margin: properties.getValue<EdgeInsetsGeometry>('margin'),
+      padding: properties.getValue<EdgeInsetsGeometry>('padding'),
       width: properties.width,
-      shape: properties.getValue<>('shape'),
-      behavior: properties.getValue<>('behavior'),
-      action: properties.getValue<>('action'),
-      duration: properties.getValue<>('duration') ?? const Duration(seconds: 4),
-      animation: properties.getValue<>('animation'),
-      onVisible: properties.getVoidCallback('on-visible', runtime),
+      shape: properties.getValue<ShapeBorder>('shape'),
+      behavior: properties.getValue<SnackBarBehavior>('behavior'),
+      action: properties.getValue<SnackBarAction>('action'),
+      animation: properties.getValue<AnimationController>('animation'),
+      onVisible: properties.getVoidCallback('on-visible')?.call(runtime),
       dismissDirection:
-          properties.getValue<>('dismiss-direction') ?? DismissDirection.down,
-      clipBehavior: properties.getValue<>('clip-behavior') ?? Clip.hardEdge,
+          properties.getValue<DismissDirection>('dismiss-direction') ??
+          DismissDirection.down,
+      clipBehavior: properties.getValue<Clip>('clip-behavior') ?? Clip.hardEdge,
     );
     return IrNativeValue(Value(snackBarWidget));
   });

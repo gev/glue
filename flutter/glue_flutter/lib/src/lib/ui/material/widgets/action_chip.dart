@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
@@ -17,21 +18,30 @@ Eval<Ir> actionChipImpl(Ir props) => switch (props) {
 
 /// Create ActionChip widget from properties
 Eval<Ir> _createActionChip(WidgetProperties properties) {
-  // Get runtime and create widget
+  final label = properties.getWidget('label');
+  if (label == null) {
+    return throwError(
+      wrongArgumentType([
+        'ActionChip requires non-null "label" property of type Widget.',
+      ]),
+    );
+  }
   return getRuntime().map((runtime) {
     final actionChipWidget = ActionChip(
       key: properties.key,
-      label: properties.getValue<>('label') ?? const Text(''),
-      labelStyle: properties.getValue<>('label-style'),
-      labelPadding: properties.getValue<>('label-padding'),
-      avatar: properties.getValue<>('avatar'),
-      avatarBoxConstraints: properties.getValue<>('avatar-box-constraints'),
-      onPressed: properties.getVoidCallback('on-pressed', runtime),
-      pressElevation: properties.getValue<>('press-elevation'),
-      side: properties.getValue<>('side'),
-      shape: properties.getValue<>('shape'),
-      clipBehavior: properties.getValue<>('clip-behavior'),
-      focusNode: properties.getValue<>('focus-node'),
+      label: label,
+      labelStyle: properties.getValue<TextStyle>('label-style'),
+      labelPadding: properties.getValue<EdgeInsets>('label-padding'),
+      avatar: properties.getValue<Widget>('avatar'),
+      avatarBoxConstraints: properties.getValue<BoxConstraints>(
+        'avatar-box-constraints',
+      ),
+      onPressed: properties.getVoidCallback('on-pressed')?.call(runtime),
+      pressElevation: properties.getDouble('press-elevation'),
+      side: properties.getValue<BorderSide>('side'),
+      shape: properties.getValue<OutlinedBorder>('shape'),
+      clipBehavior: properties.getValue<Clip>('clip-behavior') ?? Clip.none,
+      focusNode: properties.getValue<FocusNode>('focus-node'),
       autofocus: properties.getBool('autofocus') ?? false,
       backgroundColor: properties.getColor('background-color'),
       disabledColor: properties.getColor('disabled-color'),

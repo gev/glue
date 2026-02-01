@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
@@ -21,36 +22,48 @@ Eval<Ir> _createTabBar(WidgetProperties properties) {
     final tabBarWidget = TabBar(
       key: properties.key,
       tabs: properties.getWidgets('tabs'),
-      controller: properties.getValue<>('controller'),
+      controller: properties.getValue<TabController>('controller'),
       isScrollable: properties.getBool('is-scrollable') ?? false,
-      padding: properties.getValue<>('padding'),
+      padding: properties.getValue<EdgeInsetsGeometry>('padding'),
       indicatorColor: properties.getColor('indicator-color'),
       automaticIndicatorColorAdjustment:
           properties.getBool('automatic-indicator-color-adjustment') ?? true,
       indicatorWeight: properties.getDouble('indicator-weight') ?? 2.0,
-      indicatorPadding: properties.getValue<>('indicator-padding'),
-      indicator: properties.getValue<>('indicator'),
-      indicatorSize: properties.getValue<>('indicator-size'),
+      indicatorPadding:
+          properties.getValue<EdgeInsetsGeometry>('indicator-padding') ??
+          EdgeInsets.zero,
+      indicator: properties.getValue<Decoration>('indicator'),
+      indicatorSize: properties.getValue<TabBarIndicatorSize>('indicator-size'),
       dividerColor: properties.getColor('divider-color'),
       dividerHeight: properties.getDouble('divider-height'),
       labelColor: properties.getColor('label-color'),
-      labelStyle: properties.getValue<>('label-style'),
-      labelPadding: properties.getValue<>('label-padding'),
+      labelStyle: properties.getValue<TextStyle>('label-style'),
+      labelPadding: properties.getValue<EdgeInsetsGeometry>('label-padding'),
       unselectedLabelColor: properties.getColor('unselected-label-color'),
-      unselectedLabelStyle: properties.getValue<>('unselected-label-style'),
-      dragStartBehavior: properties.getValue<>('drag-start-behavior'),
-      overlayColor: properties.getValue<>('overlay-color'),
-      mouseCursor: properties.getValue<>('mouse-cursor'),
+      unselectedLabelStyle: properties.getValue<TextStyle>(
+        'unselected-label-style',
+      ),
+      dragStartBehavior:
+          properties.getValue<DragStartBehavior>('drag-start-behavior') ??
+          DragStartBehavior.start,
+      overlayColor: properties.getValue<WidgetStateProperty<Color>>(
+        'overlay-color',
+      ),
+      mouseCursor: properties.getValue<MouseCursor>('mouse-cursor'),
       enableFeedback: properties.getBool('enable-feedback'),
-      onTap: properties.getValue<>('on-tap'),
-      onHover: properties.getValue<>('on-hover'),
-      onFocusChange: properties.getValue<>('on-focus-change'),
-      physics: properties.getValue<>('physics'),
-      splashFactory: properties.getValue<>('splash-factory'),
-      splashBorderRadius: properties.getValue<>('splash-border-radius'),
-      tabAlignment: properties.getValue<>('tab-alignment'),
-      textScaler: properties.getValue<>('text-scaler'),
-      indicatorAnimation: properties.getValue<>('indicator-animation'),
+      onTap: properties.getCallback<int>('on-tap')?.call(runtime),
+      physics: properties.getValue<ScrollPhysics>('physics'),
+      splashFactory: properties.getValue<InteractiveInkFeatureFactory>(
+        'splash-factory',
+      ),
+      splashBorderRadius: properties.getValue<BorderRadius>(
+        'splash-border-radius',
+      ),
+      tabAlignment: properties.getValue<TabAlignment>('tab-alignment'),
+      textScaler: properties.getValue<TextScaler>('text-scaler'),
+      indicatorAnimation: properties.getValue<TabIndicatorAnimation>(
+        'indicator-animation',
+      ),
     );
     return IrNativeValue(Value(tabBarWidget));
   });

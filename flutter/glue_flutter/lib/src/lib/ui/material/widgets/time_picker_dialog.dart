@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
@@ -17,10 +18,18 @@ Eval<Ir> timePickerDialogImpl(Ir props) => switch (props) {
 
 /// Create TimePickerDialog widget from properties
 Eval<Ir> _createTimePickerDialog(WidgetProperties properties) {
+  final initialTime = properties.getValue<TimeOfDay>('initial-time');
+  if (initialTime == null) {
+    return throwError(
+      wrongArgumentType([
+        'initial-time must be of type TimeOfDay and cannot be null',
+      ]),
+    );
+  }
   return getRuntime().map((runtime) {
     final timePickerDialogWidget = TimePickerDialog(
       key: properties.key,
-      initialTime: properties.getValue<>('initial-time'),
+      initialTime: initialTime,
       cancelText: properties.getString('cancel-text'),
       confirmText: properties.getString('confirm-text'),
       helpText: properties.getString('help-text'),
@@ -28,13 +37,17 @@ Eval<Ir> _createTimePickerDialog(WidgetProperties properties) {
       hourLabelText: properties.getString('hour-label-text'),
       minuteLabelText: properties.getString('minute-label-text'),
       restorationId: properties.getString('restoration-id'),
-      initialEntryMode: properties.getValue<>('initial-entry-mode'),
-      orientation: properties.getValue<>('orientation'),
-      onEntryModeChanged: properties.getValue<>('on-entry-mode-changed'),
-      switchToInputEntryModeIcon: properties.getValue<>(
+      initialEntryMode:
+          properties.getValue<TimePickerEntryMode>('initial-entry-mode') ??
+          TimePickerEntryMode.dial,
+      orientation: properties.getValue<Orientation>('orientation'),
+      onEntryModeChanged: properties
+          .getCallback<TimePickerEntryMode>('on-entry-mode-changed')
+          ?.call(runtime),
+      switchToInputEntryModeIcon: properties.getValue<Icon>(
         'switch-to-input-entry-mode-icon',
       ),
-      switchToTimerEntryModeIcon: properties.getValue<>(
+      switchToTimerEntryModeIcon: properties.getValue<Icon>(
         'switch-to-timer-entry-mode-icon',
       ),
       emptyInitialInput: properties.getBool('empty-initial-input') ?? false,

@@ -20,21 +20,22 @@ Eval<Ir> _createMenuAnchor(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final menuAnchorWidget = MenuAnchor(
       key: properties.key,
-      controller: properties.getValue<>('controller'),
-      childFocusNode: properties.getValue<>('child-focus-node'),
-      style: properties.getValue<>('style'),
-      alignmentOffset: properties.getValue<>('alignment-offset') ?? Offset.zero,
-      reservedPadding: properties.getValue<>('reserved-padding'),
-      layerLink: properties.getValue<>('layer-link'),
-      clipBehavior: properties.getValue<>('clip-behavior') ?? Clip.hardEdge,
+      controller: properties.getValue<MenuController>('controller'),
+      childFocusNode: properties.getValue<FocusNode>('child-focus-node'),
+      style: properties.getValue<MenuStyle>('style'),
+      alignmentOffset: properties.getValue<Offset>('alignment-offset'),
+      reservedPadding: properties.getValue<EdgeInsetsGeometry>(
+        'reserved-padding',
+      ),
+      layerLink: properties.getValue<LayerLink>('layer-link'),
+      clipBehavior: properties.getValue<Clip>('clip-behavior') ?? Clip.hardEdge,
       consumeOutsideTap: properties.getBool('consume-outside-tap') ?? false,
-      onOpen: properties.getVoidCallback('on-open', runtime),
-      onClose: properties.getVoidCallback('on-close', runtime),
+      onOpen: properties.getVoidCallback('on-open')?.call(runtime),
+      onClose: properties.getVoidCallback('on-close')?.call(runtime),
       crossAxisUnconstrained:
           properties.getBool('cross-axis-unconstrained') ?? false,
       useRootOverlay: properties.getBool('use-root-overlay') ?? false,
       menuChildren: properties.getWidgets('menu-children'),
-      builder: properties.getValue<>('builder'),
       child: properties.child,
     );
     return IrNativeValue(Value(menuAnchorWidget));

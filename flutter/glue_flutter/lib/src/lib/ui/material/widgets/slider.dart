@@ -17,31 +17,37 @@ Eval<Ir> sliderImpl(Ir props) => switch (props) {
 
 /// Create Slider widget from properties
 Eval<Ir> _createSlider(WidgetProperties properties) {
-  final sliderWidget = Slider(
-    key: properties.key,
-    value: properties.getDouble('value') ?? 0.0,
-    secondaryTrackValue: properties.getDouble('secondary-track-value'),
-    onChanged: properties.getValue<>('on-changed'),
-    onChangeStart: properties.getValue<>('on-change-start'),
-    onChangeEnd: properties.getValue<>('on-change-end'),
-    min: properties.getDouble('min') ?? 0.0,
-    max: properties.getDouble('max') ?? 1.0,
-    divisions: properties.getInt('divisions'),
-    label: properties.getString('label'),
-    activeColor: properties.getColor('active-color'),
-    inactiveColor: properties.getColor('inactive-color'),
-    secondaryActiveColor: properties.getColor('secondary-active-color'),
-    thumbColor: properties.getColor('thumb-color'),
-    overlayColor: properties.getValue<>('overlay-color'),
-    mouseCursor: properties.getValue<>('mouse-cursor'),
-    semanticFormatterCallback: properties.getValue<>(
-      'semantic-formatter-callback',
-    ),
-    focusNode: properties.getValue<>('focus-node'),
-    autofocus: properties.getBool('autofocus') ?? false,
-    allowedInteraction: properties.getValue<>('allowed-interaction'),
-    padding: properties.getValue<>('padding'),
-    year2023: properties.getBool('year2023'),
-  );
-  return Eval.pure(IrNativeValue(Value(sliderWidget)));
+  return getRuntime().map((runtime) {
+    final sliderWidget = Slider(
+      key: properties.key,
+      value: properties.getDouble('value') ?? 0.0,
+      secondaryTrackValue: properties.getDouble('secondary-track-value'),
+      onChanged: properties.getCallback<double>('on-changed')?.call(runtime),
+      onChangeStart: properties
+          .getCallback<double>('on-change-start')
+          ?.call(runtime),
+      onChangeEnd: properties
+          .getCallback<double>('on-change-end')
+          ?.call(runtime),
+      min: properties.getDouble('min') ?? 0.0,
+      max: properties.getDouble('max') ?? 1.0,
+      divisions: properties.getInt('divisions'),
+      label: properties.getString('label'),
+      activeColor: properties.getColor('active-color'),
+      inactiveColor: properties.getColor('inactive-color'),
+      secondaryActiveColor: properties.getColor('secondary-active-color'),
+      thumbColor: properties.getColor('thumb-color'),
+      overlayColor: properties.getValue<WidgetStateProperty<Color?>>(
+        'overlay-color',
+      ),
+      mouseCursor: properties.getValue<MouseCursor>('mouse-cursor'),
+      focusNode: properties.getValue<FocusNode>('focus-node'),
+      autofocus: properties.getBool('autofocus') ?? false,
+      allowedInteraction: properties.getValue<SliderInteraction>(
+        'allowed-interaction',
+      ),
+      padding: properties.getValue<EdgeInsetsGeometry>('padding'),
+    );
+    return IrNativeValue(Value(sliderWidget));
+  });
 }

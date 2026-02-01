@@ -21,22 +21,26 @@ Eval<Ir> _createTooltip(WidgetProperties properties) {
     final tooltipWidget = Tooltip(
       key: properties.key,
       message: properties.getString('tooltip-message'),
-      padding: properties.getValue<>('tooltip-padding'),
-      margin: properties.getValue<>('tooltip-margin'),
+      padding: properties.getValue<EdgeInsetsGeometry>('tooltip-padding'),
+      margin: properties.getValue<EdgeInsetsGeometry>('tooltip-margin'),
       verticalOffset: properties.getDouble('tooltip-vertical-offset'),
       preferBelow: properties.getBool('tooltip-prefer-below'),
       excludeFromSemantics: properties.getBool(
         'tooltip-exclude-from-semantics',
       ),
-      decoration: properties.getValue<>('tooltip-decoration'),
-      textStyle: properties.getValue<>('tooltip-text-style'),
-      textAlign: properties.getValue<>('tooltip-text-align'),
-      waitDuration: properties.getValue<>('tooltip-wait-duration'),
-      showDuration: properties.getValue<>('tooltip-show-duration'),
-      triggerMode: properties.getValue<>('tooltip-trigger-mode'),
+      decoration: properties.getValue<Decoration>('tooltip-decoration'),
+      textStyle: properties.getValue<TextStyle>('tooltip-text-style'),
+      textAlign: properties.getValue<TextAlign>('tooltip-text-align'),
+      waitDuration: properties.getValue<Duration>('tooltip-wait-duration'),
+      showDuration: properties.getValue<Duration>('tooltip-show-duration'),
+      triggerMode: properties.getValue<TooltipTriggerMode>(
+        'tooltip-trigger-mode',
+      ),
       enableFeedback: properties.getBool('tooltip-enable-feedback'),
-      onTriggered: properties.getVoidCallback('tooltip-on-triggered', runtime),
-      richMessage: properties.getValue<>('tooltip-rich-message'),
+      onTriggered: properties
+          .getVoidCallback('tooltip-on-triggered')
+          ?.call(runtime),
+      richMessage: properties.getValue<InlineSpan>('tooltip-rich-message'),
       child: properties.child,
     );
     return IrNativeValue(Value(tooltipWidget));
