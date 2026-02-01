@@ -21,6 +21,7 @@ import 'package:glue_flutter/src/lib/ui/core/styles/text_align.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/text_baseline.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/text_direction.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/text_overflow.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/text_style.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/text_width_basis.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/vertical_direction.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/center.dart';
@@ -58,6 +59,9 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   // Color creation functions
   ('rgb', rgb),
   ('rgba', rgba),
+
+  // Text style creation function
+  ('text-style', textStyle),
 
   // Padding creation functions
   ('padding-all', paddingAll),
