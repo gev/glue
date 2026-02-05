@@ -2,8 +2,8 @@ import 'package:glue/either.dart';
 import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
-import 'package:glue_demo/services/state/listenable_widget.dart';
-import 'package:glue_demo/services/state/state_notifier.dart';
+import 'package:glue_flutter/src/lib/ui/state/listenable_widget.dart';
+import 'package:glue_flutter/src/lib/ui/state/state_notifier.dart';
 
 /// Creates a ListenableWidget that rebuilds when dependencies change
 /// Takes a StateNotifier and a lambda function that receives the current value

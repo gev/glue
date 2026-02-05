@@ -2,16 +2,15 @@ import 'package:glue/either.dart';
 import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
-import 'package:glue_demo/services/state/state_notifier.dart';
+import 'package:glue_flutter/src/lib/ui/state/state_notifier.dart';
 
-/// Modifies a reactive state atomically
-/// Takes: state (IrNativeValue), returns function that takes transformation lambda
+/// Writes the value of a reactive state
+/// Takes: state (IrNativeValue), returns function that takes newValue
 /// Returns: IrVoid
-/// Usage: (modify state (lambda (current-value) new-value))
-final modifyFunction = IrNativeFunc((Ir stateIr) {
+final writeFunction = IrNativeFunc((Ir stateIr) {
   return Eval.pure(
-    IrNativeFunc((Ir lambdaIr) {
-      return Eval((runtime) async {
+    IrNativeFunc((Ir newValueIr) {
+      return Eval((runtime) {
         final state = switch (stateIr) {
           IrNativeValue(value: final hv) => extractValue<StateNotifier>(hv),
           _ => null,
@@ -27,11 +26,8 @@ final modifyFunction = IrNativeFunc((Ir stateIr) {
             ),
           );
         }
-        final result = await runEval(apply(lambdaIr, [state.value]), runtime);
-        return result.match((error) => Left(error), (value) {
-          state.value = value.$1;
-          return Right((IrVoid(), runtime));
-        });
+        state.value = newValueIr;
+        return Right((IrVoid(), runtime));
       });
     }),
   );
