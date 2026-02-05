@@ -14,4 +14,5 @@ final env = envFromModules([
   uiMaterialModule,
   uiCupertinoModule,
   stateModule,
+  storeModule,
 ]);
