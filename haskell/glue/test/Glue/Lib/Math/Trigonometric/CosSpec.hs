@@ -16,7 +16,7 @@ spec = describe "Glue.Lib.Math.Trigonometric.Cos (Test cos function)" do
                 Left err -> expectationFailure $ "Cos failed: " <> show err
                 Right (res, _) -> res `shouldBe` Float 1
 
-        it "returns 0 for cos(π/2)" do
+        it "returns 0 for cos(pi/2)" do
             let args = [Float (pi / 2)]
             result <- runEvalSimple (apply Cos.cos args) []
             case result of
@@ -25,7 +25,7 @@ spec = describe "Glue.Lib.Math.Trigonometric.Cos (Test cos function)" do
                     Float n -> n `shouldSatisfy` (\x -> abs (x) < 1e-10)
                     _ -> expectationFailure "Expected Number"
 
-        it "returns -1 for cos(π)" do
+        it "returns -1 for cos(pi)" do
             let args = [Float pi]
             result <- runEvalSimple (apply Cos.cos args) []
             case result of

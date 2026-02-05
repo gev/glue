@@ -35,7 +35,7 @@ void main() {
         (value) => expect(
           (value as IrFloat).value,
           closeTo(1.5707963267948966, 0.0001),
-        ), // π/2
+        ), // pi/2
       );
     });
 

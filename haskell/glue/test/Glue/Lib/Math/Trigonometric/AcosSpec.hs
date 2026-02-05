@@ -9,7 +9,7 @@ import Test.Hspec
 spec :: Spec
 spec = describe "Glue.Lib.Math.Trigonometric.Acos (Test acos function)" do
     describe "Arccosine function" do
-        it "returns π for acos(-1)" do
+        it "returns pi for acos(-1)" do
             let args = [Float (-1)]
             result <- runEvalSimple (apply Acos.acos args) []
             case result of
@@ -18,7 +18,7 @@ spec = describe "Glue.Lib.Math.Trigonometric.Acos (Test acos function)" do
                     Float n -> n `shouldSatisfy` (\x -> abs (x - pi) < 1e-10)
                     _ -> expectationFailure "Expected Number"
 
-        it "returns π/2 for acos(0)" do
+        it "returns pi/2 for acos(0)" do
             let args = [Integer 0]
             result <- runEvalSimple (apply Acos.acos args) []
             case result of

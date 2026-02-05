@@ -16,7 +16,7 @@ spec = describe "Glue.Lib.Math.Trigonometric.Asin (Test asin function)" do
                 Left err -> expectationFailure $ "Asin failed: " <> show err
                 Right (res, _) -> res `shouldBe` Float 0
 
-        it "returns π/2 for asin(1)" do
+        it "returns pi/2 for asin(1)" do
             let args = [Integer 1]
             result <- runEvalSimple (apply Asin.asin args) []
             case result of

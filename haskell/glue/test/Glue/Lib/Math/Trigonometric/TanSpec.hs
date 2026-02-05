@@ -16,7 +16,7 @@ spec = describe "Glue.Lib.Math.Trigonometric.Tan (Test tan function)" do
                 Left err -> expectationFailure $ "Tan failed: " <> show err
                 Right (res, _) -> res `shouldBe` Float 0
 
-        it "returns 1 for tan(π/4)" do
+        it "returns 1 for tan(pi/4)" do
             let args = [Float (pi / 4)]
             result <- runEvalSimple (apply Tan.tan args) []
             case result of
