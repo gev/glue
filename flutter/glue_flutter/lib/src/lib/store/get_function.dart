@@ -14,7 +14,7 @@ Eval<Ir> getImpl(Ir key) {
 /// Helper function for second argument (store)
 Eval<Ir> Function(Ir) getKey(Ir key) {
   return (Ir store) => switch (store) {
-    IrNativeValue(value: Store s) => () {
+    IrNativeValue(value: Value(value: Store s)) => () {
       final value = s.get(key);
       return Eval.pure(value ?? IrVoid());
     }(),

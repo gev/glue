@@ -19,7 +19,7 @@ Eval<Ir> Function(Ir) putKey(Ir key) {
 /// Helper function for third argument (store)
 Eval<Ir> Function(Ir) putValue(Ir key, Ir value) {
   return (Ir store) => switch (store) {
-    IrNativeValue(value: Store s) =>
+    IrNativeValue(value: Value(value: Store s)) =>
       (s.put(key, value))
           ? Eval.pure(IrVoid())
           : throwError(runtimeException('key-already-exists', key)),
