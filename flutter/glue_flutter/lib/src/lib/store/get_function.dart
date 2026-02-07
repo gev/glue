@@ -12,12 +12,14 @@ Eval<Ir> getImpl(Ir key) {
 }
 
 /// Helper function for second argument (store)
-Eval<Ir> Function(Ir) getKey(Ir key) {
+Eval<Ir> Function(Ir) getKey(Ir pathOrKey) {
   return (Ir store) => switch (store) {
-    IrNativeValue(value: Value(value: Store s)) => () {
-      final value = s.get(key);
-      return Eval.pure(value ?? IrVoid());
-    }(),
-    _ => throwError(wrongArgumentType(['key', 'store'])),
+    IrNativeValue(value: Value(value: Store s)) => switch (pathOrKey) {
+      IrList(elements: final path) => Eval.pure(
+        s.getByPath(path.unlock) ?? IrVoid(),
+      ),
+      _ => Eval.pure(s.get(pathOrKey) ?? IrVoid()),
+    },
+    _ => throwError(wrongArgumentType(['path-or-key', 'store'])),
   };
 }

@@ -17,12 +17,18 @@ Eval<Ir> Function(Ir) putKey(Ir key) {
 }
 
 /// Helper function for third argument (store)
-Eval<Ir> Function(Ir) putValue(Ir key, Ir value) {
+Eval<Ir> Function(Ir) putValue(Ir pathOrKey, Ir value) {
   return (Ir store) => switch (store) {
-    IrNativeValue(value: Value(value: Store s)) =>
-      (s.put(key, value))
-          ? Eval.pure(IrVoid())
-          : throwError(runtimeException('key-already-exists', key)),
-    _ => throwError(wrongArgumentType(['key', 'value', 'store'])),
+    IrNativeValue(value: Value(value: Store s)) => switch (pathOrKey) {
+      IrList(elements: final path) =>
+        s.putByPath(path.unlock, value)
+            ? Eval.pure(IrVoid())
+            : throwError(runtimeException('path-already-exists', pathOrKey)),
+      _ =>
+        s.put(pathOrKey, value)
+            ? Eval.pure(IrVoid())
+            : throwError(runtimeException('key-already-exists', pathOrKey)),
+    },
+    _ => throwError(wrongArgumentType(['path-or-key', 'value', 'store'])),
   };
 }
