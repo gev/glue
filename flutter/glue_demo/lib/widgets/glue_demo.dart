@@ -57,7 +57,6 @@ class _GlueDemoState extends State<GlueDemo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Glue Demo. Live UI Editor')),
       body: Row(
         children: [
           // Left panel: Code editor
