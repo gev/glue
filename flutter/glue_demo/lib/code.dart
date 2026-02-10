@@ -7,7 +7,7 @@ String defaultCode = '''
 
     (def initial-value 0)
     (def my-counter "my-counter")
-    (def app-store (create-store ()))
+    (def app-store create-store)
     (put my-counter (state initial-value) app-store)
 
     (def (counter-display current-value) (

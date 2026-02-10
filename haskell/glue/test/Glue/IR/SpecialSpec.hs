@@ -13,4 +13,4 @@ spec = describe "Special constructors and equality" do
     it "Special are equal" do
         let s1 = Special (\_ -> pure (Integer 1)) :: IR Identity
             s2 = Special (\_ -> pure (Integer 2)) :: IR Identity
-        s1 == s2 `shouldBe` True -- Special forms compare as equal regardless of implementation
+        s1 == s2 `shouldBe` False -- Special forms compare as equal regardless of implementation

@@ -167,6 +167,20 @@ class IrObject extends Ir {
   int get hashCode => properties.hashCode;
 }
 
+class IrEvaluable extends Ir {
+  final Eval<Ir> Function() func;
+  const IrEvaluable(this.func);
+
+  @override
+  String toString() => '<evaluable>';
+
+  @override
+  bool operator ==(Object other) => false;
+
+  @override
+  int get hashCode => func.hashCode;
+}
+
 /// Special IR values
 class IrVoid extends Ir {
   const IrVoid();
@@ -190,18 +204,19 @@ class IrNativeValue extends Ir {
 }
 
 class IrNativeFunc extends Ir {
-  final Eval<Ir> Function(Ir)
-  function; // Single-arg contract for universal currying
+  // Single-arg contract for universal currying
+  final Eval<Ir> Function(Ir) function;
   const IrNativeFunc(this.function);
 
   @override
   String toString() => '<native-func>';
 
+  // All NativeFunc instances are equal (like Haskell)
   @override
-  bool operator ==(Object other) => false; // All NativeFunc instances are equal (like Haskell)
+  bool operator ==(Object other) => false;
 
   @override
-  int get hashCode => 'native-func'.hashCode;
+  int get hashCode => function.hashCode;
 }
 
 class IrSpecial extends Ir {
@@ -211,11 +226,12 @@ class IrSpecial extends Ir {
   @override
   String toString() => '<special>';
 
+  // All Special instances are equal (like Haskell)
   @override
-  bool operator ==(Object other) => other is IrSpecial; // All Special instances are equal (like Haskell)
+  bool operator ==(Object other) => false;
 
   @override
-  int get hashCode => 'special'.hashCode;
+  int get hashCode => function.hashCode;
 }
 
 class IrClosure extends Ir {
@@ -227,12 +243,9 @@ class IrClosure extends Ir {
   @override
   String toString() => '<closure>';
 
+  // Closures are not comparable (like Haskell)
   @override
-  bool operator ==(Object other) =>
-      other is IrClosure &&
-      _listsEqual(other.params, params) &&
-      other.body == body &&
-      other.env == env;
+  bool operator ==(Object other) => false;
 
   @override
   int get hashCode => Object.hash(params, body, env);

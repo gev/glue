@@ -92,7 +92,9 @@ evalSymbol :: Text -> Eval IR
 evalSymbol name = do
     env <- getEnv
     case E.lookupVar name env of
-        Right val -> pure val
+        Right val -> case val of
+            IR.Evaluable value -> eval =<< value
+            _ -> pure val
         Left err -> throwError err
 
 -- Evaluate dotted symbol access
@@ -150,9 +152,9 @@ evalList xs = do
         res -> pure $ IR.List res
 
 -- Apply multiple arguments sequentially for currying
-applyNativeFunc :: (IR -> Eval IR) -> [IR] -> Eval IR
-applyNativeFunc func [] = pure $ IR.NativeFunc func -- No args, return function as-is
-applyNativeFunc func (arg : rest) = do
+applyNativeFunc0 :: (IR -> Eval IR) -> [IR] -> Eval IR
+applyNativeFunc0 func [] = pure $ IR.NativeFunc func -- No args, return function as-is
+applyNativeFunc0 func (arg : rest) = do
     evaluatedArg <- eval arg -- Evaluate argument before passing to function
     result <- func evaluatedArg
     if isCallable result
@@ -169,14 +171,15 @@ evalObject objMap = do
 
 -- Helper to determine if an IR value can be called
 isCallable :: IR -> Bool
-isCallable (IR.NativeFunc _) = True
-isCallable (IR.Special _) = True
-isCallable (IR.Closure{}) = True
-isCallable _ = False
+isCallable = \case
+    IR.NativeFunc _ -> True
+    IR.Special _ -> True
+    IR.Closure{} -> True
+    _ -> False
 
 apply :: IR -> [IR] -> Eval IR
 apply ir args = case ir of
-    IR.NativeFunc f -> applyNativeFunc f args
+    IR.NativeFunc f -> applyNativeFunc0 f args
     IR.Special s -> s args -- Special forms still take lists
     IR.Closure params body savedEnv -> applyClosure params body savedEnv args
     IR.Symbol name -> throwError $ unboundVariable name

@@ -13,4 +13,4 @@ spec = describe "NativeFunc constructors and equality" do
     it "NativeFunc are equal" do
         let f1 = NativeFunc (\_ -> pure (Integer 1)) :: IR Identity
             f2 = NativeFunc (\_ -> pure (Integer 2)) :: IR Identity
-        f1 == f2 `shouldBe` True -- Functions compare as equal regardless of implementation
+        f1 == f2 `shouldBe` False -- Functions compare as equal regardless of implementation

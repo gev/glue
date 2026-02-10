@@ -242,7 +242,10 @@ Eval<Ir> evalSymbol(String name) {
     final result = lookupVar(name, env);
     return result.match(
       (error) => throwError(error),
-      (value) => Eval.pure(value),
+      (value) => switch (value) {
+        IrEvaluable(:final func) => func().flatMap(Eval.pure),
+        _ => Eval.pure(value),
+      },
     );
   });
 }
@@ -328,12 +331,9 @@ Eval<Ir> evalObject(Map<String, Ir> properties) {
 Eval<Ir> apply(Ir func, List<Ir> args) {
   return switch (func) {
     IrNativeFunc(function: final f) => _applyNativeFunc(f, args),
-    IrSpecial(function: final s) => s(
-      args,
-    ), // Special forms handle their own evaluation
+    IrSpecial(function: final s) => s(args),
     IrClosure(params: final params, body: final body, env: final closureEnv) =>
       applyClosure(params, body, closureEnv, args),
-    IrSymbol(value: final name) => throwError(unboundVariable(name)),
     _ => throwError(notCallableObject()),
   };
 }

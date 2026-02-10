@@ -12,7 +12,7 @@ void main() {
     test('Special forms are equal regardless of implementation', () {
       final s1 = IrSpecial((List<Ir> args) => Eval.pure(IrInteger(1)));
       final s2 = IrSpecial((List<Ir> args) => Eval.pure(IrInteger(2)));
-      expect(s1 == s2, isTrue);
+      expect(s1 == s2, isFalse);
     });
   });
 }

@@ -75,8 +75,9 @@ data IR m
     | List [IR m]
     | Object (Map Text (IR m))
     | Void
+    | Evaluable (m (IR m)) -- Functions without arguments
     | NativeValue (Value m) -- Host language values (literals)
-    | NativeFunc (IR m -> m (IR m)) -- Functions
+    | NativeFunc (IR m -> m (IR m)) -- Curred functions with arguments
     | Special ([IR m] -> m (IR m)) -- Special forms
     | Closure [Text] (IR m) (Env m)
 
@@ -107,6 +108,7 @@ instance Show (IR m) where
         Object props -> "(" <> unwords (map (\(k, v) -> ":" <> T.unpack k <> " " <> show v) (Map.toList props)) <> ")"
         Void -> "#<void>"
         NativeValue hv -> "<host:" <> show hv <> ">"
+        Evaluable _ -> "<evaluable>"
         NativeFunc _ -> "<native-func>"
         Special _ -> "<special>"
         Closure{} -> "<closure>"
@@ -121,8 +123,6 @@ instance Eq (IR m) where
     List a == List b = a == b
     Object a == Object b = a == b
     NativeValue a == NativeValue b = a == b
-    NativeFunc _ == NativeFunc _ = True
-    Special _ == Special _ = True
     Void == Void = True
     _ == _ = False
 
