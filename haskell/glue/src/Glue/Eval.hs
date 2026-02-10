@@ -93,7 +93,11 @@ evalSymbol name = do
     env <- getEnv
     case E.lookupVar name env of
         Right val -> case val of
-            IR.Evaluable value -> eval =<< value
+            IR.Evaluable value -> do
+                pushContext name
+                result <- eval =<< value
+                popContext
+                pure result
             _ -> pure val
         Left err -> throwError err
 
@@ -125,11 +129,7 @@ evalDottedSymbol parts = do
 
 -- Evaluate a list (function call or literal list)
 evalList :: [IR] -> Eval IR
-evalList [IR.Symbol name] = do
-    env <- getEnv
-    case E.lookupVar name env of
-        Right val -> pure val
-        Left err -> throwError err
+evalList [IR.Symbol name] = evalSymbol name
 evalList (IR.Symbol name : rawArgs) = do
     pushContext name
     env <- getEnv

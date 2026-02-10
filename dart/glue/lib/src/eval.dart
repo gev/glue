@@ -243,7 +243,10 @@ Eval<Ir> evalSymbol(String name) {
     return result.match(
       (error) => throwError(error),
       (value) => switch (value) {
-        IrEvaluable(:final func) => func().flatMap(Eval.pure),
+        IrEvaluable(:final func) => withContext(
+          name,
+          func().flatMap(Eval.pure),
+        ),
         _ => Eval.pure(value),
       },
     );
@@ -272,16 +275,7 @@ Eval<Ir> evalDottedSymbol(List<String> parts) {
 Eval<Ir> evalList(List<Ir> elements) {
   return switch (elements) {
     // Pattern: [IR.Symbol name]
-    [IrSymbol(value: final name)] => withContext(
-      name,
-      getEnv().flatMap((env) {
-        final result = lookupVar(name, env);
-        return result.match(
-          (error) => throwError(error),
-          (value) => Eval.pure(value),
-        );
-      }),
-    ),
+    [IrSymbol(value: final name)] => evalSymbol(name),
 
     // Pattern: (IR.Symbol name : rawArgs)
     [IrSymbol(value: final name), ...final rawArgs] => withContext(
