@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue/runtime.dart';
-import 'package:glue_flutter/src/lib/ui/state/state_helpers.dart';
-import 'package:glue_flutter/src/lib/ui/state/state_notifier.dart';
+import 'package:glue_demo/glue/state/state_helpers.dart';
+import 'package:glue_demo/glue/state/state_notifier.dart';
 
 /// Reactive widget that caches previous result and shows it while updating
 class ListenableWidget extends StatefulWidget {

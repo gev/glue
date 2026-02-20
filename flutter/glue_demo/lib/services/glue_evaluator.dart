@@ -4,7 +4,7 @@ import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue/parser.dart';
-import 'package:glue_demo/services/env.dart';
+import 'package:glue_demo/glue/env.dart';
 import 'package:glue_flutter/glue_flutter.dart';
 
 typedef GlueEvalResult = Either<GlueError, List<Widget>>;

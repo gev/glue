@@ -2,7 +2,7 @@ import 'package:glue/either.dart';
 import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
-import 'package:glue_flutter/src/lib/ui/state/state_notifier.dart';
+import 'package:glue_demo/glue/state/state_notifier.dart';
 
 /// Modifies a reactive state atomically
 /// Takes: state (IrNativeValue), returns function that takes transformation lambda

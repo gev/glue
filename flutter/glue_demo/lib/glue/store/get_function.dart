@@ -1,7 +1,7 @@
 import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
-import 'package:glue_flutter/src/lib/store/store.dart';
+import 'package:glue_demo/glue/store/store.dart';
 
 /// Get operation for store
 final Ir get = IrNativeFunc(getImpl);
