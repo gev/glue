@@ -39,6 +39,7 @@ library
     Glue.Lib.Builtin.Import
     Glue.Lib.Builtin.Lambda
     Glue.Lib.Builtin.Let
+    Glue.Lib.Builtin.Quote
     Glue.Lib.Builtin.Try
     Glue.Lib.IO
     Glue.Lib.IO.Print
@@ -151,6 +152,7 @@ test-suite glue-test
     Glue.Lib.Builtin.DefSpec
     Glue.Lib.Builtin.ImportSpec
     Glue.Lib.Builtin.LambdaSpec
+    Glue.Lib.Builtin.QuoteSpec
     Glue.Lib.Builtin.TrySpec
     Glue.Lib.IO.PrintSpec
     Glue.Lib.List.AppendSpec
