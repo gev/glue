@@ -320,5 +320,47 @@ void main() {
       expectParseError('123.456.789', SyntaxError); // Multiple dots
       expectParseError('12.34e56e78', SyntaxError); // Multiple e's
     });
+
+    // Quote Syntax (mirrors Haskell ParserSpec)
+    test("parses 'x as (quote x)", () {
+      expectParsesTo("'x", ListAst([SymbolAst('quote'), SymbolAst('x')]));
+    });
+
+    test("parses '(1 2 3) as (quote (1 2 3))", () {
+      expectParsesTo(
+        "'(1 2 3)",
+        ListAst([
+          SymbolAst('quote'),
+          ListAst([IntegerAst(1), IntegerAst(2), IntegerAst(3)]),
+        ]),
+      );
+    });
+
+    test('parses \'\'hello\'\' as (quote "hello")', () {
+      expectParsesTo(
+        "'\"hello\"",
+        ListAst([SymbolAst('quote'), StringAst('hello')]),
+      );
+    });
+
+    test("parses ''x as (quote (quote x))", () {
+      expectParsesTo(
+        "''x",
+        ListAst([
+          SymbolAst('quote'),
+          ListAst([SymbolAst('quote'), SymbolAst('x')]),
+        ]),
+      );
+    });
+
+    test("parses '(:a 1) as (quote (:a 1))", () {
+      expectParsesTo(
+        "'(:a 1)",
+        ListAst([
+          SymbolAst('quote'),
+          ObjectAst({'a': IntegerAst(1)}),
+        ]),
+      );
+    });
   });
 }

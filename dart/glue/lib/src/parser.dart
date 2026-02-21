@@ -60,6 +60,15 @@ Parser<String> pSymbolToken() {
   );
 }
 
+/// Quote parser - matches Haskell pQuote
+/// SRP: Only handles quote syntactic sugar: 'x -> (quote x)
+Parser<Ast> pQuote(Parser<Ast> expression) {
+  return (char("'") & expression).map((result) {
+    final quotedExpr = result[1] as Ast;
+    return ListAst([SymbolAst('quote'), quotedExpr]);
+  });
+}
+
 /// Expression or List parser - matches Haskell pExprOrList
 /// SRP: Only handles list parsing logic, whitespace handled at higher level
 Parser<Ast> pExprOrList(Parser<Ast> expression) {
@@ -208,11 +217,14 @@ class GlueParser {
       return StringAst(content);
     });
     final symbolParser = pSymbolToken().map((value) => SymbolAst(value));
+    final quoteParser = pQuote(expression);
     final listParser = pExprOrList(expression);
 
     // Define the parser with all atom parsers and list parser
+    // Quote has highest priority (first in choice), matching Haskell
     // Whitespace handled at this level (SRP: separation of concerns)
-    return (listParser |
+    return (quoteParser |
+            listParser |
             integerParser |
             floatParser |
             stringParser |
