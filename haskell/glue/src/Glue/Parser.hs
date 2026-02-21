@@ -29,10 +29,17 @@ lexeme = L.lexeme sc
 symbol :: Text -> Parser Text
 symbol = L.symbol sc
 
+pQuote :: Parser AST
+pQuote = do
+    _ <- char '\''
+    expr <- pGlue
+    pure $ List [Symbol "quote", expr]
+
 pGlue :: Parser AST
 pGlue =
     choice
-        [ pExprOrList
+        [ pQuote
+        , pExprOrList
         , pString
         , pInteger
         , pFloat

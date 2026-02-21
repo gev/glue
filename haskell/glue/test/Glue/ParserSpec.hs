@@ -205,3 +205,19 @@ spec = do
 
             it "handles symbols with unicode" $ do
                 parseGlue "变量" `shouldBe` Right (Symbol "变量")
+
+        describe "Quote Syntax" $ do
+            it "parses 'x as (quote x)" $ do
+                parseGlue "'x" `shouldBe` Right (List [Symbol "quote", Symbol "x"])
+
+            it "parses '(1 2 3) as (quote (1 2 3))" $ do
+                parseGlue "'(1 2 3)" `shouldBe` Right (List [Symbol "quote", List [Integer 1, Integer 2, Integer 3]])
+
+            it "parses '\"hello\" as (quote \"hello\")" $ do
+                parseGlue "'\"hello\"" `shouldBe` Right (List [Symbol "quote", String "hello"])
+
+            it "parses ''x as (quote (quote x))" $ do
+                parseGlue "''x" `shouldBe` Right (List [Symbol "quote", List [Symbol "quote", Symbol "x"]])
+
+            it "parses '(:a 1) as (quote (:a 1))" $ do
+                parseGlue "'(:a 1)" `shouldBe` Right (List [Symbol "quote", Object [("a", Integer 1)]])
