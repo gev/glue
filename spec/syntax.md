@@ -136,6 +136,13 @@ Special forms have evaluation rules different from regular function calls.
 (lambda () "hello")
 ```
 
+#### Quote
+```clojure
+(quote x)
+'x
+'(+ 1 2)
+```
+
 #### Conditional
 ```clojure
 (if (> x 0) "positive" "non-positive")
@@ -222,18 +229,19 @@ Modules define namespaces and exports.
 
 ```ebnf
 program         ::= expr
-expr            ::= atom | list | prop_list
+expr            ::= atom | list | prop_list | quote
 atom            ::= number | string | symbol
 list            ::= "(" expr* ")"
 prop_list       ::= "(" (":" symbol expr)* ")"
+quote           ::= "'" expr | "(" "quote" expr ")"
 symbol          ::= (letter | special_char) (letter | digit | special_char | ":")*
 number          ::= ["+" | "-"] digit+ ["." digit+] [("e"|"E") ["+"|"-"] digit+]
 string          ::= '"' char* '"'
 special_char    ::= arithmetic | comparison | logical | separators
-arithmetic      := "+" | "-" | "*" | "/" | "%"
-comparison      := "=" | "<" | ">"
-logical         := "&" | "|" | "!"
-separators      := "?" | "\" | "$" | "@" | "#" | "_" | "." | "'"
+arithmetic      ::= "+" | "-" | "*" | "/" | "%"
+comparison      ::= "=" | "<" | ">"
+logical         ::= "&" | "|" | "!"
+separators      ::= "?" | "\" | "$" | "@" | "#" | "_" | "." | "'"
 ```
 
 ### Evaluation Semantics
