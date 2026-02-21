@@ -3,6 +3,7 @@ import 'package:glue/src/lib/builtin/error.dart';
 import 'package:glue/src/lib/builtin/import.dart';
 import 'package:glue/src/lib/builtin/lambda.dart';
 import 'package:glue/src/lib/builtin/let.dart';
+import 'package:glue/src/lib/builtin/quote.dart';
 import 'package:glue/src/lib/builtin/try.dart';
 import 'package:glue/src/module.dart';
 
@@ -19,6 +20,8 @@ final ModuleInfo builtinModule = nativeModule('ffi.builtin', [
   ('import', importForm),
   ('error', error),
   ('try', tryFunc),
+  ('quote', quote),
+  ("'", quote), // single quote is quote
 ]);
 
 // Export the implemented special forms for use in eval.dart
