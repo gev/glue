@@ -2,6 +2,7 @@
 
 module Glue.SerializeSpec (spec) where
 
+import Data.Text qualified as T
 import Data.Text.Lazy (toStrict)
 import Glue.AST (AST (..))
 import Glue.AST qualified as AST
@@ -11,20 +12,30 @@ import Test.Hspec
 import Test.QuickCheck
 import Test.QuickCheck.Instances ()
 
+validSymbolChar :: Gen Char
+validSymbolChar = oneof [letterChar, digitChar, specialChar]
+  where
+    letterChar = choose ('a', 'z')
+    digitChar = choose ('0', '9')
+    specialChar = elements "+-*/%=<>&|!?\\$@#_.':"
+
+genValidSymbol :: Gen T.Text
+genValidSymbol = T.pack <$> listOf1 validSymbolChar
+
 instance Arbitrary AST where
     arbitrary = sized genGlue
       where
         genGlue n
             | n <= 0 =
                 oneof
-                    [ AST.Symbol <$> arbitrary
+                    [ AST.Symbol <$> genValidSymbol
                     , AST.Integer <$> arbitrary
                     , AST.Float <$> arbitrary
                     , AST.String <$> arbitrary
                     ]
         genGlue n =
             oneof
-                [ AST.Symbol <$> arbitrary
+                [ AST.Symbol <$> genValidSymbol
                 , AST.Integer <$> arbitrary
                 , AST.Float <$> arbitrary
                 , AST.String <$> arbitrary
