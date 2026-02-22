@@ -206,6 +206,7 @@ test-suite glue-test
     Glue.Module.RegistrySpec
     Glue.NativeSpec
     Glue.ParseSpec
+    Glue.SerializeSpec
     Glue.TestUtils
 
   main-is: Spec.hs
