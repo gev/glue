@@ -105,6 +105,7 @@ library
     Glue.Parse
     Glue.Parse.Error
     Glue.Runtime
+    Glue.Serialize
     Spec.Device
 
   build-depends:
