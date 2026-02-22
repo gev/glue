@@ -9,7 +9,7 @@ import Glue.Module (RegisteredModule (..))
 import Glue.Module.Error (ModuleRegistryError)
 import Glue.Module.Registration (buildRegistry)
 import Glue.Module.Registry (ModuleRegistry)
-import Glue.Parser (parseGlue)
+import Glue.Parse (parseGlue)
 import System.Directory (listDirectory)
 import System.FilePath (takeExtension, (</>))
 

@@ -1,9 +1,9 @@
-module Glue.ParserSpec (spec) where
+module Glue.ParseSpec (spec) where
 
 import Data.Either (isLeft)
 import Glue.AST
-import Glue.Parser (parseGlue)
-import Glue.Parser.Error (ParserError (..))
+import Glue.Parse (parseGlue)
+import Glue.Parse.Error (ParseError (..))
 import Test.Hspec
 
 spec :: Spec

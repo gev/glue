@@ -12,7 +12,7 @@ import Glue.Lib.Bool (bool)
 import Glue.Lib.Builtin (builtin)
 import Glue.Lib.Math.Arithmetic (arithmetic)
 import Glue.Module (envFromModules)
-import Glue.Parser (parseGlue)
+import Glue.Parse (parseGlue)
 import Test.Hspec
 
 runCode :: Text -> IO (Either GlueError (IR Eval))

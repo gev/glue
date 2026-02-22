@@ -1,5 +1,5 @@
-module Glue.Parser (
-    Parser,
+module Glue.Parse (
+    Parse,
     parseGlue,
 ) where
 
@@ -7,35 +7,35 @@ import Control.Monad (guard)
 import Data.Text (Text)
 import Data.Text qualified as T
 import Glue.AST (AST (..))
-import Glue.Parser.Error (ParserError (..), parserError)
-import Text.Megaparsec
+import Glue.Parse.Error (ParseError (..), parserError)
+import Text.Megaparsec (MonadParsec (eof, notFollowedBy, try), Parsec, between, choice, customFailure, many, manyTill, oneOf, optional, parse, some, (<|>))
 import Text.Megaparsec.Char (alphaNumChar, char, space1)
 import Text.Megaparsec.Char.Lexer qualified as L
 
-type Parser = Parsec ParserError Text
+type Parse = Parsec ParseError Text
 
-parseGlue :: Text -> Either ParserError AST
+parseGlue :: Text -> Either ParseError AST
 parseGlue input =
     case parse (pGlue <* eof) "glue-input" input of
         Left err -> Left (parserError err)
         Right ast -> Right ast
 
-sc :: Parser ()
+sc :: Parse ()
 sc = L.space space1 (L.skipLineComment ";") (L.skipBlockComment "#|" "|#")
 
-lexeme :: Parser a -> Parser a
+lexeme :: Parse a -> Parse a
 lexeme = L.lexeme sc
 
-symbol :: Text -> Parser Text
+symbol :: Text -> Parse Text
 symbol = L.symbol sc
 
-pQuote :: Parser AST
+pQuote :: Parse AST
 pQuote = do
     _ <- char '\''
     expr <- pGlue
     pure $ List [Symbol "quote", expr]
 
-pGlue :: Parser AST
+pGlue :: Parse AST
 pGlue =
     choice
         [ pQuote
@@ -46,26 +46,26 @@ pGlue =
         , pSymbol
         ]
 
-pInteger :: Parser AST
+pInteger :: Parse AST
 pInteger = try $ do
     n <- lexeme (L.signed (pure ()) L.decimal)
     notFollowedBy (char '.')
     pure $ Integer n
 
-pFloat :: Parser AST
+pFloat :: Parse AST
 pFloat = try $ do
     n <- lexeme (L.signed (pure ()) L.scientific)
     let str = show n
     guard ('.' `elem` str || 'e' `elem` str || 'E' `elem` str)
     pure $ Float (fromRational $ toRational n)
 
-pString :: Parser AST
+pString :: Parse AST
 pString = String . T.pack <$> lexeme (char '"' >> manyTill L.charLiteral (char '"'))
 
-pSymbol :: Parser AST
+pSymbol :: Parse AST
 pSymbol = Symbol . T.pack <$> lexeme (some (alphaNumChar <|> oneOf ("-._:!?\\=<>/*+%$@#&|'" :: String)))
 
-pExprOrList :: Parser AST
+pExprOrList :: Parse AST
 pExprOrList = between (symbol "(") (symbol ")") $ do
     optional pGlue >>= \case
         Nothing -> pure $ List []
@@ -77,7 +77,7 @@ pExprOrList = between (symbol "(") (symbol ")") $ do
                     propList -> pure $ List [Symbol name, propList]
             _ -> pBodyRest [first]
 
-pBodyRest :: [AST] -> Parser AST
+pBodyRest :: [AST] -> Parse AST
 pBodyRest initial = do
     elems <- (initial <>) <$> many pGlue
     case elems of
@@ -92,7 +92,7 @@ pBodyRest initial = do
     isProp (Symbol s) = T.isPrefixOf ":" s
     isProp _ = False
 
-validateProps :: [AST] -> Parser [(Text, AST)]
+validateProps :: [AST] -> Parse [(Text, AST)]
 validateProps = \case
     [] -> pure []
     [Symbol k] | T.isPrefixOf ":" k -> customFailure (UnpairedProperty k)
@@ -101,7 +101,7 @@ validateProps = \case
         pure ((T.drop 1 k, v) : others)
     (x : _) -> customFailure (MixedContent (T.pack $ show x))
 
-validateNoProps :: [AST] -> Parser ()
+validateNoProps :: [AST] -> Parse ()
 validateNoProps = mapM_ \case
     Symbol s | T.isPrefixOf ":" s -> customFailure (MixedContent s)
     _ -> pure ()

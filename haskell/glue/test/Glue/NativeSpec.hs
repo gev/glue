@@ -10,7 +10,7 @@ import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (Env, IR (..), extractValue, hostValueWithProps)
 import Glue.IR qualified
 import Glue.Lib.Builtin.Def (def)
-import Glue.Parser qualified
+import Glue.Parse (parseGlue)
 import Test.Hspec
 
 -- Test data types for host objects with mutable state
@@ -119,7 +119,7 @@ testEnv =
 
 -- Helper to run Glue code
 runGlueCode :: T.Text -> IO (Either String (IR Eval))
-runGlueCode input = case Glue.Parser.parseGlue input of
+runGlueCode input = case parseGlue input of
     Left err -> pure $ Left $ "Parse error: " ++ show err
     Right ast -> do
         let irTree = Glue.IR.compile ast

@@ -6,7 +6,7 @@ import Glue.Eval (Eval, eval, runEvalSimple)
 import Glue.IR (IR (..), compile)
 import Glue.Lib.IO (io)
 import Glue.Module (envFromModule)
-import Glue.Parser (parseGlue)
+import Glue.Parse (parseGlue)
 import Test.Hspec (Spec, describe, it, shouldReturn)
 
 runCode :: Text -> IO (Either GlueError (Maybe (IR Eval)))
