@@ -2,4 +2,4 @@
 /// Provides AST parsing and parsing utilities
 library;
 
-export 'package:glue/src/parser.dart';
+export 'package:glue/src/parse.dart';

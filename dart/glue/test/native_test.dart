@@ -4,7 +4,7 @@ import 'package:glue/ir.dart';
 import 'package:glue/src/either.dart';
 import 'package:glue/src/eval/error.dart';
 import 'package:glue/src/eval/exception.dart';
-import 'package:glue/src/parser.dart';
+import 'package:glue/src/parse.dart';
 import 'package:test/test.dart';
 
 // Test data types for host objects with mutable state

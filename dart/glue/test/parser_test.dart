@@ -1,6 +1,6 @@
 import 'package:glue/src/ast.dart';
-import 'package:glue/src/parser.dart';
-import 'package:glue/src/parser/error.dart';
+import 'package:glue/src/parse.dart';
+import 'package:glue/src/parse/error.dart';
 import 'package:test/test.dart';
 
 /// Helper function to assert parsing succeeds

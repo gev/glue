@@ -4,10 +4,10 @@ library;
 
 import 'package:glue/src/error.dart';
 
-class ParserError implements GlueError {
+class ParseError implements GlueError {
   final String message;
 
-  ParserError(this.message);
+  ParseError(this.message);
 
   @override
   String pretty() => message;
@@ -16,11 +16,11 @@ class ParserError implements GlueError {
   String toString() => message;
 }
 
-class SyntaxError extends ParserError {
+class SyntaxError extends ParseError {
   SyntaxError(String message) : super('Syntax Error: $message');
 }
 
-class MixedContentError extends ParserError {
+class MixedContentError extends ParseError {
   MixedContentError(String element)
     : super(
         'Property \'$element\' cannot be mixed with positional arguments.\n'
@@ -28,7 +28,7 @@ class MixedContentError extends ParserError {
       );
 }
 
-class UnpairedPropertyError extends ParserError {
+class UnpairedPropertyError extends ParseError {
   UnpairedPropertyError(String property)
     : super('The property \'$property\' is missing a value.');
 }

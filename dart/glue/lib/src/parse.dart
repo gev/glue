@@ -1,6 +1,6 @@
 import 'package:glue/src/ast.dart';
 import 'package:glue/src/either.dart';
-import 'package:glue/src/parser/error.dart';
+import 'package:glue/src/parse/error.dart';
 import 'package:petitparser/petitparser.dart';
 
 /// Integer parser - matches Haskell pInteger
@@ -234,7 +234,7 @@ class GlueParser {
 
   /// Parse Glue source code
   /// Returns `Either<ParserError, Ast>` following functional convention: Left=Error, Right=Success
-  Either<ParserError, Ast> parse(String input) {
+  Either<ParseError, Ast> parse(String input) {
     try {
       final result = parser.parse(input);
       if (result is Success) {
@@ -243,7 +243,7 @@ class GlueParser {
         return Left(SyntaxError((result as Failure).message)); // Error = Left
       }
     } catch (e) {
-      if (e is ParserError) {
+      if (e is ParseError) {
         return Left(e); // Error = Left
       }
       return Left(SyntaxError(e.toString())); // Error = Left
@@ -254,7 +254,7 @@ class GlueParser {
 /// Convenience function to parse Glue code
 /// Returns `Either<ParserError, Ast>` for type-safe error handling
 /// Follows functional programming convention: Left=Error, Right=Success
-Either<ParserError, Ast> parseGlue(String input) {
+Either<ParseError, Ast> parseGlue(String input) {
   final parser = GlueParser();
   return parser.parse(input);
 }

@@ -7,7 +7,7 @@ import 'package:glue/src/lib/builtin.dart';
 import 'package:glue/src/lib/list.dart';
 import 'package:glue/src/lib/math/arithmetic.dart';
 import 'package:glue/src/module.dart';
-import 'package:glue/src/parser.dart';
+import 'package:glue/src/parse.dart';
 import 'package:glue/src/runtime.dart';
 import 'package:test/test.dart';
 

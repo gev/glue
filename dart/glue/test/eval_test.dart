@@ -9,7 +9,7 @@ import 'package:glue/src/lib/math/const.dart';
 import 'package:glue/src/lib/math/trigonometric.dart';
 import 'package:glue/src/lib/math/utility.dart';
 import 'package:glue/src/module.dart';
-import 'package:glue/src/parser.dart';
+import 'package:glue/src/parse.dart';
 import 'package:glue/src/runtime.dart';
 import 'package:test/test.dart';
 
