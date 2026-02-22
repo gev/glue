@@ -3,6 +3,7 @@ module Glue.Serialize (
 ) where
 
 import Data.List (intersperse)
+import Data.Text qualified as T
 import Data.Text.Lazy (Text)
 import Data.Text.Lazy.Builder (fromText, singleton, toLazyText)
 import Data.Text.Lazy.Builder.Int (decimal)
@@ -17,9 +18,15 @@ serializeAST ast = toLazyText (go ast)
  where
   go (Integer n) = decimal n
   go (Float n) = realFloat n
-  go (String s) = "\"" <> fromText s <> "\""
+  go (String s) = "\"" <> fromText (escapeString s) <> "\""
   go (Symbol s) = fromText s
   go (List xs) = "(" <> goList (go <$> xs) <> ")"
   go (Object ps) = "(" <> goList (goProp <$> ps) <> ")"
   goList = mconcat . intersperse (singleton ' ')
   goProp (k, v) = singleton ':' <> fromText k <> singleton ' ' <> go v
+  escapeString =
+    T.replace "\\" "\\\\"
+      . T.replace "\"" "\\\""
+      . T.replace "\n" "\\n"
+      . T.replace "\t" "\\t"
+      . T.replace "\r" "\\r"

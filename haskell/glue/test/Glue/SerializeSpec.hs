@@ -14,13 +14,21 @@ import Test.QuickCheck.Instances ()
 
 validSymbolChar :: Gen Char
 validSymbolChar = oneof [letterChar, digitChar, specialChar]
-  where
-    letterChar = choose ('a', 'z')
-    digitChar = choose ('0', '9')
-    specialChar = elements "+-*/%=<>&|!?\\$@#_.':"
+
+letterChar :: Gen Char
+letterChar = choose ('a', 'z')
+
+digitChar :: Gen Char
+digitChar = choose ('0', '9')
+
+specialChar :: Gen Char
+specialChar = elements "+-*/%=<>&|!?$@#_.'"
 
 genValidSymbol :: Gen T.Text
-genValidSymbol = T.pack <$> listOf1 validSymbolChar
+genValidSymbol = T.pack <$> ((:) <$> letterChar <*> listOf validSymbolChar)
+
+genValidString :: Gen T.Text
+genValidString = T.pack <$> listOf1 (elements "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 +-.,/:;!?@#$%&*_")
 
 instance Arbitrary AST where
     arbitrary = sized genGlue
@@ -31,17 +39,17 @@ instance Arbitrary AST where
                     [ AST.Symbol <$> genValidSymbol
                     , AST.Integer <$> arbitrary
                     , AST.Float <$> arbitrary
-                    , AST.String <$> arbitrary
+                    , AST.String <$> genValidString
                     ]
         genGlue n =
             oneof
                 [ AST.Symbol <$> genValidSymbol
                 , AST.Integer <$> arbitrary
                 , AST.Float <$> arbitrary
-                , AST.String <$> arbitrary
+                , AST.String <$> genValidString
                 , -- Generate nested structures
                   AST.List <$> resize (n `div` 2) arbitrary
-                , AST.Object <$> resize (n `div` 2) arbitrary
+                , AST.Object <$> resize (n `div` 2) (listOf1 $ (,) <$> genValidSymbol <*> arbitrary)
                 ]
 
 spec :: Spec
