@@ -1,7 +1,7 @@
 module Glue.Lib.Builtin.Quote (quote) where
 
 import Glue.Eval (Eval, throwError)
-import Glue.Eval.Exception (RuntimeException, wrongArgumentType)
+import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (IR (..))
 
 {- | Quote special form - returns its argument unevaluated
