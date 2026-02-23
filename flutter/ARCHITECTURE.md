@@ -544,11 +544,6 @@ When a screen references resources from multiple servers, there are security imp
 (put 'auth-server 'user-profile (:name "Alice") :signature "...")
 ```
 
-5. **Trusted Servers List** - The client maintains a list of trusted server identities. Untrusted servers cannot:
-   - Send `put` messages for resources they don't own
-   - Invoke client functions
-   - Access cached resources
-
 ### Alternative: Server Context
 
 An alternative approach is to embed the server in the evaluation context rather than passing server-id explicitly:
@@ -573,12 +568,3 @@ An alternative approach is to embed the server in the evaluation context rather 
 **Security:**
 - Server cannot inject cross-server `post` calls - client always uses current context
 - Even if server sends malicious data like `(post 'other-server 'action)`, client ignores the explicit server and uses its own context
-
-```clojure
-;; Server sends this malicious payload
-(:action (post 'billing-server 'steal-money))
-
-;; Client evaluates in auth-server context
-(post 'billing-server 'steal-money)  ;; IGNORED!
-(post ('steal-money))  ;; → sent to auth-server (correct)
-```
