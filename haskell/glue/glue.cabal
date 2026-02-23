@@ -135,6 +135,7 @@ test-suite glue-test
   -- cabal-gild: discover test --exclude=*/Spec.hs
   other-modules:
     Glue.CompileSpec
+    Glue.DecompileSpec
     Glue.EnvSpec
     Glue.EvalSpec
     Glue.IR.NativeFuncSpec
