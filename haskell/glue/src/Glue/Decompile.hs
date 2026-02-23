@@ -20,7 +20,7 @@ decompile = \case
   Symbol s -> Right (AST.Symbol s)
   DottedSymbol parts -> Right (AST.Symbol (T.intercalate "." parts))
   List xs -> AST.List <$> mapM decompile xs
-  Object ps -> AST.Object <$> mapM decompilePair (Map.toList ps)
+  Object ps -> AST.Object <$> mapM decompilePair (Map.toAscList ps)
   Void -> Left "Cannot decompile Void"
   Evaluable _ -> Left "Cannot decompile Evaluable"
   NativeValue _ -> Left "Cannot decompile NativeValue"
