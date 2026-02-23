@@ -20,16 +20,16 @@ abstract interface class Either<L, R> {
 
 /// Represents a result (Left in Haskell Either)
 final class Left<L, R> implements Either<L, R> {
-  final L _value;
+  final L value;
 
-  const Left(this._value);
+  const Left(this.value);
 
   @override
   T match<T>(T Function(L left) onLeft, T Function(R right) onRight) =>
-      onLeft(_value);
+      onLeft(value);
 
   @override
-  Either<L, T> map<T>(T Function(R r) f) => Left<L, T>(_value);
+  Either<L, T> map<T>(T Function(R r) f) => Left<L, T>(value);
 
   @override
   bool get isLeft => true;
@@ -38,29 +38,29 @@ final class Left<L, R> implements Either<L, R> {
   bool get isRight => false;
 
   @override
-  String toString() => 'Left($_value)';
+  String toString() => 'Left($value)';
 
   @override
   bool operator ==(Object other) {
-    return other is Left<L, R> && _value == other._value;
+    return other is Left<L, R> && value == other.value;
   }
 
   @override
-  int get hashCode => _value.hashCode;
+  int get hashCode => value.hashCode;
 }
 
 /// Represents a result (Right in Haskell Either)
 final class Right<L, R> implements Either<L, R> {
-  final R _value;
+  final R value;
 
-  const Right(this._value);
+  const Right(this.value);
 
   @override
   T match<T>(T Function(L left) onLeft, T Function(R right) onRight) =>
-      onRight(_value);
+      onRight(value);
 
   @override
-  Either<L, T> map<T>(T Function(R r) f) => Right<L, T>(f(_value));
+  Either<L, T> map<T>(T Function(R r) f) => Right<L, T>(f(value));
 
   @override
   bool get isLeft => false;
@@ -69,13 +69,13 @@ final class Right<L, R> implements Either<L, R> {
   bool get isRight => true;
 
   @override
-  String toString() => 'Right($_value)';
+  String toString() => 'Right($value)';
 
   @override
   bool operator ==(Object other) {
-    return other is Right<L, R> && _value == other._value;
+    return other is Right<L, R> && value == other.value;
   }
 
   @override
-  int get hashCode => _value.hashCode;
+  int get hashCode => value.hashCode;
 }

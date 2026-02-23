@@ -2,35 +2,6 @@ import 'package:glue/either.dart';
 import 'package:glue/src/ast.dart';
 import 'package:glue/src/ir.dart';
 
-/// Compile AST to IR
-/// Mirrors Haskell compile function exactly
-Ir compile(Ast ast) {
-  return switch (ast) {
-    StringAst(:final value) => IrString(value),
-    IntegerAst(:final value) => IrInteger(value),
-    FloatAst(:final value) => IrFloat(value),
-    SymbolAst(:final value) =>
-      value.contains('.') ? IrDottedSymbol(value.split('.')) : IrSymbol(value),
-    ListAst(:final elements) => IrList(elements.map(compile).toList()),
-    ObjectAst(:final properties) => IrObject(
-      properties.map((key, value) => MapEntry(key, compile(value))).unlock,
-    ),
-  };
-}
-
-/// Helper to convert List<Either> to Either<List>
-/// Mirrors Haskell's sequence function
-Either<String, List<T>> _sequence<T>(List<Either<String, T>> results) {
-  final List<T> acc = [];
-  for (final r in results) {
-    if (r.isLeft) {
-      return Left(r.match((l) => l, (_) => ''));
-    }
-    acc.add(r.match((_) => throw Exception('unreachable'), (r) => r));
-  }
-  return Right(acc);
-}
-
 /// Decompile IR to AST (reverse of compile)
 /// Returns Either with error for non-serializable IR types
 /// Mirrors Haskell decompile function exactly
@@ -61,4 +32,19 @@ Either<String, Ast> decompile(Ir ir) {
     IrSpecial() => const Left('Cannot decompile Special'),
     IrClosure() => const Left('Cannot decompile Closure'),
   };
+}
+
+/// Helper to convert `List<Either>` to `Either<List>`
+/// Mirrors Haskell's sequence function
+Either<String, List<T>> _sequence<T>(List<Either<String, T>> results) {
+  final List<T> acc = [];
+  for (final r in results) {
+    switch (r) {
+      case Left(:final value):
+        return Left(value);
+      case Right(:final value):
+        acc.add(value);
+    }
+  }
+  return Right(acc);
 }
