@@ -3,11 +3,12 @@ module Glue.EvalSpec (spec) where
 import Data.Either (isLeft)
 import Data.Map.Strict qualified as Map
 import Data.Text (Text)
+import Glue.Compile (compile)
 import Glue.Error (GlueError (..))
 import Glue.Eval (Eval, eval, runEvalSimple)
 import Glue.Eval.Error (EvalError (..))
 import Glue.Eval.Exception (unboundVariable, wrongNumberOfArguments)
-import Glue.IR (IR (..), compile)
+import Glue.IR (IR (..))
 import Glue.Lib.Bool (bool)
 import Glue.Lib.Builtin (builtin)
 import Glue.Lib.Math.Arithmetic (arithmetic)

@@ -4,11 +4,11 @@ import Data.IORef (IORef, newIORef, readIORef)
 import Data.Map.Strict qualified as Map
 import Data.Text (Text)
 import Data.Text qualified as T
+import Glue.Compile (compile)
 import Glue.Env qualified as E
 import Glue.Eval (Eval, eval, liftIO, runEvalSimple, throwError)
 import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (Env, IR (..), extractValue, hostValueWithProps)
-import Glue.IR qualified
 import Glue.Lib.Builtin.Def (def)
 import Glue.Parse (parseGlue)
 import Test.Hspec
@@ -122,7 +122,7 @@ runGlueCode :: T.Text -> IO (Either String (IR Eval))
 runGlueCode input = case parseGlue input of
     Left err -> pure $ Left $ "Parse error: " ++ show err
     Right ast -> do
-        let irTree = Glue.IR.compile ast
+        let irTree = compile ast
         fullResult <- runEvalSimple (eval irTree) testEnv
         case fullResult of
             Left err -> pure $ Left $ "Eval error: " ++ show err

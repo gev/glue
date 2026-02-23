@@ -1,3 +1,4 @@
+import 'package:glue/compile.dart';
 import 'package:glue/src/either.dart';
 import 'package:glue/src/error.dart';
 import 'package:glue/src/eval.dart';

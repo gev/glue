@@ -1,6 +1,5 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:glue/env.dart';
-import 'package:glue/src/ast.dart';
 import 'package:glue/src/eval.dart';
 
 /// Host value wrapper for any host language object
@@ -249,22 +248,6 @@ class IrClosure extends Ir {
 
   @override
   int get hashCode => Object.hash(params, body, env);
-}
-
-/// Compile AST to IR
-/// Mirrors Haskell compile function exactly
-Ir compile(Ast ast) {
-  return switch (ast) {
-    StringAst(:final value) => IrString(value),
-    IntegerAst(:final value) => IrInteger(value),
-    FloatAst(:final value) => IrFloat(value),
-    SymbolAst(:final value) =>
-      value.contains('.') ? IrDottedSymbol(value.split('.')) : IrSymbol(value),
-    ListAst(:final elements) => IrList(elements.map(compile).toList()),
-    ObjectAst(:final properties) => IrObject(
-      properties.map((key, value) => MapEntry(key, compile(value))).unlock,
-    ),
-  };
 }
 
 /// Helper functions for IR introspection

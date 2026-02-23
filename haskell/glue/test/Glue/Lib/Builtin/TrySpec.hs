@@ -1,9 +1,10 @@
 module Glue.Lib.Builtin.TrySpec (spec) where
 
 import Data.Text (Text)
+import Glue.Compile (compile)
 import Glue.Error (GlueError (..))
 import Glue.Eval (Eval, eval, runEvalSimple)
-import Glue.IR (IR (..), compile)
+import Glue.IR (IR (..))
 import Glue.Lib.Builtin (builtin)
 import Glue.Lib.Math.Arithmetic (arithmetic)
 import Glue.Module (envFromModules)

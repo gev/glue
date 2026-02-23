@@ -6,7 +6,8 @@ import Data.Functor.Identity (Identity)
 import Data.Text qualified as T
 import Glue.AST (AST)
 import Glue.AST qualified as AST
-import Glue.IR (IR, compile, getSymbol, isList, isObject, isSymbol, listLength, objectLookup, objectSize)
+import Glue.Compile
+import Glue.IR (IR, getSymbol, isList, isObject, isSymbol, listLength, objectLookup, objectSize)
 import Test.Hspec
 import Test.Hspec.QuickCheck
 import Test.QuickCheck

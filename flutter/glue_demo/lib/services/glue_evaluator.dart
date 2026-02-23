@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:glue/compile.dart';
 import 'package:glue/either.dart';
 import 'package:glue/error.dart';
 import 'package:glue/eval.dart';

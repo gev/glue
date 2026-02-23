@@ -8,6 +8,9 @@ abstract interface class Either<L, R> {
   /// Pattern matching method - provides functional API for handling both cases
   T match<T>(T Function(L left) onLeft, T Function(R right) onRight);
 
+  /// Map over the Right value
+  Either<L, T> map<T>(T Function(R r) f);
+
   /// True if this is a Left value
   bool get isLeft;
 
@@ -24,6 +27,9 @@ final class Left<L, R> implements Either<L, R> {
   @override
   T match<T>(T Function(L left) onLeft, T Function(R right) onRight) =>
       onLeft(_value);
+
+  @override
+  Either<L, T> map<T>(T Function(R r) f) => Left<L, T>(_value);
 
   @override
   bool get isLeft => true;
@@ -52,6 +58,9 @@ final class Right<L, R> implements Either<L, R> {
   @override
   T match<T>(T Function(L left) onLeft, T Function(R right) onRight) =>
       onRight(_value);
+
+  @override
+  Either<L, T> map<T>(T Function(R r) f) => Right<L, T>(f(_value));
 
   @override
   bool get isLeft => false;

@@ -3,8 +3,9 @@ module Glue.Module.Loader where
 import Control.Monad (forM)
 import Data.Map.Strict qualified as Map
 import Data.Text.IO qualified as TIO
+import Glue.Compile (compile)
 import Glue.Eval (Eval)
-import Glue.IR (IR (..), compile)
+import Glue.IR (IR (..))
 import Glue.Module (RegisteredModule (..))
 import Glue.Module.Error (ModuleRegistryError)
 import Glue.Module.Registration (buildRegistry)

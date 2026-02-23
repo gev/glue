@@ -11,8 +11,6 @@ module Glue.IR (
     extractValue,
     isValue,
     getValueFromIR,
-    -- Compilation
-    compile,
     -- Accessor functions
     isList,
     listLength,
@@ -23,15 +21,12 @@ module Glue.IR (
     getSymbol,
 ) where
 
-import Data.Bifunctor (second)
 import Data.Dynamic (Dynamic, fromDynamic, toDyn)
 import Data.Map.Strict (Map)
 import Data.Map.Strict qualified as Map
 import Data.Text (Text)
 import Data.Text qualified as T
 import Data.Typeable (Typeable)
-import Glue.AST (AST)
-import Glue.AST qualified as AST
 
 type Frame m = Map.Map Text (IR m)
 type Env m = [Frame m]
@@ -82,18 +77,6 @@ data IR m
     | Closure [Text] (IR m) (Env m)
 
 -- Show instance for IR handles NativeFunc and Special directly
-
-compile :: AST -> IR m
-compile = \case
-    AST.Integer n -> Integer n
-    AST.Float n -> Float n
-    AST.String s -> String s
-    AST.Symbol s ->
-        if T.isInfixOf "." s
-            then DottedSymbol (T.splitOn "." s)
-            else Symbol s
-    AST.List xs -> List (map compile xs)
-    AST.Object ps -> Object $ Map.fromList (map (second compile) ps)
 
 instance Show (IR m) where
     show = \case

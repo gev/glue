@@ -1,3 +1,4 @@
+import 'package:glue/compile.dart';
 import 'package:glue/src/ast.dart';
 import 'package:glue/src/ir.dart';
 import 'package:test/test.dart' hide isList;

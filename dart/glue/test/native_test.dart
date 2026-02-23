@@ -1,3 +1,4 @@
+import 'package:glue/compile.dart';
 import 'package:glue/env.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
