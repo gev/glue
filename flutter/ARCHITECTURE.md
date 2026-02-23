@@ -439,3 +439,146 @@ The client sends `(get 'id)` without specifying a store — it just requests the
 | `session` | memory | yes | volatile server state — lost on restart, re-fetched on reconnect |
 | `local` | memory | no | form state, selection state, transient UI — client-only |
 | `prefs` | persistent | no | user preferences — saved locally, never sent to server |
+
+---
+
+## Multi-Server Architecture
+
+In distributed systems, a single application may span multiple servers (e.g., auth-service, billing-service, core-service). The client connects to multiple servers simultaneously, each providing different resources and domain logic.
+
+### API Changes
+
+The `get` and `post` functions accept a **server-id** as the first parameter to route requests to the appropriate server:
+
+```clojure
+;; Single server (default)
+(get 'resource-id)
+(post ('inc 'counter 1))
+
+;; Multi-server - server-id as first parameter
+(get 'auth-server 'user-profile)
+(get 'billing-server 'cart)
+(get 'core-server 'products)
+
+(post 'auth-server ('refresh-token))
+(post 'billing-server ('create-order cart))
+```
+
+### Syntax Requirements
+
+Following Glue grammar rules (no mixed content), server-id must be passed as a quoted symbol:
+
+```clojure
+;; get: (get server-id resource-id)
+(get 'auth-server 'user-profile)
+(get 'billing-server 'order-history)
+
+;; post: (post server-id expression)
+(post 'auth-server ('logout))
+(post 'billing-server ('process-payment (:amount 100)))
+```
+
+### Server Registry
+
+The client maintains a registry of available servers:
+
+```clojure
+;; Server configuration (typically from app initialization)
+(def servers
+  (:auth-server   (:url "wss://auth.example.com/glue"))
+   :billing-server (:url "wss://billing.example.com/glue"))
+   :core-server   (:url "wss://core.example.com/glue"))
+```
+
+### Resource Binding
+
+Resources can be bound to specific servers at definition time:
+
+```clojure
+;; Bind resources to specific servers
+(def user-profile  (get 'auth-server 'user-profile))
+(def order-history (get 'billing-server 'order-history))
+(def product-list  (get 'core-server 'products))
+```
+
+### Cross-Server Considerations
+
+When resources span multiple servers:
+
+1. **Resource References** - A screen may reference resources from different servers. The client handles routing automatically based on server-id.
+
+2. **Consistency** - Each server manages its own state. Cross-server transactions are not atomic - use eventual consistency patterns.
+
+3. **Connection Management** - Each server maintains its own WebSocket connection. Connections are independent - one server going offline doesn't affect others.
+
+4. **Server Discovery** - Server URLs can be discovered at runtime or configured statically.
+
+### Cross-Server Security (XSS-like Issues)
+
+When a screen references resources from multiple servers, there are security implications similar to web XSS:
+
+1. **Server Identity** - Each server must verify the identity of other servers it communicates with. Malicious servers could inject harmful code.
+
+2. **Resource Isolation** - A compromised server should not be able to:
+   - Access resources on other servers
+   - Execute arbitrary actions on the client
+   - Manipulate state meant for other servers
+
+3. **Message Routing** - The client must validate that:
+   - Each `put` message comes from the server it claims
+   - Resource IDs are scoped to their originating server
+   - Server-initiated calls are authorized
+
+4. **Defense Strategies**:
+   - **Server certificates** - Mutual TLS between client and servers
+   - **Message signing** - Servers sign their messages cryptographically
+   - **Resource scoping** - Prefix resources with server-id to prevent collision
+   - **Capability tokens** - Servers prove they have permission to act on resources
+
+```clojure
+;; Resource IDs scoped by server
+(get 'auth-server 'user-profile)      ;; user-profile from auth-server
+(get 'billing-server 'user-profile)   ;; user-profile from billing-server
+
+;; Server-signed put
+(put 'auth-server 'user-profile (:name "Alice") :signature "...")
+```
+
+5. **Trusted Servers List** - The client maintains a list of trusted server identities. Untrusted servers cannot:
+   - Send `put` messages for resources they don't own
+   - Invoke client functions
+   - Access cached resources
+
+### Alternative: Server Context
+
+An alternative approach is to embed the server in the evaluation context rather than passing server-id explicitly:
+
+```clojure
+;; No server-id needed - context provides it
+(get 'user-profile)    ;; → uses current server context
+(post ('refresh-token))  ;; → uses current server context
+```
+
+**How it works:**
+1. Client maintains evaluation context with current server
+2. When evaluating `put` from auth-server, context = auth-server
+3. All `get`/`post` calls automatically use that server
+4. Context switches when evaluating code from different server
+
+**Advantages:**
+- **Simpler API** - no server-id parameter needed
+- **Security by default** - client can't be tricked into posting to wrong server
+- **Implicit isolation** - each server's code runs in its context naturally
+
+**Security:**
+- Server cannot inject cross-server `post` calls - client always uses current context
+- Even if server sends malicious data like `(post 'other-server 'action)`, client ignores the explicit server and uses its own context
+
+```clojure
+;; Server sends this malicious payload
+(:action (post 'billing-server 'steal-money))
+
+;; Client evaluates in auth-server context
+(post 'billing-server 'steal-money)  ;; IGNORED!
+(post ('steal-money))  ;; → sent to auth-server (correct)
+```
