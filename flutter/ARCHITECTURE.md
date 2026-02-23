@@ -212,6 +212,91 @@ Since `post` can send arbitrary Glue expressions to the server:
 
 ---
 
+## IR Serialization
+
+The Glue IR (Intermediate Representation) contains both serializable data types and non-serializable runtime objects. Understanding this distinction is critical for `post` and any wire communication.
+
+### IR Data Types
+
+```haskell
+data IR m
+    = Integer Int                    -- serializable
+    | Float Double                    -- serializable
+    | String Text                     -- serializable
+    | Bool Bool                       -- serializable
+    | Symbol Text                     -- serializable
+    | DottedSymbol [Text]             -- serializable
+    | List [IR m]                     -- serializable
+    | Object (Map Text (IR m))        -- serializable
+    | Void                            -- serializable
+    | Evaluable (m (IR m))           -- NOT serializable
+    | NativeValue (Value m)           -- NOT serializable
+    | NativeFunc (IR m -> m (IR m))  -- NOT serializable
+    | Special ([IR m] -> m (IR m))   -- NOT serializable
+    | Closure [Text] (IR m) (Env m)   -- NOT serializable
+```
+
+### Serializable Types
+
+These types can be converted to AST and sent over the wire:
+
+| Type | Description |
+|------|-------------|
+| `Integer` | Integer numbers |
+| `Float` | Floating point numbers |
+| `String` | Text strings |
+| `Bool` | Boolean values |
+| `Symbol` | Single identifiers |
+| `DottedSymbol` | Namespaced identifiers |
+| `List` | Lists of IR values |
+| `Object` | Key-value maps |
+
+### Non-Serializable Types
+
+These types cannot be transmitted over the wire:
+
+| Type | Description |
+|------|-------------|
+| `Evaluable` | Monadic thunks (deferred computations) |
+| `NativeValue` | Host language objects (Flutter widgets, etc.) |
+| `NativeFunc` | Curried host functions |
+| `Special` | Special forms (quote, if, define, etc.) |
+| `Closure` | Functions with captured environments |
+| `Void` | Unit/null type |
+
+### The Quote Solution
+
+The **quote** mechanism (`'`) prevents evaluation and preserves expressions as serializable data:
+
+```clojure
+;; Without quote - evaluated on client
+(inc counter amount)  ;; returns Void or error if not defined
+
+;; With quote - preserved as data
+('inc 'counter amount)  ;; returns List [Symbol "inc", Symbol "counter", ...]
+```
+
+**How it works:**
+1. Quote stops evaluation at that point
+2. The result is raw IR data (symbols, lists, primitives)
+3. All serializable → can be sent via `post`
+4. Server evaluates the expression in its environment
+
+### Serialization Failures
+
+When serialization fails (trying to send non-serializable IR):
+
+- **Runtime error** - the `post` call fails with a serialization error
+- **Partial data** - only serializable parts are sent, causing unexpected behavior
+- **Silent failure** - the expression is not sent, leaving the client in an inconsistent state
+
+**Best practices:**
+- Always use quote (`'`) when sending expressions via `post`
+- Never try to serialize closures, functions, or native values
+- The server environment controls what functions are available - client doesn't need native functions
+
+---
+
 ## The Resource Lifecycle
 
 ### 1. Request
