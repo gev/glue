@@ -9,39 +9,9 @@ void main() {
   group('IR -> AST transformation (decompile)', () {
     group('Roundtrip: IR -> AST -> IR', () {
       // Property-based test matching Haskell DecompileSpec
-      test('decompile then compile returns equivalent IR', () {
-        // Test with various IR types
-        final testCases = <Ir>[
-          IrInteger(42),
-          IrFloat(3.14),
-          IrString('hello'),
-          IrSymbol('x'),
-          IrList([IrInteger(1), IrString('hello')]),
-          IrObject({'name': IrString('Alice'), 'age': IrInteger(30)}),
-          IrList([
-            IrObject({'a': IrInteger(1)}),
-            IrList([IrSymbol('x.y'), IrFloat(2.5)]),
-          ]),
-        ];
-
-        for (final ir1 in testCases) {
-          final result = decompile(ir1);
-          expect(result.isRight, isTrue, reason: 'Failed for $ir1');
-
-          final ast = result.match((l) => throw Exception(l), (r) => r);
-          final ir2 = compile(ast);
-
-          expect(
-            ir1.toString(),
-            equals(ir2.toString()),
-            reason: 'Failed for $ir1',
-          );
-        }
-      });
-
       // Random property-based tests
-      for (int i = 0; i < 100; i++) {
-        test('random IR roundtrip test $i', () {
+      test('decompile and parses back to same value', () {
+        for (int i = 0; i < 100; i++) {
           final random = Random(i);
           final ir1 = _generateIr(random, 5);
 
@@ -55,8 +25,8 @@ void main() {
           final ir2 = compile(ast);
 
           expect(ir1.toString(), equals(ir2.toString()));
-        });
-      }
+        }
+      });
     });
   });
 }

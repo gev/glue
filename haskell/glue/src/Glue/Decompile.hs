@@ -22,11 +22,11 @@ decompile = \case
   List xs -> AST.List <$> mapM decompile xs
   Object ps -> AST.Object <$> mapM decompilePair (Map.toAscList ps)
   Void -> Left "Cannot decompile Void"
-  Evaluable _ -> Left "Cannot decompile Evaluable"
-  NativeValue _ -> Left "Cannot decompile NativeValue"
-  NativeFunc _ -> Left "Cannot decompile NativeFunc"
-  Special _ -> Left "Cannot decompile Special"
-  Closure _ _ _ -> Left "Cannot decompile Closure"
+  Evaluable{} -> Left "Cannot decompile Evaluable"
+  NativeValue{} -> Left "Cannot decompile NativeValue"
+  NativeFunc{} -> Left "Cannot decompile NativeFunc"
+  Special{} -> Left "Cannot decompile Special"
+  Closure{} -> Left "Cannot decompile Closure"
  where
   decompilePair :: (T.Text, IR m) -> Either String (T.Text, AST)
   decompilePair (k, v) = case decompile v of
