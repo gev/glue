@@ -21,7 +21,9 @@ runCode input = case parseGlue input of
     Left err -> pure $ Left (GlueError err)
     Right ast -> do
         let irTree = compile ast
-        fullResult <- runEvalSimple (eval irTree) $ envFromModules [builtin, arithmetic, bool]
+        fullResult <-
+            runEvalSimple (eval irTree) $
+                envFromModules [builtin, arithmetic, bool]
         case fullResult of
             Left err -> pure $ Left (GlueError err)
             Right (res, _) -> pure $ Right res

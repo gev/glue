@@ -15,13 +15,10 @@ import 'package:glue/src/module.dart';
 final ModuleInfo builtinModule = nativeModule('ffi.builtin', [
   ('def', def),
   ('lambda', lambda),
-  ('\\', lambda), // backslash is lambda
+  ('\\', lambda),
   ('let', let),
   ('import', importForm),
   ('error', error),
   ('try', tryFunc),
   ('quote', quote),
-  ("'", quote), // single quote is quote
 ]);
-
-// Export the implemented special forms for use in eval.dart
