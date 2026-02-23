@@ -158,6 +158,60 @@ The server can send both resource deliveries (`put`) and direct client function 
 
 ---
 
+## The `post` Function: Remote Evaluation
+
+The `post` function enables **remote evaluation** — sending Glue expressions to the server for execution without requiring wrapper functions on the client. This keeps the client minimal and closed.
+
+### How It Works
+
+```clojure
+(def amount 1)
+(post ('inc 'counter amount))
+```
+
+**Evaluation on client:**
+1. `'inc` → quoted symbol (not evaluated, preserved as data)
+2. `'counter` → quoted symbol (data)
+3. `amount` → evaluated to `1`
+4. `post` receives the list `(inc counter 1)` as a **payload**
+5. `post` serializes and sends `(inc counter 1)` to the server over WebSocket
+6. Server receives and evaluates `(inc counter 1)` in its domain environment
+
+The client **never evaluates** the expression — it just forwards it as data.
+
+### Minimal Client Scope
+
+With `post`, the client requires only a handful of closed functions:
+
+| Function | Purpose |
+|----------|---------|
+| `get` | Request a resource by ID |
+| `post` | Send an expression to server for remote evaluation |
+| `put` | Update local state (server-initiated) |
+| `navigate` | Navigate to a screen |
+| `show-dialog` | Show platform dialog |
+| `listen` | Subscribe to state changes |
+| `lookup` | Get StateNotifier for resource |
+
+All server-side domain logic is invoked via `post` — no wrappers needed.
+
+### `post` vs `get`
+
+| | `get` | `post` |
+|---|---|---|
+| Purpose | Request a resource by ID | Send an arbitrary expression for evaluation |
+| Server response | `put` with resource body | Evaluates expression, may return `put` or result |
+| Use case | Fetch state, screens, fragments | Invoke actions, run domain logic |
+
+### Security Considerations
+
+Since `post` can send arbitrary Glue expressions to the server:
+- The server should validate and authorize incoming expressions
+- Consider implementing a whitelist of allowed operations
+- The server environment controls what functions are available
+
+---
+
 ## The Resource Lifecycle
 
 ### 1. Request
