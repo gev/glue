@@ -71,9 +71,9 @@ The client maintains a single **keyed reactive store** of Glue values. Both stat
 | `'user-profile` | `(:name "Alice" :age 30 ...)` | State |
 | `'cart` | `((:id "p1" :qty 2) ...)` | State |
 | `'notifications` | `(...)` | State |
-| `'home-screen` | `(listen user-profile (\ () ...))` | Screen |
-| `'cart-screen` | `(listen cart (\ () ...))` | Screen |
-| `'profile-screen` | `(listen user-profile (\ () ...))` | Screen |
+| `'home-screen` | `(listen user-profile (\ (user) ...))` | Screen |
+| `'cart-screen` | `(listen cart (\ (cart) ...))` | Screen |
+| `'profile-screen` | `(listen user-profile (\ (user) ...))` | Screen |
 
 ### State Resources
 Pure data delivered by the server. Stored as Glue values. When updated, all screens that listen to them re-render automatically.
@@ -83,11 +83,10 @@ Glue expressions that produce UI. A screen is **not a lambda over state** — it
 
 ```clojure
 (listen user-profile
-  (lambda ()
-    ((def user (read user-profile))
-     (column
-        (text user.name)
-        (text user.plan)))))
+  (lambda (user)
+    (column
+      (text user.name)
+      (text user.plan))))
 ```
 
 - `listen` establishes the reactive subscription for the client's `Listenable` widget
@@ -109,14 +108,13 @@ Screens are composed from smaller fragments using `lookup` + `listen`. `lookup` 
 (def user-stats-widget (lookup 'user-stats-widget))
 
 (listen user-profile
-  (lambda ()
+  (lambda (user)
     (column
       (listen header-widget
-        (lambda () (read header-widget)))
+        (lambda (header) (header ())))
       (listen user-stats-widget
-        (lambda ()
-          (def user-stats (read user-stats-widget))
-          (user-stats (read user-profile)))))))
+        (lambda (user-stats)
+          (user-stats user-profile))))))
 ```
 
 | ID | Role |
@@ -151,7 +149,7 @@ Messages in both directions are Glue expressions sent as plain text over the Web
 ### Server → Client
 ```clojure
 (put 'user-profile (:name "Alice" :age 30 :plan "pro"))
-(put 'home-screen  (listen user-profile (lambda () (column ...))))
+(put 'home-screen  (listen user-profile (lambda (user) (column ...))))
 (navigate 'cart-screen)         ;; invoke client function directly
 (show-dialog :title "New order" :body "...")
 ```
@@ -274,8 +272,8 @@ Stores are **first-class Glue values**. `lookup` and `put` take the store as the
 
 ;; Screens use the notifiers as usual
 (listen cart
-  (lambda ()
-    (cart-widget (read cart))))
+  (lambda (cart)
+    (cart-widget cart)))
 ```
 
 ### Who defines the store for `put`?
