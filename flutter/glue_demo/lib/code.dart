@@ -22,7 +22,7 @@ String defaultCode = '''
             :style (text-style :font-size 32 :color colors.grey)))
 
     (def (action title on-tap) 
-        (button :label (text :content title) :on-pressed on-tap))
+        (button :child (text :content title) :on-pressed on-tap))
 
     (def (demo-screen props) (
         (def counter (get my-counter app-store))
