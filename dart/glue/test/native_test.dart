@@ -194,14 +194,14 @@ Future<Either<EvalError, Ir>> runGlueCode(String input) async {
     (ast) async {
       final ir = compile(ast);
       final result = await runEvalSimple(eval(ir), testEnv());
-      return result.match((error) => Left<EvalError, Ir>(error), (value) {
+      return result.match((error) => Left(error), (value) {
         final (res, _) = value;
         // Handle implicit sequence semantics like Haskell evalBody
         return switch (res) {
-          IrList(elements: []) => Right<EvalError, Ir>(IrVoid()),
-          IrList(elements: final elements) when elements.isNotEmpty =>
-            Right<EvalError, Ir>(elements.last),
-          _ => Right<EvalError, Ir>(res),
+          IrList(:final elements) => Right(
+            elements.isEmpty ? IrVoid() : elements.last,
+          ),
+          _ => Right(res),
         };
       });
     },

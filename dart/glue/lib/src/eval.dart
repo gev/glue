@@ -229,8 +229,9 @@ Eval<Ir> eval(Ir ir) {
 Eval<Ir> evalBody(Ir body) {
   return eval(body).flatMap((result) {
     return switch (result) {
-      IrList(elements: []) => Eval.pure(IrVoid()),
-      IrList(elements: final elements) => Eval.pure(elements.last),
+      IrList(:final elements) => Eval.pure(
+        elements.isEmpty ? IrVoid() : elements.last,
+      ),
       _ => Eval.pure(result),
     };
   });
