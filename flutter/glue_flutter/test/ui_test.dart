@@ -48,6 +48,7 @@ void main() {
       expect(uiCoreModule.exports, contains('text'));
       expect(uiCoreModule.exports, contains('button'));
       expect(uiCoreModule.exports, contains('container'));
+      expect(uiCoreModule.exports, contains('sized-box'));
       expect(uiCoreModule.exports, contains('column'));
       expect(uiCoreModule.exports, contains('row'));
       expect(uiCoreModule.exports, contains('center'));

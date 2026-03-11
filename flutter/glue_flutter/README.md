@@ -31,6 +31,7 @@ Glue Flutter provides a framework-agnostic UI module implementation for Flutter,
 - `column` - Vertical layout container
 - `row` - Horizontal layout container
 - `center` - Center child widgets
+- `sized-box` - Creates a box with specific width and height
 
 ## Enum Constants
 
@@ -119,6 +120,11 @@ Material Design color constants:
 - `:children` - List of child widgets (required)
 - `:direction` - Layout direction ("vertical", "horizontal")
 - `:spacing` - Space between children
+
+### Sized Box Properties
+- `:width` - Width of the box
+- `:height` - Height of the box
+- `:child` - Child widget to contain
 
 ## Architecture
 

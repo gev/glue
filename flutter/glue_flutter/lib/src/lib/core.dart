@@ -35,6 +35,7 @@ import 'package:glue_flutter/src/lib/ui/core/widgets/list_view.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/placeholder.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/row.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/single_child_scroll_view.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/sized_box.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/sliver_grid.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/sliver_list.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/text.dart';
@@ -45,6 +46,7 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   ('column', column),
   ('row', row),
   ('center', center),
+  ('sized-box', sizedBox),
   ('icon', icon),
   ('placeholder', placeholder),
   ('image', image),
