@@ -28,6 +28,7 @@ import 'package:glue_flutter/src/lib/ui/core/widgets/center.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/column.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/container.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/custom_scroll_view.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/expanded.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/grid_view.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/icon.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/image.dart';
@@ -47,6 +48,7 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   ('row', row),
   ('center', center),
   ('sized-box', sizedBox),
+  ('expanded', expanded),
   ('icon', icon),
   ('placeholder', placeholder),
   ('image', image),
