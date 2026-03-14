@@ -3,13 +3,13 @@ module Glue.AST where
 import Data.Text (Text)
 import Data.Text qualified as T
 
-data AST where
-  String :: Text -> AST
-  Integer :: Int -> AST
-  Float :: Double -> AST
-  Symbol :: Text -> AST
-  List :: [AST] -> AST
-  Object :: [(Text, AST)] -> AST
+data AST
+  = String Text
+  | Integer Int
+  | Float Double
+  | Symbol Text
+  | List [AST]
+  | Object [(Text, AST)]
 
 instance Show AST where
   show (String s) = "\"" <> T.unpack s <> "\""
