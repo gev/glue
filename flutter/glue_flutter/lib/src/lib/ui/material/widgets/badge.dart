@@ -24,7 +24,7 @@ Eval<Ir> _createBadge(WidgetProperties properties) {
 
   final badgeWidget = Badge(
     key: properties.key,
-    child: properties.child!,
+    child: properties.child,
     label: properties.getWidget('label'),
     backgroundColor: properties.getColor('background-color'),
     textColor: properties.getColor('text-color'),
