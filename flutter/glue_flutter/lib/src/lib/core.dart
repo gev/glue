@@ -40,12 +40,14 @@ import 'package:glue_flutter/src/lib/ui/core/widgets/sized_box.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/sliver_grid.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/sliver_list.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/text.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/wrap.dart';
 
 final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   // Core widget functions
   ('container', container),
   ('column', column),
   ('row', row),
+  ('wrap', wrap),
   ('center', center),
   ('sized-box', sizedBox),
   ('expanded', expanded),
