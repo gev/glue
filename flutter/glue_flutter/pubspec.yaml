@@ -7,7 +7,7 @@ issue_tracker: https://github.com/gev/glue/issues
 publish_to: none
 
 environment:
-  sdk: '^3.9.2'
+  sdk: "^3.12.0"
   flutter: ">=3.0.0"
 
 resolution: workspace
