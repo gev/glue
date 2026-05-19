@@ -4,8 +4,8 @@ module Glue.Parse (
 ) where
 
 import Control.Monad (guard)
+import Data.Text (Text)
 import Data.Text qualified as T
-import Data.Text.Lazy (Text)
 import Glue.AST (AST (..))
 import Glue.Parse.Error (ParseError (..), parserError)
 import Text.Megaparsec (MonadParsec (eof, notFollowedBy, try), Parsec, between, choice, customFailure, many, manyTill, oneOf, optional, parse, some, (<|>))
