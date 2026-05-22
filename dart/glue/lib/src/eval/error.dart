@@ -22,10 +22,10 @@ class EvalError implements GlueError {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) &&
-      other is EvalError &&
-      _listsEqual(other.context, context) &&
-      other.exception == exception;
+      identical(this, other) ||
+      (other is EvalError &&
+          _listsEqual(other.context, context) &&
+          other.exception == exception);
 
   @override
   int get hashCode => Object.hash(context, exception);

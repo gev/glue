@@ -22,11 +22,11 @@ class RegisteredModule {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) &&
-      other is RegisteredModule &&
-      other.name == name &&
-      _listsEqual(other.exports, exports) &&
-      _listsEqualIr(other.body, body);
+      identical(this, other) ||
+      (other is RegisteredModule &&
+          other.name == name &&
+          _listsEqual(other.exports, exports) &&
+          _listsEqualIr(other.body, body));
 
   @override
   int get hashCode => Object.hash(name, exports, body);
@@ -50,9 +50,8 @@ class ImportedModule {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) &&
-      other is ImportedModule &&
-      other.moduleName == moduleName;
+      identical(this, other) ||
+      (other is ImportedModule && other.moduleName == moduleName);
 
   @override
   int get hashCode => moduleName.hashCode;
@@ -76,11 +75,11 @@ class ModuleInfo {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) &&
-      other is ModuleInfo &&
-      other.moduleName == moduleName &&
-      _listsEqual(other.exports, exports) &&
-      _listsEqualPairs(other.definitions, definitions);
+      identical(this, other) ||
+      (other is ModuleInfo &&
+          other.moduleName == moduleName &&
+          _listsEqual(other.exports, exports) &&
+          _listsEqualPairs(other.definitions, definitions));
 
   @override
   int get hashCode => Object.hash(moduleName, exports, definitions);

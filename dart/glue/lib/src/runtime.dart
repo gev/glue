@@ -52,13 +52,13 @@ class Runtime {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) &&
-      other is Runtime &&
-      other.env == env &&
-      _listsEqual(other.context, context) &&
-      other.registry == registry &&
-      other.importCache == importCache &&
-      other.rootEnv == rootEnv;
+      identical(this, other) ||
+      (other is Runtime &&
+          other.env == env &&
+          _listsEqual(other.context, context) &&
+          other.registry == registry &&
+          other.importCache == importCache &&
+          other.rootEnv == rootEnv);
 
   @override
   int get hashCode => Object.hash(env, context, registry, importCache, rootEnv);

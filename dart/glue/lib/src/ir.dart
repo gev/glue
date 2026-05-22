@@ -46,7 +46,7 @@ class IrInteger extends Ir {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) && other is IrInteger && other.value == value;
+      identical(this, other) || (other is IrInteger && other.value == value);
 
   @override
   int get hashCode => value.hashCode;
@@ -61,7 +61,7 @@ class IrFloat extends Ir {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) && other is IrFloat && other.value == value;
+      identical(this, other) || (other is IrFloat && other.value == value);
 
   @override
   int get hashCode => value.hashCode;
@@ -76,7 +76,7 @@ class IrString extends Ir {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) && other is IrString && other.value == value;
+      identical(this, other) || (other is IrString && other.value == value);
 
   @override
   int get hashCode => value.hashCode;
@@ -91,7 +91,7 @@ class IrBool extends Ir {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) && other is IrBool && other.value == value;
+      identical(this, other) || (other is IrBool && other.value == value);
 
   @override
   int get hashCode => value.hashCode;
@@ -106,7 +106,7 @@ class IrSymbol extends Ir {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) && other is IrSymbol && other.value == value;
+      identical(this, other) || (other is IrSymbol && other.value == value);
 
   @override
   int get hashCode => value.hashCode;
@@ -121,9 +121,8 @@ class IrDottedSymbol extends Ir {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) &&
-      other is IrDottedSymbol &&
-      _listsEqual(other.parts, parts);
+      identical(this, other) ||
+      (other is IrDottedSymbol && _listsEqual(other.parts, parts));
 
   @override
   int get hashCode => parts.hashCode;
@@ -148,7 +147,7 @@ class IrList extends Ir {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) && other is IrList && other.elements == elements;
+      identical(this, other) || (other is IrList && other.elements == elements);
 
   @override
   int get hashCode => elements.hashCode;
@@ -168,9 +167,8 @@ class IrObject extends Ir {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) &&
-      other is IrObject &&
-      other.properties == properties;
+      identical(this, other) ||
+      (other is IrObject && other.properties == properties);
 
   @override
   int get hashCode => properties.hashCode;

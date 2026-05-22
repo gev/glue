@@ -26,7 +26,7 @@ class StringAst extends Ast {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) && other is StringAst && other.value == value;
+      identical(this, other) || (other is StringAst && other.value == value);
 
   @override
   int get hashCode => value.hashCode;
@@ -43,7 +43,7 @@ class IntegerAst extends Ast {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) && other is IntegerAst && other.value == value;
+      identical(this, other) || (other is IntegerAst && other.value == value);
 
   @override
   int get hashCode => value.hashCode;
@@ -60,7 +60,7 @@ class FloatAst extends Ast {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) && other is FloatAst && other.value == value;
+      identical(this, other) || (other is FloatAst && other.value == value);
 
   @override
   int get hashCode => value.hashCode;
@@ -77,7 +77,7 @@ class SymbolAst extends Ast {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) && other is SymbolAst && other.value == value;
+      identical(this, other) || (other is SymbolAst && other.value == value);
 
   @override
   int get hashCode => value.hashCode;
@@ -98,7 +98,8 @@ class ListAst extends Ast {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) && other is ListAst && other.elements == elements;
+      identical(this, other) ||
+      (other is ListAst && other.elements == elements);
 
   @override
   int get hashCode => elements.hashCode;
@@ -125,9 +126,8 @@ class ObjectAst extends Ast {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) &&
-      other is ObjectAst &&
-      other.properties == properties;
+      identical(this, other) ||
+      (other is ObjectAst && other.properties == properties);
 
   @override
   int get hashCode => properties.hashCode;

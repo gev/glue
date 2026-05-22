@@ -42,7 +42,7 @@ final class Left<L, R> implements Either<L, R> {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) && other is Left<L, R> && value == other.value;
+      identical(this, other) || (other is Left<L, R> && value == other.value);
 
   @override
   int get hashCode => value.hashCode;
@@ -72,7 +72,7 @@ final class Right<L, R> implements Either<L, R> {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) && other is Right<L, R> && value == other.value;
+      identical(this, other) || (other is Right<L, R> && value == other.value);
 
   @override
   int get hashCode => value.hashCode;
