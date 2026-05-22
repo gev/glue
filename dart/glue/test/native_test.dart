@@ -21,6 +21,7 @@ class Person {
 
   @override
   bool operator ==(Object other) =>
+      identical(this, other) &&
       other is Person &&
       other.name == name &&
       other.age == age &&
@@ -41,7 +42,10 @@ class Address {
 
   @override
   bool operator ==(Object other) =>
-      other is Address && other.street == street && other.city == city;
+      identical(this, other) &&
+      other is Address &&
+      other.street == street &&
+      other.city == city;
 
   @override
   int get hashCode => Object.hash(street, city);

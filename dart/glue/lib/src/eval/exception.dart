@@ -15,6 +15,7 @@ class RuntimeException {
 
   @override
   bool operator ==(Object other) =>
+      identical(this, other) &&
       other is RuntimeException &&
       other.symbol == symbol &&
       other.value == value;

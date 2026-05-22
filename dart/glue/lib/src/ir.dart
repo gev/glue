@@ -45,7 +45,8 @@ class IrInteger extends Ir {
   String toString() => value.toString();
 
   @override
-  bool operator ==(Object other) => other is IrInteger && other.value == value;
+  bool operator ==(Object other) =>
+      identical(this, other) && other is IrInteger && other.value == value;
 
   @override
   int get hashCode => value.hashCode;
@@ -59,7 +60,8 @@ class IrFloat extends Ir {
   String toString() => value.toString();
 
   @override
-  bool operator ==(Object other) => other is IrFloat && other.value == value;
+  bool operator ==(Object other) =>
+      identical(this, other) && other is IrFloat && other.value == value;
 
   @override
   int get hashCode => value.hashCode;
@@ -73,7 +75,8 @@ class IrString extends Ir {
   String toString() => '"$value"';
 
   @override
-  bool operator ==(Object other) => other is IrString && other.value == value;
+  bool operator ==(Object other) =>
+      identical(this, other) && other is IrString && other.value == value;
 
   @override
   int get hashCode => value.hashCode;
@@ -87,7 +90,8 @@ class IrBool extends Ir {
   String toString() => value ? 'true' : 'false';
 
   @override
-  bool operator ==(Object other) => other is IrBool && other.value == value;
+  bool operator ==(Object other) =>
+      identical(this, other) && other is IrBool && other.value == value;
 
   @override
   int get hashCode => value.hashCode;
@@ -101,7 +105,8 @@ class IrSymbol extends Ir {
   String toString() => value;
 
   @override
-  bool operator ==(Object other) => other is IrSymbol && other.value == value;
+  bool operator ==(Object other) =>
+      identical(this, other) && other is IrSymbol && other.value == value;
 
   @override
   int get hashCode => value.hashCode;
@@ -116,13 +121,16 @@ class IrDottedSymbol extends Ir {
 
   @override
   bool operator ==(Object other) =>
-      other is IrDottedSymbol && _listsEqual(other.parts, parts);
+      identical(this, other) &&
+      other is IrDottedSymbol &&
+      _listsEqual(other.parts, parts);
 
   @override
   int get hashCode => parts.hashCode;
 }
 
 bool _listsEqual(List<String> a, List<String> b) {
+  if (identical(a, b)) return true;
   if (a.length != b.length) return false;
   for (int i = 0; i < a.length; i++) {
     if (a[i] != b[i]) return false;
@@ -140,7 +148,7 @@ class IrList extends Ir {
 
   @override
   bool operator ==(Object other) =>
-      other is IrList && other.elements == elements;
+      identical(this, other) && other is IrList && other.elements == elements;
 
   @override
   int get hashCode => elements.hashCode;
@@ -160,7 +168,9 @@ class IrObject extends Ir {
 
   @override
   bool operator ==(Object other) =>
-      other is IrObject && other.properties == properties;
+      identical(this, other) &&
+      other is IrObject &&
+      other.properties == properties;
 
   @override
   int get hashCode => properties.hashCode;
@@ -174,7 +184,7 @@ class IrEvaluable extends Ir {
   String toString() => '<evaluable>';
 
   @override
-  bool operator ==(Object other) => false;
+  bool operator ==(Object other) => identical(this, other);
 
   @override
   int get hashCode => func.hashCode;
@@ -199,6 +209,12 @@ class IrNativeValue extends Ir {
   const IrNativeValue(this.value);
 
   @override
+  bool operator ==(Object other) => identical(this, other);
+
+  @override
+  int get hashCode => value.hashCode;
+
+  @override
   String toString() => '<host:${value.toString()}>';
 }
 
@@ -212,7 +228,7 @@ class IrNativeFunc extends Ir {
 
   // All NativeFunc instances are equal (like Haskell)
   @override
-  bool operator ==(Object other) => false;
+  bool operator ==(Object other) => identical(this, other);
 
   @override
   int get hashCode => function.hashCode;
@@ -227,7 +243,7 @@ class IrSpecial extends Ir {
 
   // All Special instances are equal (like Haskell)
   @override
-  bool operator ==(Object other) => false;
+  bool operator ==(Object other) => identical(this, other);
 
   @override
   int get hashCode => function.hashCode;
@@ -244,7 +260,7 @@ class IrClosure extends Ir {
 
   // Closures are not comparable (like Haskell)
   @override
-  bool operator ==(Object other) => false;
+  bool operator ==(Object other) => identical(this, other);
 
   @override
   int get hashCode => Object.hash(params, body, env);

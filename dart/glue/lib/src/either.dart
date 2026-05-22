@@ -41,9 +41,8 @@ final class Left<L, R> implements Either<L, R> {
   String toString() => 'Left($value)';
 
   @override
-  bool operator ==(Object other) {
-    return other is Left<L, R> && value == other.value;
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) && other is Left<L, R> && value == other.value;
 
   @override
   int get hashCode => value.hashCode;
@@ -72,9 +71,8 @@ final class Right<L, R> implements Either<L, R> {
   String toString() => 'Right($value)';
 
   @override
-  bool operator ==(Object other) {
-    return other is Right<L, R> && value == other.value;
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) && other is Right<L, R> && value == other.value;
 
   @override
   int get hashCode => value.hashCode;
