@@ -22,10 +22,11 @@ class RegisteredModule {
 
   @override
   bool operator ==(Object other) =>
-      other is RegisteredModule &&
-      other.name == name &&
-      _listsEqual(other.exports, exports) &&
-      _listsEqualIr(other.body, body);
+      identical(this, other) ||
+      (other is RegisteredModule &&
+          other.name == name &&
+          _listsEqual(other.exports, exports) &&
+          _listsEqualIr(other.body, body));
 
   @override
   int get hashCode => Object.hash(name, exports, body);
@@ -49,7 +50,8 @@ class ImportedModule {
 
   @override
   bool operator ==(Object other) =>
-      other is ImportedModule && other.moduleName == moduleName;
+      identical(this, other) ||
+      (other is ImportedModule && other.moduleName == moduleName);
 
   @override
   int get hashCode => moduleName.hashCode;
@@ -73,10 +75,11 @@ class ModuleInfo {
 
   @override
   bool operator ==(Object other) =>
-      other is ModuleInfo &&
-      other.moduleName == moduleName &&
-      _listsEqual(other.exports, exports) &&
-      _listsEqualPairs(other.definitions, definitions);
+      identical(this, other) ||
+      (other is ModuleInfo &&
+          other.moduleName == moduleName &&
+          _listsEqual(other.exports, exports) &&
+          _listsEqualPairs(other.definitions, definitions));
 
   @override
   int get hashCode => Object.hash(moduleName, exports, definitions);
@@ -106,6 +109,7 @@ Frame frameFromModule(ModuleInfo module) => frameFromList(module.definitions);
 
 /// Helper functions for list equality
 bool _listsEqual(List<String> a, List<String> b) {
+  if (identical(a, b)) return true;
   if (a.length != b.length) return false;
   for (int i = 0; i < a.length; i++) {
     if (a[i] != b[i]) return false;
@@ -114,6 +118,7 @@ bool _listsEqual(List<String> a, List<String> b) {
 }
 
 bool _listsEqualIr(List<Ir> a, List<Ir> b) {
+  if (identical(a, b)) return true;
   if (a.length != b.length) return false;
   for (int i = 0; i < a.length; i++) {
     if (a[i] != b[i]) return false;
@@ -122,6 +127,7 @@ bool _listsEqualIr(List<Ir> a, List<Ir> b) {
 }
 
 bool _listsEqualPairs(List<(String, Ir)> a, List<(String, Ir)> b) {
+  if (identical(a, b)) return true;
   if (a.length != b.length) return false;
   for (int i = 0; i < a.length; i++) {
     final (aKey, aValue) = a[i];

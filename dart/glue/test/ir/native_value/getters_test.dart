@@ -13,7 +13,8 @@ class Person {
 
   @override
   bool operator ==(Object other) =>
-      other is Person && other.name == name && other.age == age;
+      identical(this, other) ||
+      (other is Person && other.name == name && other.age == age);
 
   @override
   int get hashCode => Object.hash(name, age);
@@ -26,7 +27,8 @@ class Calculator {
 
   @override
   bool operator ==(Object other) =>
-      other is Calculator && other.baseValue == baseValue;
+      identical(this, other) ||
+      (other is Calculator && other.baseValue == baseValue);
 
   @override
   int get hashCode => baseValue.hashCode;

@@ -10,7 +10,8 @@ class TestWidget {
 
   @override
   bool operator ==(Object other) =>
-      other is TestWidget && other.label == label && other.enabled == enabled;
+      identical(this, other) ||
+      (other is TestWidget && other.label == label && other.enabled == enabled);
 
   @override
   int get hashCode => Object.hash(label, enabled);
@@ -24,7 +25,8 @@ class TestConnection {
 
   @override
   bool operator ==(Object other) =>
-      other is TestConnection && other.host == host && other.port == port;
+      identical(this, other) ||
+      (other is TestConnection && other.host == host && other.port == port);
 
   @override
   int get hashCode => Object.hash(host, port);

@@ -52,12 +52,13 @@ class Runtime {
 
   @override
   bool operator ==(Object other) =>
-      other is Runtime &&
-      other.env == env &&
-      _listsEqual(other.context, context) &&
-      other.registry == registry &&
-      other.importCache == importCache &&
-      other.rootEnv == rootEnv;
+      identical(this, other) ||
+      (other is Runtime &&
+          other.env == env &&
+          _listsEqual(other.context, context) &&
+          other.registry == registry &&
+          other.importCache == importCache &&
+          other.rootEnv == rootEnv);
 
   @override
   int get hashCode => Object.hash(env, context, registry, importCache, rootEnv);
@@ -65,6 +66,7 @@ class Runtime {
 
 /// Helper function for list equality
 bool _listsEqual(List<String> a, List<String> b) {
+  if (identical(a, b)) return true;
   if (a.length != b.length) return false;
   for (int i = 0; i < a.length; i++) {
     if (a[i] != b[i]) return false;
