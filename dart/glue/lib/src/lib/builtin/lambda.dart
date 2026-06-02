@@ -47,8 +47,5 @@ Either<RuntimeException, List<String>> extractSymbols(List<Ir> irs) {
 /// Create closure with parameters and body
 /// Mirrors Haskell makeClosure exactly - stores all params directly
 Eval<Ir> makeClosure(List<String> params, Ir body) {
-  // return getEnv().map((env) => IrClosure(params, body, env));
-  return Eval(
-    (runtime) => Right((IrClosure(params, body, runtime.env), runtime)),
-  );
+  return getEnv().map((env) => IrClosure(params, body, env));
 }
