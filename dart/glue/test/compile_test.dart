@@ -57,9 +57,9 @@ void main() {
     });
 
     test('IrDottedSymbol equality and toString', () {
-      final ir1 = IrDottedSymbol(['a', 'b', 'c']);
-      final ir2 = IrDottedSymbol(['a', 'b', 'c']);
-      final ir3 = IrDottedSymbol(['x', 'y']);
+      final ir1 = IrDottedSymbol('a.b.c');
+      final ir2 = IrDottedSymbol('a.b.c');
+      final ir3 = IrDottedSymbol('x.y');
 
       expect(ir1 == ir2, isTrue);
       expect(ir1 == ir3, isFalse);
@@ -224,7 +224,7 @@ void main() {
 
     test('isSymbol and getSymbol', () {
       final symbolIr = IrSymbol('x');
-      final dottedIr = IrDottedSymbol(['a', 'b']);
+      final dottedIr = IrDottedSymbol('a.b');
       final nonSymbolIr = IrInteger(42);
 
       expect(isSymbol(symbolIr), isTrue);

@@ -47,7 +47,7 @@ void main() {
         final hostVal = hostValueWithProps(person, getters);
         final hostIr = IrNativeValue(hostVal);
         final env = defineVar('person', hostIr, emptyEnv());
-        final dottedIr = IrDottedSymbol(['person', 'name']);
+        final dottedIr = IrDottedSymbol('person.name');
 
         final result = await runEvalSimple(eval(dottedIr), env);
         result.match(
@@ -67,7 +67,7 @@ void main() {
         final hostVal = hostValueWithProps(person, getters);
         final hostIr = IrNativeValue(hostVal);
         final env = defineVar('person', hostIr, emptyEnv());
-        final dottedIr = IrDottedSymbol(['person', 'age']);
+        final dottedIr = IrDottedSymbol('person.age');
 
         final result = await runEvalSimple(eval(dottedIr), env);
         result.match(
@@ -91,7 +91,7 @@ void main() {
         final hostVal = hostValueWithProps(calc, getters);
         final hostIr = IrNativeValue(hostVal);
         final env = defineVar('calc', hostIr, emptyEnv());
-        final dottedIr = IrDottedSymbol(['calc', 'compute']);
+        final dottedIr = IrDottedSymbol('calc.compute');
 
         final result = await runEvalSimple(eval(dottedIr), env);
         result.match((error) => fail('Method call should succeed: $error'), (
@@ -112,7 +112,7 @@ void main() {
         final hostVal = hostValueWithProps(calc, getters);
         final hostIr = IrNativeValue(hostVal);
         final env = defineVar('calc', hostIr, emptyEnv());
-        final dottedIr = IrDottedSymbol(['calc', 'double']);
+        final dottedIr = IrDottedSymbol('calc.double');
 
         final result = await runEvalSimple(eval(dottedIr), env);
         result.match((error) => fail('Method call should succeed: $error'), (
@@ -140,7 +140,7 @@ void main() {
         final env = defineVar('person', hostIr, emptyEnv());
 
         // Test name property
-        final nameDotted = IrDottedSymbol(['person', 'name']);
+        final nameDotted = IrDottedSymbol('person.name');
         final nameResult = await runEvalSimple(eval(nameDotted), env);
         nameResult.match(
           (error) => fail('Name property access should succeed: $error'),
@@ -151,7 +151,7 @@ void main() {
         );
 
         // Test age property
-        final ageDotted = IrDottedSymbol(['person', 'age']);
+        final ageDotted = IrDottedSymbol('person.age');
         final ageResult = await runEvalSimple(eval(ageDotted), env);
         ageResult.match(
           (error) => fail('Age property access should succeed: $error'),
@@ -172,7 +172,7 @@ void main() {
         final hostVal = hostValueWithProps(person, getters);
         final hostIr = IrNativeValue(hostVal);
         final env = defineVar('person', hostIr, emptyEnv());
-        final dottedIr = IrDottedSymbol(['person', 'nonexistent']);
+        final dottedIr = IrDottedSymbol('person.nonexistent');
 
         final result = await runEvalSimple(eval(dottedIr), env);
         result.match(
@@ -185,7 +185,7 @@ void main() {
 
       test('fails when accessing property on non-host value', () async {
         final env = defineVar('number', IrInteger(42), emptyEnv());
-        final dottedIr = IrDottedSymbol(['number', 'property']);
+        final dottedIr = IrDottedSymbol('number.property');
 
         final result = await runEvalSimple(eval(dottedIr), env);
         result.match(

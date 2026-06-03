@@ -9,7 +9,7 @@ Ir compile(Ast ast) {
     IntegerAst(:final value) => IrInteger(value),
     FloatAst(:final value) => IrFloat(value),
     SymbolAst(:final value) =>
-      value.contains('.') ? IrDottedSymbol(value.split('.')) : IrSymbol(value),
+      value.contains('.') ? IrDottedSymbol(value) : IrSymbol(value),
     ListAst(:final elements) => IrList(elements.map(compile).toList()),
     ObjectAst(:final properties) => IrObject(
       properties.map((key, value) => MapEntry(key, compile(value))).unlock,

@@ -113,28 +113,22 @@ class IrSymbol extends Ir {
 }
 
 class IrDottedSymbol extends Ir {
-  final List<String> parts;
-  IrDottedSymbol(this.parts);
+  late final List<String> parts;
+  final String name;
+
+  IrDottedSymbol(this.name) {
+    parts = name.split('.');
+  }
 
   @override
   String toString() => parts.join('.');
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is IrDottedSymbol && _listsEqual(other.parts, parts));
+      identical(this, other) || (other is IrDottedSymbol && name == other.name);
 
   @override
   int get hashCode => parts.hashCode;
-}
-
-bool _listsEqual(List<String> a, List<String> b) {
-  if (identical(a, b)) return true;
-  if (a.length != b.length) return false;
-  for (int i = 0; i < a.length; i++) {
-    if (a[i] != b[i]) return false;
-  }
-  return true;
 }
 
 /// Composite IR values

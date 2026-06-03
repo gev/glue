@@ -129,7 +129,7 @@ void main() {
       final envWithObj = defineVar('obj', obj, runtime.env);
       final runtimeWithObj = runtime.copyWith(env: envWithObj);
       // Access obj.nested
-      final dottedIr = IrDottedSymbol(['obj', 'nested']);
+      final dottedIr = IrDottedSymbol('obj.nested');
       final result = await runEval(eval(dottedIr), runtimeWithObj);
       result.match((error) => fail('Should not be left: $error'), (value) {
         final (result, runtime) = value;
@@ -143,7 +143,7 @@ void main() {
       final runtimeWithObj = runtime.copyWith(env: envWithObj);
 
       // Try to access obj.missing
-      final dottedIr = IrDottedSymbol(['obj', 'missing']);
+      final dottedIr = IrDottedSymbol('obj.missing');
       final result = await runEval(eval(dottedIr), runtimeWithObj);
 
       expect(result.isLeft, isTrue);
