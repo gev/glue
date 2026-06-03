@@ -19,6 +19,7 @@ Future<Either<GlueError, Ir>> runCode(String input) async {
   final parseResult = parseGlue(input);
   return parseResult.match((parseError) => Left(parseError), (ast) async {
     final irTree = compile(ast);
+    print(irTree);
     final env = envFromModules([
       builtinModule,
       boolModule,
@@ -264,6 +265,24 @@ void main() {
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrList([IrVoid(), IrInteger(42)]))),
+      );
+    });
+
+    test('user-defined function with quoted arg', () async {
+      final code = '((def id (lambda (x) x)) (id \'foo))';
+      final result = await runCode(code);
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrList([IrVoid(), IrSymbol('foo')]))),
+      );
+    });
+
+    test('object\'s field function with quoted arg', () async {
+      final code = '((def o (:id (lambda (x) x))) (o.id \'foo))';
+      final result = await runCode(code);
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrList([IrVoid(), IrSymbol('foo')]))),
       );
     });
 
