@@ -278,6 +278,9 @@ Eval<Ir> evalList(List<Ir> elements) {
     // Pattern: [IR.Symbol name]
     [IrSymbol(value: final name)] => evalSymbol(name),
 
+    // Pattern: [IR.DottedSymbol parts]
+    [IrDottedSymbol(:final parts)] => evalDottedSymbol(parts),
+
     // Pattern: (IR.Symbol name : rawArgs)
     [IrSymbol(value: final name), ...final rawArgs] => withContext(
       name,
@@ -289,6 +292,11 @@ Eval<Ir> evalList(List<Ir> elements) {
         );
       }),
     ),
+
+    // Pattern: [IR.DottedSymbol parts : rawArgs]
+    [IrDottedSymbol(:final parts), ...final rawArgs] => evalDottedSymbol(
+      parts,
+    ).flatMap((func) => withContext(parts.join('.'), apply(func, rawArgs))),
 
     // Pattern: xs (other lists)
     _ => withContext(

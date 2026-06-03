@@ -100,6 +100,14 @@ spec = describe "Glue.Eval (System Integration)" do
         runCode "((def id (lambda (x) x)) (id 42))"
             `shouldReturn` Right (List [Void, Integer 42])
 
+    it "user-defined function with quoted arg" do
+        runCode "((def id (lambda (x) x)) (id 'foo))"
+            `shouldReturn` Right (List [Void, Symbol "foo"])
+
+    it "object's field function with quoted arg" do
+        runCode "((def o (:id (lambda (x) x))) (o.id 'foo))"
+            `shouldReturn` Right (List [Void, Symbol "foo"])
+
     it "function definition sugar syntax" do
         runCode "((def (foo x) x) (foo 42))"
             `shouldReturn` Right (List [Void, Integer 42])

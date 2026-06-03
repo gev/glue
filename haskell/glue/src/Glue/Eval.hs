@@ -24,7 +24,7 @@ module Glue.Eval (
 import Control.Monad (ap, liftM)
 import Data.Map (Map)
 import Data.Map.Strict qualified as Map
-import Data.Text (Text)
+import Data.Text (Text, intercalate)
 import Glue.Env qualified as E
 import Glue.Eval.Error (EvalError (EvalError))
 import Glue.Eval.Exception
@@ -130,6 +130,7 @@ evalDottedSymbol parts = do
 -- Evaluate a list (function call or literal list)
 evalList :: [IR] -> Eval IR
 evalList [IR.Symbol name] = evalSymbol name
+evalList [IR.DottedSymbol parts] = evalDottedSymbol parts
 evalList (IR.Symbol name : rawArgs) = do
     pushContext name
     env <- getEnv
@@ -141,6 +142,12 @@ evalList (IR.Symbol name : rawArgs) = do
         Left err -> do
             popContext
             throwError err
+evalList (IR.DottedSymbol parts : rawArgs) = do
+    func <- evalDottedSymbol parts
+    pushContext $ intercalate "." parts
+    result <- apply func rawArgs
+    popContext
+    pure result
 evalList xs = do
     results <- mapM eval xs
     case results of
