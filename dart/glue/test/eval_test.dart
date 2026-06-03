@@ -19,7 +19,6 @@ Future<Either<GlueError, Ir>> runCode(String input) async {
   final parseResult = parseGlue(input);
   return parseResult.match((parseError) => Left(parseError), (ast) async {
     final irTree = compile(ast);
-    print(irTree);
     final env = envFromModules([
       builtinModule,
       boolModule,
