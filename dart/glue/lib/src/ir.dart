@@ -128,7 +128,7 @@ class IrDottedSymbol extends Ir {
       identical(this, other) || (other is IrDottedSymbol && name == other.name);
 
   @override
-  int get hashCode => parts.hashCode;
+  int get hashCode => name.hashCode;
 }
 
 /// Composite IR values
