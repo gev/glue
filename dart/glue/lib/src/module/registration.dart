@@ -1,3 +1,4 @@
+import 'package:glue/either.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/module.dart';
 import 'package:glue/src/module/registry.dart';
@@ -6,106 +7,113 @@ import 'package:glue/src/module/registry.dart';
 /// Parses (module name (export ...) body...) IR structures into RegisteredModule instances
 
 /// Parse a module IR structure into a RegisteredModule
-/// Returns (errorMessage, registeredModule) - error if parsing fails
-(String?, RegisteredModule?) parseModule(Ir ir) {
+Either<String, RegisteredModule> parseModule(Ir ir) {
   // Must be a list starting with 'module'
   if (ir is! IrList || ir.elements.isEmpty) {
-    return ('Module declaration must be a non-empty list', null);
+    return Left('Module declaration must be a non-empty list');
   }
 
   final elements = ir.elements;
   if (elements[0] is! IrSymbol || (elements[0] as IrSymbol).value != 'module') {
-    return ('Module declaration must start with "module"', null);
+    return Left('Module declaration must start with "module"');
   }
 
   if (elements.length < 3) {
-    return ('Module declaration requires name, exports, and body', null);
+    return Left('Module declaration requires name, exports, and body');
   }
 
   // Extract module name
   final nameIr = elements[1];
   if (nameIr is! IrSymbol) {
-    return ('Module name must be a symbol', null);
+    return Left('Module name must be a symbol');
   }
-  final moduleName = (nameIr).value;
+  final moduleName = nameIr.value;
 
   // Extract exports
   final exportsIr = elements[2];
-  final (exportError, exports) = _parseExports(exportsIr);
-  if (exportError != null) {
-    return (exportError, null);
+
+  switch (_parseExports(exportsIr)) {
+    case Right(value: final exports):
+      {
+        final body = elements.sublist(3).toList();
+        return Right(
+          RegisteredModule(name: moduleName, exports: exports, body: body),
+        );
+      }
+    case Left(value: final err):
+      return Left(err);
   }
-
-  // Extract body (remaining elements)
-  final body = elements.sublist(3).toList();
-
-  return (
-    null,
-    RegisteredModule(name: moduleName, exports: exports!, body: body),
-  );
 }
 
 /// Parse export list from (export symbol ...)
 /// Returns (errorMessage, exportList) - error if parsing fails
-(String?, List<String>?) _parseExports(Ir ir) {
+Either<String, List<String>> _parseExports(Ir ir) {
   if (ir is! IrList) {
-    return ('Export declaration must be a list', null);
+    return Left('Export declaration must be a list');
   }
 
   if (ir.elements.isEmpty) {
-    return ('Export declaration cannot be empty', null);
+    return Left('Export declaration cannot be empty');
   }
 
   final first = ir.elements[0];
   if (first is! IrSymbol || first.value != 'export') {
-    return ('Export declaration must start with "export"', null);
+    return Left('Export declaration must start with "export"');
   }
 
   final exports = <String>[];
   for (final element in ir.elements.sublist(1)) {
     if (element is! IrSymbol) {
-      return ('Export list can only contain symbols', null);
+      return Left('Export list can only contain symbols');
     }
     exports.add(element.value);
   }
 
-  return (null, exports);
+  return Right(exports);
 }
 
 /// Build registry from multiple module IR structures
 /// Returns (errorMessage, registry) - error if any module fails to parse
-(String?, ModuleRegistry?) buildRegistry(List<Ir> moduleIRs) {
+Either<String, ModuleRegistry> buildRegistry(List<Ir> moduleIRs) {
   var registry = emptyRegistry();
   for (final ir in moduleIRs) {
-    final (error, module) = parseModule(ir);
-    if (error != null) {
-      return (error, null);
+    switch (parseModule(ir)) {
+      case Right(value: final module):
+        {
+          switch (registerModule(registry, module)) {
+            case Right(value: final newRegistry):
+              registry = newRegistry;
+            case Left(value: final err):
+              return Left(err);
+          }
+        }
+      case Left(value: final err):
+        return Left(err);
     }
-    final (regError, newRegistry) = registerModule(registry, module!);
-    if (regError != null) {
-      return (regError, null);
-    }
-    registry = newRegistry!;
   }
-  return (null, registry);
+  return Right(registry);
 }
 
 /// Parse and register multiple modules
-/// Returns (errorMessage, registry) - error if parsing or registration fails
-(String?, ModuleRegistry?) registerModulesFromIR(
+Either<String, ModuleRegistry> registerModulesFromIR(
   ModuleRegistry registry,
   List<Ir> moduleIRs,
 ) {
+  var currentRegistry = registry;
   for (final ir in moduleIRs) {
-    final (error, module) = parseModule(ir);
-    if (error != null) {
-      return (error, null);
+    switch (parseModule(ir)) {
+      case Right(value: final module):
+        {
+          switch (registerModule(currentRegistry, module)) {
+            case Right(value: final newRegistry):
+              currentRegistry = newRegistry;
+            case Left(value: final err):
+              return Left(err);
+          }
+        }
+      case Left(value: final err):
+        return Left(err);
     }
-    final (regError, newRegistry) = registerModule(registry, module!);
-    if (regError != null) {
-      return (regError, null);
-    }
-    registry = newRegistry!;
   }
-  return (null, registry);
+  return Right(currentRegistry);
 }

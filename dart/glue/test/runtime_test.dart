@@ -1,3 +1,4 @@
+import 'package:glue/either.dart';
 import 'package:glue/src/env.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/module.dart';
@@ -118,7 +119,9 @@ void main() {
         exports: ['func'],
         body: [IrInteger(1)],
       );
-      final (error, registryWithModule) = registerModule(registry, module);
+      final (error, registryWithModule) = split(
+        registerModule(registry, module),
+      );
       expect(error, isNull);
 
       // Add an imported module to cache

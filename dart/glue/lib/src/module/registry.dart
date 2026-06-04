@@ -1,3 +1,4 @@
+import 'package:glue/either.dart';
 import 'package:glue/src/module.dart';
 
 /// Module registry for storing registered modules
@@ -10,31 +11,32 @@ ModuleRegistry emptyRegistry() => {};
 
 /// Register a module in the registry
 /// Returns (errorMessage, newRegistry) - error if duplicate name
-(String?, ModuleRegistry?) registerModule(
+Either<String, ModuleRegistry> registerModule(
   ModuleRegistry registry,
   RegisteredModule module,
 ) {
   if (registry.containsKey(module.name)) {
-    return ('Module "${module.name}" already registered', null);
+    return Left('Module "${module.name}" already registered');
   }
-  return (null, {...registry, module.name: module});
+  return Right({...registry, module.name: module});
 }
 
 /// Register multiple modules
 /// Returns (errorMessage, newRegistry) - error if any duplicates
-(String?, ModuleRegistry?) registerModules(
+Either<String, ModuleRegistry> registerModules(
   ModuleRegistry registry,
   List<RegisteredModule> modules,
 ) {
   var currentRegistry = registry;
   for (final module in modules) {
-    final (error, newRegistry) = registerModule(currentRegistry, module);
-    if (error != null) {
-      return (error, null);
+    switch (registerModule(currentRegistry, module)) {
+      case Right(value: final newRegistry):
+        currentRegistry = newRegistry;
+      case Left(value: final err):
+        return Left(err);
     }
-    currentRegistry = newRegistry!;
   }
-  return (null, currentRegistry);
+  return Right(currentRegistry);
 }
 
 /// Lookup a module by name

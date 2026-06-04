@@ -1,3 +1,4 @@
+import 'package:glue/either.dart';
 import 'package:glue/src/env.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/module.dart';
@@ -111,7 +112,7 @@ void main() {
         body: [IrInteger(1)],
       );
 
-      final (error, newRegistry) = registerModule(registry, module);
+      final (error, newRegistry) = split(registerModule(registry, module));
       expect(error, isNull);
       expect(newRegistry, isNotNull);
       expect(registrySize(newRegistry!), equals(1));
@@ -131,10 +132,10 @@ void main() {
         body: [IrInteger(2)],
       );
 
-      final (error1, registry1) = registerModule(registry, module1);
+      final (error1, registry1) = split(registerModule(registry, module1));
       expect(error1, isNull);
 
-      final (error2, registry2) = registerModule(registry1!, module2);
+      final (error2, registry2) = split(registerModule(registry1!, module2));
       expect(error2, isNotNull);
       expect(error2, contains('already registered'));
       expect(registry2, isNull);
@@ -155,7 +156,7 @@ void main() {
         ),
       ];
 
-      final (error, newRegistry) = registerModules(registry, modules);
+      final (error, newRegistry) = split(registerModules(registry, modules));
       expect(error, isNull);
       expect(newRegistry, isNotNull);
       expect(registrySize(newRegistry!), equals(2));
@@ -228,7 +229,7 @@ void main() {
         IrList([IrSymbol('def'), IrSymbol('multiply'), IrInteger(2)]),
       ]);
 
-      final (error, module) = parseModule(ir);
+      final (error, module) = split(parseModule(ir));
       expect(error, isNull);
       expect(module, isNotNull);
       expect(module!.name, equals('test.math'));
@@ -238,7 +239,7 @@ void main() {
 
     test('parseModule: rejects non-list IR', () {
       final ir = IrSymbol('not-a-list');
-      final (error, module) = parseModule(ir);
+      final (error, module) = split(parseModule(ir));
       expect(error, isNotNull);
       expect(error, contains('must be a non-empty list'));
       expect(module, isNull);
@@ -246,7 +247,7 @@ void main() {
 
     test('parseModule: rejects empty list', () {
       final ir = IrList([]);
-      final (error, module) = parseModule(ir);
+      final (error, module) = split(parseModule(ir));
       expect(error, isNotNull);
       expect(error, contains('must be a non-empty list'));
       expect(module, isNull);
@@ -254,7 +255,7 @@ void main() {
 
     test('parseModule: rejects non-module list', () {
       final ir = IrList([IrSymbol('def'), IrSymbol('x'), IrInteger(1)]);
-      final (error, module) = parseModule(ir);
+      final (error, module) = split(parseModule(ir));
       expect(error, isNotNull);
       expect(error, contains('must start with "module"'));
       expect(module, isNull);
@@ -268,7 +269,7 @@ void main() {
         IrList([IrSymbol('def'), IrSymbol('add'), IrInteger(1)]),
       ]);
 
-      final (error, module) = parseModule(ir);
+      final (error, module) = split(parseModule(ir));
       expect(error, isNotNull);
       expect(error, contains('Module name must be a symbol'));
       expect(module, isNull);
@@ -281,7 +282,7 @@ void main() {
         IrList([IrSymbol('export')]),
       ]);
 
-      final (error, module) = parseModule(ir);
+      final (error, module) = split(parseModule(ir));
       expect(error, isNull);
       expect(module, isNotNull);
       expect(module!.name, equals('empty.module'));
@@ -305,7 +306,7 @@ void main() {
         ]),
       ];
 
-      final (error, registry) = buildRegistry(modules);
+      final (error, registry) = split(buildRegistry(modules));
       expect(error, isNull);
       expect(registry, isNotNull);
       expect(registrySize(registry!), equals(2));
@@ -324,7 +325,7 @@ void main() {
         IrSymbol('invalid-module'), // This will cause parsing error
       ];
 
-      final (error, registry) = buildRegistry(modules);
+      final (error, registry) = split(buildRegistry(modules));
       expect(error, isNotNull);
       expect(error, contains('must be a non-empty list'));
       expect(registry, isNull);
@@ -332,12 +333,14 @@ void main() {
 
     test('registerModulesFromIR: registers into existing registry', () {
       final initialRegistry = emptyRegistry();
-      final (initError, registry1) = registerModule(
-        initialRegistry,
-        RegisteredModule(
-          name: 'existing',
-          exports: ['x'],
-          body: [IrInteger(1)],
+      final (initError, registry1) = split(
+        registerModule(
+          initialRegistry,
+          RegisteredModule(
+            name: 'existing',
+            exports: ['x'],
+            body: [IrInteger(1)],
+          ),
         ),
       );
       expect(initError, isNull);
@@ -351,7 +354,9 @@ void main() {
         ]),
       ];
 
-      final (error, finalRegistry) = registerModulesFromIR(registry1!, modules);
+      final (error, finalRegistry) = split(
+        registerModulesFromIR(registry1!, modules),
+      );
       expect(error, isNull);
       expect(finalRegistry, isNotNull);
       expect(registrySize(finalRegistry!), equals(2));
