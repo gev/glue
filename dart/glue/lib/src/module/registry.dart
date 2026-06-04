@@ -10,7 +10,6 @@ typedef ModuleRegistry = Map<String, RegisteredModule>;
 ModuleRegistry emptyRegistry() => {};
 
 /// Register a module in the registry
-/// Returns (errorMessage, newRegistry) - error if duplicate name
 Either<String, ModuleRegistry> registerModule(
   ModuleRegistry registry,
   RegisteredModule module,
@@ -22,7 +21,6 @@ Either<String, ModuleRegistry> registerModule(
 }
 
 /// Register multiple modules
-/// Returns (errorMessage, newRegistry) - error if any duplicates
 Either<String, ModuleRegistry> registerModules(
   ModuleRegistry registry,
   List<RegisteredModule> modules,
