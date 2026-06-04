@@ -4,7 +4,7 @@
 library;
 
 /// Either interface - defines the contract for sum types
-abstract interface class Either<L, R> {
+sealed class Either<L, R> {
   /// Pattern matching method - provides functional API for handling both cases
   T match<T>(T Function(L left) onLeft, T Function(R right) onRight);
 
@@ -77,3 +77,6 @@ final class Right<L, R> implements Either<L, R> {
   @override
   int get hashCode => value.hashCode;
 }
+
+(L?, R?) split<L, R>(Either<L, R> either) =>
+    either.match((left) => (left, null), (right) => (null, right));
