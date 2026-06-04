@@ -46,7 +46,6 @@ Either<String, RegisteredModule> parseModule(Ir ir) {
 }
 
 /// Parse export list from (export symbol ...)
-/// Returns (errorMessage, exportList) - error if parsing fails
 Either<String, List<String>> _parseExports(Ir ir) {
   if (ir is! IrList) {
     return Left('Export declaration must be a list');
@@ -73,7 +72,6 @@ Either<String, List<String>> _parseExports(Ir ir) {
 }
 
 /// Build registry from multiple module IR structures
-/// Returns (errorMessage, registry) - error if any module fails to parse
 Either<String, ModuleRegistry> buildRegistry(List<Ir> moduleIRs) {
   var registry = emptyRegistry();
   for (final ir in moduleIRs) {
