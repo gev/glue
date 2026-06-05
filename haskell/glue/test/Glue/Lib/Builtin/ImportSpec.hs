@@ -6,7 +6,7 @@ import Glue.IR (IR (..))
 import Glue.Lib.Builtin (builtin)
 import Glue.Lib.Math.Arithmetic (arithmetic)
 import Glue.Lib.Module (moduleModule)
-import Glue.Module (envFromModule, envFromModules)
+import Glue.Module (envFromModules)
 import Glue.Module.Cache qualified as Cache
 import Glue.Module.Registration (buildRegistry)
 import Glue.Runtime (Runtime (..))
