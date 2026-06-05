@@ -1,4 +1,4 @@
-module Glue.Lib.Builtin.Import where
+module Glue.Lib.Module.Import where
 
 import Data.Map.Strict qualified as Map
 import Data.Text qualified as T

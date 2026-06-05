@@ -38,7 +38,6 @@ library
     Glue.Lib.Builtin
     Glue.Lib.Builtin.Def
     Glue.Lib.Builtin.Error
-    Glue.Lib.Builtin.Import
     Glue.Lib.Builtin.Lambda
     Glue.Lib.Builtin.Let
     Glue.Lib.Builtin.Quote
@@ -98,6 +97,8 @@ library
     Glue.Lib.Math.Utility.Min
     Glue.Lib.Math.Utility.Round
     Glue.Lib.Math.Utility.Trunc
+    Glue.Lib.Module
+    Glue.Lib.Module.Import
     Glue.Module
     Glue.Module.Cache
     Glue.Module.Error

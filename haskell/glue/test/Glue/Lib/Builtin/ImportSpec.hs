@@ -5,6 +5,7 @@ import Glue.Eval (Eval (..), eval)
 import Glue.IR (IR (..))
 import Glue.Lib.Builtin (builtin)
 import Glue.Lib.Math.Arithmetic (arithmetic)
+import Glue.Lib.Module (moduleModule)
 import Glue.Module (envFromModule, envFromModules)
 import Glue.Module.Cache qualified as Cache
 import Glue.Module.Registration (buildRegistry)
@@ -29,7 +30,7 @@ spec = do
                 Left err -> expectationFailure $ "Registry build failed: " ++ show err
                 Right registry -> do
                     -- Create initial environment with import function
-                    let initialEnv = envFromModule builtin
+                    let initialEnv = envFromModules [builtin, moduleModule]
 
                     -- Create initial eval runtime with registry
                     let initialState =
@@ -71,7 +72,7 @@ spec = do
                 Left err -> expectationFailure $ "Registry build failed: " ++ show err
                 Right registry -> do
                     -- Create initial environment with some pre-existing variables
-                    let baseEnv = envFromModule builtin
+                    let baseEnv = envFromModules [builtin, moduleModule]
                     let initialEnv = E.defineVar "preexisting" (Integer 123) baseEnv
 
                     -- Create initial eval runtime with registry
@@ -125,7 +126,7 @@ spec = do
                 Left err -> expectationFailure $ "Registry build failed: " ++ show err
                 Right registry -> do
                     -- Create initial environment with import function
-                    let initialEnv = envFromModules [builtin, arithmetic]
+                    let initialEnv = envFromModules [builtin, moduleModule, arithmetic]
 
                     -- Create initial eval runtime with registry
                     let initialState =
@@ -168,7 +169,7 @@ spec = do
                 Left err -> expectationFailure $ "Registry build failed: " ++ show err
                 Right registry -> do
                     -- Create initial environment with import function
-                    let initialEnv = envFromModule builtin
+                    let initialEnv = envFromModules [builtin, moduleModule]
 
                     -- Create initial eval runtime with registry
                     let initialState =
@@ -220,7 +221,7 @@ spec = do
                 Left err -> expectationFailure $ "Registry build failed: " ++ show err
                 Right registry -> do
                     -- Create initial environment
-                    let initialEnv = envFromModule builtin
+                    let initialEnv = envFromModules [builtin, moduleModule]
                     let initialState = Runtime initialEnv [] registry Cache.emptyCache initialEnv
 
                     -- Import math

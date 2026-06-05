@@ -7,11 +7,11 @@ import 'package:glue/src/module/cache.dart';
 import 'package:glue/src/module/registry.dart';
 
 /// Import special form - loads and evaluates a module
-/// Mirrors Haskell Glue.Lib.Builtin.Import.importForm exactly
+/// Mirrors Haskell Glue.Lib.Module.Import.importForm exactly
 final Ir importForm = IrSpecial(importFormImpl);
 
 /// Import special form implementation
-/// Mirrors Haskell Glue.Lib.Builtin.Import.importForm exactly
+/// Mirrors Haskell Glue.Lib.Module.Import.importForm exactly
 Eval<Ir> importFormImpl(List<Ir> args) {
   if (args.length != 1) {
     return throwError(wrongArgumentType(['module-name']));
