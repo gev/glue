@@ -29,14 +29,18 @@ Either<String, RegisteredModule> parseModuleParts(List<Ir> elements) {
 
   // Extract module name
   final nameIr = elements[0];
-  if (nameIr is! IrSymbol) {
-    return Left('Module name must be a symbol');
+  final String? moduleName = switch (nameIr) {
+    IrSymbol ir => ir.value,
+    IrDottedSymbol ir => ir.value,
+    _ => null,
+  };
+
+  if (moduleName == null) {
+    return Left('Module name must be a symbol or dotted symbol');
   }
-  final moduleName = nameIr.value;
 
   // Extract exports
   final exportsIr = elements[1];
-
   switch (_parseExports(exportsIr)) {
     case Right(value: final exports):
       {
