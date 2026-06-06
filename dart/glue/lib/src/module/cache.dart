@@ -15,15 +15,15 @@ ImportedModuleCache storeImportedModule(
 ) => {...cache, importedModule.moduleName: importedModule};
 
 /// Lookup an imported module by name
-ImportedModule? lookupImportedModule(String name, ImportedModuleCache cache) =>
+ImportedModule? lookupImportedModule(ImportedModuleCache cache, String name) =>
     cache[name];
 
 /// Check if a module is cached
-bool isModuleCached(String name, ImportedModuleCache cache) =>
+bool isModuleCached(ImportedModuleCache cache, String name) =>
     cache.containsKey(name);
 
 /// Remove a module from cache
-ImportedModuleCache removeFromCache(String name, ImportedModuleCache cache) {
+ImportedModuleCache removeFromCache(ImportedModuleCache cache, String name) {
   final newCache = {...cache};
   newCache.remove(name);
   return newCache;

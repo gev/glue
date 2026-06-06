@@ -35,7 +35,7 @@ Eval<Ir> importFormImpl(List<Ir> args) {
     }
 
     return getCache().flatMap((cache) {
-      final cachedModule = lookupImportedModule(moduleName, cache);
+      final cachedModule = lookupImportedModule(cache, moduleName);
 
       if (cachedModule != null) {
         // Module already imported - merge into current environment
