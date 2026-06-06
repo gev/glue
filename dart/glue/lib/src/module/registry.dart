@@ -20,6 +20,14 @@ Either<String, ModuleRegistry> registerModule(
   return Right({...registry, module.name: module});
 }
 
+/// Reregister a module in the registry
+ModuleRegistry reregisterModule(
+  ModuleRegistry registry,
+  RegisteredModule module,
+) {
+  return ({...registry, module.name: module});
+}
+
 /// Register multiple modules
 Either<String, ModuleRegistry> registerModules(
   ModuleRegistry registry,
