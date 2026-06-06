@@ -12,7 +12,7 @@ Either<String, Ast> decompile(Ir ir) {
     IrString(:final value) => Right(StringAst(value)),
     IrBool(:final value) => Right(SymbolAst(value ? 'true' : 'false')),
     IrSymbol(:final value) => Right(SymbolAst(value)),
-    IrDottedSymbol(:final name) => Right(SymbolAst(name)),
+    IrDottedSymbol(:final value) => Right(SymbolAst(value)),
     IrList(:final elements) => _sequence(
       elements.map(decompile).toList(),
     ).map((list) => ListAst(list)),

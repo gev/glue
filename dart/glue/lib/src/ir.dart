@@ -114,21 +114,22 @@ class IrSymbol extends Ir {
 
 class IrDottedSymbol extends Ir {
   late final List<String> parts;
-  final String name;
+  final String value;
 
-  IrDottedSymbol(this.name) {
-    parts = name.split('.');
+  IrDottedSymbol(this.value) {
+    parts = value.split('.');
   }
 
   @override
-  String toString() => parts.join('.');
+  String toString() => value;
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || (other is IrDottedSymbol && name == other.name);
+      identical(this, other) ||
+      (other is IrDottedSymbol && value == other.value);
 
   @override
-  int get hashCode => name.hashCode;
+  int get hashCode => value.hashCode;
 }
 
 /// Composite IR values
