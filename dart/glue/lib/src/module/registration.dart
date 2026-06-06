@@ -18,24 +18,29 @@ Either<String, RegisteredModule> parseModule(Ir ir) {
     return Left('Module declaration must start with "module"');
   }
 
-  if (elements.length < 3) {
+  return parseModuleParts(elements.sublist(1).toList());
+}
+
+/// Parse a module IR structure into a RegisteredModule
+Either<String, RegisteredModule> parseModuleParts(List<Ir> elements) {
+  if (elements.length < 2) {
     return Left('Module declaration requires name, exports, and body');
   }
 
   // Extract module name
-  final nameIr = elements[1];
+  final nameIr = elements[0];
   if (nameIr is! IrSymbol) {
     return Left('Module name must be a symbol');
   }
   final moduleName = nameIr.value;
 
   // Extract exports
-  final exportsIr = elements[2];
+  final exportsIr = elements[1];
 
   switch (_parseExports(exportsIr)) {
     case Right(value: final exports):
       {
-        final body = elements.sublist(3).toList();
+        final body = elements.sublist(2).toList();
         return Right(
           RegisteredModule(name: moduleName, exports: exports, body: body),
         );
