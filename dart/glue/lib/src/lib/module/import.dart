@@ -16,8 +16,8 @@ Eval<Ir> importFormImpl(List<Ir> args) {
 
   final moduleNameIr = args[0];
   return switch (moduleNameIr) {
-    IrSymbol(value: final name) => import(name),
-    IrDottedSymbol(value: final name) => import(name),
+    IrSymbol(value: final name) => importModule(name),
+    IrDottedSymbol(value: final name) => importModule(name),
     _ => throwError(wrongArgumentType(['module-name'])),
   };
 }
