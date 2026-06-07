@@ -6,7 +6,7 @@ import 'package:glue/src/module.dart';
 import 'package:glue/src/module/cache.dart';
 import 'package:glue/src/module/registry.dart';
 
-Eval<Ir> import(String moduleName) {
+Eval<Ir> importModule(String moduleName) {
   return getRegistry().flatMap((registry) {
     final registeredModule = lookupModule(moduleName, registry);
     if (registeredModule == null) {
