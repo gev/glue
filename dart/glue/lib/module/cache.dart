@@ -1,4 +1,4 @@
-/// Module import caching for Glue language
+/// Module caching for Glue language
 library;
 
 export 'package:glue/src/module/cache.dart';
