@@ -13,7 +13,7 @@ class Context {
   int get hashCode => _pool.hashCode;
 }
 
-T getFromContext<T>(Context context) => context._pool[T] as T;
+T? getFromContext<T>(Context context) => context._pool[T] as T?;
 
 Context putToContext<T>(Context context, T obj) =>
     Context({...context._pool, T: obj});
