@@ -119,14 +119,14 @@ Call stack provides:
 ```haskell
 evalList :: [IR] -> Eval (Maybe IR)
 evalList [IR.Symbol name] = do
-    pushContext name
+    pushCall name
     -- Symbol-only logic
-    popContext
+    popCall
 
 evalList (IR.Symbol name : rawArgs) = do
-    pushContext name
+    pushCall name
     -- Symbol with args logic
-    popContext
+    popCall
 
 evalList xs = do
     -- General list logic

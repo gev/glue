@@ -296,7 +296,7 @@ class GlueInterpreter {
     try {
       return await evalString(code);
     } finally {
-      runtime.environment = previousEnv; // Restore context
+      runtime.environment = previousEnv; 
     }
   }
 }

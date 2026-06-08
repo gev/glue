@@ -9,7 +9,7 @@ The initial Runtime is constructed with these components:
 ```haskell
 data Runtime = Runtime
     { environment :: Env           -- Current environment (initial bindings)
-    , context :: Context   -- Call stack (initially empty)
+    , stack :: CallStack   -- Call stack (initially empty)
     , registry :: ModuleRegistry Eval    -- Module metadata (initially empty)
     , importCache :: ImportedModuleCache Eval  -- Cached imports (initially empty)
     , rootEnvironment :: Env       -- Preserved root environment
@@ -24,7 +24,7 @@ The starting environment containing initial variable bindings. This can be:
 - **Custom environment**: Specific bindings for specialized execution contexts
 - **Minimal environment**: Only essential operations
 
-### Context (context)
+### CallStack (stack)
 Initialized as an empty list `[]` representing the initial call stack state.
 
 ### Registry (registry)

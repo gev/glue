@@ -11,7 +11,7 @@ Runtime represents the complete state of Glue's evaluation system, containing al
 ```haskell
 data Runtime = Runtime
     { environment :: Env
-    , context :: Context
+    , stack :: Callstack
     , registry :: ModuleRegistry Eval
     , importCache :: ImportedModuleCache Eval
     , rootEnvironment :: Env
@@ -25,8 +25,8 @@ data Runtime = Runtime
 - **Purpose:** Current variable bindings during evaluation
 - **Structure:** Stack of frames containing symbol-to-value mappings
 
-### Context (context)
-- **Type:** `Context`
+### CallStack (stack)
+- **Type:** `CallStack`
 - **Purpose:** Call stack for error reporting
 - **Structure:** List of function names showing execution path
 

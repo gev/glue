@@ -35,7 +35,7 @@ This is the reference implementation of the Glue programming language, written i
 #### Evaluator (`Glue.Eval`)
 - **Lexical Scoping**: Proper variable binding and closure capture
 - **Type Safety**: Runtime type checking and validation
-- **Error Handling**: Comprehensive error reporting and context
+- **Error Handling**: Comprehensive error reporting and call stack
 
 #### Standard Library (`Glue.Lib.*`)
 - **Bool Operations**: Conditionals, comparisons, logical operations
@@ -168,7 +168,7 @@ import Glue.Eval (Runtime(..), runEval)
 
 -- Create evaluation environment
 let env = E.fromFrame lib
-let runtime = Runtime { env = env, context = [] }
+let runtime = Runtime { env = env, stack = [] }
 
 -- Evaluate Glue code
 result <- runEval (eval compiledIR) runtime

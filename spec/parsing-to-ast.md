@@ -280,7 +280,7 @@ The parser provides detailed error messages including:
 
 The parser maintains minimal state:
 - Current token stream
-- Error context for reporting
+- Error call stack for reporting
 
 ### Backtracking
 
