@@ -14,7 +14,7 @@ void main() {
       final runtime = Runtime.initial(env);
 
       expect(runtime.env, equals(env));
-      expect(runtime.context, isEmpty);
+      expect(runtime.stack, isEmpty);
       expect(registrySize(runtime.registry), equals(0));
       expect(cacheSize(runtime.importCache), equals(0));
       expect(runtime.rootEnv, equals(env));
@@ -22,21 +22,21 @@ void main() {
 
     test('Runtime constructor creates runtime with provided values', () {
       final env = fromList([('x', IrInteger(42))]);
-      final context = ['main', 'helper'];
+      final stack = ['main', 'helper'];
       final registry = emptyRegistry();
       final cache = emptyCache();
       final rootEnv = fromList([('y', IrInteger(24))]);
 
       final runtime = Runtime(
         env: env,
-        context: context,
+        stack: stack,
         registry: registry,
         importCache: cache,
         rootEnv: rootEnv,
       );
 
       expect(runtime.env, equals(env));
-      expect(runtime.context, equals(context));
+      expect(runtime.stack, equals(stack));
       expect(runtime.registry, equals(registry));
       expect(runtime.importCache, equals(cache));
       expect(runtime.rootEnv, equals(rootEnv));
@@ -45,17 +45,17 @@ void main() {
     test('copyWith creates modified copy', () {
       final original = Runtime.initial(fromList([('x', IrInteger(42))]));
       final newEnv = fromList([('y', IrInteger(24))]);
-      final newContext = ['test'];
+      final newCall = ['test'];
 
-      final modified = original.copyWith(env: newEnv, context: newContext);
+      final modified = original.copyWith(env: newEnv, stack: newCall);
 
       // Original unchanged
       expect(original.env, equals(fromList([('x', IrInteger(42))])));
-      expect(original.context, isEmpty);
+      expect(original.stack, isEmpty);
 
       // Modified has new values
       expect(modified.env, equals(newEnv));
-      expect(modified.context, equals(newContext));
+      expect(modified.stack, equals(newCall));
 
       // Other fields unchanged
       expect(modified.registry, equals(original.registry));
@@ -76,7 +76,7 @@ void main() {
 
       // Should be equal since no changes were made
       expect(modified.env, equals(original.env));
-      expect(modified.context, equals(original.context));
+      expect(modified.stack, equals(original.stack));
       expect(modified.registry, equals(original.registry));
       expect(modified.importCache, equals(original.importCache));
       expect(modified.rootEnv, equals(original.rootEnv));
@@ -89,21 +89,21 @@ void main() {
       expect(runtime1, isNot(equals(runtime2)));
     });
 
-    test('Runtime with different context are not equal', () {
+    test('Runtime with different stack are not equal', () {
       final env = fromList([('x', IrInteger(42))]);
       final runtime1 = Runtime.initial(env);
-      final runtime2 = runtime1.copyWith(context: ['test']);
+      final runtime2 = runtime1.copyWith(stack: ['test']);
 
       expect(runtime1, isNot(equals(runtime2)));
     });
 
     test('Runtime toString provides useful information', () {
       final env = fromList([('x', IrInteger(42))]);
-      final runtime = Runtime.initial(env).copyWith(context: ['main', 'func']);
+      final runtime = Runtime.initial(env).copyWith(stack: ['main', 'func']);
 
       final string = runtime.toString();
       expect(string, contains('env: 1 frames'));
-      expect(string, contains('context: [main, func]'));
+      expect(string, contains('stack: [main, func]'));
       expect(string, contains('registry: 0 modules'));
       expect(string, contains('cache: 0 imported'));
     });

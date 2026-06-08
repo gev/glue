@@ -64,7 +64,7 @@ FutureOr<Either<EvalError, (T, Runtime)>> runEvalSimple<T>(
 
 /// Throw an evaluation error
 Eval<T> throwError<T>(RuntimeException exception) =>
-    Eval((runtime) => Left(EvalError(runtime.context, exception)));
+    Eval((runtime) => Left(EvalError(runtime.stack, exception)));
 
 /// Lift an IO operation into the Eval monad
 Eval<T> liftIO<T>(FutureOr<T> io) => Eval((runtime) async {
@@ -74,7 +74,7 @@ Eval<T> liftIO<T>(FutureOr<T> io) => Eval((runtime) async {
   } catch (e) {
     // Convert exceptions to EvalError
     final exception = RuntimeException('io-error', IrString(e.toString()));
-    final error = EvalError(runtime.context, exception);
+    final error = EvalError(runtime.stack, exception);
     return Left(error);
   }
 });
@@ -97,29 +97,24 @@ Eval<Env> getRootEnv() => Eval((runtime) => Right((runtime.rootEnv, runtime)));
 Eval<void> putRootEnv(Env rootEnv) =>
     Eval((runtime) => Right(((), runtime.copyWith(rootEnv: rootEnv))));
 
-/// Get current context
-Eval<Context> getContext() =>
-    Eval((runtime) => Right((runtime.context, runtime)));
+/// Get current stack
+Eval<CallStack> getCall() => Eval((runtime) => Right((runtime.stack, runtime)));
 
-/// Push context frame
-Eval<void> pushContext(String name) => Eval(
-  (runtime) =>
-      Right(((), runtime.copyWith(context: [name, ...runtime.context]))),
+/// Push stack frame
+Eval<void> pushCall(String name) => Eval(
+  (runtime) => Right(((), runtime.copyWith(stack: [name, ...runtime.stack]))),
 );
 
-/// Pop context frame
-Eval<void> popContext() => Eval(
-  (runtime) => runtime.context.isEmpty
+/// Pop stack frame
+Eval<void> popCall() => Eval(
+  (runtime) => runtime.stack.isEmpty
       ? Left(
           EvalError(
-            runtime.context,
-            RuntimeException(
-              'context-error',
-              IrString('Cannot pop empty context'),
-            ),
+            runtime.stack,
+            RuntimeException('stack-error', IrString('Cannot pop empty stack')),
           ),
         )
-      : Right(((), runtime.copyWith(context: runtime.context.sublist(1)))),
+      : Right(((), runtime.copyWith(stack: runtime.stack.sublist(1)))),
 );
 
 /// Get module registry
@@ -155,7 +150,7 @@ Eval<void> defineVarEval(String name, Ir value) => Eval(
 Eval<void> updateVarEval(String name, Ir value) => Eval((runtime) {
   final result = updateVar(name, value, runtime.env);
   return result.match(
-    (error) => Left(EvalError(runtime.context, error)),
+    (error) => Left(EvalError(runtime.stack, error)),
     (env) => Right(((), runtime.copyWith(env: env))),
   );
 });
@@ -178,10 +173,10 @@ Eval<T> withEnv<T>(Env tempEnv, Eval<T> action) => Eval((runtime) async {
   });
 });
 
-/// Run evaluation with additional context frame
-Eval<T> withContext<T>(String contextName, Eval<T> action) => pushContext(
+/// Run evaluation with additional stack frame
+Eval<T> withCall<T>(String contextName, Eval<T> action) => pushCall(
   contextName,
-).flatMap((_) => action.flatMap((value) => popContext().map((_) => value)));
+).flatMap((_) => action.flatMap((value) => popCall().map((_) => value)));
 
 /// ============================================================================
 /// EVALUATION SEQUENCING
@@ -244,10 +239,7 @@ Eval<Ir> evalSymbol(String name) {
     return result.match(
       (error) => throwError(error),
       (value) => switch (value) {
-        IrEvaluable(:final func) => withContext(
-          name,
-          func().flatMap(Eval.pure),
-        ),
+        IrEvaluable(:final func) => withCall(name, func().flatMap(Eval.pure)),
         _ => Eval.pure(value),
       },
     );
@@ -282,7 +274,7 @@ Eval<Ir> evalList(List<Ir> elements) {
     [IrDottedSymbol(:final parts)] => evalDottedSymbol(parts),
 
     // Pattern: (IR.Symbol name : rawArgs)
-    [IrSymbol(value: final name), ...final rawArgs] => withContext(
+    [IrSymbol(value: final name), ...final rawArgs] => withCall(
       name,
       getEnv().flatMap((env) {
         final result = lookupVar(name, env);
@@ -296,10 +288,10 @@ Eval<Ir> evalList(List<Ir> elements) {
     // Pattern: [IR.DottedSymbol parts : rawArgs]
     [IrDottedSymbol(:final parts), ...final rawArgs] => evalDottedSymbol(
       parts,
-    ).flatMap((func) => withContext(parts.join('.'), apply(func, rawArgs))),
+    ).flatMap((func) => withCall(parts.join('.'), apply(func, rawArgs))),
 
     // Pattern: xs (other lists)
-    _ => withContext(
+    _ => withCall(
       '<call>',
       sequenceAll(elements.map(eval).toList()).flatMap((evaluated) {
         return switch (evaluated) {

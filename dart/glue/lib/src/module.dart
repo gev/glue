@@ -32,7 +32,7 @@ class RegisteredModule {
   int get hashCode => Object.hash(name, exports, body);
 }
 
-/// A cached imported module with evaluated exports and evaluation context
+/// A cached imported module with evaluated exports and evaluation stack
 class ImportedModule {
   final String moduleName;
   final Map<String, Ir> exportedValues;

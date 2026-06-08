@@ -5,9 +5,9 @@ import 'package:test/test.dart';
 
 void main() {
   group('Eval Error System', () {
-    test('Context typedef', () {
-      final Context context = ['outer', 'inner'];
-      expect(context, equals(['outer', 'inner']));
+    test('CallStack typedef', () {
+      final CallStack stack = ['outer', 'inner'];
+      expect(stack, equals(['outer', 'inner']));
     });
 
     test('EvalError creation and equality', () {
@@ -15,7 +15,7 @@ void main() {
       final error1 = EvalError(['main', 'helper'], exception);
       final error2 = EvalError(['main', 'helper'], exception);
 
-      expect(error1.context, equals(['main', 'helper']));
+      expect(error1.stack, equals(['main', 'helper']));
       expect(error1.exception, equals(exception));
       expect(error1, equals(error2));
     });
@@ -29,7 +29,7 @@ void main() {
       expect(error.toString(), contains('unbound-variable'));
     });
 
-    test('prettyShow with empty context', () {
+    test('prettyShow with empty stack', () {
       final exception = notCallableObject();
       final error = EvalError([], exception);
 
@@ -38,7 +38,7 @@ void main() {
       expect(result, isNot(contains('->')));
     });
 
-    test('prettyShow with context', () {
+    test('prettyShow with stack', () {
       final exception = unboundVariable('missingVar');
       final error = EvalError(['main', 'process', 'lookup'], exception);
 
@@ -48,7 +48,7 @@ void main() {
       expect(result, contains('missingVar'));
     });
 
-    test('prettyShow context reversal', () {
+    test('prettyShow stack reversal', () {
       final exception = RuntimeException('test-error', IrString('details'));
       final error = EvalError(['first', 'second', 'third'], exception);
 

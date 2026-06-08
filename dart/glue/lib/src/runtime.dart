@@ -9,14 +9,14 @@ import 'package:glue/src/module/registry.dart';
 /// Complete evaluation runtime containing all state
 class Runtime {
   final Env env;
-  final Context context;
+  final CallStack stack;
   final ModuleRegistry registry;
   final ImportedModuleCache importCache;
   final Env rootEnv;
 
   const Runtime({
     required this.env,
-    required this.context,
+    required this.stack,
     required this.registry,
     required this.importCache,
     required this.rootEnv,
@@ -25,7 +25,7 @@ class Runtime {
   /// Create initial runtime with empty module system
   factory Runtime.initial(Env initialEnv) => Runtime(
     env: initialEnv,
-    context: [],
+    stack: [],
     registry: emptyRegistry(),
     importCache: emptyCache(),
     rootEnv: initialEnv,
@@ -34,13 +34,13 @@ class Runtime {
   /// Create a copy with modified fields
   Runtime copyWith({
     Env? env,
-    Context? context,
+    CallStack? stack,
     ModuleRegistry? registry,
     ImportedModuleCache? importCache,
     Env? rootEnv,
   }) => Runtime(
     env: env ?? this.env,
-    context: context ?? this.context,
+    stack: stack ?? this.stack,
     registry: registry ?? this.registry,
     importCache: importCache ?? this.importCache,
     rootEnv: rootEnv ?? this.rootEnv,
@@ -48,20 +48,20 @@ class Runtime {
 
   @override
   String toString() =>
-      'Runtime(env: ${env.length} frames, context: $context, registry: ${registrySize(registry)} modules, cache: ${cacheSize(importCache)} imported)';
+      'Runtime(env: ${env.length} frames, stack: $stack, registry: ${registrySize(registry)} modules, cache: ${cacheSize(importCache)} imported)';
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Runtime &&
           other.env == env &&
-          _listsEqual(other.context, context) &&
+          _listsEqual(other.stack, stack) &&
           other.registry == registry &&
           other.importCache == importCache &&
           other.rootEnv == rootEnv);
 
   @override
-  int get hashCode => Object.hash(env, context, registry, importCache, rootEnv);
+  int get hashCode => Object.hash(env, stack, registry, importCache, rootEnv);
 }
 
 /// Helper function for list equality

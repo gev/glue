@@ -4,39 +4,39 @@ import 'package:glue/src/eval/exception.dart';
 /// Evaluation error handling system
 /// Mirrors Haskell Glue.Eval.Error exactly
 
-/// Call stack context for error reporting
-typedef Context = List<String>;
+/// Call stack stack for error reporting
+typedef CallStack = List<String>;
 
-/// Evaluation error wrapping runtime exception with context
+/// Evaluation error wrapping runtime exception with stack
 class EvalError implements GlueError {
-  final Context context;
+  final CallStack stack;
   final RuntimeException exception;
 
-  const EvalError(this.context, this.exception);
+  const EvalError(this.stack, this.exception);
 
   @override
   String pretty() => prettyShow(this);
 
   @override
-  String toString() => '$context: $exception';
+  String toString() => '$stack: $exception';
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is EvalError &&
-          _listsEqual(other.context, context) &&
+          _listsEqual(other.stack, stack) &&
           other.exception == exception);
 
   @override
-  int get hashCode => Object.hash(context, exception);
+  int get hashCode => Object.hash(stack, exception);
 }
 
-/// Pretty-print evaluation error with context
+/// Pretty-print evaluation error with stack
 String prettyShow(EvalError error) {
-  if (error.context.isEmpty) {
+  if (error.stack.isEmpty) {
     return error.exception.pretty();
   }
-  final contextStr = error.context.reversed.join(' -> ');
+  final contextStr = error.stack.reversed.join(' -> ');
   return '$contextStr: ${error.exception.pretty()}';
 }
 
