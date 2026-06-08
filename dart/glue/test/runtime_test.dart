@@ -1,4 +1,5 @@
 import 'package:glue/either.dart';
+import 'package:glue/src/context.dart';
 import 'package:glue/src/env.dart';
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/module.dart';
@@ -33,6 +34,7 @@ void main() {
         registry: registry,
         importCache: cache,
         rootEnv: rootEnv,
+        context: Context.empty(),
       );
 
       expect(runtime.env, equals(env));

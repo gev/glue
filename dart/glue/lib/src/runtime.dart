@@ -1,3 +1,4 @@
+import 'package:glue/src/context.dart';
 import 'package:glue/src/env.dart';
 import 'package:glue/src/eval/error.dart';
 import 'package:glue/src/module/cache.dart';
@@ -13,13 +14,15 @@ class Runtime {
   final ModuleRegistry registry;
   final ImportedModuleCache importCache;
   final Env rootEnv;
+  final Context context;
 
-  const Runtime({
+  Runtime({
     required this.env,
     required this.stack,
     required this.registry,
     required this.importCache,
     required this.rootEnv,
+    required this.context,
   });
 
   /// Create initial runtime with empty module system
@@ -29,6 +32,7 @@ class Runtime {
     registry: emptyRegistry(),
     importCache: emptyCache(),
     rootEnv: initialEnv,
+    context: Context.empty(),
   );
 
   /// Create a copy with modified fields
@@ -38,17 +42,19 @@ class Runtime {
     ModuleRegistry? registry,
     ImportedModuleCache? importCache,
     Env? rootEnv,
+    Context? context,
   }) => Runtime(
     env: env ?? this.env,
     stack: stack ?? this.stack,
     registry: registry ?? this.registry,
     importCache: importCache ?? this.importCache,
     rootEnv: rootEnv ?? this.rootEnv,
+    context: context ?? this.context,
   );
 
   @override
   String toString() =>
-      'Runtime(env: ${env.length} frames, stack: $stack, registry: ${registrySize(registry)} modules, cache: ${cacheSize(importCache)} imported)';
+      'Runtime(env: ${env.length} frames, stack: $stack, registry: ${registrySize(registry)} modules, cache: ${cacheSize(importCache)} imported, context: $context)';
 
   @override
   bool operator ==(Object other) =>
@@ -58,10 +64,12 @@ class Runtime {
           _listsEqual(other.stack, stack) &&
           other.registry == registry &&
           other.importCache == importCache &&
-          other.rootEnv == rootEnv);
+          other.rootEnv == rootEnv &&
+          other.context == context);
 
   @override
-  int get hashCode => Object.hash(env, stack, registry, importCache, rootEnv);
+  int get hashCode =>
+      Object.hash(env, stack, registry, importCache, rootEnv, context);
 }
 
 /// Helper function for list equality
