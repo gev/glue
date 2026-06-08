@@ -98,7 +98,8 @@ Eval<void> putRootEnv(Env rootEnv) =>
     Eval((runtime) => Right(((), runtime.copyWith(rootEnv: rootEnv))));
 
 /// Get current stack
-Eval<CallStack> getCall() => Eval((runtime) => Right((runtime.stack, runtime)));
+Eval<CallStack> getStack() =>
+    Eval((runtime) => Right((runtime.stack, runtime)));
 
 /// Push stack frame
 Eval<void> pushCall(String name) => Eval(
