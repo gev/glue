@@ -36,7 +36,7 @@ spec = do
                     let initialState =
                             Runtime
                                 { env = initialEnv
-                                , context = []
+                                , stack = []
                                 , registry = registry
                                 , importCache = Cache.emptyCache
                                 , rootEnv = initialEnv
@@ -79,7 +79,7 @@ spec = do
                     let initialState =
                             Runtime
                                 { env = initialEnv
-                                , context = []
+                                , stack = []
                                 , registry = registry
                                 , importCache = Cache.emptyCache
                                 , rootEnv = initialEnv
@@ -132,7 +132,7 @@ spec = do
                     let initialState =
                             Runtime
                                 { env = initialEnv
-                                , context = []
+                                , stack = []
                                 , registry = registry
                                 , importCache = Cache.emptyCache
                                 , rootEnv = initialEnv
@@ -175,7 +175,7 @@ spec = do
                     let initialState =
                             Runtime
                                 { env = initialEnv
-                                , context = []
+                                , stack = []
                                 , registry = registry
                                 , importCache = Cache.emptyCache
                                 , rootEnv = initialEnv

@@ -26,7 +26,7 @@ instance Show (RegisteredModule ir) where
 instance Eq (RegisteredModule m) where
     m1 == m2 = name m1 == name m2 && m1.exports == m2.exports && m1.body == m2.body
 
--- | A cached imported module with evaluated exports and evaluation context
+-- | A cached imported module with evaluated exports and evaluation stack
 data ImportedModule m = ImportedModule
     { moduleName :: Text
     , exportedValues :: Map Text (IR m) -- Cached exports

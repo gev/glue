@@ -1,6 +1,6 @@
 module Glue.Eval.Error (
     EvalError (..),
-    Context,
+    Stack,
     prettyShow,
 ) where
 
@@ -8,9 +8,9 @@ import Data.Text (Text)
 import Data.Text qualified as T
 import Glue.Eval.Exception (RuntimeException, pretty)
 
-type Context = [Text]
+type Stack = [Text]
 
-data EvalError t = EvalError Context (RuntimeException t)
+data EvalError t = EvalError Stack (RuntimeException t)
     deriving (Eq)
 
 instance Show (EvalError m) where

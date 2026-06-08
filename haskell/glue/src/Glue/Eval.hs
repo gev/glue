@@ -63,7 +63,7 @@ runEvalSimple evalAction initialEnv = do
     let initialState =
             GR.Runtime
                 { GR.env = initialEnv
-                , GR.context = []
+                , GR.stack = []
                 , GR.registry = emptyRegistry
                 , GR.importCache = Map.empty
                 , GR.rootEnv = initialEnv
@@ -71,7 +71,7 @@ runEvalSimple evalAction initialEnv = do
     runEval evalAction initialState
 
 throwError :: Exception -> Eval a
-throwError err = Eval $ \runtime -> pure $ Left (EvalError (GR.context runtime) err)
+throwError err = Eval $ \runtime -> pure $ Left (EvalError (GR.stack runtime) err)
 
 liftIO :: IO a -> Eval a
 liftIO action = Eval $ \runtime -> do
@@ -94,9 +94,9 @@ evalSymbol name = do
     case E.lookupVar name env of
         Right val -> case val of
             IR.Evaluable value -> do
-                pushContext name
+                pushCall name
                 result <- eval =<< value
-                popContext
+                popCall
                 pure result
             _ -> pure val
         Left err -> throwError err
@@ -132,29 +132,29 @@ evalList :: [IR] -> Eval IR
 evalList [IR.Symbol name] = evalSymbol name
 evalList [IR.DottedSymbol parts] = evalDottedSymbol parts
 evalList (IR.Symbol name : rawArgs) = do
-    pushContext name
+    pushCall name
     env <- getEnv
     case E.lookupVar name env of
         Right func -> do
             result <- apply func rawArgs
-            popContext
+            popCall
             pure result
         Left err -> do
-            popContext
+            popCall
             throwError err
 evalList (IR.DottedSymbol parts : rawArgs) = do
     func <- evalDottedSymbol parts
-    pushContext $ intercalate "." parts
+    pushCall $ intercalate "." parts
     result <- apply func rawArgs
-    popContext
+    popCall
     pure result
 evalList xs = do
     results <- mapM eval xs
     case results of
         (f : args) | isCallable f -> do
-            pushContext "<call>"
+            pushCall "<call>"
             result <- apply f args
-            popContext
+            popCall
             pure result
         res -> pure $ IR.List res
 
@@ -268,12 +268,12 @@ getCache = Eval $ \runtime -> pure $ Right (GR.importCache runtime, runtime)
 putCache :: ImportedModuleCache Eval -> Eval ()
 putCache newCache = Eval $ \runtime -> pure $ Right ((), runtime{GR.importCache = newCache})
 
-pushContext :: Text -> Eval ()
-pushContext name = Eval $ \runtime -> pure $ Right ((), runtime{GR.context = name : GR.context runtime})
+pushCall :: Text -> Eval ()
+pushCall name = Eval $ \runtime -> pure $ Right ((), runtime{GR.stack = name : GR.stack runtime})
 
-popContext :: Eval ()
-popContext = Eval $ \runtime -> case GR.context runtime of
-    (_ : rest) -> pure $ Right ((), runtime{GR.context = rest})
+popCall :: Eval ()
+popCall = Eval $ \runtime -> case GR.stack runtime of
+    (_ : rest) -> pure $ Right ((), runtime{GR.stack = rest})
     [] -> pure $ Right ((), runtime) -- shouldn't happen, but safe
 
 -- Helper for managing environment frames during function calls

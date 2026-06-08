@@ -5,11 +5,11 @@ import Glue.IR (Env)
 import Glue.Module.Cache (ImportedModuleCache)
 import Glue.Module.Registry (ModuleRegistry)
 
-type Context = [Text]
+type CallStack = [Text]
 
 data Runtime m = Runtime
     { env :: Env m
-    , context :: Context
+    , stack :: CallStack
     , registry :: ModuleRegistry m
     , importCache :: ImportedModuleCache m
     , rootEnv :: Env m
