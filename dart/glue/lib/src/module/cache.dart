@@ -12,7 +12,11 @@ ImportedModuleCache emptyCache() => {};
 ImportedModuleCache storeImportedModule(
   ImportedModuleCache cache,
   ImportedModule importedModule,
-) => {...cache, importedModule.moduleName: importedModule};
+) {
+  cache[importedModule.moduleName] = importedModule;
+  return cache;
+  // ...cache, importedModule.moduleName: importedModule};
+}
 
 /// Lookup an imported module by name
 ImportedModule? lookupImportedModule(ImportedModuleCache cache, String name) =>

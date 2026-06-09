@@ -63,13 +63,11 @@ class Runtime {
           other.env == env &&
           _listsEqual(other.stack, stack) &&
           other.registry == registry &&
-          other.importCache == importCache &&
           other.rootEnv == rootEnv &&
           other.context == context);
 
   @override
-  int get hashCode =>
-      Object.hash(env, stack, registry, importCache, rootEnv, context);
+  int get hashCode => Object.hash(env, stack, registry, rootEnv, context);
 }
 
 /// Helper function for list equality
