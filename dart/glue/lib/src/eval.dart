@@ -20,13 +20,7 @@ class Eval<T> {
   static Eval<T> pure<T>(T value) => Eval((runtime) => Right((value, runtime)));
 
   /// Map over the result
-  Eval<U> map<U>(U Function(T) f) => Eval((runtime) async {
-    final result = await runEval(this, runtime);
-    return result.match((error) => Left(error), (value) {
-      final (result, runtime) = value;
-      return Right((f(result), runtime));
-    });
-  });
+  Eval<U> map<U>(U Function(T) f) => bind((value) => Eval.pure(f(value)));
 
   /// FlatMap (bind) operation
   Eval<U> bind<U>(Eval<U> Function(T) f) => Eval((runtime) async {
