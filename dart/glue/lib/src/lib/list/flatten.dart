@@ -28,7 +28,7 @@ Eval<List<Ir>> flattenList(List<Ir> elements) {
 
   if (head is IrList) {
     // Head is a list, flatten it and concatenate with flattened tail
-    return flattenList(head.elements.toList()).flatMap((flattenedHead) {
+    return flattenList(head.elements.toList()).bind((flattenedHead) {
       return flattenList(
         tail,
       ).map((flattenedTail) => flattenedHead + flattenedTail);

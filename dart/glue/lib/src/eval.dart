@@ -22,20 +22,16 @@ class Eval<T> {
   /// Map over the result
   Eval<U> map<U>(U Function(T) f) => Eval((runtime) async {
     final result = await runEval(this, runtime);
-    return result.match((error) => Left<EvalError, (U, Runtime)>(error), (
-      value,
-    ) {
+    return result.match((error) => Left(error), (value) {
       final (result, runtime) = value;
-      return Right<EvalError, (U, Runtime)>((f(result), runtime));
+      return Right((f(result), runtime));
     });
   });
 
   /// FlatMap (bind) operation
-  Eval<U> flatMap<U>(Eval<U> Function(T) f) => Eval((runtime) async {
+  Eval<U> bind<U>(Eval<U> Function(T) f) => Eval((runtime) async {
     final result = await runEval(this, runtime);
-    return result.match((error) => Left<EvalError, (U, Runtime)>(error), (
-      value,
-    ) {
+    return result.match((error) => Left(error), (value) {
       final (result, runtime) = value;
       return runEval(f(result), runtime);
     });
@@ -177,7 +173,7 @@ Eval<T> withEnv<T>(Env tempEnv, Eval<T> action) => Eval((runtime) async {
 /// Run evaluation with additional stack frame
 Eval<T> withCall<T>(String contextName, Eval<T> action) => pushCall(
   contextName,
-).flatMap((_) => action.flatMap((value) => popCall().map((_) => value)));
+).bind((_) => action.bind((value) => popCall().map((_) => value)));
 
 /// ============================================================================
 /// EVALUATION SEQUENCING
@@ -185,13 +181,13 @@ Eval<T> withCall<T>(String contextName, Eval<T> action) => pushCall(
 
 /// Sequence two evaluations
 Eval<(T1, T2)> sequence<T1, T2>(Eval<T1> first, Eval<T2> second) =>
-    first.flatMap((a) => second.map((b) => (a, b)));
+    first.bind((a) => second.map((b) => (a, b)));
 
 /// Sequence multiple evaluations
 Eval<List<T>> sequenceAll<T>(List<Eval<T>> evals) {
   if (evals.isEmpty) return Eval.pure([]);
 
-  return evals[0].flatMap(
+  return evals[0].bind(
     (first) => sequenceAll(evals.sublist(1)).map((rest) => [first, ...rest]),
   );
 }
@@ -200,7 +196,7 @@ Eval<List<T>> sequenceAll<T>(List<Eval<T>> evals) {
 Eval<T> sequence_<T>(List<Eval<dynamic>> evals, Eval<T> last) {
   if (evals.isEmpty) return last;
 
-  return evals[0].flatMap((_) => sequence_(evals.sublist(1), last));
+  return evals[0].bind((_) => sequence_(evals.sublist(1), last));
 }
 
 /// ============================================================================
@@ -223,7 +219,7 @@ Eval<Ir> eval(Ir ir) {
 /// Evaluate function body with implicit sequence semantics
 /// Mirrors Haskell Glue.Eval.evalBody exactly
 Eval<Ir> evalBody(Ir body) {
-  return eval(body).flatMap((result) {
+  return eval(body).bind((result) {
     return switch (result) {
       IrList(:final elements) => Eval.pure(
         elements.isEmpty ? IrVoid() : elements.last,
@@ -235,12 +231,12 @@ Eval<Ir> evalBody(Ir body) {
 
 /// Evaluate a symbol by looking it up in the environment
 Eval<Ir> evalSymbol(String name) {
-  return getEnv().flatMap((env) {
+  return getEnv().bind((env) {
     final result = lookupVar(name, env);
     return result.match(
       (error) => throwError(error),
       (value) => switch (value) {
-        IrEvaluable(:final func) => withCall(name, func().flatMap(Eval.pure)),
+        IrEvaluable(:final func) => withCall(name, func().bind(Eval.pure)),
         _ => Eval.pure(value),
       },
     );
@@ -254,7 +250,7 @@ Eval<Ir> evalDottedSymbol(List<String> parts) {
       RuntimeException('invalid-symbol', IrString('Empty dotted symbol')),
     ),
     [final base] => evalSymbol(base),
-    [final base, ...final rest] => getEnv().flatMap((env) {
+    [final base, ...final rest] => getEnv().bind((env) {
       final result = lookupVar(base, env);
       return result.match(
         (error) => throwError(error),
@@ -277,7 +273,7 @@ Eval<Ir> evalList(List<Ir> elements) {
     // Pattern: (IR.Symbol name : rawArgs)
     [IrSymbol(value: final name), ...final rawArgs] => withCall(
       name,
-      getEnv().flatMap((env) {
+      getEnv().bind((env) {
         final result = lookupVar(name, env);
         return result.match(
           (error) => throwError(error),
@@ -289,12 +285,12 @@ Eval<Ir> evalList(List<Ir> elements) {
     // Pattern: [IR.DottedSymbol parts : rawArgs]
     [IrDottedSymbol(:final parts), ...final rawArgs] => evalDottedSymbol(
       parts,
-    ).flatMap((func) => withCall(parts.join('.'), apply(func, rawArgs))),
+    ).bind((func) => withCall(parts.join('.'), apply(func, rawArgs))),
 
     // Pattern: xs (other lists)
     _ => withCall(
       '<call>',
-      sequenceAll(elements.map(eval).toList()).flatMap((evaluated) {
+      sequenceAll(elements.map(eval).toList()).bind((evaluated) {
         return switch (evaluated) {
           [final f, ...final args] when isCallable(f) => apply(f, args),
           _ => Eval.pure(IrList(evaluated)),
@@ -341,8 +337,8 @@ Eval<Ir> _applyNativeFunc(Eval<Ir> Function(Ir) func, List<Ir> args) {
     [] => Eval.pure(
       IrNativeFunc(func),
     ), // No args, return function as-is (like Haskell)
-    [final first, ...final rest] => eval(first).flatMap((arg) {
-      return func(arg).flatMap((result) {
+    [final first, ...final rest] => eval(first).bind((arg) {
+      return func(arg).bind((result) {
         return switch (isCallable(result)) {
           true => apply(result, rest), // Apply remaining args to result
           false => switch (rest) {
@@ -399,7 +395,7 @@ Eval<Ir> _evalNestedAccess(Ir obj, List<String> remainingParts) {
     IrNativeValue(value: final hostValue) =>
       // Handle property access on host values (FFI)
       hostValue.getters[prop] != null
-          ? hostValue.getters[prop]!.flatMap(
+          ? hostValue.getters[prop]!.bind(
               (result) => _evalNestedAccess(result, rest),
             )
           : throwError(propertyNotFound(prop)),
@@ -426,7 +422,7 @@ Eval<Ir> _applyFullClosure(
   Env closureEnv,
   List<Ir> rawArgs,
 ) {
-  return sequenceAll(rawArgs.map(eval).toList()).flatMap((args) {
+  return sequenceAll(rawArgs.map(eval).toList()).bind((args) {
     final bindings = <(String, Ir)>[];
     for (var i = 0; i < params.length; i++) {
       bindings.add((params[i], args[i]));

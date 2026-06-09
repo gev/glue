@@ -15,9 +15,9 @@ final Ir def = IrSpecial(defImpl);
 /// Mirrors Haskell Glue.Lib.Builtin.Def.defImpl exactly
 Eval<Ir> defImpl(List<Ir> args) {
   return switch (args) {
-    [IrSymbol(value: final name), final value] => eval(value).flatMap(
-      (evaluated) => defineVarEval(name, evaluated).map((_) => IrVoid()),
-    ),
+    [IrSymbol(value: final name), final value] => eval(
+      value,
+    ).bind((evaluated) => defineVarEval(name, evaluated).map((_) => IrVoid())),
 
     [IrList(elements: final elements), ...final body] => switch (elements
         .unlock) {
@@ -34,7 +34,7 @@ Eval<Ir> defImpl(List<Ir> args) {
                 : IrList(body);
 
             // Create closure and define it
-            return makeClosure(paramNames, bodyExpr).flatMap(
+            return makeClosure(paramNames, bodyExpr).bind(
               (closure) => defineVarEval(name, closure).map((_) => IrVoid()),
             );
           },

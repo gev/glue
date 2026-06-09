@@ -10,9 +10,7 @@ final Ir if_ = IrSpecial(ifImpl);
 /// Mirrors Haskell Glue.Lib.Bool.If.ifImpl exactly
 Eval<Ir> ifImpl(List<Ir> args) {
   return switch (args) {
-    [final cond, final thenExpr, final elseExpr] => eval(cond).flatMap((
-      condVal,
-    ) {
+    [final cond, final thenExpr, final elseExpr] => eval(cond).bind((condVal) {
       return switch (condVal) {
         IrBool(value: false) => eval(elseExpr),
         _ => eval(thenExpr),

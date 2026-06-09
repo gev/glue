@@ -175,7 +175,7 @@ Env testEnv() {
           }
           return eval(
             args[1],
-          ).flatMap((value) => defineVarEval(name, value).map((_) => value));
+          ).bind((value) => defineVarEval(name, value).map((_) => value));
         }),
         emptyEnv(),
       ),

@@ -8,7 +8,7 @@ final Ir printFunc = IrNativeFunc(printFuncImpl);
 /// Print function implementation
 /// Mirrors Haskell Glue.Lib.IO.Print.printFuncImpl exactly
 Eval<Ir> printFuncImpl(Ir arg) {
-  return eval(arg).flatMap((evaluated) {
+  return eval(arg).bind((evaluated) {
     return switch (evaluated) {
       IrString(value: final value) => liftIO(() {
         // Print without newline
@@ -26,7 +26,7 @@ final Ir println = IrNativeFunc(printlnImpl);
 /// Println function implementation
 /// Mirrors Haskell Glue.Lib.IO.Print.printlnImpl exactly
 Eval<Ir> printlnImpl(Ir arg) {
-  return eval(arg).flatMap((evaluated) {
+  return eval(arg).bind((evaluated) {
     return switch (evaluated) {
       IrString(value: final value) => liftIO(() {
         // Print with newline

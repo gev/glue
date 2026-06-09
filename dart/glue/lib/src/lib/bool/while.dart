@@ -17,7 +17,7 @@ Eval<Ir> whileImpl(List<Ir> args) {
 
 /// Internal loop function for while
 Eval<Ir> _loop(Ir cond, List<Ir> body) {
-  return eval(cond).flatMap((condVal) {
+  return eval(cond).bind((condVal) {
     return switch (condVal) {
       IrBool(value: false) => Eval.pure(IrVoid()),
       _ => switch (body) {

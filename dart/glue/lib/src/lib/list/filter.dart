@@ -32,7 +32,7 @@ Eval<List<Ir>> filterElements(Ir predicate, List<Ir> elements) {
     return Eval.pure([]);
   }
 
-  return applyPredicate(predicate, elements[0]).flatMap((satisfies) {
+  return applyPredicate(predicate, elements[0]).bind((satisfies) {
     return filterElements(predicate, elements.sublist(1)).map((rest) {
       return satisfies ? [elements[0], ...rest] : rest;
     });
@@ -41,7 +41,7 @@ Eval<List<Ir>> filterElements(Ir predicate, List<Ir> elements) {
 
 /// Helper function to apply predicate to an element
 Eval<bool> applyPredicate(Ir predicate, Ir element) {
-  return eval(IrList([predicate, element])).flatMap((result) {
+  return eval(IrList([predicate, element])).bind((result) {
     if (result is IrBool) {
       return Eval.pure(result.value);
     } else {

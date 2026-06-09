@@ -7,13 +7,13 @@ import 'package:glue/src/module/cache.dart';
 import 'package:glue/src/module/registry.dart';
 
 Eval<Ir> importModule(String moduleName) {
-  return getRegistry().flatMap((registry) {
+  return getRegistry().bind((registry) {
     final registeredModule = lookupModule(moduleName, registry);
     if (registeredModule == null) {
       return throwError(moduleNotFound(moduleName));
     }
 
-    return getCache().flatMap((cache) {
+    return getCache().bind((cache) {
       final cachedModule = lookupImportedModule(cache, moduleName);
 
       if (cachedModule != null) {
@@ -29,7 +29,7 @@ Eval<Ir> importModule(String moduleName) {
 
 /// Merge already cached imported module into current environment
 Eval<Ir> _mergeImportedModule(ImportedModule imported, String moduleName) {
-  return getEnv().flatMap((currentEnv) {
+  return getEnv().bind((currentEnv) {
     // Merge exported values directly into environment
     var updatedEnv = currentEnv;
     for (final entry in imported.exportedValues.entries) {
@@ -46,15 +46,15 @@ Eval<Ir> _evaluateAndCacheModule(
   String moduleName,
 ) {
   // Get root environment for consistent evaluation
-  return getRootEnv().flatMap((rootEnv) {
-    return getRuntime().flatMap((currentRuntime) {
+  return getRootEnv().bind((rootEnv) {
+    return getRuntime().bind((currentRuntime) {
       // Create isolated runtime
       final isolatedRuntime = currentRuntime.copyWith(env: rootEnv);
 
       // Evaluate module body in isolation
       return liftIO(
         runEval(_evalModuleBody(registered.body), isolatedRuntime),
-      ).flatMap((result) {
+      ).bind((result) {
         return result.match((error) => throwError(error.exception), (success) {
           final (evalResult, finalIsolatedRuntime) = success;
 
@@ -87,9 +87,9 @@ Eval<Ir> _evaluateAndCacheModule(
           );
 
           // Cache the imported module
-          return getCache().flatMap((cache) {
+          return getCache().bind((cache) {
             final newCache = storeImportedModule(cache, importedModule);
-            return putCache(newCache).flatMap((_) {
+            return putCache(newCache).bind((_) {
               // Merge into current environment
               return _mergeImportedModule(importedModule, moduleName);
             });
@@ -111,7 +111,7 @@ Eval<Ir> _evalModuleBody(List<Ir> body) {
     if (exprs.length == 1) {
       return eval(exprs[0]);
     } else {
-      return eval(exprs[0]).flatMap((_) => evalSequence(exprs.sublist(1)));
+      return eval(exprs[0]).bind((_) => evalSequence(exprs.sublist(1)));
     }
   }
 

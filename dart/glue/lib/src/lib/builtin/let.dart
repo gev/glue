@@ -24,11 +24,11 @@ Eval<Ir> letImpl(List<Ir> args) {
   // Evaluate all binding values and create new frame
   final bindingPairs = <(String, Ir)>[];
 
-  return _evalBindings(bindings.properties.unlock, bindingPairs).flatMap((
+  return _evalBindings(bindings.properties.unlock, bindingPairs).bind((
     evaluatedPairs,
   ) {
     // Push new frame with bindings onto current environment
-    return getEnv().flatMap((currentEnv) {
+    return getEnv().bind((currentEnv) {
       final newFrame = frameFromList(
         evaluatedPairs.map((pair) => (pair.$1, pair.$2)).toList(),
       );
@@ -36,8 +36,8 @@ Eval<Ir> letImpl(List<Ir> args) {
       final newEnv = currentEnv.add(newFrame);
 
       // Evaluate body in extended environment
-      return putEnv(newEnv).flatMap((_) {
-        return eval(body).flatMap((result) {
+      return putEnv(newEnv).bind((_) {
+        return eval(body).bind((result) {
           // Pop the frame
           return putEnv(currentEnv).map((_) => result);
         });
@@ -58,7 +58,7 @@ Eval<List<(String, Ir)>> _evalBindings(
   final entry = bindings.entries.first;
   final remaining = Map<String, Ir>.from(bindings)..remove(entry.key);
 
-  return eval(entry.value).flatMap((evaluatedValue) {
+  return eval(entry.value).bind((evaluatedValue) {
     accumulator.add((entry.key, evaluatedValue));
     return _evalBindings(remaining, accumulator);
   });

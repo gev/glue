@@ -32,7 +32,7 @@ Eval<Ir> findElement(Ir predicate, List<Ir> elements) {
     return throwError(wrongArgumentType(['element satisfying predicate']));
   }
 
-  return applyPredicate(predicate, elements[0]).flatMap((satisfies) {
+  return applyPredicate(predicate, elements[0]).bind((satisfies) {
     if (satisfies) {
       return Eval.pure(elements[0]);
     } else {
@@ -43,7 +43,7 @@ Eval<Ir> findElement(Ir predicate, List<Ir> elements) {
 
 /// Helper function to apply predicate to an element
 Eval<bool> applyPredicate(Ir predicate, Ir element) {
-  return eval(IrList([predicate, element])).flatMap((result) {
+  return eval(IrList([predicate, element])).bind((result) {
     if (result is IrBool) {
       return Eval.pure(result.value);
     } else {

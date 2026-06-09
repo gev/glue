@@ -27,8 +27,8 @@ Eval<List<Ir>> sortList(List<Ir> elements) {
   final left = elements.sublist(0, mid);
   final right = elements.sublist(mid);
 
-  return sortList(left).flatMap((sortedLeft) {
-    return sortList(right).flatMap((sortedRight) {
+  return sortList(left).bind((sortedLeft) {
+    return sortList(right).bind((sortedRight) {
       return merge(sortedLeft, sortedRight);
     });
   });
@@ -39,7 +39,7 @@ Eval<List<Ir>> merge(List<Ir> left, List<Ir> right) {
   if (left.isEmpty) return Eval.pure(right);
   if (right.isEmpty) return Eval.pure(left);
 
-  return compareIr(left[0], right[0]).flatMap((cmp) {
+  return compareIr(left[0], right[0]).bind((cmp) {
     if (cmp == -1) {
       // left[0] < right[0]
       return merge(left.sublist(1), right).map((rest) => [left[0], ...rest]);

@@ -33,7 +33,7 @@ Eval<(List<Ir>, List<Ir>)> partitionElements(Ir predicate, List<Ir> elements) {
     return Eval.pure(([], []));
   }
 
-  return applyPredicate(predicate, elements[0]).flatMap((satisfies) {
+  return applyPredicate(predicate, elements[0]).bind((satisfies) {
     return partitionElements(predicate, elements.sublist(1)).map((partitioned) {
       final (matching, nonMatching) = partitioned;
       if (satisfies) {
@@ -47,7 +47,7 @@ Eval<(List<Ir>, List<Ir>)> partitionElements(Ir predicate, List<Ir> elements) {
 
 /// Helper function to apply predicate to an element
 Eval<bool> applyPredicate(Ir predicate, Ir element) {
-  return eval(IrList([predicate, element])).flatMap((result) {
+  return eval(IrList([predicate, element])).bind((result) {
     if (result is IrBool) {
       return Eval.pure(result.value);
     } else {

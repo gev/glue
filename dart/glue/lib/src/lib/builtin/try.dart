@@ -16,8 +16,8 @@ Eval<Ir> tryFuncImpl(List<Ir> args) {
   final body = args[0];
   final catches = args.sublist(1);
 
-  return getRuntime().flatMap((runtime) {
-    return liftIO(runEval(eval(body), runtime)).flatMap((result) {
+  return getRuntime().bind((runtime) {
+    return liftIO(runEval(eval(body), runtime)).bind((result) {
       return result.match(
         (error) {
           // Handle RuntimeException exactly like Haskell
@@ -25,7 +25,7 @@ Eval<Ir> tryFuncImpl(List<Ir> args) {
           final catchHandler = _findCatch(runtimeExc.symbol, catches);
 
           if (catchHandler != null) {
-            return eval(catchHandler).flatMap((callable) {
+            return eval(catchHandler).bind((callable) {
               // Check if callable like Haskell does
               if (_isCallable(callable)) {
                 // Use same payload handling as Haskell: maybe [] (: []) payload

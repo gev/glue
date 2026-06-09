@@ -18,7 +18,7 @@ Eval<Ir> untilImpl(List<Ir> args) {
 /// Internal loop function for until
 Eval<Ir> _loopUntil(Ir cond, List<Ir> body) {
   return switch (body) {
-    [] => eval(cond).flatMap((condVal) {
+    [] => eval(cond).bind((condVal) {
       return switch (condVal) {
         IrBool(value: false) => _loopUntil(cond, body),
         _ => Eval.pure(IrVoid()),
@@ -26,7 +26,7 @@ Eval<Ir> _loopUntil(Ir cond, List<Ir> body) {
     }),
     _ => sequence_(
       body.map(eval).toList(),
-      eval(cond).flatMap((condVal) {
+      eval(cond).bind((condVal) {
         return switch (condVal) {
           IrBool(value: false) => _loopUntil(cond, body),
           _ => Eval.pure(IrVoid()),

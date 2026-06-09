@@ -20,7 +20,7 @@ Eval<Ir> errorImpl(List<Ir> args) {
     return throwError(wrongArgumentType(['symbol', 'value']));
   }
 
-  return eval(rawVal).flatMap((val) {
+  return eval(rawVal).bind((val) {
     return throwError(runtimeException(name.value, val));
   });
 }
