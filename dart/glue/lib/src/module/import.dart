@@ -70,12 +70,12 @@ Eval<Ir> _evaluateAndCacheModule(
           }
 
           // All exports validated, build the map
-          final exportedValues = <String, IrRef>{};
+          final exportedValues = <String, Ir>{};
           for (final exportName in registered.exports) {
             final lookupResult = lookupVar(exportName, moduleEnv);
             lookupResult.match(
               (_) => throw StateError('Should not happen - already validated'),
-              (value) => exportedValues[exportName] = IrRef(value),
+              (value) => exportedValues[exportName] = value,
             );
           }
 

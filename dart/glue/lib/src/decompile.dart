@@ -7,7 +7,6 @@ import 'package:glue/src/ir.dart';
 /// Mirrors Haskell decompile function exactly
 Either<String, Ast> decompile(Ir ir) {
   return switch (ir) {
-    IrRef(:final value) => decompile(value),
     IrInteger(:final value) => Right(IntegerAst(value)),
     IrFloat(:final value) => Right(FloatAst(value)),
     IrString(:final value) => Right(StringAst(value)),

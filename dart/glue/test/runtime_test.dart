@@ -129,7 +129,7 @@ void main() {
       // Add an imported module to cache
       final imported = ImportedModule(
         moduleName: 'imported.module',
-        exportedValues: {'value': IrRef(IrInteger(2))},
+        exportedValues: {'value': IrInteger(2)},
         evaluationRootEnv: env,
       );
       storeImportedModule(cache, imported);
