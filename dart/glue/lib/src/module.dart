@@ -1,5 +1,6 @@
 import 'package:glue/src/env.dart';
 import 'package:glue/src/ir.dart';
+import 'package:glue/src/ref.dart';
 
 /// Module system data structures
 /// Mirrors Haskell Glue.Module exactly
@@ -26,7 +27,7 @@ class RegisteredModule {
       (other is RegisteredModule &&
           other.name == name &&
           _listsEqual(other.exports, exports) &&
-          _listsEqualIr(other.body, body));
+          _listsEqual(other.body, body));
 
   @override
   int get hashCode => Object.hash(name, exports, body);
@@ -35,7 +36,7 @@ class RegisteredModule {
 /// A cached imported module with evaluated exports and evaluation stack
 class ImportedModule {
   final String moduleName;
-  final Map<String, Ir> exportedValues;
+  final Map<String, Ref<Ir>> exportedValues;
   final Env evaluationRootEnv;
 
   const ImportedModule({
@@ -61,7 +62,7 @@ class ImportedModule {
 class ModuleInfo {
   final String moduleName;
   final List<String> exports;
-  final List<(String, Ir)> definitions;
+  final List<(String, Ref<Ir>)> definitions;
 
   const ModuleInfo({
     required this.moduleName,
@@ -79,7 +80,7 @@ class ModuleInfo {
       (other is ModuleInfo &&
           other.moduleName == moduleName &&
           _listsEqual(other.exports, exports) &&
-          _listsEqualPairs(other.definitions, definitions));
+          _listsEqual(other.definitions, definitions));
 
   @override
   int get hashCode => Object.hash(moduleName, exports, definitions);
@@ -94,7 +95,9 @@ ModuleInfo nativeModule(String moduleName, List<(String, Ir)> definitions) =>
         final (name, _) = pair;
         return name;
       }).toList(),
-      definitions: definitions,
+      definitions: definitions
+          .map((entry) => (entry.$1, Ref(entry.$2)))
+          .toList(),
     );
 
 /// Create environment from module
@@ -108,31 +111,11 @@ Env envFromModules(List<ModuleInfo> modules) =>
 Frame frameFromModule(ModuleInfo module) => frameFromList(module.definitions);
 
 /// Helper functions for list equality
-bool _listsEqual(List<String> a, List<String> b) {
+bool _listsEqual(List a, List b) {
   if (identical(a, b)) return true;
   if (a.length != b.length) return false;
   for (int i = 0; i < a.length; i++) {
     if (a[i] != b[i]) return false;
-  }
-  return true;
-}
-
-bool _listsEqualIr(List<Ir> a, List<Ir> b) {
-  if (identical(a, b)) return true;
-  if (a.length != b.length) return false;
-  for (int i = 0; i < a.length; i++) {
-    if (a[i] != b[i]) return false;
-  }
-  return true;
-}
-
-bool _listsEqualPairs(List<(String, Ir)> a, List<(String, Ir)> b) {
-  if (identical(a, b)) return true;
-  if (a.length != b.length) return false;
-  for (int i = 0; i < a.length; i++) {
-    final (aKey, aValue) = a[i];
-    final (bKey, bValue) = b[i];
-    if (aKey != bKey || aValue != bValue) return false;
   }
   return true;
 }

@@ -5,6 +5,7 @@ import 'package:glue/src/module.dart';
 import 'package:glue/src/module/cache.dart';
 import 'package:glue/src/module/registration.dart';
 import 'package:glue/src/module/registry.dart';
+import 'package:glue/src/ref.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -33,17 +34,23 @@ void main() {
       final env = fromList([('x', IrInteger(42))]);
       final imported = ImportedModule(
         moduleName: 'test.math',
-        exportedValues: {'add': IrInteger(1), 'multiply': IrInteger(2)},
+        exportedValues: {
+          'add': Ref(IrInteger(1)),
+          'multiply': Ref(IrInteger(2)),
+        },
         evaluationRootEnv: env,
       );
 
       expect(imported.moduleName, equals('test.math'));
       expect(imported.exportedValues.length, equals(2));
-      expect(imported.exportedValues['add'], equals(IrInteger(1)));
+      expect(imported.exportedValues['add'], equals(Ref(IrInteger(1))));
 
       final imported2 = ImportedModule(
         moduleName: 'test.math',
-        exportedValues: {'add': IrInteger(1), 'multiply': IrInteger(2)},
+        exportedValues: {
+          'add': Ref(IrInteger(1)),
+          'multiply': Ref(IrInteger(2)),
+        },
         evaluationRootEnv: env,
       );
 
@@ -51,7 +58,10 @@ void main() {
     });
 
     test('ModuleInfo creation and equality', () {
-      final definitions = [('add', IrInteger(1)), ('multiply', IrInteger(2))];
+      final definitions = [
+        ('add', Ref(IrInteger(1))),
+        ('multiply', Ref(IrInteger(2))),
+      ];
       final module = ModuleInfo(
         moduleName: 'test.math',
         exports: ['add', 'multiply'],
@@ -72,16 +82,23 @@ void main() {
     });
 
     test('nativeModule factory', () {
-      final definitions = [('add', IrInteger(1)), ('multiply', IrInteger(2))];
-      final module = nativeModule('test.math', definitions);
+      final irDefinitions = [('add', IrInteger(1)), ('multiply', IrInteger(2))];
+      final refDefinitions = [
+        ('add', Ref(IrInteger(1))),
+        ('multiply', Ref(IrInteger(2))),
+      ];
+      final module = nativeModule('test.math', irDefinitions);
 
       expect(module.moduleName, equals('test.math'));
       expect(module.exports, equals(['add', 'multiply'])); // All exported
-      expect(module.definitions, equals(definitions));
+      expect(module.definitions, equals(refDefinitions));
     });
 
     test('envFromModule creates environment', () {
-      final definitions = [('x', IrInteger(42)), ('y', IrInteger(24))];
+      final definitions = [
+        ('x', Ref(IrInteger(42))),
+        ('y', Ref(IrInteger(24))),
+      ];
       final module = ModuleInfo(
         moduleName: 'test',
         exports: ['x', 'y'],
@@ -92,8 +109,8 @@ void main() {
       expect(env.length, equals(1)); // One frame
 
       final frame = env[0];
-      expect(frame['x'], equals(IrInteger(42)));
-      expect(frame['y'], equals(IrInteger(24)));
+      expect(frame['x'], equals(Ref(IrInteger(42))));
+      expect(frame['y'], equals(Ref(IrInteger(24))));
     });
   });
 
@@ -175,7 +192,7 @@ void main() {
       final env = fromList([('x', IrInteger(42))]);
       final imported = ImportedModule(
         moduleName: 'test.math',
-        exportedValues: {'add': IrInteger(1)},
+        exportedValues: {'add': Ref(IrInteger(1))},
         evaluationRootEnv: env,
       );
 
@@ -190,7 +207,7 @@ void main() {
       final env = fromList([('x', IrInteger(42))]);
       final imported = ImportedModule(
         moduleName: 'test.math',
-        exportedValues: {'add': IrInteger(1)},
+        exportedValues: {'add': Ref(IrInteger(1))},
         evaluationRootEnv: env,
       );
 
@@ -207,7 +224,7 @@ void main() {
       final env = fromList([('x', IrInteger(42))]);
       final imported = ImportedModule(
         moduleName: 'test.math',
-        exportedValues: {'add': IrInteger(1)},
+        exportedValues: {'add': Ref(IrInteger(1))},
         evaluationRootEnv: env,
       );
 

@@ -1,3 +1,4 @@
+import 'package:glue/ir.dart';
 import 'package:glue/src/module.dart';
 
 /// Module cache for storing evaluated imported modules
@@ -9,11 +10,22 @@ typedef ImportedModuleCache = Map<String, ImportedModule>;
 ImportedModuleCache emptyCache() => {};
 
 /// Store an imported module in the cache
-void storeImportedModule(
-  ImportedModuleCache cache,
-  ImportedModule importedModule,
-) {
-  cache[importedModule.moduleName] = importedModule;
+void storeImportedModule(ImportedModuleCache cache, ImportedModule imported) {
+  final cached = cache[imported.moduleName];
+  if (cached == null) {
+    cache[imported.moduleName] = imported;
+  } else {
+    for (final entry in cached.exportedValues.entries) {
+      final ref = imported.exportedValues[entry.key];
+      entry.value.value = ref?.value ?? IrVoid();
+    }
+    for (final entry in imported.exportedValues.entries) {
+      final ref = cached.exportedValues[entry.key];
+      if (ref == null) {
+        cached.exportedValues[entry.key] = entry.value;
+      }
+    }
+  }
 }
 
 /// Lookup an imported module by name

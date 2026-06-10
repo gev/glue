@@ -5,6 +5,7 @@ import 'package:glue/src/ir.dart';
 import 'package:glue/src/module.dart';
 import 'package:glue/src/module/cache.dart';
 import 'package:glue/src/module/registry.dart';
+import 'package:glue/src/ref.dart';
 
 Eval<Ir> importModule(String moduleName) {
   return getRegistry().bind((registry) {
@@ -33,7 +34,7 @@ Eval<Ir> _mergeImportedModule(ImportedModule imported, String moduleName) {
     // Merge exported values directly into environment
     var updatedEnv = currentEnv;
     for (final entry in imported.exportedValues.entries) {
-      updatedEnv = defineVar(entry.key, entry.value, updatedEnv);
+      updatedEnv = defineRef(entry.key, entry.value, updatedEnv);
     }
 
     return putEnv(updatedEnv).map((_) => IrVoid());
@@ -70,12 +71,12 @@ Eval<Ir> _evaluateAndCacheModule(
           }
 
           // All exports validated, build the map
-          final exportedValues = <String, Ir>{};
+          final exportedValues = <String, Ref<Ir>>{};
           for (final exportName in registered.exports) {
             final lookupResult = lookupVar(exportName, moduleEnv);
             lookupResult.match(
               (_) => throw StateError('Should not happen - already validated'),
-              (value) => exportedValues[exportName] = value,
+              (value) => exportedValues[exportName] = Ref(value),
             );
           }
 

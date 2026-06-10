@@ -2,6 +2,7 @@ import 'package:glue/src/env.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/eval/exception.dart';
 import 'package:glue/src/ir.dart';
+import 'package:glue/src/ref.dart';
 
 /// Let special form - creates a new scope with local bindings
 /// Mirrors Haskell Glue.Lib.Builtin.Let.let' exactly
@@ -30,7 +31,7 @@ Eval<Ir> letImpl(List<Ir> args) {
     // Push new frame with bindings onto current environment
     return getEnv().bind((currentEnv) {
       final newFrame = frameFromList(
-        evaluatedPairs.map((pair) => (pair.$1, pair.$2)).toList(),
+        evaluatedPairs.map((pair) => (pair.$1, Ref(pair.$2))).toList(),
       );
 
       final newEnv = currentEnv.add(newFrame);

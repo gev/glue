@@ -137,15 +137,6 @@ Eval<void> defineVarEval(String name, Ir value) => Eval(
       Right(((), runtime.copyWith(env: defineVar(name, value, runtime.env)))),
 );
 
-/// Update a variable in current environment
-Eval<void> updateVarEval(String name, Ir value) => Eval((runtime) {
-  final result = updateVar(name, value, runtime.env);
-  return result.match(
-    (error) => Left(EvalError(runtime.stack, error)),
-    (env) => Right(((), runtime.copyWith(env: env))),
-  );
-});
-
 /// ============================================================================
 /// ENVIRONMENT UTILITIES
 /// ============================================================================

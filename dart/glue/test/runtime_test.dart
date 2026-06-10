@@ -5,6 +5,7 @@ import 'package:glue/src/ir.dart';
 import 'package:glue/src/module.dart';
 import 'package:glue/src/module/cache.dart';
 import 'package:glue/src/module/registry.dart';
+import 'package:glue/src/ref.dart';
 import 'package:glue/src/runtime.dart';
 import 'package:test/test.dart';
 
@@ -129,7 +130,7 @@ void main() {
       // Add an imported module to cache
       final imported = ImportedModule(
         moduleName: 'imported.module',
-        exportedValues: {'value': IrInteger(2)},
+        exportedValues: {'value': Ref(IrInteger(2))},
         evaluationRootEnv: env,
       );
       storeImportedModule(cache, imported);
