@@ -16,14 +16,12 @@ void storeImportedModule(ImportedModuleCache cache, ImportedModule imported) {
     cache[imported.moduleName] = imported;
   } else {
     for (final entry in cached.exportedValues.entries) {
-      print('1 $entry');
       final ref = imported.exportedValues[entry.key];
       entry.value.value = ref?.value ?? IrVoid();
     }
     for (final entry in imported.exportedValues.entries) {
       final ref = cached.exportedValues[entry.key];
       if (ref == null) {
-        print('2 $ref');
         cached.exportedValues[entry.key] = entry.value;
       }
     }
