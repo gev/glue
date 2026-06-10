@@ -60,24 +60,6 @@ spec = describe "Glue.Env (Test stack memory model)" do
                 lookupVar name finalEnv `shouldBe` Right vLocal
                 lookupVar name (popFrame finalEnv) `shouldBe` Right vGlobal
 
-    describe "Variable updating" do
-        it "updateVar: update values in the place, don't create a new one" do
-            let vOld = Integer 10
-            let vNew = Integer 20
-            let env = pushFrame (fromList [("x", vOld)])
-
-            case updateVar "x" vNew env of
-                Left err -> expectationFailure $ "Update failed: " <> show err
-                Right updatedEnv -> do
-                    lookupLocal "x" updatedEnv `shouldBe` Nothing
-                    lookupVar "x" updatedEnv `shouldBe` Right vNew
-
-        prop
-            "updateVar: return error for unbound variable"
-            \name (v :: V) -> do
-                let env = emptyEnv :: E
-                updateVar name v env `shouldSatisfy` isLeft
-
     describe "Safety lookup" do
         it "lookupLocal: returns Nothing on the empty stack" do
             lookupLocal "x" [] `shouldBe` Nothing

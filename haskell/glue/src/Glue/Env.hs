@@ -38,11 +38,5 @@ defineVar :: Text -> IR m -> Env m -> Env m
 defineVar name val [] = [Map.singleton name val]
 defineVar name val (f : fs) = Map.insert name val f : fs
 
-updateVar :: Text -> IR m -> Env m -> Either (RuntimeException m) (Env m)
-updateVar name _ [] = Left $ canNotSetUnboundVariable name
-updateVar name val (f : fs)
-    | Map.member name f = Right (Map.insert name val f : fs)
-    | otherwise = (f :) <$> updateVar name val fs
-
 unionFrames :: [Frame m] -> Frame m
 unionFrames = foldl Map.union Map.empty

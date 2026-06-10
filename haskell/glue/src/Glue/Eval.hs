@@ -18,7 +18,6 @@ module Glue.Eval (
     getCache,
     putCache,
     defineVarEval,
-    updateVarEval,
 ) where
 
 import Control.Monad (ap, liftM)
@@ -233,13 +232,6 @@ defineVarEval :: Text -> IR -> Eval ()
 defineVarEval name val = do
     env <- getEnv
     putEnv (E.defineVar name val env)
-
-updateVarEval :: Text -> IR -> Eval ()
-updateVarEval name val = do
-    env <- getEnv
-    case E.updateVar name val env of
-        Right nextEnv -> putEnv nextEnv
-        Left err -> throwError err
 
 getEnv :: Eval Env
 getEnv = Eval $ \runtime -> pure $ Right (GR.env runtime, runtime)
