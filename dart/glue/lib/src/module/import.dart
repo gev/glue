@@ -19,20 +19,17 @@ Eval<Ir> importModule(String moduleName) {
 
       if (cachedModule != null) {
         // Module already imported - merge into current environment
-        return _mergeImportedModule(cachedModule, moduleName);
+        return _mergeImportedModule(cachedModule);
       } else {
         // First import - evaluate module in isolation
-        return _cacheAndMerdgeImortedModule(registeredModule, moduleName);
+        return _cacheAndMerdgeImortedModule(registeredModule);
       }
     });
   });
 }
 
 /// Evaluate module in isolation and cache the result
-Eval<ImportedModule> cacheImortedModule(
-  RegisteredModule registered,
-  String moduleName,
-) {
+Eval<ImportedModule> cacheImortedModule(RegisteredModule registered) {
   // Get root environment for consistent evaluation
   return getRootEnv().bind((rootEnv) {
     return getRuntime().bind((currentRuntime) {
@@ -69,7 +66,7 @@ Eval<ImportedModule> cacheImortedModule(
 
           // Create imported module record
           final importedModule = ImportedModule(
-            moduleName: moduleName,
+            moduleName: registered.name,
             exportedValues: exportedValues,
             evaluationRootEnv: rootEnv,
           );
@@ -87,16 +84,13 @@ Eval<ImportedModule> cacheImortedModule(
 
 /// Evaluate module in isolation and cache the result
 /// and merge cached imported module into current environment
-Eval<Ir> _cacheAndMerdgeImortedModule(
-  RegisteredModule registered,
-  String moduleName,
-) => cacheImortedModule(
-  registered,
-  moduleName,
-).bind((importedModule) => _mergeImportedModule(importedModule, moduleName));
+Eval<Ir> _cacheAndMerdgeImortedModule(RegisteredModule registered) =>
+    cacheImortedModule(
+      registered,
+    ).bind((importedModule) => _mergeImportedModule(importedModule));
 
 /// Merge already cached imported module into current environment
-Eval<Ir> _mergeImportedModule(ImportedModule imported, String moduleName) {
+Eval<Ir> _mergeImportedModule(ImportedModule imported) {
   return getEnv().bind((currentEnv) {
     // Merge exported values directly into environment
     var updatedEnv = currentEnv;
