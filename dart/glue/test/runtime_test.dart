@@ -132,11 +132,11 @@ void main() {
         exportedValues: {'value': IrInteger(2)},
         evaluationRootEnv: env,
       );
-      final cacheWithModule = storeImportedModule(cache, imported);
+      storeImportedModule(cache, imported);
 
       final runtime = Runtime.initial(
         env,
-      ).copyWith(registry: registryWithModule!, importCache: cacheWithModule);
+      ).copyWith(registry: registryWithModule!, importCache: cache);
 
       expect(registrySize(runtime.registry), equals(1));
       expect(cacheSize(runtime.importCache), equals(1));

@@ -9,10 +9,12 @@ typedef ImportedModuleCache = Map<String, ImportedModule>;
 ImportedModuleCache emptyCache() => {};
 
 /// Store an imported module in the cache
-ImportedModuleCache storeImportedModule(
+void storeImportedModule(
   ImportedModuleCache cache,
   ImportedModule importedModule,
-) => {...cache, importedModule.moduleName: importedModule};
+) {
+  cache[importedModule.moduleName] = importedModule;
+}
 
 /// Lookup an imported module by name
 ImportedModule? lookupImportedModule(ImportedModuleCache cache, String name) =>

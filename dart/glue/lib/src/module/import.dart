@@ -88,11 +88,8 @@ Eval<Ir> _evaluateAndCacheModule(
 
           // Cache the imported module
           return getCache().bind((cache) {
-            final newCache = storeImportedModule(cache, importedModule);
-            return putCache(newCache).bind((_) {
-              // Merge into current environment
-              return _mergeImportedModule(importedModule, moduleName);
-            });
+            storeImportedModule(cache, importedModule);
+            return _mergeImportedModule(importedModule, moduleName);
           });
         });
       });

@@ -116,9 +116,9 @@ Eval<ModuleRegistry> getRegistry() =>
 Eval<ImportedModuleCache> getCache() =>
     Eval((runtime) => Right((runtime.importCache, runtime)));
 
-/// Set import cache
-Eval<void> putCache(ImportedModuleCache cache) =>
-    Eval((runtime) => Right(((), runtime.copyWith(importCache: cache))));
+// /// Set import cache
+// Eval<void> putCache(ImportedModuleCache cache) =>
+//     Eval((runtime) => Right(((), runtime.copyWith(importCache: cache))));
 
 /// Get complete runtime
 Eval<Runtime> getRuntime() => Eval((runtime) => Right((runtime, runtime)));

@@ -179,10 +179,10 @@ void main() {
         evaluationRootEnv: env,
       );
 
-      final newCache = storeImportedModule(cache, imported);
-      expect(cacheSize(newCache), equals(1));
-      expect(lookupImportedModule(newCache, 'test.math'), equals(imported));
-      expect(isModuleCached(newCache, 'test.math'), isTrue);
+      storeImportedModule(cache, imported);
+      expect(cacheSize(cache), equals(1));
+      expect(lookupImportedModule(cache, 'test.math'), equals(imported));
+      expect(isModuleCached(cache, 'test.math'), isTrue);
     });
 
     test('removeFromCache removes module', () {
@@ -194,10 +194,10 @@ void main() {
         evaluationRootEnv: env,
       );
 
-      final cacheWithModule = storeImportedModule(cache, imported);
-      expect(cacheSize(cacheWithModule), equals(1));
+      storeImportedModule(cache, imported);
+      expect(cacheSize(cache), equals(1));
 
-      final cacheWithoutModule = removeFromCache(cacheWithModule, 'test.math');
+      final cacheWithoutModule = removeFromCache(cache, 'test.math');
       expect(cacheSize(cacheWithoutModule), equals(0));
       expect(lookupImportedModule(cacheWithoutModule, 'test.math'), isNull);
     });
@@ -211,8 +211,8 @@ void main() {
         evaluationRootEnv: env,
       );
 
-      final cacheWithModule = storeImportedModule(cache, imported);
-      expect(cacheSize(cacheWithModule), equals(1));
+      storeImportedModule(cache, imported);
+      expect(cacheSize(cache), equals(1));
 
       final emptyCacheAgain = clearCache();
       expect(cacheSize(emptyCacheAgain), equals(0));
