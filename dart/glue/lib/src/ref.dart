@@ -3,6 +3,9 @@ class Ref<T> {
   Ref(this.value);
 
   @override
+  String toString() => 'Ref($value)';
+
+  @override
   bool operator ==(Object other) =>
       identical(this, other) || (other is Ref && value == other.value);
 
