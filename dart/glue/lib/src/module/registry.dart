@@ -21,11 +21,8 @@ Either<String, ModuleRegistry> registerModule(
 }
 
 /// Reregister a module in the registry
-ModuleRegistry reregisterModule(
-  ModuleRegistry registry,
-  RegisteredModule module,
-) {
-  return ({...registry, module.name: module});
+void reregisterModule(ModuleRegistry registry, RegisteredModule module) {
+  registry[module.name] = module;
 }
 
 /// Register multiple modules

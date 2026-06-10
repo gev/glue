@@ -201,39 +201,6 @@ void main() {
       expect(lookupImportedModule(cache, 'test.math'), equals(imported));
       expect(isModuleCached(cache, 'test.math'), isTrue);
     });
-
-    test('removeFromCache removes module', () {
-      final cache = emptyCache();
-      final env = fromList([('x', IrInteger(42))]);
-      final imported = ImportedModule(
-        moduleName: 'test.math',
-        exportedValues: {'add': Ref(IrInteger(1))},
-        evaluationRootEnv: env,
-      );
-
-      storeImportedModule(cache, imported);
-      expect(cacheSize(cache), equals(1));
-
-      final cacheWithoutModule = removeFromCache(cache, 'test.math');
-      expect(cacheSize(cacheWithoutModule), equals(0));
-      expect(lookupImportedModule(cacheWithoutModule, 'test.math'), isNull);
-    });
-
-    test('clearCache empties cache', () {
-      final cache = emptyCache();
-      final env = fromList([('x', IrInteger(42))]);
-      final imported = ImportedModule(
-        moduleName: 'test.math',
-        exportedValues: {'add': Ref(IrInteger(1))},
-        evaluationRootEnv: env,
-      );
-
-      storeImportedModule(cache, imported);
-      expect(cacheSize(cache), equals(1));
-
-      final emptyCacheAgain = clearCache();
-      expect(cacheSize(emptyCacheAgain), equals(0));
-    });
   });
 
   group('Module Registration', () {

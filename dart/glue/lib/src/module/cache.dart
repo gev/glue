@@ -36,19 +36,9 @@ ImportedModule? lookupImportedModule(ImportedModuleCache cache, String name) =>
 bool isModuleCached(ImportedModuleCache cache, String name) =>
     cache.containsKey(name);
 
-/// Remove a module from cache
-ImportedModuleCache removeFromCache(ImportedModuleCache cache, String name) {
-  final newCache = {...cache};
-  newCache.remove(name);
-  return newCache;
-}
-
 /// Get all cached module names
 List<String> cachedModuleNames(ImportedModuleCache cache) =>
     cache.keys.toList();
 
 /// Get cache size
 int cacheSize(ImportedModuleCache cache) => cache.length;
-
-/// Clear entire cache
-ImportedModuleCache clearCache() => emptyCache();
