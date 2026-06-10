@@ -22,27 +22,14 @@ Eval<Ir> importModule(String moduleName) {
         return _mergeImportedModule(cachedModule, moduleName);
       } else {
         // First import - evaluate module in isolation
-        return _evaluateAndCacheModule(registeredModule, moduleName);
+        return _cacheAndMerdgeImortedModule(registeredModule, moduleName);
       }
     });
   });
 }
 
-/// Merge already cached imported module into current environment
-Eval<Ir> _mergeImportedModule(ImportedModule imported, String moduleName) {
-  return getEnv().bind((currentEnv) {
-    // Merge exported values directly into environment
-    var updatedEnv = currentEnv;
-    for (final entry in imported.exportedValues.entries) {
-      updatedEnv = defineRef(entry.key, entry.value, updatedEnv);
-    }
-
-    return putEnv(updatedEnv).map((_) => IrVoid());
-  });
-}
-
 /// Evaluate module in isolation and cache the result
-Eval<Ir> _evaluateAndCacheModule(
+Eval<ImportedModule> cacheImortedModule(
   RegisteredModule registered,
   String moduleName,
 ) {
@@ -90,11 +77,33 @@ Eval<Ir> _evaluateAndCacheModule(
           // Cache the imported module
           return getCache().bind((cache) {
             storeImportedModule(cache, importedModule);
-            return _mergeImportedModule(importedModule, moduleName);
+            return Eval.pure(importedModule);
           });
         });
       });
     });
+  });
+}
+
+/// Evaluate module in isolation and cache the result
+/// and merge cached imported module into current environment
+Eval<Ir> _cacheAndMerdgeImortedModule(
+  RegisteredModule registered,
+  String moduleName,
+) => cacheImortedModule(
+  registered,
+  moduleName,
+).bind((importedModule) => _mergeImportedModule(importedModule, moduleName));
+
+/// Merge already cached imported module into current environment
+Eval<Ir> _mergeImportedModule(ImportedModule imported, String moduleName) {
+  return getEnv().bind((currentEnv) {
+    // Merge exported values directly into environment
+    var updatedEnv = currentEnv;
+    for (final entry in imported.exportedValues.entries) {
+      updatedEnv = defineRef(entry.key, entry.value, updatedEnv);
+    }
+    return putEnv(updatedEnv).map((_) => IrVoid());
   });
 }
 
