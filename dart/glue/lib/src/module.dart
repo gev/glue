@@ -35,7 +35,7 @@ class RegisteredModule {
 /// A cached imported module with evaluated exports and evaluation stack
 class ImportedModule {
   final String moduleName;
-  final Map<String, Ir> exportedValues;
+  final Map<String, IrRef> exportedValues;
   final Env evaluationRootEnv;
 
   const ImportedModule({

@@ -33,17 +33,23 @@ void main() {
       final env = fromList([('x', IrInteger(42))]);
       final imported = ImportedModule(
         moduleName: 'test.math',
-        exportedValues: {'add': IrInteger(1), 'multiply': IrInteger(2)},
+        exportedValues: {
+          'add': IrRef(IrInteger(1)),
+          'multiply': IrRef(IrInteger(2)),
+        },
         evaluationRootEnv: env,
       );
 
       expect(imported.moduleName, equals('test.math'));
       expect(imported.exportedValues.length, equals(2));
-      expect(imported.exportedValues['add'], equals(IrInteger(1)));
+      expect(imported.exportedValues['add'], equals(IrRef(IrInteger(1))));
 
       final imported2 = ImportedModule(
         moduleName: 'test.math',
-        exportedValues: {'add': IrInteger(1), 'multiply': IrInteger(2)},
+        exportedValues: {
+          'add': IrRef(IrInteger(1)),
+          'multiply': IrRef(IrInteger(2)),
+        },
         evaluationRootEnv: env,
       );
 
@@ -175,7 +181,7 @@ void main() {
       final env = fromList([('x', IrInteger(42))]);
       final imported = ImportedModule(
         moduleName: 'test.math',
-        exportedValues: {'add': IrInteger(1)},
+        exportedValues: {'add': IrRef(IrInteger(1))},
         evaluationRootEnv: env,
       );
 
@@ -190,7 +196,7 @@ void main() {
       final env = fromList([('x', IrInteger(42))]);
       final imported = ImportedModule(
         moduleName: 'test.math',
-        exportedValues: {'add': IrInteger(1)},
+        exportedValues: {'add': IrRef(IrInteger(1))},
         evaluationRootEnv: env,
       );
 
@@ -207,7 +213,7 @@ void main() {
       final env = fromList([('x', IrInteger(42))]);
       final imported = ImportedModule(
         moduleName: 'test.math',
-        exportedValues: {'add': IrInteger(1)},
+        exportedValues: {'add': IrRef(IrInteger(1))},
         evaluationRootEnv: env,
       );
 

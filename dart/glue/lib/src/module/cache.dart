@@ -13,6 +13,20 @@ void storeImportedModule(
   ImportedModuleCache cache,
   ImportedModule importedModule,
 ) {
+  var imported = cache[importedModule.moduleName];
+  if (imported == null) {
+    cache[importedModule.moduleName] = importedModule;
+  } else {
+    final export = imported.exportedValues;
+    for (final entry in importedModule.exportedValues.entries) {
+      final ref = export[entry.key];
+      if (ref == null) {
+        export[entry.key] = entry.value;
+      } else {
+        ref.value = entry.value.value;
+      }
+    }
+  }
   cache[importedModule.moduleName] = importedModule;
 }
 

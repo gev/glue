@@ -201,6 +201,7 @@ Eval<T> sequence_<T>(List<Eval<dynamic>> evals, Eval<T> last) {
 /// Mirrors Haskell Glue.Eval.eval exactly
 Eval<Ir> eval(Ir ir) {
   return switch (ir) {
+    IrRef(:final value) => eval(value),
     IrSymbol(:final value) => evalSymbol(value),
     IrDottedSymbol(:final parts) => evalDottedSymbol(parts),
     IrList(:final elements) => evalList(elements.unlock),

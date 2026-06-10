@@ -259,6 +259,19 @@ class IrClosure extends Ir {
   int get hashCode => Object.hash(params, body, env);
 }
 
+class IrRef extends Ir {
+  Ir value;
+
+  IrRef(this.value);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || (other is IrRef && value == other.value);
+
+  @override
+  int get hashCode => value.hashCode;
+}
+
 /// Helper functions for IR introspection
 /// Mirrors Haskell accessor functions
 
