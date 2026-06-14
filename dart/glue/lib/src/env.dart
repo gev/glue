@@ -64,7 +64,6 @@ Either<RuntimeException, Ir> lookupVar(String name, Env env) {
 /// Define reference in current (top) frame
 /// Creates new frame if environment is empty
 Env defineRef(String name, Ref<Ir> value, Env env) {
-  print(value);
   if (env.isEmpty) {
     return Env([
       IMap({name: value}),
