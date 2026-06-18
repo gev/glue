@@ -29,7 +29,7 @@ Eval<Ir> importModule(String moduleName) {
 }
 
 /// Evaluate module in isolation and cache the result
-Eval<ImportedModule> cacheImortedModule(RegisteredModule registered) {
+Eval<ImportedModule> cacheImportedModule(RegisteredModule registered) {
   // Get root environment for consistent evaluation
   return getRootEnv().bind((rootEnv) {
     return getRuntime().bind((currentRuntime) {
@@ -85,7 +85,7 @@ Eval<ImportedModule> cacheImortedModule(RegisteredModule registered) {
 /// Evaluate module in isolation and cache the result
 /// and merge cached imported module into current environment
 Eval<Ir> _cacheAndMerdgeImortedModule(RegisteredModule registered) =>
-    cacheImortedModule(
+    cacheImportedModule(
       registered,
     ).bind((importedModule) => _mergeImportedModule(importedModule));
 
