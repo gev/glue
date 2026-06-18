@@ -18,11 +18,19 @@ Eval<Ir> Function(Ir props) imageImpl(
   switch (props) {
     case IrObject object:
       final properties = WidgetProperties(object.properties.unlock);
-      final src = properties.getString('src');
-      if (src == null) {
-        return throwError(wrongArgumentType(['`src` should be a `String`']));
+      final src = properties.get('src');
+      switch (src) {
+        case IrString(:final value):
+        case IrSymbol(:final value):
+        case IrDottedSymbol(:final value):
+          return _createImage(makeImage(value), properties);
+        default:
+          return throwError(
+            wrongArgumentType([
+              '`src` should be a `String`, `Symbol` or `DottedSymol`',
+            ]),
+          );
       }
-      return _createImage(makeImage(src), properties);
     default:
       return throwError(wrongArgumentType(['object']));
   }
