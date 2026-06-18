@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/widgets.dart';
 import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
@@ -6,22 +8,33 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// Image widget function
 /// Creates Flutter Image from Glue (image props) expressions
-final Ir image = IrNativeFunc(imageImpl);
+final Ir imageAsset = IrNativeFunc(imageImpl(assetImage));
+final Ir imageFile = IrNativeFunc(imageImpl(fileImage));
+final Ir imageNetwork = IrNativeFunc(imageImpl(networkImage));
 
-/// Image implementation - takes properties object
-Eval<Ir> imageImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createImage(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
+Eval<Ir> Function(Ir props) imageImpl(
+  ImageProvider Function(String src) makeImage,
+) => (Ir props) {
+  switch (props) {
+    case IrObject object:
+      final properties = WidgetProperties(object.properties.unlock);
+      final src = properties.getString('src');
+      if (src == null) {
+        return throwError(
+          wrongArgumentType(['`src` should be a bundled asset']),
+        );
+      }
+      return _createImage(makeImage(src), properties);
+    default:
+      return throwError(wrongArgumentType(['object']));
+  }
 };
 
-/// Create Image widget from properties
-Eval<Ir> _createImage(WidgetProperties properties) {
-  final image = properties.getValue<ImageProvider<Object>>('image');
-  if (image == null) {
-    return throwError(wrongArgumentType(['image property required']));
-  }
+ImageProvider assetImage(String src) => AssetImage(src);
+ImageProvider fileImage(String src) => FileImage(File(src));
+ImageProvider networkImage(String src) => NetworkImage(src);
+
+Eval<Ir> _createImage(ImageProvider image, WidgetProperties properties) {
   final imageWidget = Image(
     key: properties.key,
     image: image,
