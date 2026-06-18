@@ -20,9 +20,7 @@ Eval<Ir> Function(Ir props) imageImpl(
       final properties = WidgetProperties(object.properties.unlock);
       final src = properties.getString('src');
       if (src == null) {
-        return throwError(
-          wrongArgumentType(['`src` should be a bundled asset']),
-        );
+        return throwError(wrongArgumentType(['`src` should be a `String`']));
       }
       return _createImage(makeImage(src), properties);
     default:
