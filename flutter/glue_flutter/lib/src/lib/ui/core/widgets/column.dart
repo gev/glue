@@ -33,6 +33,7 @@ Eval<Ir> _createColumn(WidgetProperties properties) {
         properties.getValue<VerticalDirection>('vertical-direction') ??
         VerticalDirection.down,
     textBaseline: properties.getValue<TextBaseline>('text-baseline'),
+    spacing: properties.getDouble('spacing') ?? 0,
     children: properties.children,
   );
   return Eval.pure(IrNativeValue(Value(columnWidget)));

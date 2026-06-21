@@ -27,10 +27,12 @@ Eval<Ir> _createWrap(WidgetProperties properties) {
     runAlignment:
         properties.getValue<WrapAlignment>('run-alignment') ??
         WrapAlignment.start,
+    runSpacing: properties.getDouble('spacing') ?? 0,
     textDirection: properties.getValue<TextDirection>('text-direction'),
     verticalDirection:
         properties.getValue<VerticalDirection>('vertical-direction') ??
         VerticalDirection.down,
+    spacing: properties.getDouble('spacing') ?? 0,
     clipBehavior: properties.getValue<Clip>('clip-behavior') ?? Clip.none,
   );
   return Eval.pure(IrNativeValue(Value(rowWidget)));

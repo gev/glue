@@ -33,6 +33,7 @@ Eval<Ir> _createRow(WidgetProperties properties) {
     verticalDirection:
         properties.getValue<VerticalDirection>('vertical-direction') ??
         VerticalDirection.down,
+    spacing: properties.getDouble('spacing') ?? 0,
     textBaseline: properties.getValue<TextBaseline>('text-baseline'),
   );
   return Eval.pure(IrNativeValue(Value(rowWidget)));
