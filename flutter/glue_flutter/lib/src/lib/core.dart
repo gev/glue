@@ -25,6 +25,7 @@ import 'package:glue_flutter/src/lib/ui/core/styles/text_overflow.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/text_style.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/text_width_basis.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/vertical_direction.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/aspect_ratio.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/center.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/column.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/container.dart';
@@ -45,6 +46,7 @@ import 'package:glue_flutter/src/lib/ui/core/widgets/wrap.dart';
 
 final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   // Core widget functions
+  ('aspect-ratio', aspectRatio),
   ('container', container),
   ('column', column),
   ('row', row),
