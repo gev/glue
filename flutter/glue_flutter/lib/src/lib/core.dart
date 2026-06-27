@@ -16,6 +16,7 @@ import 'package:glue_flutter/src/lib/ui/core/styles/padding_only.dart'; // paddi
 import 'package:glue_flutter/src/lib/ui/core/styles/padding_symmetric.dart'; // padding-symmetric function
 import 'package:glue_flutter/src/lib/ui/core/styles/rgb.dart'; // RGB function
 import 'package:glue_flutter/src/lib/ui/core/styles/rgba.dart'; // RGBA function
+import 'package:glue_flutter/src/lib/ui/core/styles/shape_border.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/system_brightness.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/text_align.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/text_baseline.dart';
@@ -67,6 +68,15 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   // Color creation functions
   ('rgb', rgb),
   ('rgba', rgba),
+
+  // Shape borders
+  ('border-rounded-rectangle', borderRoundedRectangle),
+  ('border-circle', borderCircle),
+  ('border-stadium', borderStadium),
+  ('border-beveled-rectangle', borderBeveledRectangle),
+  ('border-radius-circular', borderRadiusCircular),
+  ('border-radius-only', borderRadiusOnly),
+  ('border-radius-val', borderRadiusVal),
 
   // Text style creation function
   ('text-style', textStyle),
