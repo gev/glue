@@ -18,7 +18,7 @@ Eval<Ir> Function(Ir) mapOver(Ir funcIr) {
   return (Ir listIr) {
     return switch (listIr) {
       IrList(elements: final elements) => sequenceAll(
-        elements.map((element) => eval(IrList([funcIr, element]))).toList(),
+        elements.map((element) => apply(funcIr, [element])).toList(),
       ).map((results) => IrList(results)),
       _ => throwError(wrongArgumentType(['function', 'list'])),
     };
