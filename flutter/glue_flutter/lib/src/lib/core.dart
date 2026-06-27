@@ -35,6 +35,7 @@ import 'package:glue_flutter/src/lib/ui/core/widgets/grid_view.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/icon.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/image.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/list_view.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/padding.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/placeholder.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/row.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/single_child_scroll_view.dart';
@@ -47,31 +48,32 @@ import 'package:glue_flutter/src/lib/ui/core/widgets/wrap.dart';
 final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   // Core widget functions
   ('aspect-ratio', aspectRatio),
-  ('container', container),
-  ('column', column),
-  ('row', row),
-  ('wrap', wrap),
   ('center', center),
-  ('sized-box', sizedBox),
+  ('column', column),
+  ('container', container),
+  ('custom-scroll-view', customScrollView),
   ('expanded', expanded),
+  ('grid-view', gridView),
   ('icon', icon),
-  ('placeholder', placeholder),
   ('image-asset', imageAsset),
   ('image-file', imageFile),
   ('image-network', imageNetwork),
   ('list-view', listView),
-  ('grid-view', gridView),
+  ('padding', padding),
+  ('placeholder', placeholder),
+  ('row', row),
   ('single-child-scroll-view', singleChildScrollView),
-  ('custom-scroll-view', customScrollView),
-  ('sliver-list', sliverList),
+  ('sized-box', sizedBox),
   ('sliver-grid', sliverGrid),
+  ('sliver-list', sliverList),
   ('text', text),
+  ('wrap', wrap),
 
   // Color creation functions
   ('rgb', rgb),
   ('rgba', rgba),
 
-  // Shape borders
+  // Shape border functions
   ('border-rounded-rectangle', borderRoundedRectangle),
   ('border-circle', borderCircle),
   ('border-stadium', borderStadium),
