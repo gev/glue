@@ -7,8 +7,8 @@ final boxFit = IrObject({
   'fill': IrNativeValue(Value(BoxFit.fill)),
   'contain': IrNativeValue(Value(BoxFit.contain)),
   'cover': IrNativeValue(Value(BoxFit.cover)),
-  'fitWidth': IrNativeValue(Value(BoxFit.fitWidth)),
-  'fitHeight': IrNativeValue(Value(BoxFit.fitHeight)),
+  'fit-width': IrNativeValue(Value(BoxFit.fitWidth)),
+  'fit-height': IrNativeValue(Value(BoxFit.fitHeight)),
   'none': IrNativeValue(Value(BoxFit.none)),
-  'scaleDown': IrNativeValue(Value(BoxFit.scaleDown)),
+  'scale-down': IrNativeValue(Value(BoxFit.scaleDown)),
 });
