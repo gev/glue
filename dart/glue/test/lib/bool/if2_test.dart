@@ -3,7 +3,7 @@ import 'package:glue/src/env.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/eval/error.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue/src/lib/bool/when.dart';
+import 'package:glue/src/lib/bool/if.dart';
 import 'package:glue/src/runtime.dart';
 import 'package:test/test.dart';
 
@@ -12,7 +12,7 @@ Future<Either<EvalError, Ir?>> runCode(List<Ir> args) async {
   final env = emptyEnv(); // Empty env for unit tests
   final runtime = Runtime.initial(env);
 
-  final evalResult = await runEval(apply(when_, args), runtime);
+  final evalResult = await runEval(apply(if_, args), runtime);
   return evalResult.match((error) => Left(error), (value) {
     final (result, _) = value;
     return Right(result);

@@ -10,8 +10,11 @@ final Ir if_ = IrSpecial(ifImpl);
 /// Mirrors Haskell Glue.Lib.Bool.If.ifImpl exactly
 Eval<Ir> ifImpl(List<Ir> args) {
   return switch (args) {
+    [final cond, final thenExpr] => eval(cond).bind((condVal) {
+      return isTruthy(condVal) ? eval(thenExpr) : Eval.pure(IrVoid());
+    }),
     [final cond, final thenExpr, final elseExpr] => eval(cond).bind((condVal) {
-      return eval(isTruthy(condVal) ? thenExpr : elseExpr);
+      return isTruthy(condVal) ? eval(thenExpr) : eval(elseExpr);
     }),
     _ => throwError(wrongArgumentType(['condition', 'then', 'else'])),
   };

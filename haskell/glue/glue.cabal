@@ -32,7 +32,6 @@ library
     Glue.Lib.Bool.Lt
     Glue.Lib.Bool.Ne
     Glue.Lib.Bool.Not
-    Glue.Lib.Bool.When
     Glue.Lib.Builtin
     Glue.Lib.Builtin.Def
     Glue.Lib.Builtin.Error
@@ -144,12 +143,12 @@ test-suite glue-test
     Glue.Lib.Bool.EqSpec
     Glue.Lib.Bool.GeSpec
     Glue.Lib.Bool.GtSpec
-    Glue.Lib.Bool.IfSpec
+    Glue.Lib.Bool.IfSpec2
+    Glue.Lib.Bool.IfSpec3
     Glue.Lib.Bool.LeSpec
     Glue.Lib.Bool.LtSpec
     Glue.Lib.Bool.NeSpec
     Glue.Lib.Bool.NotSpec
-    Glue.Lib.Bool.WhenSpec
     Glue.Lib.Builtin.DefSpec
     Glue.Lib.Builtin.ImportSpec
     Glue.Lib.Builtin.LambdaSpec

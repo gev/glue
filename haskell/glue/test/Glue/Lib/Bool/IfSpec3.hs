@@ -1,4 +1,4 @@
-module Glue.Lib.Bool.IfSpec (spec) where
+module Glue.Lib.Bool.IfSpec3 (spec) where
 
 import Glue.Eval (apply, runEvalSimple)
 import Glue.IR (IR (..))

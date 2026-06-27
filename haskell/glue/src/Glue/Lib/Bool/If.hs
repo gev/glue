@@ -8,7 +8,10 @@ if_ :: IR Eval
 if_ = Special ifImpl
 
 ifImpl :: [IR Eval] -> Eval (IR Eval)
+ifImpl [cond, thenExpr] = do
+    condVal <- eval cond
+    if isTruthy condVal then eval thenExpr else pure Void
 ifImpl [cond, thenExpr, elseExpr] = do
     condVal <- eval cond
-    eval if isTruthy condVal then thenExpr else elseExpr
+    if isTruthy condVal then eval thenExpr else eval elseExpr
 ifImpl _ = throwError $ wrongArgumentType ["condition", "then", "else"]
