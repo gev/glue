@@ -102,7 +102,7 @@ spec = describe "Value property getters" do
                 Left err -> expectationFailure $ "Age property access should succeed: " ++ show err
 
     describe "Error handling" do
-        it "fails when accessing non-existent property" do
+        it "returns Void when accessing non-existent property" do
             let person = Person "David" 40
                 getters = Map.fromList [("name", pure (String "David"))]
                 hostVal = hostValueWithProps person getters
@@ -112,8 +112,9 @@ spec = describe "Value property getters" do
 
             result <- runEvalSimple (eval dottedIr) env
             case result of
-                Left _ -> pure () -- Should fail
+                Right (Void, _) -> pure ()
                 Right (val, _) -> expectationFailure $ "Accessing non-existent property should fail, but got: " ++ show val
+                Left err -> expectationFailure $ "Accessing non-existent property should fail, but got: " ++ show err
 
         it "fails when accessing property on non-host value" do
             let env = E.defineVar "number" (Integer 42) E.emptyEnv

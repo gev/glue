@@ -137,7 +137,7 @@ void main() {
       });
     });
 
-    test('dotted symbols throw error for missing properties', () async {
+    test('dotted symbols return Void for missing properties', () async {
       final obj = IrObject({'a': IrInteger(1)});
       final envWithObj = defineVar('obj', obj, runtime.env);
       final runtimeWithObj = runtime.copyWith(env: envWithObj);
@@ -146,11 +146,9 @@ void main() {
       final dottedIr = IrDottedSymbol('obj.missing');
       final result = await runEval(eval(dottedIr), runtimeWithObj);
 
-      expect(result.isLeft, isTrue);
-      result.match(
-        (error) => expect(error.exception.symbol, equals('property-not-found')),
-        (value) => fail('Should not be right: $value'),
-      );
+      result.match((error) => fail('Error: $error'), (value) {
+        expect(value.$1, equals(IrVoid()));
+      });
     });
 
     test('function application works with closures', () async {

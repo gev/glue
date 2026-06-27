@@ -164,7 +164,7 @@ void main() {
     });
 
     group('Error handling', () {
-      test('fails when accessing non-existent property', () async {
+      test('returns Void when accessing non-existent property', () async {
         final person = Person('David', 40);
         final getters = <String, Eval<Ir>>{
           'name': Eval((runtime) => Right((IrString('David'), runtime))),
@@ -175,12 +175,9 @@ void main() {
         final dottedIr = IrDottedSymbol('person.nonexistent');
 
         final result = await runEvalSimple(eval(dottedIr), env);
-        result.match(
-          (error) => expect(true, isTrue), // Should fail
-          (value) => fail(
-            'Accessing non-existent property should fail, but got: ${value.$1}',
-          ),
-        );
+        result.match((error) => fail('Error: $error'), (value) {
+          expect(value.$1, equals(IrVoid()));
+        });
       });
 
       test('fails when accessing property on non-host value', () async {

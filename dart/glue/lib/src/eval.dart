@@ -375,7 +375,7 @@ Eval<Ir> _evalNestedAccess(Ir obj, List<String> remainingParts) {
     IrObject(properties: final props) =>
       props[prop] != null
           ? _evalNestedAccess(props[prop]!, rest)
-          : throwError(propertyNotFound(prop)),
+          : Eval.pure(IrVoid()),
 
     IrNativeValue(value: final hostValue) =>
       // Handle property access on host values (FFI)
@@ -383,7 +383,7 @@ Eval<Ir> _evalNestedAccess(Ir obj, List<String> remainingParts) {
           ? hostValue.getters[prop]!.bind(
               (result) => _evalNestedAccess(result, rest),
             )
-          : throwError(propertyNotFound(prop)),
+          : Eval.pure(IrVoid()),
 
     _ => throwError(notAnObject(obj)),
   };

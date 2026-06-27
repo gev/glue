@@ -304,11 +304,13 @@ void main() {
         expect(result.isLeft, isTrue);
       });
 
-      test('fails accessing non-existent properties', () async {
+      test('returns Void when accessing non-existent properties', () async {
         final result = await runGlueCode(
           '((def bob (person :name "Bob" :age 25)) bob.nonexistent)',
         );
-        expect(result.isLeft, isTrue);
+        result.match((error) => fail('Error: $error'), (value) {
+          expect(value, equals(IrVoid()));
+        });
       });
     });
   });

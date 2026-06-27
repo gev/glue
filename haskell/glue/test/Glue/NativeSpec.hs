@@ -250,7 +250,7 @@ spec = describe "Full FFI Integration Tests" do
                                     _ -> False
                                 )
 
-        it "fails accessing non-existent properties" $ do
+        it "returns Void when accessing non-existent properties" $ do
             result <-
                 runGlueCode $
                     T.unlines
@@ -259,8 +259,4 @@ spec = describe "Full FFI Integration Tests" do
                         , "  bob.nonexistent"
                         , ")"
                         ]
-            result
-                `shouldSatisfy` ( \case
-                                    Left _ -> True
-                                    _ -> False
-                                )
+            result `shouldBe` Right Void
