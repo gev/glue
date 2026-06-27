@@ -39,15 +39,6 @@ void main() {
           (value) => expect(value, equals(IrVoid())),
         );
       });
-
-      test('returns void when body is empty', () async {
-        final args = [IrBool(true)];
-        final result = await runCode(args);
-        result.match(
-          (error) => fail('Should not be left: $error'),
-          (value) => expect(value, equals(IrVoid())),
-        );
-      });
     });
   });
 }

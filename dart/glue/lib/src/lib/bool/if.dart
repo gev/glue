@@ -11,10 +11,7 @@ final Ir if_ = IrSpecial(ifImpl);
 Eval<Ir> ifImpl(List<Ir> args) {
   return switch (args) {
     [final cond, final thenExpr, final elseExpr] => eval(cond).bind((condVal) {
-      return switch (condVal) {
-        IrBool(value: false) => eval(elseExpr),
-        _ => eval(thenExpr),
-      };
+      return eval(isTruthy(condVal) ? thenExpr : elseExpr);
     }),
     _ => throwError(wrongArgumentType(['condition', 'then', 'else'])),
   };

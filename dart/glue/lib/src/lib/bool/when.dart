@@ -10,16 +10,8 @@ final Ir when_ = IrSpecial(whenImpl);
 /// Mirrors Haskell Glue.Lib.Bool.When.whenImpl exactly
 Eval<Ir> whenImpl(List<Ir> args) {
   return switch (args) {
-    [final cond, ...final body] => eval(cond).bind((condVal) {
-      return switch (condVal) {
-        IrBool(value: false) => Eval.pure(IrVoid()),
-        _ => switch (body) {
-          [] => Eval.pure(IrVoid()),
-          _ => sequenceAll(
-            body.map(eval).toList(),
-          ).map((results) => results.last),
-        },
-      };
+    [final cond, final body] => eval(cond).bind((condVal) {
+      return isTruthy(condVal) ? eval(body) : Eval.pure(IrVoid());
     }),
     _ => throwError(wrongArgumentType(['condition', 'body'])),
   };

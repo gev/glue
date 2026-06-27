@@ -22,9 +22,9 @@ spec = describe "Glue.Lib.Bool.When (Test when special form)" do
                 Left err -> expectationFailure $ "When failed: " <> show err
                 Right (res, _) -> res `shouldBe` Void
 
-        it "executes multiple body expressions and returns last" do
+        it "fails multiple body expressions" do
             let args = [Bool True, Integer 1, Integer 2, Integer 3]
             result <- runEvalSimple (apply when_ args) []
             case result of
-                Left err -> expectationFailure $ "When failed: " <> show err
-                Right (res, _) -> res `shouldBe` Integer 3
+                Left _ -> pure ()
+                Right (res, _) -> expectationFailure $ "But: " <> show res

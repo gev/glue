@@ -7,9 +7,7 @@ import 'package:glue/src/lib/bool/le.dart';
 import 'package:glue/src/lib/bool/lt.dart';
 import 'package:glue/src/lib/bool/ne.dart';
 import 'package:glue/src/lib/bool/not.dart';
-import 'package:glue/src/lib/bool/until.dart';
 import 'package:glue/src/lib/bool/when.dart';
-import 'package:glue/src/lib/bool/while.dart';
 import 'package:glue/src/module.dart';
 
 /// Bool module - boolean operations, comparisons, and control flow
@@ -42,6 +40,4 @@ final ModuleInfo boolModule = nativeModule('ffi.bool', [
   // Special forms
   ('if', if_),
   ('when', when_),
-  ('while', while_),
-  ('until', until_),
 ]);

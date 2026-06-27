@@ -13,6 +13,8 @@ module Glue.IR (
     getValueFromIR,
     -- Accessor functions
     isList,
+    isTruthy,
+    isFalsy,
     listLength,
     isObject,
     objectSize,
@@ -148,3 +150,12 @@ isValue _ = False
 getValueFromIR :: IR m -> Maybe (Value m)
 getValueFromIR (NativeValue hv) = Just hv
 getValueFromIR _ = Nothing
+
+-- Check value is truthy or falsy
+isTruthy :: IR m -> Bool
+isTruthy (Bool b) = b
+isTruthy Void = False
+isTruthy _ = True
+
+isFalsy :: IR m -> Bool
+isFalsy = not . isTruthy

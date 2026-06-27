@@ -10,9 +10,7 @@ import Glue.Lib.Bool.Le (le)
 import Glue.Lib.Bool.Lt (lt)
 import Glue.Lib.Bool.Ne (ne)
 import Glue.Lib.Bool.Not (not_)
-import Glue.Lib.Bool.Until (until_)
 import Glue.Lib.Bool.When (when_)
-import Glue.Lib.Bool.While (while_)
 import Glue.Module (ModuleInfo, nativeModule)
 
 bool :: ModuleInfo Eval
@@ -36,6 +34,4 @@ bool =
         , ("!", not_)
         , ("if", if_)
         , ("when", when_)
-        , ("while", while_)
-        , ("until", until_)
         ]

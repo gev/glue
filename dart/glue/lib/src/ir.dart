@@ -287,3 +287,13 @@ String getSymbol(Ir ir) => switch (ir) {
 bool isValue(Ir ir) => ir is IrNativeValue;
 
 Value? getValueFromIR(Ir ir) => ir is IrNativeValue ? ir.value : null;
+
+/// Check value is truthy or falsy
+
+bool isTruthy(Ir ir) => switch (ir) {
+  IrBool(:final value) => value,
+  IrVoid() => false,
+  _ => true,
+};
+
+bool isFalsy(Ir ir) => !isTruthy(ir);

@@ -2,7 +2,7 @@ module Glue.Lib.Bool.If where
 
 import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception (wrongArgumentType)
-import Glue.IR (IR (..))
+import Glue.IR (IR (..), isTruthy)
 
 if_ :: IR Eval
 if_ = Special ifImpl
@@ -10,7 +10,5 @@ if_ = Special ifImpl
 ifImpl :: [IR Eval] -> Eval (IR Eval)
 ifImpl [cond, thenExpr, elseExpr] = do
     condVal <- eval cond
-    case condVal of
-        Bool False -> eval elseExpr
-        _ -> eval thenExpr
+    eval if isTruthy condVal then thenExpr else elseExpr
 ifImpl _ = throwError $ wrongArgumentType ["condition", "then", "else"]

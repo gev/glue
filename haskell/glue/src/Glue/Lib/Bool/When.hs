@@ -2,19 +2,15 @@ module Glue.Lib.Bool.When where
 
 import Glue.Eval (Eval, eval, throwError)
 import Glue.Eval.Exception (wrongArgumentType)
-import Glue.IR (IR (..))
+import Glue.IR (IR (..), isTruthy)
 
 when_ :: IR Eval
 when_ = Special whenImpl
 
 whenImpl :: [IR Eval] -> Eval (IR Eval)
-whenImpl (cond : body) = do
+whenImpl [cond, body] = do
     condVal <- eval cond
-    case condVal of
-        Bool False -> pure Void
-        _ -> case body of
-            [] -> pure Void
-            _ -> do
-                results <- mapM eval body
-                pure $ last results
+    if isTruthy condVal
+        then eval body
+        else pure Void
 whenImpl _ = throwError $ wrongArgumentType ["condition", "body"]

@@ -32,9 +32,7 @@ library
     Glue.Lib.Bool.Lt
     Glue.Lib.Bool.Ne
     Glue.Lib.Bool.Not
-    Glue.Lib.Bool.Until
     Glue.Lib.Bool.When
-    Glue.Lib.Bool.While
     Glue.Lib.Builtin
     Glue.Lib.Builtin.Def
     Glue.Lib.Builtin.Error
@@ -151,9 +149,7 @@ test-suite glue-test
     Glue.Lib.Bool.LtSpec
     Glue.Lib.Bool.NeSpec
     Glue.Lib.Bool.NotSpec
-    Glue.Lib.Bool.UntilSpec
     Glue.Lib.Bool.WhenSpec
-    Glue.Lib.Bool.WhileSpec
     Glue.Lib.Builtin.DefSpec
     Glue.Lib.Builtin.ImportSpec
     Glue.Lib.Builtin.LambdaSpec
