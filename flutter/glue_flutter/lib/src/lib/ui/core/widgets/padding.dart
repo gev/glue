@@ -5,32 +5,27 @@ import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// Padding widget function
-/// Creates Flutter Padding from Glue (padding child props) expressions
 final Ir padding = IrNativeFunc(paddingImpl);
 
-/// Padding implementation - takes child, then properties
-Eval<Ir> paddingImpl(Ir child) {
-  return Eval.pure(IrNativeFunc(paddingWithChild(child)));
-}
+/// Padding implementation - takes properties object directly (just like card)
+Eval<Ir> paddingImpl(Ir props) => switch (props) {
+  IrObject(:final properties) => _createPadding(
+    WidgetProperties(properties.unlock),
+  ),
+  _ => throwError(wrongArgumentType(['object'])),
+};
 
-/// Padding with child - takes properties object
-Eval<Ir> Function(Ir) paddingWithChild(Ir child) =>
-    (Ir props) => switch (props) {
-      IrObject(:final properties) => _createPadding(
-        WidgetProperties(properties.unlock),
-      ),
-      _ => throwError(wrongArgumentType(['object'])),
-    };
-
-/// Create Padding widget from properties and child
+/// Create Padding widget from properties
 Eval<Ir> _createPadding(WidgetProperties properties) {
-  final padding = properties.getValue<EdgeInsetsGeometry>('padding');
-  if (padding == null) {
+  final paddingValue = properties.getValue<EdgeInsetsGeometry>('padding');
+  if (paddingValue == null) {
     return throwError(wrongArgumentType(['padding property required']));
   }
+
   final paddingWidget = Padding(
     key: properties.key,
-    padding: padding,
+    padding: paddingValue,
+    // WidgetProperties сам достанет :child из переданного объекта
     child: properties.child,
   );
   return Eval.pure(IrNativeValue(Value(paddingWidget)));
