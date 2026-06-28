@@ -239,7 +239,12 @@ Eval<Ir> evalDottedSymbol(List<String> parts) {
       final result = lookupVar(base, env);
       return result.match(
         (error) => throwError(error),
-        (value) => _evalNestedAccess(value, rest),
+        (value) => switch (value) {
+          IrEvaluable val => eval(val).bind((res) {
+            return _evalNestedAccess(res, rest);
+          }),
+          _ => _evalNestedAccess(value, rest),
+        },
       );
     }),
   };
