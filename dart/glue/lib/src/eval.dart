@@ -240,9 +240,10 @@ Eval<Ir> evalDottedSymbol(List<String> parts) {
       return result.match(
         (error) => throwError(error),
         (value) => switch (value) {
-          IrEvaluable val => eval(val).bind((res) {
-            return _evalNestedAccess(res, rest);
-          }),
+          IrEvaluable(:final func) => withCall(
+            base,
+            func().bind((res) => _evalNestedAccess(res, rest)),
+          ),
           _ => _evalNestedAccess(value, rest),
         },
       );
