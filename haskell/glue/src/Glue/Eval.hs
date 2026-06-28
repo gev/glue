@@ -107,10 +107,8 @@ evalDottedSymbol parts = do
         [] -> throwError $ unboundVariable "" -- shouldn't happen
         [base] -> evalSymbol base
         base : rest -> do
-            env <- getEnv
-            case E.lookupVar base env of
-                Left err -> throwError err
-                Right obj -> evalNestedAccess obj rest
+            obj <- evalSymbol base
+            evalNestedAccess obj rest
   where
     evalNestedAccess obj [] = pure obj
     evalNestedAccess obj (prop : rest) = do
