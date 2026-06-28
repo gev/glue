@@ -235,18 +235,8 @@ Eval<Ir> evalDottedSymbol(List<String> parts) {
       RuntimeException('invalid-symbol', IrString('Empty dotted symbol')),
     ),
     [final base] => evalSymbol(base),
-    [final base, ...final rest] => getEnv().bind((env) {
-      final result = lookupVar(base, env);
-      return result.match(
-        (error) => throwError(error),
-        (value) => switch (value) {
-          IrEvaluable(:final func) => withCall(
-            base,
-            func().bind((res) => _evalNestedAccess(res, rest)),
-          ),
-          _ => _evalNestedAccess(value, rest),
-        },
-      );
+    [final base, ...final rest] => evalSymbol(base).bind((value) {
+      return _evalNestedAccess(value, rest);
     }),
   };
 }
