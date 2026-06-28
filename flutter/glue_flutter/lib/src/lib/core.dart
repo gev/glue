@@ -8,6 +8,10 @@ import 'package:glue_flutter/src/lib/ui/core/styles/edge_insets.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/filter_quality.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/flutter_logo_style.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/font_weight.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/hsl.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/hsla.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/hsv.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/hsva.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/image_repeat.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/main_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/main_axis_size.dart';
@@ -69,6 +73,10 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   // Color creation functions
   ('rgb', rgb),
   ('rgba', rgba),
+  ('hsl', hsl),
+  ('hsla', hsla),
+  ('hsv', hsv),
+  ('hsva', hsva),
 
   // Shape border functions
   ('border-rounded-rectangle', borderRoundedRectangle),
