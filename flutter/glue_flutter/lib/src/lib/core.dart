@@ -4,18 +4,15 @@ import 'package:glue_flutter/src/lib/ui/core/styles/box_fit.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/brightness.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/clip.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/cross_axis_alignment.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/edge_insets.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/filter_quality.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/flutter_logo_style.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/font_weight.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/image_repeat.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/main_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/main_axis_size.dart';
-import 'package:glue_flutter/src/lib/ui/core/styles/padding_all.dart'; // padding-all function
-import 'package:glue_flutter/src/lib/ui/core/styles/padding_directional.dart'; // padding-directional function
-import 'package:glue_flutter/src/lib/ui/core/styles/padding_only.dart'; // padding-only function
-import 'package:glue_flutter/src/lib/ui/core/styles/padding_symmetric.dart'; // padding-symmetric function
-import 'package:glue_flutter/src/lib/ui/core/styles/rgb.dart'; // RGB function
-import 'package:glue_flutter/src/lib/ui/core/styles/rgba.dart'; // RGBA function
+import 'package:glue_flutter/src/lib/ui/core/styles/rgb.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/rgba.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/shape_border.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/system_brightness.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/text_align.dart';
@@ -86,10 +83,10 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   ('text-style', textStyle),
 
   // Padding creation functions
-  ('padding-all', paddingAll),
-  ('padding-symmetric', paddingSymmetric),
-  ('padding-only', paddingOnly),
-  ('padding-directional', paddingDirectional),
+  ('edge-insets-all', edgeInsetsAll),
+  ('edge-insets-symmetric', edgeInsetsSymmetric),
+  ('edge-insets-only', edgeInsetsOnly),
+  ('edge-insets-directional', edgeInsetsDirectional),
 
   // Enum union objects
   ('cross-axis-alignment', crossAxisAlignment),
