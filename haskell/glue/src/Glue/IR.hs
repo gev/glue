@@ -155,6 +155,8 @@ getValueFromIR _ = Nothing
 isTruthy :: IR m -> Bool
 isTruthy (Bool b) = b
 isTruthy Void = False
+isTruthy (String "") = False
+isTruthy (List []) = False
 isTruthy _ = True
 
 isFalsy :: IR m -> Bool

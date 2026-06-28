@@ -293,6 +293,8 @@ Value? getValueFromIR(Ir ir) => ir is IrNativeValue ? ir.value : null;
 bool isTruthy(Ir ir) => switch (ir) {
   IrBool(:final value) => value,
   IrVoid() => false,
+  IrString(value: "") => false,
+  IrList(elements: []) => false,
   _ => true,
 };
 
