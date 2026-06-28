@@ -24,6 +24,7 @@ library
     Glue.Eval.Exception
     Glue.IR
     Glue.Lib.Bool
+    Glue.Lib.Bool.And
     Glue.Lib.Bool.Eq
     Glue.Lib.Bool.Ge
     Glue.Lib.Bool.Gt
@@ -32,6 +33,7 @@ library
     Glue.Lib.Bool.Lt
     Glue.Lib.Bool.Ne
     Glue.Lib.Bool.Not
+    Glue.Lib.Bool.Or
     Glue.Lib.Builtin
     Glue.Lib.Builtin.Def
     Glue.Lib.Builtin.Error

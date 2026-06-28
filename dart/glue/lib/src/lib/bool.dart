@@ -1,4 +1,5 @@
 import 'package:glue/src/ir.dart';
+import 'package:glue/src/lib/bool/and.dart';
 import 'package:glue/src/lib/bool/eq.dart';
 import 'package:glue/src/lib/bool/ge.dart';
 import 'package:glue/src/lib/bool/gt.dart';
@@ -7,6 +8,7 @@ import 'package:glue/src/lib/bool/le.dart';
 import 'package:glue/src/lib/bool/lt.dart';
 import 'package:glue/src/lib/bool/ne.dart';
 import 'package:glue/src/lib/bool/not.dart';
+import 'package:glue/src/lib/bool/or.dart';
 import 'package:glue/src/module.dart';
 
 /// Bool module - boolean operations, comparisons, and control flow
@@ -15,11 +17,8 @@ import 'package:glue/src/module.dart';
 /// The bool module containing all boolean functions and special forms
 /// Mirrors Haskell Glue.Lib.Bool.bool exactly
 final ModuleInfo boolModule = nativeModule('ffi.bool', [
-  // Constants
   ('true', IrBool(true)),
   ('false', IrBool(false)),
-
-  // Comparison functions
   ('==', eq),
   ('ne', ne),
   ('!=', ne),
@@ -32,11 +31,13 @@ final ModuleInfo boolModule = nativeModule('ffi.bool', [
   ('ge', ge),
   ('>=', ge),
 
-  // Logical functions
   ('not', not),
   ('!', not),
+  ("and", and_),
+  ("&&", and_),
+  ("or", or_),
+  ("||", or_),
 
-  // Special forms
   ('if', if_),
   ('?', if_),
 ]);

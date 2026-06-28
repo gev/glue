@@ -2,6 +2,7 @@ module Glue.Lib.Bool where
 
 import Glue.Eval (Eval)
 import Glue.IR (IR (..))
+import Glue.Lib.Bool.And (and_)
 import Glue.Lib.Bool.Eq (eq)
 import Glue.Lib.Bool.Ge (ge)
 import Glue.Lib.Bool.Gt (gt)
@@ -10,6 +11,7 @@ import Glue.Lib.Bool.Le (le)
 import Glue.Lib.Bool.Lt (lt)
 import Glue.Lib.Bool.Ne (ne)
 import Glue.Lib.Bool.Not (not_)
+import Glue.Lib.Bool.Or (or_)
 import Glue.Module (ModuleInfo, nativeModule)
 
 bool :: ModuleInfo Eval
@@ -31,6 +33,10 @@ bool =
         , (">=", ge)
         , ("not", not_)
         , ("!", not_)
+        , ("and", and_)
+        , ("&&", and_)
+        , ("or", or_)
+        , ("||", or_)
         , ("if", if_)
         , ("?", if_)
         ]
