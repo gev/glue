@@ -16,7 +16,7 @@ Eval<Ir> _aspectRatioImpl(Ir props) => switch (props) {
 
 Eval<Ir> _createAspectRatio(WidgetProperties properties) {
   final widget = AspectRatio(
-    key: properties.getKey('key'),
+    key: properties.key,
     aspectRatio: properties.getDouble('aspect-ratio') ?? 1.0,
     child: properties.child,
   );
