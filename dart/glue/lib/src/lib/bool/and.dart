@@ -7,7 +7,9 @@ final Ir and_ = IrSpecial(andImpl);
 Eval<Ir> andImpl(List<Ir> args) {
   return switch (args) {
     [final a, final b] => eval(a).bind((a_) {
-      return isFalsy(a_) ? Eval.pure(a_) : eval(b);
+      return isFalsy(a_)
+          ? Eval.pure(IrBool(false))
+          : eval(b).bind((v) => Eval.pure(IrBool(isTruthy(v))));
     }),
     _ => throwError(wrongNumberOfArguments()),
   };
