@@ -15,6 +15,8 @@ module Glue.IR (
     isList,
     isTruthy,
     isFalsy,
+    isEmpty,
+    isExist,
     listLength,
     isObject,
     objectSize,
@@ -153,11 +155,24 @@ getValueFromIR _ = Nothing
 
 -- Check value is truthy or falsy
 isTruthy :: IR m -> Bool
-isTruthy (Bool b) = b
-isTruthy Void = False
-isTruthy (String "") = False
-isTruthy (List []) = False
-isTruthy _ = True
+isTruthy = \case
+    Integer 0 -> False
+    Float 0 -> False
+    Void -> False
+    Bool b -> b
+    _ -> True
 
 isFalsy :: IR m -> Bool
 isFalsy = not . isTruthy
+
+-- Check value is empty or exists
+isEmpty :: IR m -> Bool
+isEmpty = \case
+    Object m -> null m
+    String "" -> True
+    List [] -> True
+    Void -> True
+    _ -> False
+
+isExist :: IR m -> Bool
+isExist = not . isEmpty

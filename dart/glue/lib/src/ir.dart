@@ -289,13 +289,23 @@ bool isValue(Ir ir) => ir is IrNativeValue;
 Value? getValueFromIR(Ir ir) => ir is IrNativeValue ? ir.value : null;
 
 /// Check value is truthy or falsy
-
 bool isTruthy(Ir ir) => switch (ir) {
   IrBool(:final value) => value,
+  IrInteger(value: 0) => false,
+  IrFloat(value: 0) => false,
   IrVoid() => false,
-  IrString(value: "") => false,
-  IrList(elements: []) => false,
   _ => true,
 };
 
 bool isFalsy(Ir ir) => !isTruthy(ir);
+
+/// Check value is empty or exists
+bool isEmpty(Ir ir) => switch (ir) {
+  IrObject(:final properties) => properties.isEmpty,
+  IrList(:final elements) => elements.isEmpty,
+  IrString(value: "") => true,
+  IrVoid() => true,
+  _ => false,
+};
+
+bool isExist(Ir ir) => !isEmpty(ir);
