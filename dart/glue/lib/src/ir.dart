@@ -332,6 +332,6 @@ String? toString(Ir ir) => switch (ir) {
 };
 
 T? to<T>(Ir ir) => switch (ir) {
-  IrNativeValue(:final value) => extractValue(value),
+  IrNativeValue(:final value) => extractValue<T>(value),
   _ => null,
 };
