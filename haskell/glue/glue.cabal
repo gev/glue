@@ -25,7 +25,6 @@ library
     Glue.IR
     Glue.Lib.Bool
     Glue.Lib.Bool.And
-    Glue.Lib.Bool.Coalesce
     Glue.Lib.Bool.Eq
     Glue.Lib.Bool.Ge
     Glue.Lib.Bool.Gt

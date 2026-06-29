@@ -3,7 +3,6 @@ module Glue.Lib.Bool where
 import Glue.Eval (Eval)
 import Glue.IR (IR (..))
 import Glue.Lib.Bool.And (and_)
-import Glue.Lib.Bool.Coalesce (coalesce)
 import Glue.Lib.Bool.Eq (eq)
 import Glue.Lib.Bool.Ge (ge)
 import Glue.Lib.Bool.Gt (gt)
@@ -42,7 +41,6 @@ bool =
         , ("||", or_)
         , ("is-empty", isEmpty_)
         , ("is-exist", isExist_)
-        , ("??", coalesce)
         , ("if", if_)
         , ("?", if_)
         ]

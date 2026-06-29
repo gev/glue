@@ -1,6 +1,5 @@
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/lib/bool/and.dart';
-import 'package:glue/src/lib/bool/coalesce.dart';
 import 'package:glue/src/lib/bool/eq.dart';
 import 'package:glue/src/lib/bool/ge.dart';
 import 'package:glue/src/lib/bool/gt.dart';
@@ -43,7 +42,6 @@ final ModuleInfo boolModule = nativeModule('ffi.bool', [
 
   ('is-empty', isEmpty_),
   ('is-exist', isExist_),
-  ('??', coalesce),
 
   ('if', if_),
   ('?', if_),
