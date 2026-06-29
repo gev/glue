@@ -315,3 +315,23 @@ double? toDouble(Ir ir) => switch (ir) {
   IrFloat(:final value) => value,
   _ => null,
 };
+
+int? toInt(Ir ir) => switch (ir) {
+  IrInteger(:final value) => value,
+  _ => null,
+};
+
+bool? toBool(Ir ir) => switch (ir) {
+  IrBool(:final value) => value,
+  _ => null,
+};
+
+String? toString(Ir ir) => switch (ir) {
+  IrString(:final value) => value,
+  _ => null,
+};
+
+T? to<T>(Ir ir) => switch (ir) {
+  IrNativeValue(:final value) => extractValue(value),
+  _ => null,
+};
