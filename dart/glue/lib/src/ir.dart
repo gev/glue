@@ -309,3 +309,9 @@ bool isEmpty(Ir ir) => switch (ir) {
 };
 
 bool isExist(Ir ir) => !isEmpty(ir);
+
+double? toDouble(Ir ir) => switch (ir) {
+  IrInteger(:final value) => value.toDouble(),
+  IrFloat(:final value) => value,
+  _ => null,
+};
