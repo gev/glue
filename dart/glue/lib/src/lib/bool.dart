@@ -1,9 +1,12 @@
 import 'package:glue/src/ir.dart';
 import 'package:glue/src/lib/bool/and.dart';
+import 'package:glue/src/lib/bool/coalesce.dart';
 import 'package:glue/src/lib/bool/eq.dart';
 import 'package:glue/src/lib/bool/ge.dart';
 import 'package:glue/src/lib/bool/gt.dart';
 import 'package:glue/src/lib/bool/if.dart';
+import 'package:glue/src/lib/bool/is_empty.dart';
+import 'package:glue/src/lib/bool/is_exist.dart';
 import 'package:glue/src/lib/bool/le.dart';
 import 'package:glue/src/lib/bool/lt.dart';
 import 'package:glue/src/lib/bool/ne.dart';
@@ -33,10 +36,14 @@ final ModuleInfo boolModule = nativeModule('ffi.bool', [
 
   ('not', not),
   ('!', not),
-  ("and", and_),
-  ("&&", and_),
-  ("or", or_),
-  ("||", or_),
+  ('and', and_),
+  ('&&', and_),
+  ('or', or_),
+  ('||', or_),
+
+  ('is-empty', isEmpty_),
+  ('is-exist', isExist_),
+  ('??', coalesce),
 
   ('if', if_),
   ('?', if_),

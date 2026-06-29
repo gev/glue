@@ -25,10 +25,13 @@ library
     Glue.IR
     Glue.Lib.Bool
     Glue.Lib.Bool.And
+    Glue.Lib.Bool.Coalesce
     Glue.Lib.Bool.Eq
     Glue.Lib.Bool.Ge
     Glue.Lib.Bool.Gt
     Glue.Lib.Bool.If
+    Glue.Lib.Bool.IsEmpty
+    Glue.Lib.Bool.IsExist
     Glue.Lib.Bool.Le
     Glue.Lib.Bool.Lt
     Glue.Lib.Bool.Ne

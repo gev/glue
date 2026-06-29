@@ -1,7 +1,7 @@
 import 'package:glue/either.dart';
 import 'package:glue/src/context.dart';
 import 'package:glue/src/env.dart';
-import 'package:glue/src/ir.dart';
+import 'package:glue/src/ir.dart' hide isEmpty;
 import 'package:glue/src/module.dart';
 import 'package:glue/src/module/cache.dart';
 import 'package:glue/src/module/registry.dart';
