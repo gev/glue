@@ -335,7 +335,7 @@ void main() {
     });
 
     test('user-defined function multi-param', () async {
-      final code = '((def f (lambda (a b) ((a) (b)))) (f 1 2))';
+      final code = '((def f (lambda (a b) (a) (b))) (f 1 2))';
       final result = await runCode(code);
       result.match(
         (error) => fail('Should not be left: $error'),
@@ -378,7 +378,7 @@ void main() {
     });
 
     test('\\ alias works like lambda (multi-param)', () async {
-      final code = '((def f (\\ (a b) ((a) (b)))) (f 1 2))';
+      final code = '((def f (\\ (a b) (a) (b))) (f 1 2))';
       final result = await runCode(code);
       result.match(
         (error) => fail('Should not be left: $error'),
@@ -387,7 +387,7 @@ void main() {
     });
 
     test('\\ alias works like lambda (multi-param)', () async {
-      final code = '((\\ (a b) ((a) (b))) 1 2)';
+      final code = '((\\ (a b) (a) (b)) 1 2)';
       final result = await runCode(code);
       result.match(
         (error) => fail('Should not be left: $error'),
@@ -609,7 +609,7 @@ void main() {
     test(
       'function bodies with lists return last value (implicit sequences)',
       () async {
-        final code = '((\\ (x y) (42 (+ x y))) 1 2)';
+        final code = '((\\ (x y) 42 (+ x y)) 1 2)';
         final result = await runCode(code);
         result.match(
           (error) => fail('Should not be left: $error'),
@@ -628,7 +628,7 @@ void main() {
     });
 
     test('function bodies with single-element lists work', () async {
-      final code = '((\\ (x y) ((+ x y))) 1 2)';
+      final code = '((\\ (x y) (+ x y)) 1 2)';
       final result = await runCode(code);
       result.match(
         (error) => fail('Should not be left: $error'),

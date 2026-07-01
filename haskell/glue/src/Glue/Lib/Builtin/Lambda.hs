@@ -9,7 +9,7 @@ lambda :: IR Eval
 lambda = Special lambdaImpl
 
 lambdaImpl :: [IR Eval] -> Eval (IR Eval)
-lambdaImpl [argsNode, body] = do
+lambdaImpl (argsNode : body) = do
     rawArgs <- case argsNode of
         List xs -> pure xs
         _ -> throwError $ wrongArgumentType ["arguments list", "body"]
@@ -19,7 +19,7 @@ lambdaImpl [argsNode, body] = do
     makeClosure params body
 lambdaImpl _ = throwError $ wrongArgumentType ["arguments", "body"]
 
-makeClosure :: [Text] -> IR Eval -> Eval (IR Eval)
+makeClosure :: [Text] -> [IR Eval] -> Eval (IR Eval)
 makeClosure params body =
     Closure params body <$> getEnv
 

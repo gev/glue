@@ -17,11 +17,7 @@ defImpl (List (Symbol name : params) : body) = do
     paramSymbols <- case extractSymbols params of
         Right ps -> pure ps
         Left _ -> throwError $ wrongArgumentType ["symbols in function parameters"]
-    let bodyExpr = case body of
-            [] -> Void
-            [single] -> single
-            multiple -> List multiple
-    closure <- makeClosure paramSymbols bodyExpr
+    closure <- makeClosure paramSymbols body
 
     defineVarEval name closure
     pure Void

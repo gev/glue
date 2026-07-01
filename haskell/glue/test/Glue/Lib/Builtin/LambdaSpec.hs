@@ -19,7 +19,7 @@ spec = describe "Glue.Lib.Builtin.Lambda (Test lambda special form)" do
                 Right (res, _) -> case res of
                     Closure params body capturedEnv -> do
                         params `shouldBe` ["a", "b"]
-                        body `shouldBe` Symbol "body"
+                        body `shouldBe` [Symbol "body"]
                         -- capturedEnv should be the []
                         E.lookupVar "x" capturedEnv `shouldBe` Right (Integer 10)
                     _ -> expectationFailure "Expected Just Closure"
@@ -32,7 +32,7 @@ spec = describe "Glue.Lib.Builtin.Lambda (Test lambda special form)" do
                 Right (res, _) -> case res of
                     Closure params body _ -> do
                         params `shouldBe` []
-                        body `shouldBe` Integer 42
+                        body `shouldBe` [Integer 42]
                     _ -> expectationFailure "Expected Just Closure"
 
     describe "extractSymbols" do

@@ -244,7 +244,7 @@ class IrSpecial extends Ir {
 
 class IrClosure extends Ir {
   final List<String> params; // Multiple params like Haskell
-  final Ir body;
+  final List<Ir> body;
   final Env env;
   const IrClosure(this.params, this.body, this.env);
 

@@ -26,15 +26,8 @@ Eval<Ir> defImpl(List<Ir> args) {
           (_) =>
               throwError(wrongArgumentType(['symbols in function parameters'])),
           (paramNames) {
-            // Create body expression
-            final bodyExpr = body.isEmpty
-                ? IrVoid()
-                : body.length == 1
-                ? body[0]
-                : IrList(body);
-
             // Create closure and define it
-            return makeClosure(paramNames, bodyExpr).bind(
+            return makeClosure(paramNames, body).bind(
               (closure) => defineVarEval(name, closure).map((_) => IrVoid()),
             );
           },

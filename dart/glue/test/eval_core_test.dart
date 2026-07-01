@@ -155,7 +155,9 @@ void main() {
       // Create a simple closure: (lambda (a) (+ a 1))
       final closure = IrClosure(
         ['a'],
-        IrList([IrSymbol('add'), IrSymbol('a'), IrInteger(1)]),
+        [
+          IrList([IrSymbol('add'), IrSymbol('a'), IrInteger(1)]),
+        ],
         runtime.env,
       );
       // Apply it: ((lambda (a) (+ a 1)) 10) should equal 11
@@ -170,7 +172,9 @@ void main() {
       // Create a closure: (lambda (a b) (+ a b))
       final closure = IrClosure(
         ['a', 'b'],
-        IrList([IrSymbol('add'), IrSymbol('a'), IrSymbol('b')]),
+        [
+          IrList([IrSymbol('add'), IrSymbol('a'), IrSymbol('b')]),
+        ],
         runtime.env,
       );
 

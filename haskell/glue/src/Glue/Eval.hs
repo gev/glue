@@ -190,7 +190,7 @@ apply ir args = case ir of
     _ -> throwError notCallableObject
 
 -- Apply a closure with the given arguments
-applyClosure :: [Text] -> IR -> Env -> [IR] -> Eval IR
+applyClosure :: [Text] -> [IR] -> Env -> [IR] -> Eval IR
 applyClosure params body env rawArgs = do
     argValues <- mapM eval rawArgs
     let numArgs = length argValues
@@ -213,12 +213,11 @@ applyClosure params body env rawArgs = do
                 else throwError wrongNumberOfArguments
 
 -- Evaluate function body with implicit sequence semantics
-evalBody :: IR -> Eval IR
+evalBody :: [IR] -> Eval IR
 evalBody body =
-    eval body >>= \case
-        IR.List [] -> pure IR.Void
-        IR.List xs -> pure $ last xs
-        other -> pure other
+    mapM eval body >>= \case
+        [] -> pure IR.Void
+        xs -> pure $ last xs
 
 -- Safely build environment with parameter bindings
 buildEnvWithBindings :: Env -> [(Text, IR)] -> Env

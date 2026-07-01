@@ -22,7 +22,7 @@ void main() {
           expect(res, isA<IrClosure>());
           final closure = res as IrClosure;
           expect(closure.params, equals(['a', 'b']));
-          expect(closure.body, equals(IrSymbol('body')));
+          expect(closure.body, equals([IrSymbol('body')]));
           // Check that environment was captured
           final lookupResult = lookupVar('x', closure.env);
           expect(lookupResult.isRight, isTrue);
@@ -42,7 +42,7 @@ void main() {
           expect(res, isA<IrClosure>());
           final closure = res as IrClosure;
           expect(closure.params, isEmpty);
-          expect(closure.body, equals(IrInteger(42)));
+          expect(closure.body, equals([IrInteger(42)]));
         });
       });
     });

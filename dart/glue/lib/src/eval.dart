@@ -203,13 +203,11 @@ Eval<Ir> eval(Ir ir) {
 
 /// Evaluate function body with implicit sequence semantics
 /// Mirrors Haskell Glue.Eval.evalBody exactly
-Eval<Ir> evalBody(Ir body) {
-  return eval(body).bind((result) {
+Eval<Ir> evalBody(List<Ir> body) {
+  return sequenceAll(body.map(eval).toList()).bind((result) {
     return switch (result) {
-      IrList(:final elements) => Eval.pure(
-        elements.isEmpty ? IrVoid() : elements.last,
-      ),
-      _ => Eval.pure(result),
+      [] => Eval.pure(IrVoid()),
+      _ => Eval.pure(result.last),
     };
   });
 }
@@ -335,7 +333,7 @@ Eval<Ir> _applyNativeFunc(Eval<Ir> Function(Ir) func, List<Ir> args) {
 /// Apply a closure with the given arguments
 Eval<Ir> applyClosure(
   List<String> params,
-  Ir body,
+  List<Ir> body,
   Env closureEnv,
   List<Ir> rawArgs,
 ) {
@@ -399,7 +397,7 @@ bool isCallable(Ir value) {
 /// Full application of a closure
 Eval<Ir> _applyFullClosure(
   List<String> params,
-  Ir body,
+  List<Ir> body,
   Env closureEnv,
   List<Ir> rawArgs,
 ) {
@@ -415,7 +413,7 @@ Eval<Ir> _applyFullClosure(
 /// Partial application of a closure
 Eval<Ir> _applyPartialClosure(
   List<String> params,
-  Ir body,
+  List<Ir> body,
   Env closureEnv,
   List<Ir> rawArgs,
 ) {

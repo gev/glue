@@ -78,7 +78,7 @@ data IR m
     | NativeValue (Value m) -- Host language values (literals)
     | NativeFunc (IR m -> m (IR m)) -- Curred functions with arguments
     | Special ([IR m] -> m (IR m)) -- Special forms
-    | Closure [Text] (IR m) (Env m)
+    | Closure [Text] [IR m] (Env m)
 
 -- Show instance for IR handles NativeFunc and Special directly
 

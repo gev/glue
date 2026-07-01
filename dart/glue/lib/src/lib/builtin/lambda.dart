@@ -13,12 +13,11 @@ final Ir lambda = IrSpecial(lambdaImpl);
 /// Lambda special form implementation
 /// Mirrors Haskell Glue.Lib.Builtin.Lambda.lambda exactly
 Eval<Ir> lambdaImpl(List<Ir> args) {
-  if (args.length != 2) {
+  if (args.length < 2) {
     return throwError(wrongArgumentType(['arguments', 'body']));
   }
 
-  final paramsIr = args[0];
-  final body = args[1];
+  final [paramsIr, ...body] = args;
 
   if (paramsIr is! IrList) {
     return throwError(wrongArgumentType(['arguments list', 'body']));
@@ -46,6 +45,6 @@ Either<RuntimeException, List<String>> extractSymbols(List<Ir> irs) {
 
 /// Create closure with parameters and body
 /// Mirrors Haskell makeClosure exactly - stores all params directly
-Eval<Ir> makeClosure(List<String> params, Ir body) {
+Eval<Ir> makeClosure(List<String> params, List<Ir> body) {
   return getEnv().map((env) => IrClosure(params, body, env));
 }

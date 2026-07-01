@@ -133,7 +133,7 @@ spec = describe "Glue.Eval (System Integration)" do
             `shouldReturn` Left (GlueError (EvalError @Eval ["id"] wrongNumberOfArguments))
 
     it "user-defined function multi-param" do
-        runCode "((def f (lambda (a b) ((a) (b)))) (f 1 2))"
+        runCode "((def f (lambda (a b) (a) (b))) (f 1 2))"
             `shouldReturn` Right (List [Void, Integer 2])
 
     it "\\ alias works like lambda (lexical shadowing)" do
@@ -153,11 +153,11 @@ spec = describe "Glue.Eval (System Integration)" do
             `shouldReturn` Left (GlueError (EvalError @Eval ["id"] wrongNumberOfArguments))
 
     it "\\ alias works like lambda (multi-param)" do
-        runCode "((def f (\\ (a b) ((a) (b)))) (f 1 2))"
+        runCode "((def f (\\ (a b) (a) (b))) (f 1 2))"
             `shouldReturn` Right (List [Void, Integer 2])
 
     it "\\ alias works like lambda (multi-param)" do
-        runCode "((\\ (a b) ((a) (b))) 1 2)"
+        runCode "((\\ (a b) (a) (b)) 1 2)"
             `shouldReturn` Right (Integer 2)
 
     it "== alias works like eq" do
@@ -240,7 +240,7 @@ spec = describe "Glue.Eval (System Integration)" do
 
     it "function bodies with lists return last value (implicit sequences)" do
         -- Test direct lambda call first
-        runCode "((\\ (x y) (42 (+ x y))) 1 2)"
+        runCode "((\\ (x y) 42 (+ x y)) 1 2)"
             `shouldReturn` Right (Integer 3)
 
     it "function bodies with direct expressions work" do
@@ -248,7 +248,7 @@ spec = describe "Glue.Eval (System Integration)" do
             `shouldReturn` Right (Integer 1)
 
     it "function bodies with single-element lists work" do
-        runCode "((\\ (x y) ((+ x y))) 1 2)"
+        runCode "((\\ (x y) (+ x y)) 1 2)"
             `shouldReturn` Right (Integer 3)
 
     describe "NativeFunc Partial Application" do
