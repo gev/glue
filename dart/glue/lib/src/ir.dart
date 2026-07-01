@@ -310,28 +310,28 @@ bool isEmpty(Ir ir) => switch (ir) {
 
 bool isExist(Ir ir) => !isEmpty(ir);
 
-double? toDouble(Ir ir) => switch (ir) {
+double? toDouble(Ir? ir) => switch (ir) {
   IrInteger(:final value) => value.toDouble(),
   IrFloat(:final value) => value,
   _ => null,
 };
 
-int? toInt(Ir ir) => switch (ir) {
+int? toInt(Ir? ir) => switch (ir) {
   IrInteger(:final value) => value,
   _ => null,
 };
 
-bool? toBool(Ir ir) => switch (ir) {
+bool? toBool(Ir? ir) => switch (ir) {
   IrBool(:final value) => value,
   _ => null,
 };
 
-String? toString(Ir ir) => switch (ir) {
+String? toString(Ir? ir) => switch (ir) {
   IrString(:final value) => value,
   _ => null,
 };
 
-T? to<T>(Ir ir) => switch (ir) {
+T? to<T>(Ir? ir) => switch (ir) {
   IrNativeValue(:final value) => extractValue<T>(value),
   _ => null,
 };
