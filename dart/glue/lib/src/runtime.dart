@@ -61,7 +61,7 @@ class Runtime {
       identical(this, other) ||
       (other is Runtime &&
           other.env == env &&
-          _listsEqual(other.stack, stack) &&
+          other.stack == stack &&
           other.registry == registry &&
           other.importCache == importCache &&
           other.rootEnv == rootEnv &&
@@ -69,14 +69,4 @@ class Runtime {
 
   @override
   int get hashCode => Object.hash(env, stack, registry, rootEnv, context);
-}
-
-/// Helper function for list equality
-bool _listsEqual(List<String> a, List<String> b) {
-  if (identical(a, b)) return true;
-  if (a.length != b.length) return false;
-  for (int i = 0; i < a.length; i++) {
-    if (a[i] != b[i]) return false;
-  }
-  return true;
 }
