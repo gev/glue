@@ -60,7 +60,10 @@ List<T> extractNativeValues<T>(Ir? value) => switch (value) {
         )
         .whereType<T>()
         .toList(),
-  _ => [],
+  _ => switch (extractNativeValue<T>(value)) {
+    null => [],
+    T res => [res],
+  },
 };
 
 /// Extract VoidCallback from Glue IR value with provided runtime
