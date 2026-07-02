@@ -32,7 +32,7 @@ void storeImportedModule(ImportedModuleCache cache, ImportedModule imported) {
 ImportedModule? lookupImportedModule(ImportedModuleCache cache, String name) =>
     cache[name];
 
-/// Check if a module is cached
+/// Check if the module is cached
 bool isModuleCached(ImportedModuleCache cache, String name) =>
     cache.containsKey(name);
 
