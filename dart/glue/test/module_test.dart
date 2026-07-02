@@ -1,5 +1,4 @@
 import 'package:glue/either.dart';
-import 'package:glue/src/env.dart';
 import 'package:glue/src/ir.dart' hide isEmpty;
 import 'package:glue/src/module.dart';
 import 'package:glue/src/module/cache.dart';
@@ -31,14 +30,12 @@ void main() {
     });
 
     test('ImportedModule creation and equality', () {
-      final env = fromList([('x', IrInteger(42))]);
       final imported = ImportedModule(
         moduleName: 'test.math',
         exportedValues: {
           'add': Ref(IrInteger(1)),
           'multiply': Ref(IrInteger(2)),
         },
-        evaluationRootEnv: env,
       );
 
       expect(imported.moduleName, equals('test.math'));
@@ -51,7 +48,6 @@ void main() {
           'add': Ref(IrInteger(1)),
           'multiply': Ref(IrInteger(2)),
         },
-        evaluationRootEnv: env,
       );
 
       expect(imported, equals(imported2));
@@ -189,11 +185,9 @@ void main() {
 
     test('storeImportedModule adds to cache', () {
       final cache = emptyCache();
-      final env = fromList([('x', IrInteger(42))]);
       final imported = ImportedModule(
         moduleName: 'test.math',
         exportedValues: {'add': Ref(IrInteger(1))},
-        evaluationRootEnv: env,
       );
 
       storeImportedModule(cache, imported);

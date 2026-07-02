@@ -14,13 +14,11 @@ spec = do
             lookupCachedModule "nonexistent" cache `shouldBe` Nothing
 
         it "caches and retrieves imported module" $ do
-            let emptyEnv = E.emptyEnv
             let exportedValues = E.frameFromList [("value", Integer 42)]
             let importedModule =
                     ImportedModule
                         { moduleName = "test.module"
                         , exportedValues = exportedValues
-                        , evaluationRootEnv = emptyEnv
                         }
 
             -- Start with empty cache
@@ -33,13 +31,11 @@ spec = do
             lookupCachedModule "test.module" cached `shouldBe` Just importedModule
 
         it "handles missing modules in cache" $ do
-            let emptyEnv = E.emptyEnv
             let exportedValues = E.frameFromList [("func", Integer 123)]
             let importedModule =
                     ImportedModule
                         { moduleName = "existing.module"
                         , exportedValues = exportedValues
-                        , evaluationRootEnv = emptyEnv
                         }
 
             -- Cache one module
@@ -49,14 +45,11 @@ spec = do
             lookupCachedModule "nonexistent.module" cache `shouldBe` Nothing
 
         it "overwrites existing cached module" $ do
-            let emptyEnv = E.emptyEnv
-
             -- First module
             let module1 =
                     ImportedModule
                         { moduleName = "test.module"
                         , exportedValues = E.frameFromList [("value", Integer 1)]
-                        , evaluationRootEnv = emptyEnv
                         }
 
             -- Second module with same name but different content
@@ -64,7 +57,6 @@ spec = do
                     ImportedModule
                         { moduleName = "test.module"
                         , exportedValues = E.frameFromList [("value", Integer 2)]
-                        , evaluationRootEnv = emptyEnv
                         }
 
             -- Cache first module
@@ -77,20 +69,16 @@ spec = do
             lookupCachedModule "test.module" cache2 `shouldBe` Just module2
 
         it "caches multiple different modules" $ do
-            let emptyEnv = E.emptyEnv
-
             let module1 =
                     ImportedModule
                         { moduleName = "math.add"
                         , exportedValues = E.frameFromList [("add", Integer 1)]
-                        , evaluationRootEnv = emptyEnv
                         }
 
             let module2 =
                     ImportedModule
                         { moduleName = "math.mul"
                         , exportedValues = E.frameFromList [("mul", Integer 2)]
-                        , evaluationRootEnv = emptyEnv
                         }
 
             -- Cache both modules

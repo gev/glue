@@ -31,51 +31,44 @@ Eval<Ir> importModule(String moduleName) {
 /// Evaluate module in isolation and cache the result
 Eval<ImportedModule> cacheImportedModule(RegisteredModule registered) {
   // Get root environment for consistent evaluation
-  return getRootEnv().bind((rootEnv) {
-    return getRuntime().bind((currentRuntime) {
-      // Create isolated runtime
-      final isolatedRuntime = currentRuntime.copyWith(env: rootEnv);
+  return getRuntime().bind((currentRuntime) {
+    // Create isolated runtime
+    final isolatedRuntime = currentRuntime.copyWith(
+      env: currentRuntime.rootEnv,
+    );
 
-      // Evaluate module body in isolation
-      return liftIO(
-        runEval(_evalModuleBody(registered.body), isolatedRuntime),
-      ).bind((result) {
-        return result.match((error) => throwError(error.exception), (success) {
-          final (evalResult, finalIsolatedRuntime) = success;
+    // Evaluate module body in isolation
+    return liftIO(
+      runEval(_evalModuleBody(registered.body), isolatedRuntime),
+    ).bind((result) {
+      return result.match((error) => throwError(error.exception), (success) {
+        final (evalResult, finalIsolatedRuntime) = success;
 
-          // Extract exported values from final environment
-          final moduleEnv = finalIsolatedRuntime.env;
+        // Extract exported values from final environment
+        final moduleEnv = finalIsolatedRuntime.env;
 
-          // Check all exports exist, fail fast on undefined exports
-          for (final exportName in registered.exports) {
-            final lookupResult = lookupVar(exportName, moduleEnv);
-            if (lookupResult.isLeft) {
-              return throwError(undefinedExport(exportName));
-            }
-          }
-
-          // All exports validated, build the map
-          final exportedValues = <String, Ref<Ir>>{};
-          for (final exportName in registered.exports) {
-            final lookupResult = lookupVar(exportName, moduleEnv);
-            lookupResult.match(
-              (_) => throw StateError('Should not happen - already validated'),
-              (value) => exportedValues[exportName] = Ref(value),
-            );
-          }
-
-          // Create imported module record
-          final importedModule = ImportedModule(
-            moduleName: registered.name,
-            exportedValues: exportedValues,
-            evaluationRootEnv: rootEnv,
+        //Collect all exports exist, fail on undefined exports
+        // All exports validated, build the map
+        final exportedValues = <String, Ref<Ir>>{};
+        for (final exportName in registered.exports) {
+          final lookupResult = lookupVar(exportName, moduleEnv);
+          lookupResult.match(
+            (_) => throwError(undefinedExport(exportName)),
+            (value) => exportedValues[exportName] = Ref(value),
           );
+        }
 
-          // Cache the imported module
-          return getCache().bind((cache) {
-            storeImportedModule(cache, importedModule);
-            return Eval.pure(importedModule);
-          });
+        // Create imported module record
+        final importedModule = ImportedModule(
+          moduleName: registered.name,
+          exportedValues: exportedValues,
+          // evaluationRootEnv: currentRuntime.rootEnv,
+        );
+
+        // Cache the imported module
+        return getCache().bind((cache) {
+          storeImportedModule(cache, importedModule);
+          return Eval.pure(importedModule);
         });
       });
     });

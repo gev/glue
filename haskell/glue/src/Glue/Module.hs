@@ -30,7 +30,6 @@ instance Eq (RegisteredModule m) where
 data ImportedModule m = ImportedModule
     { moduleName :: Text
     , exportedValues :: Map Text (IR m) -- Cached exports
-    , evaluationRootEnv :: Env m -- Root env used for evaluation
     }
 
 instance Show (ImportedModule m) where

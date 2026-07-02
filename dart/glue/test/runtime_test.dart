@@ -131,7 +131,6 @@ void main() {
       final imported = ImportedModule(
         moduleName: 'imported.module',
         exportedValues: {'value': Ref(IrInteger(2))},
-        evaluationRootEnv: env,
       );
       storeImportedModule(cache, imported);
 

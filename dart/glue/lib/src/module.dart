@@ -37,12 +37,12 @@ class RegisteredModule {
 class ImportedModule {
   final String moduleName;
   final Map<String, Ref<Ir>> exportedValues;
-  final Env evaluationRootEnv;
+  // final Env evaluationRootEnv;
 
   const ImportedModule({
     required this.moduleName,
     required this.exportedValues,
-    required this.evaluationRootEnv,
+    // required this.evaluationRootEnv,
   });
 
   @override
