@@ -49,6 +49,10 @@ RegisteredModule? lookupModule(String name, ModuleRegistry registry) =>
 /// Get the number of registered modules
 int registrySize(ModuleRegistry registry) => registry.length;
 
+/// Check if the module is registered
+bool isModuleRegistered(ModuleRegistry registry, String name) =>
+    registry.containsKey(name);
+
 /// Get all registered module names
 List<String> registeredModuleNames(ModuleRegistry registry) =>
     registry.keys.toList();
