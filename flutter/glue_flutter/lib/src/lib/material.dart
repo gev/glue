@@ -34,6 +34,7 @@ import 'package:glue_flutter/src/lib/ui/material/widgets/filled_button.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/filter_chip.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/floating_action_button.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/icon_button.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/ink_well.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/input_chip.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/linear_progress_indicator.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/list_tile.dart';
@@ -72,6 +73,7 @@ final ModuleInfo uiMaterialModule = nativeModule('ffi.ui.material', [
   ('icon-button', iconButton),
   ('segmented-button', segmentedButton),
   ('text-button', textButton),
+  ('ink-well', inkWell),
   ('card', card),
   ('filled-card', filledCard),
   ('outlined-card', outlinedCard),
