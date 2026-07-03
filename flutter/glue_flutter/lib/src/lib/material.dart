@@ -70,6 +70,8 @@ final ModuleInfo uiMaterialModule = nativeModule('ffi.ui.material', [
   ('outlined-button', outlinedButton),
   ('text-button', textButton),
   ('card', card),
+  ('card-filled', cardFilled),
+  ('card-outlined', cardOutlined),
   ('list-tile', listTile),
   ('snack-bar', snackBar),
   ('text-field', textField),

@@ -6,19 +6,23 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// Card widget function
 /// Creates Flutter Card from Glue (card props) expressions
-final Ir card = IrNativeFunc(cardImpl);
+final Ir card = IrNativeFunc(cardImpl(Card.new));
+final Ir cardFilled = IrNativeFunc(cardImpl(Card.filled));
+final Ir cardOutlined = IrNativeFunc(cardImpl(Card.outlined));
 
 /// Card implementation - takes properties object
-Eval<Ir> cardImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createCard(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> Function(Ir props) cardImpl(dynamic card) =>
+    (Ir props) => switch (props) {
+      IrObject(:final properties) => _createCard(
+        card,
+        WidgetProperties(properties.unlock),
+      ),
+      _ => throwError(wrongArgumentType(['object'])),
+    };
 
 /// Create Card widget from properties
-Eval<Ir> _createCard(WidgetProperties properties) {
-  final cardWidget = Card(
+Eval<Ir> _createCard(dynamic card, WidgetProperties properties) {
+  final cardWidget = card(
     key: properties.key,
     color: properties.getColor('color'),
     shadowColor: properties.getColor('shadow-color'),
