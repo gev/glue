@@ -7,8 +7,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 /// Card widget function
 /// Creates Flutter Card from Glue (card props) expressions
 final Ir card = IrNativeFunc(cardImpl(Card.new));
-final Ir cardFilled = IrNativeFunc(cardImpl(Card.filled));
-final Ir cardOutlined = IrNativeFunc(cardImpl(Card.outlined));
+final Ir filledCard = IrNativeFunc(cardImpl(Card.filled));
+final Ir outlinedCard = IrNativeFunc(cardImpl(Card.outlined));
 
 /// Card implementation - takes properties object
 Eval<Ir> Function(Ir props) cardImpl(dynamic card) =>
