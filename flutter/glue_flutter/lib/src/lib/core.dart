@@ -90,7 +90,6 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   ('edge-insets-directional', edgeInsetsDirectional),
 
   // Broder radius functions
-  ('border-radius-zero', borderRadiusZero),
   ('border-radius-all', borderRadiusAll),
   ('border-radius-circular', borderRadiusCircular),
   ('border-radius-only', borderRadiusOnly),
@@ -98,6 +97,7 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   ('border-radius-vertical', borderRadiusVertical),
   ('border-radius-directional', borderRadiusDirectional),
   ('border-radius-directional-horizontal', borderRadiusDirectionalHorizontal),
+  ('border-radius-zero', borderRadiusZero),
 
   // Shape border functions
   ('border-rounded-rectangle', borderRoundedRectangle),
@@ -106,9 +106,10 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   ('border-beveled-rectangle', borderBeveledRectangle),
 
   // Radius functions
-  ('radius-zero', radiusZero),
+  ('radius', radiusCircular),
   ('radius-circular', radiusCircular),
   ('radius-elliptical', radiusElliptical),
+  ('radius-zero', radiusZero),
 
   // Enum union objects
   ('cross-axis-alignment', crossAxisAlignment),
