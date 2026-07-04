@@ -1,5 +1,6 @@
 import 'package:glue/module.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/axis.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/border_rdius.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/box_fit.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/brightness.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/clip.dart';
@@ -78,23 +79,30 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   ('hsv', hsv),
   ('hsva', hsva),
 
+  // Text style creation function
+  ('text-style', textStyle),
+
+  // Edge insets creation functions
+  ('edge-insets-all', edgeInsetsAll),
+  ('edge-insets-symmetric', edgeInsetsSymmetric),
+  ('edge-insets-only', edgeInsetsOnly),
+  ('edge-insets-directional', edgeInsetsDirectional),
+
+  // Broder radius functions
+  ('border-radius-zero', borderRadiusZero),
+  ('border-radius-all', borderRadiusAll),
+  ('border-radius-circular', borderRadiusCircular),
+  ('border-radius-only', borderRadiusOnly),
+  ('border-radius-horizontal', borderRadiusHorizontal),
+  ('border-radius-vertical', borderRadiusVertical),
+  ('border-radius-directional', borderRadiusDirectional),
+  ('border-radius-directional-horizontal', borderRadiusDirectionalHorizontal),
+
   // Shape border functions
   ('border-rounded-rectangle', borderRoundedRectangle),
   ('border-circle', borderCircle),
   ('border-stadium', borderStadium),
   ('border-beveled-rectangle', borderBeveledRectangle),
-  ('border-radius-circular', borderRadiusCircular),
-  ('border-radius-only', borderRadiusOnly),
-  ('border-radius-val', borderRadiusVal),
-
-  // Text style creation function
-  ('text-style', textStyle),
-
-  // Padding creation functions
-  ('edge-insets-all', edgeInsetsAll),
-  ('edge-insets-symmetric', edgeInsetsSymmetric),
-  ('edge-insets-only', edgeInsetsOnly),
-  ('edge-insets-directional', edgeInsetsDirectional),
 
   // Enum union objects
   ('cross-axis-alignment', crossAxisAlignment),
