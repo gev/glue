@@ -16,6 +16,7 @@ import 'package:glue_flutter/src/lib/ui/core/styles/hsva.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/image_repeat.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/main_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/main_axis_size.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/radius.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/rgb.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/rgba.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/shape_border.dart';
@@ -103,6 +104,11 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   ('border-circle', borderCircle),
   ('border-stadium', borderStadium),
   ('border-beveled-rectangle', borderBeveledRectangle),
+
+  // Radius functions
+  ('radius-zero', radiusZero),
+  ('radius-circular', radiusCircular),
+  ('radius-elliptical', radiusElliptical),
 
   // Enum union objects
   ('cross-axis-alignment', crossAxisAlignment),
