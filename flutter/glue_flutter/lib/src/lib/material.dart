@@ -31,6 +31,7 @@ import 'package:glue_flutter/src/lib/ui/material/widgets/elevated_button.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/expansion_panel_list.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/expansion_tile.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/filled_button.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/filled_tonal_button.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/filter_chip.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/floating_action_button.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/icon_button.dart';
@@ -68,6 +69,7 @@ final ModuleInfo uiMaterialModule = nativeModule('ffi.ui.material', [
   ('scaffold', scaffold),
   ('button', button),
   ('filled-button', filledButton),
+  ('filled-tonal-button', filledTonalButton),
   ('outlined-button', outlinedButton),
   ('elevated-button', elevatedButton),
   ('icon-button', iconButton),
