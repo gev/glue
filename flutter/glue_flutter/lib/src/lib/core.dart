@@ -87,8 +87,8 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   ('text-style', textStyle),
 
   // Box constraints functions
-  ('box-constaints', boxConstraints),
-  ('box-constaints-tight', boxConstraintsTight),
+  ('box-constraints', boxConstraints),
+  ('box-constraints-tight', boxConstraintsTight),
 
   // Edge insets creation functions
   ('edge-insets-all', edgeInsetsAll),
