@@ -29,6 +29,7 @@ import 'package:glue_flutter/src/lib/ui/core/styles/text_overflow.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/text_style.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/text_width_basis.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/vertical_direction.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/wrap_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/aspect_ratio.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/center.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/column.dart';
@@ -121,6 +122,7 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   // Enum union objects
   ('cross-axis-alignment', crossAxisAlignment),
   ('main-axis-alignment', mainAxisAlignment),
+  ('wrap-alignment', wrapAlignment),
   ('main-axis-size', mainAxisSize),
   ('text-align', textAlign),
   ('text-direction', textDirection),
