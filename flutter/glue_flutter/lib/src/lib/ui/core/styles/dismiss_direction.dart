@@ -6,6 +6,6 @@ import 'package:glue/ir.dart';
 final dismissDirection = IrObject({
   'vertical': IrNativeValue(Value(DismissDirection.vertical)),
   'horizontal': IrNativeValue(Value(DismissDirection.horizontal)),
-  'endToStart': IrNativeValue(Value(DismissDirection.endToStart)),
-  'startToEnd': IrNativeValue(Value(DismissDirection.startToEnd)),
+  'end-to-start': IrNativeValue(Value(DismissDirection.endToStart)),
+  'start-to-end': IrNativeValue(Value(DismissDirection.startToEnd)),
 });

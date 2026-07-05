@@ -11,8 +11,8 @@ final textInputType = IrObject({
   'datetime': IrNativeValue(Value(TextInputType.datetime)),
   'email': IrNativeValue(Value(TextInputType.emailAddress)),
   'url': IrNativeValue(Value(TextInputType.url)),
-  'visiblePassword': IrNativeValue(Value(TextInputType.visiblePassword)),
+  'visible-password': IrNativeValue(Value(TextInputType.visiblePassword)),
   'name': IrNativeValue(Value(TextInputType.name)),
-  'streetAddress': IrNativeValue(Value(TextInputType.streetAddress)),
+  'street-address': IrNativeValue(Value(TextInputType.streetAddress)),
   'none': IrNativeValue(Value(TextInputType.none)),
 });

@@ -5,5 +5,5 @@ import 'package:glue/ir.dart';
 /// Each property is a NativeValue wrapping the Flutter TextWidthBasis enum value
 final textWidthBasis = IrObject({
   'parent': IrNativeValue(Value(TextWidthBasis.parent)),
-  'longestLine': IrNativeValue(Value(TextWidthBasis.longestLine)),
+  'longest-line': IrNativeValue(Value(TextWidthBasis.longestLine)),
 });

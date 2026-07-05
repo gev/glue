@@ -4,40 +4,44 @@ import 'package:glue/ir.dart';
 /// FloatingActionButtonLocation enum object - represents all FloatingActionButtonLocation values as Glue object properties
 /// Each property is a NativeValue wrapping the Flutter FloatingActionButtonLocation enum value
 final floatingActionButtonLocation = IrObject({
-  'startTop': IrNativeValue(Value(FloatingActionButtonLocation.startTop)),
-  'miniStartTop': IrNativeValue(
+  'start-top': IrNativeValue(Value(FloatingActionButtonLocation.startTop)),
+  'mini-start-top': IrNativeValue(
     Value(FloatingActionButtonLocation.miniStartTop),
   ),
-  'centerTop': IrNativeValue(Value(FloatingActionButtonLocation.centerTop)),
-  'miniCenterTop': IrNativeValue(
+  'center-top': IrNativeValue(Value(FloatingActionButtonLocation.centerTop)),
+  'mini-center-top': IrNativeValue(
     Value(FloatingActionButtonLocation.miniCenterTop),
   ),
-  'endTop': IrNativeValue(Value(FloatingActionButtonLocation.endTop)),
-  'miniEndTop': IrNativeValue(Value(FloatingActionButtonLocation.miniEndTop)),
-  'startFloat': IrNativeValue(Value(FloatingActionButtonLocation.startFloat)),
-  'miniStartFloat': IrNativeValue(
+  'end-top': IrNativeValue(Value(FloatingActionButtonLocation.endTop)),
+  'mini-end-top': IrNativeValue(Value(FloatingActionButtonLocation.miniEndTop)),
+  'start-float': IrNativeValue(Value(FloatingActionButtonLocation.startFloat)),
+  'mini-start-float': IrNativeValue(
     Value(FloatingActionButtonLocation.miniStartFloat),
   ),
-  'centerFloat': IrNativeValue(Value(FloatingActionButtonLocation.centerFloat)),
-  'miniCenterFloat': IrNativeValue(
+  'center-float': IrNativeValue(
+    Value(FloatingActionButtonLocation.centerFloat),
+  ),
+  'mini-center-float': IrNativeValue(
     Value(FloatingActionButtonLocation.miniCenterFloat),
   ),
-  'endFloat': IrNativeValue(Value(FloatingActionButtonLocation.endFloat)),
-  'miniEndFloat': IrNativeValue(
+  'end-float': IrNativeValue(Value(FloatingActionButtonLocation.endFloat)),
+  'mini-end-float': IrNativeValue(
     Value(FloatingActionButtonLocation.miniEndFloat),
   ),
-  'startDocked': IrNativeValue(Value(FloatingActionButtonLocation.startDocked)),
-  'miniStartDocked': IrNativeValue(
+  'start-docked': IrNativeValue(
+    Value(FloatingActionButtonLocation.startDocked),
+  ),
+  'mini-start-docked': IrNativeValue(
     Value(FloatingActionButtonLocation.miniStartDocked),
   ),
-  'centerDocked': IrNativeValue(
+  'center-docked': IrNativeValue(
     Value(FloatingActionButtonLocation.centerDocked),
   ),
-  'miniCenterDocked': IrNativeValue(
+  'mini-center-docked': IrNativeValue(
     Value(FloatingActionButtonLocation.miniCenterDocked),
   ),
-  'endDocked': IrNativeValue(Value(FloatingActionButtonLocation.endDocked)),
-  'miniEndDocked': IrNativeValue(
+  'end-docked': IrNativeValue(Value(FloatingActionButtonLocation.endDocked)),
+  'mini-end-docked': IrNativeValue(
     Value(FloatingActionButtonLocation.miniEndDocked),
   ),
 });

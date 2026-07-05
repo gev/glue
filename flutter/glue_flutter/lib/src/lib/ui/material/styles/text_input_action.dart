@@ -11,9 +11,9 @@ final textInputAction = IrObject({
   'send': IrNativeValue(Value(TextInputAction.send)),
   'next': IrNativeValue(Value(TextInputAction.next)),
   'previous': IrNativeValue(Value(TextInputAction.previous)),
-  'continueAction': IrNativeValue(Value(TextInputAction.continueAction)),
+  'continue-action': IrNativeValue(Value(TextInputAction.continueAction)),
   'join': IrNativeValue(Value(TextInputAction.join)),
   'route': IrNativeValue(Value(TextInputAction.route)),
-  'emergencyCall': IrNativeValue(Value(TextInputAction.emergencyCall)),
+  'emergency-call': IrNativeValue(Value(TextInputAction.emergencyCall)),
   'newline': IrNativeValue(Value(TextInputAction.newline)),
 });

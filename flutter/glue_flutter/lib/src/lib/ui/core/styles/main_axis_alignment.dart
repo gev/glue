@@ -7,7 +7,7 @@ final mainAxisAlignment = IrObject({
   'start': IrNativeValue(Value(MainAxisAlignment.start)),
   'end': IrNativeValue(Value(MainAxisAlignment.end)),
   'center': IrNativeValue(Value(MainAxisAlignment.center)),
-  'spaceBetween': IrNativeValue(Value(MainAxisAlignment.spaceBetween)),
-  'spaceAround': IrNativeValue(Value(MainAxisAlignment.spaceAround)),
-  'spaceEvenly': IrNativeValue(Value(MainAxisAlignment.spaceEvenly)),
+  'space-between': IrNativeValue(Value(MainAxisAlignment.spaceBetween)),
+  'space-around': IrNativeValue(Value(MainAxisAlignment.spaceAround)),
+  'space-evenly': IrNativeValue(Value(MainAxisAlignment.spaceEvenly)),
 });
