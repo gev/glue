@@ -17,7 +17,7 @@ Eval<Ir> gridViewImpl(Ir props) => switch (props) {
 
 /// Create GridView widget from properties
 Eval<Ir> _createGridView(WidgetProperties properties) {
-  final gridViewWidget = GridView(
+  final gridViewWidget = GridView.count(
     key: properties.key,
     scrollDirection:
         properties.getValue<Axis>('scroll-direction') ?? Axis.vertical,
@@ -27,9 +27,10 @@ Eval<Ir> _createGridView(WidgetProperties properties) {
     physics: properties.getValue<ScrollPhysics>('physics'),
     shrinkWrap: properties.getBool('shrink-wrap') ?? false,
     padding: properties.getValue<EdgeInsetsGeometry>('padding'),
-    gridDelegate:
-        properties.getValue<SliverGridDelegate>('grid-delegate') ??
-        const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+    crossAxisCount: properties.getInt('cross-axis-count') ?? 2,
+    mainAxisSpacing: properties.getDouble('main-axis-cpacing') ?? 0,
+    crossAxisSpacing: properties.getDouble('cross-axis-cpacing') ?? 0,
+    childAspectRatio: properties.getDouble('child-aspect-ratio') ?? 1.0,
     addAutomaticKeepAlives:
         properties.getBool('add-automatic-keep-alives') ?? true,
     addRepaintBoundaries: properties.getBool('add-repaint-boundaries') ?? true,
