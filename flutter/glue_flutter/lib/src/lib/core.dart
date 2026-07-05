@@ -45,6 +45,7 @@ import 'package:glue_flutter/src/lib/ui/core/widgets/single_child_scroll_view.da
 import 'package:glue_flutter/src/lib/ui/core/widgets/sized_box.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/sliver_grid.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/sliver_list.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/spacer.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/text.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/wrap.dart';
 
@@ -67,6 +68,7 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   ('row', row),
   ('single-child-scroll-view', singleChildScrollView),
   ('sized-box', sizedBox),
+  ('spacer', spacer),
   ('sliver-grid', sliverGrid),
   ('sliver-list', sliverList),
   ('text', text),
