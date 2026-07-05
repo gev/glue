@@ -51,6 +51,9 @@ import 'package:glue_flutter/src/lib/ui/material/widgets/scaffold.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/search_anchor.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/search_bar.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/segmented_button.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/show_bottom_sheet.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/show_dialog.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/show_modal_bottom_sheet.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/slider.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/snack_bar.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/stepper.dart';
@@ -134,4 +137,8 @@ final ModuleInfo uiMaterialModule = nativeModule('ffi.ui.material', [
   ('color-scheme-light', colorSchemeLight),
   ('color-scheme-dark', colorSchemeDark),
   ('text-theme', textTheme),
+
+  ('show-dialog', showDialog_),
+  ('show-bottom-sheet', showBottomSheet_),
+  ('show-modal-bottom-sheet', showModalBottomSheet_),
 ]);
