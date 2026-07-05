@@ -4,8 +4,8 @@ import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/glue_flutter.dart';
 
-/// Box constraints  function - (box-constraints (:min-width 0 :max-width 100 :min-height 0 :max-height 100))
-final boxConstraints = IrNativeFunc(boxConstraintsImpl);
+/// Box constraints only function - (box-constraints-only (:min-width 0 :max-width 100 :min-height 0 :max-height 100))
+final boxConstraintsOnly = IrNativeFunc(boxConstraintsImpl);
 
 Eval<Ir> boxConstraintsImpl(Ir props) => switch (props) {
   IrObject(:final properties) => createBoxConstraints(
