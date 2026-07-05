@@ -28,6 +28,9 @@ Eval<Ir> _createWrap(WidgetProperties properties) {
         properties.getValue<WrapAlignment>('run-alignment') ??
         WrapAlignment.start,
     runSpacing: properties.getDouble('run-spacing') ?? 0,
+    crossAxisAlignment:
+        properties.getValue<WrapCrossAlignment>('cross-axis-alignment') ??
+        WrapCrossAlignment.start,
     textDirection: properties.getValue<TextDirection>('text-direction'),
     verticalDirection:
         properties.getValue<VerticalDirection>('vertical-direction') ??
