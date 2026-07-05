@@ -22,9 +22,9 @@ Eval<Ir> _createBottomSheet(WidgetProperties properties) {
   if (onClosing == null) {
     return throwError(wrongArgumentType(['on-closing']));
   }
-  final WidgetBuilder? builder = properties.getValue<WidgetBuilder>('builder');
-  if (builder == null) {
-    return throwError(wrongArgumentType(['builder']));
+  final child = properties.child;
+  if (child == null) {
+    return throwError(wrongArgumentType(['`Widget` requared']));
   }
   return getRuntime().map((runtime) {
     final bottomSheetWidget = BottomSheet(
@@ -45,7 +45,7 @@ Eval<Ir> _createBottomSheet(WidgetProperties properties) {
       shape: properties.getValue<ShapeBorder>('shape'),
       clipBehavior: properties.getValue<Clip>('clip-behavior'),
       constraints: properties.getValue<BoxConstraints>('constraints'),
-      builder: builder,
+      builder: (_) => child,
       onClosing: onClosing(runtime),
     );
     return IrNativeValue(Value(bottomSheetWidget));

@@ -23,13 +23,13 @@ Eval<Ir> showDialogImpl(Ir ir) {
 }
 
 Eval<Ir> _showDialog(BuildContext context, WidgetProperties properties) {
-  final dialog = properties.child;
-  if (dialog == null) {
+  final child = properties.child;
+  if (child == null) {
     return throwError(wrongArgumentType(['`Widget` requared']));
   }
   showDialog(
     context: context,
-    builder: (_) => dialog,
+    builder: (_) => child,
     barrierDismissible: properties.getBool('barrier-dismissible') ?? true,
     barrierColor: properties.getValue<Color>('barrier-color'),
     barrierLabel: properties.getString('barrier-label'),

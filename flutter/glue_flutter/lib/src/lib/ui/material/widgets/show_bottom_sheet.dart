@@ -23,13 +23,13 @@ Eval<Ir> showBottomSheetImpl(Ir ir) {
 }
 
 Eval<Ir> _showBottomSheet(BuildContext context, WidgetProperties properties) {
-  final bottomSheet = properties.child;
-  if (bottomSheet == null) {
+  final child = properties.child;
+  if (child == null) {
     return throwError(wrongArgumentType(['`Widget` requared']));
   }
   showBottomSheet(
     context: context,
-    builder: (_) => bottomSheet,
+    builder: (_) => child,
     backgroundColor: properties.getValue<Color>('background-color'),
     elevation: properties.getDouble('elevation'),
     shape: properties.getValue<ShapeBorder>('shape'),
