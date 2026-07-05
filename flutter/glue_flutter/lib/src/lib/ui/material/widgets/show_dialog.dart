@@ -23,7 +23,7 @@ Eval<Ir> showDialogImpl(Ir ir) {
 }
 
 Eval<Ir> _showDialog(BuildContext context, WidgetProperties properties) {
-  final dialog = properties.getValue<Widget>('dialog');
+  final dialog = properties.child;
   if (dialog == null) {
     return throwError(wrongArgumentType(['`Widget` requared']));
   }

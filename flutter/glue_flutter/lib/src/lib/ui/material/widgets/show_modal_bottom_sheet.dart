@@ -29,7 +29,7 @@ Eval<Ir> _showModalBottomSheet(
   BuildContext context,
   WidgetProperties properties,
 ) {
-  final bottomSheet = properties.getValue<Widget>('bottomSheet');
+  final bottomSheet = properties.child;
   if (bottomSheet == null) {
     return throwError(wrongArgumentType(['`Widget` requared']));
   }

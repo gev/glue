@@ -23,7 +23,7 @@ Eval<Ir> showBottomSheetImpl(Ir ir) {
 }
 
 Eval<Ir> _showBottomSheet(BuildContext context, WidgetProperties properties) {
-  final bottomSheet = properties.getValue<Widget>('bottomSheet');
+  final bottomSheet = properties.child;
   if (bottomSheet == null) {
     return throwError(wrongArgumentType(['`Widget` requared']));
   }
