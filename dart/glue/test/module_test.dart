@@ -1,4 +1,5 @@
 import 'package:glue/either.dart';
+import 'package:glue/env.dart';
 import 'package:glue/src/ir.dart' hide isEmpty;
 import 'package:glue/src/module.dart';
 import 'package:glue/src/module/cache.dart';
@@ -36,6 +37,7 @@ void main() {
           'add': Ref(IrInteger(1)),
           'multiply': Ref(IrInteger(2)),
         },
+        frame: const Frame.empty(),
       );
 
       expect(imported.moduleName, equals('test.math'));
@@ -48,6 +50,7 @@ void main() {
           'add': Ref(IrInteger(1)),
           'multiply': Ref(IrInteger(2)),
         },
+        frame: const Frame.empty(),
       );
 
       expect(imported, equals(imported2));
@@ -188,6 +191,7 @@ void main() {
       final imported = ImportedModule(
         moduleName: 'test.math',
         exportedValues: {'add': Ref(IrInteger(1))},
+        frame: const Frame.empty(),
       );
 
       storeImportedModule(cache, imported);

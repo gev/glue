@@ -45,24 +45,23 @@ Eval<ImportedModule> cacheImportedModule(RegisteredModule registered) {
         final (evalResult, finalIsolatedRuntime) = success;
 
         // Extract exported values from final environment
-        final moduleEnv = finalIsolatedRuntime.env;
+        final moduleFrame = finalIsolatedRuntime.env.last;
 
         //Collect all exports exist, fail on undefined exports
         // All exports validated, build the map
         final exportedValues = <String, Ref<Ir>>{};
         for (final exportName in registered.exports) {
-          final lookupResult = lookupVar(exportName, moduleEnv);
-          lookupResult.match(
-            (_) => throwError(undefinedExport(exportName)),
-            (value) => exportedValues[exportName] = Ref(value),
-          );
+          final lookupResult = moduleFrame[exportName];
+          if (lookupResult != null) {
+            exportedValues[exportName] = lookupResult;
+          }
         }
 
         // Create imported module record
         final importedModule = ImportedModule(
           moduleName: registered.name,
           exportedValues: exportedValues,
-          // evaluationRootEnv: currentRuntime.rootEnv,
+          frame: moduleFrame,
         );
 
         // Cache the imported module

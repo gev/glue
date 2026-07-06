@@ -131,6 +131,7 @@ void main() {
       final imported = ImportedModule(
         moduleName: 'imported.module',
         exportedValues: {'value': Ref(IrInteger(2))},
+        frame: const Frame.empty(),
       );
       storeImportedModule(cache, imported);
 
