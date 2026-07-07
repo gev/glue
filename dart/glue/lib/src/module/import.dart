@@ -42,7 +42,7 @@ Eval<ImportedModule> cacheImportedModule(RegisteredModule registered) {
       runEval(_evalModuleBody(registered.body), isolatedRuntime),
     ).bind((result) {
       return result.match((error) => throwError(error.exception), (success) {
-        final (evalResult, finalIsolatedRuntime) = success;
+        final (_, finalIsolatedRuntime) = success;
 
         // Extract exported values from final environment
         final moduleFrame = finalIsolatedRuntime.env.last;
@@ -54,6 +54,13 @@ Eval<ImportedModule> cacheImportedModule(RegisteredModule registered) {
           final lookupResult = moduleFrame[exportName];
           if (lookupResult != null) {
             exportedValues[exportName] = lookupResult;
+          }
+        }
+
+        final members = <String, Ref<Ir>>{};
+        for (final entry in moduleFrame.entries) {
+          if (!isolatedRuntime.env.last.containsKey(entry.key)) {
+            members[entry.key] = entry.value;
           }
         }
 

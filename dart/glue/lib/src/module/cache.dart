@@ -1,6 +1,5 @@
 import 'package:glue/ir.dart';
 import 'package:glue/src/module.dart';
-import 'package:glue/src/ref.dart';
 
 /// Module cache for storing evaluated imported modules
 /// Mirrors Haskell ImportedModuleCache functionality
