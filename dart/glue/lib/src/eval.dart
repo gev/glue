@@ -146,12 +146,9 @@ Eval<T> withEnv<T>(Env tempEnv, Eval<T> action) => Eval((runtime) async {
   final originalEnv = runtime.env;
   final tempRuntime = runtime.copyWith(env: tempEnv);
   final result = await runEval(action, tempRuntime);
-  return result.match((error) => Left<EvalError, (T, Runtime)>(error), (value) {
+  return result.match((error) => Left(error), (value) {
     final (result, runtime) = value;
-    return Right<EvalError, (T, Runtime)>((
-      result,
-      runtime.copyWith(env: originalEnv),
-    ));
+    return Right((result, runtime.copyWith(env: originalEnv)));
   });
 });
 
