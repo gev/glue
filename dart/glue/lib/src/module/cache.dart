@@ -10,10 +10,14 @@ typedef ImportedModuleCache = Map<String, ImportedModule>;
 ImportedModuleCache emptyCache() => {};
 
 /// Store an imported module in the cache
-void storeImportedModule(ImportedModuleCache cache, ImportedModule imported) {
+ImportedModule storeImportedModule(
+  ImportedModuleCache cache,
+  ImportedModule imported,
+) {
   final cached = cache[imported.moduleName];
   if (cached == null) {
     cache[imported.moduleName] = imported;
+    return imported;
   } else {
     for (final entry in cached.frame.entries) {
       final ref = imported.frame[entry.key];
@@ -26,6 +30,7 @@ void storeImportedModule(ImportedModuleCache cache, ImportedModule imported) {
       }
     }
   }
+  return cached;
 }
 
 /// Lookup an imported module by name

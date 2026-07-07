@@ -66,7 +66,7 @@ Eval<ImportedModule> cacheImportedModule(RegisteredModule registered) {
 
         // Cache the imported module
         return getCache().bind((cache) {
-          storeImportedModule(cache, importedModule);
+          final module = storeImportedModule(cache, importedModule);
           return Eval.pure(importedModule);
         });
       });
