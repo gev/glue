@@ -19,9 +19,15 @@ ImportedModule storeImportedModule(
     cache[imported.moduleName] = imported;
     return imported;
   } else {
-    for (final entry in cached.frame.entries) {
-      final ref = imported.frame[entry.key];
+    for (final entry in cached.members.entries) {
+      final ref = imported.members[entry.key];
       entry.value.value = ref?.value ?? IrVoid();
+    }
+    for (final entry in imported.members.entries) {
+      final ref = cached.members[entry.key];
+      if (ref == null) {
+        cached.exportedValues[entry.key] = entry.value;
+      }
     }
     for (final entry in imported.exportedValues.entries) {
       final ref = cached.exportedValues[entry.key];

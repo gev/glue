@@ -61,7 +61,7 @@ Eval<ImportedModule> cacheImportedModule(RegisteredModule registered) {
         final importedModule = ImportedModule(
           moduleName: registered.name,
           exportedValues: exportedValues,
-          frame: moduleFrame,
+          members: moduleFrame.unlock,
         );
 
         // Cache the imported module
