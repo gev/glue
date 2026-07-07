@@ -19,11 +19,9 @@ Eval<Ir> importModule(String moduleName) {
 
       if (cachedModule != null) {
         // Module already imported - merge into current environment
-        print('merdge');
         return _mergeImportedModule(cachedModule);
       } else {
         // First import - evaluate module in isolation
-        print('cache and merdge');
         return _cacheAndMerdgeImortedModule(registeredModule);
       }
     });
