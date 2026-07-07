@@ -1,4 +1,5 @@
 import 'package:glue/module.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/material.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/color_scheme_dark.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/color_scheme_light.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/colors.dart';
@@ -124,6 +125,7 @@ final ModuleInfo uiMaterialModule = nativeModule('ffi.ui.material', [
   ('drawer-header', drawerHeader),
   ('user-accounts-drawer-header', userAccountsDrawerHeader),
   ('navigation-rail', navigationRail),
+  ('material', material),
 
   // Material enum union objects
   ('colors', colors),
