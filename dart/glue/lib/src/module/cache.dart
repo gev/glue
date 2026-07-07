@@ -1,5 +1,6 @@
 import 'package:glue/ir.dart';
 import 'package:glue/src/module.dart';
+import 'package:glue/src/ref.dart';
 
 /// Module cache for storing evaluated imported modules
 /// Mirrors Haskell ImportedModuleCache functionality
@@ -29,10 +30,10 @@ ImportedModule storeImportedModule(
         cached.members[entry.key] = entry.value;
       }
     }
-    for (final entry in imported.exportedValues.entries) {
-      final ref = cached.exportedValues[entry.key];
+    for (final key in imported.exportedValues.keys) {
+      final ref = cached.exportedValues[key];
       if (ref == null) {
-        cached.exportedValues[entry.key] = entry.value;
+        cached.exportedValues[key] = cached.members[key] ?? Ref(IrVoid());
       }
     }
   }
