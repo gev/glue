@@ -38,6 +38,7 @@ import 'package:glue_flutter/src/lib/ui/core/widgets/container.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/custom_scroll_view.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/expanded.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/grid_view.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/hero.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/icon.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/image.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/list_view.dart';
@@ -65,6 +66,7 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   ('image-asset', imageAsset),
   ('image-file', imageFile),
   ('image-network', imageNetwork),
+  ('hero', hero),
   ('list-view', listView),
   ('padding', padding),
   ('placeholder', placeholder),
