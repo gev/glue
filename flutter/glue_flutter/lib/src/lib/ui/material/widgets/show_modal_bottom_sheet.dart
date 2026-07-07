@@ -29,13 +29,13 @@ Eval<Ir> _showModalBottomSheet(
   BuildContext context,
   WidgetProperties properties,
 ) {
-  final child = properties.getValue<WidgetBuilder>('child');
+  final child = properties.child;
   if (child == null) {
     return throwError(wrongArgumentType(['`Widget` requared']));
   }
   showModalBottomSheet(
     context: context,
-    builder: child,
+    builder: (_) => child,
     backgroundColor: properties.getValue<Color>('background-color'),
     elevation: properties.getDouble('elevation'),
     shape: properties.getValue<ShapeBorder>('shape'),
