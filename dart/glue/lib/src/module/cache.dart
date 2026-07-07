@@ -19,10 +19,6 @@ void storeImportedModule(ImportedModuleCache cache, ImportedModule imported) {
       final ref = imported.frame[entry.key];
       entry.value.value = ref?.value ?? IrVoid();
     }
-    for (final entry in cached.exportedValues.entries) {
-      final ref = imported.exportedValues[entry.key];
-      entry.value.value = ref?.value ?? IrVoid();
-    }
     for (final entry in imported.exportedValues.entries) {
       final ref = cached.exportedValues[entry.key];
       if (ref == null) {
