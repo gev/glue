@@ -26,7 +26,7 @@ ImportedModule storeImportedModule(
     for (final entry in imported.members.entries) {
       final ref = cached.members[entry.key];
       if (ref == null) {
-        cached.exportedValues[entry.key] = entry.value;
+        cached.members[entry.key] = entry.value;
       }
     }
     for (final entry in imported.exportedValues.entries) {
