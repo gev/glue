@@ -19,19 +19,14 @@ ImportedModule storeImportedModule(
     cache[imported.moduleName] = imported;
     return imported;
   } else {
-    for (final entry in cached.members.entries) {
-      final ref = imported.members[entry.key];
+    for (final entry in cached.exportedValues.entries) {
+      final ref = imported.exportedValues[entry.key];
       entry.value.value = ref?.value ?? IrVoid();
     }
-    for (final entry in imported.members.entries) {
-      final ref = cached.members[entry.key];
+    for (final entry in imported.exportedValues.entries) {
+      final ref = cached.exportedValues[entry.key];
       if (ref == null) {
-        cached.members[entry.key] = entry.value;
-      }
-      if (imported.exportedValues.containsKey(entry.key)) {
         cached.exportedValues[entry.key] = entry.value;
-      } else {
-        cached.exportedValues.remove(entry.key);
       }
     }
   }

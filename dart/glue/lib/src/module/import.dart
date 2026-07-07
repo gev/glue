@@ -57,18 +57,10 @@ Eval<ImportedModule> cacheImportedModule(RegisteredModule registered) {
           }
         }
 
-        final members = <String, Ref<Ir>>{};
-        for (final entry in moduleFrame.entries) {
-          if (!isolatedRuntime.env.last.containsKey(entry.key)) {
-            members[entry.key] = entry.value;
-          }
-        }
-
         // Create imported module record
         final importedModule = ImportedModule(
           moduleName: registered.name,
           exportedValues: exportedValues,
-          members: members,
         );
 
         // Cache the imported module

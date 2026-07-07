@@ -37,12 +37,10 @@ class RegisteredModule {
 class ImportedModule {
   final String moduleName;
   final Map<String, Ref<Ir>> exportedValues;
-  final Map<String, Ref<Ir>> members;
 
   const ImportedModule({
     required this.moduleName,
     required this.exportedValues,
-    required this.members,
   });
 
   @override

@@ -36,7 +36,6 @@ void main() {
           'add': Ref(IrInteger(1)),
           'multiply': Ref(IrInteger(2)),
         },
-        members: {},
       );
 
       expect(imported.moduleName, equals('test.math'));
@@ -49,7 +48,6 @@ void main() {
           'add': Ref(IrInteger(1)),
           'multiply': Ref(IrInteger(2)),
         },
-        members: {},
       );
 
       expect(imported, equals(imported2));
@@ -190,7 +188,6 @@ void main() {
       final imported = ImportedModule(
         moduleName: 'test.math',
         exportedValues: {'add': Ref(IrInteger(1))},
-        members: {},
       );
 
       storeImportedModule(cache, imported);
