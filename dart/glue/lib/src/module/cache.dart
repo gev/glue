@@ -29,11 +29,10 @@ ImportedModule storeImportedModule(
       if (ref == null) {
         cached.members[entry.key] = entry.value;
       }
-    }
-    for (final key in imported.exportedValues.keys) {
-      final ref = cached.exportedValues[key];
-      if (ref == null) {
-        cached.exportedValues[key] = cached.members[key] ?? Ref(IrVoid());
+      if (imported.exportedValues.containsKey(entry.key)) {
+        cached.exportedValues[entry.key] = entry.value;
+      } else {
+        cached.exportedValues.remove(entry.key);
       }
     }
   }
