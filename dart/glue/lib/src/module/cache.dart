@@ -14,7 +14,6 @@ ImportedModule storeImportedModule(
   ImportedModuleCache cache,
   ImportedModule imported,
 ) {
-  print(imported.members);
   final cached = cache[imported.moduleName];
   if (cached == null) {
     cache[imported.moduleName] = imported;
