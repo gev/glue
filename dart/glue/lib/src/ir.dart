@@ -343,5 +343,6 @@ Ir toIr(dynamic value) => switch (value) {
   int v => IrInteger(v),
   double v => IrFloat(v),
   String v => IrString(v),
+  Iterable values => IrList(values.map(toIr).toList()),
   _ => IrNativeValue(Value(value)),
 };
