@@ -337,6 +337,7 @@ T? to<T>(Ir? ir) => switch (ir) {
 };
 
 Ir toIr(dynamic value) => switch (value) {
+  Ir v => v,
   null => IrVoid(),
   bool v => IrBool(v),
   int v => IrInteger(v),
