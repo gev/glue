@@ -335,3 +335,12 @@ T? to<T>(Ir? ir) => switch (ir) {
   IrNativeValue(:final value) => extractValue<T>(value),
   _ => null,
 };
+
+Ir toIr(dynamic value) => switch (value) {
+  null => IrVoid(),
+  bool v => IrBool(v),
+  int v => IrInteger(v),
+  double v => IrFloat(v),
+  String v => IrString(v),
+  _ => IrNativeValue(Value(value)),
+};
