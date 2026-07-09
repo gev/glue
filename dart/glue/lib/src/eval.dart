@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:glue/src/either.dart';
 import 'package:glue/src/env.dart';
 import 'package:glue/src/eval/error.dart';
@@ -12,7 +10,7 @@ import 'package:glue/src/runtime.dart';
 /// Evaluation monad for Glue expressions
 /// Mirrors Haskell Glue.Eval.Eval exactly
 class Eval<T> {
-  final FutureOr<Either<EvalError, (T, Runtime)>> Function(Runtime) _run;
+  final Either<EvalError, (T, Runtime)> Function(Runtime) _run;
 
   const Eval(this._run);
 
@@ -23,8 +21,8 @@ class Eval<T> {
   Eval<U> map<U>(U Function(T) f) => bind((value) => Eval.pure(f(value)));
 
   /// FlatMap (bind) operation
-  Eval<U> bind<U>(Eval<U> Function(T) f) => Eval((runtime) async {
-    final result = await runEval(this, runtime);
+  Eval<U> bind<U>(Eval<U> Function(T) f) => Eval((runtime) {
+    final result = runEval(this, runtime);
     return result.match((error) => Left(error), (value) {
       final (result, runtime) = value;
       return runEval(f(result), runtime);
@@ -37,17 +35,15 @@ class Eval<T> {
 /// ============================================================================
 
 /// Run the evaluation with initial runtime (matches Haskell runEval)
-FutureOr<Either<EvalError, (T, Runtime)>> runEval<T>(
-  Eval<T> eval,
-  Runtime runtime,
-) => eval._run(runtime);
+Either<EvalError, (T, Runtime)> runEval<T>(Eval<T> eval, Runtime runtime) =>
+    eval._run(runtime);
 
 /// Simple evaluation with just environment
 /// Mirrors Haskell runEvalSimple exactly
-FutureOr<Either<EvalError, (T, Runtime)>> runEvalSimple<T>(
+Either<EvalError, (T, Runtime)> runEvalSimple<T>(
   Eval<T> action,
   Env initialEnv,
-) async {
+) {
   final initialRuntime = Runtime.initial(initialEnv);
   return runEval(action, initialRuntime);
 }
@@ -57,9 +53,9 @@ Eval<T> throwError<T>(RuntimeException exception) =>
     Eval((runtime) => Left(EvalError(runtime.stack, exception)));
 
 /// Lift an IO operation into the Eval monad
-Eval<T> liftIO<T>(FutureOr<T> io) => Eval((runtime) async {
+Eval<T> liftIO<T>(T io) => Eval((runtime) {
   try {
-    final result = await io;
+    final result = io;
     return Right((result, runtime));
   } catch (e) {
     // Convert exceptions to EvalError
@@ -142,10 +138,10 @@ Eval<void> defineVarEval(String name, Ir value) => Eval(
 /// ============================================================================
 
 /// Run evaluation with temporary environment
-Eval<T> withEnv<T>(Env tempEnv, Eval<T> action) => Eval((runtime) async {
+Eval<T> withEnv<T>(Env tempEnv, Eval<T> action) => Eval((runtime) {
   final originalEnv = runtime.env;
   final tempRuntime = runtime.copyWith(env: tempEnv);
-  final result = await runEval(action, tempRuntime);
+  final result = runEval(action, tempRuntime);
   return result.match((error) => Left(error), (value) {
     final (result, runtime) = value;
     return Right((result, runtime.copyWith(env: originalEnv)));
