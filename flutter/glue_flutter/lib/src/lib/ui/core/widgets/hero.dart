@@ -19,6 +19,7 @@ Eval<Ir> heroImpl(Ir props) => switch (props) {
 /// Create Hero widget from properties
 Eval<Ir> _createHero(WidgetProperties properties) {
   final tag = properties.get('tag');
+  print(tag);
   if (tag == null) {
     return throwError(wrongArgumentType(['`Object` tag property requiered']));
   }
