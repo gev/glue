@@ -28,7 +28,7 @@ Eval<Ir> _createHero(WidgetProperties properties) {
   }
   final heroWidget = Hero(
     key: properties.key,
-    tag: "123",
+    tag: tag,
     createRectTween: properties.getValue<Tween<Rect?> Function(Rect?, Rect?)>(
       'create-rect-tween',
     ),
