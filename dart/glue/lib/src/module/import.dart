@@ -38,36 +38,33 @@ Eval<ImportedModule> cacheImportedModule(RegisteredModule registered) {
     );
 
     // Evaluate module body in isolation
-    return liftIO(
-      runEval(_evalModuleBody(registered.body), isolatedRuntime),
-    ).bind((result) {
-      return result.match((error) => throwError(error.exception), (success) {
-        final (_, finalIsolatedRuntime) = success;
+    final result = runEval(_evalModuleBody(registered.body), isolatedRuntime);
+    return result.match((error) => throwError(error.exception), (success) {
+      final (_, finalIsolatedRuntime) = success;
 
-        // Extract exported values from final environment
-        final moduleFrame = finalIsolatedRuntime.env.last;
+      // Extract exported values from final environment
+      final moduleFrame = finalIsolatedRuntime.env.last;
 
-        //Collect all exports exist, fail on undefined exports
-        // All exports validated, build the map
-        final exportedValues = <String, Ref<Ir>>{};
-        for (final exportName in registered.exports) {
-          final lookupResult = moduleFrame[exportName];
-          if (lookupResult != null) {
-            exportedValues[exportName] = lookupResult;
-          }
+      //Collect all exports exist, fail on undefined exports
+      // All exports validated, build the map
+      final exportedValues = <String, Ref<Ir>>{};
+      for (final exportName in registered.exports) {
+        final lookupResult = moduleFrame[exportName];
+        if (lookupResult != null) {
+          exportedValues[exportName] = lookupResult;
         }
+      }
 
-        // Create imported module record
-        final importedModule = ImportedModule(
-          moduleName: registered.name,
-          exportedValues: exportedValues,
-        );
+      // Create imported module record
+      final importedModule = ImportedModule(
+        moduleName: registered.name,
+        exportedValues: exportedValues,
+      );
 
-        // Cache the imported module
-        return getCache().bind((cache) {
-          final module = storeImportedModule(cache, importedModule);
-          return Eval.pure(module);
-        });
+      // Cache the imported module
+      return getCache().bind((cache) {
+        final module = storeImportedModule(cache, importedModule);
+        return Eval.pure(module);
       });
     });
   });

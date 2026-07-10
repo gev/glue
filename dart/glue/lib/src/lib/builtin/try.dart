@@ -17,36 +17,35 @@ Eval<Ir> tryFuncImpl(List<Ir> args) {
   final catches = args.sublist(1);
 
   return getRuntime().bind((runtime) {
-    return liftIO(runEval(eval(body), runtime)).bind((result) {
-      return result.match(
-        (error) {
-          // Handle RuntimeException exactly like Haskell
-          final runtimeExc = error.exception;
-          final catchHandler = _findCatch(runtimeExc.symbol, catches);
+    final result = runEval(eval(body), runtime);
+    return result.match(
+      (error) {
+        // Handle RuntimeException exactly like Haskell
+        final runtimeExc = error.exception;
+        final catchHandler = _findCatch(runtimeExc.symbol, catches);
 
-          if (catchHandler != null) {
-            return eval(catchHandler).bind((callable) {
-              // Check if callable like Haskell does
-              if (_isCallable(callable)) {
-                // Use same payload handling as Haskell: maybe [] (: []) payload
-                final List<Ir> payload = runtimeExc.value != null
-                    ? [runtimeExc.value!]
-                    : [];
-                return apply(callable, payload);
-              } else {
-                return throwError(notCallableObject());
-              }
-            });
-          } else {
-            return throwError(runtimeExc);
-          }
-        },
-        (success) {
-          final (value, newRuntime) = success;
-          return putRuntime(newRuntime).map((_) => value);
-        },
-      );
-    });
+        if (catchHandler != null) {
+          return eval(catchHandler).bind((callable) {
+            // Check if callable like Haskell does
+            if (_isCallable(callable)) {
+              // Use same payload handling as Haskell: maybe [] (: []) payload
+              final List<Ir> payload = runtimeExc.value != null
+                  ? [runtimeExc.value!]
+                  : [];
+              return apply(callable, payload);
+            } else {
+              return throwError(notCallableObject());
+            }
+          });
+        } else {
+          return throwError(runtimeExc);
+        }
+      },
+      (success) {
+        final (value, newRuntime) = success;
+        return putRuntime(newRuntime).map((_) => value);
+      },
+    );
   });
 }
 

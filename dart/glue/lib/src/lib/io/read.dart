@@ -11,5 +11,5 @@ final Ir readLine = IrNativeFunc(readLineImpl);
 /// Mirrors Haskell Glue.Lib.IO.Read.readLineImpl exactly
 Eval<Ir> readLineImpl(Ir arg) {
   // Ignore the argument, always read a line
-  return liftIO(stdin.readLineSync() ?? '').map((line) => IrString(line));
+  return Eval.pure(IrString(stdin.readLineSync() ?? ''));
 }

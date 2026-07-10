@@ -52,19 +52,6 @@ Either<EvalError, (T, Runtime)> runEvalSimple<T>(
 Eval<T> throwError<T>(RuntimeException exception) =>
     Eval((runtime) => Left(EvalError(runtime.stack, exception)));
 
-/// Lift an IO operation into the Eval monad
-Eval<T> liftIO<T>(T io) => Eval((runtime) {
-  try {
-    final result = io;
-    return Right((result, runtime));
-  } catch (e) {
-    // Convert exceptions to EvalError
-    final exception = RuntimeException('io-error', IrString(e.toString()));
-    final error = EvalError(runtime.stack, exception);
-    return Left(error);
-  }
-});
-
 /// ============================================================================
 /// ENVIRONMENT AND RUNTIME ACCESS
 /// ============================================================================
