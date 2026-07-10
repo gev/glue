@@ -37,6 +37,7 @@ import 'package:glue_flutter/src/lib/ui/core/widgets/column.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/container.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/custom_scroll_view.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/expanded.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/fitted_box.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/grid_view.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/hero.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/icon.dart';
@@ -61,6 +62,7 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   ('container', container),
   ('custom-scroll-view', customScrollView),
   ('expanded', expanded),
+  ('fitted-box', fittedBox),
   ('grid-view', gridView),
   ('icon', icon),
   ('image-asset', imageAsset),
