@@ -3,8 +3,8 @@ import 'package:glue/ir.dart';
 
 final dynamicSchemeVariant = IrObject({
   'tonal-spot': IrNativeValue(Value(DynamicSchemeVariant.tonalSpot)),
-  'horizontal': IrNativeValue(Value(DynamicSchemeVariant.fidelity)),
-  'fidelity': IrNativeValue(Value(DynamicSchemeVariant.monochrome)),
+  'fidelity': IrNativeValue(Value(DynamicSchemeVariant.fidelity)),
+  'monochrome': IrNativeValue(Value(DynamicSchemeVariant.monochrome)),
   'neutral': IrNativeValue(Value(DynamicSchemeVariant.neutral)),
   'vibrant': IrNativeValue(Value(DynamicSchemeVariant.vibrant)),
   'expressive': IrNativeValue(Value(DynamicSchemeVariant.expressive)),
