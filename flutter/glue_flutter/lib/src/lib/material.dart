@@ -4,6 +4,7 @@ import 'package:glue_flutter/src/lib/ui/material/styles/color_scheme_dark.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/color_scheme_light.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/colors.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/drag_start_behavior.dart';
+import 'package:glue_flutter/src/lib/ui/material/styles/dynamic_scheme_variant.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/floating_action_button_location.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/text_theme.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/theme.dart';
@@ -131,7 +132,7 @@ final ModuleInfo uiMaterialModule = nativeModule('ffi.ui.material', [
   ('colors', colors),
   ('drag-start-behavior', dragStartBehavior),
   ('floating-action-button-location', floatingActionButtonLocation),
-
+  ('dynamic-scheme-variant', dynamicSchemeVariant),
   // Material theme functions and objects
   ('theme-dark', themeDark),
   ('theme-light', themeLight),
