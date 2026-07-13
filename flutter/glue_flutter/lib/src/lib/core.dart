@@ -51,6 +51,7 @@ import 'package:glue_flutter/src/lib/ui/core/widgets/sized_box.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/sliver_grid.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/sliver_list.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/spacer.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/stack.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/text.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/wrap.dart';
 
@@ -78,6 +79,7 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   ('spacer', spacer),
   ('sliver-grid', sliverGrid),
   ('sliver-list', sliverList),
+  ('stack', stack),
   ('text', text),
   ('wrap', wrap),
 
