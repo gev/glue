@@ -41,7 +41,7 @@ void main() {
         // Create a person with a name property
         final person = Person('Alice', 30);
         final nameGetter = Eval(
-          (runtime) => Done(Right((IrString('Alice'), runtime))),
+          (runtime) => Right((IrString('Alice'), runtime)),
         );
         final getters = <String, Eval<Ir>>{'name': nameGetter};
         final hostVal = hostValueWithProps(person, getters);
@@ -62,9 +62,7 @@ void main() {
       test('accesses property returning a number', () {
         // Create a person with an age property
         final person = Person('Bob', 25);
-        final ageGetter = Eval(
-          (runtime) => Done(Right((IrInteger(25), runtime))),
-        );
+        final ageGetter = Eval((runtime) => Right((IrInteger(25), runtime)));
         final getters = <String, Eval<Ir>>{'age': ageGetter};
         final hostVal = hostValueWithProps(person, getters);
         final hostIr = IrNativeValue(hostVal);
@@ -87,7 +85,7 @@ void main() {
         // Create a calculator with a compute method
         final calc = Calculator(10);
         final computeGetter = Eval(
-          (runtime) => Done(Right((IrInteger(42), runtime))),
+          (runtime) => Right((IrInteger(42), runtime)),
         ); // Always returns 42
         final getters = <String, Eval<Ir>>{'compute': computeGetter};
         final hostVal = hostValueWithProps(calc, getters);
@@ -108,7 +106,7 @@ void main() {
         // Create a calculator that returns double its base value
         final calc = Calculator(15);
         final doubleGetter = Eval(
-          (runtime) => Done(Right((IrInteger(30), runtime))),
+          (runtime) => Right((IrInteger(30), runtime)),
         ); // 15 * 2
         final getters = <String, Eval<Ir>>{'double': doubleGetter};
         final hostVal = hostValueWithProps(calc, getters);
@@ -130,11 +128,9 @@ void main() {
       test('accesses different properties on the same host value', () {
         final person = Person('Charlie', 35);
         final nameGetter = Eval(
-          (runtime) => Done(Right((IrString('Charlie'), runtime))),
+          (runtime) => Right((IrString('Charlie'), runtime)),
         );
-        final ageGetter = Eval(
-          (runtime) => Done(Right((IrInteger(35), runtime))),
-        );
+        final ageGetter = Eval((runtime) => Right((IrInteger(35), runtime)));
         final getters = <String, Eval<Ir>>{
           'name': nameGetter,
           'age': ageGetter,
@@ -171,7 +167,7 @@ void main() {
       test('returns Void when accessing non-existent property', () {
         final person = Person('David', 40);
         final getters = <String, Eval<Ir>>{
-          'name': Eval((runtime) => Done(Right((IrString('David'), runtime)))),
+          'name': Eval((runtime) => Right((IrString('David'), runtime))),
         };
         final hostVal = hostValueWithProps(person, getters);
         final hostIr = IrNativeValue(hostVal);
