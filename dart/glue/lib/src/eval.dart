@@ -239,15 +239,23 @@ Eval<void> defineVarEval(String name, Ir value) => Eval(
 /// ============================================================================
 
 /// Run evaluation with temporary environment
-Eval<T> withEnv<T>(Env tempEnv, Eval<T> action) => Eval((runtime) {
-  final originalEnv = runtime.env;
-  final tempRuntime = runtime.copyWith(env: tempEnv);
-  final result = runEval(action, tempRuntime);
-  return result.match((error) => Done(Left(error)), (value) {
-    final (result, runtime) = value;
-    return Done(Right((result, runtime.copyWith(env: originalEnv))));
-  });
-});
+// Eval<T> withEnv<T>(Env tempEnv, Eval<T> action) => Eval((runtime) {
+//   final originalEnv = runtime.env;
+//   final tempRuntime = runtime.copyWith(env: tempEnv);
+//   final result = runEval(action, tempRuntime);
+//   return result.match((error) => Done(Left(error)), (value) {
+//     final (result, runtime) = value;
+//     return Done(Right((result, runtime.copyWith(env: originalEnv))));
+//   });
+// });
+
+Eval<T> withEnv<T>(Env tempEnv, Eval<T> action) {
+  return getEnv().bind(
+    (originalEnv) => putEnv(tempEnv).bind(
+      (_) => action.bind((result) => putEnv(originalEnv).map((_) => result)),
+    ),
+  );
+}
 
 /// Run evaluation with additional stack frame
 Eval<T> withCall<T>(String contextName, Eval<T> action) => pushCall(
