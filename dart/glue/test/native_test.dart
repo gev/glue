@@ -108,12 +108,12 @@ Eval<Ir> _createPerson(Map<String, Ir> props) {
   final personObj = Person(name, age, addressValue);
 
   final getters = <String, Eval<Ir>>{
-    'name': Eval((runtime) => Right((IrString(personObj.name), runtime))),
-    'age': Eval((runtime) => Right((IrInteger(personObj.age), runtime))),
+    'name': Eval((runtime) => Done(Right((IrString(personObj.name), runtime)))),
+    'age': Eval((runtime) => Done(Right((IrInteger(personObj.age), runtime)))),
     'address': Eval(
       (runtime) => switch (personObj.addressValue) {
-        final addrValue? => Right((IrNativeValue(addrValue), runtime)),
-        null => Right((IrString('no address'), runtime)),
+        final addrValue? => Done(Right((IrNativeValue(addrValue), runtime))),
+        null => Done(Right((IrString('no address'), runtime))),
       },
     ),
   };
@@ -142,8 +142,10 @@ Eval<Ir> _createAddress(Map<String, Ir> props) {
   final addrObj = Address(street, city);
 
   final getters = <String, Eval<Ir>>{
-    'street': Eval((runtime) => Right((IrString(addrObj.street), runtime))),
-    'city': Eval((runtime) => Right((IrString(addrObj.city), runtime))),
+    'street': Eval(
+      (runtime) => Done(Right((IrString(addrObj.street), runtime))),
+    ),
+    'city': Eval((runtime) => Done(Right((IrString(addrObj.city), runtime)))),
   };
 
   return Eval.pure(IrNativeValue(hostValueWithProps(addrObj, getters)));

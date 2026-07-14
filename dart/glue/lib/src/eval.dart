@@ -7,26 +7,110 @@ import 'package:glue/src/module/cache.dart';
 import 'package:glue/src/module/registry.dart';
 import 'package:glue/src/runtime.dart';
 
+sealed class Trampoline<T> {}
+
+class Done<T> extends Trampoline<T> {
+  final Either<EvalError, (T, Runtime)> result;
+  Done(this.result);
+}
+
+class Suspend<T> extends Trampoline<T> {
+  final Eval<T> nextEval;
+  final Runtime runtime;
+  Suspend(this.nextEval, this.runtime);
+}
+
 /// Evaluation monad for Glue expressions
 /// Mirrors Haskell Glue.Eval.Eval exactly
+// class Eval<T> {
+//   final Either<EvalError, (T, Runtime)> Function(Runtime) _run;
+
+//   const Eval(this._run);
+
+//   /// Create a successful evaluation
+//   static Eval<T> pure<T>(T value) => Eval((runtime) => Right((value, runtime)));
+
+//   /// Map over the result
+//   Eval<U> map<U>(U Function(T) f) => bind((value) => Eval.pure(f(value)));
+
+//   /// FlatMap (bind) operation
+//   Eval<U> bind<U>(Eval<U> Function(T) f) => Eval((runtime) {
+//     final result = runEval(this, runtime);
+//     return result.match((error) => Left(error), (value) {
+//       final (result, runtime) = value;
+//       return runEval(f(result), runtime);
+//     });
+//   });
+// }
+
 class Eval<T> {
-  final Either<EvalError, (T, Runtime)> Function(Runtime) _run;
+  final Trampoline<T> Function(Runtime) _run;
 
   const Eval(this._run);
 
-  /// Create a successful evaluation
-  static Eval<T> pure<T>(T value) => Eval((runtime) => Right((value, runtime)));
+  /// Базовое значение возвращает Done мгновенно
+  static Eval<T> pure<T>(T value) =>
+      Eval((runtime) => Done(Right((value, runtime))));
 
-  /// Map over the result
-  Eval<U> map<U>(U Function(T) f) => bind((value) => Eval.pure(f(value)));
+  /// Ошибка тоже возвращает Done
+  static Eval<T> fail<T>(EvalError error) =>
+      Eval((runtime) => Done(Left(error)));
 
-  /// FlatMap (bind) operation
+  /// Функция ручного прерывания (чтобы разбить тяжелые вычисления)
+  static Eval<T> defer<T>(Eval<T> Function() thunk) =>
+      Eval((runtime) => Suspend(thunk(), runtime));
+
+  /// Map over the result (Optimized for Trampoline)
+  Eval<U> map<U>(U Function(T) f) => Eval((runtime) {
+    final step = _run(runtime);
+
+    return switch (step) {
+      // 1. Если текущий шаг вернул результат, мы просто применяем
+      // функцию к значению и сразу отдаем Done. Никаких лишних Suspend!
+      Done(:final result) => Done(
+        result.match(
+          (error) => Left(error), // Ошибку не трогаем
+          (value) {
+            final (t, newRuntime) = value;
+            return Right((f(t), newRuntime)); // Меняем T на U
+          },
+        ),
+      ),
+
+      // 2. Если вычисление ушло в паузу, мы берем следующий Eval
+      // и говорим ему: "Когда выполнишься, не забудь сделать map(f)".
+      Suspend(:final nextEval, :final runtime) => Suspend(
+        nextEval.map(f),
+        runtime,
+      ),
+    };
+  });
+
+  /// ТОТ САМЫЙ BIND, КОТОРЫЙ НЕ ПАДАЕТ
   Eval<U> bind<U>(Eval<U> Function(T) f) => Eval((runtime) {
-    final result = runEval(this, runtime);
-    return result.match((error) => Left(error), (value) {
-      final (result, runtime) = value;
-      return runEval(f(result), runtime);
-    });
+    // 1. Делаем ровно ОДИН шаг текущего вычисления
+    final step = _run(runtime);
+
+    return switch (step) {
+      // 2. Если левая часть завершилась...
+      Done(:final result) => result.match(
+        // Ошибку прокидываем дальше
+        (error) => Done(Left(error)),
+        (value) {
+          final (t, newRuntime) = value;
+          // УСПЕХ: Мы применяем функцию `f`, получаем следующий Eval,
+          // НО НЕ ЗАПУСКАЕМ ЕГО! Мы возвращаем Suspend.
+          // Это заставит Dart ВЫЙТИ из функции и отдать Eval в while-цикл.
+          return Suspend(f(t), newRuntime);
+        },
+      ),
+
+      // 3. Если левая часть ЕЩЕ НЕ завершилась (внутри глубокая рекурсия)...
+      Suspend(:final nextEval, :final runtime) =>
+        // Мы берем следующий шаг и "приклеиваем" к нему наш bind!
+        // Dart-стек тут не растет, мы просто создаем новый объект Eval в куче.
+        Suspend(nextEval.bind(f), runtime),
+    };
   });
 }
 
@@ -35,8 +119,29 @@ class Eval<T> {
 /// ============================================================================
 
 /// Run the evaluation with initial runtime (matches Haskell runEval)
-Either<EvalError, (T, Runtime)> runEval<T>(Eval<T> eval, Runtime runtime) =>
-    eval._run(runtime);
+// Either<EvalError, (T, Runtime)> runEval<T>(Eval<T> eval, Runtime runtime) =>
+//     eval._run(runtime);
+
+Either<EvalError, (T, Runtime)> runEval<T>(Eval<T> eval, Runtime runtime) {
+  // Кладем первую задачу в "луп"
+  Trampoline<T> current = Suspend(eval, runtime);
+
+  while (true) {
+    switch (current) {
+      // Событие: всё закончилось. Прерываем цикл и отдаем ответ.
+      case Done(:final result):
+        return result;
+
+      // Событие: пауза.
+      case Suspend(:final nextEval, :final runtime):
+        // Выполняем ОДИН шаг и обновляем current.
+        // Так как nextEval._run возвращает Trampoline,
+        // мы никогда не уходим в стек вызовов глубже 1 уровня!
+        current = nextEval._run(runtime);
+        break;
+    }
+  }
+}
 
 /// Simple evaluation with just environment
 /// Mirrors Haskell runEvalSimple exactly
@@ -50,65 +155,73 @@ Either<EvalError, (T, Runtime)> runEvalSimple<T>(
 
 /// Throw an evaluation error
 Eval<T> throwError<T>(RuntimeException exception) =>
-    Eval((runtime) => Left(EvalError(runtime.stack, exception)));
+    Eval((runtime) => Done(Left(EvalError(runtime.stack, exception))));
 
 /// ============================================================================
 /// ENVIRONMENT AND RUNTIME ACCESS
 /// ============================================================================
 
 /// Get current environment
-Eval<Env> getEnv() => Eval((runtime) => Right((runtime.env, runtime)));
+Eval<Env> getEnv() => Eval((runtime) => Done(Right((runtime.env, runtime))));
 
 /// Set current environment
 Eval<void> putEnv(Env env) =>
-    Eval((runtime) => Right(((), runtime.copyWith(env: env))));
+    Eval((runtime) => Done(Right(((), runtime.copyWith(env: env)))));
 
 /// Get root environment
-Eval<Env> getRootEnv() => Eval((runtime) => Right((runtime.rootEnv, runtime)));
+Eval<Env> getRootEnv() =>
+    Eval((runtime) => Done(Right((runtime.rootEnv, runtime))));
 
 /// Set root environment
 Eval<void> putRootEnv(Env rootEnv) =>
-    Eval((runtime) => Right(((), runtime.copyWith(rootEnv: rootEnv))));
+    Eval((runtime) => Done(Right(((), runtime.copyWith(rootEnv: rootEnv)))));
 
 /// Get current stack
 Eval<CallStack> getStack() =>
-    Eval((runtime) => Right((runtime.stack, runtime)));
+    Eval((runtime) => Done(Right((runtime.stack, runtime))));
 
 /// Push stack frame
 Eval<void> pushCall(String name) => Eval(
-  (runtime) => Right(((), runtime.copyWith(stack: [name, ...runtime.stack]))),
+  (runtime) =>
+      Done(Right(((), runtime.copyWith(stack: [name, ...runtime.stack])))),
 );
 
 /// Pop stack frame
 Eval<void> popCall() => Eval(
-  (runtime) => runtime.stack.isEmpty
-      ? Left(
-          EvalError(
-            runtime.stack,
-            RuntimeException('stack-error', IrString('Cannot pop empty stack')),
-          ),
-        )
-      : Right(((), runtime.copyWith(stack: runtime.stack.sublist(1)))),
+  (runtime) => Done(
+    runtime.stack.isEmpty
+        ? Left(
+            EvalError(
+              runtime.stack,
+              RuntimeException(
+                'stack-error',
+                IrString('Cannot pop empty stack'),
+              ),
+            ),
+          )
+        : Right(((), runtime.copyWith(stack: runtime.stack.sublist(1)))),
+  ),
 );
 
 /// Get module registry
 Eval<ModuleRegistry> getRegistry() =>
-    Eval((runtime) => Right((runtime.registry, runtime)));
+    Eval((runtime) => Done(Right((runtime.registry, runtime))));
 
 /// Get import cache
 Eval<ImportedModuleCache> getCache() =>
-    Eval((runtime) => Right((runtime.importCache, runtime)));
+    Eval((runtime) => Done(Right((runtime.importCache, runtime))));
 
 // /// Set import cache
 // Eval<void> putCache(ImportedModuleCache cache) =>
 //     Eval((runtime) => Right(((), runtime.copyWith(importCache: cache))));
 
 /// Get complete runtime
-Eval<Runtime> getRuntime() => Eval((runtime) => Right((runtime, runtime)));
+Eval<Runtime> getRuntime() =>
+    Eval((runtime) => Done(Right((runtime, runtime))));
 
 /// Set complete runtime
 Eval<void> putRuntime(Runtime newRuntime) =>
-    Eval((_) => Right(((), newRuntime)));
+    Eval((_) => Done(Right(((), newRuntime))));
 
 /// ============================================================================
 /// VARIABLE MANAGEMENT
@@ -116,8 +229,9 @@ Eval<void> putRuntime(Runtime newRuntime) =>
 
 /// Define a variable in current environment
 Eval<void> defineVarEval(String name, Ir value) => Eval(
-  (runtime) =>
-      Right(((), runtime.copyWith(env: defineVar(name, value, runtime.env)))),
+  (runtime) => Done(
+    Right(((), runtime.copyWith(env: defineVar(name, value, runtime.env)))),
+  ),
 );
 
 /// ============================================================================
@@ -129,9 +243,9 @@ Eval<T> withEnv<T>(Env tempEnv, Eval<T> action) => Eval((runtime) {
   final originalEnv = runtime.env;
   final tempRuntime = runtime.copyWith(env: tempEnv);
   final result = runEval(action, tempRuntime);
-  return result.match((error) => Left(error), (value) {
+  return result.match((error) => Done(Left(error)), (value) {
     final (result, runtime) = value;
-    return Right((result, runtime.copyWith(env: originalEnv)));
+    return Done(Right((result, runtime.copyWith(env: originalEnv))));
   });
 });
 

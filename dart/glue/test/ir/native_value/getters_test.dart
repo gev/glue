@@ -37,11 +37,11 @@ class Calculator {
 void main() {
   group('Value property getters', () {
     group('Property access returning values', () {
-      test('accesses simple property returning a string', () async {
+      test('accesses simple property returning a string', () {
         // Create a person with a name property
         final person = Person('Alice', 30);
         final nameGetter = Eval(
-          (runtime) => Right((IrString('Alice'), runtime)),
+          (runtime) => Done(Right((IrString('Alice'), runtime))),
         );
         final getters = <String, Eval<Ir>>{'name': nameGetter};
         final hostVal = hostValueWithProps(person, getters);
@@ -49,7 +49,7 @@ void main() {
         final env = defineVar('person', hostIr, emptyEnv());
         final dottedIr = IrDottedSymbol('person.name');
 
-        final result = await runEvalSimple(eval(dottedIr), env);
+        final result = runEvalSimple(eval(dottedIr), env);
         result.match(
           (error) => fail('Property access should succeed: $error'),
           (value) {
@@ -59,17 +59,19 @@ void main() {
         );
       });
 
-      test('accesses property returning a number', () async {
+      test('accesses property returning a number', () {
         // Create a person with an age property
         final person = Person('Bob', 25);
-        final ageGetter = Eval((runtime) => Right((IrInteger(25), runtime)));
+        final ageGetter = Eval(
+          (runtime) => Done(Right((IrInteger(25), runtime))),
+        );
         final getters = <String, Eval<Ir>>{'age': ageGetter};
         final hostVal = hostValueWithProps(person, getters);
         final hostIr = IrNativeValue(hostVal);
         final env = defineVar('person', hostIr, emptyEnv());
         final dottedIr = IrDottedSymbol('person.age');
 
-        final result = await runEvalSimple(eval(dottedIr), env);
+        final result = runEvalSimple(eval(dottedIr), env);
         result.match(
           (error) => fail('Property access should succeed: $error'),
           (value) {
@@ -81,11 +83,11 @@ void main() {
     });
 
     group('Method calls returning computed values', () {
-      test('calls method that computes and returns a value', () async {
+      test('calls method that computes and returns a value', () {
         // Create a calculator with a compute method
         final calc = Calculator(10);
         final computeGetter = Eval(
-          (runtime) => Right((IrInteger(42), runtime)),
+          (runtime) => Done(Right((IrInteger(42), runtime))),
         ); // Always returns 42
         final getters = <String, Eval<Ir>>{'compute': computeGetter};
         final hostVal = hostValueWithProps(calc, getters);
@@ -93,7 +95,7 @@ void main() {
         final env = defineVar('calc', hostIr, emptyEnv());
         final dottedIr = IrDottedSymbol('calc.compute');
 
-        final result = await runEvalSimple(eval(dottedIr), env);
+        final result = runEvalSimple(eval(dottedIr), env);
         result.match((error) => fail('Method call should succeed: $error'), (
           value,
         ) {
@@ -102,11 +104,11 @@ void main() {
         });
       });
 
-      test('calls method that accesses host object data', () async {
+      test('calls method that accesses host object data', () {
         // Create a calculator that returns double its base value
         final calc = Calculator(15);
         final doubleGetter = Eval(
-          (runtime) => Right((IrInteger(30), runtime)),
+          (runtime) => Done(Right((IrInteger(30), runtime))),
         ); // 15 * 2
         final getters = <String, Eval<Ir>>{'double': doubleGetter};
         final hostVal = hostValueWithProps(calc, getters);
@@ -114,7 +116,7 @@ void main() {
         final env = defineVar('calc', hostIr, emptyEnv());
         final dottedIr = IrDottedSymbol('calc.double');
 
-        final result = await runEvalSimple(eval(dottedIr), env);
+        final result = runEvalSimple(eval(dottedIr), env);
         result.match((error) => fail('Method call should succeed: $error'), (
           value,
         ) {
@@ -125,12 +127,14 @@ void main() {
     });
 
     group('Multiple properties on same object', () {
-      test('accesses different properties on the same host value', () async {
+      test('accesses different properties on the same host value', () {
         final person = Person('Charlie', 35);
         final nameGetter = Eval(
-          (runtime) => Right((IrString('Charlie'), runtime)),
+          (runtime) => Done(Right((IrString('Charlie'), runtime))),
         );
-        final ageGetter = Eval((runtime) => Right((IrInteger(35), runtime)));
+        final ageGetter = Eval(
+          (runtime) => Done(Right((IrInteger(35), runtime))),
+        );
         final getters = <String, Eval<Ir>>{
           'name': nameGetter,
           'age': ageGetter,
@@ -141,7 +145,7 @@ void main() {
 
         // Test name property
         final nameDotted = IrDottedSymbol('person.name');
-        final nameResult = await runEvalSimple(eval(nameDotted), env);
+        final nameResult = runEvalSimple(eval(nameDotted), env);
         nameResult.match(
           (error) => fail('Name property access should succeed: $error'),
           (value) {
@@ -152,7 +156,7 @@ void main() {
 
         // Test age property
         final ageDotted = IrDottedSymbol('person.age');
-        final ageResult = await runEvalSimple(eval(ageDotted), env);
+        final ageResult = runEvalSimple(eval(ageDotted), env);
         ageResult.match(
           (error) => fail('Age property access should succeed: $error'),
           (value) {
@@ -164,17 +168,17 @@ void main() {
     });
 
     group('Error handling', () {
-      test('returns Void when accessing non-existent property', () async {
+      test('returns Void when accessing non-existent property', () {
         final person = Person('David', 40);
         final getters = <String, Eval<Ir>>{
-          'name': Eval((runtime) => Right((IrString('David'), runtime))),
+          'name': Eval((runtime) => Done(Right((IrString('David'), runtime)))),
         };
         final hostVal = hostValueWithProps(person, getters);
         final hostIr = IrNativeValue(hostVal);
         final env = defineVar('person', hostIr, emptyEnv());
         final dottedIr = IrDottedSymbol('person.nonexistent');
 
-        final result = await runEvalSimple(eval(dottedIr), env);
+        final result = runEvalSimple(eval(dottedIr), env);
         result.match((error) => fail('Error: $error'), (value) {
           expect(value.$1, equals(IrVoid()));
         });
