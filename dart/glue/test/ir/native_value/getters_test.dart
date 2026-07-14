@@ -184,11 +184,11 @@ void main() {
         });
       });
 
-      test('fails when accessing property on non-host value', () async {
+      test('fails when accessing property on non-host value', () {
         final env = defineVar('number', IrInteger(42), emptyEnv());
         final dottedIr = IrDottedSymbol('number.property');
 
-        final result = await runEvalSimple(eval(dottedIr), env);
+        final result = runEvalSimple(eval(dottedIr), env);
         result.match(
           (error) => expect(true, isTrue), // Should fail
           (value) => fail(
