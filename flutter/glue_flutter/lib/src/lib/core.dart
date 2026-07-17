@@ -17,6 +17,7 @@ import 'package:glue_flutter/src/lib/ui/core/styles/hsva.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/image_repeat.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/main_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/main_axis_size.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/offset.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/radius.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/rgb.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/rgba.dart';
@@ -125,6 +126,11 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   ('radius-circular', radiusCircular),
   ('radius-elliptical', radiusElliptical),
   ('radius-zero', radiusZero),
+
+  //Offset function
+  ('offset-zero', offsetZero),
+  ('offset-infinite', offsetInfinite),
+  ('offset', offset),
 
   // Enum union objects
   ('cross-axis-alignment', crossAxisAlignment),
