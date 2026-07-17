@@ -29,8 +29,8 @@ Eval<Ir> radiusEllipticalImpl(Ir props) => switch (props) {
 
 Eval<Ir> createRadiusElliptical(WidgetProperties properties) {
   final radius = Radius.elliptical(
-    properties.getValue<double>('x') ?? 0.0,
-    properties.getValue<double>('y') ?? 0.0,
+    properties.getDouble('x') ?? 0.0,
+    properties.getDouble('y') ?? 0.0,
   );
   return Eval.pure(IrNativeValue(Value(radius)));
 }
