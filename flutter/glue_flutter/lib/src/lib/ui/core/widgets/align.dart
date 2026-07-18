@@ -20,8 +20,7 @@ Eval<Ir> alignImpl(Ir props) => switch (props) {
 Eval<Ir> _createAlign(WidgetProperties properties) {
   final alignWidget = Align(
     key: properties.key,
-    alignment:
-        properties.getValue<AlignmentGeometry>('alignment') ?? Alignment.center,
+    alignment: properties.getValue<Alignment>('alignment') ?? Alignment.center,
     widthFactor: properties.getDouble('witdh-factor'),
     heightFactor: properties.getDouble('height-factor'),
     child: properties.child,
