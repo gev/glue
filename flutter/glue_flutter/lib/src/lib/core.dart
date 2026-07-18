@@ -34,6 +34,7 @@ import 'package:glue_flutter/src/lib/ui/core/styles/vertical_direction.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/wrap_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/wrap_cros_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/align.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/animated_positioned.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/aspect_ratio.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/center.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/column.dart';
@@ -62,6 +63,7 @@ import 'package:glue_flutter/src/lib/ui/core/widgets/wrap.dart';
 final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   // Core widget functions
   ('align', align),
+  ('animated-positioned', animatedPositioned),
   ('aspect-ratio', aspectRatio),
   ('center', center),
   ('column', column),
