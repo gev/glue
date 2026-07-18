@@ -46,6 +46,7 @@ import 'package:glue_flutter/src/lib/ui/core/widgets/image.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/list_view.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/padding.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/placeholder.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/positioned.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/row.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/single_child_scroll_view.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/sized_box.dart';
@@ -73,6 +74,7 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   ('hero', hero),
   ('list-view', listView),
   ('padding', padding),
+  ('positioned', positioned),
   ('placeholder', placeholder),
   ('row', row),
   ('single-child-scroll-view', singleChildScrollView),
