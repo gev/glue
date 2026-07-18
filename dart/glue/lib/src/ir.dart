@@ -12,6 +12,13 @@ class Value {
 
   @override
   String toString() => 'Value($value, getters: ${getters.length})';
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || (other is Value && value == other.value);
+
+  @override
+  int get hashCode => value.hashCode;
 }
 
 /// Create a host value from any value
@@ -202,7 +209,9 @@ class IrNativeValue extends Ir {
   const IrNativeValue(this.value);
 
   @override
-  bool operator ==(Object other) => identical(this, other);
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is IrNativeValue && value == other.value);
 
   @override
   int get hashCode => value.hashCode;
