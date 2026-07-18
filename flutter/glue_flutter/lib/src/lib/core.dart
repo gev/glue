@@ -7,6 +7,7 @@ import 'package:glue_flutter/src/lib/ui/core/styles/box_fit.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/brightness.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/clip.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/cross_axis_alignment.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/duration.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/edge_insets.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/filter_quality.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/flutter_logo_style.dart';
@@ -99,6 +100,8 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   ('hsv', hsv),
   ('hsva', hsva),
 
+  //Duration function
+  ('duration', duration),
   // Text style creation function
   ('text-style', textStyle),
 
