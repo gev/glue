@@ -4,6 +4,7 @@ import 'package:glue/src/lib/builtin/lambda.dart';
 import 'package:glue/src/lib/builtin/let.dart';
 import 'package:glue/src/lib/builtin/quote.dart';
 import 'package:glue/src/lib/builtin/try.dart';
+import 'package:glue/src/lib/builtin/void.dart';
 import 'package:glue/src/module.dart';
 
 /// Builtin module - special forms and core language constructs
@@ -19,4 +20,6 @@ final ModuleInfo builtinModule = nativeModule('ffi.builtin', [
   ('error', error),
   ('try', tryFunc),
   ('quote', quote),
+  ('void', void_),
+  ('_', void_),
 ]);
