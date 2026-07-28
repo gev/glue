@@ -33,7 +33,7 @@ Value hostValueWithProps(dynamic value, Map<String, Eval<Ir>> getters) =>
 /// Extract a host value with type safety
 /// Mirrors Haskell extractValue exactly
 T? extractValue<T>(Value hostValue) => switch (hostValue) {
-  Value(value: T v) => v,
+  Value(:final value) when value is T => value,
   _ => null,
 };
 
