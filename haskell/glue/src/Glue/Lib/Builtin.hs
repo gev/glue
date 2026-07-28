@@ -1,6 +1,7 @@
 module Glue.Lib.Builtin where
 
 import Glue.Eval (Eval)
+import Glue.Lib.Builtin.At (at)
 import Glue.Lib.Builtin.Def (def)
 import Glue.Lib.Builtin.Error (errorFunc)
 import Glue.Lib.Builtin.Lambda (lambda)
@@ -26,4 +27,6 @@ builtin =
         , ("#", list)
         , ("void", void)
         , ("_", void)
+        , ("at", at)
+        , ("@", at)
         ]

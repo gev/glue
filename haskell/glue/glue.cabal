@@ -39,6 +39,7 @@ library
     Glue.Lib.Bool.Not
     Glue.Lib.Bool.Or
     Glue.Lib.Builtin
+    Glue.Lib.Builtin.At
     Glue.Lib.Builtin.Def
     Glue.Lib.Builtin.Error
     Glue.Lib.Builtin.Lambda
