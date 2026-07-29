@@ -1,4 +1,5 @@
 import 'package:glue/module.dart';
+import 'package:glue_flutter/src/lib/ui/material/styles/button_style.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/color_scheme_dark.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/color_scheme_light.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/colors.dart';
@@ -144,6 +145,8 @@ final ModuleInfo uiMaterialModule = nativeModule('ffi.ui.material', [
   ('color-scheme-light', colorSchemeLight),
   ('color-scheme-dark', colorSchemeDark),
   ('text-theme', textTheme),
+
+  ('button-style', buttonStyle),
 
   ('show-dialog', showDialog_),
   ('show-bottom-sheet', showBottomSheet_),
