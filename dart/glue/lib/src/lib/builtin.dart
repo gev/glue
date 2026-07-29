@@ -1,3 +1,4 @@
+import 'package:glue/src/lib/builtin/at.dart';
 import 'package:glue/src/lib/builtin/def.dart';
 import 'package:glue/src/lib/builtin/error.dart';
 import 'package:glue/src/lib/builtin/lambda.dart';
@@ -25,4 +26,6 @@ final ModuleInfo builtinModule = nativeModule('ffi.builtin', [
   ('#', list),
   ('void', void_),
   ('_', void_),
+  ('at', at),
+  ('@', at),
 ]);
