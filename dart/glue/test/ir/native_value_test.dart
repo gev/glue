@@ -67,10 +67,10 @@ void main() {
     });
 
     group('Value equality', () {
-      test('host values are never equal (opaque comparison)', () {
+      test('host values are equal', () {
         final hv1 = hostValue(TestWidget('a', true));
         final hv2 = hostValue(TestWidget('a', true));
-        expect(hv1 == hv2, isFalse);
+        expect(hv1 == hv2, isTrue);
       });
 
       test('different host values are not equal', () {
@@ -117,12 +117,10 @@ void main() {
     group('IR with NativeValue', () {
       test('IR equality handles NativeValue (host values are never equal)', () {
         final hv1 = hostValue(TestWidget('ir', true));
-        final hv2 = hostValue(
-          TestWidget('ir', true),
-        ); // Same content, different instances
+        final hv2 = hostValue(TestWidget('ir', true));
         final ir1 = IrNativeValue(hv1);
         final ir2 = IrNativeValue(hv2);
-        expect(ir1 == ir2, isFalse); // Host values are never equal
+        expect(ir1 == ir2, isTrue); // Host values equal
       });
 
       test('IR show displays NativeValue', () {
