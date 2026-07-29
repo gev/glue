@@ -12,6 +12,7 @@ import 'package:glue_flutter/src/lib/ui/material/styles/theme_light.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/action_chip.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/alert_dialog.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/app_bar.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/back_button.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/badge.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/bottom_app_bar.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/bottom_navigation_bar.dart';
@@ -22,6 +23,7 @@ import 'package:glue_flutter/src/lib/ui/material/widgets/checkbox.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/chip.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/choice_chip.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/circular_progress_indicator.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/close_button.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/data_table.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/date_picker_dialog.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/divider.dart';
@@ -72,7 +74,9 @@ final ModuleInfo uiMaterialModule = nativeModule('ffi.ui.material', [
   // Material widgets
   ('app-bar', appBar),
   ('scaffold', scaffold),
+  ('back-button', backButton),
   ('button', button),
+  ('close-button', closeButton),
   ('filled-button', filledButton),
   ('filled-tonal-button', filledTonalButton),
   ('outlined-button', outlinedButton),
