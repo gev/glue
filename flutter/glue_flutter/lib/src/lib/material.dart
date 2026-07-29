@@ -1,5 +1,4 @@
 import 'package:glue/module.dart';
-import 'package:glue_flutter/src/lib/ui/core/widgets/material.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/color_scheme_dark.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/color_scheme_light.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/colors.dart';
@@ -41,6 +40,7 @@ import 'package:glue_flutter/src/lib/ui/material/widgets/ink_well.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/input_chip.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/linear_progress_indicator.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/list_tile.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/material.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/menu_anchor.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/navigation_bar.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/navigation_drawer.dart';
