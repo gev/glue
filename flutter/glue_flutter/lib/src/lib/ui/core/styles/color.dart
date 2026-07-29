@@ -3,7 +3,8 @@ import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 
-Ir makeColor(Color c) {
+Ir makeColor(Color? c) {
+  if (c == null) return IrVoid();
   return IrNativeValue(
     Value(
       c,
