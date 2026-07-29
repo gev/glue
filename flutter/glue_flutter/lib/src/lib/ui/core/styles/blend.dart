@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
+import 'package:glue_flutter/glue_flutter.dart';
 import 'package:glue_flutter/src/utils/value_extractors.dart';
 
 /// Blend function - (blend color1 color2 alphaBlend)
@@ -24,7 +25,7 @@ Eval<Ir> blendColors(Ir c1, Ir c2, Ir alpha) {
       color1.withOpacity(alphaValue),
       color2,
     );
-    return Eval.pure(IrNativeValue(Value(blendedColor)));
+    return Eval.pure(makeColor(blendedColor));
   }
   return Eval.pure(IrString('Error: Invalid colors for blending'));
 }

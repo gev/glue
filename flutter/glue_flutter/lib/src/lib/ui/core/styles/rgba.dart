@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/color.dart';
 import 'package:glue_flutter/src/utils/value_extractors.dart';
 
 /// RGBA function - (rgba 255 0 0 128)
@@ -18,10 +19,15 @@ Eval<Ir> rgbaImpl(Ir r) => Eval.pure(
 );
 
 Eval<Ir> createRgbaColor(Ir r, Ir g, Ir b, Ir a) {
-  final red = extractInt(r)?.clamp(0, 255) ?? 0;
-  final green = extractInt(g)?.clamp(0, 255) ?? 0;
-  final blue = extractInt(b)?.clamp(0, 255) ?? 0;
   final alpha = extractInt(a)?.clamp(0, 255) ?? 255;
-  final color = Color.fromARGB(alpha, red, green, blue);
-  return Eval.pure(IrNativeValue(Value(color)));
+  final red = extractDouble(r)?.clamp(0, 1) ?? 0;
+  final green = extractDouble(g)?.clamp(0, 1) ?? 0;
+  final blue = extractDouble(b)?.clamp(0, 1) ?? 0;
+  final color = Color.fromARGB(
+    (255 * alpha).round(),
+    (255 * red).round(),
+    (255 * green).round(),
+    (255 * blue).round(),
+  );
+  return Eval.pure(makeColor(color));
 }

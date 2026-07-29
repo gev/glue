@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/color.dart';
 import 'package:glue_flutter/src/utils/value_extractors.dart';
 
 /// HSV function - (hsv 360 1.0 1.0)
@@ -17,5 +18,5 @@ Eval<Ir> createHsvColor(Ir h, Ir s, Ir v) {
   final saturation = (extractDouble(s)?.clamp(0, 1) ?? 0).toDouble();
   final value = (extractDouble(v)?.clamp(0, 1) ?? 1).toDouble();
   final color = HSVColor.fromAHSV(1.0, hue, saturation, value).toColor();
-  return Eval.pure(IrNativeValue(Value(color)));
+  return Eval.pure(makeColor(color));
 }
