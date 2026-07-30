@@ -38,6 +38,7 @@ import 'package:glue_flutter/src/lib/ui/core/widgets/align.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/animated_positioned.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/aspect_ratio.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/center.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/clip_rrect.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/column.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/container.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/custom_scroll_view.dart';
@@ -67,6 +68,7 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   ('animated-positioned', animatedPositioned),
   ('aspect-ratio', aspectRatio),
   ('center', center),
+  ('clip-rrect', clipRRect),
   ('column', column),
   ('container', container),
   ('custom-scroll-view', customScrollView),
