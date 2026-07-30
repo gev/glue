@@ -2,6 +2,7 @@ import 'package:glue/module.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/alignment.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/axis.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/border_rdius.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/box-shadow.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/box_constraints.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/box_decoration.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/box_fit.dart';
@@ -114,6 +115,7 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   ('box-constraints-tight', boxConstraintsTight),
 
   ('box-decoration', boxDecoration),
+  ('box-shadow', boxShadow),
 
   // Edge insets creation functions
   ('edge-insets-all', edgeInsetsAll),
