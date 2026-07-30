@@ -335,6 +335,23 @@ bool? toBool(Ir? ir) => switch (ir) {
   _ => null,
 };
 
+List<T> toList<T>(Ir? value) => switch (value) {
+  IrList(:final elements) =>
+    elements
+        .map(
+          (child) => switch (child) {
+            IrNativeValue(value: Value(value: T widget)) => widget,
+            _ => null,
+          },
+        )
+        .whereType<T>()
+        .toList(),
+  _ => switch (to<T>(value)) {
+    null => [],
+    T res => [res],
+  },
+};
+
 String? toString(Ir? ir) => switch (ir) {
   IrString(:final value) => value,
   _ => null,
