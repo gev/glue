@@ -5,6 +5,7 @@ import 'package:glue_flutter/src/lib/ui/core/styles/border_rdius.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/box_constraints.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/box_decoration.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/box_fit.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/box_shape.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/brightness.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/clip.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/cross_axis_alignment.dart';
@@ -162,6 +163,7 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   ('font-weight', fontWeight),
   ('flutter-logo-style', flutterLogoStyle),
   ('box-fit', boxFit),
+  ('box-shape', boxShape),
   ('image-repeat', imageRepeat),
   ('text-overflow', textOverflow),
   ('text-width-basis', textWidthBasis),
