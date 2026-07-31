@@ -16,7 +16,6 @@ import 'package:glue_flutter/src/lib/ui/material/widgets/app_bar.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/back_button.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/badge.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/bottom_app_bar.dart';
-import 'package:glue_flutter/src/lib/ui/material/widgets/bottom_navigation_bar.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/bottom_sheet.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/button.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/card.dart';
@@ -102,7 +101,6 @@ final ModuleInfo uiMaterialModule = nativeModule('ffi.ui.material', [
   ('slider', slider),
   ('alert-dialog', alertDialog),
   ('chip', chip),
-  ('bottom-navigation-bar', bottomNavigationBar),
   ('drawer', drawer),
   ('date-picker-dialog', datePickerDialog),
   ('time-picker-dialog', timePickerDialog),
@@ -128,9 +126,9 @@ final ModuleInfo uiMaterialModule = nativeModule('ffi.ui.material', [
   ('action-chip', actionChip),
   ('bottom-app-bar', bottomAppBar),
   ('navigation-drawer', navigationDrawer),
+  ('navigation-rail', navigationRail),
   ('drawer-header', drawerHeader),
   ('user-accounts-drawer-header', userAccountsDrawerHeader),
-  ('navigation-rail', navigationRail),
   ('material', material),
 
   // Material enum union objects
