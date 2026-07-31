@@ -44,6 +44,7 @@ import 'package:glue_flutter/src/lib/ui/material/widgets/linear_progress_indicat
 import 'package:glue_flutter/src/lib/ui/material/widgets/list_tile.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/material.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/menu_anchor.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/navigation-destination.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/navigation_bar.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/navigation_drawer.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/navigation_rail.dart';
@@ -104,7 +105,6 @@ final ModuleInfo uiMaterialModule = nativeModule('ffi.ui.material', [
   ('drawer', drawer),
   ('date-picker-dialog', datePickerDialog),
   ('time-picker-dialog', timePickerDialog),
-  ('navigation-bar', navigationBar),
   ('tab-bar', tabBar),
   ('menu-anchor', menuAnchor),
   ('expansion-tile', expansionTile),
@@ -125,6 +125,8 @@ final ModuleInfo uiMaterialModule = nativeModule('ffi.ui.material', [
   ('choice-chip', choiceChip),
   ('action-chip', actionChip),
   ('bottom-app-bar', bottomAppBar),
+  ('navigation-bar', navigationBar),
+  ('navigation-destination', navigationDestination),
   ('navigation-drawer', navigationDrawer),
   ('navigation-rail', navigationRail),
   ('drawer-header', drawerHeader),
