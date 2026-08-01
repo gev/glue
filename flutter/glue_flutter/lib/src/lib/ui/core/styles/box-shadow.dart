@@ -13,6 +13,8 @@ final Ir boxShadow = IrNativeFunc((props) {
             offset: to<Offset>(properties['offset']) ?? Offset.zero,
             blurRadius: toDouble(properties['blur-radius']) ?? 0.0,
             spreadRadius: toDouble(properties['spread-radius']) ?? 0.0,
+            blurStyle:
+                to<BlurStyle>(properties['blur-style']) ?? BlurStyle.normal,
           ),
         ),
       ),
