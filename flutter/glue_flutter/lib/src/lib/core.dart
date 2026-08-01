@@ -1,6 +1,7 @@
 import 'package:glue/module.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/alignment.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/axis.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/blur_style.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/border_rdius.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/box-shadow.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/box_constraints.dart';
@@ -152,6 +153,7 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
 
   // Enum union objects
   ('alignment', alignment),
+  ('blur-style', blurStyle),
   ('cross-axis-alignment', crossAxisAlignment),
   ('main-axis-alignment', mainAxisAlignment),
   ('main-axis-size', mainAxisSize),
