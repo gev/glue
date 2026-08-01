@@ -23,7 +23,7 @@ Eval<Ir> _createContainer(WidgetProperties properties) {
     alignment: properties.getValue<Alignment>('alignment'),
     padding: properties.getValue<EdgeInsetsGeometry>('padding'),
     color: properties.getColor('color'),
-    decoration: properties.getValue('decoration'),
+    decoration: properties.getValue<Decoration>('decoration'),
     foregroundDecoration: properties.getValue<Decoration>(
       'foreground-decoration',
     ),
