@@ -40,7 +40,7 @@ Eval<Ir> _createChip(WidgetProperties properties) {
       clipBehavior: properties.getValue<Clip>('clip-behavior') ?? Clip.none,
       focusNode: properties.getValue<FocusNode>('focus-node'),
       autofocus: properties.getBool('autofocus') ?? false,
-      color: properties.getValue<WidgetStateProperty<Color?>>('color'),
+      color: WidgetStateProperty.all(properties.getValue<Color?>('color')),
       backgroundColor: properties.getColor('background-color'),
       padding: properties.getValue<EdgeInsetsGeometry>('padding'),
       visualDensity: properties.getValue<VisualDensity>('visual-density'),
