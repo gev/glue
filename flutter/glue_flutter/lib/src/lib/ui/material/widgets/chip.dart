@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
@@ -17,11 +18,15 @@ Eval<Ir> chipImpl(Ir props) => switch (props) {
 
 /// Create Chip widget from properties
 Eval<Ir> _createChip(WidgetProperties properties) {
+  final label = properties.getWidget('label');
+  if (label == null) {
+    return throwError(wrongArgumentType(['Property `label` required']));
+  }
   return getRuntime().map((runtime) {
     final chipWidget = Chip(
       key: properties.key,
       avatar: properties.getWidget('avatar'),
-      label: properties.child ?? const Text('Chip'),
+      label: label,
       labelStyle: properties.getValue<TextStyle>('label-style'),
       labelPadding: properties.getValue<EdgeInsetsGeometry>('label-padding'),
       deleteIcon: properties.getWidget('delete-icon'),
