@@ -1,31 +1,31 @@
 import 'package:glue/src/env.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue/src/lib/list/cdr.dart';
+import 'package:glue/src/lib/list/head.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('Glue.Lib.List.Cdr (cdr)', () {
-    test('returns the rest of a list', () async {
+  group('Glue.Lib.List.Head (head)', () {
+    test('returns the first element of a list', () async {
       final args = [
         IrList([IrInteger(1), IrInteger(2), IrInteger(3)]),
       ];
-      final result = await runEvalSimple(apply(cdr, args), emptyEnv());
-      result.match((error) => fail('Cdr failed: $error'), (value) {
+      final result = runEvalSimple(apply(head, args), emptyEnv());
+      result.match((error) => fail('Head failed: $error'), (value) {
         final (res, _) = value;
-        expect(res, equals(IrList([IrInteger(2), IrInteger(3)])));
+        expect(res, equals(IrInteger(1)));
       });
     });
 
     test('fails on empty list', () async {
       final args = [IrList([])];
-      final result = await runEvalSimple(apply(cdr, args), emptyEnv());
+      final result = runEvalSimple(apply(head, args), emptyEnv());
       expect(result.isLeft, isTrue);
     });
 
     test('fails on non-list', () async {
       final args = [IrInteger(42)];
-      final result = await runEvalSimple(apply(cdr, args), emptyEnv());
+      final result = runEvalSimple(apply(head, args), emptyEnv());
       expect(result.isLeft, isTrue);
     });
   });
