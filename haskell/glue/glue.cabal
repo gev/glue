@@ -67,7 +67,7 @@ library
     Glue.Lib.List.Nth
     Glue.Lib.List.Partition
     Glue.Lib.List.Position
-    Glue.Lib.List.Prepand
+    Glue.Lib.List.Prepend
     Glue.Lib.List.Remove
     Glue.Lib.List.Reverse
     Glue.Lib.List.Sort
