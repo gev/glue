@@ -59,6 +59,8 @@ library
     Glue.Lib.List.Filter
     Glue.Lib.List.Find
     Glue.Lib.List.Flatten
+    Glue.Lib.List.Foldl
+    Glue.Lib.List.Foldr
     Glue.Lib.List.Head
     Glue.Lib.List.Last
     Glue.Lib.List.Length

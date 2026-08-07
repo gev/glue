@@ -8,6 +8,8 @@ import Glue.Lib.List.Drop qualified as Drop
 import Glue.Lib.List.Filter qualified as Filter
 import Glue.Lib.List.Find qualified as Find
 import Glue.Lib.List.Flatten qualified as Flatten
+import Glue.Lib.List.Foldl qualified as Foldl
+import Glue.Lib.List.Foldr qualified as Foldr
 import Glue.Lib.List.Head qualified as Head
 import Glue.Lib.List.Last qualified as Last
 import Glue.Lib.List.Length qualified as Length
@@ -36,6 +38,8 @@ list =
         , ("filter", Filter.filter)
         , ("find", Find.find)
         , ("flatten", Flatten.flatten)
+        , ("foldl", Foldl.foldl)
+        , ("foldr", Foldr.foldr)
         , ("last", Last.last)
         , ("length", Length.length)
         , ("map", Map.map)
