@@ -5,7 +5,7 @@ import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (IR (..))
 
 prepend :: IR Eval
-prepend = NativeFunc prepandImpl
+prepend = NativeFunc prependImpl
 
 prependImpl :: IR Eval -> Eval (IR Eval)
 prependImpl item = pure $ NativeFunc (prependWith item)

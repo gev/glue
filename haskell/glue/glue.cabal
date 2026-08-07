@@ -64,7 +64,6 @@ library
     Glue.Lib.List.Length
     Glue.Lib.List.Map
     Glue.Lib.List.Member
-    Glue.Lib.List.Nth
     Glue.Lib.List.Partition
     Glue.Lib.List.Position
     Glue.Lib.List.Prepend
