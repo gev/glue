@@ -43,7 +43,6 @@ Eval<Ir> _foldrLoop(Ir funcIr, Ir acc, List<Ir> elements) {
   if (elements.isEmpty) {
     return Eval.pure(acc);
   }
-  // Берем последний элемент, свертаем хвост, а затем применяем f(x, acc)
   final last = elements.last;
   final rest = elements.sublist(0, elements.length - 1);
 

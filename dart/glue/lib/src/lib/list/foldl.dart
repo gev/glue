@@ -43,7 +43,6 @@ Eval<Ir> _foldlLoop(Ir funcIr, Ir acc, List<Ir> elements) {
   if (elements.isEmpty) {
     return Eval.pure(acc);
   }
-  // Передаем аккумулятор и текущий элемент в функцию: f(acc, x)
   return apply(funcIr, [acc, elements.first]).bind((newAcc) {
     return _foldlLoop(funcIr, newAcc, elements.sublist(1));
   });
