@@ -166,23 +166,23 @@ test-suite glue-test
     Glue.Lib.IO.PrintSpec
     Glue.Lib.List.AppendSpec
     Glue.Lib.List.ButlastSpec
-    Glue.Lib.List.CarSpec
-    Glue.Lib.List.CdrSpec
-    Glue.Lib.List.ConsSpec
+    Glue.Lib.List.ConcatSpec
     Glue.Lib.List.DropSpec
     Glue.Lib.List.FilterSpec
     Glue.Lib.List.FindSpec
     Glue.Lib.List.FlattenSpec
+    Glue.Lib.List.HeadSpec
     Glue.Lib.List.LastSpec
     Glue.Lib.List.LengthSpec
     Glue.Lib.List.MapSpec
     Glue.Lib.List.MemberSpec
-    Glue.Lib.List.NthSpec
     Glue.Lib.List.PartitionSpec
     Glue.Lib.List.PositionSpec
+    Glue.Lib.List.PrependSpec
     Glue.Lib.List.RemoveSpec
     Glue.Lib.List.ReverseSpec
     Glue.Lib.List.SortSpec
+    Glue.Lib.List.TailSpec
     Glue.Lib.List.TakeSpec
     Glue.Lib.List.ZipSpec
     Glue.Lib.Math.Arithmetic.AddSpec

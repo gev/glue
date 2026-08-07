@@ -13,7 +13,7 @@ spec = describe "Glue.Lib.List.Append (Test append function)" do
         result <- runEvalSimple (apply append args) initialEnv
         case result of
             Left err -> expectationFailure $ "Append failed: " <> show err
-            Right (res, _) -> res `shouldBe` List [Integer 1, Integer 2, Integer 3, Integer 4]
+            Right (res, _) -> res `shouldBe` List [Integer 1, Integer 2, List [Integer 3, Integer 4]]
 
     it "appends empty list to non-empty list" do
         let initialEnv = []
@@ -21,7 +21,7 @@ spec = describe "Glue.Lib.List.Append (Test append function)" do
         result <- runEvalSimple (apply append args) initialEnv
         case result of
             Left err -> expectationFailure $ "Append failed: " <> show err
-            Right (res, _) -> res `shouldBe` List [Integer 1, Integer 2]
+            Right (res, _) -> res `shouldBe` List [Integer 1, Integer 2, List []]
 
     it "appends non-empty list to empty list" do
         let initialEnv = []
@@ -29,7 +29,7 @@ spec = describe "Glue.Lib.List.Append (Test append function)" do
         result <- runEvalSimple (apply append args) initialEnv
         case result of
             Left err -> expectationFailure $ "Append failed: " <> show err
-            Right (res, _) -> res `shouldBe` List [Integer 3, Integer 4]
+            Right (res, _) -> res `shouldBe` List [List [Integer 3, Integer 4]]
 
     it "appends two empty lists" do
         let initialEnv = []
@@ -37,7 +37,7 @@ spec = describe "Glue.Lib.List.Append (Test append function)" do
         result <- runEvalSimple (apply append args) initialEnv
         case result of
             Left err -> expectationFailure $ "Append failed: " <> show err
-            Right (res, _) -> res `shouldBe` List []
+            Right (res, _) -> res `shouldBe` List [List []]
 
     it "fails on non-list first argument" do
         let initialEnv = []
@@ -46,11 +46,3 @@ spec = describe "Glue.Lib.List.Append (Test append function)" do
         case result of
             Left _ -> pure () -- Expected error
             Right _ -> expectationFailure "Append should fail on non-list first argument"
-
-    it "fails on non-list second argument" do
-        let initialEnv = []
-        let args = [List [Integer 1], Integer 42]
-        result <- runEvalSimple (apply append args) initialEnv
-        case result of
-            Left _ -> pure () -- Expected error
-            Right _ -> expectationFailure "Append should fail on non-list second argument"
