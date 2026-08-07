@@ -3,7 +3,7 @@ module Glue.Lib.Module.Import where
 import Data.Map.Strict qualified as Map
 import Data.Text qualified as T
 import Glue.Env qualified as E
-import Glue.Eval (Eval, eval, getCache, getEnv, getRegistry, getRootEnv, getRuntime, liftIO, putCache, putEnv, runEval, throwError)
+import Glue.Eval (Eval, eval, getCache, getEnv, getRegistry, getRuntime, liftIO, putCache, putEnv, runEval, throwError)
 import Glue.Eval.Error (EvalError (..))
 import Glue.Eval.Exception (moduleNotFound, undefinedExport, wrongArgumentType)
 import Glue.IR (IR (..))
