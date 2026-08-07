@@ -5,6 +5,8 @@ import 'package:glue/src/lib/list/drop.dart';
 import 'package:glue/src/lib/list/filter.dart';
 import 'package:glue/src/lib/list/find.dart';
 import 'package:glue/src/lib/list/flatten.dart';
+import 'package:glue/src/lib/list/foldl.dart';
+import 'package:glue/src/lib/list/foldr.dart';
 import 'package:glue/src/lib/list/head.dart';
 import 'package:glue/src/lib/list/last.dart';
 import 'package:glue/src/lib/list/length.dart';
@@ -35,6 +37,8 @@ final ModuleInfo listModule = nativeModule('ffi.list', [
   ('filter', filter),
   ('find', find),
   ('flatten', flatten),
+  ('foldl', foldl),
+  ('foldr', foldr),
   ('head', head),
   ('last', last),
   ('length', length),
