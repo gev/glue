@@ -581,7 +581,7 @@ void main() {
     });
 
     test('let bindings are local', () async {
-      final code = '((let (:x 42) x) x)';
+      final code = '((let (def x 42) x) x)';
       final result = await runCode(code);
       expect(result.isLeft, isTrue);
     });
