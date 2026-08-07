@@ -545,7 +545,7 @@ void main() {
     });
 
     test('let creates local bindings', () async {
-      final code = '(let (:x 42) x)';
+      final code = '(let (def x 42) x)';
       final result = await runCode(code);
       result.match(
         (error) => fail('Should not be left: $error'),
@@ -554,7 +554,7 @@ void main() {
     });
 
     test('let bindings can access outer scope', () async {
-      final code = '((def outer 100) (let (:x outer) (+ x 1)))';
+      final code = '((def outer 100) (let (def x outer) (+ x 1)))';
       final result = await runCode(code);
       result.match(
         (error) => fail('Should not be left: $error'),
@@ -563,7 +563,7 @@ void main() {
     });
 
     test('let bindings shadow outer scope', () async {
-      final code = '((def x 100) (let (:x 200) x))';
+      final code = '((def x 100) (let (def x 200) x))';
       final result = await runCode(code);
       result.match(
         (error) => fail('Should not be left: $error'),
@@ -572,7 +572,7 @@ void main() {
     });
 
     test('let with multiple bindings', () async {
-      final code = '(let (:x 10 :y 20) (+ x y))';
+      final code = '(let (def x 10) (def y 20) (+ x y))';
       final result = await runCode(code);
       result.match(
         (error) => fail('Should not be left: $error'),

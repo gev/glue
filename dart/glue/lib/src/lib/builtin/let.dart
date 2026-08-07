@@ -2,65 +2,18 @@ import 'package:glue/src/env.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/eval/exception.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue/src/ref.dart';
 
-/// Let special form - creates a new scope with local bindings
-/// Mirrors Haskell Glue.Lib.Builtin.Let.let' exactly
+/// Let special form - creates a new scope with sequential definitions and body expressions.
+/// Usage: (let (def foo 1) (def bar (+ foo 1)) bar)
 final Ir let = IrSpecial(letImpl);
 
 /// Let special form implementation
-/// Mirrors Haskell Glue.Lib.Builtin.Let.let' exactly
 Eval<Ir> letImpl(List<Ir> args) {
-  if (args.length != 2) {
-    return throwError(wrongArgumentType(['object', 'body']));
+  if (args.isEmpty) {
+    return throwError(wrongArgumentType(['body']));
   }
-
-  final bindings = args[0];
-  final body = args[1];
-
-  if (bindings is! IrObject) {
-    return throwError(wrongArgumentType(['object', 'body']));
-  }
-
-  // Evaluate all binding values and create new frame
-  final bindingPairs = <(String, Ir)>[];
-
-  return _evalBindings(bindings.properties.unlock, bindingPairs).bind((
-    evaluatedPairs,
-  ) {
-    // Push new frame with bindings onto current environment
-    return getEnv().bind((currentEnv) {
-      final newFrame = frameFromList(
-        evaluatedPairs.map((pair) => (pair.$1, Ref(pair.$2))).toList(),
-      );
-
-      final newEnv = currentEnv.add(newFrame);
-
-      // Evaluate body in extended environment
-      return putEnv(newEnv).bind((_) {
-        return eval(body).bind((result) {
-          // Pop the frame
-          return putEnv(currentEnv).map((_) => result);
-        });
-      });
-    });
-  });
-}
-
-/// Helper to evaluate all bindings recursively
-Eval<List<(String, Ir)>> _evalBindings(
-  Map<String, Ir> bindings,
-  List<(String, Ir)> accumulator,
-) {
-  if (bindings.isEmpty) {
-    return Eval.pure(accumulator);
-  }
-
-  final entry = bindings.entries.first;
-  final remaining = Map<String, Ir>.from(bindings)..remove(entry.key);
-
-  return eval(entry.value).bind((evaluatedValue) {
-    accumulator.add((entry.key, evaluatedValue));
-    return _evalBindings(remaining, accumulator);
+  return getEnv().bind((currentEnv) {
+    final localEnv = currentEnv.add(frameFromList([]));
+    return withEnv(localEnv, evalBody(args));
   });
 }
