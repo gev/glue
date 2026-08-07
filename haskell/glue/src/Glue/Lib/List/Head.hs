@@ -1,14 +1,14 @@
-module Glue.Lib.List.Cdr where
+module Glue.Lib.List.Head where
 
 import Glue.Eval (Eval, throwError)
 import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (IR (..))
 
-cdr :: IR Eval
-cdr = NativeFunc cdrImpl
+head :: IR Eval
+head = NativeFunc headImpl
 
-cdrImpl :: IR Eval -> Eval (IR Eval)
-cdrImpl arg = case arg of
-    List (_ : xs) -> pure $ List xs
+headImpl :: IR Eval -> Eval (IR Eval)
+headImpl arg = case arg of
+    List (x : _) -> pure x
     List [] -> throwError $ wrongArgumentType ["non-empty list"]
     _ -> throwError $ wrongArgumentType ["list"]

@@ -54,13 +54,12 @@ library
     Glue.Lib.List
     Glue.Lib.List.Append
     Glue.Lib.List.Butlast
-    Glue.Lib.List.Car
-    Glue.Lib.List.Cdr
-    Glue.Lib.List.Cons
+    Glue.Lib.List.Concat
     Glue.Lib.List.Drop
     Glue.Lib.List.Filter
     Glue.Lib.List.Find
     Glue.Lib.List.Flatten
+    Glue.Lib.List.Head
     Glue.Lib.List.Last
     Glue.Lib.List.Length
     Glue.Lib.List.Map
@@ -68,9 +67,11 @@ library
     Glue.Lib.List.Nth
     Glue.Lib.List.Partition
     Glue.Lib.List.Position
+    Glue.Lib.List.Prepand
     Glue.Lib.List.Remove
     Glue.Lib.List.Reverse
     Glue.Lib.List.Sort
+    Glue.Lib.List.Tail
     Glue.Lib.List.Take
     Glue.Lib.List.Zip
     Glue.Lib.Math.Arithmetic

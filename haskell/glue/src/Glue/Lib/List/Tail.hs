@@ -1,14 +1,14 @@
-module Glue.Lib.List.Car where
+module Glue.Lib.List.Tail where
 
 import Glue.Eval (Eval, throwError)
 import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (IR (..))
 
-car :: IR Eval
-car = NativeFunc carImpl
+tail :: IR Eval
+tail = NativeFunc tailImpl
 
-carImpl :: IR Eval -> Eval (IR Eval)
-carImpl arg = case arg of
-    List (x : _) -> pure x
+tailImpl :: IR Eval -> Eval (IR Eval)
+tailImpl arg = case arg of
+    List (_ : xs) -> pure $ List xs
     List [] -> throwError $ wrongArgumentType ["non-empty list"]
     _ -> throwError $ wrongArgumentType ["list"]
