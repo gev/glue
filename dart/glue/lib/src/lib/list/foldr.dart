@@ -2,7 +2,18 @@ import 'package:glue/src/eval.dart';
 import 'package:glue/src/eval/exception.dart';
 import 'package:glue/src/ir.dart';
 
-/// Foldr function - strict right-to-left fold
+/// Strict right-to-left fold over a list.
+///
+/// Curried signature: `foldr(func)(initVal)(list)`
+///
+/// Arguments:
+/// - [func]: The accumulator function applied at each step.
+/// - [initVal]: The initial value of the accumulator.
+/// - [list]: The target [IrList] to fold over.
+///
+/// Lambda argument order: `(x, acc)`
+/// - [x]: The current element of the list (first parameter).
+/// - [acc]: The current accumulator value (second parameter).
 Ir foldr = IrNativeFunc(foldrImpl);
 
 Eval<Ir> foldrImpl(Ir funcIr) {

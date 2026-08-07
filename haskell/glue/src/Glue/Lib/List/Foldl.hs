@@ -5,6 +5,19 @@ import Glue.Eval (Eval, apply, throwError)
 import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
+{- | Strict left-to-right fold over a list.
+
+Curried signature: @foldl func initVal list@
+
+Arguments:
+  * @func@: The accumulator function applied at each step.
+  * @initVal@: The initial value of the accumulator.
+  * @list@: The target @List@ to fold over.
+
+Lambda argument order: @(acc, x)@
+  * @acc@: The current accumulator value (first parameter).
+  * @x@: The current element of the list (second parameter).
+-}
 foldl :: IR Eval
 foldl = NativeFunc foldlImpl
 
