@@ -37,6 +37,7 @@ import 'package:glue_flutter/src/lib/ui/core/styles/text_direction.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/text_overflow.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/text_style.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/text_width_basis.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/tile_mode.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/vertical_direction.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/wrap_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/wrap_cros_alignment.dart';
@@ -187,4 +188,6 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   ('linear-gradient', linearGradient),
   ('radial-gradient', radialGradient),
   ('sweep-gradient', sweepGradient),
+
+  ('tile-mode', tileMode),
 ]);
