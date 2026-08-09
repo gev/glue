@@ -340,7 +340,12 @@ List<T> toList<T>(Ir? value) => switch (value) {
     elements
         .map(
           (child) => switch (child) {
-            IrNativeValue(value: Value(value: T widget)) => widget,
+            IrBool(:final value) when T is bool => value,
+            IrFloat(:final value) when T is double => value,
+            IrInteger(:final value) when T is int => value,
+            IrInteger(:final value) when T is double => value.toDouble(),
+            IrString(:final value) when T is String => value,
+            IrNativeValue(value: Value(:final T value)) => value,
             _ => null,
           },
         )
