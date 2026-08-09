@@ -17,6 +17,7 @@ import 'package:glue_flutter/src/lib/ui/core/styles/edge_insets.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/filter_quality.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/flutter_logo_style.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/font_weight.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/gradient.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/hsl.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/hsla.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/hsv.dart';
@@ -182,4 +183,8 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
 
   ('brightness', brightness),
   ('system-brightness', systemBrightness),
+
+  ('linear-gradient', linearGradient),
+  ('radial-gradient', radialGradient),
+  ('sweep-gradient', sweepGradient),
 ]);
