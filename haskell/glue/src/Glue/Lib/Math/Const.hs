@@ -13,4 +13,5 @@ const =
         , ("minus-infinity", Float ((-1) / 0))
         , ("pi", Float pi)
         , ("phi", Float ((1 + sqrt 5) / 2))
+        , ("nan", Float (0 / 0))
         ]
