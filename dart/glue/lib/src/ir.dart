@@ -340,11 +340,11 @@ List<T> toList<T>(Ir? value) => switch (value) {
     elements
         .map(
           (child) => switch (child) {
-            IrBool(:final value) when T is bool => value,
-            IrFloat(:final value) when T is double => value,
-            IrInteger(:final value) when T is int => value,
-            IrInteger(:final value) when T is double => value.toDouble(),
-            IrString(:final value) when T is String => value,
+            IrBool(:final value) when T == bool => value,
+            IrFloat(:final value) when T == double => value,
+            IrInteger(:final value) when T == int => value,
+            IrInteger(:final value) when T == double => value.toDouble(),
+            IrString(:final value) when T == String => value,
             IrNativeValue(value: Value(:final T value)) => value,
             _ => null,
           },
