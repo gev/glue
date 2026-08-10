@@ -9,7 +9,10 @@ import 'package:glue/src/module.dart';
 /// The const module containing mathematical constants
 /// Mirrors Haskell Glue.Lib.Math.Const.const exactly
 final ModuleInfo constModule = nativeModule('ffi.math.const', [
-  // Mathematical constants
-  ('pi', IrFloat(math.pi)),
   ('e', IrFloat(math.e)),
+  ('infinity', IrFloat(double.infinity)),
+  ('minus-infinity', IrFloat(-double.infinity)),
+  ('pi', IrFloat(math.pi)),
+  ('phi', IrFloat((1 + math.sqrt(5)) / 2)),
+  ('nan', IrFloat(double.nan)),
 ]);
