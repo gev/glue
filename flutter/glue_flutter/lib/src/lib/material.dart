@@ -1,7 +1,6 @@
 import 'package:glue/module.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/button_style.dart';
-import 'package:glue_flutter/src/lib/ui/material/styles/color_scheme_dark.dart';
-import 'package:glue_flutter/src/lib/ui/material/styles/color_scheme_light.dart';
+import 'package:glue_flutter/src/lib/ui/material/styles/color_scheme.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/colors.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/drag_start_behavior.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/dynamic_scheme_variant.dart';
