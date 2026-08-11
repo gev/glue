@@ -46,7 +46,7 @@ class WidgetProperties {
   double? get vertical => extractDouble(_props['vertical']);
 
   Key? get key {
-    final key = extractNativeValue(_props['key']);
+    final key = _props['key'];
     if (key != null) {
       return ValueKey(key);
     }
