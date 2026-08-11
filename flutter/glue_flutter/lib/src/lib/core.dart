@@ -83,6 +83,7 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   ('fitted-box', fittedBox),
   ('grid-view', gridView),
   ('icon', icon),
+  ('image', image),
   ('image-asset', imageAsset),
   ('image-file', imageFile),
   ('image-network', imageNetwork),
