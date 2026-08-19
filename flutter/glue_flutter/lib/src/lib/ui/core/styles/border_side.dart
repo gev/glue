@@ -14,15 +14,12 @@ Eval<Ir> borderSideImpl(Ir props) => switch (props) {
 };
 
 Eval<Ir> _createBorderSide(WidgetProperties properties) {
-  return getRuntime().map((runtime) {
-    final side = BorderSide(
-      color: properties.getValue<Color>('color') ?? const Color(0xFF000000),
-      width: properties.getDouble('width') ?? 1.0,
-      style: properties.getValue<BorderStyle>('style') ?? BorderStyle.solid,
-      strokeAlign:
-          properties.getDouble('stroke-align') ?? BorderSide.strokeAlignInside,
-    );
-
-    return IrNativeValue(Value(side));
-  });
+  final side = BorderSide(
+    color: properties.getValue<Color>('color') ?? const Color(0xFF000000),
+    width: properties.getDouble('width') ?? 1.0,
+    style: properties.getValue<BorderStyle>('style') ?? BorderStyle.solid,
+    strokeAlign:
+        properties.getDouble('stroke-align') ?? BorderSide.strokeAlignInside,
+  );
+  return Eval.pure(IrNativeValue(Value(side)));
 }
