@@ -3,6 +3,8 @@ import 'package:glue_flutter/src/lib/ui/core/styles/alignment.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/axis.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/blur_style.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/border_rdius.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/border_side.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/border_style.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/box-shadow.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/box_border.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/box_constraints.dart';
@@ -148,6 +150,9 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   ('border-circle', borderCircle),
   ('border-stadium', borderStadium),
   ('border-beveled-rectangle', borderBeveledRectangle),
+
+  ('border-side', borderSide),
+  ('border-style', borderStyle),
 
   // Radius functions
   ('radius', radiusCircular),
