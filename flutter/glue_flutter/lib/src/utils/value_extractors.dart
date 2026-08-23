@@ -71,10 +71,10 @@ VoidCallback Function(Runtime)? extractVoidCallback(Ir? value) =>
     switch (value) {
       IrClosure(:final params) =>
         params.isEmpty
-            ? (Runtime runtime) => () async {
+            ? (Runtime runtime) => () {
                 final evalAction = apply(value, []);
                 // Use provided runtime instead of creating from env
-                final result = await runEval(evalAction, runtime);
+                final result = runEval(evalAction, runtime);
                 switch (result) {
                   case Either<EvalError, (Ir, Runtime)> r:
                     r.match(
@@ -93,7 +93,7 @@ typedef Callback<T> = void Function(T? value);
 Callback<T> Function(Runtime)? extractCallback<T>(Ir? value) => switch (value) {
   IrClosure(:final params) =>
     params.length == 1
-        ? (Runtime runtime) => (arg) async {
+        ? (Runtime runtime) => (arg) {
             final args = switch (arg) {
               bool v => [IrBool(v)],
               int v => [IrInteger(v)],
@@ -104,7 +104,7 @@ Callback<T> Function(Runtime)? extractCallback<T>(Ir? value) => switch (value) {
             };
             final evalAction = apply(value, args);
             // Use provided runtime instead of creating from env
-            final result = await runEval(evalAction, runtime);
+            final result = runEval(evalAction, runtime);
             switch (result) {
               case Either<EvalError, (Ir, Runtime)> r:
                 r.match(

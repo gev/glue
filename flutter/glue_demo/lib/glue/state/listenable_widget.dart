@@ -47,13 +47,13 @@ class _ListenableWidgetState extends State<ListenableWidget> {
     super.dispose();
   }
 
-  void _updateWidget() async {
+  void _updateWidget() {
     // Get current value from StateNotifier
     final stateNotifier = widget.notifier as StateNotifier;
     final currentValue = stateNotifier.value;
 
     // Call lambda with current value
-    final result = await runEval(
+    final result = runEval(
       apply(widget.lambda, [currentValue]),
       widget.runtime,
     );

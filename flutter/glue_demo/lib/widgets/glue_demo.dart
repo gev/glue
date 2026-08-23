@@ -38,8 +38,8 @@ class _GlueDemoState extends State<GlueDemo> {
     }
   }
 
-  Future<void> _evaluateCode(String code) async {
-    final result = await GlueEvaluator.evaluateCode(code);
+  void _evaluateCode(String code) {
+    final result = GlueEvaluator.evaluateCode(code);
     setState(() {
       result.match(
         (error) {

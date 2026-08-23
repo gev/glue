@@ -13,7 +13,7 @@ typedef GlueEvalResult = Either<GlueError, List<Widget>>;
 /// Service for evaluating Glue code and converting results to Flutter widgets
 class GlueEvaluator {
   /// Evaluate Glue code and return either widgets or a Glue error
-  static Future<GlueEvalResult> evaluateCode(String code) async {
+  static GlueEvalResult evaluateCode(String code) {
     print('🔄 Starting Glue evaluation for code: "${code.trim()}"');
 
     final parseResult = parseGlue(code.trim());
@@ -22,13 +22,13 @@ class GlueEvaluator {
         print('💥 Parse failed: $parseError');
         return Left(parseError);
       },
-      (ast) async {
+      (ast) {
         print('✅ Parse successful: $ast');
         final irTree = compile(ast);
         print('✅ Compilation successful: $irTree');
 
         print('✅ Environment created with UI module: $uiCoreModule');
-        final evalResult = await runEvalSimple(eval(irTree), env);
+        final evalResult = runEvalSimple(eval(irTree), env);
         return evalResult.match(
           (error) {
             print('💥 Evaluation failed: $error');
