@@ -46,11 +46,6 @@ spec = describe "Glue.Lib.Builtin.Quote (Test quote special form)" do
                 Right (res, _) -> res `shouldBe` Object (Map.fromList [("name", String "Alice")])
 
     describe "Error cases" do
-        it "fails with no arguments" do
-            let args = []
-            result <- runEvalSimple (apply quote args) []
-            result `shouldSatisfy` isLeft
-
         it "fails with multiple arguments" do
             let args = [Integer 1, Integer 2]
             result <- runEvalSimple (apply quote args) []
