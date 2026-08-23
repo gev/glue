@@ -282,10 +282,19 @@ Eval<Ir> evalObject(Map<String, Ir> properties) {
 Eval<Ir> apply(Ir func, List<Ir> args) {
   return switch (func) {
     IrNativeFunc(function: final f) => _applyNativeFunc(f, args),
-    IrSpecial(function: final s) => s(args),
+    IrSpecial(function: final s) => _applySpecial(s, args),
     IrClosure(params: final params, body: final body, env: final closureEnv) =>
       applyClosure(params, body, closureEnv, args),
     _ => throwError(notCallableObject()),
+  };
+}
+
+Eval<Ir> _applySpecial(Eval<Ir> Function(List<Ir>) special, List<Ir> args) {
+  return switch (args) {
+    [] => Eval.pure(
+      IrSpecial(special),
+    ), // No args, return function as-is (like Haskell)
+    _ => special(args),
   };
 }
 
