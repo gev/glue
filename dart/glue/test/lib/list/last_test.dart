@@ -6,48 +6,48 @@ import 'package:test/test.dart';
 
 void main() {
   group('Glue.Lib.List.Last (last)', () {
-    test('returns the last element of a list', () async {
+    test('returns the last element of a list', () {
       final args = [
         IrList([IrInteger(1), IrInteger(2), IrInteger(3)]),
       ];
-      final result = await runEvalSimple(apply(last, args), emptyEnv());
+      final result = runEvalSimple(apply(last, args), emptyEnv());
       result.match((error) => fail('Last failed: $error'), (value) {
         final (res, _) = value;
         expect(res, equals(IrInteger(3)));
       });
     });
 
-    test('returns the only element of a single-element list', () async {
+    test('returns the only element of a single-element list', () {
       final args = [
         IrList([IrInteger(42)]),
       ];
-      final result = await runEvalSimple(apply(last, args), emptyEnv());
+      final result = runEvalSimple(apply(last, args), emptyEnv());
       result.match((error) => fail('Last failed: $error'), (value) {
         final (res, _) = value;
         expect(res, equals(IrInteger(42)));
       });
     });
 
-    test('returns string element', () async {
+    test('returns string element', () {
       final args = [
         IrList([IrString('hello'), IrString('world')]),
       ];
-      final result = await runEvalSimple(apply(last, args), emptyEnv());
+      final result = runEvalSimple(apply(last, args), emptyEnv());
       result.match((error) => fail('Last failed: $error'), (value) {
         final (res, _) = value;
         expect(res, equals(IrString('world')));
       });
     });
 
-    test('fails on empty list', () async {
+    test('fails on empty list', () {
       final args = [IrList([])];
-      final result = await runEvalSimple(apply(last, args), emptyEnv());
+      final result = runEvalSimple(apply(last, args), emptyEnv());
       expect(result.isLeft, isTrue);
     });
 
-    test('fails on non-list argument', () async {
+    test('fails on non-list argument', () {
       final args = [IrInteger(42)];
-      final result = await runEvalSimple(apply(last, args), emptyEnv());
+      final result = runEvalSimple(apply(last, args), emptyEnv());
       expect(result.isLeft, isTrue);
     });
   });

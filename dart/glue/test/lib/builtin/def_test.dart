@@ -17,9 +17,9 @@ void main() {
     });
 
     group('Defining variables', () {
-      test('defines a variable in the environment', () async {
+      test('defines a variable in the environment', () {
         final args = [IrSymbol('x'), IrInteger(42)];
-        final result = await runEval(apply(def, args), runtime);
+        final result = runEval(apply(def, args), runtime);
         result.match((error) => fail('Def failed: $error'), (value) {
           final (res, runtime) = value;
           expect(res, equals(IrVoid()));
@@ -33,20 +33,20 @@ void main() {
         });
       });
 
-      test('fails with non-symbol as name', () async {
+      test('fails with non-symbol as name', () {
         final args = [IrInteger(1), IrInteger(42)];
-        final result = await runEval(apply(def, args), runtime);
+        final result = runEval(apply(def, args), runtime);
         expect(result.isLeft, isTrue);
       });
     });
 
     group('Function definition sugar', () {
-      test('defines simple function', () async {
+      test('defines simple function', () {
         final args = [
           IrList([IrSymbol('square'), IrSymbol('x')]),
           IrList([IrSymbol('*'), IrSymbol('x'), IrSymbol('x')]),
         ];
-        final result = await runEval(apply(def, args), runtime);
+        final result = runEval(apply(def, args), runtime);
         result.match((error) => fail('Def failed: $error'), (value) {
           final (res, runtime) = value;
           // Should return IrVoid like variable definitions
@@ -63,12 +63,12 @@ void main() {
         });
       });
 
-      test('defines function with multiple parameters', () async {
+      test('defines function with multiple parameters', () {
         final args = [
           IrList([IrSymbol('add'), IrSymbol('x'), IrSymbol('y')]),
           IrList([IrSymbol('+'), IrSymbol('x'), IrSymbol('y')]),
         ];
-        final result = await runEval(apply(def, args), runtime);
+        final result = runEval(apply(def, args), runtime);
         result.match((error) => fail('Def failed: $error'), (value) {
           final (res, runtime) = value;
           // Should return IrVoid like variable definitions
@@ -85,13 +85,13 @@ void main() {
         });
       });
 
-      test('defines function with multiple body expressions', () async {
+      test('defines function with multiple body expressions', () {
         final args = [
           IrList([IrSymbol('test'), IrSymbol('x')]),
           IrList([IrSymbol('println'), IrString('hello')]),
           IrList([IrSymbol('*'), IrSymbol('x'), IrInteger(2)]),
         ];
-        final result = await runEval(apply(def, args), runtime);
+        final result = runEval(apply(def, args), runtime);
         result.match((error) => fail('Def failed: $error'), (value) {
           final (res, runtime) = value;
           // Should return IrVoid like variable definitions
@@ -108,12 +108,12 @@ void main() {
         });
       });
 
-      test('fails with invalid function signature', () async {
+      test('fails with invalid function signature', () {
         final args = [
           IrList([IrInteger(42), IrSymbol('x')]),
           IrList([IrSymbol('*'), IrSymbol('x'), IrSymbol('x')]),
         ];
-        final result = await runEval(apply(def, args), runtime);
+        final result = runEval(apply(def, args), runtime);
         expect(result.isLeft, isTrue);
       });
     });

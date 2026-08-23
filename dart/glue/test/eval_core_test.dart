@@ -38,15 +38,15 @@ void main() {
       runtime = Runtime.initial(env);
     });
 
-    test('eval literals returns themselves', () async {
-      final intResult = await runEval(eval(IrInteger(123)), runtime);
+    test('eval literals returns themselves', () {
+      final intResult = runEval(eval(IrInteger(123)), runtime);
       expect(intResult.isRight, isTrue);
       intResult.match((error) => fail('Should not be left: $error'), (value) {
         final (result, runtime) = value;
         expect(result, equals(IrInteger(123)));
       });
 
-      final stringResult = await runEval(eval(IrString('world')), runtime);
+      final stringResult = runEval(eval(IrString('world')), runtime);
       expect(stringResult.isRight, isTrue);
       stringResult.match((error) => fail('Should not be left: $error'), (
         value,
@@ -56,14 +56,14 @@ void main() {
       });
     });
 
-    test('evalSymbol looks up variables', () async {
-      final result = await runEval(evalSymbol('x'), runtime);
+    test('evalSymbol looks up variables', () {
+      final result = runEval(evalSymbol('x'), runtime);
       result.match((error) => fail('Should not be left: $error'), (value) {
         final (result, runtime) = value;
         expect(result, equals(IrInteger(42)));
       });
 
-      final stringResult = await runEval(evalSymbol('y'), runtime);
+      final stringResult = runEval(evalSymbol('y'), runtime);
       expect(stringResult.isRight, isTrue);
       stringResult.match((error) => fail('Should not be left: $error'), (
         value,
@@ -73,8 +73,8 @@ void main() {
       });
     });
 
-    test('evalSymbol throws error for unbound variables', () async {
-      final result = await runEval(evalSymbol('nonexistent'), runtime);
+    test('evalSymbol throws error for unbound variables', () {
+      final result = runEval(evalSymbol('nonexistent'), runtime);
       expect(result.isLeft, isTrue);
       result.match(
         (error) => expect(error.exception.symbol, equals('unbound-variable')),
@@ -82,9 +82,9 @@ void main() {
       );
     });
 
-    test('evalList creates literal lists', () async {
+    test('evalList creates literal lists', () {
       final listIr = IrList([IrInteger(1), IrInteger(2), IrInteger(3)]);
-      final result = await runEval(eval(listIr), runtime);
+      final result = runEval(eval(listIr), runtime);
       result.match((error) => fail('Should not be left: $error'), (value) {
         final (result, runtime) = value;
         expect(result, isA<IrList>());
@@ -96,23 +96,23 @@ void main() {
       });
     });
 
-    test('evalList evaluates function calls', () async {
+    test('evalList evaluates function calls', () {
       // Test calling the 'add' function: (add x 8) should equal 50
       final callIr = IrList([IrSymbol('add'), IrSymbol('x'), IrInteger(8)]);
-      final result = await runEval(eval(callIr), runtime);
+      final result = runEval(eval(callIr), runtime);
       result.match((error) => fail('Should not be left: $error'), (value) {
         final (result, runtime) = value;
         expect(result, equals(IrInteger(50))); // 42 + 8 = 50
       });
     });
 
-    test('evalObject evaluates properties', () async {
+    test('evalObject evaluates properties', () {
       final objIr = IrObject({
         'a': IrInteger(1),
         'b': IrSymbol('x'), // Should evaluate to 42
         'c': IrString('literal'),
       });
-      final result = await runEval(eval(objIr), runtime);
+      final result = runEval(eval(objIr), runtime);
       result.match((error) => fail('Should not be left: $error'), (value) {
         final (result, runtime) = value;
         expect(result, isA<IrObject>());
@@ -123,35 +123,35 @@ void main() {
       });
     });
 
-    test('dotted symbols work for simple access', () async {
+    test('dotted symbols work for simple access', () {
       // Create an object and bind it
       final obj = IrObject({'nested': IrInteger(99)});
       final envWithObj = defineVar('obj', obj, runtime.env);
       final runtimeWithObj = runtime.copyWith(env: envWithObj);
       // Access obj.nested
       final dottedIr = IrDottedSymbol('obj.nested');
-      final result = await runEval(eval(dottedIr), runtimeWithObj);
+      final result = runEval(eval(dottedIr), runtimeWithObj);
       result.match((error) => fail('Should not be left: $error'), (value) {
         final (result, runtime) = value;
         expect(result, equals(IrInteger(99)));
       });
     });
 
-    test('dotted symbols return Void for missing properties', () async {
+    test('dotted symbols return Void for missing properties', () {
       final obj = IrObject({'a': IrInteger(1)});
       final envWithObj = defineVar('obj', obj, runtime.env);
       final runtimeWithObj = runtime.copyWith(env: envWithObj);
 
       // Try to access obj.missing
       final dottedIr = IrDottedSymbol('obj.missing');
-      final result = await runEval(eval(dottedIr), runtimeWithObj);
+      final result = runEval(eval(dottedIr), runtimeWithObj);
 
       result.match((error) => fail('Error: $error'), (value) {
         expect(value.$1, equals(IrVoid()));
       });
     });
 
-    test('function application works with closures', () async {
+    test('function application works with closures', () {
       // Create a simple closure: (lambda (a) (+ a 1))
       final closure = IrClosure(
         ['a'],
@@ -161,14 +161,14 @@ void main() {
         runtime.env,
       );
       // Apply it: ((lambda (a) (+ a 1)) 10) should equal 11
-      final result = await runEval(apply(closure, [IrInteger(10)]), runtime);
+      final result = runEval(apply(closure, [IrInteger(10)]), runtime);
       result.match((error) => fail('Should not be left: $error'), (value) {
         final (result, runtime) = value;
         expect(result, equals(IrInteger(11))); // 10 + 1 = 11
       });
     });
 
-    test('partial application works', () async {
+    test('partial application works', () {
       // Create a closure: (lambda (a b) (+ a b))
       final closure = IrClosure(
         ['a', 'b'],
@@ -179,10 +179,7 @@ void main() {
       );
 
       // Partially apply: ((lambda (a b) (+ a b)) 5) should return a closure
-      final partialResult = await runEval(
-        apply(closure, [IrInteger(5)]),
-        runtime,
-      );
+      final partialResult = runEval(apply(closure, [IrInteger(5)]), runtime);
 
       expect(partialResult.isRight, isTrue);
       partialResult.match((error) => fail('Should not be left: $error'), (

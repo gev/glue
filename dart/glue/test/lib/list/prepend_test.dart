@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 
 void main() {
   group('Glue.Lib.List.Prepend (prepend)', () {
-    test('prependtructs a list by prepending an element', () async {
+    test('prependtructs a list by prepending an element', () {
       final args = [
         IrInteger(1),
         IrList([IrInteger(2), IrInteger(3)]),
@@ -18,7 +18,7 @@ void main() {
       });
     });
 
-    test('prependtructs a list with empty tail', () async {
+    test('prependtructs a list with empty tail', () {
       final args = [IrInteger(42), IrList([])];
       final result = runEvalSimple(apply(prepend, args), emptyEnv());
       result.match((error) => fail('Prepend failed: $error'), (value) {
@@ -27,7 +27,7 @@ void main() {
       });
     });
 
-    test('fails on non-list tail', () async {
+    test('fails on non-list tail', () {
       final args = [IrInteger(1), IrInteger(2)];
       final result = runEvalSimple(apply(prepend, args), emptyEnv());
       expect(result.isLeft, isTrue);

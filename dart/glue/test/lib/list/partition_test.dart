@@ -13,9 +13,9 @@ import 'package:glue/src/runtime.dart';
 import 'package:test/test.dart';
 
 /// Helper to run full Glue code like Haskell tests
-Future<Either<GlueError, Ir>> runCode(String input) async {
+Either<GlueError, Ir> runCode(String input) {
   final parseResult = parseGlue(input);
-  return parseResult.match((parseError) => Left(parseError), (ast) async {
+  return parseResult.match((parseError) => Left(parseError), (ast) {
     final irTree = compile(ast);
     final env = envFromModules([
       builtinModule,
@@ -25,7 +25,7 @@ Future<Either<GlueError, Ir>> runCode(String input) async {
     ]); // Load all necessary modules for testing
     final runtime = Runtime.initial(env);
 
-    final evalResult = await runEval(eval(irTree), runtime);
+    final evalResult = runEval(eval(irTree), runtime);
     return evalResult.match((error) => Left(error), (value) {
       final (result, _) = value;
       return Right(result);
@@ -35,10 +35,8 @@ Future<Either<GlueError, Ir>> runCode(String input) async {
 
 void main() {
   group('Glue.Lib.List.Partition (partition)', () {
-    test('partitions list into matching and non-matching elements', () async {
-      final result = await runCode(
-        '(partition (lambda (x) (> x 3)) (1 2 3 4 5))',
-      );
+    test('partitions list into matching and non-matching elements', () {
+      final result = runCode('(partition (lambda (x) (> x 3)) (1 2 3 4 5))');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(
@@ -53,8 +51,8 @@ void main() {
       );
     });
 
-    test('partitions list with all elements matching', () async {
-      final result = await runCode('(partition (lambda (x) (> x 0)) (1 2 3))');
+    test('partitions list with all elements matching', () {
+      final result = runCode('(partition (lambda (x) (> x 0)) (1 2 3))');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(
@@ -69,8 +67,8 @@ void main() {
       );
     });
 
-    test('partitions list with no elements matching', () async {
-      final result = await runCode('(partition (lambda (x) (> x 10)) (1 2 3))');
+    test('partitions list with no elements matching', () {
+      final result = runCode('(partition (lambda (x) (> x 10)) (1 2 3))');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(
@@ -85,16 +83,16 @@ void main() {
       );
     });
 
-    test('partitions empty list', () async {
-      final result = await runCode('(partition (lambda (x) true) ())');
+    test('partitions empty list', () {
+      final result = runCode('(partition (lambda (x) true) ())');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrList([IrList([]), IrList([])]))),
       );
     });
 
-    test('partitions list with mixed matching', () async {
-      final result = await runCode(
+    test('partitions list with mixed matching', () {
+      final result = runCode(
         '(partition (lambda (x) (== (% x 2) 0)) (1 2 3 4 5))',
       );
       result.match(
@@ -111,8 +109,8 @@ void main() {
       );
     });
 
-    test('fails on non-list second argument', () async {
-      final result = await runCode('(partition (lambda (x) true) 42)');
+    test('fails on non-list second argument', () {
+      final result = runCode('(partition (lambda (x) true) 42)');
       expect(result.isLeft, isTrue);
     });
   });

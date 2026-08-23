@@ -8,11 +8,11 @@ import 'package:glue/src/runtime.dart';
 import 'package:test/test.dart';
 
 /// Helper to run full Glue code like Haskell tests
-Future<Either<EvalError, Ir?>> runCode(List<Ir> args) async {
+Either<EvalError, Ir?> runCode(List<Ir> args) {
   final env = emptyEnv(); // Empty env for unit tests
   final runtime = Runtime.initial(env);
 
-  final evalResult = await runEval(apply(gt, args), runtime);
+  final evalResult = runEval(apply(gt, args), runtime);
   return evalResult.match((error) => Left(error), (value) {
     final (result, _) = value;
     return Right(result);
@@ -22,36 +22,36 @@ Future<Either<EvalError, Ir?>> runCode(List<Ir> args) async {
 void main() {
   group('Glue.Lib.Bool.Gt (Test gt function)', () {
     group('Greater than comparison', () {
-      test('returns true for larger integer', () async {
+      test('returns true for larger integer', () {
         final args = [IrInteger(15), IrInteger(10)];
-        final result = await runCode(args);
+        final result = runCode(args);
         result.match(
           (error) => fail('Should not be left: $error'),
           (value) => expect(value, equals(IrBool(true))),
         );
       });
 
-      test('returns false for equal integers', () async {
+      test('returns false for equal integers', () {
         final args = [IrInteger(10), IrInteger(10)];
-        final result = await runCode(args);
+        final result = runCode(args);
         result.match(
           (error) => fail('Should not be left: $error'),
           (value) => expect(value, equals(IrBool(false))),
         );
       });
 
-      test('returns false for smaller integer', () async {
+      test('returns false for smaller integer', () {
         final args = [IrInteger(5), IrInteger(10)];
-        final result = await runCode(args);
+        final result = runCode(args);
         result.match(
           (error) => fail('Should not be left: $error'),
           (value) => expect(value, equals(IrBool(false))),
         );
       });
 
-      test('works with floats', () async {
+      test('works with floats', () {
         final args = [IrFloat(3.15), IrFloat(3.14)];
-        final result = await runCode(args);
+        final result = runCode(args);
         result.match(
           (error) => fail('Should not be left: $error'),
           (value) => expect(value, equals(IrBool(true))),

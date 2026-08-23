@@ -10,16 +10,16 @@ import 'package:glue/src/runtime.dart';
 import 'package:test/test.dart';
 
 /// Helper to run full Glue code like Haskell tests
-Future<Either<GlueError, Ir>> runCode(String input) async {
+Either<GlueError, Ir> runCode(String input) {
   final parseResult = parseGlue(input);
-  return parseResult.match((parseError) => Left(parseError), (ast) async {
+  return parseResult.match((parseError) => Left(parseError), (ast) {
     final irTree = compile(ast);
     final env = envFromModules([
       arithmeticModule,
     ]); // Load only arithmetic module for testing
     final runtime = Runtime.initial(env);
 
-    final evalResult = await runEval(eval(irTree), runtime);
+    final evalResult = runEval(eval(irTree), runtime);
     return evalResult.match((error) => Left(error), (value) {
       final (result, _) = value;
       return Right(result);
@@ -29,32 +29,32 @@ Future<Either<GlueError, Ir>> runCode(String input) async {
 
 void main() {
   group('Glue.Lib.Math.Arithmetic.Div (/)', () {
-    test('divides integers and returns float', () async {
-      final result = await runCode('(/ 10 2)');
+    test('divides integers and returns float', () {
+      final result = runCode('(/ 10 2)');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect((value as IrFloat).value, closeTo(5.0, 0.0001)),
       );
     });
 
-    test('divides floats correctly', () async {
-      final result = await runCode('(/ 7.5 2.5)');
+    test('divides floats correctly', () {
+      final result = runCode('(/ 7.5 2.5)');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect((value as IrFloat).value, closeTo(3.0, 0.0001)),
       );
     });
 
-    test('converts mixed types to float', () async {
-      final result = await runCode('(/ 9 2)');
+    test('converts mixed types to float', () {
+      final result = runCode('(/ 9 2)');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect((value as IrFloat).value, closeTo(4.5, 0.0001)),
       );
     });
 
-    test('fails with wrong argument types', () async {
-      final result = await runCode('(/ 5 "hello")');
+    test('fails with wrong argument types', () {
+      final result = runCode('(/ 5 "hello")');
       expect(result.isLeft, isTrue);
     });
   });

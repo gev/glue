@@ -184,7 +184,7 @@ Env testEnv() {
 }
 
 // Helper to run Glue code
-Future<Either<EvalError, Ir>> runGlueCode(String input) async {
+Either<EvalError, Ir> runGlueCode(String input) {
   final parseResult = parseGlue(input);
   return parseResult.match(
     (parseError) => Left(
@@ -193,9 +193,9 @@ Future<Either<EvalError, Ir>> runGlueCode(String input) async {
         RuntimeException('parse-error', IrString(parseError.message)),
       ),
     ),
-    (ast) async {
+    (ast) {
       final ir = compile(ast);
-      final result = await runEvalSimple(eval(ir), testEnv());
+      final result = runEvalSimple(eval(ir), testEnv());
       return result.match((error) => Left(error), (value) {
         final (res, _) = value;
         // Handle implicit sequence semantics like Haskell evalBody
@@ -213,8 +213,8 @@ Future<Either<EvalError, Ir>> runGlueCode(String input) async {
 void main() {
   group('Full FFI Integration Tests', () {
     group('Basic Object Creation and Property Access', () {
-      test('creates person and accesses properties', () async {
-        final result = await runGlueCode('''
+      test('creates person and accesses properties', () {
+        final result = runGlueCode('''
           ((def bob (person :name "Bob" :age 25))
            bob.name)
           ''');
@@ -223,8 +223,8 @@ void main() {
         });
       });
 
-      test('creates address and accesses properties', () async {
-        final result = await runGlueCode('''
+      test('creates address and accesses properties', () {
+        final result = runGlueCode('''
           ((def addr (address :street "123 Main St" :city "Springfield"))
            addr.street)
           ''');
@@ -235,8 +235,8 @@ void main() {
     });
 
     group('Complex Object Relationships', () {
-      test('creates person with address', () async {
-        final result = await runGlueCode('''
+      test('creates person with address', () {
+        final result = runGlueCode('''
           ((def addr (address :street "123 Main St" :city "Springfield"))
            (def bob (person :name "Bob" :age 25 :address addr))
            bob.address.city)
@@ -248,64 +248,60 @@ void main() {
     });
 
     group('Error Handling', () {
-      test('fails with wrong constructor arguments', () async {
-        final result = await runGlueCode('(person "Bob")');
+      test('fails with wrong constructor arguments', () {
+        final result = runGlueCode('(person "Bob")');
         expect(result.isLeft, isTrue);
       });
 
-      test('fails with wrong name type', () async {
-        final result = await runGlueCode('(person :name 123 :age 25)');
+      test('fails with wrong name type', () {
+        final result = runGlueCode('(person :name 123 :age 25)');
         expect(result.isLeft, isTrue);
       });
 
-      test('fails with wrong age type', () async {
-        final result = await runGlueCode('(person :name "Bob" :age "25")');
+      test('fails with wrong age type', () {
+        final result = runGlueCode('(person :name "Bob" :age "25")');
         expect(result.isLeft, isTrue);
       });
 
-      test('fails with wrong address type', () async {
-        final result = await runGlueCode(
+      test('fails with wrong address type', () {
+        final result = runGlueCode(
           '(person :name "Bob" :age 25 :address "not-an-address")',
         );
         expect(result.isLeft, isTrue);
       });
 
-      test('fails with missing name field', () async {
-        final result = await runGlueCode('(person :age 25)');
+      test('fails with missing name field', () {
+        final result = runGlueCode('(person :age 25)');
         expect(result.isLeft, isTrue);
       });
 
-      test('fails with missing age field', () async {
-        final result = await runGlueCode('(person :name "Bob")');
+      test('fails with missing age field', () {
+        final result = runGlueCode('(person :name "Bob")');
         expect(result.isLeft, isTrue);
       });
 
-      test('fails with wrong street type', () async {
-        final result = await runGlueCode(
-          '(address :street 123 :city "Springfield")',
-        );
+      test('fails with wrong street type', () {
+        final result = runGlueCode('(address :street 123 :city "Springfield")');
         expect(result.isLeft, isTrue);
       });
 
-      test('fails with wrong city type', () async {
-        final result = await runGlueCode(
-          '(address :street "123 Main St" :city 456)',
-        );
+      test('fails with wrong city type', () {
+        final result = runGlueCode('(address :street "123 Main St" :city 456)');
         expect(result.isLeft, isTrue);
       });
 
-      test('fails with missing street field', () async {
-        final result = await runGlueCode('(address :city "Springfield")');
+      test('fails with missing street field', () {
+        final result = runGlueCode('(address :city "Springfield")');
         expect(result.isLeft, isTrue);
       });
 
-      test('fails with missing city field', () async {
-        final result = await runGlueCode('(address :street "123 Main St")');
+      test('fails with missing city field', () {
+        final result = runGlueCode('(address :street "123 Main St")');
         expect(result.isLeft, isTrue);
       });
 
-      test('returns Void when accessing non-existent properties', () async {
-        final result = await runGlueCode(
+      test('returns Void when accessing non-existent properties', () {
+        final result = runGlueCode(
           '((def bob (person :name "Bob" :age 25)) bob.nonexistent)',
         );
         result.match((error) => fail('Error: $error'), (value) {

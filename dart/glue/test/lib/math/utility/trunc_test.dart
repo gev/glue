@@ -10,16 +10,16 @@ import 'package:glue/src/runtime.dart';
 import 'package:test/test.dart';
 
 /// Helper to run full Glue code like Haskell tests
-Future<Either<GlueError, Ir>> runCode(String input) async {
+Either<GlueError, Ir> runCode(String input) {
   final parseResult = parseGlue(input);
-  return parseResult.match((parseError) => Left(parseError), (ast) async {
+  return parseResult.match((parseError) => Left(parseError), (ast) {
     final irTree = compile(ast);
     final env = envFromModules([
       utilityModule,
     ]); // Load only utility module for testing
     final runtime = Runtime.initial(env);
 
-    final evalResult = await runEval(eval(irTree), runtime);
+    final evalResult = runEval(eval(irTree), runtime);
     return evalResult.match((error) => Left(error), (value) {
       final (result, _) = value;
       return Right(result);
@@ -29,32 +29,32 @@ Future<Either<GlueError, Ir>> runCode(String input) async {
 
 void main() {
   group('Glue.Lib.Math.Utility.Trunc (trunc)', () {
-    test('trunc with positive float returns integer', () async {
-      final result = await runCode('(trunc 3.7)');
+    test('trunc with positive float returns integer', () {
+      final result = runCode('(trunc 3.7)');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrInteger(3))),
       );
     });
 
-    test('trunc with negative float returns integer', () async {
-      final result = await runCode('(trunc -3.7)');
+    test('trunc with negative float returns integer', () {
+      final result = runCode('(trunc -3.7)');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrInteger(-3))),
       );
     });
 
-    test('trunc with integer input return same integer', () async {
-      final result = await runCode('(trunc 5)');
+    test('trunc with integer input return same integer', () {
+      final result = runCode('(trunc 5)');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrInteger(5))),
       );
     });
 
-    test('fails with wrong argument types', () async {
-      final result = await runCode('(trunc "hello")');
+    test('fails with wrong argument types', () {
+      final result = runCode('(trunc "hello")');
       expect(result.isLeft, isTrue);
     });
   });

@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 
 void main() {
   group('Glue.Lib.List.Concat (concat)', () {
-    test('concats two lists', () async {
+    test('concats two lists', () {
       final args = [
         IrList([IrInteger(1), IrInteger(2)]),
         IrList([IrInteger(3), IrInteger(4)]),
@@ -23,7 +23,7 @@ void main() {
       });
     });
 
-    test('concats empty list to non-empty list', () async {
+    test('concats empty list to non-empty list', () {
       final args = [
         IrList([IrInteger(1), IrInteger(2)]),
         IrList([]),
@@ -35,7 +35,7 @@ void main() {
       });
     });
 
-    test('concats non-empty list to empty list', () async {
+    test('concats non-empty list to empty list', () {
       final args = [
         IrList([]),
         IrList([IrInteger(3), IrInteger(4)]),
@@ -47,7 +47,7 @@ void main() {
       });
     });
 
-    test('concats two empty lists', () async {
+    test('concats two empty lists', () {
       final args = [IrList([]), IrList([])];
       final result = runEvalSimple(apply(concat, args), emptyEnv());
       result.match((error) => fail('Concat failed: $error'), (value) {
@@ -56,7 +56,7 @@ void main() {
       });
     });
 
-    test('fails on non-list first argument', () async {
+    test('fails on non-list first argument', () {
       final args = [
         IrInteger(42),
         IrList([IrInteger(1)]),
@@ -65,7 +65,7 @@ void main() {
       expect(result.isLeft, isTrue);
     });
 
-    test('fails on non-list second argument', () async {
+    test('fails on non-list second argument', () {
       final args = [
         IrList([IrInteger(1)]),
         IrInteger(42),

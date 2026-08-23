@@ -8,7 +8,7 @@ import 'package:test/test.dart';
 void main() {
   group('Lambda Special Form', () {
     group('Creating closures', () {
-      test('creates a closure with parameters and body', () async {
+      test('creates a closure with parameters and body', () {
         final initialEnv = fromList([('x', IrInteger(10))]);
         final testRuntime = Runtime.initial(initialEnv);
         final args = [
@@ -16,7 +16,7 @@ void main() {
           IrSymbol('body'),
         ];
 
-        final result = await runEval(apply(lambda, args), testRuntime);
+        final result = runEval(apply(lambda, args), testRuntime);
         result.match((error) => fail('Lambda failed: $error'), (value) {
           final (res, runtime) = value;
           expect(res, isA<IrClosure>());
@@ -33,10 +33,10 @@ void main() {
         });
       });
 
-      test('creates a closure with no parameters', () async {
+      test('creates a closure with no parameters', () {
         final args = [IrList([]), IrInteger(42)];
         final runtime = Runtime.initial(fromList([]));
-        final result = await runEval(apply(lambda, args), runtime);
+        final result = runEval(apply(lambda, args), runtime);
         result.match((error) => fail('Lambda failed: $error'), (value) {
           final (res, runtime) = value;
           expect(res, isA<IrClosure>());
@@ -68,20 +68,20 @@ void main() {
     });
 
     group('Error cases', () {
-      test('fails with non-list as parameters', () async {
+      test('fails with non-list as parameters', () {
         final args = [IrInteger(1), IrSymbol('body')];
         final runtime = Runtime.initial(fromList([]));
-        final result = await runEval(apply(lambda, args), runtime);
+        final result = runEval(apply(lambda, args), runtime);
         expect(result.isLeft, isTrue);
       });
 
-      test('fails with non-symbols in parameters', () async {
+      test('fails with non-symbols in parameters', () {
         final args = [
           IrList([IrInteger(1)]),
           IrSymbol('body'),
         ];
         final runtime = Runtime.initial(fromList([]));
-        final result = await runEval(apply(lambda, args), runtime);
+        final result = runEval(apply(lambda, args), runtime);
         expect(result.isLeft, isTrue);
       });
     });

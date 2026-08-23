@@ -13,9 +13,9 @@ import 'package:glue/src/runtime.dart';
 import 'package:test/test.dart';
 
 /// Helper to run full Glue code like Haskell tests
-Future<Either<GlueError, Ir>> runCode(String input) async {
+Either<GlueError, Ir> runCode(String input) {
   final parseResult = parseGlue(input);
-  return parseResult.match((parseError) => Left(parseError), (ast) async {
+  return parseResult.match((parseError) => Left(parseError), (ast) {
     final irTree = compile(ast);
     final env = envFromModules([
       builtinModule,
@@ -25,7 +25,7 @@ Future<Either<GlueError, Ir>> runCode(String input) async {
     ]); // Load all necessary modules for testing
     final runtime = Runtime.initial(env);
 
-    final evalResult = await runEval(eval(irTree), runtime);
+    final evalResult = runEval(eval(irTree), runtime);
     return evalResult.match((error) => Left(error), (value) {
       final (result, _) = value;
       return Right(result);
@@ -35,44 +35,42 @@ Future<Either<GlueError, Ir>> runCode(String input) async {
 
 void main() {
   group('Glue.Lib.List.Position (position)', () {
-    test('finds position of first element that satisfies predicate', () async {
-      final result = await runCode('(position (lambda (x) (> x 2)) (1 2 3 4))');
+    test('finds position of first element that satisfies predicate', () {
+      final result = runCode('(position (lambda (x) (> x 2)) (1 2 3 4))');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrInteger(2))),
       );
     });
 
-    test('finds position of first element in list', () async {
-      final result = await runCode('(position (lambda (x) (> x 0)) (1 2 3))');
+    test('finds position of first element in list', () {
+      final result = runCode('(position (lambda (x) (> x 0)) (1 2 3))');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrInteger(0))),
       );
     });
 
-    test('finds position of element in middle of list', () async {
-      final result = await runCode(
-        '(position (lambda (x) (== x 5)) (1 2 5 3))',
-      );
+    test('finds position of element in middle of list', () {
+      final result = runCode('(position (lambda (x) (== x 5)) (1 2 5 3))');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrInteger(2))),
       );
     });
 
-    test('fails when no element satisfies predicate', () async {
-      final result = await runCode('(position (lambda (x) (> x 10)) (1 2 3))');
+    test('fails when no element satisfies predicate', () {
+      final result = runCode('(position (lambda (x) (> x 10)) (1 2 3))');
       expect(result.isLeft, isTrue);
     });
 
-    test('fails on empty list', () async {
-      final result = await runCode('(position (lambda (x) true) ())');
+    test('fails on empty list', () {
+      final result = runCode('(position (lambda (x) true) ())');
       expect(result.isLeft, isTrue);
     });
 
-    test('fails on non-list second argument', () async {
-      final result = await runCode('(position (lambda (x) true) 42)');
+    test('fails on non-list second argument', () {
+      final result = runCode('(position (lambda (x) true) 42)');
       expect(result.isLeft, isTrue);
     });
   });

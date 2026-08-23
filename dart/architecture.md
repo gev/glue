@@ -72,8 +72,8 @@ class Eval<A> {
   Future<EvalResult<A>> execute(Runtime runtime) => runEval(runtime);
 
   Eval<B> flatMap<B>(Eval<B> Function(A) f) {
-    return Eval((runtime) async {
-      final result = await runEval(runtime);
+    return Eval((runtime)  {
+      final result = runEval(runtime);
       return result.fold(
         (error) => EvalResult.error(error, runtime),
         (success) => f(success.value).runEval(success.runtime),
@@ -121,7 +121,7 @@ class ModuleRegistry {
   final Map<String, ModuleInfo> _modules = {};
   final Map<String, ImportedModule> _cache = {};
 
-  Future<ImportedModule> import(String name) async {
+  Future<ImportedModule> import(String name) {
     if (_cache.containsKey(name)) {
       return _cache[name]!;
     }
@@ -278,19 +278,19 @@ class GlueInterpreter {
   final Runtime runtime;
 
   // Context switching methods
-  Future<Ir> evalInModel(String code) async {
+  Future<Ir> evalInModel(String code) {
     return await _evalWithEnvironment(code, modelEnvironment);
   }
 
-  Future<Ir> evalInViewModel(String code) async {
+  Future<Ir> evalInViewModel(String code) {
     return await _evalWithEnvironment(code, viewModelEnvironment);
   }
 
-  Future<Widget> evalInView(String code) async {
+  Future<Widget> evalInView(String code) {
     return await _evalWithEnvironment(code, viewEnvironment);
   }
 
-  Future<Ir> _evalWithEnvironment(String code, Environment env) async {
+  Future<Ir> _evalWithEnvironment(String code, Environment env) {
     final previousEnv = runtime.environment;
     runtime.environment = env;
     try {

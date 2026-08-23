@@ -8,11 +8,11 @@ import 'package:glue/src/runtime.dart';
 import 'package:test/test.dart';
 
 /// Helper to run full Glue code like Haskell tests
-Future<Either<EvalError, Ir?>> runCode(List<Ir> args) async {
+Either<EvalError, Ir?> runCode(List<Ir> args) {
   final env = emptyEnv(); // Empty env for unit tests
   final runtime = Runtime.initial(env);
 
-  final evalResult = await runEval(apply(if_, args), runtime);
+  final evalResult = runEval(apply(if_, args), runtime);
   return evalResult.match((error) => Left(error), (value) {
     final (result, _) = value;
     return Right(result);
@@ -22,18 +22,18 @@ Future<Either<EvalError, Ir?>> runCode(List<Ir> args) async {
 void main() {
   group('Glue.Lib.Bool.When (Test when special form)', () {
     group('Conditional execution', () {
-      test('executes body when condition is true', () async {
+      test('executes body when condition is true', () {
         final args = [IrBool(true), IrInteger(42)];
-        final result = await runCode(args);
+        final result = runCode(args);
         result.match(
           (error) => fail('Should not be left: $error'),
           (value) => expect(value, equals(IrInteger(42))),
         );
       });
 
-      test('returns void when condition is false', () async {
+      test('returns void when condition is false', () {
         final args = [IrBool(false), IrInteger(42)];
-        final result = await runCode(args);
+        final result = runCode(args);
         result.match(
           (error) => fail('Should not be left: $error'),
           (value) => expect(value, equals(IrVoid())),

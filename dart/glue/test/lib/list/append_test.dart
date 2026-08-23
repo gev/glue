@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 
 void main() {
   group('Glue.Lib.List.Append (append)', () {
-    test('appendtructs a list by appending an element', () async {
+    test('appendtructs a list by appending an element', () {
       final args = [
         IrList([IrInteger(1), IrInteger(2)]),
         IrInteger(3),
@@ -18,7 +18,7 @@ void main() {
       });
     });
 
-    test('appendtructs a list with empty tail', () async {
+    test('appendtructs a list with empty tail', () {
       final args = [IrList([]), IrInteger(42)];
       final result = runEvalSimple(apply(append, args), emptyEnv());
       result.match((error) => fail('Append failed: $error'), (value) {
@@ -27,7 +27,7 @@ void main() {
       });
     });
 
-    test('fails on non-list head', () async {
+    test('fails on non-list head', () {
       final args = [IrInteger(1), IrInteger(2)];
       final result = runEvalSimple(apply(append, args), emptyEnv());
       expect(result.isLeft, isTrue);

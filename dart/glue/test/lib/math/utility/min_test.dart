@@ -10,16 +10,16 @@ import 'package:glue/src/runtime.dart';
 import 'package:test/test.dart';
 
 /// Helper to run full Glue code like Haskell tests
-Future<Either<GlueError, Ir>> runCode(String input) async {
+Either<GlueError, Ir> runCode(String input) {
   final parseResult = parseGlue(input);
-  return parseResult.match((parseError) => Left(parseError), (ast) async {
+  return parseResult.match((parseError) => Left(parseError), (ast) {
     final irTree = compile(ast);
     final env = envFromModules([
       utilityModule,
     ]); // Load only utility module for testing
     final runtime = Runtime.initial(env);
 
-    final evalResult = await runEval(eval(irTree), runtime);
+    final evalResult = runEval(eval(irTree), runtime);
     return evalResult.match((error) => Left(error), (value) {
       final (result, _) = value;
       return Right(result);
@@ -29,32 +29,32 @@ Future<Either<GlueError, Ir>> runCode(String input) async {
 
 void main() {
   group('Glue.Lib.Math.Utility.Min (min)', () {
-    test('min with two integers returns integer', () async {
-      final result = await runCode('(min 5 3)');
+    test('min with two integers returns integer', () {
+      final result = runCode('(min 5 3)');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrInteger(3))),
       );
     });
 
-    test('min with two floats returns float', () async {
-      final result = await runCode('(min 3.5 2.1)');
+    test('min with two floats returns float', () {
+      final result = runCode('(min 3.5 2.1)');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect((value as IrFloat).value, closeTo(2.1, 0.0001)),
       );
     });
 
-    test('min with mixed types returns float', () async {
-      final result = await runCode('(min 5 2.5)');
+    test('min with mixed types returns float', () {
+      final result = runCode('(min 5 2.5)');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect((value as IrFloat).value, closeTo(2.5, 0.0001)),
       );
     });
 
-    test('fails with wrong argument types', () async {
-      final result = await runCode('(min 5 "hello")');
+    test('fails with wrong argument types', () {
+      final result = runCode('(min 5 "hello")');
       expect(result.isLeft, isTrue);
     });
   });

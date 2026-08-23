@@ -10,16 +10,16 @@ import 'package:glue/src/runtime.dart';
 import 'package:test/test.dart';
 
 /// Helper to run full Glue code like Haskell tests
-Future<Either<GlueError, Ir>> runCode(String input) async {
+Either<GlueError, Ir> runCode(String input) {
   final parseResult = parseGlue(input);
-  return parseResult.match((parseError) => Left(parseError), (ast) async {
+  return parseResult.match((parseError) => Left(parseError), (ast) {
     final irTree = compile(ast);
     final env = envFromModules([
       powerModule,
     ]); // Load only power module for testing
     final runtime = Runtime.initial(env);
 
-    final evalResult = await runEval(eval(irTree), runtime);
+    final evalResult = runEval(eval(irTree), runtime);
     return evalResult.match((error) => Left(error), (value) {
       final (result, _) = value;
       return Right(result);
@@ -29,32 +29,32 @@ Future<Either<GlueError, Ir>> runCode(String input) async {
 
 void main() {
   group('Glue.Lib.Math.Power.Sqrt (sqrt)', () {
-    test('sqrt with integer returns float', () async {
-      final result = await runCode('(sqrt 4)');
+    test('sqrt with integer returns float', () {
+      final result = runCode('(sqrt 4)');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect((value as IrFloat).value, closeTo(2.0, 0.0001)),
       );
     });
 
-    test('sqrt with float returns float', () async {
-      final result = await runCode('(sqrt 9.0)');
+    test('sqrt with float returns float', () {
+      final result = runCode('(sqrt 9.0)');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect((value as IrFloat).value, closeTo(3.0, 0.0001)),
       );
     });
 
-    test('sqrt with perfect square', () async {
-      final result = await runCode('(sqrt 16)');
+    test('sqrt with perfect square', () {
+      final result = runCode('(sqrt 16)');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect((value as IrFloat).value, closeTo(4.0, 0.0001)),
       );
     });
 
-    test('fails with wrong argument types', () async {
-      final result = await runCode('(sqrt "hello")');
+    test('fails with wrong argument types', () {
+      final result = runCode('(sqrt "hello")');
       expect(result.isLeft, isTrue);
     });
   });

@@ -8,11 +8,11 @@ import 'package:glue/src/runtime.dart';
 import 'package:test/test.dart';
 
 /// Helper to run full Glue code like Haskell tests
-Future<Either<EvalError, Ir?>> runCode(List<Ir> args) async {
+Either<EvalError, Ir?> runCode(List<Ir> args) {
   final env = emptyEnv(); // Empty env for unit tests
   final runtime = Runtime.initial(env);
 
-  final evalResult = await runEval(apply(not, args), runtime);
+  final evalResult = runEval(apply(not, args), runtime);
   return evalResult.match((error) => Left(error), (value) {
     final (result, _) = value;
     return Right(result);
@@ -22,18 +22,18 @@ Future<Either<EvalError, Ir?>> runCode(List<Ir> args) async {
 void main() {
   group('Glue.Lib.Bool.Not (Test not function)', () {
     group('Logical not', () {
-      test('returns true for false', () async {
+      test('returns true for false', () {
         final args = [IrBool(false)];
-        final result = await runCode(args);
+        final result = runCode(args);
         result.match(
           (error) => fail('Should not be left: $error'),
           (value) => expect(value, equals(IrBool(true))),
         );
       });
 
-      test('returns false for true', () async {
+      test('returns false for true', () {
         final args = [IrBool(true)];
-        final result = await runCode(args);
+        final result = runCode(args);
         result.match(
           (error) => fail('Should not be left: $error'),
           (value) => expect(value, equals(IrBool(false))),

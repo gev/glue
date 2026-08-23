@@ -10,16 +10,16 @@ import 'package:glue/src/runtime.dart';
 import 'package:test/test.dart';
 
 /// Helper to run full Glue code like Haskell tests
-Future<Either<GlueError, Ir>> runCode(String input) async {
+Either<GlueError, Ir> runCode(String input) {
   final parseResult = parseGlue(input);
-  return parseResult.match((parseError) => Left(parseError), (ast) async {
+  return parseResult.match((parseError) => Left(parseError), (ast) {
     final irTree = compile(ast);
     final env = envFromModules([
       listModule,
     ]); // Load only list module for testing
     final runtime = Runtime.initial(env);
 
-    final evalResult = await runEval(eval(irTree), runtime);
+    final evalResult = runEval(eval(irTree), runtime);
     return evalResult.match((error) => Left(error), (value) {
       final (result, _) = value;
       return Right(result);
@@ -29,40 +29,40 @@ Future<Either<GlueError, Ir>> runCode(String input) async {
 
 void main() {
   group('Glue.Lib.List.Member (member)', () {
-    test('returns true for item in list', () async {
-      final result = await runCode('(member 2 (1 2 3))');
+    test('returns true for item in list', () {
+      final result = runCode('(member 2 (1 2 3))');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrBool(true))),
       );
     });
 
-    test('returns false for item not in list', () async {
-      final result = await runCode('(member 4 (1 2 3))');
+    test('returns false for item not in list', () {
+      final result = runCode('(member 4 (1 2 3))');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrBool(false))),
       );
     });
 
-    test('returns true for string in list', () async {
-      final result = await runCode('(member "hello" ("world" "hello" "test"))');
+    test('returns true for string in list', () {
+      final result = runCode('(member "hello" ("world" "hello" "test"))');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrBool(true))),
       );
     });
 
-    test('returns false for empty list', () async {
-      final result = await runCode('(member 1 ())');
+    test('returns false for empty list', () {
+      final result = runCode('(member 1 ())');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrBool(false))),
       );
     });
 
-    test('fails on non-list second argument', () async {
-      final result = await runCode('(member 1 42)');
+    test('fails on non-list second argument', () {
+      final result = runCode('(member 1 42)');
       expect(result.isLeft, isTrue);
     });
   });

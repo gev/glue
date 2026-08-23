@@ -110,7 +110,7 @@ describe "Module.Function" $ do
 ```dart
 // Dart equivalent
 group('Module.Function', () {
-  test('does something', () async {
+  test('does something', () {
     final result = await runTest(input);
     expect(result, equals(expected));
   });

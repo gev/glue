@@ -13,9 +13,9 @@ import 'package:glue/src/runtime.dart';
 import 'package:test/test.dart';
 
 /// Helper to run full Glue code like Haskell tests
-Future<Either<GlueError, Ir>> runCode(String input) async {
+Either<GlueError, Ir> runCode(String input) {
   final parseResult = parseGlue(input);
-  return parseResult.match((parseError) => Left(parseError), (ast) async {
+  return parseResult.match((parseError) => Left(parseError), (ast) {
     final irTree = compile(ast);
     final env = envFromModules([
       builtinModule,
@@ -25,7 +25,7 @@ Future<Either<GlueError, Ir>> runCode(String input) async {
     ]); // Load all necessary modules for testing
     final runtime = Runtime.initial(env);
 
-    final evalResult = await runEval(eval(irTree), runtime);
+    final evalResult = runEval(eval(irTree), runtime);
     return evalResult.match((error) => Left(error), (value) {
       final (result, _) = value;
       return Right(result);
@@ -35,8 +35,8 @@ Future<Either<GlueError, Ir>> runCode(String input) async {
 
 void main() {
   group('Glue.Lib.List.Map (map)', () {
-    test('maps a function over a list of numbers', () async {
-      final result = await runCode('(map (lambda (x) (* x 2)) (1 2 3))');
+    test('maps a function over a list of numbers', () {
+      final result = runCode('(map (lambda (x) (* x 2)) (1 2 3))');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(
@@ -46,16 +46,16 @@ void main() {
       );
     });
 
-    test('maps over empty list', () async {
-      final result = await runCode('(map (lambda (x) (+ x 1)) ())');
+    test('maps over empty list', () {
+      final result = runCode('(map (lambda (x) (+ x 1)) ())');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrList([]))),
       );
     });
 
-    test('maps a function that returns different types', () async {
-      final result = await runCode(
+    test('maps a function that returns different types', () {
+      final result = runCode(
         '(map (lambda (x) (if (== x 1) "one" x)) (1 2 3))',
       );
       result.match(
@@ -67,8 +67,8 @@ void main() {
       );
     });
 
-    test('fails on non-list second argument', () async {
-      final result = await runCode('(map (lambda (x) (+ x 1)) 42)');
+    test('fails on non-list second argument', () {
+      final result = runCode('(map (lambda (x) (+ x 1)) 42)');
       expect(result.isLeft, isTrue);
     });
   });

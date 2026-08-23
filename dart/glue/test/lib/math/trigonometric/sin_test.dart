@@ -10,16 +10,16 @@ import 'package:glue/src/runtime.dart';
 import 'package:test/test.dart';
 
 /// Helper to run full Glue code like Haskell tests
-Future<Either<GlueError, Ir>> runCode(String input) async {
+Either<GlueError, Ir> runCode(String input) {
   final parseResult = parseGlue(input);
-  return parseResult.match((parseError) => Left(parseError), (ast) async {
+  return parseResult.match((parseError) => Left(parseError), (ast) {
     final irTree = compile(ast);
     final env = envFromModules([
       trigonometricModule,
     ]); // Load only trigonometric module for testing
     final runtime = Runtime.initial(env);
 
-    final evalResult = await runEval(eval(irTree), runtime);
+    final evalResult = runEval(eval(irTree), runtime);
     return evalResult.match((error) => Left(error), (value) {
       final (result, _) = value;
       return Right(result);
@@ -29,32 +29,32 @@ Future<Either<GlueError, Ir>> runCode(String input) async {
 
 void main() {
   group('Glue.Lib.Math.Trigonometric.Sin (sin)', () {
-    test('sin with common angles', () async {
-      final result = await runCode('(sin 0)');
+    test('sin with common angles', () {
+      final result = runCode('(sin 0)');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect((value as IrFloat).value, closeTo(0.0, 0.0001)),
       );
     });
 
-    test('sin with integer input', () async {
-      final result = await runCode('(sin 1)');
+    test('sin with integer input', () {
+      final result = runCode('(sin 1)');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, isA<IrFloat>()),
       );
     });
 
-    test('sin with float input', () async {
-      final result = await runCode('(sin 1.0)');
+    test('sin with float input', () {
+      final result = runCode('(sin 1.0)');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, isA<IrFloat>()),
       );
     });
 
-    test('fails with wrong argument types', () async {
-      final result = await runCode('(sin "hello")');
+    test('fails with wrong argument types', () {
+      final result = runCode('(sin "hello")');
       expect(result.isLeft, isTrue);
     });
   });

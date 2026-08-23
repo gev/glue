@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 
 void main() {
   group('Glue.Lib.List.Head (head)', () {
-    test('returns the first element of a list', () async {
+    test('returns the first element of a list', () {
       final args = [
         IrList([IrInteger(1), IrInteger(2), IrInteger(3)]),
       ];
@@ -17,13 +17,13 @@ void main() {
       });
     });
 
-    test('fails on empty list', () async {
+    test('fails on empty list', () {
       final args = [IrList([])];
       final result = runEvalSimple(apply(head, args), emptyEnv());
       expect(result.isLeft, isTrue);
     });
 
-    test('fails on non-list', () async {
+    test('fails on non-list', () {
       final args = [IrInteger(42)];
       final result = runEvalSimple(apply(head, args), emptyEnv());
       expect(result.isLeft, isTrue);

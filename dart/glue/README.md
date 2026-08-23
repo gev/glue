@@ -22,7 +22,7 @@ dart pub add glue
 ```dart
 import 'package:glue/glue.dart';
 
-void main() async {
+void main() {
   final glue = GlueInterpreter();
 
   // Simple arithmetic

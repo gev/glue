@@ -10,16 +10,16 @@ import 'package:glue/src/runtime.dart';
 import 'package:test/test.dart';
 
 /// Helper to run full Glue code like Haskell tests
-Future<Either<GlueError, Ir>> runCode(String input) async {
+Either<GlueError, Ir> runCode(String input) {
   final parseResult = parseGlue(input);
-  return parseResult.match((parseError) => Left(parseError), (ast) async {
+  return parseResult.match((parseError) => Left(parseError), (ast) {
     final irTree = compile(ast);
     final env = envFromModules([
       listModule,
     ]); // Load only list module for testing
     final runtime = Runtime.initial(env);
 
-    final evalResult = await runEval(eval(irTree), runtime);
+    final evalResult = runEval(eval(irTree), runtime);
     return evalResult.match((error) => Left(error), (value) {
       final (result, _) = value;
       return Right(result);
@@ -29,8 +29,8 @@ Future<Either<GlueError, Ir>> runCode(String input) async {
 
 void main() {
   group('Glue.Lib.List.Zip (zip)', () {
-    test('zips two lists of equal length', () async {
-      final result = await runCode('(zip (1 2 3) ("a" "b" "c"))');
+    test('zips two lists of equal length', () {
+      final result = runCode('(zip (1 2 3) ("a" "b" "c"))');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(
@@ -46,8 +46,8 @@ void main() {
       );
     });
 
-    test('zips two lists where first is shorter', () async {
-      final result = await runCode('(zip (1 2) ("a" "b" "c"))');
+    test('zips two lists where first is shorter', () {
+      final result = runCode('(zip (1 2) ("a" "b" "c"))');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(
@@ -62,8 +62,8 @@ void main() {
       );
     });
 
-    test('zips two lists where second is shorter', () async {
-      final result = await runCode('(zip (1 2 3) ("a" "b"))');
+    test('zips two lists where second is shorter', () {
+      final result = runCode('(zip (1 2 3) ("a" "b"))');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(
@@ -78,29 +78,29 @@ void main() {
       );
     });
 
-    test('zips two empty lists', () async {
-      final result = await runCode('(zip () ())');
+    test('zips two empty lists', () {
+      final result = runCode('(zip () ())');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrList([]))),
       );
     });
 
-    test('zips one empty list with non-empty', () async {
-      final result = await runCode('(zip () (1 2))');
+    test('zips one empty list with non-empty', () {
+      final result = runCode('(zip () (1 2))');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrList([]))),
       );
     });
 
-    test('fails on non-list first argument', () async {
-      final result = await runCode('(zip 42 (1 2))');
+    test('fails on non-list first argument', () {
+      final result = runCode('(zip 42 (1 2))');
       expect(result.isLeft, isTrue);
     });
 
-    test('fails on non-list second argument', () async {
-      final result = await runCode('(zip (1 2) 42)');
+    test('fails on non-list second argument', () {
+      final result = runCode('(zip (1 2) 42)');
       expect(result.isLeft, isTrue);
     });
   });

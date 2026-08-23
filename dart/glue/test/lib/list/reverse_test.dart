@@ -6,27 +6,27 @@ import 'package:test/test.dart';
 
 void main() {
   group('Glue.Lib.List.Reverse (reverse)', () {
-    test('reverses a list', () async {
+    test('reverses a list', () {
       final args = [
         IrList([IrInteger(1), IrInteger(2), IrInteger(3)]),
       ];
-      final result = await runEvalSimple(apply(reverse, args), emptyEnv());
+      final result = runEvalSimple(apply(reverse, args), emptyEnv());
       result.match((error) => fail('Reverse failed: $error'), (value) {
         final (res, _) = value;
         expect(res, equals(IrList([IrInteger(3), IrInteger(2), IrInteger(1)])));
       });
     });
 
-    test('reverses an empty list', () async {
+    test('reverses an empty list', () {
       final args = [IrList([])];
-      final result = await runEvalSimple(apply(reverse, args), emptyEnv());
+      final result = runEvalSimple(apply(reverse, args), emptyEnv());
       result.match((error) => fail('Reverse failed: $error'), (value) {
         final (res, _) = value;
         expect(res, equals(IrList([])));
       });
     });
 
-    test('reverses a list with multiple elements', () async {
+    test('reverses a list with multiple elements', () {
       final args = [
         IrList([
           IrInteger(1),
@@ -36,7 +36,7 @@ void main() {
           IrInteger(5),
         ]),
       ];
-      final result = await runEvalSimple(apply(reverse, args), emptyEnv());
+      final result = runEvalSimple(apply(reverse, args), emptyEnv());
       result.match((error) => fail('Reverse failed: $error'), (value) {
         final (res, _) = value;
         expect(
@@ -54,9 +54,9 @@ void main() {
       });
     });
 
-    test('fails on non-list', () async {
+    test('fails on non-list', () {
       final args = [IrInteger(42)];
-      final result = await runEvalSimple(apply(reverse, args), emptyEnv());
+      final result = runEvalSimple(apply(reverse, args), emptyEnv());
       expect(result.isLeft, isTrue);
     });
   });

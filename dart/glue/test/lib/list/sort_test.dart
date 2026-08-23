@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 
 void main() {
   group('Glue.Lib.List.Sort (sort)', () {
-    test('sorts a list of numbers in ascending order', () async {
+    test('sorts a list of numbers in ascending order', () {
       final args = [
         IrList([
           IrInteger(3),
@@ -16,7 +16,7 @@ void main() {
           IrInteger(5),
         ]),
       ];
-      final result = await runEvalSimple(apply(sort, args), emptyEnv());
+      final result = runEvalSimple(apply(sort, args), emptyEnv());
       result.match((error) => fail('Sort failed: $error'), (value) {
         final (res, _) = value;
         expect(
@@ -34,11 +34,11 @@ void main() {
       });
     });
 
-    test('sorts a list of strings in alphabetical order', () async {
+    test('sorts a list of strings in alphabetical order', () {
       final args = [
         IrList([IrString('zebra'), IrString('apple'), IrString('banana')]),
       ];
-      final result = await runEvalSimple(apply(sort, args), emptyEnv());
+      final result = runEvalSimple(apply(sort, args), emptyEnv());
       result.match((error) => fail('Sort failed: $error'), (value) {
         final (res, _) = value;
         expect(
@@ -50,27 +50,27 @@ void main() {
       });
     });
 
-    test('sorts an empty list', () async {
+    test('sorts an empty list', () {
       final args = [IrList([])];
-      final result = await runEvalSimple(apply(sort, args), emptyEnv());
+      final result = runEvalSimple(apply(sort, args), emptyEnv());
       result.match((error) => fail('Sort failed: $error'), (value) {
         final (res, _) = value;
         expect(res, equals(IrList([])));
       });
     });
 
-    test('sorts a single element list', () async {
+    test('sorts a single element list', () {
       final args = [
         IrList([IrInteger(42)]),
       ];
-      final result = await runEvalSimple(apply(sort, args), emptyEnv());
+      final result = runEvalSimple(apply(sort, args), emptyEnv());
       result.match((error) => fail('Sort failed: $error'), (value) {
         final (res, _) = value;
         expect(res, equals(IrList([IrInteger(42)])));
       });
     });
 
-    test('sorts a list with duplicate elements', () async {
+    test('sorts a list with duplicate elements', () {
       final args = [
         IrList([
           IrInteger(3),
@@ -80,7 +80,7 @@ void main() {
           IrInteger(2),
         ]),
       ];
-      final result = await runEvalSimple(apply(sort, args), emptyEnv());
+      final result = runEvalSimple(apply(sort, args), emptyEnv());
       result.match((error) => fail('Sort failed: $error'), (value) {
         final (res, _) = value;
         expect(
@@ -98,20 +98,20 @@ void main() {
       });
     });
 
-    test('fails on non-list argument', () async {
+    test('fails on non-list argument', () {
       final args = [IrInteger(42)];
-      final result = await runEvalSimple(apply(sort, args), emptyEnv());
+      final result = runEvalSimple(apply(sort, args), emptyEnv());
       expect(result.isLeft, isTrue);
     });
 
-    test('fails on list with incomparable elements', () async {
+    test('fails on list with incomparable elements', () {
       final args = [
         IrList([
           IrInteger(1),
           IrList([IrInteger(2)]),
         ]),
       ];
-      final result = await runEvalSimple(apply(sort, args), emptyEnv());
+      final result = runEvalSimple(apply(sort, args), emptyEnv());
       expect(result.isLeft, isTrue);
     });
   });

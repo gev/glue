@@ -10,14 +10,14 @@ import 'package:glue/src/runtime.dart';
 import 'package:test/test.dart';
 
 /// Helper to run full Glue code like Haskell tests
-Future<Either<GlueError, Ir>> runCode(String input) async {
+Either<GlueError, Ir> runCode(String input) {
   final parseResult = parseGlue(input);
-  return parseResult.match((parseError) => Left(parseError), (ast) async {
+  return parseResult.match((parseError) => Left(parseError), (ast) {
     final irTree = compile(ast);
     final env = envFromModules([ioModule]); // Load only io module for testing
     final runtime = Runtime.initial(env);
 
-    final evalResult = await runEval(eval(irTree), runtime);
+    final evalResult = runEval(eval(irTree), runtime);
     return evalResult.match((error) => Left(error), (value) {
       final (result, _) = value;
       return Right(result);
@@ -27,16 +27,16 @@ Future<Either<GlueError, Ir>> runCode(String input) async {
 
 void main() {
   group('Glue.Lib.IO.Print', () {
-    test('print returns void', () async {
-      final result = await runCode('(print "hello")');
+    test('print returns void', () {
+      final result = runCode('(print "hello")');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrVoid())),
       );
     });
 
-    test('println returns void', () async {
-      final result = await runCode('(println "hello")');
+    test('println returns void', () {
+      final result = runCode('(println "hello")');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrVoid())),
