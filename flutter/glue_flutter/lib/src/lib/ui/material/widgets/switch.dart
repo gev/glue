@@ -20,7 +20,7 @@ Eval<Ir> switchImpl(Ir props) => switch (props) {
 /// Create Switch widget from properties
 Eval<Ir> _createSwitch(WidgetProperties properties) {
   return getRuntime().map((runtime) {
-    final switchWidget = Switch(
+    final switchWidget = Switch.adaptive(
       key: properties.key,
       value: properties.getBool('value') ?? false,
       onChanged: properties.getCallback<bool>('on-changed')?.call(runtime),
