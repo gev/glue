@@ -19,15 +19,11 @@ Eval<Ir> switchImpl(Ir props) => switch (props) {
 
 /// Create Switch widget from properties
 Eval<Ir> _createSwitch(WidgetProperties properties) {
-  final onChanged = properties.getCallback<bool>('on-changed');
-  if (onChanged == null) {
-    return throwError(wrongArgumentType(['on-changed (callback)']));
-  }
   return getRuntime().map((runtime) {
     final switchWidget = Switch(
       key: properties.key,
       value: properties.getBool('value') ?? false,
-      onChanged: onChanged(runtime),
+      onChanged: properties.getCallback<bool>('on-changed')?.call(runtime),
       activeThumbColor: properties.getColor('active-thumb-color'),
       activeTrackColor: properties.getColor('active-track-color'),
       inactiveThumbColor: properties.getColor('inactive-thumb-color'),
