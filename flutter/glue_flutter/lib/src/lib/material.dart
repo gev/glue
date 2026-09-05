@@ -17,6 +17,7 @@ import 'package:glue_flutter/src/lib/ui/material/widgets/badge.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/bottom_app_bar.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/bottom_sheet.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/button.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/button_segment.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/card.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/checkbox.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/chip.dart';
@@ -83,6 +84,7 @@ final ModuleInfo uiMaterialModule = nativeModule('ffi.ui.material', [
   ('elevated-button', elevatedButton),
   ('icon-button', iconButton),
   ('segmented-button', segmentedButton),
+  ('button-segment', buttonSegment),
   ('text-button', textButton),
   ('ink-well', inkWell),
   ('card', card),
