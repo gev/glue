@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
@@ -18,19 +17,21 @@ Eval<Ir> segmentedButtonImpl(Ir props) => switch (props) {
 
 /// Create SegmentedButton widget from properties
 Eval<Ir> _createSegmentedButton(WidgetProperties properties) {
-  final selected = properties.getValue<Set<dynamic>>('selected');
-  if (selected == null) {
-    return throwError(wrongArgumentType(['selected']));
-  }
   return getRuntime().map((runtime) {
-    final segmentedButtonWidget = SegmentedButton<dynamic>(
+    final segmentedButtonWidget = SegmentedButton<Ir>(
       key: properties.key,
-      selected: selected,
-      segments: properties.getValues('segments'),
+      selected: properties.getValue<Set<Ir>>('selected') ?? {},
+      segments: properties.getValues<ButtonSegment<Ir>>('segments'),
       onSelectionChanged: properties
-          .getCallback<Set<dynamic>>('on-selection-changed')
+          .getCallback<Set<Ir>>('on-selection-changed')
           ?.call(runtime),
+      emptySelectionAllowed:
+          properties.getBool('empty-selection-allowed') ?? false,
+      multiSelectionEnabled:
+          properties.getBool('multi-selection-enabled') ?? false,
       showSelectedIcon: properties.getBool('show-selected-icon') ?? true,
+      style: properties.getValue<ButtonStyle>('style'),
+      selectedIcon: properties.getWidget('selected-icon'),
     );
     return IrNativeValue(Value(segmentedButtonWidget));
   });
