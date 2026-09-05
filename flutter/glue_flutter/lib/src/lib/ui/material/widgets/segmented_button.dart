@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:glue/either.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
+import 'package:glue/runtime.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// SegmentedButton widget function
@@ -20,11 +22,11 @@ Eval<Ir> _createSegmentedButton(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final segmentedButtonWidget = SegmentedButton<Ir>(
       key: properties.key,
-      selected: properties.getValue<Set<Ir>>('selected') ?? {},
+      selected: toList<Ir>(properties.get('selected')).toSet(),
       segments: properties.getValues<ButtonSegment<Ir>>('segments'),
-      onSelectionChanged: properties
-          .getCallback<Set<Ir>>('on-selection-changed')
-          ?.call(runtime),
+      onSelectionChanged: _getCallback(
+        properties.get('on-selection-changed'),
+      )?.call(runtime),
       emptySelectionAllowed:
           properties.getBool('empty-selection-allowed') ?? false,
       multiSelectionEnabled:
@@ -35,4 +37,17 @@ Eval<Ir> _createSegmentedButton(WidgetProperties properties) {
     );
     return IrNativeValue(Value(segmentedButtonWidget));
   });
+}
+
+typedef Callback = void Function(Set<Ir> selected);
+
+Callback Function(Runtime)? _getCallback(Ir? value) {
+  if (value == null) return null;
+  return (Runtime runtime) => (set) {
+    final evalAction = apply(value, set.toList());
+    final result = runEval(evalAction, runtime);
+    if (result case Left(:final value)) {
+      print('Callback execution error: $value');
+    }
+  };
 }
