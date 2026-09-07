@@ -15,6 +15,7 @@ import 'package:glue/src/lib/list/member.dart';
 import 'package:glue/src/lib/list/partition.dart';
 import 'package:glue/src/lib/list/position.dart';
 import 'package:glue/src/lib/list/prepend.dart';
+import 'package:glue/src/lib/list/range.dart';
 import 'package:glue/src/lib/list/remove.dart';
 import 'package:glue/src/lib/list/reverse.dart';
 import 'package:glue/src/lib/list/sort.dart';
@@ -47,6 +48,7 @@ final ModuleInfo listModule = nativeModule('ffi.list', [
   ('partition', partition),
   ('position', position),
   ('prepend', prepend),
+  ('range', range),
   ('remove', remove),
   ('reverse', reverse),
   ('sort', sort),
