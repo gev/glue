@@ -17,8 +17,8 @@ Eval<Ir> buttonSegmentImpl(Ir props) => switch (props) {
 
 /// Create ButtonSegment from properties
 Eval<Ir> _createButtonSegment(WidgetProperties properties) {
-  final segment = ButtonSegment(
-    value: properties.get('value') ?? IrVoid,
+  final segment = ButtonSegment<Ir>(
+    value: properties.get('value') ?? IrVoid(),
     label: properties.getValue<Widget>('label'),
     icon: properties.getValue<Widget>('icon'),
     tooltip: properties.getValue<String>('tooltip'),
