@@ -44,6 +44,8 @@ typedef Callback = void Function(Set selected);
 Callback Function(Runtime)? _getCallback(Ir? value) {
   if (value == null) return null;
   return (Runtime runtime) => (set) {
+    print(set);
+    return;
     final list = set.toList() as List<Ir>;
     final evalAction = apply(value, [IrList(list)]);
     final result = runEval(evalAction, runtime);
