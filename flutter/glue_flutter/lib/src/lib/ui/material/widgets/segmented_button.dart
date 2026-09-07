@@ -35,7 +35,12 @@ Eval<Ir> _createSegmentedButton(WidgetProperties properties) {
       style: properties.getValue<ButtonStyle>('style'),
       selectedIcon: properties.getWidget('selected-icon'),
     );
-    return IrNativeValue(Value(segmentedButtonWidget));
+    final res = IrNativeValue(Value(segmentedButtonWidget));
+    print(segmentedButtonWidget.runtimeType);
+    print(res.runtimeType);
+    print(res.value.runtimeType);
+    print(res.value.value.runtimeType);
+    return res;
   });
 }
 
