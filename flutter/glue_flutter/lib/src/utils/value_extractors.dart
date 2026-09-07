@@ -54,12 +54,12 @@ List<T> extractNativeValues<T>(Ir? value) {
     case IrList(:final elements):
       final res = <T>[];
       print(T);
-      print(res);
       for (final element in elements) {
         if (element case IrNativeValue(value: Value(value: T v))) {
           res.add(v);
         }
       }
+      print(res);
       return res;
     default:
       final res = (extractNativeValue<T>(value));
