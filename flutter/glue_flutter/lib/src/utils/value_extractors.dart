@@ -58,8 +58,8 @@ List<T> extractNativeValues<T>(Ir? value) {
         if (element case IrNativeValue(value: Value(value: final v))) {
           if (v is T) res.add(v);
         }
-        return res;
       }
+      return res;
     default:
       final res = (extractNativeValue<T>(value));
       return res != null ? [res] : [];
