@@ -54,11 +54,11 @@ List<T> extractNativeValues<T>(Ir? value) => switch (value) {
     elements
         .map(
           (child) => switch (child) {
-            IrNativeValue(value: Value(value: final widget)) => widget,
+            IrNativeValue(value: Value(:final value)) => value,
             _ => null,
           },
         )
-        .where((item) => item.runtimeType == T)
+        // .where((item) => item.runtimeType == T)
         .cast<T>()
         .toList(),
   _ => switch (extractNativeValue<T>(value)) {
