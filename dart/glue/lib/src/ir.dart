@@ -204,14 +204,14 @@ class IrVoid extends Ir {
   int get hashCode => 'void'.hashCode;
 }
 
-class IrNativeValue extends Ir {
-  final Value value; // Host language value wrapped in Value
+class IrNativeValue<T> extends Ir {
+  final Value<T> value; // Host language value wrapped in Value
   const IrNativeValue(this.value);
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is IrNativeValue && value == other.value);
+      (other is IrNativeValue<T> && value == other.value);
 
   @override
   int get hashCode => value.hashCode;
