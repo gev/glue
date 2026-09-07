@@ -55,8 +55,9 @@ List<T> extractNativeValues<T>(Ir? value) {
       final res = <T>[];
       print(T);
       for (final element in elements) {
-        if (element case IrNativeValue(value: Value(value: T v))) {
-          res.add(v);
+        if (element case IrNativeValue(value: Value(value: final v))) {
+          print(v.runtimeType);
+          if (v is T) res.add(v);
         }
       }
       print(res);
