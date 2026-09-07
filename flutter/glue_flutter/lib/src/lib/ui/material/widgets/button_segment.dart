@@ -24,10 +24,5 @@ Eval<Ir> _createButtonSegment(WidgetProperties properties) {
     tooltip: properties.getValue<String>('tooltip'),
     enabled: properties.getBool('enabled') ?? true,
   );
-  final res = IrNativeValue(Value(segment));
-  print(segment.runtimeType);
-  print(res.runtimeType);
-  print(res.value.runtimeType);
-  print(res.value.value.runtimeType);
-  return Eval.pure(res);
+  return Eval.pure(IrNativeValue(Value(segment)));
 }
