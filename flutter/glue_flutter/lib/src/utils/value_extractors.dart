@@ -58,8 +58,7 @@ List<T> extractNativeValues<T>(Ir? value) => switch (value) {
             _ => null,
           },
         )
-        // .where((item) => item.runtimeType == T)
-        .cast<T>()
+        .whereType<T>()
         .toList(),
   _ => switch (extractNativeValue<T>(value)) {
     null => [],
