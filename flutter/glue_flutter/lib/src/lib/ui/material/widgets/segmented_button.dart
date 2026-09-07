@@ -20,10 +20,10 @@ Eval<Ir> segmentedButtonImpl(Ir props) => switch (props) {
 /// Create SegmentedButton widget from properties
 Eval<Ir> _createSegmentedButton(WidgetProperties properties) {
   return getRuntime().map((runtime) {
-    final segmentedButtonWidget = SegmentedButton(
+    final segmentedButtonWidget = SegmentedButton<Ir>(
       key: properties.key,
       selected: toList<Ir>(properties.get('selected')).toSet(),
-      segments: properties.getValues<ButtonSegment>('segments'),
+      segments: properties.getValues<ButtonSegment<Ir>>('segments'),
       onSelectionChanged: _getCallback(
         properties.get('on-selection-changed'),
       )?.call(runtime),
@@ -39,21 +39,17 @@ Eval<Ir> _createSegmentedButton(WidgetProperties properties) {
   });
 }
 
-typedef Callback = void Function(Set selected);
+typedef Callback = void Function(Set<Ir> selected);
 
 Callback Function(Runtime)? _getCallback(Ir? value) {
   if (value == null) return null;
   return (Runtime runtime) => (set) {
-    print(set.runtimeType);
-    if (set.runtimeType == Set<Ir>) {
-      print(set);
-      return;
-      // final list = set.toList();
-      // final evalAction = apply(value, [IrList(list)]);
-      // final result = runEval(evalAction, runtime);
-      // if (result case Left(:final value)) {
-      //   print('Callback execution error: $value');
-      // }
-    }
+    print(set);
+    // final list = set.toList();
+    // final evalAction = apply(value, [IrList(list)]);
+    // final result = runEval(evalAction, runtime);
+    // if (result case Left(:final value)) {
+    //   print('Callback execution error: $value');
+    // }
   };
 }
