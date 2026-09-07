@@ -5,6 +5,7 @@ import 'package:glue_flutter/src/lib/ui/material/styles/colors.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/drag_start_behavior.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/dynamic_scheme_variant.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/floating_action_button_location.dart';
+import 'package:glue_flutter/src/lib/ui/material/styles/segmented_button_style.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/text_theme.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/theme.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/theme_dark.dart';
@@ -148,6 +149,7 @@ final ModuleInfo uiMaterialModule = nativeModule('ffi.ui.material', [
   ('text-theme', textTheme),
 
   ('button-style', buttonStyle),
+  ('segmented-button-style', segmentedButtonStyle),
 
   ('show-dialog', showDialog_),
   ('show-bottom-sheet', showBottomSheet_),
