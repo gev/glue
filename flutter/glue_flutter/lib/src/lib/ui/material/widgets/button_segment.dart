@@ -17,15 +17,12 @@ Eval<Ir> buttonSegmentImpl(Ir props) => switch (props) {
 
 /// Create ButtonSegment from properties
 Eval<Ir> _createButtonSegment(WidgetProperties properties) {
-  // ButtonSegment не требует runtime для создания, но оборачиваем для консистентности стиля
-  return getRuntime().map((runtime) {
-    final segment = ButtonSegment<Ir>(
-      value: properties.getValue<Ir>('value')!,
-      label: properties.getValue<Widget>('label'),
-      icon: properties.getValue<Widget>('icon'),
-      tooltip: properties.getValue<String>('tooltip'),
-      enabled: properties.getBool('enabled') ?? true,
-    );
-    return IrNativeValue(Value(segment));
-  });
+  final segment = ButtonSegment<Ir>(
+    value: properties.getValue<Ir>('value')!,
+    label: properties.getValue<Widget>('label'),
+    icon: properties.getValue<Widget>('icon'),
+    tooltip: properties.getValue<String>('tooltip'),
+    enabled: properties.getBool('enabled') ?? true,
+  );
+  return Eval.pure(IrNativeValue(Value(segment)));
 }
