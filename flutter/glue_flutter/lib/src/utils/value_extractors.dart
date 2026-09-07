@@ -49,22 +49,21 @@ Color? extractColor(Ir? value) => switch (value) {
 };
 
 /// Extract children list from Glue IR value
-List<T> extractNativeValues<T>(Ir? value) => switch (value) {
-  IrList(:final elements) =>
-    elements
-        .map(
-          (child) => switch (child) {
-            IrNativeValue(value: Value(:final value)) => value,
-            _ => null,
-          },
-        )
-        .whereType<T>()
-        .toList(),
-  _ => switch (extractNativeValue<T>(value)) {
-    null => [],
-    T res => [res],
-  },
-};
+List<T> extractNativeValues<T>(Ir? value) {
+  switch (value) {
+    case IrList(:final elements):
+      final res = <T>[];
+      for (final element in elements) {
+        if (element case IrNativeValue(value: Value(value: T v))) {
+          res.add(v);
+        }
+      }
+      return res;
+    default:
+      final res = (extractNativeValue<T>(value));
+      return res != null ? [res] : [];
+  }
+}
 
 /// Extract VoidCallback from Glue IR value with provided runtime
 VoidCallback Function(Runtime)? extractVoidCallback(Ir? value) =>
