@@ -4,8 +4,8 @@ import 'package:glue/src/eval.dart';
 
 /// Host value wrapper for any host language object
 /// Mirrors Haskell Value exactly with getters
-class Value<T> {
-  final T value;
+class Value {
+  final dynamic value;
   final Map<String, Eval<Ir>> getters;
 
   const Value(this.value, {this.getters = const {}});
@@ -15,7 +15,7 @@ class Value<T> {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || (other is Value<T> && value == other.value);
+      identical(this, other) || (other is Value && value == other.value);
 
   @override
   int get hashCode => value.hashCode;
@@ -23,16 +23,16 @@ class Value<T> {
 
 /// Create a host value from any value
 /// Mirrors Haskell hostValue exactly
-Value<T> hostValue<T>(T value) => Value<T>(value);
+Value hostValue(dynamic value) => Value(value);
 
 /// Create a host value with properties getters
 /// Mirrors Haskell hostValueWithProps exactly
-Value<T> hostValueWithProps<T>(T value, Map<String, Eval<Ir>> getters) =>
+Value hostValueWithProps(dynamic value, Map<String, Eval<Ir>> getters) =>
     Value(value, getters: getters);
 
 /// Extract a host value with type safety
 /// Mirrors Haskell extractValue exactly
-T? extractValue<T>(Value<dynamic> hostValue) => switch (hostValue) {
+T? extractValue<T>(Value hostValue) => switch (hostValue) {
   Value(value: T v) => v,
   _ => null,
 };
@@ -204,14 +204,14 @@ class IrVoid extends Ir {
   int get hashCode => 'void'.hashCode;
 }
 
-class IrNativeValue<T> extends Ir {
-  final Value<T> value; // Host language value wrapped in Value
+class IrNativeValue extends Ir {
+  final Value value; // Host language value wrapped in Value
   const IrNativeValue(this.value);
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is IrNativeValue<T> && value == other.value);
+      (other is IrNativeValue && value == other.value);
 
   @override
   int get hashCode => value.hashCode;
