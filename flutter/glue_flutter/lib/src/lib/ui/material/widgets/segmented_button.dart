@@ -20,10 +20,6 @@ Eval<Ir> segmentedButtonImpl(Ir props) => switch (props) {
 /// Create SegmentedButton widget from properties
 Eval<Ir> _createSegmentedButton(WidgetProperties properties) {
   return getRuntime().map((runtime) {
-    print(properties);
-    print(toList<Ir>(properties.get('selected')).toSet());
-    print(properties.getValues<ButtonSegment>('segments'));
-    return IrNativeValue(Value(SizedBox()));
     final segmentedButtonWidget = SegmentedButton<Ir>(
       key: properties.key,
       selected: toList<Ir>(properties.get('selected')).toSet(),
