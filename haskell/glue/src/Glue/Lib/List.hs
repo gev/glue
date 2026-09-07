@@ -18,6 +18,7 @@ import Glue.Lib.List.Member (member)
 import Glue.Lib.List.Partition qualified as Partition
 import Glue.Lib.List.Position qualified as Position
 import Glue.Lib.List.Prepend (prepend)
+import Glue.Lib.List.Range
 import Glue.Lib.List.Remove (remove)
 import Glue.Lib.List.Reverse qualified as Reverse
 import Glue.Lib.List.Sort qualified as Sort
@@ -47,6 +48,7 @@ list =
         , ("partition", Partition.partition)
         , ("prepend", prepend)
         , ("position", Position.position)
+        , ("range", range)
         , ("remove", remove)
         , ("reverse", Reverse.reverse)
         , ("sort", Sort.sort)
