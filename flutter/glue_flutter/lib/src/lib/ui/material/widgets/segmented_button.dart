@@ -20,14 +20,10 @@ Eval<Ir> segmentedButtonImpl(Ir props) => switch (props) {
 /// Create SegmentedButton widget from properties
 Eval<Ir> _createSegmentedButton(WidgetProperties properties) {
   return getRuntime().map((runtime) {
-    print(properties);
-    print(toList<Ir>(properties.get('selected')).toSet());
-    print(properties.getValues<ButtonSegment<Ir>>('segments'));
-    return IrNativeValue(Value(SizedBox()));
-    final segmentedButtonWidget = SegmentedButton<Ir>(
+    final segmentedButtonWidget = SegmentedButton(
       key: properties.key,
       selected: toList<Ir>(properties.get('selected')).toSet(),
-      segments: properties.getValues<ButtonSegment<Ir>>('segments'),
+      segments: properties.getValues<ButtonSegment>('segments'),
       onSelectionChanged: _getCallback(
         properties.get('on-selection-changed'),
       )?.call(runtime),
@@ -43,9 +39,9 @@ Eval<Ir> _createSegmentedButton(WidgetProperties properties) {
   });
 }
 
-typedef Callback = void Function(Set<Ir> selected);
+typedef Callback = void Function(dynamic selected);
 
-Callback Function(Runtime)? _getCallback(Ir? value) {
+Callback Function(Runtime)? _getCallback(dynamic value) {
   if (value == null) return null;
   return (Runtime runtime) => (set) {
     final evalAction = apply(value, [IrList(set.toList())]);
