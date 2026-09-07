@@ -44,6 +44,7 @@ typedef Callback = void Function(Set selected);
 Callback Function(Runtime)? _getCallback(Ir? value) {
   if (value == null) return null;
   return (Runtime runtime) => (set) {
+    print(set.runtimeType);
     if (set.runtimeType == Set<Ir>) {
       print(set);
       return;
