@@ -54,7 +54,7 @@ List<T> extractNativeValues<T>(Ir? value) => switch (value) {
     elements
         .map(
           (child) => switch (child) {
-            IrNativeValue(value: Value(value: final widget)) => widget,
+            IrNativeValue(value: Value(value: T widget)) => widget,
             _ => null,
           },
         )
