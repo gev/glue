@@ -53,7 +53,6 @@ List<T> extractNativeValues<T>(Ir? value) {
   switch (value) {
     case IrList(:final elements):
       final res = <T>[];
-      print(T);
       for (final element in elements) {
         if (element case IrNativeValue(value: Value(value: final v))) {
           if (v is T) res.add(v);
