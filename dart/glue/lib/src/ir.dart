@@ -4,8 +4,8 @@ import 'package:glue/src/eval.dart';
 
 /// Host value wrapper for any host language object
 /// Mirrors Haskell Value exactly with getters
-class Value {
-  final dynamic value;
+class Value<T> {
+  final T value;
   final Map<String, Eval<Ir>> getters;
 
   const Value(this.value, {this.getters = const {}});
@@ -15,7 +15,7 @@ class Value {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || (other is Value && value == other.value);
+      identical(this, other) || (other is Value<T> && value == other.value);
 
   @override
   int get hashCode => value.hashCode;
@@ -23,16 +23,16 @@ class Value {
 
 /// Create a host value from any value
 /// Mirrors Haskell hostValue exactly
-Value hostValue(dynamic value) => Value(value);
+Value<T> hostValue<T>(T value) => Value<T>(value);
 
 /// Create a host value with properties getters
 /// Mirrors Haskell hostValueWithProps exactly
-Value hostValueWithProps(dynamic value, Map<String, Eval<Ir>> getters) =>
+Value<T> hostValueWithProps<T>(T value, Map<String, Eval<Ir>> getters) =>
     Value(value, getters: getters);
 
 /// Extract a host value with type safety
 /// Mirrors Haskell extractValue exactly
-T? extractValue<T>(Value hostValue) => switch (hostValue) {
+T? extractValue<T>(Value<dynamic> hostValue) => switch (hostValue) {
   Value(value: T v) => v,
   _ => null,
 };
