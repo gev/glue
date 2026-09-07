@@ -24,7 +24,7 @@ Eval<Ir> _createSegmentedButton(WidgetProperties properties) {
       key: properties.key,
       selected: toList<Ir>(properties.get('selected')).toSet(),
       segments:
-          properties.getValues<ButtonSegment>('segments')
+          properties.getValues<ButtonSegment<dynamic>>('segments')
               as List<ButtonSegment<Ir>>,
       onSelectionChanged: _getCallback(
         properties.get('on-selection-changed'),
