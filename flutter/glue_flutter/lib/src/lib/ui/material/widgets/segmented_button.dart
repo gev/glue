@@ -22,8 +22,8 @@ Eval<Ir> _createSegmentedButton(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     print(properties);
     print(toList<Ir>(properties.get('selected')).toSet());
-    return IrNativeValue(Value(SizedBox()));
     print(properties.getValues<ButtonSegment<Ir>>('segments'));
+    return IrNativeValue(Value(SizedBox()));
     final segmentedButtonWidget = SegmentedButton<Ir>(
       key: properties.key,
       selected: toList<Ir>(properties.get('selected')).toSet(),
