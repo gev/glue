@@ -27,20 +27,22 @@ Eval<Ir> _createSearchBar(WidgetProperties properties) {
       onChanged: properties.getValue<ValueChanged<String>>('on-changed'),
       onSubmitted: properties.getValue<ValueChanged<String>>('on-submitted'),
       constraints: properties.getValue<BoxConstraints>('constraints'),
-      elevation: properties.getValue<WidgetStateProperty<double?>>('elevation'),
-      overlayColor: properties.getValue<WidgetStateProperty<Color?>>(
-        'overlay-color',
+      elevation: wrapWidgetStateProperty(properties.getDouble('elevation')),
+      overlayColor: wrapWidgetStateProperty(
+        properties.getValue<Color>('overlay-color'),
       ),
-      side: properties.getValue<WidgetStateProperty<BorderSide?>>('side'),
-      shape: properties.getValue<WidgetStateProperty<OutlinedBorder?>>('shape'),
-      padding: properties.getValue<WidgetStateProperty<EdgeInsetsGeometry?>>(
-        'padding',
+      side: wrapWidgetStateProperty(properties.getValue<BorderSide>('side')),
+      shape: wrapWidgetStateProperty(
+        properties.getValue<OutlinedBorder>('shape'),
       ),
-      textStyle: properties.getValue<WidgetStateProperty<TextStyle?>>(
-        'text-style',
+      padding: wrapWidgetStateProperty(
+        properties.getValue<EdgeInsetsGeometry>('padding'),
       ),
-      hintStyle: properties.getValue<WidgetStateProperty<TextStyle?>>(
-        'hint-style',
+      textStyle: wrapWidgetStateProperty(
+        properties.getValue<TextStyle>('text-style'),
+      ),
+      hintStyle: wrapWidgetStateProperty(
+        properties.getValue<TextStyle>('hint-style'),
       ),
       textCapitalization:
           properties.getValue<TextCapitalization>('text-capitalization') ??

@@ -22,7 +22,7 @@ Eval<Ir> _createStepper(WidgetProperties properties) {
       key: properties.key,
       steps: properties.getValues<Step>('steps'),
       currentStep: properties.getInt('current-step') ?? 0,
-      onStepTapped: properties.getValue<Function(int)?>('on-step-tapped'),
+      onStepTapped: properties.getValue<Function(int)>('on-step-tapped'),
       onStepContinue: properties
           .getVoidCallback('on-step-continue')
           ?.call(runtime),
@@ -34,9 +34,9 @@ Eval<Ir> _createStepper(WidgetProperties properties) {
       type: properties.getValue<StepperType>('type') ?? StepperType.vertical,
       physics: properties.getValue<ScrollPhysics>('physics'),
       elevation: properties.getDouble('elevation'),
-      margin: properties.getValue<EdgeInsetsGeometry?>('margin'),
-      connectorColor: properties.getValue<WidgetStateProperty<Color>?>(
-        'connector-color',
+      margin: properties.getValue<EdgeInsetsGeometry>('margin'),
+      connectorColor: wrapWidgetStateProperty(
+        properties.getValue<Color>('connector-color'),
       ),
       connectorThickness: properties.getDouble('connector-thickness'),
       stepIconBuilder: properties.getValue<Widget Function(int, StepState)>(

@@ -46,8 +46,8 @@ Eval<Ir> _createTabBar(WidgetProperties properties) {
       dragStartBehavior:
           properties.getValue<DragStartBehavior>('drag-start-behavior') ??
           DragStartBehavior.start,
-      overlayColor: properties.getValue<WidgetStateProperty<Color>>(
-        'overlay-color',
+      overlayColor: wrapWidgetStateProperty(
+        properties.getValue<Color>('overlay-color'),
       ),
       mouseCursor: properties.getValue<MouseCursor>('mouse-cursor'),
       enableFeedback: properties.getBool('enable-feedback'),

@@ -56,4 +56,4 @@ Eval<Ir> _createButtonStyle(WidgetProperties properties) {
 }
 
 WidgetStateProperty<T>? _wsp<T>(T? value) =>
-    value != null ? WidgetStateProperty.all(value) : null;
+    value != null ? wrapWidgetStateProperty(value) : null;

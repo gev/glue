@@ -33,19 +33,21 @@ Eval<Ir> _createSwitch(WidgetProperties properties) {
       inactiveThumbImage: properties.getValue<ImageProvider>(
         'inactive-thumb-image',
       ),
-      thumbColor: properties.getValue<WidgetStateProperty<Color?>>(
-        'thumb-color',
+      thumbColor: wrapWidgetStateProperty(
+        properties.getValue<Color>('thumb-color'),
       ),
-      trackColor: properties.getValue<WidgetStateProperty<Color?>>(
-        'track-color',
+      trackColor: wrapWidgetStateProperty(
+        properties.getValue<Color>('track-color'),
       ),
-      trackOutlineColor: properties.getValue<WidgetStateProperty<Color?>>(
-        'track-outline-color',
+      trackOutlineColor: wrapWidgetStateProperty(
+        properties.getValue<Color>('track-outline-color'),
       ),
-      trackOutlineWidth: properties.getValue<WidgetStateProperty<double?>>(
-        'track-outline-width',
+      trackOutlineWidth: wrapWidgetStateProperty(
+        properties.getDouble('track-outline-width'),
       ),
-      thumbIcon: properties.getValue<WidgetStateProperty<Icon?>>('thumb-icon'),
+      thumbIcon: wrapWidgetStateProperty(
+        properties.getValue<Icon>('thumb-icon'),
+      ),
       materialTapTargetSize: properties.getValue<MaterialTapTargetSize>(
         'material-tap-target-size',
       ),
@@ -55,8 +57,8 @@ Eval<Ir> _createSwitch(WidgetProperties properties) {
       mouseCursor: properties.getValue<MouseCursor>('mouse-cursor'),
       focusColor: properties.getColor('focus-color'),
       hoverColor: properties.getColor('hover-color'),
-      overlayColor: properties.getValue<WidgetStateProperty<Color?>>(
-        'overlay-color',
+      overlayColor: wrapWidgetStateProperty(
+        properties.getValue<Color>('overlay-color'),
       ),
       splashRadius: properties.getDouble('splash-radius'),
       focusNode: properties.getValue<FocusNode>('focus-node'),

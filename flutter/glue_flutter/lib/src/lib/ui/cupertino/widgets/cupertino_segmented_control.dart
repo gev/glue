@@ -21,20 +21,20 @@ Eval<Ir> cupertinoSegmentedControlImpl(Ir props) => switch (props) {
 
 /// Create CupertinoSegmentedControl widget from properties object
 Eval<Ir> _createCupertinoSegmentedControl(WidgetProperties properties) {
-  final children = properties.getValue<Map<Object, Widget>>('children');
+  final children = properties.getValue<Map<Ir, Widget>>('children');
   if (children == null) {
     return throwError(wrongArgumentType(['Children required']));
   }
-  final onValueChanged = properties.getCallback<dynamic>('on-value-changed');
+  final onValueChanged = properties.getCallback<Ir>('on-value-changed');
   if (onValueChanged == null) {
     return throwError(wrongArgumentType(['on-value-changed required']));
   }
   return getRuntime().map((runtime) {
-    final widget = CupertinoSegmentedControl(
+    final widget = CupertinoSegmentedControl<Ir>(
       key: properties.key,
       children: children,
       onValueChanged: onValueChanged(runtime),
-      groupValue: properties.getValue<dynamic>('group-value'),
+      groupValue: properties.getValue<Ir>('group-value'),
       unselectedColor: properties.getColor('unselected-color'),
       selectedColor: properties.getColor('selected-color'),
       borderColor: properties.getColor('border-color'),

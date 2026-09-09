@@ -21,7 +21,7 @@ Eval<Ir> cupertinoSlidingSegmentedControlImpl(Ir props) => switch (props) {
 
 /// Create CupertinoSlidingSegmentedControl widget from properties object
 Eval<Ir> _createCupertinoSlidingSegmentedControl(WidgetProperties properties) {
-  final children = properties.getValue<Map<Object, Widget>>('children');
+  final children = properties.getValue<Map<Ir, Widget>>('children');
   if (children == null) {
     return throwError(wrongArgumentType(['Children required']));
   }
@@ -30,11 +30,11 @@ Eval<Ir> _createCupertinoSlidingSegmentedControl(WidgetProperties properties) {
     return throwError(wrongArgumentType(['on-value-changed required']));
   }
   return getRuntime().map((runtime) {
-    final widget = CupertinoSlidingSegmentedControl(
+    final widget = CupertinoSlidingSegmentedControl<Ir>(
       key: properties.key,
       children: children,
       onValueChanged: onValueChanged(runtime),
-      groupValue: properties.getValue<dynamic>('group-value'),
+      groupValue: properties.getValue<Ir>('group-value'),
       thumbColor: properties.getColor('thumb-color')!,
       backgroundColor:
           properties.getColor('background-color') ??

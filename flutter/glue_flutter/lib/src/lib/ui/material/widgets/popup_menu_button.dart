@@ -19,7 +19,7 @@ Eval<Ir> popupMenuButtonImpl(Ir props) => switch (props) {
 /// Create PopupMenuButton widget from properties
 Eval<Ir> _createPopupMenuButton(WidgetProperties properties) {
   final itemBuilder = properties
-      .getValue<List<PopupMenuEntry<dynamic>> Function(BuildContext)>(
+      .getValue<List<PopupMenuEntry<Ir>> Function(BuildContext)>(
         'item-builder',
       );
   if (itemBuilder == null) {
@@ -30,10 +30,10 @@ Eval<Ir> _createPopupMenuButton(WidgetProperties properties) {
     );
   }
   return getRuntime().map((runtime) {
-    final popupMenuButtonWidget = PopupMenuButton<dynamic>(
+    final popupMenuButtonWidget = PopupMenuButton<Ir>(
       key: properties.key,
       itemBuilder: itemBuilder,
-      initialValue: properties.getValue<dynamic>('initial-value'),
+      initialValue: properties.get('initial-value'),
       onSelected: properties.getValue<Function(dynamic)>('on-selected'),
       onCanceled: properties.getVoidCallback('on-canceled')?.call(runtime),
       tooltip: properties.getString('tooltip'),

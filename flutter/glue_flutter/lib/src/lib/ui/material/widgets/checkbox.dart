@@ -30,12 +30,14 @@ Eval<Ir> _createCheckbox(WidgetProperties properties) {
       onChanged: onChanged(runtime),
       mouseCursor: properties.getValue<MouseCursor>('mouse-cursor'),
       activeColor: properties.getColor('active-color'),
-      fillColor: properties.getValue<WidgetStateProperty<Color?>>('fill-color'),
+      fillColor: wrapWidgetStateProperty(
+        properties.getValue<Color>('fill-color'),
+      ),
       checkColor: properties.getColor('check-color'),
       focusColor: properties.getColor('focus-color'),
       hoverColor: properties.getColor('hover-color'),
-      overlayColor: properties.getValue<WidgetStateProperty<Color?>>(
-        'overlay-color',
+      overlayColor: wrapWidgetStateProperty(
+        properties.getValue<Color>('overlay-color'),
       ),
       splashRadius: properties.getDouble('splash-radius'),
       materialTapTargetSize: properties.getValue<MaterialTapTargetSize>(

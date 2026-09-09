@@ -24,11 +24,13 @@ Eval<Ir> _createRadio(WidgetProperties properties) {
       mouseCursor: properties.getValue<MouseCursor>('mouse-cursor'),
       toggleable: properties.getBool('toggleable') ?? false,
       activeColor: properties.getColor('active-color'),
-      fillColor: properties.getValue<WidgetStateProperty<Color?>>('fill-color'),
+      fillColor: wrapWidgetStateProperty(
+        properties.getValue<Color>('fill-color'),
+      ),
       focusColor: properties.getColor('focus-color'),
       hoverColor: properties.getColor('hover-color'),
-      overlayColor: properties.getValue<WidgetStateProperty<Color?>>(
-        'overlay-color',
+      overlayColor: wrapWidgetStateProperty(
+        properties.getValue<Color>('overlay-color'),
       ),
       splashRadius: properties.getDouble('splash-radius'),
       materialTapTargetSize: properties.getValue<MaterialTapTargetSize>(
@@ -41,12 +43,12 @@ Eval<Ir> _createRadio(WidgetProperties properties) {
       groupRegistry: properties.getValue<RadioGroupRegistry<Object>>(
         'group-registry',
       ),
-      backgroundColor: properties.getValue<WidgetStateProperty<Color?>>(
-        'background-color',
+      backgroundColor: wrapWidgetStateProperty(
+        properties.getValue<Color>('background-color'),
       ),
-      side: properties.getValue<BorderSide?>('side'),
-      innerRadius: properties.getValue<WidgetStateProperty<double?>>(
-        'inner-radius',
+      side: properties.getValue<BorderSide>('side'),
+      innerRadius: wrapWidgetStateProperty(
+        properties.getDouble('inner-radius'),
       ),
     );
     return IrNativeValue(Value(radioWidget));

@@ -36,11 +36,11 @@ Eval<Ir> _createNavigationBar(WidgetProperties properties) {
       labelBehavior: properties.getValue<NavigationDestinationLabelBehavior>(
         'label-behavior',
       ),
-      overlayColor: properties.getValue<WidgetStateProperty<Color?>>(
-        'overlay-color',
+      overlayColor: wrapWidgetStateProperty(
+        properties.getValue<Color>('overlay-color'),
       ),
-      labelTextStyle: properties.getValue<WidgetStateProperty<TextStyle>>(
-        'label-text-style',
+      labelTextStyle: wrapWidgetStateProperty(
+        properties.getValue<TextStyle>('label-text-style'),
       ),
       labelPadding: properties.getValue<EdgeInsetsGeometry>('label-padding'),
       maintainBottomViewPadding:

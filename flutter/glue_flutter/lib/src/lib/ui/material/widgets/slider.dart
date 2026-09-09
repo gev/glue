@@ -37,8 +37,8 @@ Eval<Ir> _createSlider(WidgetProperties properties) {
       inactiveColor: properties.getColor('inactive-color'),
       secondaryActiveColor: properties.getColor('secondary-active-color'),
       thumbColor: properties.getColor('thumb-color'),
-      overlayColor: properties.getValue<WidgetStateProperty<Color?>>(
-        'overlay-color',
+      overlayColor: wrapWidgetStateProperty(
+        properties.getValue<Color>('overlay-color'),
       ),
       mouseCursor: properties.getValue<MouseCursor>('mouse-cursor'),
       focusNode: properties.getValue<FocusNode>('focus-node'),

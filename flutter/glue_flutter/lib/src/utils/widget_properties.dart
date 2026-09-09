@@ -18,7 +18,7 @@ class WidgetProperties {
   double? getDouble(String key) => extractDouble(_props[key]);
   int? getInt(String key) => extractInt(_props[key]);
 
-  T? getValue<T>(String key) => extractNativeValue(_props[key]);
+  T? getValue<T extends Object>(String key) => extractNativeValue(_props[key]);
   List<T> getValues<T>(String key) => extractNativeValues(_props[key]);
 
   Key? getKey(String key) => extractNativeValue(_props[key]);
@@ -56,3 +56,6 @@ class WidgetProperties {
   Widget? get child => extractNativeValue(_props['child']);
   List<Widget> get children => extractNativeValues(_props['children']);
 }
+
+WidgetStateProperty<T>? wrapWidgetStateProperty<T>(T? value) =>
+    value != null ? wrapWidgetStateProperty(value) : null;

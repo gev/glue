@@ -37,9 +37,7 @@ Eval<Ir> _createChoiceChip(WidgetProperties properties) {
       onSelected: properties
           .getCallback<bool>('choice-chip-on-selected')
           ?.call(runtime),
-      pressElevation: properties.getValue<double>(
-        'choice-chip-press-elevation',
-      ),
+      pressElevation: properties.getDouble('choice-chip-press-elevation'),
       side: properties.getValue<BorderSide>('choice-chip-side'),
       shape: properties.getValue<RoundedRectangleBorder>('choice-chip-shape'),
       clipBehavior:
