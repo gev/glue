@@ -58,4 +58,4 @@ class WidgetProperties {
 }
 
 WidgetStateProperty<T>? wrapWidgetStateProperty<T>(T? value) =>
-    value != null ? wrapWidgetStateProperty(value) : null;
+    value != null ? WidgetStateProperty.all(value) : null;
