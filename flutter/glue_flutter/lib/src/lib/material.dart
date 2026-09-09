@@ -154,7 +154,7 @@ final ModuleInfo uiMaterialModule = nativeModule('ffi.ui.material', [
 
   ('visual-density', visualDensity),
   ('visual-density-compact', visualDensityCompact),
-  ('visual-density-standart', visualDensityStandard),
+  ('visual-density-standard', visualDensityStandard),
   ('visual-density-comfortable', visualDensityComfortable),
 
   ('show-dialog', showDialog_),
