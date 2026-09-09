@@ -18,7 +18,7 @@ Eval<Ir> sliderImpl(Ir props) => switch (props) {
 /// Create Slider widget from properties
 Eval<Ir> _createSlider(WidgetProperties properties) {
   return getRuntime().map((runtime) {
-    final sliderWidget = Slider.adaptive(
+    final sliderWidget = Slider(
       key: properties.key,
       value: properties.getDouble('value') ?? 0.0,
       secondaryTrackValue: properties.getDouble('secondary-track-value'),
