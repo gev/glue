@@ -3,7 +3,6 @@ import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/glue_flutter.dart';
-import 'package:glue_flutter/src/utils/value_extractors.dart';
 
 /// Edge insets all function - (edge-insetsall 10)
 final edgeInsetsAll = IrNativeFunc(edgeInsetsAllImpl);
