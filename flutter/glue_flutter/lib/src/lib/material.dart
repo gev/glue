@@ -10,6 +10,7 @@ import 'package:glue_flutter/src/lib/ui/material/styles/text_theme.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/theme.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/theme_dark.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/theme_light.dart';
+import 'package:glue_flutter/src/lib/ui/material/styles/visual_density.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/action_chip.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/alert_dialog.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/app_bar.dart';
@@ -150,6 +151,11 @@ final ModuleInfo uiMaterialModule = nativeModule('ffi.ui.material', [
 
   ('button-style', buttonStyle),
   ('segmented-button-style', segmentedButtonStyle),
+
+  ('visual-density', visualDensity),
+  ('visual-density-compact', visualDensityCompact),
+  ('visual-density-standart', visualDensityStandard),
+  ('visual-density-comfortable', visualDensityComfortable),
 
   ('show-dialog', showDialog_),
   ('show-bottom-sheet', showBottomSheet_),
