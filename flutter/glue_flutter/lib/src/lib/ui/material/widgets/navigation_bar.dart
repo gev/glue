@@ -37,7 +37,7 @@ Eval<Ir> _createNavigationBar(WidgetProperties properties) {
         'label-behavior',
       ),
       overlayColor: wrapWidgetStateProperty(
-        properties.getValue<Color>('overlay-color'),
+        properties.getColor('overlay-color'),
       ),
       labelTextStyle: wrapWidgetStateProperty(
         properties.getValue<TextStyle>('label-text-style'),

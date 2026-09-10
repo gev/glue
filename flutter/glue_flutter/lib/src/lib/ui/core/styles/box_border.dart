@@ -19,7 +19,7 @@ Eval<Ir> createBorderAll(WidgetProperties properties) {
     IrNativeValue(
       Value(
         Border.all(
-          color: properties.getValue<Color>('color') ?? Color(0xFF000000),
+          color: properties.getColor('color') ?? Color(0xFF000000),
           width: properties.width ?? 1,
         ),
       ),

@@ -15,7 +15,7 @@ Eval<Ir> borderSideImpl(Ir props) => switch (props) {
 
 Eval<Ir> _createBorderSide(WidgetProperties properties) {
   final side = BorderSide(
-    color: properties.getValue<Color>('color') ?? const Color(0xFF000000),
+    color: properties.getColor('color') ?? const Color(0xFF000000),
     width: properties.getDouble('width') ?? 1.0,
     style: properties.getValue<BorderStyle>('style') ?? BorderStyle.solid,
     strokeAlign:

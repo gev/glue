@@ -22,7 +22,7 @@ Eval<Ir> _createBackButton(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final buttonWidget = BackButton(
       key: properties.key,
-      color: properties.getValue<Color>('color'),
+      color: properties.getColor('color'),
       style: properties.getValue<ButtonStyle>('style'),
       onPressed: properties.getVoidCallback('on-pressed')?.call(runtime),
     );

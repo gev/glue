@@ -16,26 +16,18 @@ Eval<Ir> segmentedButtonStyleImpl(Ir props) => switch (props) {
 Eval<Ir> _createSegmentedButtonStyle(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final style = SegmentedButton.styleFrom(
-      foregroundColor: properties.getValue<Color>('foreground-color'),
-      backgroundColor: properties.getValue<Color>('background-color'),
-      selectedForegroundColor: properties.getValue<Color>(
-        'selected-foreground-color',
-      ),
-      selectedBackgroundColor: properties.getValue<Color>(
-        'selected-background-color',
-      ),
-      disabledForegroundColor: properties.getValue<Color>(
-        'disabled-foreground-color',
-      ),
-      disabledBackgroundColor: properties.getValue<Color>(
-        'disabled-background-color',
-      ),
-      shadowColor: properties.getValue<Color>('shadow-color'),
-      surfaceTintColor: properties.getValue<Color>('surface-tint-color'),
-      iconColor: properties.getValue<Color>('icon-color'),
+      foregroundColor: properties.getColor('foreground-color'),
+      backgroundColor: properties.getColor('background-color'),
+      selectedForegroundColor: properties.getColor('selected-foreground-color'),
+      selectedBackgroundColor: properties.getColor('selected-background-color'),
+      disabledForegroundColor: properties.getColor('disabled-foreground-color'),
+      disabledBackgroundColor: properties.getColor('disabled-background-color'),
+      shadowColor: properties.getColor('shadow-color'),
+      surfaceTintColor: properties.getColor('surface-tint-color'),
+      iconColor: properties.getColor('icon-color'),
       iconSize: properties.getDouble('icon-size'),
-      disabledIconColor: properties.getValue<Color>('disabled-icon-color'),
-      overlayColor: properties.getValue<Color>('overlay-color'),
+      disabledIconColor: properties.getColor('disabled-icon-color'),
+      overlayColor: properties.getColor('overlay-color'),
       elevation: properties.getDouble('elevation'),
       textStyle: properties.getValue<TextStyle>('text-style'),
       padding: properties.getValue<EdgeInsetsGeometry>('padding'),

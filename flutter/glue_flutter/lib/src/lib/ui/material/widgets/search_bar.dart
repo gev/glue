@@ -29,7 +29,7 @@ Eval<Ir> _createSearchBar(WidgetProperties properties) {
       constraints: properties.getValue<BoxConstraints>('constraints'),
       elevation: wrapWidgetStateProperty(properties.getDouble('elevation')),
       overlayColor: wrapWidgetStateProperty(
-        properties.getValue<Color>('overlay-color'),
+        properties.getColor('overlay-color'),
       ),
       side: wrapWidgetStateProperty(properties.getValue<BorderSide>('side')),
       shape: wrapWidgetStateProperty(

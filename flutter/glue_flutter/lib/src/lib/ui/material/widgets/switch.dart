@@ -33,14 +33,10 @@ Eval<Ir> _createSwitch(WidgetProperties properties) {
       inactiveThumbImage: properties.getValue<ImageProvider>(
         'inactive-thumb-image',
       ),
-      thumbColor: wrapWidgetStateProperty(
-        properties.getValue<Color>('thumb-color'),
-      ),
-      trackColor: wrapWidgetStateProperty(
-        properties.getValue<Color>('track-color'),
-      ),
+      thumbColor: wrapWidgetStateProperty(properties.getColor('thumb-color')),
+      trackColor: wrapWidgetStateProperty(properties.getColor('track-color')),
       trackOutlineColor: wrapWidgetStateProperty(
-        properties.getValue<Color>('track-outline-color'),
+        properties.getColor('track-outline-color'),
       ),
       trackOutlineWidth: wrapWidgetStateProperty(
         properties.getDouble('track-outline-width'),
@@ -58,7 +54,7 @@ Eval<Ir> _createSwitch(WidgetProperties properties) {
       focusColor: properties.getColor('focus-color'),
       hoverColor: properties.getColor('hover-color'),
       overlayColor: wrapWidgetStateProperty(
-        properties.getValue<Color>('overlay-color'),
+        properties.getColor('overlay-color'),
       ),
       splashRadius: properties.getDouble('splash-radius'),
       focusNode: properties.getValue<FocusNode>('focus-node'),

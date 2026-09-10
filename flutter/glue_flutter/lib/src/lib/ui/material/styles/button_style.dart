@@ -20,19 +20,17 @@ Eval<Ir> _createButtonStyle(WidgetProperties properties) {
         properties.getValue<TextStyle>('text-style'),
       ),
       backgroundColor: wrapWidgetStateProperty(
-        properties.getValue<Color>('background-color'),
+        properties.getColor('background-color'),
       ),
       foregroundColor: wrapWidgetStateProperty(
-        properties.getValue<Color>('foreground-color'),
+        properties.getColor('foreground-color'),
       ),
       overlayColor: wrapWidgetStateProperty(
-        properties.getValue<Color>('overlay-color'),
+        properties.getColor('overlay-color'),
       ),
-      shadowColor: wrapWidgetStateProperty(
-        properties.getValue<Color>('shadow-color'),
-      ),
+      shadowColor: wrapWidgetStateProperty(properties.getColor('shadow-color')),
       surfaceTintColor: wrapWidgetStateProperty(
-        properties.getValue<Color>('surface-tint-color'),
+        properties.getColor('surface-tint-color'),
       ),
       elevation: wrapWidgetStateProperty(properties.getDouble('elevation')),
       padding: wrapWidgetStateProperty(
@@ -47,9 +45,7 @@ Eval<Ir> _createButtonStyle(WidgetProperties properties) {
       maximumSize: wrapWidgetStateProperty(
         properties.getValue<Size>('maximum-size'),
       ),
-      iconColor: wrapWidgetStateProperty(
-        properties.getValue<Color>('icon-color'),
-      ),
+      iconColor: wrapWidgetStateProperty(properties.getColor('icon-color')),
       iconSize: wrapWidgetStateProperty(properties.getDouble('icon-size')),
       iconAlignment: properties.getValue<IconAlignment>('icon-alignment'),
       side: wrapWidgetStateProperty(properties.getValue<BorderSide>('side')),

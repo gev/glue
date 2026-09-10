@@ -26,11 +26,11 @@ Eval<Ir> _createDataTable(WidgetProperties properties) {
       sortAscending: properties.getBool('sort-ascending') ?? true,
       onSelectAll: properties.getCallback<bool>('on-select-all')?.call(runtime),
       dataRowColor: wrapWidgetStateProperty(
-        properties.getValue<Color>('data-row-color'),
+        properties.getColor('data-row-color'),
       ),
       dataTextStyle: properties.getValue<TextStyle>('data-text-style'),
       headingRowColor: wrapWidgetStateProperty(
-        properties.getValue<Color>('heading-row-color'),
+        properties.getColor('heading-row-color'),
       ),
       headingRowHeight: properties.getDouble('heading-row-height'),
       headingTextStyle: properties.getValue<TextStyle>('heading-text-style'),

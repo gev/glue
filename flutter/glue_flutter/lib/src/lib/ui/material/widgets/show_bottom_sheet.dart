@@ -30,7 +30,7 @@ Eval<Ir> _showBottomSheet(BuildContext context, WidgetProperties properties) {
   showBottomSheet(
     context: context,
     builder: (_) => child,
-    backgroundColor: properties.getValue<Color>('background-color'),
+    backgroundColor: properties.getColor('background-color'),
     elevation: properties.getDouble('elevation'),
     shape: properties.getValue<ShapeBorder>('shape'),
     clipBehavior: properties.getValue<Clip>('clip-behavior'),

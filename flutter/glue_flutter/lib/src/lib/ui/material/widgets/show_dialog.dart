@@ -31,7 +31,7 @@ Eval<Ir> _showDialog(BuildContext context, WidgetProperties properties) {
     context: context,
     builder: (_) => child,
     barrierDismissible: properties.getBool('barrier-dismissible') ?? true,
-    barrierColor: properties.getValue<Color>('barrier-color'),
+    barrierColor: properties.getColor('barrier-color'),
     barrierLabel: properties.getString('barrier-label'),
     useSafeArea: properties.getBool('usesafe-area') ?? true,
     useRootNavigator: properties.getBool('use-root-navigator') ?? true,

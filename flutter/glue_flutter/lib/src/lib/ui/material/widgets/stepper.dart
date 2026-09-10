@@ -36,7 +36,7 @@ Eval<Ir> _createStepper(WidgetProperties properties) {
       elevation: properties.getDouble('elevation'),
       margin: properties.getValue<EdgeInsetsGeometry>('margin'),
       connectorColor: wrapWidgetStateProperty(
-        properties.getValue<Color>('connector-color'),
+        properties.getColor('connector-color'),
       ),
       connectorThickness: properties.getDouble('connector-thickness'),
       stepIconBuilder: properties.getValue<Widget Function(int, StepState)>(

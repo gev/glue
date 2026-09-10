@@ -24,13 +24,11 @@ Eval<Ir> _createRadio(WidgetProperties properties) {
       mouseCursor: properties.getValue<MouseCursor>('mouse-cursor'),
       toggleable: properties.getBool('toggleable') ?? false,
       activeColor: properties.getColor('active-color'),
-      fillColor: wrapWidgetStateProperty(
-        properties.getValue<Color>('fill-color'),
-      ),
+      fillColor: wrapWidgetStateProperty(properties.getColor('fill-color')),
       focusColor: properties.getColor('focus-color'),
       hoverColor: properties.getColor('hover-color'),
       overlayColor: wrapWidgetStateProperty(
-        properties.getValue<Color>('overlay-color'),
+        properties.getColor('overlay-color'),
       ),
       splashRadius: properties.getDouble('splash-radius'),
       materialTapTargetSize: properties.getValue<MaterialTapTargetSize>(
@@ -44,7 +42,7 @@ Eval<Ir> _createRadio(WidgetProperties properties) {
         'group-registry',
       ),
       backgroundColor: wrapWidgetStateProperty(
-        properties.getValue<Color>('background-color'),
+        properties.getColor('background-color'),
       ),
       side: properties.getValue<BorderSide>('side'),
       innerRadius: wrapWidgetStateProperty(
