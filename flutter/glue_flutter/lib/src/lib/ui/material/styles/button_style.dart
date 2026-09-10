@@ -16,23 +16,49 @@ Eval<Ir> buttonStyleImpl(Ir props) => switch (props) {
 Eval<Ir> _createButtonStyle(WidgetProperties properties) {
   return getRuntime().map((runtime) {
     final style = ButtonStyle(
-      textStyle: _wsp(properties.getValue<TextStyle>('text-style')),
-      backgroundColor: _wsp(properties.getValue<Color>('background-color')),
-      foregroundColor: _wsp(properties.getValue<Color>('foreground-color')),
-      overlayColor: _wsp(properties.getValue<Color>('overlay-color')),
-      shadowColor: _wsp(properties.getValue<Color>('shadow-color')),
-      surfaceTintColor: _wsp(properties.getValue<Color>('surface-tint-color')),
-      elevation: _wsp(properties.getDouble('elevation')),
-      padding: _wsp(properties.getValue<EdgeInsetsGeometry>('padding')),
-      minimumSize: _wsp(properties.getValue<Size>('minimum-size')),
-      fixedSize: _wsp(properties.getValue<Size>('fixed-size')),
-      maximumSize: _wsp(properties.getValue<Size>('maximum-size')),
-      iconColor: _wsp(properties.getValue<Color>('icon-color')),
-      iconSize: _wsp(properties.getDouble('icon-size')),
+      textStyle: wrapWidgetStateProperty(
+        properties.getValue<TextStyle>('text-style'),
+      ),
+      backgroundColor: wrapWidgetStateProperty(
+        properties.getValue<Color>('background-color'),
+      ),
+      foregroundColor: wrapWidgetStateProperty(
+        properties.getValue<Color>('foreground-color'),
+      ),
+      overlayColor: wrapWidgetStateProperty(
+        properties.getValue<Color>('overlay-color'),
+      ),
+      shadowColor: wrapWidgetStateProperty(
+        properties.getValue<Color>('shadow-color'),
+      ),
+      surfaceTintColor: wrapWidgetStateProperty(
+        properties.getValue<Color>('surface-tint-color'),
+      ),
+      elevation: wrapWidgetStateProperty(properties.getDouble('elevation')),
+      padding: wrapWidgetStateProperty(
+        properties.getValue<EdgeInsetsGeometry>('padding'),
+      ),
+      minimumSize: wrapWidgetStateProperty(
+        properties.getValue<Size>('minimum-size'),
+      ),
+      fixedSize: wrapWidgetStateProperty(
+        properties.getValue<Size>('fixed-size'),
+      ),
+      maximumSize: wrapWidgetStateProperty(
+        properties.getValue<Size>('maximum-size'),
+      ),
+      iconColor: wrapWidgetStateProperty(
+        properties.getValue<Color>('icon-color'),
+      ),
+      iconSize: wrapWidgetStateProperty(properties.getDouble('icon-size')),
       iconAlignment: properties.getValue<IconAlignment>('icon-alignment'),
-      side: _wsp(properties.getValue<BorderSide>('side')),
-      shape: _wsp(properties.getValue<OutlinedBorder>('shape')),
-      mouseCursor: _wsp(properties.getValue<MouseCursor>('mouse-cursor')),
+      side: wrapWidgetStateProperty(properties.getValue<BorderSide>('side')),
+      shape: wrapWidgetStateProperty(
+        properties.getValue<OutlinedBorder>('shape'),
+      ),
+      mouseCursor: wrapWidgetStateProperty(
+        properties.getValue<MouseCursor>('mouse-cursor'),
+      ),
       visualDensity: properties.getValue<VisualDensity>('visual-density'),
       tapTargetSize: properties.getValue<MaterialTapTargetSize>(
         'tap-target-size',
@@ -54,6 +80,3 @@ Eval<Ir> _createButtonStyle(WidgetProperties properties) {
     return IrNativeValue(Value(style));
   });
 }
-
-WidgetStateProperty<T>? _wsp<T>(T? value) =>
-    value != null ? wrapWidgetStateProperty(value) : null;
