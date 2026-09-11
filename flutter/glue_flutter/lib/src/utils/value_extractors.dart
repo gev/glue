@@ -66,52 +66,41 @@ List<T> extractNativeValues<T>(Ir? value) {
 }
 
 /// Extract VoidCallback from Glue IR value with provided runtime
-VoidCallback Function(Runtime)? extractVoidCallback(Ir? value) =>
-    switch (value) {
-      IrClosure(:final params) =>
-        params.isEmpty
-            ? (Runtime runtime) => () {
-                final evalAction = apply(value, []);
-                // Use provided runtime instead of creating from env
-                final result = runEval(evalAction, runtime);
-                switch (result) {
-                  case Either<EvalError, (Ir, Runtime)> r:
-                    r.match(
-                      (error) => print('Callback execution error: $error'),
-                      (_) {}, // Success, do nothing
-                    );
-                }
-              }
-            : null, // Only support parameterless closures for VoidCallback
-      _ => null,
-    };
+VoidCallback Function(Runtime)? extractVoidCallback(Ir? value) => value != null
+    ? (Runtime runtime) => () {
+        final evalAction = apply(value, []);
+        final result = runEval(evalAction, runtime);
+        switch (result) {
+          case Either<EvalError, (Ir, Runtime)> r:
+            r.match(
+              (error) => print('Callback execution error: $error'),
+              (_) {}, // Success, do nothing
+            );
+        }
+      }
+    : null;
 
 typedef Callback<T> = void Function(T? value);
 
 /// Extract Callback from Glue IR value with provided runtime
-Callback<T> Function(Runtime)? extractCallback<T>(Ir? value) => switch (value) {
-  IrClosure(:final params) =>
-    params.length == 1
-        ? (Runtime runtime) => (arg) {
-            final args = switch (arg) {
-              bool v => [IrBool(v)],
-              int v => [IrInteger(v)],
-              double v => [IrFloat(v)],
-              String v => [IrString(v)],
-              T v => [IrNativeValue(Value(v))],
-              _ => <Ir>[],
-            };
-            final evalAction = apply(value, args);
-            // Use provided runtime instead of creating from env
-            final result = runEval(evalAction, runtime);
-            switch (result) {
-              case Either<EvalError, (Ir, Runtime)> r:
-                r.match(
-                  (error) => print('Callback execution error: $error'),
-                  (_) {}, // Success, do nothing
-                );
-            }
-          }
-        : null, // Only support parameterless closures for VoidCallback
-  _ => null,
-};
+Callback<T> Function(Runtime)? extractCallback<T>(Ir? value) => value != null
+    ? (Runtime runtime) => (T? arg) {
+        final args = switch (arg) {
+          bool v => [IrBool(v)],
+          int v => [IrInteger(v)],
+          double v => [IrFloat(v)],
+          String v => [IrString(v)],
+          T v => [IrNativeValue(Value(v))],
+          _ => <Ir>[],
+        };
+        final evalAction = apply(value, args);
+        final result = runEval(evalAction, runtime);
+        switch (result) {
+          case Either<EvalError, (Ir, Runtime)> r:
+            r.match(
+              (error) => print('Callback execution error: $error'),
+              (_) {}, // Success, do nothing
+            );
+        }
+      }
+    : null;
