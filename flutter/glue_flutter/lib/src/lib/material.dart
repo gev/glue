@@ -7,6 +7,7 @@ import 'package:glue_flutter/src/lib/ui/material/styles/dynamic_scheme_variant.d
 import 'package:glue_flutter/src/lib/ui/material/styles/floating_action_button_location.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/input_border_none.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/input_decoration.dart';
+import 'package:glue_flutter/src/lib/ui/material/styles/outline_input_border.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/segmented_button_style.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/text_theme.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/theme.dart';
@@ -158,6 +159,7 @@ final ModuleInfo uiMaterialModule = nativeModule('ffi.ui.material', [
   ('input-decoration', inputDecoration),
   ('input-border-none', inputBorderNone),
   ('underline-input-border', underlineInputBorder),
+  ('outline-input-border', outlineInputBorder),
 
   ('visual-density', visualDensity),
   ('visual-density-compact', visualDensityCompact),
