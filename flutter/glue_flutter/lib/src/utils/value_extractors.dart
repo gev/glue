@@ -66,7 +66,8 @@ List<T> extractNativeValues<T>(Ir? value) {
 }
 
 /// Extract VoidCallback from Glue IR value with provided runtime
-VoidCallback Function(Runtime)? extractVoidCallback(Ir? value) => value != null
+VoidCallback Function(Runtime)? extractVoidCallback(Ir? value) =>
+    value != null && isCallable(value)
     ? (Runtime runtime) => () {
         final evalAction = apply(value, []);
         final result = runEval(evalAction, runtime);
@@ -83,7 +84,8 @@ VoidCallback Function(Runtime)? extractVoidCallback(Ir? value) => value != null
 typedef Callback<T> = void Function(T? value);
 
 /// Extract Callback from Glue IR value with provided runtime
-Callback<T> Function(Runtime)? extractCallback<T>(Ir? value) => value != null
+Callback<T> Function(Runtime)? extractCallback<T>(Ir? value) =>
+    value != null && isCallable(value)
     ? (Runtime runtime) => (T? arg) {
         final args = switch (arg) {
           bool v => [IrBool(v)],
