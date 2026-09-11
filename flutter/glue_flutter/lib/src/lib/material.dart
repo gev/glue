@@ -12,6 +12,7 @@ import 'package:glue_flutter/src/lib/ui/material/styles/text_theme.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/theme.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/theme_dark.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/theme_light.dart';
+import 'package:glue_flutter/src/lib/ui/material/styles/underline_input_border.dart';
 import 'package:glue_flutter/src/lib/ui/material/styles/visual_density.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/action_chip.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/alert_dialog.dart';
@@ -156,6 +157,7 @@ final ModuleInfo uiMaterialModule = nativeModule('ffi.ui.material', [
 
   ('input-decoration', inputDecoration),
   ('input-border-none', inputBorderNone),
+  ('underline-input-border', underlineInputBorder),
 
   ('visual-density', visualDensity),
   ('visual-density-compact', visualDensityCompact),
