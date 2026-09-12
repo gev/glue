@@ -12,16 +12,16 @@ module Glue.IR (
     isValue,
     getValueFromIR,
     -- Accessor functions
-    isList,
-    isTruthy,
-    isFalsy,
-    isEmpty,
-    isExist,
+    empty,
+    exists,
     listLength,
-    isObject,
     objectSize,
     objectLookup,
     isSymbol,
+    isList,
+    isObject,
+    isTruthy,
+    isFalsy,
     getSymbol,
 ) where
 
@@ -166,13 +166,13 @@ isFalsy :: IR m -> Bool
 isFalsy = not . isTruthy
 
 -- Check value is empty or exists
-isEmpty :: IR m -> Bool
-isEmpty = \case
+empty :: IR m -> Bool
+empty = \case
     Object m -> null m
     String "" -> True
     List [] -> True
     Void -> True
     _ -> False
 
-isExist :: IR m -> Bool
-isExist = not . isEmpty
+exists :: IR m -> Bool
+exists = not . empty
