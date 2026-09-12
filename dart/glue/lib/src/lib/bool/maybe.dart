@@ -7,7 +7,7 @@ final Ir maybe = IrSpecial(maybeImpl);
 Eval<Ir> maybeImpl(List<Ir> args) {
   return switch (args) {
     [final f, final x] => eval(x).bind((x_) {
-      return isExist(x_)
+      return exists(x_)
           ? eval(f).bind((g) => apply(g, [x_]))
           : Eval.pure(IrVoid());
     }),

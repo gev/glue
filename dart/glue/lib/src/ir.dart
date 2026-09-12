@@ -309,7 +309,7 @@ bool isTruthy(Ir ir) => switch (ir) {
 bool isFalsy(Ir ir) => !isTruthy(ir);
 
 /// Check value is empty or exists
-bool isEmpty(Ir ir) => switch (ir) {
+bool empty(Ir ir) => switch (ir) {
   IrObject(:final properties) => properties.isEmpty,
   IrList(:final elements) => elements.isEmpty,
   IrString(value: "") => true,
@@ -317,7 +317,7 @@ bool isEmpty(Ir ir) => switch (ir) {
   _ => false,
 };
 
-bool isExist(Ir ir) => !isEmpty(ir);
+bool exists(Ir ir) => !empty(ir);
 
 double? toDouble(Ir? ir) => switch (ir) {
   IrInteger(:final value) => value.toDouble(),

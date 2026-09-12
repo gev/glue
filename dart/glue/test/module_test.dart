@@ -1,5 +1,5 @@
 import 'package:glue/either.dart';
-import 'package:glue/src/ir.dart' hide isEmpty;
+import 'package:glue/src/ir.dart' hide empty;
 import 'package:glue/src/module.dart';
 import 'package:glue/src/module/cache.dart';
 import 'package:glue/src/module/registration.dart';

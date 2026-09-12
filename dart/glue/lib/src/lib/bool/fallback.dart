@@ -7,7 +7,7 @@ final Ir fallback = IrSpecial(fallbackImpl);
 Eval<Ir> fallbackImpl(List<Ir> args) {
   return switch (args) {
     [final a, final b] => eval(a).bind((a_) {
-      return isExist(a_) ? Eval.pure(a_) : eval(b);
+      return exists(a_) ? Eval.pure(a_) : eval(b);
     }),
     _ => throwError(wrongNumberOfArguments()),
   };
