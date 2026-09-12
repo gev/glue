@@ -44,7 +44,7 @@ list =
         , ("last", Last.last)
         , ("length", Length.length)
         , ("map", Map.map)
-        , ("member", member)
+        , ("member?", member)
         , ("partition", Partition.partition)
         , ("prepend", prepend)
         , ("position", Position.position)
