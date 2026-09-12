@@ -30,7 +30,7 @@ Either<GlueError, Ir> runCode(String input) {
 void main() {
   group('Glue.Lib.List.Member (member)', () {
     test('returns true for item in list', () {
-      final result = runCode('(member 2 (1 2 3))');
+      final result = runCode('(member? 2 (1 2 3))');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrBool(true))),
@@ -38,7 +38,7 @@ void main() {
     });
 
     test('returns false for item not in list', () {
-      final result = runCode('(member 4 (1 2 3))');
+      final result = runCode('(member? 4 (1 2 3))');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrBool(false))),
@@ -46,7 +46,7 @@ void main() {
     });
 
     test('returns true for string in list', () {
-      final result = runCode('(member "hello" ("world" "hello" "test"))');
+      final result = runCode('(member? "hello" ("world" "hello" "test"))');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrBool(true))),
@@ -54,7 +54,7 @@ void main() {
     });
 
     test('returns false for empty list', () {
-      final result = runCode('(member 1 ())');
+      final result = runCode('(member? 1 ())');
       result.match(
         (error) => fail('Should not be left: $error'),
         (value) => expect(value, equals(IrBool(false))),
@@ -62,7 +62,7 @@ void main() {
     });
 
     test('fails on non-list second argument', () {
-      final result = runCode('(member 1 42)');
+      final result = runCode('(member? 1 42)');
       expect(result.isLeft, isTrue);
     });
   });
