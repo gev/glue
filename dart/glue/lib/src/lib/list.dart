@@ -44,7 +44,7 @@ final ModuleInfo listModule = nativeModule('ffi.list', [
   ('last', last),
   ('length', length),
   ('map', map),
-  ('member', member),
+  ('member?', member),
   ('partition', partition),
   ('position', position),
   ('prepend', prepend),
