@@ -43,7 +43,7 @@ final ModuleInfo boolModule = nativeModule('ffi.bool', [
   ('||', or_),
 
   ('empty?', empty),
-  ('exist?', exists),
+  ('exists?', exists),
 
   ('fallback', fallback),
   ('??', fallback),
