@@ -53,15 +53,21 @@ void main() {
 
     test('fails when no element satisfies predicate', () {
       final result = runCode('(find (lambda (x) (> x 10)) (1 2 3))');
-      expect(result.isLeft, isTrue);
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrVoid())),
+      );
     });
 
-    test('fails on empty list', () {
+    test('Void on empty list', () {
       final result = runCode('(find (lambda (x) true) ())');
-      expect(result.isLeft, isTrue);
+      result.match(
+        (error) => fail('Should not be left: $error'),
+        (value) => expect(value, equals(IrVoid())),
+      );
     });
 
-    test('fails on non-list second argument', () {
+    test('Void on non-list second argument', () {
       final result = runCode('(find (lambda (x) true) 42)');
       expect(result.isLeft, isTrue);
     });

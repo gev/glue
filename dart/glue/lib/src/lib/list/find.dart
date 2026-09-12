@@ -29,7 +29,7 @@ Eval<Ir> Function(Ir) findIn(Ir predicate) {
 /// Helper function to find first element satisfying predicate
 Eval<Ir> findElement(Ir predicate, List<Ir> elements) {
   if (elements.isEmpty) {
-    return throwError(wrongArgumentType(['element satisfying predicate']));
+    return Eval.pure(IrVoid());
   }
 
   return applyPredicate(predicate, elements[0]).bind((satisfies) {
@@ -43,7 +43,7 @@ Eval<Ir> findElement(Ir predicate, List<Ir> elements) {
 
 /// Helper function to apply predicate to an element
 Eval<bool> applyPredicate(Ir predicate, Ir element) {
-  return eval(IrList([predicate, element])).bind((result) {
+  return apply(predicate, [element]).bind((result) {
     if (result is IrBool) {
       return Eval.pure(result.value);
     } else {
