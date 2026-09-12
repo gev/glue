@@ -1,6 +1,6 @@
 module Glue.Lib.List.Find where
 
-import Glue.Eval (Eval, eval, throwError)
+import Glue.Eval (Eval, apply, throwError)
 import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
@@ -19,10 +19,10 @@ findIn predicate list = case list of
 
 -- Helper function to find first element satisfying predicate
 findElement :: IR Eval -> [IR Eval] -> Eval (IR Eval)
-findElement _ [] = throwError $ wrongArgumentType ["element satisfying predicate"]
+findElement _ [] = pure Void
 findElement predicate (x : xs) = do
     -- Evaluate (predicate x) and check if it returns true
-    result <- eval (List [predicate, x])
+    result <- apply predicate [x]
     case result of
         Bool True -> pure x
         Bool False -> findElement predicate xs
