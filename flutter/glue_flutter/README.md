@@ -85,7 +85,7 @@ Material Design color constants:
   :cross-axis-alignment cross-axis-alignment.center
   :main-axis-alignment main-axis-alignment.spaceEvenly
   :children
-    (text :content "Hello World"
+    (text :text "Hello World"
           :color colors.blue
           :weight font-weight.bold
           :align text-align.center))

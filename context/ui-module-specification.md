@@ -22,7 +22,7 @@ The `ui` module provides a framework-agnostic API for creating user interfaces i
 (import "ui")
 
 (container :children (
-  (text :content "Hello World" :color colors.blue :size 24)
+  (text :text "Hello World" :color colors.blue :size 24)
   (button :label "Click Me" :on-tap handle-click)
 ))
 ```
@@ -41,10 +41,10 @@ Creates text display elements with optional styling.
 
 ```clojure
 ;; Basic usage
-(text :content "Hello World")
+(text :text "Hello World")
 
 ;; With styling
-(text :content "Styled Text"
+(text :text "Styled Text"
       :color colors.blue
       :size 18
       :weight font-weight.bold
@@ -85,8 +85,8 @@ Creates layout containers for organizing child components.
 ```clojure
 ;; Vertical layout (default)
 (container :children (
-  (text :content "Item 1")
-  (text :content "Item 2")
+  (text :text "Item 1")
+  (text :text "Item 2")
 ))
 
 ;; Horizontal layout
@@ -137,7 +137,7 @@ Framework implementations provide **enum union objects** for type-safe access to
 
 ```clojure
 ;; Direct enum access (type-safe, preferred)
-(text :content "Hello World"
+(text :text "Hello World"
       :color colors.blue           ;; Enum object
       :weight font-weight.bold     ;; Enum object
       :align text-align.center)    ;; Enum object

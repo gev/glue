@@ -24,7 +24,7 @@ The application includes several Glue code examples:
 
 ### Text Widget
 ```clojure
-(text :content "Hello, Glue!"
+(text :text "Hello, Glue!"
       :color colors.blue
       :size 24
       :weight font-weight.bold)
@@ -38,9 +38,9 @@ The application includes several Glue code examples:
 ### Column Layout
 ```clojure
 (column :children (
-  (text :content "Item 1")
-  (text :content "Item 2")
-  (text :content "Item 3")
+  (text :text "Item 1")
+  (text :text "Item 2")
+  (text :text "Item 3")
 ))
 ```
 

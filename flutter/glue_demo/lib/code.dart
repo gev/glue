@@ -12,17 +12,17 @@ String defaultCode = '''
 
     (def (counter-display current-value) (
         (def size (+ current-value 100))
-        (text 
-            :content current-value 
+        (text
+            :text current-value
             :style (text-style :font-size size :color colors.blue))))
 
-    (def (greeting message) 
-        (text 
-            :content message 
+    (def (greeting message)
+        (text
+            :text message
             :style (text-style :font-size 32 :color colors.grey)))
 
-    (def (action title on-tap) 
-        (button :child (text :content title) :on-pressed on-tap))
+    (def (action title on-tap)
+        (button :child (text :text title) :on-pressed on-tap))
 
     (def (demo-screen props) (
         (def counter (get my-counter app-store))
@@ -31,15 +31,15 @@ String defaultCode = '''
             :children (
                 (greeting props.message)
                 (listen counter counter-display)
-                (row 
-                    :main-axis-alignment main-axis-alignment.center 
+                (row
+                    :main-axis-alignment main-axis-alignment.center
                     :children (
                         (action "Increment" (inc counter props.amount))
                         (action "Decrement" (dec counter props.amount)))))))
     )
 
-    (demo-screen 
-        :message "Hello Glue!" 
+    (demo-screen
+        :message "Hello Glue!"
         :amount 1)
 )
 ''';

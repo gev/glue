@@ -5,10 +5,9 @@ import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 /// Text widget function
-/// Creates Flutter Text widget from Glue (text :content "text" ...) expressions
+/// Creates Flutter Text widget from Glue (text :text "text" ...) expressions
 final Ir text = IrNativeFunc(textImpl);
 
-/// Text implementation - takes properties object with :content, :color, etc.
 Eval<Ir> textImpl(Ir props) => switch (props) {
   IrObject(:final properties) => _createText(
     WidgetProperties(properties.unlock),
