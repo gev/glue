@@ -19,7 +19,7 @@ Eval<Ir> textImpl(Ir props) => switch (props) {
 /// Create Text widget from properties
 Eval<Ir> _createText(WidgetProperties properties) {
   final textWidget = Text(
-    properties.getString('content') ?? '',
+    properties.getString('text') ?? '',
     key: properties.key,
     style: properties.getValue<TextStyle>('style'),
     strutStyle: properties.getValue<StrutStyle>('strut-style'),
