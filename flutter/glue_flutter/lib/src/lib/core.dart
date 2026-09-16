@@ -57,8 +57,10 @@ import 'package:glue_flutter/src/lib/ui/core/widgets/grid_view.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/hero.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/icon.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/image.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/indexed_stack.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/list_view.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/padding.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/page_view.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/placeholder.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/positioned.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/repaint_boundary.dart';
@@ -90,9 +92,11 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   ('image-asset', imageAsset),
   ('image-file', imageFile),
   ('image-network', imageNetwork),
+  ('indexed-stack', indexedStack),
   ('hero', hero),
   ('list-view', listView),
   ('padding', padding),
+  ('page-view', pageView),
   ('positioned', positioned),
   ('placeholder', placeholder),
   ('repaint-boundary', repaintBoundary),
