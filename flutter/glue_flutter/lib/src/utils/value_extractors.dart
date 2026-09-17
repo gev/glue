@@ -48,6 +48,21 @@ Color? extractColor(Ir? value) => switch (value) {
   _ => null,
 };
 
+Key? extractKey(Ir? value) => switch (value) {
+  null => null,
+  IrNativeValue(value: Value(value: Key key)) => key,
+  Ir key => ValueKey(key),
+};
+
+T? extracFromGlobalKey<T>(Ir? value) => switch (value) {
+  IrNativeValue(value: Value(value: GlobalKey key)) =>
+    switch (key.currentState) {
+      T state => state,
+      _ => null,
+    },
+  _ => null,
+};
+
 /// Extract children list from Glue IR value
 List<T> extractNativeValues<T>(Ir? value) {
   switch (value) {

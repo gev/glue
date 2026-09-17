@@ -21,8 +21,6 @@ class WidgetProperties {
   T? getValue<T extends Object>(String key) => extractNativeValue(_props[key]);
   List<T> getValues<T>(String key) => extractNativeValues(_props[key]);
 
-  Key? getKey(String key) => extractNativeValue(_props[key]);
-
   Widget? getWidget(String key) => extractNativeValue(_props[key]);
   List<Widget> getWidgets(String key) => extractNativeValues(_props[key]);
 
@@ -45,11 +43,10 @@ class WidgetProperties {
   double? get horizontal => extractDouble(_props['horizontal']);
   double? get vertical => extractDouble(_props['vertical']);
 
-  Key? get key => switch (_props['key']) {
-    null => null,
-    IrNativeValue(value: Value(value: Key key)) => key,
-    Ir key => ValueKey(key),
-  };
+  Key? get key => getKey('key');
+
+  Key? getKey(String key) => extractKey(_props[key]);
+  T? getFromGlobalKey<T>(String key) => extracFromGlobalKey(_props[key]);
 
   Widget? get child => extractNativeValue(_props['child']);
   List<Widget> get children => extractNativeValues(_props['children']);
