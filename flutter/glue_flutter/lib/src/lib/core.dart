@@ -1,4 +1,5 @@
 import 'package:glue/module.dart';
+import 'package:glue_flutter/src/lib/ui/core/global_key.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/alignment.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/axis.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/blur_style.dart';
@@ -204,4 +205,6 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   ('sweep-gradient', sweepGradient),
 
   ('tile-mode', tileMode),
+
+  ('global-key', globalKey),
 ]);
