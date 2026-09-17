@@ -45,13 +45,11 @@ class WidgetProperties {
   double? get horizontal => extractDouble(_props['horizontal']);
   double? get vertical => extractDouble(_props['vertical']);
 
-  Key? get key {
-    final key = _props['key'];
-    if (key != null) {
-      return ValueKey(key);
-    }
-    return null;
-  }
+  Key? get key => switch (_props['key']) {
+    null => null,
+    IrNativeValue(value: Value(value: Key key)) => key,
+    Ir key => ValueKey(key),
+  };
 
   Widget? get child => extractNativeValue(_props['child']);
   List<Widget> get children => extractNativeValues(_props['children']);
