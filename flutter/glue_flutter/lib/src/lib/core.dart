@@ -62,6 +62,7 @@ import 'package:glue_flutter/src/lib/ui/core/widgets/list_view.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/padding.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/page_view.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/placeholder.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/pope_scope.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/positioned.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/repaint_boundary.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/row.dart';
@@ -97,8 +98,9 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   ('list-view', listView),
   ('padding', padding),
   ('page-view', pageView),
-  ('positioned', positioned),
   ('placeholder', placeholder),
+  ('positioned', positioned),
+  ('pop-scope', popScope),
   ('repaint-boundary', repaintBoundary),
   ('row', row),
   ('single-child-scroll-view', singleChildScrollView),
