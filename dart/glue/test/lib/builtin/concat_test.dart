@@ -1,7 +1,7 @@
 import 'package:glue/src/env.dart';
 import 'package:glue/src/eval.dart';
 import 'package:glue/src/ir.dart';
-import 'package:glue/src/lib/list/concat.dart';
+import 'package:glue/src/lib/builtin/concat.dart';
 import 'package:test/test.dart';
 
 void main() {

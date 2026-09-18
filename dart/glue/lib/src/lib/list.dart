@@ -1,6 +1,5 @@
 import 'package:glue/src/lib/list/append.dart';
 import 'package:glue/src/lib/list/butlast.dart';
-import 'package:glue/src/lib/list/concat.dart';
 import 'package:glue/src/lib/list/drop.dart';
 import 'package:glue/src/lib/list/filter.dart';
 import 'package:glue/src/lib/list/find.dart';
@@ -33,7 +32,6 @@ final ModuleInfo listModule = nativeModule('ffi.list', [
   // Core list operations
   ('append', append),
   ('butlast', butlast),
-  ('concat', concat),
   ('drop', drop),
   ('filter', filter),
   ('find', find),

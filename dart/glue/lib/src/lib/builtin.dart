@@ -1,4 +1,5 @@
 import 'package:glue/src/lib/builtin/at.dart';
+import 'package:glue/src/lib/builtin/concat.dart';
 import 'package:glue/src/lib/builtin/def.dart';
 import 'package:glue/src/lib/builtin/error.dart';
 import 'package:glue/src/lib/builtin/lambda.dart';
@@ -15,6 +16,7 @@ import 'package:glue/src/module.dart';
 /// The builtin module containing all special forms
 /// Mirrors Haskell Glue.Lib.Builtin.builtin exactly
 final ModuleInfo builtinModule = nativeModule('ffi.builtin', [
+  ('concat', concat),
   ('def', def),
   ('lambda', lambda),
   ('\\', lambda),
