@@ -12,5 +12,7 @@ concatImpl list1 = pure $ NativeFunc (concatTo list1)
 
 concatTo :: IR Eval -> IR Eval -> Eval (IR Eval)
 concatTo list1 list2 = case (list1, list2) of
+    (Object xs, Object ys) -> pure $ Object (xs <> ys)
+    (String xs, String ys) -> pure $ String (xs <> ys)
     (List xs, List ys) -> pure $ List (xs <> ys)
     _ -> throwError $ wrongArgumentType ["list", "list"]
