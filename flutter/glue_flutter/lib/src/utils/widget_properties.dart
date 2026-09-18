@@ -46,7 +46,7 @@ class WidgetProperties {
   Key? get key => getKey('key');
 
   Key? getKey(String key) => extractKey(_props[key]);
-  T? getFromGlobalKey<T>(String key) => extracFromGlobalKey(_props[key]);
+  T? getFromGlobalKey<T>(String key) => extractFromGlobalKey(_props[key]);
 
   Widget? get child => extractNativeValue(_props['child']);
   List<Widget> get children => extractNativeValues(_props['children']);

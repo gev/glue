@@ -54,7 +54,7 @@ Key? extractKey(Ir? value) => switch (value) {
   Ir key => ValueKey(key),
 };
 
-T? extracFromGlobalKey<T>(Ir? value) => switch (value) {
+T? extractFromGlobalKey<T>(Ir? value) => switch (value) {
   IrNativeValue(value: Value(value: GlobalKey key)) =>
     switch (key.currentState) {
       T state => state,
