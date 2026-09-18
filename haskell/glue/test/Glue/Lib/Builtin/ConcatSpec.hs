@@ -1,8 +1,8 @@
-module Glue.Lib.List.ConcatSpec (spec) where
+module Glue.Lib.Builtin.ConcatSpec (spec) where
 
 import Glue.Eval (apply, runEvalSimple)
 import Glue.IR (IR (..))
-import Glue.Lib.List.Concat (concat)
+import Glue.Lib.Builtin.Concat (concat)
 import Test.Hspec
 import Prelude hiding (concat)
 

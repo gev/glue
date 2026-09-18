@@ -2,6 +2,7 @@ module Glue.Lib.Builtin where
 
 import Glue.Eval (Eval)
 import Glue.Lib.Builtin.At (at)
+import Glue.Lib.Builtin.Concat qualified as Concat
 import Glue.Lib.Builtin.Def (def)
 import Glue.Lib.Builtin.Error (errorFunc)
 import Glue.Lib.Builtin.Lambda (lambda)
@@ -16,7 +17,8 @@ builtin :: ModuleInfo Eval
 builtin =
     nativeModule
         "ffi.builtin"
-        [ ("def", def)
+        [ ("concat", Concat.concat)
+        , ("def", def)
         , ("lambda", lambda)
         , ("\\", lambda)
         , ("let", let')

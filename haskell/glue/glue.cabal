@@ -40,6 +40,7 @@ library
     Glue.Lib.Bool.Or
     Glue.Lib.Builtin
     Glue.Lib.Builtin.At
+    Glue.Lib.Builtin.Concat
     Glue.Lib.Builtin.Def
     Glue.Lib.Builtin.Error
     Glue.Lib.Builtin.Lambda
@@ -54,7 +55,6 @@ library
     Glue.Lib.List
     Glue.Lib.List.Append
     Glue.Lib.List.Butlast
-    Glue.Lib.List.Concat
     Glue.Lib.List.Drop
     Glue.Lib.List.Filter
     Glue.Lib.List.Find
@@ -161,6 +161,7 @@ test-suite glue-test
     Glue.Lib.Bool.LtSpec
     Glue.Lib.Bool.NeSpec
     Glue.Lib.Bool.NotSpec
+    Glue.Lib.Builtin.ConcatSpec
     Glue.Lib.Builtin.DefSpec
     Glue.Lib.Builtin.ImportSpec
     Glue.Lib.Builtin.LambdaSpec
@@ -169,7 +170,6 @@ test-suite glue-test
     Glue.Lib.IO.PrintSpec
     Glue.Lib.List.AppendSpec
     Glue.Lib.List.ButlastSpec
-    Glue.Lib.List.ConcatSpec
     Glue.Lib.List.DropSpec
     Glue.Lib.List.FilterSpec
     Glue.Lib.List.FindSpec

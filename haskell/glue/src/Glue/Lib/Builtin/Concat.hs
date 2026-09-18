@@ -1,4 +1,4 @@
-module Glue.Lib.List.Concat where
+module Glue.Lib.Builtin.Concat where
 
 import Glue.Eval (Eval, throwError)
 import Glue.Eval.Exception (wrongArgumentType)

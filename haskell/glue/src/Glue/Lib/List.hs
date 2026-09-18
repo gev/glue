@@ -3,7 +3,6 @@ module Glue.Lib.List where
 import Glue.Eval (Eval)
 import Glue.Lib.List.Append (append)
 import Glue.Lib.List.Butlast (butlast)
-import Glue.Lib.List.Concat qualified as Concat
 import Glue.Lib.List.Drop qualified as Drop
 import Glue.Lib.List.Filter qualified as Filter
 import Glue.Lib.List.Find qualified as Find
@@ -33,7 +32,6 @@ list =
         "ffi.list"
         [ ("append", append)
         , ("but-last", butlast)
-        , ("concat", Concat.concat)
         , ("head", Head.head)
         , ("drop", Drop.drop)
         , ("filter", Filter.filter)
