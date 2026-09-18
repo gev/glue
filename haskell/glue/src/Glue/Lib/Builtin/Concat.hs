@@ -8,10 +8,10 @@ concat :: IR Eval
 concat = NativeFunc concatImpl
 
 concatImpl :: IR Eval -> Eval (IR Eval)
-concatImpl list1 = pure $ NativeFunc (concatTo list1)
+concatImpl ir1 = pure $ NativeFunc (concatTo ir1)
 
 concatTo :: IR Eval -> IR Eval -> Eval (IR Eval)
-concatTo list1 list2 = case (list1, list2) of
+concatTo ir1 ir2 = case (ir1, ir2) of
     (Object xs, Object ys) -> pure $ Object (xs <> ys)
     (String xs, String ys) -> pure $ String (xs <> ys)
     (List xs, List ys) -> pure $ List (xs <> ys)
