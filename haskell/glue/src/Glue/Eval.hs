@@ -113,6 +113,7 @@ evalDottedSymbol parts = do
     evalNestedAccess obj [] = pure obj
     evalNestedAccess obj (prop : rest) = do
         case obj of
+            IR.Void -> pure IR.Void
             IR.Object objMap -> case Map.lookup prop objMap of
                 Just val -> evalNestedAccess val rest
                 Nothing -> pure IR.Void

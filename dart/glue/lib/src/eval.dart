@@ -355,6 +355,8 @@ Eval<Ir> _evalNestedAccess(Ir obj, List<String> remainingParts) {
   final rest = remainingParts.sublist(1);
 
   return switch (obj) {
+    IrVoid v => Eval.pure(v),
+
     IrObject(properties: final props) =>
       props[prop] != null
           ? _evalNestedAccess(props[prop]!, rest)
