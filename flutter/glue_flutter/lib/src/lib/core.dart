@@ -33,6 +33,7 @@ import 'package:glue_flutter/src/lib/ui/core/styles/radius.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/rgb.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/rgba.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/shape_border.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/stack_fit.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/system_brightness.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/text_align.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/text_baseline.dart';
@@ -207,6 +208,8 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   ('sweep-gradient', sweepGradient),
 
   ('tile-mode', tileMode),
+
+  ('stack-fit', stackFit),
 
   ('global-key', globalKey),
 ]);
