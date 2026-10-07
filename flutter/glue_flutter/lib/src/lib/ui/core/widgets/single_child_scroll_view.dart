@@ -32,11 +32,10 @@ Eval<Ir> _createSingleChildScrollView(WidgetProperties properties) {
         DragStartBehavior.start,
     clipBehavior: properties.getValue<Clip>('clip-behavior') ?? Clip.none,
     restorationId: properties.getString('restoration-id'),
-    keyboardDismissBehavior:
-        properties.getValue<ScrollViewKeyboardDismissBehavior>(
+    keyboardDismissBehavior: properties
+        .getValue<ScrollViewKeyboardDismissBehavior>(
           'keyboard-dismiss-behavior',
-        ) ??
-        ScrollViewKeyboardDismissBehavior.manual,
+        ),
     child: properties.child,
   );
   return Eval.pure(IrNativeValue(Value(singleChildScrollViewWidget)));
