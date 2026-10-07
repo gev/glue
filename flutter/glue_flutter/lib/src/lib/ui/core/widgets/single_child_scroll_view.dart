@@ -30,6 +30,9 @@ Eval<Ir> _createSingleChildScrollView(WidgetProperties properties) {
     dragStartBehavior:
         properties.getValue<DragStartBehavior>('drag-start-behavior') ??
         DragStartBehavior.start,
+    hitTestBehavior:
+        properties.getValue<HitTestBehavior>('hit-test-behavior') ??
+        HitTestBehavior.opaque,
     clipBehavior: properties.getValue<Clip>('clip-behavior') ?? Clip.none,
     restorationId: properties.getString('restoration-id'),
     keyboardDismissBehavior: properties
