@@ -61,6 +61,7 @@ import 'package:glue_flutter/src/lib/ui/core/widgets/grid_view.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/hero.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/icon.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/image.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/image_filtered.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/indexed_stack.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/list_view.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/padding.dart';
@@ -216,5 +217,6 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   ('global-key', globalKey),
 
   ('backdrop-filter', backdropFilter),
+  ('image-filtered', imageFiltered),
   ('image-filter-blur', imageFilterBlur),
 ]);
