@@ -11,8 +11,8 @@ final Ir imageFilterBlur = IrNativeFunc((Ir props) {
     case IrObject(:final properties):
       final props = WidgetProperties(properties.unlock);
       final imageFilter = ImageFilter.blur(
-        sigmaX: props.getValue<double>('sigma-x') ?? 0.0,
-        sigmaY: props.getValue<double>('sigma-y') ?? 0.0,
+        sigmaX: props.getDouble('sigma-x') ?? 0.0,
+        sigmaY: props.getDouble('sigma-y') ?? 0.0,
         tileMode: props.getValue<TileMode>('tile-mode') ?? TileMode.clamp,
       );
       return Eval.pure(IrNativeValue(Value(imageFilter)));
