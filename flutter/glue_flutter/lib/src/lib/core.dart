@@ -25,6 +25,7 @@ import 'package:glue_flutter/src/lib/ui/core/styles/hsl.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/hsla.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/hsv.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/hsva.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/image_filter.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/image_repeat.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/main_axis_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/main_axis_size.dart';
@@ -48,6 +49,7 @@ import 'package:glue_flutter/src/lib/ui/core/styles/wrap_cros_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/align.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/animated_positioned.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/aspect_ratio.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/backdrop_filter.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/center.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/clip_rrect.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/column.dart';
@@ -212,4 +214,7 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   ('stack-fit', stackFit),
 
   ('global-key', globalKey),
+
+  ('backdrop-filter', backdropFilter),
+  ('image-filter-blur', imageFilterBlur),
 ]);
