@@ -64,6 +64,7 @@ import 'package:glue_flutter/src/lib/ui/core/widgets/image.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/image_filtered.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/indexed_stack.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/list_view.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/opacity.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/padding.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/page_view.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/placeholder.dart';
@@ -102,6 +103,7 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   ('indexed-stack', indexedStack),
   ('hero', hero),
   ('list-view', listView),
+  ('opacity', opacity),
   ('padding', padding),
   ('page-view', pageView),
   ('placeholder', placeholder),
