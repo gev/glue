@@ -16,7 +16,7 @@ zipWithList1 funcIR list1IR = pure $ NativeFunc (zipWithLists funcIR list1IR)
 zipWithLists :: IR Eval -> IR Eval -> IR Eval -> Eval (IR Eval)
 zipWithLists func list1 list2 = case (list1, list2) of
     (List xs, List ys) -> List <$> zipWithElements func xs ys
-    _ -> throwError $ wrongArgumentType ["func", "list", "list"]
+    _ -> throwError $ wrongArgumentType ["function", "list", "list"]
 
 zipWithElements :: IR Eval -> [IR Eval] -> [IR Eval] -> Eval [IR Eval]
 zipWithElements _ [] _ = pure []
