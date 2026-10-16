@@ -9,12 +9,12 @@ Ir zip = IrNativeFunc(zipImpl);
 /// Zip function implementation
 /// Mirrors Haskell Glue.Lib.List.Zip.zipImpl exactly
 Eval<Ir> zipImpl(Ir list1Ir) {
-  return Eval.pure(IrNativeFunc(zipWith(list1Ir)));
+  return Eval.pure(IrNativeFunc(zipWithList1(list1Ir)));
 }
 
 /// Helper function for second list argument
 /// Mirrors Haskell Glue.Lib.List.Zip.zipWith exactly
-Eval<Ir> Function(Ir) zipWith(Ir list1) {
+Eval<Ir> Function(Ir) zipWithList1(Ir list1) {
   return (Ir list2) => switch ((list1, list2)) {
     (IrList(elements: final e1), IrList(elements: final e2)) => Eval.pure(
       IrList(zipLists(e1.toList(), e2.toList())),
