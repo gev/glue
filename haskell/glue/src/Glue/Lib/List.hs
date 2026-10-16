@@ -24,6 +24,7 @@ import Glue.Lib.List.Sort qualified as Sort
 import Glue.Lib.List.Tail qualified as Tail
 import Glue.Lib.List.Take qualified as Take
 import Glue.Lib.List.Zip qualified as Zip
+import Glue.Lib.List.ZipWith qualified as ZipWith
 import Glue.Module (ModuleInfo, nativeModule)
 
 list :: ModuleInfo Eval
@@ -53,4 +54,5 @@ list =
         , ("tail", Tail.tail)
         , ("take", Take.take)
         , ("zip", Zip.zip)
+        , ("zip-with", ZipWith.zipWith)
         ]
