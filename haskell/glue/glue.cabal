@@ -76,6 +76,7 @@ library
     Glue.Lib.List.Tail
     Glue.Lib.List.Take
     Glue.Lib.List.Zip
+    Glue.Lib.List.ZipWith
     Glue.Lib.Math.Arithmetic
     Glue.Lib.Math.Arithmetic.Add
     Glue.Lib.Math.Arithmetic.Div
