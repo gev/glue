@@ -20,6 +20,7 @@ import 'package:glue/src/lib/list/reverse.dart';
 import 'package:glue/src/lib/list/sort.dart';
 import 'package:glue/src/lib/list/tail.dart';
 import 'package:glue/src/lib/list/take.dart';
+import 'package:glue/src/lib/list/zip-with.dart';
 import 'package:glue/src/lib/list/zip.dart';
 import 'package:glue/src/module.dart';
 
@@ -53,4 +54,5 @@ final ModuleInfo listModule = nativeModule('ffi.list', [
   ('tail', tail),
   ('take', take),
   ('zip', zip),
+  ('zip-with', zipWith),
 ]);
