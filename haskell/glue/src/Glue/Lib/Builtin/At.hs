@@ -13,6 +13,8 @@ at :: IR Eval
 at = NativeFunc \target ->
     pure $ NativeFunc \accessor ->
         case (target, accessor) of
+            (Void, _) -> pure Void
+            (_, Void) -> pure Void
             (String text, Integer index) ->
                 pure
                     if index >= 0 && index < T.length text

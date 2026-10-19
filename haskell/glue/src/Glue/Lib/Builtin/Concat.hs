@@ -12,6 +12,8 @@ concatImpl ir1 = pure $ NativeFunc (concatTo ir1)
 
 concatTo :: IR Eval -> IR Eval -> Eval (IR Eval)
 concatTo ir1 ir2 = case (ir1, ir2) of
+    (Void, ys) -> pure ys
+    (xs, Void) -> pure xs
     (Object xs, Object ys) -> pure $ Object (xs <> ys)
     (String xs, String ys) -> pure $ String (xs <> ys)
     (List xs, List ys) -> pure $ List (xs <> ys)
