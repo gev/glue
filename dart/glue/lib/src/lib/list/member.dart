@@ -16,6 +16,7 @@ Eval<Ir> memberImpl(Ir itemIr) {
 /// Mirrors Haskell Glue.Lib.List.Member.memberIn exactly
 Eval<Ir> Function(Ir) memberIn(Ir item) {
   return (Ir list) => switch (list) {
+    IrVoid() => Eval.pure(IrVoid()),
     IrList(:final elements) => Eval.pure(IrBool(elements.contains(item))),
     _ => throwError(wrongArgumentType(['list'])),
   };

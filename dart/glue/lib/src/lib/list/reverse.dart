@@ -10,6 +10,7 @@ Ir reverse = IrNativeFunc(reverseImpl);
 /// Mirrors Haskell Glue.Lib.List.Reverse.reverseImpl exactly
 Eval<Ir> reverseImpl(Ir arg) {
   return switch (arg) {
+    IrVoid() => Eval.pure(IrVoid()),
     IrList(elements: final elements) => Eval.pure(
       IrList(elements.reversed.toList()),
     ),

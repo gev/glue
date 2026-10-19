@@ -10,10 +10,9 @@ Ir butlast = IrNativeFunc(butlastImpl);
 /// Mirrors Haskell Glue.Lib.List.Butlast.butlastImpl exactly
 Eval<Ir> butlastImpl(Ir arg) {
   return switch (arg) {
+    IrVoid() => Eval.pure(IrVoid()),
     IrList(elements: final elements) =>
-      elements.isEmpty
-          ? throwError(wrongArgumentType(['non-empty list']))
-          : elements.length == 1
+      elements.length <= 1
           ? Eval.pure(IrList([]))
           : Eval.pure(
               IrList(elements.sublist(0, elements.length - 1).toList()),

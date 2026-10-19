@@ -17,12 +17,6 @@ void main() {
       });
     });
 
-    test('fails on empty list', () {
-      final args = [IrList([])];
-      final result = runEvalSimple(apply(tail, args), emptyEnv());
-      expect(result.isLeft, isTrue);
-    });
-
     test('fails on non-list', () {
       final args = [IrInteger(42)];
       final result = runEvalSimple(apply(tail, args), emptyEnv());

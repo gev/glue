@@ -10,6 +10,7 @@ Ir sort = IrNativeFunc(sortImpl);
 /// Mirrors Haskell Glue.Lib.List.Sort.sortImpl exactly
 Eval<Ir> sortImpl(Ir arg) {
   return switch (arg) {
+    IrVoid() => Eval.pure(IrVoid()),
     IrList(elements: final elements) => sortList(
       elements.toList(),
     ).map((sortedElements) => IrList(sortedElements)),

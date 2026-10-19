@@ -17,6 +17,7 @@ Eval<Ir> findImpl(Ir predicateIr) {
 Eval<Ir> Function(Ir) findIn(Ir predicate) {
   return (Ir list) {
     return switch (list) {
+      IrVoid() => Eval.pure(IrVoid()),
       IrList(elements: final elements) => findElement(
         predicate,
         elements.toList(),

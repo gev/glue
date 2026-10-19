@@ -29,6 +29,7 @@ Eval<Ir> Function(Ir) foldrInit(Ir funcIr) {
 Eval<Ir> Function(Ir) foldrOver(Ir funcIr, Ir initValIr) {
   return (Ir listIr) {
     return switch (listIr) {
+      IrVoid v => Eval.pure(v),
       IrList(elements: final elements) => _foldrLoop(
         funcIr,
         initValIr,

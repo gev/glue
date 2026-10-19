@@ -39,12 +39,6 @@ void main() {
       });
     });
 
-    test('fails on empty list', () {
-      final args = [IrList([])];
-      final result = runEvalSimple(apply(last, args), emptyEnv());
-      expect(result.isLeft, isTrue);
-    });
-
     test('fails on non-list argument', () {
       final args = [IrInteger(42)];
       final result = runEvalSimple(apply(last, args), emptyEnv());

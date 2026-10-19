@@ -10,6 +10,7 @@ Ir length = IrNativeFunc(lengthImpl);
 /// Mirrors Haskell Glue.Lib.List.Length.lengthImpl exactly
 Eval<Ir> lengthImpl(Ir arg) {
   return switch (arg) {
+    IrVoid() => Eval.pure(IrInteger(0)),
     IrList(elements: final elements) => Eval.pure(IrInteger(elements.length)),
     _ => throwError(wrongArgumentType(['list'])),
   };

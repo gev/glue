@@ -29,6 +29,7 @@ Eval<Ir> Function(Ir) foldlInit(Ir funcIr) {
 Eval<Ir> Function(Ir) foldlOver(Ir funcIr, Ir initValIr) {
   return (Ir listIr) {
     return switch (listIr) {
+      IrVoid() => Eval.pure(IrVoid()),
       IrList(elements: final elements) => _foldlLoop(
         funcIr,
         initValIr,

@@ -16,6 +16,8 @@ Eval<Ir> zipImpl(Ir list1Ir) {
 /// Mirrors Haskell Glue.Lib.List.Zip.zipWith exactly
 Eval<Ir> Function(Ir) zipWithList1(Ir list1) {
   return (Ir list2) => switch ((list1, list2)) {
+    (IrVoid(), _) => Eval.pure(IrVoid()),
+    (_, IrVoid()) => Eval.pure(IrVoid()),
     (IrList(elements: final e1), IrList(elements: final e2)) => Eval.pure(
       IrList(zipLists(e1.toList(), e2.toList())),
     ),

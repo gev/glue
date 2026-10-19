@@ -17,6 +17,7 @@ Eval<Ir> partitionImpl(Ir predicateIr) {
 Eval<Ir> Function(Ir) partitionList(Ir predicate) {
   return (Ir list) {
     return switch (list) {
+      IrVoid() => Eval.pure(IrVoid()),
       IrList(elements: final elements) =>
         partitionElements(predicate, elements.toList()).map((partitioned) {
           final (matching, nonMatching) = partitioned;

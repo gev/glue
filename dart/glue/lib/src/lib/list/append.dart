@@ -16,6 +16,8 @@ Eval<Ir> appendImpl(Ir list) {
 /// Mirrors Haskell Glue.Lib.List.Append.appendWith exactly
 Eval<Ir> Function(Ir) appendWith(Ir list) {
   return (Ir item) => switch (list) {
+    Ir ir when item is IrVoid => Eval.pure(ir),
+    IrVoid() => Eval.pure(IrList([item])),
     IrList(elements: final elements) => Eval.pure(IrList([...elements, item])),
     _ => throwError(wrongArgumentType(['list', 'any'])),
   };

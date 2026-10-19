@@ -10,9 +10,10 @@ Ir tail = IrNativeFunc(tailImpl);
 /// Mirrors Haskell Glue.Lib.List.Tail.tailImpl exactly
 Eval<Ir> tailImpl(Ir arg) {
   return switch (arg) {
+    IrVoid() => Eval.pure(IrVoid()),
     IrList(:final elements) =>
       elements.isEmpty
-          ? throwError(wrongArgumentType(['non-empty list']))
+          ? Eval.pure(IrList([]))
           : Eval.pure(IrList(elements.skip(1).toList())),
     _ => throwError(wrongArgumentType(['list'])),
   };

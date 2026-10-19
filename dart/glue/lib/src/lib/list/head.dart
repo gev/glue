@@ -10,10 +10,10 @@ Ir head = IrNativeFunc(headImpl);
 /// Mirrors Haskell Glue.Lib.List.Head.headImpl exactly
 Eval<Ir> headImpl(Ir arg) {
   return switch (arg) {
-    IrList(:final elements) =>
-      elements.isEmpty
-          ? throwError(wrongArgumentType(['non-empty list']))
-          : Eval.pure(elements.first),
+    IrVoid() => Eval.pure(IrVoid()),
+    IrList(:final elements) => Eval.pure(
+      elements.isEmpty ? IrVoid() : elements.first,
+    ),
     _ => throwError(wrongArgumentType(['list'])),
   };
 }

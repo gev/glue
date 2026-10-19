@@ -14,6 +14,7 @@ Eval<Ir> removeImpl(Ir itemIr) {
 
 Eval<Ir> Function(Ir) removeFrom(Ir item) {
   return (Ir list) => switch (list) {
+    IrVoid() => Eval.pure(IrVoid()),
     IrList(:final elements) => Eval.pure(
       IrList(elements.where((element) => element != item).toList()),
     ),

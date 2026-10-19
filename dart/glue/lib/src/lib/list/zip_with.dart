@@ -25,6 +25,8 @@ Eval<Ir> Function(Ir) zipWithList1(Ir funcIr) {
 Eval<Ir> Function(Ir) zipWithLists(Ir funcIr, Ir list1Ir) {
   return (Ir list2Ir) {
     return switch ((list1Ir, list2Ir)) {
+      (IrVoid(), _) => Eval.pure(IrVoid()),
+      (_, IrVoid()) => Eval.pure(IrVoid()),
       (IrList(elements: final e1), IrList(elements: final e2)) =>
         zipWithElements(funcIr, e1.toList(), e2.toList()),
       _ => throwError(wrongArgumentType(['function', 'list', 'list'])),

@@ -10,10 +10,9 @@ Ir last = IrNativeFunc(lastImpl);
 /// Mirrors Haskell Glue.Lib.List.Last.lastImpl exactly
 Eval<Ir> lastImpl(Ir arg) {
   return switch (arg) {
+    IrVoid() => Eval.pure(IrVoid()),
     IrList(elements: final elements) =>
-      elements.isNotEmpty
-          ? Eval.pure(elements.last)
-          : throwError(wrongArgumentType(['non-empty list'])),
+      elements.isNotEmpty ? Eval.pure(elements.last) : Eval.pure(IrVoid()),
     _ => throwError(wrongArgumentType(['list'])),
   };
 }

@@ -16,11 +16,12 @@ Eval<Ir> dropImpl(Ir countIr) {
 /// Mirrors Haskell Glue.Lib.List.Drop.dropFrom exactly
 Eval<Ir> Function(Ir) dropFrom(Ir countIr) {
   return (Ir listIr) => switch ((countIr, listIr)) {
+    (_, IrVoid()) => Eval.pure(IrVoid()),
     (IrInteger(value: final n), IrList(elements: final elements)) =>
       n < 0
           ? throwError(wrongArgumentType(['non-negative integer']))
           : Eval.pure(
-              IrList(n >= elements.length ? <Ir>[] : elements.skip(n).toList()),
+              IrList(n >= elements.length ? [] : elements.skip(n).toList()),
             ),
     _ => throwError(wrongArgumentType(['number', 'list'])),
   };

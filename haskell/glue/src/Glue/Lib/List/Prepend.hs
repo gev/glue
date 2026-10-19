@@ -11,6 +11,7 @@ prependImpl :: IR Eval -> Eval (IR Eval)
 prependImpl item = pure $ NativeFunc (prependWith item)
 
 prependWith :: IR Eval -> IR Eval -> Eval (IR Eval)
+prependWith Void ir = pure ir
 prependWith item list = case list of
     Void -> pure $ List [item]
     List xs -> pure $ List (item : xs)

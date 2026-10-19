@@ -17,6 +17,7 @@ Eval<Ir> mapImpl(Ir funcIr) {
 Eval<Ir> Function(Ir) mapOver(Ir funcIr) {
   return (Ir listIr) {
     return switch (listIr) {
+      IrVoid() => Eval.pure(IrVoid()),
       IrList(elements: final elements) => sequenceAll(
         elements.map((element) => apply(funcIr, [element])).toList(),
       ).map((results) => IrList(results)),

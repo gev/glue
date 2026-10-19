@@ -16,6 +16,8 @@ Eval<Ir> prependImpl(Ir item) {
 /// Mirrors Haskell Glue.Lib.List.Prepend.prependWith exactly
 Eval<Ir> Function(Ir) prependWith(Ir item) {
   return (Ir list) => switch (list) {
+    Ir ir when item is IrVoid => Eval.pure(ir),
+    IrVoid() => Eval.pure(IrList([item])),
     IrList(elements: final elements) => Eval.pure(IrList([item, ...elements])),
     _ => throwError(wrongArgumentType(['any', 'list'])),
   };

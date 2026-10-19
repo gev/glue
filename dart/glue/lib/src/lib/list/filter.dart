@@ -17,6 +17,7 @@ Eval<Ir> filterImpl(Ir predicateIr) {
 Eval<Ir> Function(Ir) filterList(Ir predicate) {
   return (Ir list) {
     return switch (list) {
+      IrVoid() => Eval.pure(IrVoid()),
       IrList(elements: final elements) => filterElements(
         predicate,
         elements.toList(),
@@ -41,7 +42,7 @@ Eval<List<Ir>> filterElements(Ir predicate, List<Ir> elements) {
 
 /// Helper function to apply predicate to an element
 Eval<bool> applyPredicate(Ir predicate, Ir element) {
-  return eval(IrList([predicate, element])).bind((result) {
+  return apply(predicate, [element]).bind((result) {
     if (result is IrBool) {
       return Eval.pure(result.value);
     } else {

@@ -10,6 +10,7 @@ Ir flatten = IrNativeFunc(flattenImpl);
 /// Mirrors Haskell Glue.Lib.List.Flatten.flattenImpl exactly
 Eval<Ir> flattenImpl(Ir list) {
   return switch (list) {
+    IrVoid() => Eval.pure(IrVoid()),
     IrList(elements: final elements) => flattenList(
       elements.toList(),
     ).map((flattened) => IrList(flattened)),
