@@ -6,6 +6,10 @@ final Ir at = IrNativeFunc((Ir target) {
   return Eval.pure(
     IrNativeFunc((Ir accessor) {
       switch (target) {
+        case IrVoid():
+        case _ when accessor is IrVoid:
+          return Eval.pure(IrVoid());
+
         case IrString(:final value) when accessor is IrInteger:
           final index = accessor.value;
           if (index >= 0 && index < value.length) {

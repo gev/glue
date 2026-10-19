@@ -16,6 +16,8 @@ Eval<Ir> concatImpl(Ir ir1) {
 /// Mirrors Haskell Glue.Lib.Builtin.Concat.concatWith exactly
 Eval<Ir> Function(Ir) concatWith(Ir ir1) {
   return (Ir ir2) => switch ((ir1, ir2)) {
+    (IrVoid _, Ir ys) => Eval.pure(ys),
+    (Ir xs, IrVoid _) => Eval.pure(xs),
     (IrObject(properties: final p1), IrObject(properties: final p2)) =>
       Eval.pure(IrObject(p1.addAll(p2, keepOrder: true).unlock)),
     (IrString(value: final v1), IrString(value: final v2)) => Eval.pure(
