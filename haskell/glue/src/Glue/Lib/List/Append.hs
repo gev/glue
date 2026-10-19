@@ -11,6 +11,8 @@ appendImpl :: IR Eval -> Eval (IR Eval)
 appendImpl list = pure $ NativeFunc (appendTo list)
 
 appendTo :: IR Eval -> IR Eval -> Eval (IR Eval)
+appendTo ir Void = pure ir
 appendTo list item = case list of
+    Void -> pure $ List [item]
     List xs -> pure $ List (xs <> [item])
     _ -> throwError $ wrongArgumentType ["list", "any"]

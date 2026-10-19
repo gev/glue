@@ -15,13 +15,6 @@ spec = describe "Glue.Lib.List.Head (Test head function)" do
             Left err -> expectationFailure $ "Head failed: " <> show err
             Right (res, _) -> res `shouldBe` Integer 1
 
-    it "fails on empty list" do
-        let args = [List []]
-        result <- runEvalSimple (apply head args) []
-        case result of
-            Left _ -> pure () -- Expected error
-            Right _ -> expectationFailure "Head should fail on empty list"
-
     it "fails on non-list" do
         let args = [Integer 42]
         result <- runEvalSimple (apply head args) []

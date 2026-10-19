@@ -9,6 +9,7 @@ flatten = NativeFunc flattenImpl
 
 flattenImpl :: IR Eval -> Eval (IR Eval)
 flattenImpl list = case list of
+    Void -> pure Void
     List xs -> do
         flattened <- flattenList xs
         pure $ List flattened

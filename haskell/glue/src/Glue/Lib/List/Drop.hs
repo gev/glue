@@ -12,6 +12,7 @@ dropImpl countIR = pure $ NativeFunc (dropFrom countIR)
 
 dropFrom :: IR Eval -> IR Eval -> Eval (IR Eval)
 dropFrom count list = case (count, list) of
+    (_, Void) -> pure Void
     (Integer n, List xs) -> do
         if n < 0
             then throwError $ wrongArgumentType ["non-negative integer"]

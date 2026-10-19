@@ -1,6 +1,6 @@
 module Glue.Lib.List.Filter where
 
-import Glue.Eval (Eval, eval, throwError)
+import Glue.Eval (Eval, apply, throwError)
 import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (IR (..))
 
@@ -12,6 +12,7 @@ filterImpl predicateIR = pure $ NativeFunc (filterWith predicateIR)
 
 filterWith :: IR Eval -> IR Eval -> Eval (IR Eval)
 filterWith predicate list = case list of
+    Void -> pure Void
     List xs -> do
         -- Filter elements that satisfy the predicate
         filtered <- filterElements predicate xs
@@ -32,7 +33,7 @@ filterElements predicate (x : xs) = do
 applyPredicate :: IR Eval -> IR Eval -> Eval Bool
 applyPredicate predicate x = do
     -- Evaluate (pred x) and check if it returns true
-    result <- eval (List [predicate, x])
+    result <- apply predicate [x]
     case result of
         Bool True -> pure True
         Bool False -> pure False

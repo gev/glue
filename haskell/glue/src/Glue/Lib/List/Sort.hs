@@ -9,6 +9,7 @@ sort = NativeFunc sortImpl
 
 sortImpl :: IR Eval -> Eval (IR Eval)
 sortImpl listIR = case listIR of
+    Void -> pure Void
     List xs -> do
         sorted <- sortList xs
         pure $ List sorted

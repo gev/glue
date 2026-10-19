@@ -28,7 +28,8 @@ foldrInit func initVal = pure $ NativeFunc (foldrOver func initVal)
 
 foldrOver :: IR Eval -> IR Eval -> IR Eval -> Eval (IR Eval)
 foldrOver func initVal list = case list of
-    List xs -> do
+    Void -> pure Void
+    List xs ->
         -- Strict right-to-left fold (foldr') using Prelude.foldr with strict binding
         Prelude.foldr
             ( \x next acc -> do

@@ -12,5 +12,6 @@ memberImpl itemIR = pure $ NativeFunc (memberIn itemIR)
 
 memberIn :: IR Eval -> IR Eval -> Eval (IR Eval)
 memberIn item list = case list of
+    Void -> pure Void
     List xs -> pure . Bool $ item `elem` xs
     _ -> throwError $ wrongArgumentType ["list"]

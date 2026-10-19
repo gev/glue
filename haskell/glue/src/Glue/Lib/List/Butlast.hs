@@ -9,7 +9,8 @@ butlast = NativeFunc butlastImpl
 
 butlastImpl :: IR Eval -> Eval (IR Eval)
 butlastImpl arg = case arg of
-    List [] -> throwError $ wrongArgumentType ["non-empty list"]
+    Void -> pure Void
+    List [] -> pure $ List []
     List [_] -> pure $ List []
     List xs -> pure $ List (init xs)
     _ -> throwError $ wrongArgumentType ["list"]

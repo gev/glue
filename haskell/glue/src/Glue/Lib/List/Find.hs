@@ -12,6 +12,7 @@ findImpl predicateIR = pure $ NativeFunc (findIn predicateIR)
 
 findIn :: IR Eval -> IR Eval -> Eval (IR Eval)
 findIn predicate list = case list of
+    Void -> pure Void
     List xs -> do
         -- Find first element that satisfies predicate
         findElement predicate xs

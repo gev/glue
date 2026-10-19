@@ -9,5 +9,6 @@ length = NativeFunc lengthImpl
 
 lengthImpl :: IR Eval -> Eval (IR Eval)
 lengthImpl arg = case arg of
+    Void -> pure $ Integer 0
     List xs -> pure $ Integer (fromIntegral $ Prelude.length xs)
     _ -> throwError $ wrongArgumentType ["list"]

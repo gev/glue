@@ -9,6 +9,7 @@ tail = NativeFunc tailImpl
 
 tailImpl :: IR Eval -> Eval (IR Eval)
 tailImpl arg = case arg of
+    Void -> pure Void
     List (_ : xs) -> pure $ List xs
-    List [] -> throwError $ wrongArgumentType ["non-empty list"]
+    List [] -> pure $ List []
     _ -> throwError $ wrongArgumentType ["list"]

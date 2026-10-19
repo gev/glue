@@ -28,13 +28,6 @@ spec = describe "Glue.Lib.List.Last (Test last function)" do
             Left err -> expectationFailure $ "Last failed: " <> show err
             Right (res, _) -> res `shouldBe` String "world"
 
-    it "fails on empty list" do
-        let args = [List []]
-        result <- runEvalSimple (apply Last.last args) []
-        case result of
-            Left _ -> pure () -- Expected error
-            Right _ -> expectationFailure "Last should fail on empty list"
-
     it "fails on non-list argument" do
         let args = [Integer 42]
         result <- runEvalSimple (apply Last.last args) []

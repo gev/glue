@@ -12,7 +12,8 @@ takeImpl countIR = pure $ NativeFunc (takeFrom countIR)
 
 takeFrom :: IR Eval -> IR Eval -> Eval (IR Eval)
 takeFrom count list = case (count, list) of
-    (Integer n, List xs) -> do
+    (_, Void) -> pure Void
+    (Integer n, List xs) ->
         if n < 0
             then throwError $ wrongArgumentType ["non-negative integer"]
             else pure $ List (Prelude.take (fromIntegral n) xs)

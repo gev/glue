@@ -12,6 +12,7 @@ removeImpl itemIR = pure $ NativeFunc (removeFrom itemIR)
 
 removeFrom :: IR Eval -> IR Eval -> Eval (IR Eval)
 removeFrom item list = case list of
+    Void -> pure Void
     List xs -> do
         let filtered = filter (/= item) xs
         pure $ List filtered

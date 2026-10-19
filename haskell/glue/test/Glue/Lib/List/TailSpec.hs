@@ -15,13 +15,6 @@ spec = describe "Glue.Lib.List.Tail (Test tail function)" do
             Left err -> expectationFailure $ "Tail failed: " <> show err
             Right (res, _) -> res `shouldBe` List [Integer 2, Integer 3]
 
-    it "fails on empty list" do
-        let args = [List []]
-        result <- runEvalSimple (apply tail args) []
-        case result of
-            Left _ -> pure () -- Expected error
-            Right _ -> expectationFailure "Tail should fail on empty list"
-
     it "fails on non-list" do
         let args = [Integer 42]
         result <- runEvalSimple (apply tail args) []

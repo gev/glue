@@ -28,13 +28,6 @@ spec = describe "Glue.Lib.List.Butlast (Test butlast function)" do
             Left err -> expectationFailure $ "Butlast failed: " <> show err
             Right (res, _) -> res `shouldBe` List [String "hello", String "world"]
 
-    it "fails on empty list" do
-        let args = [List []]
-        result <- runEvalSimple (apply butlast args) []
-        case result of
-            Left _ -> pure () -- Expected error
-            Right _ -> expectationFailure "Butlast should fail on empty list"
-
     it "fails on non-list argument" do
         let args = [Integer 42]
         result <- runEvalSimple (apply butlast args) []

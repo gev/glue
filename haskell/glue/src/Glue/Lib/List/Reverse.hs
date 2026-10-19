@@ -9,5 +9,6 @@ reverse = NativeFunc reverseImpl
 
 reverseImpl :: IR Eval -> Eval (IR Eval)
 reverseImpl arg = case arg of
+    Void -> pure Void
     List xs -> pure $ List (Prelude.reverse xs)
     _ -> throwError $ wrongArgumentType ["list"]

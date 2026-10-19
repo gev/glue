@@ -12,6 +12,8 @@ zipImpl list1IR = pure $ NativeFunc (zipLists list1IR)
 
 zipLists :: IR Eval -> IR Eval -> Eval (IR Eval)
 zipLists list1 list2 = case (list1, list2) of
+    (Void, _) -> pure Void
+    (_, Void) -> pure Void
     (List xs, List ys) -> do
         let zipped = zipElements xs ys
         pure $ List zipped

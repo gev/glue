@@ -29,7 +29,8 @@ foldlInit func initVal = pure $ NativeFunc (foldlOver func initVal)
 
 foldlOver :: IR Eval -> IR Eval -> IR Eval -> Eval (IR Eval)
 foldlOver func initVal list = case list of
-    List xs -> do
+    Void -> pure Void
+    List xs ->
         -- Strict left-to-right fold accumulating effects/values via foldM
         foldM (\acc x -> apply func [acc, x]) initVal xs
     _ -> throwError $ wrongArgumentType ["function", "any", "list"]

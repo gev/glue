@@ -12,5 +12,6 @@ prependImpl item = pure $ NativeFunc (prependWith item)
 
 prependWith :: IR Eval -> IR Eval -> Eval (IR Eval)
 prependWith item list = case list of
+    Void -> pure $ List [item]
     List xs -> pure $ List (item : xs)
     _ -> throwError $ wrongArgumentType ["any", "list"]

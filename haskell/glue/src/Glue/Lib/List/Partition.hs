@@ -1,6 +1,6 @@
 module Glue.Lib.List.Partition where
 
-import Glue.Eval (Eval, eval, throwError)
+import Glue.Eval (Eval, apply, throwError)
 import Glue.Eval.Exception
 import Glue.IR (IR (..))
 
@@ -12,6 +12,7 @@ partitionImpl predicateIR = pure $ NativeFunc (partitionList predicateIR)
 
 partitionList :: IR Eval -> IR Eval -> Eval (IR Eval)
 partitionList predicate list = case list of
+    Void -> pure Void
     List xs -> do
         -- Partition list into two lists based on predicate
         (matching, nonMatching) <- partitionElements predicate xs
@@ -23,7 +24,7 @@ partitionElements :: IR Eval -> [IR Eval] -> Eval ([IR Eval], [IR Eval])
 partitionElements _ [] = pure ([], [])
 partitionElements predicate (x : xs) = do
     -- Evaluate (predicate x) and check if it returns true
-    result <- eval (List [predicate, x])
+    result <- apply predicate [x]
     (matching, nonMatching) <- partitionElements predicate xs
     case result of
         Bool True -> pure (x : matching, nonMatching)

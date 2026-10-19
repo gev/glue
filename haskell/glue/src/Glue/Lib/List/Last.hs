@@ -9,6 +9,7 @@ last = NativeFunc lastImpl
 
 lastImpl :: IR Eval -> Eval (IR Eval)
 lastImpl arg = case arg of
-    List [] -> throwError $ wrongArgumentType ["non-empty list"]
+    Void -> pure Void
+    List [] -> pure Void
     List xs -> pure $ Prelude.last xs
     _ -> throwError $ wrongArgumentType ["list"]

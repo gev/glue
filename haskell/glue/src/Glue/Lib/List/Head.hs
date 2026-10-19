@@ -9,6 +9,7 @@ head = NativeFunc headImpl
 
 headImpl :: IR Eval -> Eval (IR Eval)
 headImpl arg = case arg of
+    Void -> pure Void
+    List [] -> pure Void
     List (x : _) -> pure x
-    List [] -> throwError $ wrongArgumentType ["non-empty list"]
     _ -> throwError $ wrongArgumentType ["list"]
