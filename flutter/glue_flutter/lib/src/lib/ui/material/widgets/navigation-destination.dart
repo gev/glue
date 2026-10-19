@@ -9,12 +9,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir navigationDestination = IrNativeFunc(navigationDestinationImpl);
 
 /// NavigationDestination implementation - takes properties object
-Eval<Ir> navigationDestinationImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createNavigationDestination(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createNavigationDestination(WidgetProperties.empty()),
-};
+Eval<Ir> navigationDestinationImpl(Ir props) =>
+    _createNavigationDestination(WidgetProperties(props));
 
 /// Create NavigationDestination widget from properties
 Eval<Ir> _createNavigationDestination(WidgetProperties properties) {

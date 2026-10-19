@@ -9,12 +9,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir customScrollView = IrNativeFunc(customScrollViewImpl);
 
 /// CustomScrollView implementation - takes properties object
-Eval<Ir> customScrollViewImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createCustomScrollView(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createCustomScrollView(WidgetProperties.empty()),
-};
+Eval<Ir> customScrollViewImpl(Ir props) =>
+    _createCustomScrollView(WidgetProperties(props));
 
 /// Create CustomScrollView widget from properties
 Eval<Ir> _createCustomScrollView(WidgetProperties properties) {

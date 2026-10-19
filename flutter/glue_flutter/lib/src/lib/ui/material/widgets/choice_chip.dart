@@ -9,12 +9,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir choiceChip = IrNativeFunc(choiceChipImpl);
 
 /// ChoiceChip implementation - takes properties object
-Eval<Ir> choiceChipImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createChoiceChip(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createChoiceChip(WidgetProperties.empty()),
-};
+Eval<Ir> choiceChipImpl(Ir props) => _createChoiceChip(WidgetProperties(props));
 
 /// Create ChoiceChip widget from properties
 Eval<Ir> _createChoiceChip(WidgetProperties properties) {

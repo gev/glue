@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
@@ -9,12 +8,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir listTile = IrNativeFunc(listTileImpl);
 
 /// ListTile implementation - takes properties object
-Eval<Ir> listTileImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createListTile(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> listTileImpl(Ir props) => _createListTile(WidgetProperties(props));
 
 /// Create ListTile widget from properties
 Eval<Ir> _createListTile(WidgetProperties properties) {

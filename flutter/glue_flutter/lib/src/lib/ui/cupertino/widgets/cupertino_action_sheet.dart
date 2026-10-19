@@ -9,12 +9,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir cupertinoActionSheet = IrNativeFunc(cupertinoActionSheetImpl);
 
 /// CupertinoActionSheet implementation - takes properties object with keyword arguments
-Eval<Ir> cupertinoActionSheetImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createCupertinoActionSheet(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createCupertinoActionSheet(WidgetProperties.empty()),
-};
+Eval<Ir> cupertinoActionSheetImpl(Ir props) =>
+    _createCupertinoActionSheet(WidgetProperties(props));
 
 /// Create CupertinoActionSheet widget from properties object
 Eval<Ir> _createCupertinoActionSheet(WidgetProperties properties) {

@@ -8,12 +8,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir expansionPanelList = IrNativeFunc(expansionPanelListImpl);
 
 /// ExpansionPanelList implementation - takes properties object
-Eval<Ir> expansionPanelListImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createExpansionPanelList(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createExpansionPanelList(WidgetProperties.empty()),
-};
+Eval<Ir> expansionPanelListImpl(Ir props) =>
+    _createExpansionPanelList(WidgetProperties(props));
 
 /// Create ExpansionPanelList widget from properties
 Eval<Ir> _createExpansionPanelList(WidgetProperties properties) {

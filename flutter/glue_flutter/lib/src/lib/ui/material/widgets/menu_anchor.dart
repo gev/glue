@@ -8,12 +8,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir menuAnchor = IrNativeFunc(menuAnchorImpl);
 
 /// MenuAnchor implementation - takes properties object
-Eval<Ir> menuAnchorImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createMenuAnchor(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createMenuAnchor(WidgetProperties.empty()),
-};
+Eval<Ir> menuAnchorImpl(Ir props) => _createMenuAnchor(WidgetProperties(props));
 
 /// Create MenuAnchor widget from properties
 Eval<Ir> _createMenuAnchor(WidgetProperties properties) {

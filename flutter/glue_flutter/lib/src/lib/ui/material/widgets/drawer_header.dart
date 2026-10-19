@@ -8,12 +8,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir drawerHeader = IrNativeFunc(drawerHeaderImpl);
 
 /// DrawerHeader implementation - takes properties object
-Eval<Ir> drawerHeaderImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createDrawerHeader(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createDrawerHeader(WidgetProperties.empty()),
-};
+Eval<Ir> drawerHeaderImpl(Ir props) =>
+    _createDrawerHeader(WidgetProperties(props));
 
 /// Create DrawerHeader widget from properties
 Eval<Ir> _createDrawerHeader(WidgetProperties properties) {

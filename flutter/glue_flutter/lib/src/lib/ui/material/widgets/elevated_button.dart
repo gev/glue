@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
@@ -9,12 +8,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir elevatedButton = IrNativeFunc(elevatedButtonImpl);
 
 /// ElevatedButton implementation - takes properties object
-Eval<Ir> elevatedButtonImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createElevatedButton(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> elevatedButtonImpl(Ir props) =>
+    _createElevatedButton(WidgetProperties(props));
 
 /// Create ElevatedButton widget from properties
 Eval<Ir> _createElevatedButton(WidgetProperties properties) {

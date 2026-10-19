@@ -10,12 +10,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir cupertinoSlider = IrNativeFunc(cupertinoSliderImpl);
 
 /// CupertinoSlider implementation - takes properties object with keyword arguments
-Eval<Ir> cupertinoSliderImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createCupertinoSlider(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createCupertinoSlider(WidgetProperties.empty()),
-};
+Eval<Ir> cupertinoSliderImpl(Ir props) =>
+    _createCupertinoSlider(WidgetProperties(props));
 
 /// Create CupertinoSlider widget from properties object
 Eval<Ir> _createCupertinoSlider(WidgetProperties properties) {

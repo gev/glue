@@ -9,12 +9,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir popupMenuButton = IrNativeFunc(popupMenuButtonImpl);
 
 /// PopupMenuButton implementation - takes properties object
-Eval<Ir> popupMenuButtonImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createPopupMenuButton(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createPopupMenuButton(WidgetProperties.empty()),
-};
+Eval<Ir> popupMenuButtonImpl(Ir props) =>
+    _createPopupMenuButton(WidgetProperties(props));
 
 /// Create PopupMenuButton widget from properties
 Eval<Ir> _createPopupMenuButton(WidgetProperties properties) {

@@ -8,12 +8,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir navigationRail = IrNativeFunc(navigationRailImpl);
 
 /// NavigationRail implementation - takes properties object
-Eval<Ir> navigationRailImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createNavigationRail(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createNavigationRail(WidgetProperties.empty()),
-};
+Eval<Ir> navigationRailImpl(Ir props) =>
+    _createNavigationRail(WidgetProperties(props));
 
 /// Create NavigationRail widget from properties
 Eval<Ir> _createNavigationRail(WidgetProperties properties) {

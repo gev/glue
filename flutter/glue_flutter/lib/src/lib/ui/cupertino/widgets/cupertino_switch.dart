@@ -10,12 +10,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir cupertinoSwitch = IrNativeFunc(cupertinoSwitchImpl);
 
 /// CupertinoSwitch implementation - takes properties object with keyword arguments
-Eval<Ir> cupertinoSwitchImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createCupertinoSwitch(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createCupertinoSwitch(WidgetProperties.empty()),
-};
+Eval<Ir> cupertinoSwitchImpl(Ir props) =>
+    _createCupertinoSwitch(WidgetProperties(props));
 
 /// Create CupertinoSwitch widget from properties object
 Eval<Ir> _createCupertinoSwitch(WidgetProperties properties) {

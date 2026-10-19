@@ -8,12 +8,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir userAccountsDrawerHeader = IrNativeFunc(userAccountsDrawerHeaderImpl);
 
 /// UserAccountsDrawerHeader implementation - takes properties object
-Eval<Ir> userAccountsDrawerHeaderImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createUserAccountsDrawerHeader(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createUserAccountsDrawerHeader(WidgetProperties.empty()),
-};
+Eval<Ir> userAccountsDrawerHeaderImpl(Ir props) =>
+    _createUserAccountsDrawerHeader(WidgetProperties(props));
 
 /// Create UserAccountsDrawerHeader widget from properties
 Eval<Ir> _createUserAccountsDrawerHeader(WidgetProperties properties) {

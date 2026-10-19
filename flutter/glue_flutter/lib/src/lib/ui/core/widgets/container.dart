@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
@@ -9,12 +8,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir container = IrNativeFunc(containerImpl);
 
 /// Container implementation - takes properties object
-Eval<Ir> containerImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createContainer(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> containerImpl(Ir props) => _createContainer(WidgetProperties(props));
 
 /// Create Container widget from properties
 Eval<Ir> _createContainer(WidgetProperties properties) {

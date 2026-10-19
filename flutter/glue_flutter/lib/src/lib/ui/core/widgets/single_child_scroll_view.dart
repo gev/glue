@@ -9,12 +9,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir singleChildScrollView = IrNativeFunc(singleChildScrollViewImpl);
 
 /// SingleChildScrollView implementation - takes properties object
-Eval<Ir> singleChildScrollViewImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createSingleChildScrollView(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createSingleChildScrollView(WidgetProperties.empty()),
-};
+Eval<Ir> singleChildScrollViewImpl(Ir props) =>
+    _createSingleChildScrollView(WidgetProperties(props));
 
 /// Create SingleChildScrollView widget from properties
 Eval<Ir> _createSingleChildScrollView(WidgetProperties properties) {

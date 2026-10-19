@@ -8,12 +8,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir inputDecoration = IrNativeFunc(inputDecorationImpl);
 
 /// InputDecoration implementation - takes properties object
-Eval<Ir> inputDecorationImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createInputDecoration(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createInputDecoration(WidgetProperties.empty()),
-};
+Eval<Ir> inputDecorationImpl(Ir props) =>
+    _createInputDecoration(WidgetProperties(props));
 
 /// Create InputDecoration from properties
 Eval<Ir> _createInputDecoration(WidgetProperties properties) {

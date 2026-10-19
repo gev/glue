@@ -6,12 +6,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 /// BorderSide binder for Glue
 final Ir borderSide = IrNativeFunc(borderSideImpl);
 
-Eval<Ir> borderSideImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createBorderSide(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => Eval.pure(IrNativeValue(Value(const BorderSide()))),
-};
+Eval<Ir> borderSideImpl(Ir props) => _createBorderSide(WidgetProperties(props));
 
 Eval<Ir> _createBorderSide(WidgetProperties properties) {
   final side = BorderSide(

@@ -9,12 +9,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir datePickerDialog = IrNativeFunc(datePickerDialogImpl);
 
 /// DatePickerDialog implementation - takes properties object
-Eval<Ir> datePickerDialogImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createDatePickerDialog(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createDatePickerDialog(WidgetProperties.empty()),
-};
+Eval<Ir> datePickerDialogImpl(Ir props) =>
+    _createDatePickerDialog(WidgetProperties(props));
 
 /// Create DatePickerDialog widget from properties
 Eval<Ir> _createDatePickerDialog(WidgetProperties properties) {

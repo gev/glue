@@ -9,12 +9,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir badge = IrNativeFunc(badgeImpl);
 
 /// Badge implementation - takes properties object
-Eval<Ir> badgeImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createBadge(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> badgeImpl(Ir props) => _createBadge(WidgetProperties(props));
 
 /// Create Badge widget from properties
 Eval<Ir> _createBadge(WidgetProperties properties) {

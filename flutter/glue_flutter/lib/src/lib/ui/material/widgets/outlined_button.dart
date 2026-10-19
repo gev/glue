@@ -9,12 +9,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir outlinedButton = IrNativeFunc(outlinedButtonImpl);
 
 /// OutlinedButton implementation - takes properties object with keyword arguments
-Eval<Ir> outlinedButtonImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createOutlinedButton(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createOutlinedButton(WidgetProperties.empty()),
-};
+Eval<Ir> outlinedButtonImpl(Ir props) =>
+    _createOutlinedButton(WidgetProperties(props));
 
 /// Create OutlinedButton widget from properties object
 Eval<Ir> _createOutlinedButton(WidgetProperties properties) {

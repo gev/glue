@@ -9,12 +9,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir filledButton = IrNativeFunc(filledButtonImpl);
 
 /// FilledButton implementation - takes properties object with keyword arguments
-Eval<Ir> filledButtonImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createFilledButton(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createFilledButton(WidgetProperties.empty()),
-};
+Eval<Ir> filledButtonImpl(Ir props) =>
+    _createFilledButton(WidgetProperties(props));
 
 /// Create FilledButton widget from properties object
 Eval<Ir> _createFilledButton(WidgetProperties properties) {

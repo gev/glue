@@ -9,12 +9,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir cupertinoPageScaffold = IrNativeFunc(cupertinoPageScaffoldImpl);
 
 /// CupertinoPageScaffold implementation - takes properties object with keyword arguments
-Eval<Ir> cupertinoPageScaffoldImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createCupertinoPageScaffold(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createCupertinoPageScaffold(WidgetProperties.empty()),
-};
+Eval<Ir> cupertinoPageScaffoldImpl(Ir props) =>
+    _createCupertinoPageScaffold(WidgetProperties(props));
 
 /// Create CupertinoPageScaffold widget from properties object
 Eval<Ir> _createCupertinoPageScaffold(WidgetProperties properties) {

@@ -9,12 +9,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir safeArea = IrNativeFunc(safeAreaImpl);
 
 /// SafeArea implementation - takes properties object
-Eval<Ir> safeAreaImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createSafeArea(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> safeAreaImpl(Ir props) => _createSafeArea(WidgetProperties(props));
 
 /// Create SafeArea widget from properties
 Eval<Ir> _createSafeArea(WidgetProperties properties) {

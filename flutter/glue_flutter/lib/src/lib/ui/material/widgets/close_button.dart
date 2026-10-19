@@ -9,12 +9,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir closeButton = IrNativeFunc(closeButtonImpl);
 
 /// CloseButton implementation - takes properties object with keyword arguments
-Eval<Ir> closeButtonImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createCloseButton(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createCloseButton(WidgetProperties.empty()),
-};
+Eval<Ir> closeButtonImpl(Ir props) =>
+    _createCloseButton(WidgetProperties(props));
 
 /// Create CloseButton widget from properties object
 Eval<Ir> _createCloseButton(WidgetProperties properties) {

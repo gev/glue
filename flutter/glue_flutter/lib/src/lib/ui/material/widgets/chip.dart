@@ -9,12 +9,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir chip = IrNativeFunc(chipImpl);
 
 /// Chip implementation - takes properties object
-Eval<Ir> chipImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createChip(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createChip(WidgetProperties.empty()),
-};
+Eval<Ir> chipImpl(Ir props) => _createChip(WidgetProperties(props));
 
 /// Create Chip widget from properties
 Eval<Ir> _createChip(WidgetProperties properties) {

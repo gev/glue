@@ -9,12 +9,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir backButton = IrNativeFunc(backButtonImpl);
 
 /// BackButton implementation - takes properties object with keyword arguments
-Eval<Ir> backButtonImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createBackButton(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createBackButton(WidgetProperties.empty()),
-};
+Eval<Ir> backButtonImpl(Ir props) => _createBackButton(WidgetProperties(props));
 
 /// Create BackButton widget from properties object
 Eval<Ir> _createBackButton(WidgetProperties properties) {

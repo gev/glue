@@ -8,12 +8,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir searchAnchor = IrNativeFunc(searchAnchorImpl);
 
 /// SearchAnchor implementation - takes properties object
-Eval<Ir> searchAnchorImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createSearchAnchor(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createSearchAnchor(WidgetProperties.empty()),
-};
+Eval<Ir> searchAnchorImpl(Ir props) =>
+    _createSearchAnchor(WidgetProperties(props));
 
 /// Create SearchAnchor widget from properties
 Eval<Ir> _createSearchAnchor(WidgetProperties properties) {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/glue_flutter.dart';
@@ -14,12 +13,8 @@ final visualDensityComfortable = IrNativeValue(
 
 final visualDensity = IrNativeFunc(visualDensityImpl);
 
-Eval<Ir> visualDensityImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => createVisualDensity(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> visualDensityImpl(Ir props) =>
+    createVisualDensity(WidgetProperties(props));
 
 Eval<Ir> createVisualDensity(WidgetProperties properties) {
   final density = VisualDensity(

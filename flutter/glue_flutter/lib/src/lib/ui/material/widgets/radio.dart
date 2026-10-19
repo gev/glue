@@ -8,12 +8,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir radio = IrNativeFunc(radioImpl);
 
 /// Radio implementation - takes properties object
-Eval<Ir> radioImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createRadio(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createRadio(WidgetProperties.empty()),
-};
+Eval<Ir> radioImpl(Ir props) => _createRadio(WidgetProperties(props));
 
 /// Create Radio widget from properties
 Eval<Ir> _createRadio(WidgetProperties properties) {

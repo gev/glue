@@ -9,12 +9,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir bottomSheet = IrNativeFunc(bottomSheetImpl);
 
 /// BottomSheet implementation - takes properties object
-Eval<Ir> bottomSheetImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createBottomSheet(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createBottomSheet(WidgetProperties.empty()),
-};
+Eval<Ir> bottomSheetImpl(Ir props) =>
+    _createBottomSheet(WidgetProperties(props));
 
 /// Create BottomSheet widget from properties
 Eval<Ir> _createBottomSheet(WidgetProperties properties) {

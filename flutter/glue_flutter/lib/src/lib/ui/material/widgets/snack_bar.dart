@@ -9,12 +9,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir snackBar = IrNativeFunc(snackBarImpl);
 
 /// SnackBar implementation - takes properties object
-Eval<Ir> snackBarImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createSnackBar(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> snackBarImpl(Ir props) => _createSnackBar(WidgetProperties(props));
 
 /// Create SnackBar widget from properties
 Eval<Ir> _createSnackBar(WidgetProperties properties) {

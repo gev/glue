@@ -8,12 +8,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir floatingActionButton = IrNativeFunc(floatingActionButtonImpl);
 
 /// FloatingActionButton implementation - takes properties object
-Eval<Ir> floatingActionButtonImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createFloatingActionButton(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createFloatingActionButton(WidgetProperties.empty()),
-};
+Eval<Ir> floatingActionButtonImpl(Ir props) =>
+    _createFloatingActionButton(WidgetProperties(props));
 
 /// Create FloatingActionButton widget from properties
 Eval<Ir> _createFloatingActionButton(WidgetProperties properties) {

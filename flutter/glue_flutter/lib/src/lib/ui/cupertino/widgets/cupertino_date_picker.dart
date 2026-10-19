@@ -10,12 +10,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir cupertinoDatePicker = IrNativeFunc(cupertinoDatePickerImpl);
 
 /// CupertinoDatePicker implementation - takes properties object with keyword arguments
-Eval<Ir> cupertinoDatePickerImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createCupertinoDatePicker(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createCupertinoDatePicker(WidgetProperties.empty()),
-};
+Eval<Ir> cupertinoDatePickerImpl(Ir props) =>
+    _createCupertinoDatePicker(WidgetProperties(props));
 
 /// Create CupertinoDatePicker widget from properties object
 Eval<Ir> _createCupertinoDatePicker(WidgetProperties properties) {

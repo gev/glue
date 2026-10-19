@@ -1,17 +1,12 @@
 import 'package:flutter/widgets.dart';
-import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 final Ir borderRoundedRectangle = IrNativeFunc(_roundedRectangleImpl);
 
-Eval<Ir> _roundedRectangleImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createRoundedRectangle(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> _roundedRectangleImpl(Ir props) =>
+    _createRoundedRectangle(WidgetProperties(props));
 
 Eval<Ir> _createRoundedRectangle(WidgetProperties properties) {
   final border = RoundedRectangleBorder(
@@ -25,12 +20,7 @@ Eval<Ir> _createRoundedRectangle(WidgetProperties properties) {
 
 final Ir borderCircle = IrNativeFunc(_circleImpl);
 
-Eval<Ir> _circleImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createCircle(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> _circleImpl(Ir props) => _createCircle(WidgetProperties(props));
 
 Eval<Ir> _createCircle(WidgetProperties properties) {
   final border = CircleBorder(
@@ -41,12 +31,7 @@ Eval<Ir> _createCircle(WidgetProperties properties) {
 
 final Ir borderStadium = IrNativeFunc(_stadiumImpl);
 
-Eval<Ir> _stadiumImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createStadium(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> _stadiumImpl(Ir props) => _createStadium(WidgetProperties(props));
 
 Eval<Ir> _createStadium(WidgetProperties properties) {
   final border = StadiumBorder(
@@ -57,12 +42,8 @@ Eval<Ir> _createStadium(WidgetProperties properties) {
 
 final Ir borderBeveledRectangle = IrNativeFunc(_beveledRectangleImpl);
 
-Eval<Ir> _beveledRectangleImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createBeveledRectangle(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> _beveledRectangleImpl(Ir props) =>
+    _createBeveledRectangle(WidgetProperties(props));
 
 Eval<Ir> _createBeveledRectangle(WidgetProperties properties) {
   final border = BeveledRectangleBorder(

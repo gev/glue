@@ -12,12 +12,8 @@ final Ir cupertinoSegmentedControl = IrNativeFunc(
 );
 
 /// CupertinoSegmentedControl implementation - takes properties object with keyword arguments
-Eval<Ir> cupertinoSegmentedControlImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createCupertinoSegmentedControl(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createCupertinoSegmentedControl(WidgetProperties.empty()),
-};
+Eval<Ir> cupertinoSegmentedControlImpl(Ir props) =>
+    _createCupertinoSegmentedControl(WidgetProperties(props));
 
 /// Create CupertinoSegmentedControl widget from properties object
 Eval<Ir> _createCupertinoSegmentedControl(WidgetProperties properties) {

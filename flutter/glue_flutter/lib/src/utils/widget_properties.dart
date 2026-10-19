@@ -6,9 +6,17 @@ import 'package:glue_flutter/src/utils/value_extractors.dart';
 /// Properties wrapper with lazy getters
 /// Provides clean API for accessing widget properties without pre-computing everything
 class WidgetProperties {
-  final Map<String, Ir> _props;
+  late final Map<String, Ir> _props;
 
-  WidgetProperties(Map<String, Ir> props) : _props = props;
+  WidgetProperties(Ir ir) {
+    switch (ir) {
+      case IrObject(:final properties):
+        _props = properties.unlock;
+      default:
+        _props = {};
+    }
+  }
+
   WidgetProperties.empty() : _props = {};
 
   Ir? get(String key) => _props[key];

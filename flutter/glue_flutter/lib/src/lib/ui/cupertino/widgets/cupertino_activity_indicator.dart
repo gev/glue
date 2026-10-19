@@ -11,12 +11,8 @@ final Ir cupertinoActivityIndicator = IrNativeFunc(
 );
 
 /// CupertinoActivityIndicator implementation - takes properties object with keyword arguments
-Eval<Ir> cupertinoActivityIndicatorImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createCupertinoActivityIndicator(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createCupertinoActivityIndicator(WidgetProperties.empty()),
-};
+Eval<Ir> cupertinoActivityIndicatorImpl(Ir props) =>
+    _createCupertinoActivityIndicator(WidgetProperties(props));
 
 /// Create CupertinoActivityIndicator widget from properties object
 Eval<Ir> _createCupertinoActivityIndicator(WidgetProperties properties) {

@@ -9,12 +9,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir popScope = IrNativeFunc(popScopeImpl);
 
 /// PopScope implementation - takes properties object
-Eval<Ir> popScopeImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createPopScope(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> popScopeImpl(Ir props) => _createPopScope(WidgetProperties(props));
 
 /// Create PopScope widget from properties
 Eval<Ir> _createPopScope(WidgetProperties properties) {

@@ -8,12 +8,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir gridView = IrNativeFunc(gridViewImpl);
 
 /// GridView implementation - takes properties object
-Eval<Ir> gridViewImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createGridView(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createGridView(WidgetProperties.empty()),
-};
+Eval<Ir> gridViewImpl(Ir props) => _createGridView(WidgetProperties(props));
 
 /// Create GridView widget from properties
 Eval<Ir> _createGridView(WidgetProperties properties) {

@@ -9,12 +9,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir textButton = IrNativeFunc(textButtonImpl);
 
 /// TextButton implementation - takes properties object with keyword arguments
-Eval<Ir> textButtonImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createTextButton(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createTextButton(WidgetProperties.empty()),
-};
+Eval<Ir> textButtonImpl(Ir props) => _createTextButton(WidgetProperties(props));
 
 /// Create TextButton widget from properties object
 Eval<Ir> _createTextButton(WidgetProperties properties) {

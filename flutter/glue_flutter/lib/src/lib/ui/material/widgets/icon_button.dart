@@ -8,12 +8,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir iconButton = IrNativeFunc(iconButtonImpl);
 
 /// IconButton implementation - takes properties object
-Eval<Ir> iconButtonImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createIconButton(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createIconButton(WidgetProperties.empty()),
-};
+Eval<Ir> iconButtonImpl(Ir props) => _createIconButton(WidgetProperties(props));
 
 /// Create IconButton widget from properties
 Eval<Ir> _createIconButton(WidgetProperties properties) {

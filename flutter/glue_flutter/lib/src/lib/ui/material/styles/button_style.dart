@@ -6,12 +6,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 /// ButtonStyle binder for Glue
 final Ir buttonStyle = IrNativeFunc(buttonStyleImpl);
 
-Eval<Ir> buttonStyleImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createButtonStyle(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => Eval.pure(IrNativeValue(Value(const ButtonStyle()))),
-};
+Eval<Ir> buttonStyleImpl(Ir props) =>
+    _createButtonStyle(WidgetProperties(props));
 
 Eval<Ir> _createButtonStyle(WidgetProperties properties) {
   return getRuntime().map((runtime) {

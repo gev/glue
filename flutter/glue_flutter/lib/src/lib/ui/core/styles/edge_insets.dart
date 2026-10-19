@@ -22,12 +22,8 @@ Eval<Ir> createEdgeInsetsAll(EdgeInsetsGeometry insets) {
 /// Edge insets directional function - (edge-insetsdirectional (:start 10 :top 5 :end 10 :bottom 5))
 final edgeInsetsDirectional = IrNativeFunc(edgeInsetsDirectionalImpl);
 
-Eval<Ir> edgeInsetsDirectionalImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => createEdgeInsetsDirectional(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> edgeInsetsDirectionalImpl(Ir props) =>
+    createEdgeInsetsDirectional(WidgetProperties(props));
 
 Eval<Ir> createEdgeInsetsDirectional(WidgetProperties properties) {
   final insets = EdgeInsetsDirectional.only(
@@ -42,12 +38,8 @@ Eval<Ir> createEdgeInsetsDirectional(WidgetProperties properties) {
 /// Edge insets only function - (edge-insetsonly (:left 10 :top 5 :right 10 :bottom 5))
 final edgeInsetsOnly = IrNativeFunc(edgeInsetsOnlyImpl);
 
-Eval<Ir> edgeInsetsOnlyImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => createEdgeInsetsOnly(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> edgeInsetsOnlyImpl(Ir props) =>
+    createEdgeInsetsOnly(WidgetProperties(props));
 
 Eval<Ir> createEdgeInsetsOnly(WidgetProperties properties) {
   final insets = EdgeInsets.only(
@@ -62,12 +54,8 @@ Eval<Ir> createEdgeInsetsOnly(WidgetProperties properties) {
 /// Edge insets symmetric function - (edge-insetssymmetric (:vertical 10 :horizontal 5))
 final edgeInsetsSymmetric = IrNativeFunc(edgeInsetsSymmetricImpl);
 
-Eval<Ir> edgeInsetsSymmetricImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => createEdgeInsetsSymmetric(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> edgeInsetsSymmetricImpl(Ir props) =>
+    createEdgeInsetsSymmetric(WidgetProperties(props));
 
 Eval<Ir> createEdgeInsetsSymmetric(WidgetProperties properties) {
   final insets = EdgeInsets.symmetric(

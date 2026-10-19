@@ -9,12 +9,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir checkbox = IrNativeFunc(checkboxImpl);
 
 /// Checkbox implementation - takes properties object
-Eval<Ir> checkboxImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createCheckbox(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createCheckbox(WidgetProperties.empty()),
-};
+Eval<Ir> checkboxImpl(Ir props) => _createCheckbox(WidgetProperties(props));
 
 /// Create Checkbox widget from properties
 Eval<Ir> _createCheckbox(WidgetProperties properties) {

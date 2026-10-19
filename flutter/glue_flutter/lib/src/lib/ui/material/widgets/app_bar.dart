@@ -10,12 +10,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir appBar = IrNativeFunc(appBarImpl);
 
 /// AppBar implementation - takes properties object with keyword arguments
-Eval<Ir> appBarImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createAppBar(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createAppBar(WidgetProperties.empty()),
-};
+Eval<Ir> appBarImpl(Ir props) => _createAppBar(WidgetProperties(props));
 
 /// Create AppBar widget from properties object
 Eval<Ir> _createAppBar(WidgetProperties properties) {

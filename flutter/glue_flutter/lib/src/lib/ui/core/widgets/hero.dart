@@ -9,12 +9,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir hero = IrNativeFunc(heroImpl);
 
 /// Hero implementation - takes properties object
-Eval<Ir> heroImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createHero(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> heroImpl(Ir props) => _createHero(WidgetProperties(props));
 
 /// Create Hero widget from properties
 Eval<Ir> _createHero(WidgetProperties properties) {

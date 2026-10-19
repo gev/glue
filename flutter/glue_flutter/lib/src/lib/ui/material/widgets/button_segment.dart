@@ -8,12 +8,8 @@ import 'package:glue_flutter/glue_flutter.dart';
 final Ir buttonSegment = IrNativeFunc(buttonSegmentImpl);
 
 /// ButtonSegment implementation - takes properties object
-Eval<Ir> buttonSegmentImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createButtonSegment(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createButtonSegment(WidgetProperties.empty()),
-};
+Eval<Ir> buttonSegmentImpl(Ir props) =>
+    _createButtonSegment(WidgetProperties(props));
 
 /// Create ButtonSegment from properties
 Eval<Ir> _createButtonSegment(WidgetProperties properties) {

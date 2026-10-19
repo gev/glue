@@ -9,12 +9,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir cupertinoNavigationBar = IrNativeFunc(cupertinoNavigationBarImpl);
 
 /// CupertinoNavigationBar implementation - takes properties object with keyword arguments
-Eval<Ir> cupertinoNavigationBarImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createCupertinoNavigationBar(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createCupertinoNavigationBar(WidgetProperties.empty()),
-};
+Eval<Ir> cupertinoNavigationBarImpl(Ir props) =>
+    _createCupertinoNavigationBar(WidgetProperties(props));
 
 /// Create CupertinoNavigationBar widget from properties object
 Eval<Ir> _createCupertinoNavigationBar(WidgetProperties properties) {

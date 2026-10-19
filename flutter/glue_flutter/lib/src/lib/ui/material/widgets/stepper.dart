@@ -8,12 +8,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir stepper = IrNativeFunc(stepperImpl);
 
 /// Stepper implementation - takes properties object
-Eval<Ir> stepperImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createStepper(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createStepper(WidgetProperties.empty()),
-};
+Eval<Ir> stepperImpl(Ir props) => _createStepper(WidgetProperties(props));
 
 /// Create Stepper widget from properties
 Eval<Ir> _createStepper(WidgetProperties properties) {

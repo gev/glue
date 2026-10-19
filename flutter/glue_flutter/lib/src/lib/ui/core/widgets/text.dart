@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
@@ -8,12 +7,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 /// Creates Flutter Text widget from Glue (text :text "text" ...) expressions
 final Ir text = IrNativeFunc(textImpl);
 
-Eval<Ir> textImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createText(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> textImpl(Ir props) => _createText(WidgetProperties(props));
 
 /// Create Text widget from properties
 Eval<Ir> _createText(WidgetProperties properties) {

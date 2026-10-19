@@ -9,12 +9,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir tabBarView = IrNativeFunc(tabBarViewImpl);
 
 /// TabBarView implementation - takes properties object
-Eval<Ir> tabBarViewImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createTabBarView(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createTabBarView(WidgetProperties.empty()),
-};
+Eval<Ir> tabBarViewImpl(Ir props) => _createTabBarView(WidgetProperties(props));
 
 /// Create TabBarView widget from properties
 Eval<Ir> _createTabBarView(WidgetProperties properties) {

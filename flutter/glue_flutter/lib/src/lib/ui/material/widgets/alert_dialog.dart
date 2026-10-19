@@ -8,12 +8,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir alertDialog = IrNativeFunc(alertDialogImpl);
 
 /// AlertDialog implementation - takes properties object
-Eval<Ir> alertDialogImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createAlertDialog(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createAlertDialog(WidgetProperties.empty()),
-};
+Eval<Ir> alertDialogImpl(Ir props) =>
+    _createAlertDialog(WidgetProperties(props));
 
 /// Create AlertDialog widget from properties
 Eval<Ir> _createAlertDialog(WidgetProperties properties) {

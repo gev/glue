@@ -10,12 +10,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir cupertinoPicker = IrNativeFunc(cupertinoPickerImpl);
 
 /// CupertinoPicker implementation - takes properties object with keyword arguments
-Eval<Ir> cupertinoPickerImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createCupertinoPicker(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createCupertinoPicker(WidgetProperties.empty()),
-};
+Eval<Ir> cupertinoPickerImpl(Ir props) =>
+    _createCupertinoPicker(WidgetProperties(props));
 
 /// Create CupertinoPicker widget from properties object
 Eval<Ir> _createCupertinoPicker(WidgetProperties properties) {

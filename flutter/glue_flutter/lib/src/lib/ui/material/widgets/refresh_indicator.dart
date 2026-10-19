@@ -9,12 +9,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir refreshIndicator = IrNativeFunc(refreshIndicatorImpl);
 
 /// RefreshIndicator implementation - takes properties object
-Eval<Ir> refreshIndicatorImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createRefreshIndicator(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createRefreshIndicator(WidgetProperties.empty()),
-};
+Eval<Ir> refreshIndicatorImpl(Ir props) =>
+    _createRefreshIndicator(WidgetProperties(props));
 
 /// Create RefreshIndicator widget from properties
 Eval<Ir> _createRefreshIndicator(WidgetProperties properties) {

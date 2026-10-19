@@ -8,12 +8,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir inputChip = IrNativeFunc(inputChipImpl);
 
 /// InputChip implementation - takes properties object
-Eval<Ir> inputChipImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createInputChip(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createInputChip(WidgetProperties.empty()),
-};
+Eval<Ir> inputChipImpl(Ir props) => _createInputChip(WidgetProperties(props));
 
 /// Create InputChip widget from properties
 Eval<Ir> _createInputChip(WidgetProperties properties) {

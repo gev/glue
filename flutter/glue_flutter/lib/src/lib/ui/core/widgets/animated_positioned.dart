@@ -8,12 +8,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir animatedPositioned = IrNativeFunc(animatedPositionedImpl);
 
 /// AnimatedPositioned implementation - takes properties object directly (just like card)
-Eval<Ir> animatedPositionedImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createAnimatedPositioned(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> animatedPositionedImpl(Ir props) =>
+    _createAnimatedPositioned(WidgetProperties(props));
 
 /// Create Positioned widget from properties
 Eval<Ir> _createAnimatedPositioned(WidgetProperties properties) {

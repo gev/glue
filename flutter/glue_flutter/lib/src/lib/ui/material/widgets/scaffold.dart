@@ -1,6 +1,5 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
@@ -10,12 +9,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir scaffold = IrNativeFunc(scaffoldImpl);
 
 /// Scaffold implementation - takes properties object
-Eval<Ir> scaffoldImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createScaffold(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> scaffoldImpl(Ir props) => _createScaffold(WidgetProperties(props));
 
 /// Create Scaffold widget from properties
 Eval<Ir> _createScaffold(WidgetProperties properties) {

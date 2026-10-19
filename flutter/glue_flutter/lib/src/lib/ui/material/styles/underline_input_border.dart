@@ -8,12 +8,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir underlineInputBorder = IrNativeFunc(underlineInputBorderImpl);
 
 /// UnderlineInputBorder implementation - takes properties object
-Eval<Ir> underlineInputBorderImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createUnderlineInputBorder(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createUnderlineInputBorder(WidgetProperties.empty()),
-};
+Eval<Ir> underlineInputBorderImpl(Ir props) =>
+    _createUnderlineInputBorder(WidgetProperties(props));
 
 /// Create UnderlineInputBorder from properties
 Eval<Ir> _createUnderlineInputBorder(WidgetProperties properties) {

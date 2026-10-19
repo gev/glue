@@ -10,12 +10,8 @@ final Ir circularProgressIndicator = IrNativeFunc(
 );
 
 /// CircularProgressIndicator implementation - takes properties object
-Eval<Ir> circularProgressIndicatorImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createCircularProgressIndicator(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createCircularProgressIndicator(WidgetProperties.empty()),
-};
+Eval<Ir> circularProgressIndicatorImpl(Ir props) =>
+    _createCircularProgressIndicator(WidgetProperties(props));
 
 /// Create CircularProgressIndicator widget from properties
 Eval<Ir> _createCircularProgressIndicator(WidgetProperties properties) {

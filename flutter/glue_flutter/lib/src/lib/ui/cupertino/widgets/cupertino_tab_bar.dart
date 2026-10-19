@@ -9,12 +9,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir cupertinoTabBar = IrNativeFunc(cupertinoTabBarImpl);
 
 /// CupertinoTabBar implementation - takes properties object with keyword arguments
-Eval<Ir> cupertinoTabBarImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createCupertinoTabBar(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createCupertinoTabBar(WidgetProperties.empty()),
-};
+Eval<Ir> cupertinoTabBarImpl(Ir props) =>
+    _createCupertinoTabBar(WidgetProperties(props));
 
 /// Create CupertinoTabBar widget from properties object
 Eval<Ir> _createCupertinoTabBar(WidgetProperties properties) {

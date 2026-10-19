@@ -3,7 +3,6 @@ import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/glue_flutter.dart';
-import 'package:glue_flutter/src/utils/value_extractors.dart';
 
 final borderRadiusZero = IrNativeValue(Value(BorderRadius.zero));
 
@@ -37,12 +36,8 @@ Eval<Ir> createBorderRadiusCircular(BorderRadiusGeometry radius) {
 
 final borderRadiusDirectional = IrNativeFunc(borderRadiusVerticalImpl);
 
-Eval<Ir> borderRadiusDirectionalImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => createBorderRadiusVertical(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> borderRadiusDirectionalImpl(Ir props) =>
+    createBorderRadiusVertical(WidgetProperties(props));
 
 Eval<Ir> createBorderRadiusDirectional(WidgetProperties properties) {
   final radius = BorderRadiusDirectional.only(
@@ -56,12 +51,8 @@ Eval<Ir> createBorderRadiusDirectional(WidgetProperties properties) {
 
 final borderRadiusHorizontal = IrNativeFunc(borderRadiusVerticalImpl);
 
-Eval<Ir> borderRadiusHorizontalImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => createBorderRadiusVertical(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> borderRadiusHorizontalImpl(Ir props) =>
+    createBorderRadiusVertical(WidgetProperties(props));
 
 Eval<Ir> createBorderRadiusHorizontal(WidgetProperties properties) {
   final radius = BorderRadius.horizontal(
@@ -75,12 +66,8 @@ final borderRadiusDirectionalHorizontal = IrNativeFunc(
   borderRadiusVerticalImpl,
 );
 
-Eval<Ir> borderRadiusDirectionalHorizontalImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => createBorderRadiusVertical(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> borderRadiusDirectionalHorizontalImpl(Ir props) =>
+    createBorderRadiusVertical(WidgetProperties(props));
 
 Eval<Ir> createBorderRadiusDirectionalHorizontal(WidgetProperties properties) {
   final radius = BorderRadiusDirectional.horizontal(
@@ -92,12 +79,8 @@ Eval<Ir> createBorderRadiusDirectionalHorizontal(WidgetProperties properties) {
 
 final borderRadiusVertical = IrNativeFunc(borderRadiusVerticalImpl);
 
-Eval<Ir> borderRadiusVerticalImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => createBorderRadiusVertical(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> borderRadiusVerticalImpl(Ir props) =>
+    createBorderRadiusVertical(WidgetProperties(props));
 
 Eval<Ir> createBorderRadiusVertical(WidgetProperties properties) {
   final radius = BorderRadiusDirectional.vertical(
@@ -109,12 +92,8 @@ Eval<Ir> createBorderRadiusVertical(WidgetProperties properties) {
 
 final borderRadiusOnly = IrNativeFunc(borderRadiusOnlyImpl);
 
-Eval<Ir> borderRadiusOnlyImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => createBorderRadiusOnly(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> borderRadiusOnlyImpl(Ir props) =>
+    createBorderRadiusOnly(WidgetProperties(props));
 
 Eval<Ir> createBorderRadiusOnly(WidgetProperties properties) {
   final radius = BorderRadius.only(

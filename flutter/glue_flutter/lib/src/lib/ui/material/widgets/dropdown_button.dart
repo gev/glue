@@ -8,12 +8,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir dropdownButton = IrNativeFunc(dropdownButtonImpl);
 
 /// DropdownButton implementation - takes properties object
-Eval<Ir> dropdownButtonImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createDropdownButton(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createDropdownButton(WidgetProperties.empty()),
-};
+Eval<Ir> dropdownButtonImpl(Ir props) =>
+    _createDropdownButton(WidgetProperties(props));
 
 /// Create DropdownButton widget from properties
 Eval<Ir> _createDropdownButton(WidgetProperties properties) {

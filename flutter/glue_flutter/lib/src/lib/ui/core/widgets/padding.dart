@@ -8,12 +8,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir padding = IrNativeFunc(paddingImpl);
 
 /// Padding implementation - takes properties object directly (just like card)
-Eval<Ir> paddingImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createPadding(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> paddingImpl(Ir props) => _createPadding(WidgetProperties(props));
 
 /// Create Padding widget from properties
 Eval<Ir> _createPadding(WidgetProperties properties) {

@@ -8,12 +8,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir expansionTile = IrNativeFunc(expansionTileImpl);
 
 /// ExpansionTile implementation - takes properties object
-Eval<Ir> expansionTileImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createExpansionTile(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createExpansionTile(WidgetProperties.empty()),
-};
+Eval<Ir> expansionTileImpl(Ir props) =>
+    _createExpansionTile(WidgetProperties(props));
 
 /// Create ExpansionTile widget from properties
 Eval<Ir> _createExpansionTile(WidgetProperties properties) {

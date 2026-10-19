@@ -9,12 +9,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir expanded = IrNativeFunc(expandedImpl);
 
 /// Expanded implementation - takes properties object
-Eval<Ir> expandedImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createExpanded(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> expandedImpl(Ir props) => _createExpanded(WidgetProperties(props));
 
 /// Create Expanded widget from properties
 Eval<Ir> _createExpanded(WidgetProperties properties) {

@@ -7,18 +7,13 @@ import 'package:glue_flutter/glue_flutter.dart';
 
 final Ir showBottomSheet_ = IrNativeFunc(showBottomSheetImpl);
 
-Eval<Ir> showBottomSheetImpl(Ir ir) {
+Eval<Ir> showBottomSheetImpl(Ir props) {
   return getRuntime().bind((runtime) {
-    switch (ir) {
-      case IrObject(:final properties):
-        final context = getFromContext<BuildContext>(runtime.context);
-        if (context != null) {
-          return _showBottomSheet(context, WidgetProperties(properties.unlock));
-        }
-        return Eval.pure(IrVoid());
-      default:
-        return throwError(wrongArgumentType(['Object parameter required']));
+    final context = getFromContext<BuildContext>(runtime.context);
+    if (context != null) {
+      return _showBottomSheet(context, WidgetProperties(props));
     }
+    return Eval.pure(IrVoid());
   });
 }
 

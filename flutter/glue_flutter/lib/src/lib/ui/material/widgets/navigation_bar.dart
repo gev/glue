@@ -8,12 +8,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir navigationBar = IrNativeFunc(navigationBarImpl);
 
 /// NavigationBar implementation - takes properties object
-Eval<Ir> navigationBarImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createNavigationBar(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createNavigationBar(WidgetProperties.empty()),
-};
+Eval<Ir> navigationBarImpl(Ir props) =>
+    _createNavigationBar(WidgetProperties(props));
 
 /// Create NavigationBar widget from properties
 Eval<Ir> _createNavigationBar(WidgetProperties properties) {

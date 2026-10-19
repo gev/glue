@@ -8,12 +8,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir listView = IrNativeFunc(listViewImpl);
 
 /// ListView implementation - takes properties object
-Eval<Ir> listViewImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createListView(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createListView(WidgetProperties.empty()),
-};
+Eval<Ir> listViewImpl(Ir props) => _createListView(WidgetProperties(props));
 
 /// Create ListView widget from properties
 Eval<Ir> _createListView(WidgetProperties properties) {

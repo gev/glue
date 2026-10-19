@@ -8,12 +8,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir linearProgressIndicator = IrNativeFunc(linearProgressIndicatorImpl);
 
 /// LinearProgressIndicator implementation - takes properties object
-Eval<Ir> linearProgressIndicatorImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createLinearProgressIndicator(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createLinearProgressIndicator(WidgetProperties.empty()),
-};
+Eval<Ir> linearProgressIndicatorImpl(Ir props) =>
+    _createLinearProgressIndicator(WidgetProperties(props));
 
 /// Create LinearProgressIndicator widget from properties
 Eval<Ir> _createLinearProgressIndicator(WidgetProperties properties) {

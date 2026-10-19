@@ -1,7 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
@@ -11,12 +10,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir pageView = IrNativeFunc(pageViewImpl);
 
 /// PageView implementation - takes properties object
-Eval<Ir> pageViewImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createPageView(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> pageViewImpl(Ir props) => _createPageView(WidgetProperties(props));
 
 /// Create PageView widget from properties
 Eval<Ir> _createPageView(WidgetProperties properties) {

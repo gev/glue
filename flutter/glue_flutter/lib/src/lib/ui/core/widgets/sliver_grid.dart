@@ -9,12 +9,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir sliverGrid = IrNativeFunc(sliverGridImpl);
 
 /// SliverGrid implementation - takes properties object
-Eval<Ir> sliverGridImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createSliverGrid(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createSliverGrid(WidgetProperties.empty()),
-};
+Eval<Ir> sliverGridImpl(Ir props) => _createSliverGrid(WidgetProperties(props));
 
 /// Create SliverGrid widget from properties
 Eval<Ir> _createSliverGrid(WidgetProperties properties) {

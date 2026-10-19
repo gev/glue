@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
@@ -9,12 +8,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir fittedBox = IrNativeFunc(fittedBoxImpl);
 
 /// FittedBox implementation - takes properties object
-Eval<Ir> fittedBoxImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createFittedBox(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> fittedBoxImpl(Ir props) => _createFittedBox(WidgetProperties(props));
 
 /// Create FittedBox widget from properties
 Eval<Ir> _createFittedBox(WidgetProperties properties) {

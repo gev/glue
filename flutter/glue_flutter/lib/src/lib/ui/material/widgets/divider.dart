@@ -8,12 +8,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir divider = IrNativeFunc(dividerImpl);
 
 /// Divider implementation - takes properties object
-Eval<Ir> dividerImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createDivider(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createDivider(WidgetProperties.empty()),
-};
+Eval<Ir> dividerImpl(Ir props) => _createDivider(WidgetProperties(props));
 
 /// Create Divider widget from properties
 Eval<Ir> _createDivider(WidgetProperties properties) {

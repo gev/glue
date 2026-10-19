@@ -9,12 +9,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir button = IrNativeFunc(buttonImpl);
 
 /// Button implementation - takes properties object with keyword arguments
-Eval<Ir> buttonImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createButton(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createButton(WidgetProperties.empty()),
-};
+Eval<Ir> buttonImpl(Ir props) => _createButton(WidgetProperties(props));
 
 /// Create Button widget from properties object
 Eval<Ir> _createButton(WidgetProperties properties) {

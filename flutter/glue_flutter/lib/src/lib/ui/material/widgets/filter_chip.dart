@@ -8,12 +8,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir filterChip = IrNativeFunc(filterChipImpl);
 
 /// FilterChip implementation - takes properties object
-Eval<Ir> filterChipImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createFilterChip(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createFilterChip(WidgetProperties.empty()),
-};
+Eval<Ir> filterChipImpl(Ir props) => _createFilterChip(WidgetProperties(props));
 
 /// Create FilterChip widget from properties
 Eval<Ir> _createFilterChip(WidgetProperties properties) {

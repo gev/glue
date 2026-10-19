@@ -8,12 +8,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir dataTable = IrNativeFunc(dataTableImpl);
 
 /// DataTable implementation - takes properties object
-Eval<Ir> dataTableImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createDataTable(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createDataTable(WidgetProperties.empty()),
-};
+Eval<Ir> dataTableImpl(Ir props) => _createDataTable(WidgetProperties(props));
 
 /// Create DataTable widget from properties
 Eval<Ir> _createDataTable(WidgetProperties properties) {

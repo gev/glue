@@ -9,12 +9,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir switchWidget = IrNativeFunc(switchImpl);
 
 /// Switch implementation - takes properties object
-Eval<Ir> switchImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createSwitch(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createSwitch(WidgetProperties.empty()),
-};
+Eval<Ir> switchImpl(Ir props) => _createSwitch(WidgetProperties(props));
 
 /// Create Switch widget from properties
 Eval<Ir> _createSwitch(WidgetProperties properties) {

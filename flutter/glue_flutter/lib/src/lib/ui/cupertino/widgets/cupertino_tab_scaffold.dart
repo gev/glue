@@ -10,12 +10,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir cupertinoTabScaffold = IrNativeFunc(cupertinoTabScaffoldImpl);
 
 /// CupertinoTabScaffold implementation - takes properties object with keyword arguments
-Eval<Ir> cupertinoTabScaffoldImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createCupertinoTabScaffold(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createCupertinoTabScaffold(WidgetProperties.empty()),
-};
+Eval<Ir> cupertinoTabScaffoldImpl(Ir props) =>
+    _createCupertinoTabScaffold(WidgetProperties(props));
 
 /// Create CupertinoTabScaffold widget from properties object
 Eval<Ir> _createCupertinoTabScaffold(WidgetProperties properties) {

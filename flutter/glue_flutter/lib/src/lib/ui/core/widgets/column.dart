@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
@@ -9,12 +8,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir column = IrNativeFunc(columnImpl);
 
 /// Column implementation - takes properties object
-Eval<Ir> columnImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createColumn(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> columnImpl(Ir props) => _createColumn(WidgetProperties(props));
 
 /// Create Column widget from properties
 Eval<Ir> _createColumn(WidgetProperties properties) {

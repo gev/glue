@@ -8,12 +8,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir positioned = IrNativeFunc(positionedImpl);
 
 /// Positioned implementation - takes properties object directly (just like card)
-Eval<Ir> positionedImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createPositioned(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> positionedImpl(Ir props) => _createPositioned(WidgetProperties(props));
 
 /// Create Positioned widget from properties
 Eval<Ir> _createPositioned(WidgetProperties properties) {

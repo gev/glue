@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
@@ -12,13 +11,7 @@ final Ir outlinedCard = IrNativeFunc(cardImpl(Card.outlined));
 
 /// Card implementation - takes properties object
 Eval<Ir> Function(Ir props) cardImpl(dynamic card) =>
-    (Ir props) => switch (props) {
-      IrObject(:final properties) => _createCard(
-        card,
-        WidgetProperties(properties.unlock),
-      ),
-      _ => throwError(wrongArgumentType(['object'])),
-    };
+    (Ir props) => _createCard(card, WidgetProperties(props));
 
 /// Create Card widget from properties
 Eval<Ir> _createCard(dynamic card, WidgetProperties properties) {

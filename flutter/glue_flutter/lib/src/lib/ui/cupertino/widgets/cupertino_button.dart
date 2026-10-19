@@ -9,12 +9,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir cupertinoButton = IrNativeFunc(cupertinoButtonImpl);
 
 /// CupertinoButton implementation - takes properties object with keyword arguments
-Eval<Ir> cupertinoButtonImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createCupertinoButton(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createCupertinoButton(WidgetProperties.empty()),
-};
+Eval<Ir> cupertinoButtonImpl(Ir props) =>
+    _createCupertinoButton(WidgetProperties(props));
 
 /// Create CupertinoButton widget from properties object
 Eval<Ir> _createCupertinoButton(WidgetProperties properties) {

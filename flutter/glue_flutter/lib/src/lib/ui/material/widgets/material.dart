@@ -9,12 +9,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir material = IrNativeFunc(materialImpl);
 
 /// Material implementation - takes properties object
-Eval<Ir> materialImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createMaterial(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> materialImpl(Ir props) => _createMaterial(WidgetProperties(props));
 
 /// Create Material widget from properties
 Eval<Ir> _createMaterial(WidgetProperties properties) {

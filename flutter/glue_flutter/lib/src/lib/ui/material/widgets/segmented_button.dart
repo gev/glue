@@ -10,12 +10,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir segmentedButton = IrNativeFunc(segmentedButtonImpl);
 
 /// SegmentedButton implementation - takes properties object
-Eval<Ir> segmentedButtonImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createSegmentedButton(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createSegmentedButton(WidgetProperties.empty()),
-};
+Eval<Ir> segmentedButtonImpl(Ir props) =>
+    _createSegmentedButton(WidgetProperties(props));
 
 /// Create SegmentedButton widget from properties
 Eval<Ir> _createSegmentedButton(WidgetProperties properties) {

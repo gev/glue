@@ -8,12 +8,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir outlineInputBorder = IrNativeFunc(outlineInputBorderImpl);
 
 /// OutlineInputBorder implementation - takes properties object
-Eval<Ir> outlineInputBorderImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createOutlineInputBorder(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createOutlineInputBorder(WidgetProperties.empty()),
-};
+Eval<Ir> outlineInputBorderImpl(Ir props) =>
+    _createOutlineInputBorder(WidgetProperties(props));
 
 /// Create OutlineInputBorder from properties
 Eval<Ir> _createOutlineInputBorder(WidgetProperties properties) {

@@ -8,12 +8,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir tooltip = IrNativeFunc(tooltipImpl);
 
 /// Tooltip implementation - takes properties object
-Eval<Ir> tooltipImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createTooltip(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createTooltip(WidgetProperties.empty()),
-};
+Eval<Ir> tooltipImpl(Ir props) => _createTooltip(WidgetProperties(props));
 
 /// Create Tooltip widget from properties
 Eval<Ir> _createTooltip(WidgetProperties properties) {

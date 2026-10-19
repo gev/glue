@@ -5,12 +5,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 
 final Ir inkWell = IrNativeFunc(inkWellImpl);
 
-Eval<Ir> inkWellImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createInkWell(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createInkWell(WidgetProperties.empty()),
-};
+Eval<Ir> inkWellImpl(Ir props) => _createInkWell(WidgetProperties(props));
 
 Eval<Ir> _createInkWell(WidgetProperties properties) {
   return getRuntime().map((runtime) {

@@ -9,12 +9,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir timePickerDialog = IrNativeFunc(timePickerDialogImpl);
 
 /// TimePickerDialog implementation - takes properties object
-Eval<Ir> timePickerDialogImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createTimePickerDialog(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createTimePickerDialog(WidgetProperties.empty()),
-};
+Eval<Ir> timePickerDialogImpl(Ir props) =>
+    _createTimePickerDialog(WidgetProperties(props));
 
 /// Create TimePickerDialog widget from properties
 Eval<Ir> _createTimePickerDialog(WidgetProperties properties) {

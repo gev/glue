@@ -9,12 +9,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir sliverList = IrNativeFunc(sliverListImpl);
 
 /// SliverList implementation - takes properties object
-Eval<Ir> sliverListImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createSliverList(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createSliverList(WidgetProperties.empty()),
-};
+Eval<Ir> sliverListImpl(Ir props) => _createSliverList(WidgetProperties(props));
 
 /// Create SliverList widget from properties
 Eval<Ir> _createSliverList(WidgetProperties properties) {

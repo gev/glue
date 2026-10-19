@@ -9,12 +9,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir actionChip = IrNativeFunc(actionChipImpl);
 
 /// ActionChip implementation - takes properties object
-Eval<Ir> actionChipImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createActionChip(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createActionChip(WidgetProperties.empty()),
-};
+Eval<Ir> actionChipImpl(Ir props) => _createActionChip(WidgetProperties(props));
 
 /// Create ActionChip widget from properties
 Eval<Ir> _createActionChip(WidgetProperties properties) {

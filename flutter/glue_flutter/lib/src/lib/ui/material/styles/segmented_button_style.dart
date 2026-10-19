@@ -6,12 +6,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 /// SegmentedButtonStyle binder for Glue using official styleFrom
 final Ir segmentedButtonStyle = IrNativeFunc(segmentedButtonStyleImpl);
 
-Eval<Ir> segmentedButtonStyleImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createSegmentedButtonStyle(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => Eval.pure(IrNativeValue(Value(const ButtonStyle()))),
-};
+Eval<Ir> segmentedButtonStyleImpl(Ir props) =>
+    _createSegmentedButtonStyle(WidgetProperties(props));
 
 Eval<Ir> _createSegmentedButtonStyle(WidgetProperties properties) {
   return getRuntime().map((runtime) {

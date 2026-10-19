@@ -8,12 +8,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir drawer = IrNativeFunc(drawerImpl);
 
 /// Drawer implementation - takes properties object
-Eval<Ir> drawerImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createDrawer(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createDrawer(WidgetProperties.empty()),
-};
+Eval<Ir> drawerImpl(Ir props) => _createDrawer(WidgetProperties(props));
 
 /// Create Drawer widget from properties
 Eval<Ir> _createDrawer(WidgetProperties properties) {

@@ -8,12 +8,8 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir navigationDrawer = IrNativeFunc(navigationDrawerImpl);
 
 /// NavigationDrawer implementation - takes properties object
-Eval<Ir> navigationDrawerImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createNavigationDrawer(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createNavigationDrawer(WidgetProperties.empty()),
-};
+Eval<Ir> navigationDrawerImpl(Ir props) =>
+    _createNavigationDrawer(WidgetProperties(props));
 
 /// Create NavigationDrawer widget from properties
 Eval<Ir> _createNavigationDrawer(WidgetProperties properties) {

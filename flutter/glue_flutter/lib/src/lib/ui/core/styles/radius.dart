@@ -20,12 +20,8 @@ Eval<Ir> createRadiusCircular(Radius radius) =>
 
 final radiusElliptical = IrNativeFunc(radiusEllipticalImpl);
 
-Eval<Ir> radiusEllipticalImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => createRadiusElliptical(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => throwError(wrongArgumentType(['object'])),
-};
+Eval<Ir> radiusEllipticalImpl(Ir props) =>
+    createRadiusElliptical(WidgetProperties(props));
 
 Eval<Ir> createRadiusElliptical(WidgetProperties properties) {
   final radius = Radius.elliptical(

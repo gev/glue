@@ -8,12 +8,7 @@ import 'package:glue_flutter/src/utils/widget_properties.dart';
 final Ir slider = IrNativeFunc(sliderImpl);
 
 /// Slider implementation - takes properties object
-Eval<Ir> sliderImpl(Ir props) => switch (props) {
-  IrObject(:final properties) => _createSlider(
-    WidgetProperties(properties.unlock),
-  ),
-  _ => _createSlider(WidgetProperties.empty()),
-};
+Eval<Ir> sliderImpl(Ir props) => _createSlider(WidgetProperties(props));
 
 /// Create Slider widget from properties
 Eval<Ir> _createSlider(WidgetProperties properties) {
