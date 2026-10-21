@@ -23,6 +23,18 @@ Eval<Ir> Function(Ir) concatWith(Ir ir1) {
     (IrString(value: final v1), IrString(value: final v2)) => Eval.pure(
       IrString(v1 + v2),
     ),
+    (IrString(value: final v1), IrInteger(value: final v2)) => Eval.pure(
+      IrString(v1 + v2.toString()),
+    ),
+    (IrString(value: final v1), IrFloat(value: final v2)) => Eval.pure(
+      IrString(v1 + v2.toString()),
+    ),
+    (IrInteger(value: final v1), IrString(value: final v2)) => Eval.pure(
+      IrString(v1.toString() + v2),
+    ),
+    (IrFloat(value: final v1), IrString(value: final v2)) => Eval.pure(
+      IrString(v1.toString() + v2),
+    ),
     (IrList(elements: final e1), IrList(elements: final e2)) => Eval.pure(
       IrList([...e1, ...e2]),
     ),
