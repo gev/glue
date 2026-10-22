@@ -15,7 +15,7 @@ Eval<Ir> takeImpl(Ir countIr) {
 /// Helper function for list argument
 /// Mirrors Haskell Glue.Lib.List.Take.takeFrom exactly
 Eval<Ir> Function(Ir) takeFrom(Ir count) {
-  return (Ir list) => switch ((count, list)) {
+  return (Ir ir) => switch ((count, ir)) {
     (_, IrVoid()) => Eval.pure(IrVoid()),
     (IrInteger(value: final n), IrList(elements: final elements)) =>
       n < 0
@@ -26,6 +26,12 @@ Eval<Ir> Function(Ir) takeFrom(Ir count) {
                     ? elements.toList()
                     : elements.take(n).toList(),
               ),
+            ),
+    (IrInteger(value: final n), IrString(:final value)) =>
+      n < 0
+          ? throwError(wrongArgumentType(['non-negative integer']))
+          : Eval.pure(
+              IrString(n >= value.length ? value : value.substring(0, n)),
             ),
     _ => throwError(wrongArgumentType(['number', 'list'])),
   };
