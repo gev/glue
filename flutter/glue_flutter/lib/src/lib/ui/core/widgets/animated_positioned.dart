@@ -11,7 +11,7 @@ final Ir animatedPositioned = IrNativeFunc(animatedPositionedImpl);
 Eval<Ir> animatedPositionedImpl(Ir props) =>
     _createAnimatedPositioned(WidgetProperties(props));
 
-/// Create Positioned widget from properties
+/// Create AnimatedPositioned widget from properties
 Eval<Ir> _createAnimatedPositioned(WidgetProperties properties) {
   final child = properties.child;
   if (child == null) {
@@ -22,7 +22,7 @@ Eval<Ir> _createAnimatedPositioned(WidgetProperties properties) {
     return throwError(wrongArgumentType(['`duration` property required']));
   }
 
-  final positionedWidget = AnimatedPositioned(
+  final widget = AnimatedPositioned(
     key: properties.key,
     left: properties.left,
     right: properties.right,
@@ -32,5 +32,5 @@ Eval<Ir> _createAnimatedPositioned(WidgetProperties properties) {
     curve: properties.getValue<Curve>('curve') ?? Curves.linear,
     child: child,
   );
-  return Eval.pure(IrNativeValue(Value(positionedWidget)));
+  return Eval.pure(IrNativeValue(Value(widget)));
 }
