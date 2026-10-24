@@ -11,7 +11,7 @@ final Ir animatedPositioned = IrNativeFunc(animatedPositionedImpl);
 Eval<Ir> animatedPositionedImpl(Ir props) =>
     _createAnimatedPositioned(WidgetProperties(props));
 
-/// Create Positioned widget from properties
+/// Create Size widget from properties
 Eval<Ir> _createAnimatedPositioned(WidgetProperties properties) {
   final child = properties.child;
   if (child == null) {
