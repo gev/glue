@@ -4,15 +4,15 @@ import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
 
-/// AnimatedPositioned widget function
-final Ir animatedPositioned = IrNativeFunc(animatedPositionedImpl);
+/// AnimatedSize widget function
+final Ir animatedSize = IrNativeFunc(animatedSizeImpl);
 
-/// AnimatedPositioned implementation - takes properties object directly (just like card)
-Eval<Ir> animatedPositionedImpl(Ir props) =>
-    _createAnimatedPositioned(WidgetProperties(props));
+/// AnimatedSize implementation - takes properties object directly (just like card)
+Eval<Ir> animatedSizeImpl(Ir props) =>
+    _createAnimatedSize(WidgetProperties(props));
 
-/// Create Size widget from properties
-Eval<Ir> _createAnimatedPositioned(WidgetProperties properties) {
+/// Create AnimatedSize widget from properties
+Eval<Ir> _createAnimatedSize(WidgetProperties properties) {
   final child = properties.child;
   if (child == null) {
     return throwError(wrongArgumentType(['`child` property required']));
@@ -22,7 +22,7 @@ Eval<Ir> _createAnimatedPositioned(WidgetProperties properties) {
     return throwError(wrongArgumentType(['`duration` property required']));
   }
 
-  final positionedWidget = AnimatedSize(
+  final widget = AnimatedSize(
     key: properties.key,
     duration: duration,
     alignment:
@@ -32,5 +32,5 @@ Eval<Ir> _createAnimatedPositioned(WidgetProperties properties) {
     clipBehavior: properties.getValue<Clip>('clip-behavior') ?? Clip.hardEdge,
     child: child,
   );
-  return Eval.pure(IrNativeValue(Value(positionedWidget)));
+  return Eval.pure(IrNativeValue(Value(widget)));
 }
