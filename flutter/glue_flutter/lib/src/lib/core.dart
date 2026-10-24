@@ -48,6 +48,7 @@ import 'package:glue_flutter/src/lib/ui/core/styles/wrap_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/wrap_cros_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/align.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/animated_positioned.dart';
+import 'package:glue_flutter/src/lib/ui/core/widgets/animated_size.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/aspect_ratio.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/backdrop_filter.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/center.dart';
@@ -86,6 +87,7 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   // Core widget functions
   ('align', align),
   ('animated-positioned', animatedPositioned),
+  ('animated-size', animatedSize),
   ('aspect-ratio', aspectRatio),
   ('center', center),
   ('clip-rrect', clipRRect),
