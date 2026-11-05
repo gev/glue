@@ -538,8 +538,8 @@ void main() {
       );
     });
 
-    test('let creates local bindings', () {
-      final code = '(let (def x 42) x)';
+    test('do creates local bindings', () {
+      final code = '(do (def x 42) x)';
       final result = runCode(code);
       result.match(
         (error) => fail('Should not be left: $error'),
@@ -547,8 +547,8 @@ void main() {
       );
     });
 
-    test('let bindings can access outer scope', () {
-      final code = '((def outer 100) (let (def x outer) (+ x 1)))';
+    test('local bindings can access outer scope', () {
+      final code = '((def outer 100) (do (def x outer) (+ x 1)))';
       final result = runCode(code);
       result.match(
         (error) => fail('Should not be left: $error'),
@@ -556,8 +556,8 @@ void main() {
       );
     });
 
-    test('let bindings shadow outer scope', () {
-      final code = '((def x 100) (let (def x 200) x))';
+    test('do bindings shadow outer scope', () {
+      final code = '((def x 100) (do (def x 200) x))';
       final result = runCode(code);
       result.match(
         (error) => fail('Should not be left: $error'),
@@ -565,8 +565,8 @@ void main() {
       );
     });
 
-    test('let with multiple bindings', () {
-      final code = '(let (def x 10) (def y 20) (+ x y))';
+    test('do with multiple bindings', () {
+      final code = '(do (def x 10) (def y 20) (+ x y))';
       final result = runCode(code);
       result.match(
         (error) => fail('Should not be left: $error'),
@@ -574,8 +574,8 @@ void main() {
       );
     });
 
-    test('let bindings are local', () {
-      final code = '((let (def x 42) x) x)';
+    test('do bindings are local', () {
+      final code = '((do (def x 42) x) x)';
       final result = runCode(code);
       expect(result.isLeft, isTrue);
     });

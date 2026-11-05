@@ -1,9 +1,9 @@
 import 'package:glue/src/lib/builtin/at.dart';
 import 'package:glue/src/lib/builtin/concat.dart';
 import 'package:glue/src/lib/builtin/def.dart';
+import 'package:glue/src/lib/builtin/do.dart';
 import 'package:glue/src/lib/builtin/error.dart';
 import 'package:glue/src/lib/builtin/lambda.dart';
-import 'package:glue/src/lib/builtin/let.dart';
 import 'package:glue/src/lib/builtin/list.dart';
 import 'package:glue/src/lib/builtin/quote.dart';
 import 'package:glue/src/lib/builtin/try.dart';
@@ -20,7 +20,7 @@ final ModuleInfo builtinModule = nativeModule('ffi.builtin', [
   ('def', def),
   ('lambda', lambda),
   ('\\', lambda),
-  ('let', let),
+  ('do', do_),
   ('error', error),
   ('try', tryFunc),
   ('quote', quote),

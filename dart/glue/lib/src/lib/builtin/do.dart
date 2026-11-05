@@ -3,12 +3,12 @@ import 'package:glue/src/eval.dart';
 import 'package:glue/src/eval/exception.dart';
 import 'package:glue/src/ir.dart';
 
-/// Let special form - creates a new scope with sequential definitions and body expressions.
-/// Usage: (let (def foo 1) (def bar (+ foo 1)) bar)
-final Ir let = IrSpecial(letImpl);
+/// Do special form - creates a new scope with sequential definitions and body expressions.
+/// Usage: (do (def foo 1) (def bar (+ foo 1)) bar)
+final Ir do_ = IrSpecial(doImpl);
 
-/// Let special form implementation
-Eval<Ir> letImpl(List<Ir> args) {
+/// Do special form implementation
+Eval<Ir> doImpl(List<Ir> args) {
   if (args.isEmpty) {
     return throwError(wrongArgumentType(['body']));
   }
