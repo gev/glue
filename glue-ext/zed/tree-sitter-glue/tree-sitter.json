@@ -1,0 +1,13 @@
+{
+  "grammars": [
+    {
+      "name": "glue",
+      "camelcase": "Glue",
+      "scope": "source.glue",
+      "path": ".",
+      "file-types": [
+        "glue"
+      ]
+    }
+  ]
+}

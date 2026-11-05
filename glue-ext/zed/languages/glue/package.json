@@ -1,0 +1,9 @@
+{
+  "name": "glue-format",
+  "version": "0.1.0",
+  "description": "External stdin/stdout formatter for Glue",
+  "license": "MIT",
+  "bin": {
+    "glue-format": "formatter.js"
+  }
+}

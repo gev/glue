@@ -1,0 +1,10 @@
+id = "glue"
+name = "Glue"
+version = "0.1.0"
+schema_version = 1
+authors = ["Evgeny Gazdovsky"]
+description = "Syntax highlighting and formatting for the Glue language."
+
+[grammars.glue]
+repository = "https://github.com/gev/tree-sitter-glue"
+rev = "main"
