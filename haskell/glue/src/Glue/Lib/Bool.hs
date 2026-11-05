@@ -24,6 +24,7 @@ bool =
         "ffi.bool"
         [ ("true", Bool True)
         , ("false", Bool False)
+        , ("eq", eq)
         , ("==", eq)
         , ("ne", ne)
         , ("!=", ne)

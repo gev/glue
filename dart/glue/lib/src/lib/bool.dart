@@ -23,6 +23,7 @@ import 'package:glue/src/module.dart';
 final ModuleInfo boolModule = nativeModule('ffi.bool', [
   ('true', IrBool(true)),
   ('false', IrBool(false)),
+  ('eq', eq),
   ('==', eq),
   ('ne', ne),
   ('!=', ne),
