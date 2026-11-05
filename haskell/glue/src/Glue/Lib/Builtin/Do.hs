@@ -1,15 +1,15 @@
-module Glue.Lib.Builtin.Let where
+module Glue.Lib.Builtin.Do where
 
 import Glue.Eval (Eval, eval, getEnv, putEnv, throwError)
 import Glue.Eval.Exception (wrongArgumentType)
 import Glue.IR (IR (..))
 
-let' :: IR Eval
-let' = Special letImpl
+do' :: IR Eval
+do' = Special doImpl
 
-letImpl :: [IR Eval] -> Eval (IR Eval)
-letImpl [] = throwError $ wrongArgumentType ["body"]
-letImpl body = do
+doImpl :: [IR Eval] -> Eval (IR Eval)
+doImpl [] = throwError $ wrongArgumentType ["body"]
+doImpl body = do
     -- Push new frame with bindings onto current environment
     currentEnv <- getEnv
     -- Evaluate body in extended environment

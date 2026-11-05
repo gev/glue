@@ -42,9 +42,9 @@ library
     Glue.Lib.Builtin.At
     Glue.Lib.Builtin.Concat
     Glue.Lib.Builtin.Def
+    Glue.Lib.Builtin.Do
     Glue.Lib.Builtin.Error
     Glue.Lib.Builtin.Lambda
-    Glue.Lib.Builtin.Let
     Glue.Lib.Builtin.List
     Glue.Lib.Builtin.Quote
     Glue.Lib.Builtin.Try
