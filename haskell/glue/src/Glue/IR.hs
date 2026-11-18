@@ -37,7 +37,7 @@ type Env m = [Frame m]
 
 -- Host value wrapper for any host language object
 data Value m = Value
-    { getValue :: Dynamic
+    { getValue :: !Dynamic
     , getters :: Map Text (m (IR m))
     }
 
@@ -65,20 +65,20 @@ extractValue :: (Typeable a) => Value m -> Maybe a
 extractValue = fromDynamic . getValue
 
 data IR m
-    = Integer Int
-    | Float Double
-    | String Text
-    | Bool Bool
-    | Symbol Text
-    | DottedSymbol [Text]
-    | List [IR m]
-    | Object (Map Text (IR m))
+    = Integer !Int
+    | Float !Double
+    | String !Text
+    | Bool !Bool
+    | Symbol !Text
+    | DottedSymbol ![Text]
+    | List ![IR m]
+    | Object !(Map Text (IR m))
     | Void
-    | Evaluable (m (IR m)) -- Functions without arguments
-    | NativeValue (Value m) -- Host language values (literals)
-    | NativeFunc (IR m -> m (IR m)) -- Curred functions with arguments
-    | Special ([IR m] -> m (IR m)) -- Special forms
-    | Closure [Text] [IR m] (Env m)
+    | Evaluable !(m (IR m)) -- Functions without arguments
+    | NativeValue !(Value m) -- Host language values (literals)
+    | NativeFunc !(IR m -> m (IR m)) -- Curred functions with arguments
+    | Special !([IR m] -> m (IR m)) -- Special forms
+    | Closure ![Text] ![IR m] !(Env m)
 
 -- Show instance for IR handles NativeFunc and Special directly
 

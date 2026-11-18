@@ -15,9 +15,9 @@ import Prelude hiding (mod)
 
 -- | A registered module containing metadata and body for evaluation
 data RegisteredModule m = RegisteredModule
-    { name :: Text
-    , exports :: [Text]
-    , body :: [IR m]
+    { name :: !Text
+    , exports :: ![Text]
+    , body :: ![IR m]
     }
 
 instance Show (RegisteredModule ir) where
@@ -28,7 +28,7 @@ instance Eq (RegisteredModule m) where
 
 -- | A cached imported module with evaluated exports and evaluation stack
 data ImportedModule m = ImportedModule
-    { moduleName :: Text
+    { moduleName :: !Text
     , exportedValues :: Map Text (IR m) -- Cached exports
     }
 
@@ -40,8 +40,8 @@ instance Eq (ImportedModule m) where
 
 -- | Result of parsing a module
 data ModuleInfo m = ModuleInfo
-    { moduleName :: Text
-    , exports :: [Text]
+    { moduleName :: !Text
+    , exports :: ![Text]
     , definitions :: [(Text, IR m)]
     }
     deriving (Show, Eq)
