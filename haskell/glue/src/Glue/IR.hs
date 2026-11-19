@@ -70,7 +70,7 @@ data IR m
     | String !Text
     | Bool !Bool
     | Symbol !Text
-    | DottedSymbol Text ![Text]
+    | DottedSymbol !Text ![Text]
     | List ![IR m]
     | Object !(Map Text (IR m))
     | Void
