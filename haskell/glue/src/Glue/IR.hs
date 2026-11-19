@@ -70,7 +70,7 @@ data IR m
     | String !Text
     | Bool !Bool
     | Symbol !Text
-    | DottedSymbol ![Text]
+    | DottedSymbol Text ![Text]
     | List ![IR m]
     | Object !(Map Text (IR m))
     | Void
@@ -90,7 +90,7 @@ instance Show (IR m) where
         Bool True -> "true"
         Bool False -> "false"
         Symbol s -> T.unpack s
-        DottedSymbol parts -> T.unpack (T.intercalate "." parts)
+        DottedSymbol s _ -> T.unpack s
         List xs -> "(" <> unwords (map show xs) <> ")"
         Object props -> "(" <> unwords (map (\(k, v) -> ":" <> T.unpack k <> " " <> show v) (Map.toList props)) <> ")"
         Void -> "#<void>"
@@ -106,7 +106,7 @@ instance Eq (IR m) where
     String a == String b = a == b
     Bool a == Bool b = a == b
     Symbol a == Symbol b = a == b
-    DottedSymbol a == DottedSymbol b = a == b
+    DottedSymbol a _ == DottedSymbol b _ = a == b
     List a == List b = a == b
     Object a == Object b = a == b
     NativeValue a == NativeValue b = a == b
@@ -136,12 +136,12 @@ objectLookup _ _ = Nothing
 
 isSymbol :: IR m -> Bool
 isSymbol (Symbol _) = True
-isSymbol (DottedSymbol _) = True
+isSymbol (DottedSymbol _ _) = True
 isSymbol _ = False
 
 getSymbol :: IR m -> Text
 getSymbol (Symbol s) = s
-getSymbol (DottedSymbol parts) = T.intercalate "." parts
+getSymbol (DottedSymbol s _) = s
 getSymbol _ = ""
 
 -- Host value utilities

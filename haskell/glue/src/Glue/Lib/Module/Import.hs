@@ -20,7 +20,7 @@ importForm = Special importFormImpl
 
 importFormImpl :: [IR Eval] -> Eval (IR Eval)
 importFormImpl [Symbol moduleName] = importModule [moduleName]
-importFormImpl [DottedSymbol modulePath] = importModule modulePath
+importFormImpl [DottedSymbol _ modulePath] = importModule modulePath
 importFormImpl _ = throwError $ wrongArgumentType ["module-name"]
 
 importModule :: [T.Text] -> Eval (IR Eval)

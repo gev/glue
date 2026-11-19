@@ -17,7 +17,7 @@ compile = \case
     AST.String s -> String s
     AST.Symbol s ->
         if T.isInfixOf "." s
-            then DottedSymbol (T.splitOn "." s)
+            then DottedSymbol s (T.splitOn "." s)
             else Symbol s
     AST.List xs -> List (map compile xs)
     AST.Object ps -> Object $ Map.fromList (map (second compile) ps)

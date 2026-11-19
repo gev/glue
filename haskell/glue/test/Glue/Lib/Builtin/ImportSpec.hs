@@ -115,7 +115,7 @@ spec = do
             let moduleIR =
                     List
                         [ Symbol "module"
-                        , DottedSymbol ["test", "dual"]
+                        , DottedSymbol "test.dual" ["test", "dual"]
                         , List [Symbol "export", Symbol "add", Symbol "multiply"]
                         , List [Symbol "def", Symbol "add", List [Symbol "+", Integer 1, Integer 2]]
                         , List [Symbol "def", Symbol "multiply", List [Symbol "*", Integer 3, Integer 4]]
@@ -139,7 +139,7 @@ spec = do
                                 }
 
                     -- Evaluate import
-                    let importIR = List [Symbol "import", DottedSymbol ["test", "dual"]]
+                    let importIR = List [Symbol "import", DottedSymbol "test.dual" ["test", "dual"]]
                     result <- runEval (eval importIR) initialState
 
                     case result of

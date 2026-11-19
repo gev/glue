@@ -3,7 +3,6 @@ module Glue.Module.Registration where
 import Control.Monad (foldM)
 import Data.Map.Strict qualified as Map
 import Data.Text (Text)
-import Data.Text qualified as T
 import Glue.IR (IR (..))
 import Glue.Module (ModuleInfo (..), RegisteredModule (..))
 import Glue.Module.Error (ModuleRegistryError (..))
@@ -22,7 +21,7 @@ parseModule _ = Left $ InvalidModuleStructure "Expected (module name body...)"
 -- | Extract module name from Symbol or DottedSymbol
 extractModuleName :: IR m -> Either (ModuleRegistryError m) Text
 extractModuleName (Symbol name) = pure name
-extractModuleName (DottedSymbol parts) = pure $ T.intercalate "." parts
+extractModuleName (DottedSymbol s _) = pure s
 extractModuleName _ = Left $ InvalidModuleStructure "Module name must be a symbol"
 
 -- | Extract exports from module body

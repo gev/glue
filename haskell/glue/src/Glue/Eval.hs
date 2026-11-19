@@ -23,7 +23,7 @@ module Glue.Eval (
 import Control.Monad (ap, liftM)
 import Data.Map (Map)
 import Data.Map.Strict qualified as Map
-import Data.Text (Text, intercalate)
+import Data.Text (Text)
 import Glue.Env qualified as E
 import Glue.Eval.Error (EvalError (EvalError))
 import Glue.Eval.Exception
@@ -81,7 +81,7 @@ liftIO action = Eval $ \runtime -> do
 eval :: IR -> Eval IR
 eval ir = case ir of
     IR.Symbol name -> evalSymbol name
-    IR.DottedSymbol parts -> evalDottedSymbol parts
+    IR.DottedSymbol _ parts -> evalDottedSymbol parts
     IR.List xs -> evalList xs
     IR.Object objMap -> evalObject objMap
     _ -> pure ir
@@ -128,7 +128,7 @@ evalDottedSymbol parts = do
 -- Evaluate a list (function call or literal list)
 evalList :: [IR] -> Eval IR
 evalList [IR.Symbol name] = evalSymbol name
-evalList [IR.DottedSymbol parts] = evalDottedSymbol parts
+evalList [IR.DottedSymbol _ parts] = evalDottedSymbol parts
 evalList (IR.Symbol name : rawArgs) = do
     pushCall name
     env <- getEnv
@@ -140,9 +140,9 @@ evalList (IR.Symbol name : rawArgs) = do
         Left err -> do
             popCall
             throwError err
-evalList (IR.DottedSymbol parts : rawArgs) = do
+evalList (IR.DottedSymbol s parts : rawArgs) = do
     func <- evalDottedSymbol parts
-    pushCall $ intercalate "." parts
+    pushCall s
     result <- apply func rawArgs
     popCall
     pure result

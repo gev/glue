@@ -24,7 +24,7 @@ spec = describe "Value property getters" do
                 hostVal = hostValueWithProps person getters
                 hostIr = NativeValue hostVal :: IR Eval
                 env = E.defineVar "person" hostIr E.emptyEnv
-                dottedIr = DottedSymbol ["person", "name"] :: IR Eval
+                dottedIr = DottedSymbol "person.name" ["person", "name"] :: IR Eval
 
             result <- runEvalSimple (eval dottedIr) env
             case result of
@@ -39,7 +39,7 @@ spec = describe "Value property getters" do
                 hostVal = hostValueWithProps person getters
                 hostIr = NativeValue hostVal :: IR Eval
                 env = E.defineVar "person" hostIr E.emptyEnv
-                dottedIr = DottedSymbol ["person", "age"] :: IR Eval
+                dottedIr = DottedSymbol "peraon.age" ["person", "age"] :: IR Eval
 
             result <- runEvalSimple (eval dottedIr) env
             case result of
@@ -55,7 +55,7 @@ spec = describe "Value property getters" do
                 hostVal = hostValueWithProps calc getters
                 hostIr = NativeValue hostVal :: IR Eval
                 env = E.defineVar "calc" hostIr E.emptyEnv
-                dottedIr = DottedSymbol ["calc", "compute"] :: IR Eval
+                dottedIr = DottedSymbol "calc.compute" ["calc", "compute"] :: IR Eval
 
             result <- runEvalSimple (eval dottedIr) env
             case result of
@@ -70,7 +70,7 @@ spec = describe "Value property getters" do
                 hostVal = hostValueWithProps calc getters
                 hostIr = NativeValue hostVal :: IR Eval
                 env = E.defineVar "calc" hostIr E.emptyEnv
-                dottedIr = DottedSymbol ["calc", "double"] :: IR Eval
+                dottedIr = DottedSymbol "calc.double" ["calc", "double"] :: IR Eval
 
             result <- runEvalSimple (eval dottedIr) env
             case result of
@@ -88,14 +88,14 @@ spec = describe "Value property getters" do
                 env = E.defineVar "person" hostIr E.emptyEnv
 
             -- Test name property
-            let nameDotted = DottedSymbol ["person", "name"] :: IR Eval
+            let nameDotted = DottedSymbol "person.name" ["person", "name"] :: IR Eval
             nameResult <- runEvalSimple (eval nameDotted) env
             case nameResult of
                 Right (nameVal, _) -> nameVal `shouldBe` String "Charlie"
                 Left err -> expectationFailure $ "Name property access should succeed: " ++ show err
 
             -- Test age property
-            let ageDotted = DottedSymbol ["person", "age"] :: IR Eval
+            let ageDotted = DottedSymbol "person.age" ["person", "age"] :: IR Eval
             ageResult <- runEvalSimple (eval ageDotted) env
             case ageResult of
                 Right (ageVal, _) -> ageVal `shouldBe` Integer 35
@@ -108,7 +108,7 @@ spec = describe "Value property getters" do
                 hostVal = hostValueWithProps person getters
                 hostIr = NativeValue hostVal :: IR Eval
                 env = E.defineVar "person" hostIr E.emptyEnv
-                dottedIr = DottedSymbol ["person", "nonexistent"] :: IR Eval
+                dottedIr = DottedSymbol "person.nonexistent" ["person", "nonexistent"] :: IR Eval
 
             result <- runEvalSimple (eval dottedIr) env
             case result of
@@ -118,7 +118,7 @@ spec = describe "Value property getters" do
 
         it "fails when accessing property on non-host value" do
             let env = E.defineVar "number" (Integer 42) E.emptyEnv
-                dottedIr = DottedSymbol ["number", "property"] :: IR Eval
+                dottedIr = DottedSymbol "number.property" ["number", "property"] :: IR Eval
 
             result <- runEvalSimple (eval dottedIr) env
             case result of

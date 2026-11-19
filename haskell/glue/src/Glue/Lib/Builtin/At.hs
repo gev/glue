@@ -26,12 +26,12 @@ at = NativeFunc \target ->
                 pure . fromMaybe Void $ M.lookup field object
             (Object object, Symbol field) ->
                 pure . fromMaybe Void $ M.lookup field object
-            (Object object, DottedSymbol field) -> nestedLookup field object
+            (Object object, DottedSymbol _ field) -> nestedLookup field object
             (NativeValue (Value _ getters), String field) ->
                 fromMaybe (pure Void) $ M.lookup field getters
             (NativeValue (Value _ getters), Symbol field) ->
                 fromMaybe (pure Void) $ M.lookup field getters
-            (NativeValue (Value _ getters), DottedSymbol fields) -> nestedNativeLookup fields getters
+            (NativeValue (Value _ getters), DottedSymbol _ fields) -> nestedNativeLookup fields getters
             _ -> throwError $ wrongArgumentType ["target", "accessor"]
   where
     nestedLookup [] _ = pure Void

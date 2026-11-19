@@ -1,5 +1,5 @@
 module Glue.Decompile (
-  decompile,
+    decompile,
 ) where
 
 import Data.Map.Strict qualified as Map
@@ -13,22 +13,22 @@ Returns Left error for non-serializable IR types
 -}
 decompile :: IR m -> Either String AST
 decompile = \case
-  Integer n -> Right (AST.Integer n)
-  Float n -> Right (AST.Float n)
-  String s -> Right (AST.String s)
-  Bool b -> Right (AST.Symbol (if b then "true" else "false"))
-  Symbol s -> Right (AST.Symbol s)
-  DottedSymbol parts -> Right (AST.Symbol (T.intercalate "." parts))
-  List xs -> AST.List <$> mapM decompile xs
-  Object ps -> AST.Object <$> mapM decompilePair (Map.toAscList ps)
-  Void -> Left "Cannot decompile Void"
-  Evaluable{} -> Left "Cannot decompile Evaluable"
-  NativeValue{} -> Left "Cannot decompile NativeValue"
-  NativeFunc{} -> Left "Cannot decompile NativeFunc"
-  Special{} -> Left "Cannot decompile Special"
-  Closure{} -> Left "Cannot decompile Closure"
- where
-  decompilePair :: (T.Text, IR m) -> Either String (T.Text, AST)
-  decompilePair (k, v) = case decompile v of
-    Left err -> Left err
-    Right ast -> Right (k, ast)
+    Integer n -> Right (AST.Integer n)
+    Float n -> Right (AST.Float n)
+    String s -> Right (AST.String s)
+    Bool b -> Right (AST.Symbol (if b then "true" else "false"))
+    Symbol s -> Right (AST.Symbol s)
+    DottedSymbol s _ -> Right (AST.Symbol s)
+    List xs -> AST.List <$> mapM decompile xs
+    Object ps -> AST.Object <$> mapM decompilePair (Map.toAscList ps)
+    Void -> Left "Cannot decompile Void"
+    Evaluable{} -> Left "Cannot decompile Evaluable"
+    NativeValue{} -> Left "Cannot decompile NativeValue"
+    NativeFunc{} -> Left "Cannot decompile NativeFunc"
+    Special{} -> Left "Cannot decompile Special"
+    Closure{} -> Left "Cannot decompile Closure"
+  where
+    decompilePair :: (T.Text, IR m) -> Either String (T.Text, AST)
+    decompilePair (k, v) = case decompile v of
+        Left err -> Left err
+        Right ast -> Right (k, ast)
