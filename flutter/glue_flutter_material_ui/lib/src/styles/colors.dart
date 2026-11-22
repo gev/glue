@@ -1,5 +1,5 @@
 import 'package:glue/ir.dart';
-import 'package:glue_flutter_ui/src/styles/color.dart';
+import 'package:glue_flutter_ui/utils/color.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Colors object - represents common named colors as Glue object properties

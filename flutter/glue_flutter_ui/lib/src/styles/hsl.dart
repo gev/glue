@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
-import 'package:glue_flutter_ui/src/styles/color.dart';
+import 'package:glue_flutter_ui/utils/color.dart';
 import 'package:glue_flutter_ui/utils/value_extractors.dart';
 
 /// HSL function - (hsl 360 1.0 0.5)
