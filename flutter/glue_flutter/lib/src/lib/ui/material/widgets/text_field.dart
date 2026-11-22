@@ -1,11 +1,11 @@
 import 'dart:ui';
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// TextField widget function
 /// Creates Flutter TextField from Glue (text-field props) expressions

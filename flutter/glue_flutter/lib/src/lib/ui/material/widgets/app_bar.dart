@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// AppBar widget function
 /// Creates Flutter AppBar from Glue expressions

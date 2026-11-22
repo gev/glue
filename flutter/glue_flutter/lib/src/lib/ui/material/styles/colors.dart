@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/color.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Colors object - represents common named colors as Glue object properties
 /// Each property is a NativeValue wrapping the Flutter Color constant

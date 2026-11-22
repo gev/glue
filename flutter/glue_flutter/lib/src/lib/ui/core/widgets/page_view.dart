@@ -1,5 +1,4 @@
 import 'package:flutter/gestures.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
@@ -14,10 +13,6 @@ Eval<Ir> pageViewImpl(Ir props) => _createPageView(WidgetProperties(props));
 
 /// Create PageView widget from properties
 Eval<Ir> _createPageView(WidgetProperties properties) {
-  // Обратите внимание: для controller и onPageChanged в зависимости от вашей архитектуры
-  // может потребоваться специальный парсинг колбэков/контроллеров.
-  // Здесь они указаны через getValue, если движок поддерживает их передачу.
-
   final pageViewWidget = PageView(
     key: properties.key,
     scrollDirection:

@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:glue/ir.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// TextInputAction enum object
 /// Represents all TextInputAction values as Glue object properties

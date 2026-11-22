@@ -50,8 +50,8 @@ import 'package:glue_flutter/src/lib/ui/material/widgets/linear_progress_indicat
 import 'package:glue_flutter/src/lib/ui/material/widgets/list_tile.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/material.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/menu_anchor.dart';
-import 'package:glue_flutter/src/lib/ui/material/widgets/navigation-destination.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/navigation_bar.dart';
+import 'package:glue_flutter/src/lib/ui/material/widgets/navigation_destination.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/navigation_drawer.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/navigation_rail.dart';
 import 'package:glue_flutter/src/lib/ui/material/widgets/outlined_button.dart';

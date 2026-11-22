@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Widget for displaying evaluation errors
 class ErrorDisplayWidget extends StatelessWidget {

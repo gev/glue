@@ -1,5 +1,5 @@
 import 'package:code_forge/code_forge.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Left pane widget containing the Glue code editor
 class CodeEditorPane extends StatefulWidget {

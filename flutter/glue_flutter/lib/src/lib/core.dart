@@ -3,14 +3,14 @@ import 'package:glue_flutter/src/lib/ui/core/global_key.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/alignment.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/axis.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/blur_style.dart';
-import 'package:glue_flutter/src/lib/ui/core/styles/border_rdius.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/border_radius.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/border_side.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/border_style.dart';
-import 'package:glue_flutter/src/lib/ui/core/styles/box-shadow.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/box_border.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/box_constraints.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/box_decoration.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/box_fit.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/box_shadow.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/box_shape.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/brightness.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/clip.dart';
@@ -45,7 +45,7 @@ import 'package:glue_flutter/src/lib/ui/core/styles/text_width_basis.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/tile_mode.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/vertical_direction.dart';
 import 'package:glue_flutter/src/lib/ui/core/styles/wrap_alignment.dart';
-import 'package:glue_flutter/src/lib/ui/core/styles/wrap_cros_alignment.dart';
+import 'package:glue_flutter/src/lib/ui/core/styles/wrap_cross_alignment.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/align.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/animated_positioned.dart';
 import 'package:glue_flutter/src/lib/ui/core/widgets/animated_size.dart';
@@ -149,7 +149,7 @@ final ModuleInfo uiCoreModule = nativeModule('ffi.ui.core', [
   ('edge-insets-only', edgeInsetsOnly),
   ('edge-insets-directional', edgeInsetsDirectional),
 
-  // Broder radius functions
+  // Border radius functions
   ('border-radius-all', borderRadiusAll),
   ('border-radius-circular', borderRadiusCircular),
   ('border-radius-only', borderRadiusOnly),

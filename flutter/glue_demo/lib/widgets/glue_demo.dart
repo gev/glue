@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:glue_demo/code.dart';
 import 'package:glue_demo/services/glue_evaluator.dart';
 import 'package:glue_demo/widgets/code_editor_pane.dart';
 import 'package:glue_demo/widgets/ui_preview_pane.dart';
+import 'package:material_ui/material_ui.dart';
 
 class GlueDemo extends StatefulWidget {
   const GlueDemo({super.key});

@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
+
 import 'error_display_widget.dart';
 import 'widget_renderer_widget.dart';
 

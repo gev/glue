@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:glue/compile.dart';
 import 'package:glue/either.dart';
 import 'package:glue/error.dart';
@@ -7,6 +6,7 @@ import 'package:glue/ir.dart';
 import 'package:glue/parse.dart';
 import 'package:glue_demo/glue/env.dart';
 import 'package:glue_flutter/glue_flutter.dart';
+import 'package:material_ui/material_ui.dart';
 
 typedef GlueEvalResult = Either<GlueError, List<Widget>>;
 

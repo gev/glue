@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/glue_flutter.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// ButtonSegment function
 /// Creates Flutter ButtonSegment from Glue (button-segment props) expressions
