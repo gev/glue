@@ -23,8 +23,8 @@ Eval<Ir> _createGridView(WidgetProperties properties) {
     shrinkWrap: properties.getBool('shrink-wrap') ?? false,
     padding: properties.getValue<EdgeInsetsGeometry>('padding'),
     crossAxisCount: properties.getInt('cross-axis-count') ?? 2,
-    mainAxisSpacing: properties.getDouble('main-axis-cpacing') ?? 0,
-    crossAxisSpacing: properties.getDouble('cross-axis-cpacing') ?? 0,
+    mainAxisSpacing: properties.getDouble('main-axis-spacing') ?? 0,
+    crossAxisSpacing: properties.getDouble('cross-axis-spacing') ?? 0,
     childAspectRatio: properties.getDouble('child-aspect-ratio') ?? 1.0,
     addAutomaticKeepAlives:
         properties.getBool('add-automatic-keep-alives') ?? true,

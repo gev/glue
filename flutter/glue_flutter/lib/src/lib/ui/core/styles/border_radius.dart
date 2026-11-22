@@ -100,7 +100,7 @@ Eval<Ir> createBorderRadiusOnly(WidgetProperties properties) {
     topLeft: properties.getValue<Radius>('top-left') ?? Radius.zero,
     topRight: properties.getValue<Radius>('top-right') ?? Radius.zero,
     bottomLeft: properties.getValue<Radius>('bottom-left') ?? Radius.zero,
-    bottomRight: properties.getValue<Radius>('botton-right') ?? Radius.zero,
+    bottomRight: properties.getValue<Radius>('bottom-right') ?? Radius.zero,
   );
   return Eval.pure(IrNativeValue(Value(radius)));
 }
