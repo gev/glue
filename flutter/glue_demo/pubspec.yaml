@@ -35,7 +35,9 @@ dependencies:
 
   # Workspace dependencies
   glue:
-  glue_flutter:
+  glue_flutter_ui:
+  glue_flutter_cupertino_ui:
+  glue_flutter_material_ui:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

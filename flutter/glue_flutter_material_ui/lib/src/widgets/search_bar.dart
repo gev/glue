@@ -1,0 +1,51 @@
+import 'package:glue/eval.dart';
+import 'package:glue/ir.dart';
+import 'package:glue_flutter_ui/utils/widget_properties.dart';
+import 'package:material_ui/material_ui.dart';
+
+/// SearchBar widget function
+/// Creates Flutter SearchBar from Glue (search-bar props) expressions
+final Ir searchBar = IrNativeFunc(searchBarImpl);
+
+/// SearchBar implementation - takes properties object
+Eval<Ir> searchBarImpl(Ir props) => _createSearchBar(WidgetProperties(props));
+
+/// Create SearchBar widget from properties
+Eval<Ir> _createSearchBar(WidgetProperties properties) {
+  return getRuntime().map((runtime) {
+    final searchBarWidget = SearchBar(
+      key: properties.key,
+      controller: properties.getValue<TextEditingController>('controller'),
+      focusNode: properties.getValue<FocusNode>('focus-node'),
+      hintText: properties.getString('hint-text'),
+      onTap: properties.getVoidCallback('on-tap')?.call(runtime),
+      onChanged: properties.getValue<ValueChanged<String>>('on-changed'),
+      onSubmitted: properties.getValue<ValueChanged<String>>('on-submitted'),
+      constraints: properties.getValue<BoxConstraints>('constraints'),
+      elevation: wrapWidgetStateProperty(properties.getDouble('elevation')),
+      overlayColor: wrapWidgetStateProperty(
+        properties.getColor('overlay-color'),
+      ),
+      side: wrapWidgetStateProperty(properties.getValue<BorderSide>('side')),
+      shape: wrapWidgetStateProperty(
+        properties.getValue<OutlinedBorder>('shape'),
+      ),
+      padding: wrapWidgetStateProperty(
+        properties.getValue<EdgeInsetsGeometry>('padding'),
+      ),
+      textStyle: wrapWidgetStateProperty(
+        properties.getValue<TextStyle>('text-style'),
+      ),
+      hintStyle: wrapWidgetStateProperty(
+        properties.getValue<TextStyle>('hint-style'),
+      ),
+      textCapitalization:
+          properties.getValue<TextCapitalization>('text-capitalization') ??
+          TextCapitalization.none,
+      keyboardType:
+          properties.getValue<TextInputType>('keyboard-type') ??
+          TextInputType.text,
+    );
+    return IrNativeValue(Value(searchBarWidget));
+  });
+}

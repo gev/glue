@@ -1,0 +1,32 @@
+import 'package:flutter/widgets.dart';
+import 'package:glue/error.dart';
+import 'package:glue/eval.dart';
+import 'package:glue/ir.dart';
+import 'package:glue_flutter_ui/utils/value_extractors.dart';
+import 'package:glue_flutter_ui/utils/widget_properties.dart';
+
+final radiusZero = IrNativeValue(Value(Radius.zero));
+
+final radiusCircular = IrNativeFunc(radiusCircularImpl);
+
+Eval<Ir> radiusCircularImpl(Ir value) {
+  final radius = extractDouble(value);
+  if (radius == null) return throwError(wrongArgumentType(['number']));
+  return createRadiusCircular(Radius.circular(radius));
+}
+
+Eval<Ir> createRadiusCircular(Radius radius) =>
+    Eval.pure(IrNativeValue(Value(radius)));
+
+final radiusElliptical = IrNativeFunc(radiusEllipticalImpl);
+
+Eval<Ir> radiusEllipticalImpl(Ir props) =>
+    createRadiusElliptical(WidgetProperties(props));
+
+Eval<Ir> createRadiusElliptical(WidgetProperties properties) {
+  final radius = Radius.elliptical(
+    properties.getDouble('x') ?? 0.0,
+    properties.getDouble('y') ?? 0.0,
+  );
+  return Eval.pure(IrNativeValue(Value(radius)));
+}

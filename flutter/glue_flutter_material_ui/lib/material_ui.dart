@@ -1,0 +1,172 @@
+import 'package:glue/module.dart';
+import 'package:glue_flutter_material_ui/src/styles/button_style.dart';
+import 'package:glue_flutter_material_ui/src/styles/color_scheme.dart';
+import 'package:glue_flutter_material_ui/src/styles/colors.dart';
+import 'package:glue_flutter_material_ui/src/styles/drag_start_behavior.dart';
+import 'package:glue_flutter_material_ui/src/styles/dynamic_scheme_variant.dart';
+import 'package:glue_flutter_material_ui/src/styles/floating_action_button_location.dart';
+import 'package:glue_flutter_material_ui/src/styles/input_border_none.dart';
+import 'package:glue_flutter_material_ui/src/styles/input_decoration.dart';
+import 'package:glue_flutter_material_ui/src/styles/outline_input_border.dart';
+import 'package:glue_flutter_material_ui/src/styles/segmented_button_style.dart';
+import 'package:glue_flutter_material_ui/src/styles/text_theme.dart';
+import 'package:glue_flutter_material_ui/src/styles/theme.dart';
+import 'package:glue_flutter_material_ui/src/styles/theme_dark.dart';
+import 'package:glue_flutter_material_ui/src/styles/theme_light.dart';
+import 'package:glue_flutter_material_ui/src/styles/underline_input_border.dart';
+import 'package:glue_flutter_material_ui/src/styles/visual_density.dart';
+import 'package:glue_flutter_material_ui/src/widgets/action_chip.dart';
+import 'package:glue_flutter_material_ui/src/widgets/alert_dialog.dart';
+import 'package:glue_flutter_material_ui/src/widgets/app_bar.dart';
+import 'package:glue_flutter_material_ui/src/widgets/back_button.dart';
+import 'package:glue_flutter_material_ui/src/widgets/badge.dart';
+import 'package:glue_flutter_material_ui/src/widgets/bottom_app_bar.dart';
+import 'package:glue_flutter_material_ui/src/widgets/bottom_sheet.dart';
+import 'package:glue_flutter_material_ui/src/widgets/button.dart';
+import 'package:glue_flutter_material_ui/src/widgets/button_segment.dart';
+import 'package:glue_flutter_material_ui/src/widgets/card.dart';
+import 'package:glue_flutter_material_ui/src/widgets/checkbox.dart';
+import 'package:glue_flutter_material_ui/src/widgets/chip.dart';
+import 'package:glue_flutter_material_ui/src/widgets/choice_chip.dart';
+import 'package:glue_flutter_material_ui/src/widgets/circular_progress_indicator.dart';
+import 'package:glue_flutter_material_ui/src/widgets/close_button.dart';
+import 'package:glue_flutter_material_ui/src/widgets/data_table.dart';
+import 'package:glue_flutter_material_ui/src/widgets/date_picker_dialog.dart';
+import 'package:glue_flutter_material_ui/src/widgets/divider.dart';
+import 'package:glue_flutter_material_ui/src/widgets/drawer.dart';
+import 'package:glue_flutter_material_ui/src/widgets/drawer_header.dart';
+import 'package:glue_flutter_material_ui/src/widgets/dropdown_button.dart';
+import 'package:glue_flutter_material_ui/src/widgets/elevated_button.dart';
+import 'package:glue_flutter_material_ui/src/widgets/expansion_panel_list.dart';
+import 'package:glue_flutter_material_ui/src/widgets/expansion_tile.dart';
+import 'package:glue_flutter_material_ui/src/widgets/filled_button.dart';
+import 'package:glue_flutter_material_ui/src/widgets/filled_tonal_button.dart';
+import 'package:glue_flutter_material_ui/src/widgets/filter_chip.dart';
+import 'package:glue_flutter_material_ui/src/widgets/floating_action_button.dart';
+import 'package:glue_flutter_material_ui/src/widgets/icon_button.dart';
+import 'package:glue_flutter_material_ui/src/widgets/ink_well.dart';
+import 'package:glue_flutter_material_ui/src/widgets/input_chip.dart';
+import 'package:glue_flutter_material_ui/src/widgets/linear_progress_indicator.dart';
+import 'package:glue_flutter_material_ui/src/widgets/list_tile.dart';
+import 'package:glue_flutter_material_ui/src/widgets/material.dart';
+import 'package:glue_flutter_material_ui/src/widgets/menu_anchor.dart';
+import 'package:glue_flutter_material_ui/src/widgets/navigation_bar.dart';
+import 'package:glue_flutter_material_ui/src/widgets/navigation_destination.dart';
+import 'package:glue_flutter_material_ui/src/widgets/navigation_drawer.dart';
+import 'package:glue_flutter_material_ui/src/widgets/navigation_rail.dart';
+import 'package:glue_flutter_material_ui/src/widgets/outlined_button.dart';
+import 'package:glue_flutter_material_ui/src/widgets/popup_menu_button.dart';
+import 'package:glue_flutter_material_ui/src/widgets/radio.dart';
+import 'package:glue_flutter_material_ui/src/widgets/refresh_indicator.dart';
+import 'package:glue_flutter_material_ui/src/widgets/scaffold.dart';
+import 'package:glue_flutter_material_ui/src/widgets/search_anchor.dart';
+import 'package:glue_flutter_material_ui/src/widgets/search_bar.dart';
+import 'package:glue_flutter_material_ui/src/widgets/segmented_button.dart';
+import 'package:glue_flutter_material_ui/src/widgets/show_bottom_sheet.dart';
+import 'package:glue_flutter_material_ui/src/widgets/show_dialog.dart';
+import 'package:glue_flutter_material_ui/src/widgets/show_modal_bottom_sheet.dart';
+import 'package:glue_flutter_material_ui/src/widgets/slider.dart';
+import 'package:glue_flutter_material_ui/src/widgets/snack_bar.dart';
+import 'package:glue_flutter_material_ui/src/widgets/stepper.dart';
+import 'package:glue_flutter_material_ui/src/widgets/switch.dart';
+import 'package:glue_flutter_material_ui/src/widgets/tab_bar.dart';
+import 'package:glue_flutter_material_ui/src/widgets/tab_bar_view.dart';
+import 'package:glue_flutter_material_ui/src/widgets/text_button.dart';
+import 'package:glue_flutter_material_ui/src/widgets/text_field.dart';
+import 'package:glue_flutter_material_ui/src/widgets/time_picker_dialog.dart';
+import 'package:glue_flutter_material_ui/src/widgets/tooltip.dart';
+import 'package:glue_flutter_material_ui/src/widgets/user_accounts_drawer_header.dart';
+
+final ModuleInfo uiMaterialModule = nativeModule('ffi.ui.material', [
+  // Material widgets
+  ('app-bar', appBar),
+  ('scaffold', scaffold),
+  ('back-button', backButton),
+  ('button', button),
+  ('close-button', closeButton),
+  ('filled-button', filledButton),
+  ('filled-tonal-button', filledTonalButton),
+  ('outlined-button', outlinedButton),
+  ('elevated-button', elevatedButton),
+  ('icon-button', iconButton),
+  ('segmented-button', segmentedButton),
+  ('button-segment', buttonSegment),
+  ('text-button', textButton),
+  ('ink-well', inkWell),
+  ('card', card),
+  ('filled-card', filledCard),
+  ('outlined-card', outlinedCard),
+  ('list-tile', listTile),
+  ('snack-bar', snackBar),
+  ('text-field', textField),
+  ('floating-action-button', floatingActionButton),
+  ('checkbox', checkbox),
+  ('switch', switchWidget),
+  ('linear-progress-indicator', linearProgressIndicator),
+  ('badge', badge),
+  ('divider', divider),
+  ('radio', radio),
+  ('slider', slider),
+  ('alert-dialog', alertDialog),
+  ('chip', chip),
+  ('drawer', drawer),
+  ('date-picker-dialog', datePickerDialog),
+  ('time-picker-dialog', timePickerDialog),
+  ('tab-bar', tabBar),
+  ('menu-anchor', menuAnchor),
+  ('expansion-tile', expansionTile),
+  ('data-table', dataTable),
+  ('tooltip', tooltip),
+  ('popup-menu-button', popupMenuButton),
+  ('dropdown-button', dropdownButton),
+  ('refresh-indicator', refreshIndicator),
+  ('circular-progress-indicator', circularProgressIndicator),
+  ('stepper', stepper),
+  ('expansion-panel-list', expansionPanelList),
+  ('tab-bar-view', tabBarView),
+  ('bottom-sheet', bottomSheet),
+  ('search-bar', searchBar),
+  ('search-anchor', searchAnchor),
+  ('input-chip', inputChip),
+  ('filter-chip', filterChip),
+  ('choice-chip', choiceChip),
+  ('action-chip', actionChip),
+  ('bottom-app-bar', bottomAppBar),
+  ('navigation-bar', navigationBar),
+  ('navigation-destination', navigationDestination),
+  ('navigation-drawer', navigationDrawer),
+  ('navigation-rail', navigationRail),
+  ('drawer-header', drawerHeader),
+  ('user-accounts-drawer-header', userAccountsDrawerHeader),
+  ('material', material),
+
+  // Material enum union objects
+  ('colors', colors),
+  ('drag-start-behavior', dragStartBehavior),
+  ('floating-action-button-location', floatingActionButtonLocation),
+  ('dynamic-scheme-variant', dynamicSchemeVariant),
+  // Material theme functions and objects
+  ('theme-dark', themeDark),
+  ('theme-light', themeLight),
+  ('theme', theme),
+  ('color-scheme-light', colorSchemeLight),
+  ('color-scheme-dark', colorSchemeDark),
+  ('text-theme', textTheme),
+
+  ('button-style', buttonStyle),
+  ('segmented-button-style', segmentedButtonStyle),
+
+  ('input-decoration', inputDecoration),
+  ('input-border-none', inputBorderNone),
+  ('underline-input-border', underlineInputBorder),
+  ('outline-input-border', outlineInputBorder),
+
+  ('visual-density', visualDensity),
+  ('visual-density-compact', visualDensityCompact),
+  ('visual-density-standard', visualDensityStandard),
+  ('visual-density-comfortable', visualDensityComfortable),
+
+  ('show-dialog', showDialog_),
+  ('show-bottom-sheet', showBottomSheet_),
+  ('show-modal-bottom-sheet', showModalBottomSheet_),
+]);

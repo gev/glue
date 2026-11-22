@@ -1,0 +1,35 @@
+import 'package:cupertino_ui/cupertino_ui.dart';
+import 'package:flutter/gestures.dart';
+import 'package:glue/eval.dart';
+import 'package:glue/ir.dart';
+import 'package:glue_flutter_ui/utils/widget_properties.dart';
+
+/// CupertinoSwitch widget function
+/// Creates Flutter CupertinoSwitch from Glue expressions
+/// Expects keyword arguments: :value, :on-changed, etc.
+final Ir cupertinoSwitch = IrNativeFunc(cupertinoSwitchImpl);
+
+/// CupertinoSwitch implementation - takes properties object with keyword arguments
+Eval<Ir> cupertinoSwitchImpl(Ir props) =>
+    _createCupertinoSwitch(WidgetProperties(props));
+
+/// Create CupertinoSwitch widget from properties object
+Eval<Ir> _createCupertinoSwitch(WidgetProperties properties) {
+  return getRuntime().map((runtime) {
+    // final callback = properties.onSwitchChanged != null
+    //     ? (bool value) => properties.onSwitchChanged!(value)
+    //     : null;
+    final switchWidget = CupertinoSwitch(
+      key: properties.key,
+      value: properties.getBool('value') ?? false,
+      onChanged: properties.getCallback<bool>('on-changed')?.call(runtime),
+      thumbColor: properties.getColor('thumb-color'),
+      dragStartBehavior:
+          properties.getValue<DragStartBehavior>('drag-start-behavior') ??
+          DragStartBehavior.start,
+      focusNode: properties.getValue<FocusNode>('focus-node'),
+      autofocus: properties.getBool('autofocus') ?? false,
+    );
+    return IrNativeValue(Value(switchWidget));
+  });
+}

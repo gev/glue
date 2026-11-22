@@ -1,0 +1,30 @@
+import 'package:glue/eval.dart';
+import 'package:glue/ir.dart';
+import 'package:glue_flutter_ui/utils/widget_properties.dart';
+import 'package:material_ui/material_ui.dart';
+
+/// CircularProgressIndicator widget function
+/// Creates Flutter CircularProgressIndicator from Glue (circular-progress-indicator props) expressions
+final Ir circularProgressIndicator = IrNativeFunc(
+  circularProgressIndicatorImpl,
+);
+
+/// CircularProgressIndicator implementation - takes properties object
+Eval<Ir> circularProgressIndicatorImpl(Ir props) =>
+    _createCircularProgressIndicator(WidgetProperties(props));
+
+/// Create CircularProgressIndicator widget from properties
+Eval<Ir> _createCircularProgressIndicator(WidgetProperties properties) {
+  final circularProgressIndicatorWidget = CircularProgressIndicator(
+    key: properties.key,
+    value: properties.getDouble('value'),
+    backgroundColor: properties.getColor('background-color'),
+    color: properties.getColor('color'),
+    strokeWidth: properties.getDouble('stroke-width'),
+    strokeAlign: properties.getDouble('stroke-align'),
+    strokeCap: properties.getValue<StrokeCap>('stroke-cap'),
+    semanticsLabel: properties.getString('semantics-label'),
+    semanticsValue: properties.getString('semantics-value'),
+  );
+  return Eval.pure(IrNativeValue(Value(circularProgressIndicatorWidget)));
+}

@@ -1,0 +1,52 @@
+import 'package:glue/eval.dart';
+import 'package:glue/ir.dart';
+import 'package:glue_flutter_ui/utils/widget_properties.dart';
+import 'package:material_ui/material_ui.dart';
+
+/// ExpansionTile widget function
+/// Creates Flutter ExpansionTile from Glue (expansion-tile props) expressions
+final Ir expansionTile = IrNativeFunc(expansionTileImpl);
+
+/// ExpansionTile implementation - takes properties object
+Eval<Ir> expansionTileImpl(Ir props) =>
+    _createExpansionTile(WidgetProperties(props));
+
+/// Create ExpansionTile widget from properties
+Eval<Ir> _createExpansionTile(WidgetProperties properties) {
+  return getRuntime().map((runtime) {
+    final expansionTileWidget = ExpansionTile(
+      key: properties.key,
+      leading: properties.getWidget('leading'),
+      title: properties.child ?? const SizedBox(),
+      subtitle: properties.getWidget('subtitle'),
+      trailing: properties.getWidget('trailing'),
+      children: properties.getWidgets('children'),
+      initiallyExpanded: properties.getBool('initially-expanded') ?? false,
+      maintainState: properties.getBool('maintain-state') ?? false,
+      tilePadding: properties.getValue<EdgeInsetsGeometry>('tile-padding'),
+      expandedAlignment: properties.getValue<Alignment>('expanded-alignment'),
+      expandedCrossAxisAlignment: properties.getValue<CrossAxisAlignment>(
+        'expanded-cross-axis-alignment',
+      ),
+      childrenPadding: properties.getValue<EdgeInsetsGeometry>(
+        'children-padding',
+      ),
+      backgroundColor: properties.getColor('background-color'),
+      collapsedBackgroundColor: properties.getColor(
+        'collapsed-background-color',
+      ),
+      textColor: properties.getColor('text-color'),
+      collapsedTextColor: properties.getColor('collapsed-text-color'),
+      iconColor: properties.getColor('icon-color'),
+      collapsedIconColor: properties.getColor('collapsed-icon-color'),
+      controlAffinity: properties.getValue<ListTileControlAffinity>(
+        'control-affinity',
+      ),
+      controller: properties.getValue<ExpansibleController>('controller'),
+      onExpansionChanged: properties
+          .getCallback<bool>('on-expansion-changed')
+          ?.call(runtime),
+    );
+    return IrNativeValue(Value(expansionTileWidget));
+  });
+}

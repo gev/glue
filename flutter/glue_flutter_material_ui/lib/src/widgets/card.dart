@@ -1,0 +1,32 @@
+import 'package:glue/eval.dart';
+import 'package:glue/ir.dart';
+import 'package:glue_flutter_ui/utils/widget_properties.dart';
+import 'package:material_ui/material_ui.dart';
+
+/// Card widget function
+/// Creates Flutter Card from Glue (card props) expressions
+final Ir card = IrNativeFunc(cardImpl(Card.new));
+final Ir filledCard = IrNativeFunc(cardImpl(Card.filled));
+final Ir outlinedCard = IrNativeFunc(cardImpl(Card.outlined));
+
+/// Card implementation - takes properties object
+Eval<Ir> Function(Ir props) cardImpl(dynamic card) =>
+    (Ir props) => _createCard(card, WidgetProperties(props));
+
+/// Create Card widget from properties
+Eval<Ir> _createCard(dynamic card, WidgetProperties properties) {
+  final cardWidget = card(
+    key: properties.key,
+    color: properties.getColor('color'),
+    shadowColor: properties.getColor('shadow-color'),
+    surfaceTintColor: properties.getColor('surface-tint-color'),
+    elevation: properties.getDouble('elevation'),
+    shape: properties.getValue<ShapeBorder>('shape'),
+    borderOnForeground: properties.getBool('border-on-foreground') ?? true,
+    margin: properties.getValue<EdgeInsetsGeometry>('margin'),
+    clipBehavior: properties.getValue<Clip>('clip-behavior'),
+    semanticContainer: properties.getBool('semantic-container') ?? true,
+    child: properties.child,
+  );
+  return Eval.pure(IrNativeValue(Value(cardWidget)));
+}

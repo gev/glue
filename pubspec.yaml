@@ -6,5 +6,7 @@ environment:
 
 workspace:
   - dart/glue
-  - flutter/glue_flutter
+  - flutter/glue_flutter_ui
+  - flutter/glue_flutter_cupertino_ui
+  - flutter/glue_flutter_material_ui
   - flutter/glue_demo

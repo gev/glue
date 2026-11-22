@@ -1,0 +1,27 @@
+import 'package:glue/eval.dart';
+import 'package:glue/ir.dart';
+import 'package:glue_flutter_ui/utils/widget_properties.dart';
+import 'package:material_ui/material_ui.dart';
+
+final Ir inkWell = IrNativeFunc(inkWellImpl);
+
+Eval<Ir> inkWellImpl(Ir props) => _createInkWell(WidgetProperties(props));
+
+Eval<Ir> _createInkWell(WidgetProperties properties) {
+  return getRuntime().map((runtime) {
+    final inkWellWidget = InkWell(
+      key: properties.key,
+      onTap: properties.getVoidCallback('on-tap')?.call(runtime),
+      onLongPress: properties.getVoidCallback('on-long-press')?.call(runtime),
+      onHover: properties.getCallback<bool>('on-hover')?.call(runtime),
+      onFocusChange: properties
+          .getCallback<bool>('on-focus-change')
+          ?.call(runtime),
+      focusNode: properties.getValue<FocusNode>('focus-node'),
+      autofocus: properties.getBool('autofocus') ?? false,
+      borderRadius: properties.getValue<BorderRadius>('clip-behavior'),
+      child: properties.child,
+    );
+    return IrNativeValue(Value(inkWellWidget));
+  });
+}

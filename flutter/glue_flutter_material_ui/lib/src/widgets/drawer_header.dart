@@ -1,0 +1,32 @@
+import 'package:glue/eval.dart';
+import 'package:glue/ir.dart';
+import 'package:glue_flutter_ui/utils/widget_properties.dart';
+import 'package:material_ui/material_ui.dart';
+
+/// DrawerHeader widget function
+/// Creates Flutter DrawerHeader from Glue (drawer-header props) expressions
+final Ir drawerHeader = IrNativeFunc(drawerHeaderImpl);
+
+/// DrawerHeader implementation - takes properties object
+Eval<Ir> drawerHeaderImpl(Ir props) =>
+    _createDrawerHeader(WidgetProperties(props));
+
+/// Create DrawerHeader widget from properties
+Eval<Ir> _createDrawerHeader(WidgetProperties properties) {
+  final drawerHeaderWidget = DrawerHeader(
+    key: properties.key,
+    decoration: properties.getValue<Decoration>('decoration'),
+    margin:
+        properties.getValue<EdgeInsetsGeometry>('margin') ??
+        const EdgeInsets.only(bottom: 8.0),
+    padding:
+        properties.getValue<EdgeInsetsGeometry>('padding') ??
+        EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
+    duration:
+        properties.getValue<Duration>('duration') ??
+        const Duration(milliseconds: 250),
+    curve: properties.getValue<Curve>('curve') ?? Curves.fastOutSlowIn,
+    child: properties.child,
+  );
+  return Eval.pure(IrNativeValue(Value(drawerHeaderWidget)));
+}

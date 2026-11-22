@@ -1,0 +1,20 @@
+import 'package:flutter/widgets.dart';
+import 'package:glue/eval.dart';
+import 'package:glue/ir.dart';
+import 'package:glue_flutter_ui/utils/widget_properties.dart';
+
+/// Spacer widget function
+/// Creates Flutter Spacer from Glue (spacer props) expressions
+final Ir spacer = IrNativeFunc(spacerImpl);
+
+/// Spacer implementation - takes properties object
+Eval<Ir> spacerImpl(Ir props) => _createSpacer(WidgetProperties(props));
+
+/// Create Spacer widget from properties
+Eval<Ir> _createSpacer(WidgetProperties properties) {
+  final spacerWidget = Spacer(
+    key: properties.key,
+    flex: properties.getInt('flex') ?? 1,
+  );
+  return Eval.pure(IrNativeValue(Value(spacerWidget)));
+}

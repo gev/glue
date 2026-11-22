@@ -1,0 +1,55 @@
+import 'package:glue/eval.dart';
+import 'package:glue/ir.dart';
+import 'package:glue_flutter_ui/utils/widget_properties.dart';
+import 'package:material_ui/material_ui.dart';
+
+/// SegmentedButtonStyle binder for Glue using official styleFrom
+final Ir segmentedButtonStyle = IrNativeFunc(segmentedButtonStyleImpl);
+
+Eval<Ir> segmentedButtonStyleImpl(Ir props) =>
+    _createSegmentedButtonStyle(WidgetProperties(props));
+
+Eval<Ir> _createSegmentedButtonStyle(WidgetProperties properties) {
+  return getRuntime().map((runtime) {
+    final style = SegmentedButton.styleFrom(
+      foregroundColor: properties.getColor('foreground-color'),
+      backgroundColor: properties.getColor('background-color'),
+      selectedForegroundColor: properties.getColor('selected-foreground-color'),
+      selectedBackgroundColor: properties.getColor('selected-background-color'),
+      disabledForegroundColor: properties.getColor('disabled-foreground-color'),
+      disabledBackgroundColor: properties.getColor('disabled-background-color'),
+      shadowColor: properties.getColor('shadow-color'),
+      surfaceTintColor: properties.getColor('surface-tint-color'),
+      iconColor: properties.getColor('icon-color'),
+      iconSize: properties.getDouble('icon-size'),
+      disabledIconColor: properties.getColor('disabled-icon-color'),
+      overlayColor: properties.getColor('overlay-color'),
+      elevation: properties.getDouble('elevation'),
+      textStyle: properties.getValue<TextStyle>('text-style'),
+      padding: properties.getValue<EdgeInsetsGeometry>('padding'),
+      minimumSize: properties.getValue<Size>('minimum-size'),
+      fixedSize: properties.getValue<Size>('fixed-size'),
+      maximumSize: properties.getValue<Size>('maximum-size'),
+      side: properties.getValue<BorderSide>('side'),
+      shape: properties.getValue<OutlinedBorder>('shape'),
+      enabledMouseCursor: properties.getValue<MouseCursor>(
+        'enabled-mouse-cursor',
+      ),
+      disabledMouseCursor: properties.getValue<MouseCursor>(
+        'disabled-mouse-cursor',
+      ),
+      visualDensity: properties.getValue<VisualDensity>('visual-density'),
+      tapTargetSize: properties.getValue<MaterialTapTargetSize>(
+        'tap-target-size',
+      ),
+      animationDuration: properties.getValue<Duration>('animation-duration'),
+      enableFeedback: properties.getBool('enable-feedback'),
+      alignment: properties.getValue<AlignmentGeometry>('alignment'),
+      splashFactory: properties.getValue<InteractiveInkFeatureFactory>(
+        'splash-factory',
+      ),
+    );
+
+    return IrNativeValue(Value(style));
+  });
+}

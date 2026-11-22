@@ -1,0 +1,26 @@
+name: glue_flutter_cupertino_ui
+description: Flutter Cupertino UI bindings for the Glue programming language.
+version: 0.1.0
+homepage: https://github.com/gev/glue
+repository: https://github.com/gev/glue
+issue_tracker: https://github.com/gev/glue/issues
+publish_to: none
+
+environment:
+  sdk: "^3.12.0"
+  flutter: ">=3.50.0"
+
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  glue:
+  glue_flutter_ui:
+
+  cupertino_ui: any
+  
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0

@@ -1,0 +1,32 @@
+import 'package:flutter/widgets.dart';
+import 'package:glue/eval.dart';
+import 'package:glue/ir.dart';
+import 'package:glue_flutter_ui/utils/widget_properties.dart';
+
+/// Text widget function
+/// Creates Flutter Text widget from Glue (text :text "text" ...) expressions
+final Ir text = IrNativeFunc(textImpl);
+
+Eval<Ir> textImpl(Ir props) => _createText(WidgetProperties(props));
+
+/// Create Text widget from properties
+Eval<Ir> _createText(WidgetProperties properties) {
+  final textWidget = Text(
+    properties.getString('text') ?? '',
+    key: properties.key,
+    style: properties.getValue<TextStyle>('style'),
+    strutStyle: properties.getValue<StrutStyle>('strut-style'),
+    textAlign: properties.getValue<TextAlign>('text-align'),
+    textDirection: properties.getValue<TextDirection>('text-direction'),
+    locale: properties.getValue<Locale>('locale'),
+    softWrap: properties.getBool('soft-wrap'),
+    overflow: properties.getValue<TextOverflow>('overflow'),
+    maxLines: properties.getInt('max-lines'),
+    semanticsLabel: properties.getString('semantics-label'),
+    textWidthBasis: properties.getValue<TextWidthBasis>('text-width-basis'),
+    textHeightBehavior: properties.getValue<TextHeightBehavior>(
+      'text-height-behavior',
+    ),
+  );
+  return Eval.pure(IrNativeValue(Value(textWidget)));
+}

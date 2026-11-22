@@ -1,0 +1,69 @@
+import 'package:glue/eval.dart';
+import 'package:glue/ir.dart';
+import 'package:glue_flutter_ui/utils/widget_properties.dart';
+import 'package:material_ui/material_ui.dart';
+
+/// ListTile widget function
+/// Creates Flutter ListTile from Glue (list-tile props) expressions
+final Ir listTile = IrNativeFunc(listTileImpl);
+
+/// ListTile implementation - takes properties object
+Eval<Ir> listTileImpl(Ir props) => _createListTile(WidgetProperties(props));
+
+/// Create ListTile widget from properties
+Eval<Ir> _createListTile(WidgetProperties properties) {
+  return getRuntime().map((runtime) {
+    final listTileWidget = ListTile(
+      key: properties.key,
+      leading: properties.getWidget('leading'),
+      title: properties.getWidget('title'),
+      subtitle: properties.getWidget('subtitle'),
+      trailing: properties.getWidget('trailing'),
+      isThreeLine: properties.getBool('is-three-line') ?? false,
+      dense: properties.getBool('dense'),
+      visualDensity: properties.getValue<VisualDensity>('visual-density'),
+      shape: properties.getValue<OutlinedBorder>('shape'),
+      style: properties.getValue<ListTileStyle>('style'),
+      selectedColor: properties.getColor('selected-color'),
+      iconColor: properties.getColor('icon-color'),
+      textColor: properties.getColor('text-color'),
+      titleTextStyle: properties.getValue<TextStyle>('title-text-style'),
+      subtitleTextStyle: properties.getValue<TextStyle>('subtitle-text-style'),
+      leadingAndTrailingTextStyle: properties.getValue<TextStyle>(
+        'leading-and-trailing-text-style',
+      ),
+      contentPadding: properties.getValue<EdgeInsetsGeometry>(
+        'content-padding',
+      ),
+      enabled: properties.getBool('enabled') ?? true,
+      onTap: properties.getVoidCallback('on-tap')?.call(runtime),
+      onLongPress: properties.getVoidCallback('on-long-press')?.call(runtime),
+      onFocusChange: properties
+          .getCallback<bool>('on-focus-change')
+          ?.call(runtime),
+      mouseCursor: properties.getValue<MouseCursor>('mouse-cursor'),
+      selected: properties.getBool('selected') ?? false,
+      focusColor: properties.getColor('focus-color'),
+      hoverColor: properties.getColor('hover-color'),
+      splashColor: properties.getColor('splash-color'),
+      focusNode: properties.getValue<FocusNode>('focus-node'),
+      autofocus: properties.getBool('autofocus') ?? false,
+      tileColor: properties.getColor('tile-color'),
+      selectedTileColor: properties.getColor('selected-tile-color'),
+      enableFeedback: properties.getBool('enable-feedback'),
+      horizontalTitleGap: properties.getDouble('horizontal-title-gap'),
+      minVerticalPadding: properties.getDouble('min-vertical-padding'),
+      minLeadingWidth: properties.getDouble('min-leading-width'),
+      minTileHeight: properties.getDouble('min-tile-height'),
+      titleAlignment: properties.getValue<ListTileTitleAlignment>(
+        'title-alignment',
+      ),
+      internalAddSemanticForOnTap:
+          properties.getBool('internal-add-semantic-for-on-tap') ?? true,
+      statesController: properties.getValue<WidgetStatesController>(
+        'states-controller',
+      ),
+    );
+    return IrNativeValue(Value(listTileWidget));
+  });
+}

@@ -1,0 +1,33 @@
+import 'package:glue/eval.dart';
+import 'package:glue/ir.dart';
+import 'package:glue_flutter_ui/utils/widget_properties.dart';
+import 'package:material_ui/material_ui.dart';
+
+/// ElevatedButton widget function
+/// Creates Flutter ElevatedButton from Glue (elevated-button props) expressions
+final Ir elevatedButton = IrNativeFunc(elevatedButtonImpl);
+
+/// ElevatedButton implementation - takes properties object
+Eval<Ir> elevatedButtonImpl(Ir props) =>
+    _createElevatedButton(WidgetProperties(props));
+
+/// Create ElevatedButton widget from properties
+Eval<Ir> _createElevatedButton(WidgetProperties properties) {
+  return getRuntime().map((runtime) {
+    final elevatedButtonWidget = ElevatedButton(
+      key: properties.key,
+      onPressed: properties.getVoidCallback('on-pressed')?.call(runtime),
+      onLongPress: properties.getVoidCallback('on-long-press')?.call(runtime),
+      onHover: properties.getCallback<bool>('on-hover')?.call(runtime),
+      onFocusChange: properties
+          .getCallback<bool>('on-focus-change')
+          ?.call(runtime),
+      style: properties.getValue<ButtonStyle>('style'),
+      focusNode: properties.getValue<FocusNode>('focus-node'),
+      autofocus: properties.getBool('autofocus') ?? false,
+      clipBehavior: properties.getValue<Clip>('clip-behavior'),
+      child: properties.child,
+    );
+    return IrNativeValue(Value(elevatedButtonWidget));
+  });
+}

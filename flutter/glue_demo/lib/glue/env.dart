@@ -5,7 +5,9 @@ import 'package:glue/lib/math/arithmetic.dart';
 import 'package:glue/module.dart';
 import 'package:glue_demo/glue/state.dart';
 import 'package:glue_demo/glue/store.dart';
-import 'package:glue_flutter/glue_flutter.dart';
+import 'package:glue_flutter_cupertino_ui/cupertino_ui.dart';
+import 'package:glue_flutter_material_ui/material_ui.dart';
+import 'package:glue_flutter_ui/ui.dart';
 
 final env = envFromModules([
   builtinModule,

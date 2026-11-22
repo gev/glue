@@ -1,0 +1,35 @@
+import 'package:glue/eval.dart';
+import 'package:glue/ir.dart';
+import 'package:glue_flutter_ui/utils/widget_properties.dart';
+import 'package:material_ui/material_ui.dart';
+
+/// OutlinedButton widget function
+/// Creates Flutter OutlinedButton from Glue (outlined-button props) expressions
+/// Expects keyword arguments: :label, :on-press, :disabled, etc.
+final Ir outlinedButton = IrNativeFunc(outlinedButtonImpl);
+
+/// OutlinedButton implementation - takes properties object with keyword arguments
+Eval<Ir> outlinedButtonImpl(Ir props) =>
+    _createOutlinedButton(WidgetProperties(props));
+
+/// Create OutlinedButton widget from properties object
+Eval<Ir> _createOutlinedButton(WidgetProperties properties) {
+  // Get runtime and create widget
+  return getRuntime().map((runtime) {
+    final buttonWidget = OutlinedButton(
+      key: properties.key,
+      onPressed: properties.getVoidCallback('on-pressed')?.call(runtime),
+      onLongPress: properties.getVoidCallback('on-long-press')?.call(runtime),
+      onHover: properties.getCallback<bool>('on-hover')?.call(runtime),
+      onFocusChange: properties
+          .getCallback<bool>('on-focus-change')
+          ?.call(runtime),
+      style: properties.getValue<ButtonStyle>('style'),
+      focusNode: properties.getValue<FocusNode>('focus-node'),
+      autofocus: properties.getBool('autofocus') ?? false,
+      clipBehavior: properties.getValue<Clip>('clip-behavior'),
+      child: properties.child,
+    );
+    return IrNativeValue(Value(buttonWidget));
+  });
+}

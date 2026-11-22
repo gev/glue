@@ -1,0 +1,27 @@
+import 'package:glue/eval.dart';
+import 'package:glue/ir.dart';
+import 'package:glue_flutter_ui/utils/widget_properties.dart';
+import 'package:material_ui/material_ui.dart';
+
+/// LinearProgressIndicator widget function
+/// Creates Flutter LinearProgressIndicator from Glue (linear-progress-indicator props) expressions
+final Ir linearProgressIndicator = IrNativeFunc(linearProgressIndicatorImpl);
+
+/// LinearProgressIndicator implementation - takes properties object
+Eval<Ir> linearProgressIndicatorImpl(Ir props) =>
+    _createLinearProgressIndicator(WidgetProperties(props));
+
+/// Create LinearProgressIndicator widget from properties
+Eval<Ir> _createLinearProgressIndicator(WidgetProperties properties) {
+  final progressIndicatorWidget = LinearProgressIndicator(
+    key: properties.key,
+    value: properties.getDouble('value'),
+    backgroundColor: properties.getColor('background-color'),
+    color: properties.getColor('color'),
+    valueColor: properties.getValue<Animation<Color?>>('value-color'),
+    minHeight: properties.getDouble('min-height'),
+    semanticsLabel: properties.getString('semantics-label'),
+    semanticsValue: properties.getString('semantics-value'),
+  );
+  return Eval.pure(IrNativeValue(Value(progressIndicatorWidget)));
+}
