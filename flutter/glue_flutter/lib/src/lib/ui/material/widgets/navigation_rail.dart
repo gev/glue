@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// NavigationRail widget function
 /// Creates Flutter NavigationRail from Glue (navigation-rail props) expressions

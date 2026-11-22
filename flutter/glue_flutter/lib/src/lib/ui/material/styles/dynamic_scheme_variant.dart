@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:glue/ir.dart';
+import 'package:material_ui/material_ui.dart';
 
 final dynamicSchemeVariant = IrObject({
   'tonal-spot': IrNativeValue(Value(DynamicSchemeVariant.tonalSpot)),

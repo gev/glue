@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:glue/error.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
 import 'package:glue_flutter/src/utils/widget_properties.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// DatePickerDialog widget function
 /// Creates Flutter DatePickerDialog from Glue (date-picker-dialog props) expressions

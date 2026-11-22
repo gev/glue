@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:glue/eval.dart';
 import 'package:glue/ir.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Material 3 TextTheme constructor with all 13 typography styles
 /// Based on Material Design 3 typography scale
