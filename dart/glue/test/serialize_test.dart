@@ -8,7 +8,7 @@ import 'package:test/test.dart';
 /// Valid symbol chars: letter first, then letter/digit/special
 final _letterChars = 'abcdefghijklmnopqrstuvwxyz';
 final _digitChars = '0123456789';
-final _specialChars = '+-*/%=<>&|\!?\$@#_.\'';
+final _specialChars = '+-*/%=<>&|!?\$@#_.\'';
 
 String _genValidSymbol(Random random) {
   final first = _letterChars[random.nextInt(_letterChars.length)];
