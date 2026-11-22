@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:glue_demo/code.dart';
 import 'package:glue_demo/services/glue_evaluator.dart';
 import 'package:glue_demo/widgets/code_editor_pane.dart';
