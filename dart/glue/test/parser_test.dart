@@ -178,7 +178,7 @@ void main() {
     });
 
     test('handle escape sequences in strings', () {
-      expectParsesTo('"hello\\nworld"', StringAst('hello\\nworld'));
+      expectParsesTo('"hello\\nworld"', StringAst('hello\nworld'));
     });
 
     test('handle symbols with unicode', () {

@@ -42,11 +42,27 @@ Parser<String> pFloatToken() {
       });
 }
 
+Parser<String> charLiteral() {
+  const escapes = {'\\': '\\', '"': '"', 'n': '\n', 't': '\t', 'r': '\r'};
+
+  final escaped = (char('\\') & anyOf(escapes.keys.join()))
+      .pick(1)
+      .map((c) => escapes[c]!);
+
+  final normal = pattern('^"\\');
+
+  return (escaped | normal).cast<String>();
+}
+
 /// String parser - matches Haskell pString
 /// SRP: Only handles string parsing logic, no whitespace
 Parser<String> pStringToken() {
-  final character = (char('\\') & any()) | pattern('^"');
-  return (char('"') & character.star() & char('"')).flatten();
+  // final character = (char('\\') & any()) | pattern('^"');
+  // return (char('"') & character.star() & char('"')).flatten();
+  return (char('"') & charLiteral().star() & char('"'))
+      .pick(1)
+      .castList<String>()
+      .map((chars) => chars.join());
 }
 
 /// Symbol parser - matches Haskell pSymbol
@@ -212,10 +228,7 @@ class GlueParser {
       }
       return FloatAst(double.parse(value));
     });
-    final stringParser = pStringToken().map((value) {
-      final content = value.substring(1, value.length - 1);
-      return StringAst(content);
-    });
+    final stringParser = pStringToken().map((value) => StringAst(value));
     final symbolParser = pSymbolToken().map((value) => SymbolAst(value));
     final quoteParser = pQuote(expression);
     final listParser = pExprOrList(expression);
