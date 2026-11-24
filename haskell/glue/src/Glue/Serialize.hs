@@ -18,7 +18,7 @@ serializeAST ast = toLazyText (go ast)
  where
   go (Integer n) = decimal n
   go (Float n) = realFloat n
-  go (String s) = "\"" <> fromText s <> "\""
+  go (String s) = "\"" <> fromText (escapeString s) <> "\""
   go (Symbol s) = fromText s
   go (List xs) = "(" <> goList (go <$> xs) <> ")"
   go (Object ps) = "(" <> goList (goProp <$> ps) <> ")"
