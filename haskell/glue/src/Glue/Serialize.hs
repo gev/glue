@@ -25,8 +25,8 @@ serializeAST ast = toLazyText (go ast)
   goList = mconcat . intersperse (singleton ' ')
   goProp (k, v) = singleton ':' <> fromText k <> singleton ' ' <> go v
   escapeString =
-    T.replace "\\" "\\\\"
-      . T.replace "\"" "\\\""
-      . T.replace "\n" "\\n"
+    T.replace "\n" "\\n"
       . T.replace "\t" "\\t"
       . T.replace "\r" "\\r"
+      . T.replace "\"" "\\\""
+      . T.replace "\\" "\\\\"
