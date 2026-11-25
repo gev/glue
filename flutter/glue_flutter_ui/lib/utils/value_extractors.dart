@@ -103,6 +103,7 @@ Callback<T> Function(Runtime)? extractCallback<T>(Ir? value) =>
     value != null && isCallable(value)
     ? (Runtime runtime) => (T? arg) {
         final args = switch (arg) {
+          Ir ir => ir,
           bool v => [IrBool(v)],
           int v => [IrInteger(v)],
           double v => [IrFloat(v)],
